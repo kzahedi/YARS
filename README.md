@@ -7,11 +7,11 @@ YARS - Yet Another RobotSimulator
 http://www.fontspace.com
 
 <b>Images</b><br>
-CBT.jpg    - http://www.flickr.com/photos/stallio/3149911976/sizes/o/in/photostream/
-wall.jpg   - http://agf81.deviantart.com/art/Brick-Seamless-160259435
-clouds.jpg - http://www.ode.org
-wheel.jpg  - source no longer available
-wood2.jpg  - source no longer available
+CBT.jpg    - http://www.flickr.com/photos/stallio/3149911976/sizes/o/in/photostream/<br>
+wall.jpg   - http://agf81.deviantart.com/art/Brick-Seamless-160259435<br>
+clouds.jpg - http://www.ode.org<br>
+wheel.jpg  - source no longer available<br>
+wood2.jpg  - source no longer available<br>
 ground.jpg - source no longer available
 
 
