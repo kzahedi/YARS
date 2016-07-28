@@ -1,0 +1,74 @@
+<project    name="@JAR_NAME@"  default="compile" basedir=".">
+
+  <property name="target.jdk" value="1.5"/>
+
+  <property name="src.dir"    location="@SOURCE_DIR@"/>
+  <property name="build.dir"  location="@BUILD_DIR@"/>
+  <property name="dist.dir"   location="@DIST_DIR@"/>
+  <property name="jar.name"   value="@JAR_NAME@.jar"/>
+  <property name="main.class" value="@MAIN_CLASS@"/>
+  <property name="class.path" value="@CLASS_PATH@"/>
+
+  <!-- **********************************************************  -->
+  <!-- Init Tasks                                                  -->
+  <!-- **********************************************************  -->
+
+  <target name="clean" description="clean up">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dir}/${jar.name}"/>
+    <mkdir dir="${dist.dir}"/>
+    <tstamp/>
+  </target>
+
+  <!-- **********************************************************  -->
+  <!-- Compile Tasks                                                  -->
+  <!-- **********************************************************  -->
+
+  <target name="compile" description="compile the files" depends="init">
+
+    <javac srcdir="${src.dir}" destdir="${build.dir}"
+           debug="on"
+           nowarn="yes"
+           source="${target.jdk}">
+
+      <classpath>
+        <fileset dir="@CMAKE_BINARY_DIR@">
+          <include name="**/*.jar"/>
+          <exclude name="**/${jar.name}"/>
+        </fileset>
+      </classpath>
+
+    </javac>
+
+  </target>
+
+  <target name="clean_compile" description="clean and compile"
+    depends="clean, compile"/>
+
+  <!-- **********************************************************  -->
+  <!-- Jar Tasks                                                  -->
+  <!-- **********************************************************  -->
+
+  <target name="jar" depends="compile" description="generate jar file">
+    <jar jarfile="${jar.name}">
+      <fileset dir="${build.dir}">
+        <include name="org/**/*.class"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <attribute name="Main-Class" value="${main.class}"/>
+        <attribute name="Class-Path"  value="${class.path}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="distribute" depends="jar" description="move generated jar file">
+    <copy file="${jar.name}" todir="@CMAKE_BINARY_DIR@/jar/"/>
+  </target>
+
+</project>
+

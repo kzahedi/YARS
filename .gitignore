@@ -1,0 +1,8 @@
+
+*.ttf
+
+*.ttc
+
+tags
+
+.vimprj/settings.vim

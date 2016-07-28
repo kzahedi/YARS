@@ -1,0 +1,85 @@
+#ifndef __DATA_GENERIC_DEFLECTION_SENSOR_H__
+#define __DATA_GENERIC_DEFLECTION_SENSOR_H__
+
+#include <yars/configuration/data/DataSensor.h>
+#include <yars/configuration/data/DataNoise.h>
+#include <yars/configuration/data/DataFilter.h>
+
+#include <yars/types/Domain.h>
+
+#include <yars/util/Mapping.h>
+#include <yars/util/noise/Noise.h>
+
+# define GENERIC_DEFLECTION_SENSOR "deflection"
+# define YARS_STRING_GENERIC_DEFLECTION_SENSOR  (char*)GENERIC_DEFLECTION_SENSOR
+# define YARS_STRING_GENERIC_DEFLECTION_SENSOR_DEFINITION  (char*)GENERIC_DEFLECTION_SENSOR DIVIDER DEFINITION
+
+#include <string>
+#include <pthread.h>
+
+using namespace std;
+
+class DataGenericDeflectionSensor : public DataSensor
+{
+  public:
+
+    /**
+     * @brief Constructor.
+     *
+     * @param parent
+     */
+    DataGenericDeflectionSensor(DataNode* parent);
+
+    /**
+     * @brief Destructor
+     */
+    ~DataGenericDeflectionSensor();
+
+    /**
+     * @brief Adds DataParseElement to this element. Used during parsing.
+     *
+     * @param element
+     * @sa DataParseElement
+     */
+    void add(DataParseElement *element);
+
+    /**
+     * @brief Returns the domain of the sensor, i.e. which light values can be
+     * measured.
+     *
+     * @return domain
+     */
+    Domain domain();
+
+    static void createXsd(XsdSpecification *spec);
+
+    DataGenericDeflectionSensor* _copy();
+
+    int dimension() { return 1; }
+
+    yReal internalValue(int index);
+    yReal externalValue(int index);
+    void setInternalValue(int index, yReal v);
+    void setExternalValue(int index, yReal v);
+    void setInternalDomain(Domain d);
+    void setExternalDomain(Domain d);
+    Domain getInternalDomain(int index);
+    Domain getExternalDomain(int index);
+
+    void _resetTo(const DataSensor *sensor);
+    void setDegToRad();
+
+  private:
+    void __setMapping();
+    Domain   _domain;
+    yReal _internalValue;
+    yReal _externalValue;
+    Mapping  _internalExternalMapping;
+    Domain   _internalDomain;
+    Domain   _externalDomain;
+    Noise   *_n;
+    pthread_mutex_t _mutex;
+    bool  _useRad;
+};
+
+#endif // __DATA_GENERIC_DEFLECTION_SENSOR_H__

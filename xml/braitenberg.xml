@@ -1,0 +1,281 @@
+<rosiml version="0.8.40">
+
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+    <screen name="Braiternberg 6 inputs" show="true" follow="false">
+      <size   width="800" height="800"/>
+      <camera>
+        <position x="0.00" y="0.00" z="10"/>
+        <lookAt x="0.0" y="0.01" z="0.0"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+    <cameras>
+      <orbit speed="0.5">
+        <lookAtX p="0.05" i="0.001"  d="0.002"/>
+        <lookAtY p="0.05" i="0.001"  d="0.002"/>
+        <lookAtZ p="1.0"  i="0.0"    d="0.0"/>
+        <fromX   p="0.01" i="0.0001" d="0.0002"/>
+        <fromY   p="0.01" i="0.0001" d="0.0002"/>
+        <fromZ   p="0.0"  i="0.0"    d="0.0"/>
+      </orbit>
+      <centre speed="1.5"/>
+    </cameras>
+
+    <followables>
+      <followable name="main body"/>
+    </followables>
+  </screens>
+
+  <environment>
+    <gravitation x="0.0" y="0.0" z="-9.81"/>
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+
+
+    <box name="wall 1">
+      <dimension height="0.5" width="7.75" depth="0.25"/>
+      <pose x="4" y="0" z="-0.15" alpha="0" beta="0" gamma="90"/>
+      <visualisation>
+        <first  name="YARS/Wall2"/>
+        <second name="YARS/Wall1"/>
+        <third  name="YARS/Wall1"/>
+        <fourth name="YARS/Wall1"/>
+        <fifth  name="YARS/Wall1"/>
+        <sixth  name="YARS/Wall2"/>
+      </visualisation>
+      <physics>
+        <mass kg="0"/>
+      </physics>
+    </box>
+
+    <box name="wall 2">
+      <dimension height="0.5" width="7.75" depth="0.25"/>
+      <pose x="-4" y="0" z="-0.15" alpha="0" beta="0" gamma="90"/>
+      <visualisation>
+        <first  name="YARS/Wall2"/>
+        <second name="YARS/Green"/>
+        <third  name="YARS/Blue"/>
+        <fourth name="YARS/Wall2"/>
+        <fifth  name="YARS/Wall1"/>
+        <sixth  name="YARS/Wall1"/>
+     </visualisation>
+      <physics>
+        <mass kg="0"/>
+      </physics>
+    </box>
+
+    <box name="wall 3">
+      <dimension height="0.5" width="8.25" depth="0.25"/>
+      <pose x="0" y="4" z="-0.15" alpha="0" beta="0" gamma="0"/>
+      <visualisation>
+        <first  name="YARS/Wall2"/>
+        <second name="YARS/Green"/>
+        <third  name="YARS/Wall1"/>
+        <fourth name="YARS/Wall2"/>
+        <fifth  name="YARS/Wall1"/>
+        <sixth  name="YARS/Wall1"/>
+      </visualisation>
+      <physics>
+        <mass kg="0"/>
+      </physics>
+    </box>
+
+    <box name="wall 4">
+      <dimension height="0.5" width="8.25" depth="0.25"/>
+      <pose x="0" y="-4" z="-0.15" alpha="0" beta="0" gamma="0"/>
+      <visualisation>
+        <first  name="YARS/Wall2"/>
+        <second name="YARS/Wall2"/>
+        <third  name="YARS/Wall2"/>
+        <fourth name="YARS/Wall2"/>
+        <fifth  name="YARS/Wall1"/>
+        <sixth  name="YARS/Wall1"/>
+      </visualisation>
+      <physics>
+        <mass kg="0"/>
+      </physics>
+    </box>
+
+  </environment>
+
+  <robots>
+    <robot name="Braitenberg">
+      <body>
+        <composite name="composite">
+          <geometry>
+            <cylinder name="main body" visualise="true">
+              <dimension radius="0.10" height="0.09"/>
+              <pose x="0" y="0" z="0.01" alpha="0" beta="0" gamma="0"/>
+              <visualisation>
+                <top name="Chain/Circuit/Top/Green"/>
+                <bottom name="Chain/Circuit/Body/Green"/>
+                <body name="Chain/Circuit/Body/Green"/>
+              </visualisation>
+              <physics>
+                <mass kg="1.0"/>
+              </physics>
+            </cylinder>
+
+            <sphere name="wheel front" visualise="true">
+              <dimension radius="0.01"/>
+              <pose x="0.08" y="0" z="-0.0499999" alpha="0" beta="0" gamma="0"/>
+              <visualisation>
+                <texture name="Chain/Wheel"/>
+              </visualisation>
+              <physics>
+                <mass kg="0.1"/>
+              </physics>
+            </sphere>
+
+            <sphere name="wheel back" visualise="true">
+              <dimension radius="0.01"/>
+              <pose x="-0.08" y="0" z="-0.049999" alpha="0" beta="0" gamma="0"/>
+              <visualisation>
+                <texture name="Chain/Wheel"/>
+              </visualisation>
+              <physics>
+                <mass kg="0.1"/>
+              </physics>
+            </sphere>
+          </geometry>
+          <physics>
+            <friction value="0"/>
+          </physics>
+        </composite>
+        <sphere name="wheel left" visualise="true">
+          <dimension radius="0.03"/>
+          <pose x="0" y="0.085" z="-0.03"/>
+          <visualisation>
+            <texture name="Chain/Wheel"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="1000"/>
+          </physics>
+        </sphere>
+        <sphere name="wheel right" visualise="true">
+          <dimension radius="0.03"/>
+          <pose x="0" y="-0.085" z="-0.03"/>
+          <visualisation>
+            <texture name="Chain/Wheel"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="1000"/>
+          </physics>
+        </sphere>
+      </body>
+      <pose x="2.25" z="0.05" gamma="15"/>
+      <actuators>
+        <hinge name="wheel left hinge" type="velocity" mode="active">
+          <source      name="wheel left"/>
+          <destination name="main body"/>
+          <force       max="10.0"/>
+          <velocity    max="10.0"/>
+          <pose        x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+          <mapping     min="-1" max="+1"/>
+          <regular     softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.1" i="0.001" d="0.001"/>
+        </hinge>
+        <hinge name="wheel right hinge" type="velocity" mode="active">
+          <source      name="wheel right"/>
+          <destination name="main body"/>
+          <force       max="10.0"/>
+          <velocity    max="10.0"/>
+          <pose        x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+          <mapping     min="-1" max="+1"/>
+          <regular     softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.1" i="0.001" d="0.001"/>
+        </hinge>
+
+      </actuators>
+      <sensors>
+        <proximity name="left 1">
+          <object        name="main body"/>
+          <pose          x="0.0"   y="0.1" z="0" alpha="-90" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <proximity name="left 2">
+          <object        name="main body"/>
+          <pose          x="0.0707107"   y="0.0707107" z="0" alpha="-45" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <proximity name="left 3">
+          <object        name="main body"/>
+          <pose          x="0.0965926"   y="0.0258819" z="0" alpha="-15" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <proximity name="right 3">
+          <object        name="main body"/>
+          <pose          x="0.0965926"   y="-0.0258819" z="0" alpha="15" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <proximity name="right 2">
+          <object        name="main body"/>
+          <pose          x="0.0707107"   y="-0.0707107" z="0" alpha="45" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <proximity name="right 1">
+          <object        name="main body"/>
+          <pose          x="0.0"   y="-0.1" z="0" alpha="90" beta="90"/>
+          <distance      meter="0.5"/>
+          <mapping       min="1" max="-1"/>
+          <openingAngles x="25"   y="2.5"/>
+        </proximity>
+        <velocity  name="left wheel hinge sensor">
+          <object  name="wheel right hinge"/>
+          <domain  min="-10" max="10"/>
+          <mapping min="-1" max="1"/>
+        </velocity>
+        <velocity  name="right wheel hinge sensor">
+          <object  name="wheel right hinge"/>
+          <domain  min="-10" max="10"/>
+          <mapping min="-1" max="1"/>
+        </velocity>
+
+      </sensors>
+
+      <controller  module="Braitenberg2b" frequency="10"/>
+
+    </robot>
+  </robots>
+
+  <traces>
+    <trace  target="main body" length="5" max="300" time="5" particles="false">
+      <init  colour="ff0000"    size="0.01"/>
+      <final colour="ff000000"  size="0.00"/>
+    </trace>
+    <trace  target="wheel right" length="5" max="200" time="5" particles="false">
+      <init  colour="00ff00"    size="0.01"/>
+      <final colour="00ff0000"  size="0.00"/>
+    </trace>
+    <trace  target="wheel left" length="5" max="100" time="5" particles="false">
+      <init  colour="0000ff"    size="0.01"/>
+      <final colour="0000ff00"  size="0.00"/>
+    </trace>
+  </traces>
+</rosiml>

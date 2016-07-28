@@ -1,0 +1,4 @@
+[General]
+# Zip=
+# FileSystem=
+@OGRE_RESOURCES_DIRECTORIES@
