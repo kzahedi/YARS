@@ -3,7 +3,7 @@ YARS - Yet Another RobotSimulator
 
 
 ## Third party files
-<b> Fonts: </b><br>
+<b> Fonts </b><br>
 http://www.fontspace.com
 
 <b>Images</b><br>
