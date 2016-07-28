@@ -1,8 +1,8 @@
 # YARS
-YARS - Yet Another RobotSimulator
+YARS - Yet Another Robot Simulator
 
 
-## Third party files
+### Third party files
 <b> Fonts </b><br>
 http://www.fontspace.com
 
