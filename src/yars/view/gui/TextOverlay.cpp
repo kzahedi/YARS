@@ -8,8 +8,10 @@
 
 bool TextOverlay::_added = false;
 
-TextOverlay::TextOverlay(string name)
+TextOverlay::TextOverlay(int index)
 {
+  _index = index;
+
   if(!_added)
   {
     ColoredTextAreaOverlayElementFactory* pColoredTextAreaOverlayElementFactory = new ColoredTextAreaOverlayElementFactory();
@@ -21,8 +23,12 @@ TextOverlay::TextOverlay(string name)
   _statsFontSize = 12;
   _overlayMgr    = Ogre::OverlayManager::getSingletonPtr();
 
-  _overlay = _overlayMgr->create(name.c_str());
-  _panel   = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("Panel", "container1"));
+  stringstream oss;
+  oss << "text overlay " << _index;
+  _overlay = _overlayMgr->create(oss.str().c_str());
+  oss.str("");
+  oss << "container " << _index;
+  _panel   = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("Panel", oss.str().c_str()));
   _panel->setDimensions(1, 1);
   _panel->setPosition(0, 0);
   _overlay->add2D(_panel);
@@ -37,8 +43,10 @@ void TextOverlay::addTextBox(const std::string& ID,
     std::string fontname,
     std::string charheight)
 {
+  stringstream oss;
+  oss << ID << " " << _index;
   ColoredTextAreaOverlayElement* textBox =
-    (ColoredTextAreaOverlayElement*)_overlayMgr->createOverlayElement("ColoredTextArea", ID);
+    (ColoredTextAreaOverlayElement*)_overlayMgr->createOverlayElement("ColoredTextArea", oss.str().c_str());
   textBox->setDimensions(width, height);
   textBox->setMetricsMode(Ogre::GMM_PIXELS);
   textBox->setPosition(x, y);
@@ -62,7 +70,9 @@ void TextOverlay::removeTextBox(const std::string& ID)
 
 void TextOverlay::setText(const std::string& ID, const std::string& Text, int windowHeight)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   std::string c = "^0" + Text;
   if(ID == "robot")
   {
@@ -93,7 +103,9 @@ void TextOverlay::setText(const std::string& ID, const std::string& Text, int wi
 
 const std::string& TextOverlay::getText(const std::string& ID)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   return textBox->getCaption();
 }
 
@@ -113,31 +125,41 @@ void TextOverlay::printf(const std::string& ID,  const char *fmt, /* args*/ ...)
     va_end(ap);
   }
 
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   textBox->setCaption(text);
 }
 
 
 Ogre::Real TextOverlay::getHeight(const std::string& ID)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   textBox->getHeight();
 }
 
 Ogre::Real TextOverlay::getWidth(const std::string& ID)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   return textBox->getWidth();
 }
 
 void TextOverlay::setPosition(const std::string& ID, Ogre::Real x, Ogre::Real y)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   textBox->setPosition(x, y);
 }
 
 bool TextOverlay::hasOverlay(const std::string& ID)
 {
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
+  stringstream oss;
+  oss << ID << " " << _index;
+  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
   return (textBox != NULL);
 }

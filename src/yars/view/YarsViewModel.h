@@ -36,7 +36,12 @@ class YarsViewModel : public Observable, public Observer
     bool                    _sync;
     bool                    _syncedStep;
     bool                    _toggleVideo;
-    OgreHandler            *_ogreHandler;
+    OgreHandler*            _ogreHandler;
+    Ogre::GLPlugin*         _GLPlugin;
+    Ogre::ParticleFXPlugin* _particlePlugin;
+    Ogre::Root*             _root;
+    pthread_mutex_t         _mutex;
+
 };
 
 #endif // __YARS_VIEW_MODEL_H__

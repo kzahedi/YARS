@@ -1,7 +1,8 @@
 #include "view/YarsViewModel.h"
 
-#include "configuration/data/Data.h"
-#include "configuration/YarsConfiguration.h"
+#include <yars/configuration/data/Data.h>
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/defines/mutex.h>
 
 #include <Ogre.h>
 
@@ -14,9 +15,11 @@ YarsViewModel::YarsViewModel()
   _syncedStep      = false;
   _toggleVideo     = false;
 
+  // YM_INIT;
+
   if(__YARS_GET_USE_VISUALISATION)
   {
-    _ogreHandler                = OgreHandler::instance();
+    _ogreHandler = OgreHandler::instance();
     initialiseView();
     _ogreHandler->setupSceneManager();
     FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
@@ -26,6 +29,7 @@ YarsViewModel::YarsViewModel()
 YarsViewModel::~YarsViewModel()
 {
   Y_DEBUG("YarsViewModel destructor called.");
+  // YM_CLOSE;
 }
 
 void YarsViewModel::initialiseView()
@@ -38,10 +42,20 @@ void YarsViewModel::initialiseView()
 
 void YarsViewModel::visualiseScene()
 {
-  if(!__YARS_GET_USE_VISUALISATION) return;
-  if(__YARS_CURRENT_DATA->screens() == NULL) return;
+  // YM_LOCK;
+  if(!__YARS_GET_USE_VISUALISATION)
+  {
+    // YM_UNLOCK;
+    return;
+  }
+  if(__YARS_CURRENT_DATA->screens() == NULL)
+  {
+    // YM_UNLOCK;
+    return;
+  }
   _ogreHandler->step();
   FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
+  // YM_UNLOCK;
 }
 
 void YarsViewModel::reset()
@@ -62,7 +76,10 @@ void YarsViewModel::quit()
 
 void YarsViewModel::__newWindow()
 {
+  cout << "new window" << endl;
+  // YM_LOCK;
   __createNewWindow();
+  // YM_UNLOCK;
 }
 
 void YarsViewModel::__createNewWindow()

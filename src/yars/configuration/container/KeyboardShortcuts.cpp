@@ -83,10 +83,10 @@ KeyboardShortcuts::KeyboardShortcuts()
   visualiseAxes.id                            = YarsKeyFunction::VisualiseAxes;
   _keys.push_back(&visualiseAxes);
 
-  // openNewWindow.keyCode                       = __KEYBOARD_OPTIONS_OPEN_NEW_WINDOW_KEY;
-  // openNewWindow.description                   = __KEYBOARD_OPTIONS_OPEN_NEW_WINDOW_DESCRIPTION;
-  // openNewWindow.id                            = YarsKeyFunction::OpenNewWindow;
-  // _keys.push_back(&openNewWindow);
+  openNewWindow.keyCode                       = __KEYBOARD_OPTIONS_OPEN_NEW_WINDOW_KEY;
+  openNewWindow.description                   = __KEYBOARD_OPTIONS_OPEN_NEW_WINDOW_DESCRIPTION;
+  openNewWindow.id                            = YarsKeyFunction::OpenNewWindow;
+  _keys.push_back(&openNewWindow);
 
   setWindowTitle.keyCode                      = __KEYBOARD_OPTIONS_SET_WINDOW_TITLE_KEY;
   setWindowTitle.description                  = __KEYBOARD_OPTIONS_SET_WINDOW_TITLE_DESCRIPTION;

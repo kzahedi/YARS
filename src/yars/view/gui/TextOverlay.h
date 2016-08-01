@@ -16,7 +16,7 @@ class TextOverlay
 {
   public:
 
-    TextOverlay(string name);
+    TextOverlay(int index);
     ~TextOverlay();
 
     void printf(const std::string& ID,  const char *fmt, /* args*/ ...);
@@ -60,6 +60,7 @@ class TextOverlay
     int                      _robotFontSize;
     int                      _timeFontSize;
     int                      _statsFontSize;
+    int                      _index;
 
 };
 

@@ -141,6 +141,8 @@ void SdlWindow::step()
   SDL_Event event;
 
 #ifdef USE_CAPTURE_VIDEO
+  // cout << "capture running:     " << _captureRunning    << endl;
+  // cout << "img capture running: " << _imgCaptureRunning << endl;
   if(_captureRunning || _imgCaptureRunning)
 #else // USE_CAPTURE_VIDEO
   if(_imgCaptureRunning)
@@ -380,6 +382,7 @@ void SdlWindow::__setupSDL()
   _ogreHandler = OgreHandler::instance();
   stringstream oss;
   oss << "YARS Render window " << _index;
+  cout << oss.str() << endl;
   _window = _ogreHandler->root()->createRenderWindow(oss.str(),
       _windowConfiguration->geometry.width(),
       _windowConfiguration->geometry.height(),
@@ -400,6 +403,7 @@ void SdlWindow::__setupSDL()
   _sceneManager = _ogreHandler->getSceneManager();
   oss.str("");
   oss << "YARS Camera" << _index;
+  cout << oss.str() << endl;
   _camera = _sceneManager->createCamera(oss.str());
   _camera->setNearClipDistance(0.01f);
   _camera->setFarClipDistance(1000000.0f);
@@ -422,10 +426,9 @@ void SdlWindow::setupOSD()
   Colour osdColour = _data->osdTimeFontColour();
   string osdFont = _data->osdTimeFontName();
 
-  stringstream oss;
-  oss << "text overlay " << _index;
-  _textOverlay  = new TextOverlay(oss.str());
+  _textOverlay  = new TextOverlay(_index);
 
+  stringstream oss;
   oss.str("");
   oss << _data->osdTimeFontSize();
   _textOverlay->addTextBox("time", "00d:00h:00m:00s", 10, 10,  100, 20,

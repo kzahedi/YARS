@@ -1,10 +1,11 @@
 #ifndef __SDL_WINDOW_H__
 #define __SDL_WINDOW_H__
 
+#include <pthread.h>
 #include <OGRE/Ogre.h>
+
 #include "util/Observable.h"
 #include "util/ObservableMessage.h"
-
 
 #include "configuration/data/Data.h"
 
