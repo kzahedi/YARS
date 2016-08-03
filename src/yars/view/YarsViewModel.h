@@ -41,7 +41,7 @@ class YarsViewModel : public Observable, public Observer
     Ogre::ParticleFXPlugin* _particlePlugin;
     Ogre::Root*             _root;
     pthread_mutex_t         _mutex;
-
+    SDL_Event               _event;
 };
 
 #endif // __YARS_VIEW_MODEL_H__

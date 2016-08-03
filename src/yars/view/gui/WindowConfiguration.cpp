@@ -50,15 +50,15 @@ WindowConfiguration::WindowConfiguration(int i)
   fontTimeColour  = __YARS_GET_OSD_TIME_FONT_COLOR(index);  
 
 
-  if(index > 0)
-  {
+  // if(index > 0)
+  // {
     string ext = captureName.substr(captureName.find_last_of("."), captureName.size() - 1);
     captureName = captureName.substr(0, captureName.find_last_of("."));
     stringstream oss;
     oss << captureName << "-" << index << ext;
     captureName = oss.str();
     orgCaptureName = captureName;
-  }
+  // }
   captureIndex     = 0;
 
   // TODO overwrite values by DataScreen-values

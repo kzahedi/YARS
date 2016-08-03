@@ -21,6 +21,21 @@
 #  include <lqt/colormodels.h>
 #endif // USE_CAPTURE_VIDEO
 
+#ifndef __APPLE__
+namespace _SDL_
+{
+#endif // __APPLE__
+# include <SDL2/SDL.h>
+# include <SDL2/SDL_opengl.h>
+# include <SDL2/SDL_syswm.h>
+# include <SDL2/SDL_thread.h>
+#ifndef __APPLE__
+};
+
+using namespace _SDL_;
+#endif // __APPLE__
+
+
 #include <pthread.h>
 
 class SdlWindow : public Observable
@@ -42,6 +57,7 @@ class SdlWindow : public Observable
 #endif // USE_CAPTURE_VIDEO
     void toggleShadows();
     void setupOSD();
+    void handleEvent(SDL_Event);
 
   private:
     
@@ -112,6 +128,7 @@ class SdlWindow : public Observable
     Ogre::Vector3        _cpos;
     Ogre::Vector3        _cdir;
     Ogre::Vector3        _clookAt;
+    int                  _windowID;
     P3D                  _ypos;
     P3D                  _ylookAt;
 };

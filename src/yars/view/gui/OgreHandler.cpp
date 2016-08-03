@@ -42,7 +42,8 @@ OgreHandler::OgreHandler()
     OGRE_EXCEPT( Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL", "main" );
   }
   _root->setRenderSystem( _root->getAvailableRenderers()[0] );
-  _root->initialise( false );
+  _window = _root->initialise( false );
+  // _window->removeAllViewports();
   _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC, "Default SceneManager");
 }
 

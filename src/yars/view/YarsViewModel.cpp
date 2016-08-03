@@ -8,6 +8,7 @@
 
 YarsViewModel::YarsViewModel()
 {
+  SDL_Init( SDL_INIT_EVERYTHING );
   _drawFequency    = 1;
   _visualiseCalled = 0;
   _run             = true;
@@ -54,8 +55,13 @@ void YarsViewModel::visualiseScene()
     return;
   }
   _ogreHandler->step();
+
   FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
-  // YM_UNLOCK;
+  while(SDL_PollEvent(&_event))
+  {
+    FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->handleEvent(_event);
+  }
+  YM_UNLOCK;
 }
 
 void YarsViewModel::reset()

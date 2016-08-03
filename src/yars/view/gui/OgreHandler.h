@@ -28,14 +28,13 @@ class OgreHandler
 
     static OgreHandler *_me;
 
-    Ogre::Root             *_root;
-    Ogre::SceneManager     *_sceneManager;
-    Ogre::SceneNode        *_rootNode;
-    SceneGraph             *_sceneGraph;
-    Ogre::GLPlugin         *_GLPlugin;
-    Ogre::ParticleFXPlugin *_particlePlugin;
-    // TextOverlay        *_textOverlay;
-
+    Ogre::Root*         _root;
+    Ogre::SceneManager* _sceneManager;
+    Ogre::SceneNode*    _rootNode;
+    SceneGraph*         _sceneGraph;
+    Ogre::GLPlugin*     _GLPlugin;
+    Ogre::ParticleFXPlugin*_particlePlugin;
+    Ogre::RenderWindow* _window;
 };
 
 
