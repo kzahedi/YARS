@@ -3,7 +3,11 @@
 
 #include "WindowConfiguration.h"
 
-#include <QtGui>
+#include <QApplication>
+#include <QFrame>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
 
 class WindowConfigurationDialog : public QFrame
 {
@@ -42,12 +46,11 @@ class WindowConfigurationDialog : public QFrame
     QLineEdit *_xyz_x;
     QLineEdit *_xyz_y;
     QLineEdit *_xyz_z;
-    QLineEdit *_lookAt_x;
-    QLineEdit *_lookAt_y;
-    QLineEdit *_lookAt_z;
+    QLineEdit *_hpr_h;
+    QLineEdit *_hpr_p;
+    QLineEdit *_hpr_r;
     QLineEdit *_maxTraceLines;
     QLineEdit *_maxTracePoints;
-
 };
 
 #endif // __WINDOW_CONFIGURATIONS_DIALOG_H__

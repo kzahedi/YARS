@@ -78,6 +78,7 @@ using namespace std;
 
 SdlWindow::SdlWindow(int index)
 {
+  cout << "SDL Window: " << index << endl;
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
   _cameraHandler        = new CameraHandler(_windowConfiguration);
@@ -88,6 +89,7 @@ SdlWindow::SdlWindow(int index)
   _ctrlPressed          = false;
   _altPressed           = false;
   _metaPressed          = false;
+  _textOverlay          = NULL;
 #ifdef USE_CAPTURE_VIDEO
   _captureRunning       = false;
 #endif // USE_CAPTURE_VIDEO
@@ -140,15 +142,13 @@ SdlWindow::SdlWindow(int index)
 
 void SdlWindow::step()
 {
-  SDL_Event event;
-
 #ifdef USE_CAPTURE_VIDEO
   if(_captureRunning || _imgCaptureRunning)
 #else // USE_CAPTURE_VIDEO
   if(_imgCaptureRunning)
 #endif // USE_CAPTURE_VIDEO
   {
-    if(_index == 0)
+    if(_index == 0 && _textOverlay != NULL)
       _textOverlay->setText("stats","");
   }
   else
@@ -168,7 +168,7 @@ void SdlWindow::step()
       _fpsString.str("");
 
       _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
-      if(_index == 0)
+      if(_index == 0 && _textOverlay != NULL)
         _textOverlay->setText("stats", _fpsString.str());
       _lastTime = _currentTime;
       _lastStep = step;
@@ -178,8 +178,11 @@ void SdlWindow::step()
   if(_index == 0) __osd();
 }
 
-void SdlWindow::handleEvent(SDL_Event event)
+void SdlWindow::parseEvent(SDL_Event event)
 {
+  cout << "handle event" << endl;
+  cout << this << endl;
+  cout << "window ID: " << this->_windowID << endl;
   // while(SDL_PollEvent(&event))
   {
     if(event.window.windowID != _windowID) return;
@@ -277,7 +280,7 @@ void SdlWindow::handleEvent(SDL_Event event)
 
             Ogre::Real x = _viewport->getActualWidth() - 140;
             Ogre::Real y = 10;
-            if(_index == 0)
+            if(_index == 0 && _textOverlay != NULL)
               _textOverlay->setPosition("legend", x, y);
             break;
         }
@@ -428,22 +431,20 @@ void SdlWindow::__setupSDL()
 
 void SdlWindow::setupOSD()
 {
-
   Colour osdColour = _data->osdTimeFontColour();
   string osdFont = _data->osdTimeFontName();
 
-  if(_index == 0)
-    _textOverlay = new TextOverlay(_index);
+  _textOverlay = new TextOverlay(_index);
 
   stringstream oss;
   oss.str("");
   oss << _data->osdTimeFontSize();
-  if(_index == 0)
+  if(_index == 0 && _textOverlay != NULL)
     _textOverlay->addTextBox("time", "00d:00h:00m:00s", 10, 10,  100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, oss.str());
 
-  if(_index == 0)
+  if(_index == 0 && _textOverlay != NULL)
     _textOverlay->addTextBox("stats", "", 10, 40,  100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, "16");
@@ -453,7 +454,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << _data->osdRobotFontSize();
 
-  if(_index == 0)
+  if(_index == 0 && _textOverlay != NULL)
     _textOverlay->addTextBox("robot", "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
                              _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
@@ -461,7 +462,7 @@ void SdlWindow::setupOSD()
 
   Ogre::Real x = _viewport->getActualWidth() - 140;
   Ogre::Real y = 10;
-  if(_index == 0)
+  if(_index == 0 && _textOverlay != NULL)
     _textOverlay->addTextBox("legend",
                              "^0YARS, Zahedi", x, y, 15, 10,
                              Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
@@ -775,7 +776,7 @@ void SdlWindow::__osd()
 {
   if(_windowConfiguration->osdElapsedTime)
   {
-    if(_index == 0)
+    if(_index == 0 && _textOverlay != NULL)
       _textOverlay->setText("time", OSD::getElapsedTimeString());
   }
   if( _windowConfiguration->osdRobotInformation)
@@ -795,7 +796,7 @@ void SdlWindow::__osd()
         controller->unlockOSD();
       }
     }
-    if(_index == 0)
+    if(_index == 0 && _textOverlay != NULL)
       _textOverlay->setText("robot", oss.str(), (int)_viewport->getActualHeight());
   }
 }

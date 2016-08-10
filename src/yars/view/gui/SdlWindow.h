@@ -57,7 +57,7 @@ class SdlWindow : public Observable
 #endif // USE_CAPTURE_VIDEO
     void toggleShadows();
     void setupOSD();
-    void handleEvent(SDL_Event);
+    void parseEvent(SDL_Event);
 
   private:
     

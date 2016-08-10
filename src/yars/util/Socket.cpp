@@ -178,7 +178,7 @@ const Socket& Socket::operator<<(const Buffer &b) const
 
   send(_sock, buf, b.size() + 1, 0);
 
-  delete buf;
+  delete[] buf;
 
   return *this;
 }
@@ -240,9 +240,9 @@ const Socket& Socket::operator>>(Buffer &b) const
     }
   }
 
-  delete buf;
-  delete type;
-  delete sizeBytes;
+  delete[] buf;
+  delete[] type;
+  delete[] sizeBytes;
 
   return *this;
 }

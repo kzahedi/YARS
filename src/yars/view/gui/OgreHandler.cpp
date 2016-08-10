@@ -38,7 +38,8 @@ OgreHandler::OgreHandler()
   // }
 // #endif // __APPLE__
 
-  if ( _root->getAvailableRenderers().size() != 1 ) {
+  if ( _root->getAvailableRenderers().size() != 1 )
+  {
     OGRE_EXCEPT( Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL", "main" );
   }
   _root->setRenderSystem( _root->getAvailableRenderers()[0] );
@@ -82,8 +83,6 @@ void OgreHandler::setupSceneManager()
   // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("particles", "FileSystem");
   // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("meshes",    "FileSystem");
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
-  
 
   _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);
   // _sceneManager->setSkyBox(true, "YARS/SkyBox", 100000.0);

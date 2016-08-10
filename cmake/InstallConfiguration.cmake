@@ -1,4 +1,4 @@
-include(${CMAKE_SOURCE_DIR}/modules/CMakeMacroParseArguments.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/CMakeMacroParseArguments.cmake)
 
 IF(NOT EXISTS ${PROJECT_BINARY_DIR}/lib)
   FILE(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/lib)

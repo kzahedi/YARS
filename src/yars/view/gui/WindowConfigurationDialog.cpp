@@ -15,20 +15,20 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   QString xyz_y;
   QString xyz_z;
 
-  QString lookAt_x;
-  QString lookAt_y;
-  QString lookAt_z;
+  QString hpr_h;
+  QString hpr_p;
+  QString hpr_r;
 
   QString maxTraceLines;
   QString maxTracePoints;
 
-  xyz_x.setNum(_windowConfiguration->cameraPosition.x);
-  xyz_y.setNum(_windowConfiguration->cameraPosition.y);
-  xyz_z.setNum(_windowConfiguration->cameraPosition.z);
+  xyz_x.setNum(_windowConfiguration->cameraPose.position.x);
+  xyz_y.setNum(_windowConfiguration->cameraPose.position.y);
+  xyz_z.setNum(_windowConfiguration->cameraPose.position.z);
 
-  lookAt_x.setNum(_windowConfiguration->cameraLookAt.x);
-  lookAt_y.setNum(_windowConfiguration->cameraLookAt.y);
-  lookAt_z.setNum(_windowConfiguration->cameraLookAt.z);
+  hpr_h.setNum(_windowConfiguration->cameraPose.orientation.x);
+  hpr_p.setNum(_windowConfiguration->cameraPose.orientation.y);
+  hpr_r.setNum(_windowConfiguration->cameraPose.orientation.z);
 
   maxTraceLines.setNum(_windowConfiguration->maxTraceLines);
   maxTracePoints.setNum(_windowConfiguration->maxTracePoints);
@@ -51,13 +51,13 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   _xyz_x                  = new QLineEdit(xyz_x);
   _xyz_y                  = new QLineEdit(xyz_y);
   _xyz_z                  = new QLineEdit(xyz_z);
-  _lookAt_x               = new QLineEdit(lookAt_x);
-  _lookAt_y               = new QLineEdit(lookAt_y);
-  _lookAt_z               = new QLineEdit(lookAt_z);
+  _hpr_h                  = new QLineEdit(hpr_h);
+  _hpr_p                  = new QLineEdit(hpr_p);
+  _hpr_r                  = new QLineEdit(hpr_r);
   _maxTraceLines          = new QLineEdit(maxTraceLines);
   _maxTracePoints         = new QLineEdit(maxTracePoints);
 
-  for(std::vector<string>::iterator i = _windowConfiguration->camNames.begin();
+  for(vector<string>::iterator i = _windowConfiguration->camNames.begin();
       i != _windowConfiguration->camNames.end(); i++)
   {
     _followModes->addItem(QString::fromStdString(*i));
@@ -82,7 +82,7 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
     _useTextures->setCheckState(Qt::Unchecked);
   }
 
-  if(_windowConfiguration->useFollow)
+  if(_windowConfiguration->followObjects)
   {
     _useFollowMode->setCheckState(Qt::Checked);
   }
@@ -108,7 +108,7 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   row++;
   layout->addWidget(new QLabel("Capture name"),       row, 0, 1, 1);
   layout->addWidget(_captureName,                     row, 1, 1, 3);
-
+  
   row++;
   layout->addWidget(new QLabel("Window dimension"),   row, 0, 1, 1);
   layout->addWidget(_width,                           row, 1, 1, 1);
@@ -122,10 +122,10 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   layout->addWidget(_xyz_z,                           row, 3, 1, 1);
 
   row++;
-  layout->addWidget(new QLabel("Camera look at"),     row, 0, 1, 1);
-  layout->addWidget(_lookAt_x,                        row, 1, 1, 1);
-  layout->addWidget(_lookAt_y,                        row, 2, 1, 1);
-  layout->addWidget(_lookAt_z,                        row, 3, 1, 1);
+  layout->addWidget(new QLabel("Camera orientation"), row, 0, 1, 1);
+  layout->addWidget(_hpr_h,                           row, 1, 1, 1);
+  layout->addWidget(_hpr_p,                           row, 2, 1, 1);
+  layout->addWidget(_hpr_r,                           row, 3, 1, 1);
 
   row++;
   layout->addWidget(new QLabel("Visualise axes"),     row, 0, 1, 1);
@@ -172,9 +172,9 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   connect(_xyz_x,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
   connect(_xyz_y,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
   connect(_xyz_z,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
-  connect(_lookAt_x,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
-  connect(_lookAt_y,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
-  connect(_lookAt_z,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
+  connect(_hpr_h,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
+  connect(_hpr_p,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
+  connect(_hpr_r,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
   connect(_maxTraceLines,  SIGNAL(editingFinished()),        this,   SLOT(maxTraceLinesChanged()));
   connect(_maxTracePoints, SIGNAL(editingFinished()),        this,   SLOT(maxTracePointsChanged()));
   connect(this,            SIGNAL(dataChanged()),            parent, SLOT(windowConfigurationChanged()));
@@ -203,7 +203,7 @@ void WindowConfigurationDialog::texturesChanged(int status)
 
 void WindowConfigurationDialog::followModeChanged(int status)
 {
-  _windowConfiguration->useFollow = (status == Qt::Checked);
+  _windowConfiguration->followObjects = (status == Qt::Checked);
 }
 
 void WindowConfigurationDialog::visualiseAxesChanged(int status)
@@ -231,12 +231,12 @@ void WindowConfigurationDialog::heightChanged()
 
 void WindowConfigurationDialog::cameraPoseChanged()
 {
-  _windowConfiguration->cameraPosition.x = _xyz_x->text().toDouble();
-  _windowConfiguration->cameraPosition.y = _xyz_y->text().toDouble();
-  _windowConfiguration->cameraPosition.z = _xyz_z->text().toDouble();
-  _windowConfiguration->cameraLookAt.x   = _lookAt_x->text().toDouble();
-  _windowConfiguration->cameraLookAt.y   = _lookAt_y->text().toDouble();
-  _windowConfiguration->cameraLookAt.z   = _lookAt_z->text().toDouble();
+  _windowConfiguration->cameraPose.position.x = _xyz_x->text().toDouble();
+  _windowConfiguration->cameraPose.position.y = _xyz_y->text().toDouble();
+  _windowConfiguration->cameraPose.position.z = _xyz_z->text().toDouble();
+  _windowConfiguration->cameraPose.orientation.x = _hpr_h->text().toDouble();
+  _windowConfiguration->cameraPose.orientation.y = _hpr_p->text().toDouble();
+  _windowConfiguration->cameraPose.orientation.z = _hpr_r->text().toDouble();
   emit dataChanged();
 }
 

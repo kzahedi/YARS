@@ -70,7 +70,8 @@ if(YARS_USE_VISUALISATION)
     link_directories(/usr/local/lib /usr/local/lib/OGRE)
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt pthread ${OGRE_LIBRARIES}
-      zzip freeimage freetype GLEW quicktime)
+      zzip freeimage freetype quicktime)
+      # zzip freeimage freetype GLEW quicktime)
 
   else(UNIX AND NOT APPLE)
     target_link_libraries(${YARS_TARGET}
@@ -81,7 +82,8 @@ if(YARS_USE_VISUALISATION)
       Plugin_OctreeZoneStatic OgreRTShaderSystemStatic
       Plugin_PCZSceneManagerStatic OgreTerrainStatic OgreVolumeStatic
       RenderSystem_GLStatic OgreMainStatic
-      zzip freeimage freetype GLEW)
+      zzip freeimage freetype)
+      # zzip freeimage freetype GLEW)
     # Plugin_CgProgramManagerStatic
   endif(UNIX AND NOT APPLE)
 

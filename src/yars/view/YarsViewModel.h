@@ -4,7 +4,8 @@
 #include "util/Observable.h"
 #include "console/ConsoleView.h"
 #include "view/gui/OgreHandler.h"
-#include "gui/SdlWindow.h"
+#include "gui/QtWindowHandler.h"
+// #include "gui/SdlWindow.h"
 
 class YarsViewModel : public Observable, public Observer
 {
@@ -29,7 +30,8 @@ class YarsViewModel : public Observable, public Observer
     void __newWindow();
     void __createNewWindow();
 
-    std::vector<SdlWindow*> _windowManager;
+    // std::vector<SdlWindow*> _windowManager;
+    std::vector<QtWindowHandler*> _windowManager;
     int                     _drawFequency;
     int                     _visualiseCalled;
     bool                    _run;
@@ -41,7 +43,7 @@ class YarsViewModel : public Observable, public Observer
     Ogre::ParticleFXPlugin* _particlePlugin;
     Ogre::Root*             _root;
     pthread_mutex_t         _mutex;
-    SDL_Event               _event;
+    // SDL_Event               _event;
 };
 
 #endif // __YARS_VIEW_MODEL_H__

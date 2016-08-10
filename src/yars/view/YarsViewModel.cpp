@@ -8,7 +8,7 @@
 
 YarsViewModel::YarsViewModel()
 {
-  SDL_Init( SDL_INIT_EVERYTHING );
+  // SDL_Init( SDL_INIT_EVERYTHING );
   _drawFequency    = 1;
   _visualiseCalled = 0;
   _run             = true;
@@ -23,7 +23,7 @@ YarsViewModel::YarsViewModel()
     _ogreHandler = OgreHandler::instance();
     initialiseView();
     _ogreHandler->setupSceneManager();
-    FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
+    // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
   }
 }
 
@@ -43,39 +43,39 @@ void YarsViewModel::initialiseView()
 
 void YarsViewModel::visualiseScene()
 {
-  // YM_LOCK;
+  YM_LOCK;
   if(!__YARS_GET_USE_VISUALISATION)
   {
-    // YM_UNLOCK;
+    YM_UNLOCK;
     return;
   }
   if(__YARS_CURRENT_DATA->screens() == NULL)
   {
-    // YM_UNLOCK;
+    YM_UNLOCK;
     return;
   }
   _ogreHandler->step();
 
-  FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
-  while(SDL_PollEvent(&_event))
-  {
-    FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->handleEvent(_event);
-  }
+  // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
+  // while(SDL_PollEvent(&_event))
+  // {
+    // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->parseEvent(_event);
+  // }
   YM_UNLOCK;
 }
 
 void YarsViewModel::reset()
 {
   _ogreHandler->reset();
-  FOREACH(SdlWindow*, i, _windowManager) (*i)->reset();
+  // FOREACH(SdlWindow*, i, _windowManager) (*i)->reset();
 }
 
 void YarsViewModel::quit()
 {
   Y_DEBUG("YarsViewModel::quit called")
   _run = false;
-  FOREACH(SdlWindow*, i, _windowManager) (*i)->close();
-  FOREACH(SdlWindow*, i, _windowManager) (*i)->quit();
+  // FOREACH(SdlWindow*, i, _windowManager) (*i)->close();
+  // FOREACH(SdlWindow*, i, _windowManager) (*i)->quit();
   _windowManager.clear();
   Y_DEBUG("YarsViewModel::quit completed")
 }
@@ -83,14 +83,17 @@ void YarsViewModel::quit()
 void YarsViewModel::__newWindow()
 {
   cout << "new window" << endl;
-  // YM_LOCK;
+  YM_LOCK;
   __createNewWindow();
-  // YM_UNLOCK;
+  YM_UNLOCK;
 }
 
 void YarsViewModel::__createNewWindow()
 {
-  SdlWindow *wm = new SdlWindow(_windowManager.size());
+  cout << "new window" << endl;
+  // SdlWindow *wm = new SdlWindow(_windowManager.size());
+  QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
+  cout << "new window end" << endl;
   wm->addObserver(this);
 #ifdef USE_CAPTURE_VIDEO
   if(wm->captureRunning())
@@ -131,6 +134,7 @@ void YarsViewModel::run()
 {
   while(_run)
   {
+    YM_LOCK;
     if(_sync)
     {
       if(_syncedStep) 
@@ -140,9 +144,9 @@ void YarsViewModel::run()
         if(_toggleVideo == true)
         {
           _toggleVideo = false;
-          FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
+          // FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
         }
-        FOREACH(SdlWindow*, i, _windowManager) (*i)->captureVideo();
+        // FOREACH(SdlWindow*, i, _windowManager) (*i)->captureVideo();
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
       }
@@ -153,11 +157,12 @@ void YarsViewModel::run()
       if(_toggleVideo == true)
       {
         _toggleVideo = false;
-        FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
+        // FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
       }
 #endif // USE_CAPTURE_VIDEO
       visualiseScene();
     }
+    YM_UNLOCK;
   }
 }
 
@@ -170,7 +175,7 @@ void YarsViewModel::synched()
 
 void YarsViewModel::toggleShadows()
 {
-  FOREACH(SdlWindow*, i, _windowManager) (*i)->toggleShadows();
+  // FOREACH(SdlWindow*, i, _windowManager) (*i)->toggleShadows();
 }
 
 void YarsViewModel::toggleCaptureVideo()

@@ -57,7 +57,7 @@ void LoggingModuleSensor::__useExternal(int index)
   c[0] = (char)index;
   string s(c);
   addMethod(&LoggingModule::getSensorExternalValues, s);
-  delete c;
+  delete[] c;
 }
 
 void LoggingModuleSensor::__useInternal(int index)
@@ -79,5 +79,5 @@ void LoggingModuleSensor::__useInternal(int index)
   c[0] = (char)index;
   string s(c);
   addMethod(&LoggingModule::getSensorInternalValues, c);
-  delete c;
+  delete[] c;
 }

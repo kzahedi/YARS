@@ -87,7 +87,7 @@ const NamedPipe& NamedPipe::operator<<(const Buffer &b) const
 
   write(_fdOut, buf, b.size()+1);
 
-  delete buf;
+  delete[] buf;
 
   return *this;
 }
@@ -148,9 +148,9 @@ const NamedPipe& NamedPipe::operator>>(Buffer &b) const
     }
   }
 
-  delete buf;
-  delete type;
-  delete sizeBytes;
+  delete[] buf;
+  delete[] type;
+  delete[] sizeBytes;
 
   return *this;
 }

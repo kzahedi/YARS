@@ -1,7 +1,7 @@
 include_directories(..)
 include_directories(../namedPipeClientCom)
 
-include(${CMAKE_SOURCE_DIR}/modules/SetCompilerSettings.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/SetCompilerSettings.cmake)
 
 add_library(YarsControllerNIL SHARED NIL.cpp)
 add_library(YarsControllerSinus SHARED SinusController.cpp)
