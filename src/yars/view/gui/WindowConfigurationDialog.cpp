@@ -1,5 +1,7 @@
 #include "WindowConfigurationDialog.h"
 
+#include <QtWidgets>
+
 WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *windowConfiguration, QWidget *parent)
   : QFrame()
 {

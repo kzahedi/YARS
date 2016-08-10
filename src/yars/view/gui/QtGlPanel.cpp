@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include <QMouseEvent>
+
 using namespace std;
 
 
@@ -144,7 +146,8 @@ void QtGlPanel::keyPressEvent(QKeyEvent *event)
     shift = true;
   }
 
-  int i = YarsContainers::KeyEventHandler()->handleKeyEvent(alt, ctrl, shift, key);
+  // int i = YarsContainers::KeyEventHandler()->handleKeyEvent(alt, ctrl, shift, key);
+  int i = KeyHandler::instance()->handleKeyEvent(alt, ctrl, shift, key);
   __catchedLocally(i);
 }
 
@@ -298,8 +301,7 @@ void QtGlPanel::__osd()
   {
     if( _windowConfiguration->osdElapsedTime )
     {
-      string elapsedTime;
-      OSD::getElapsedTimeString(&elapsedTime);
+      string elapsedTime = OSD::getElapsedTimeString();
       _elapsedTimeString = QString(elapsedTime.c_str());
     }
 
@@ -322,33 +324,33 @@ void QtGlPanel::__osd()
   int height = 0;
   if( _windowConfiguration->osdElapsedTime )
   {
-    QFontMetrics fm(_windowConfiguration->osdElapsedTimeFont);
-    int width = fm.width(_elapsedTimeString);
-    height += fm.height() + 5;
-    renderText(
-        _windowConfiguration->geometry.width() - width - 10,
-        height,
-        _elapsedTimeString,
-        _windowConfiguration->osdElapsedTimeFont);
+    // QFontMetrics fm(_windowConfiguration->osdElapsedTimeFont);
+    // int width = fm.width(_elapsedTimeString);
+    // height += fm.height() + 5;
+    // renderText(
+        // _windowConfiguration->geometry.width() - width - 10,
+        // height,
+        // _elapsedTimeString,
+        // _windowConfiguration->osdElapsedTimeFont);
   }
 
   if( _windowConfiguration->osdFramePerSecond )
   {
-    QFontMetrics fm(_windowConfiguration->osdFramePerSecondFont);
-    int width  = fm.width(_fpsString1);
-    height += fm.height() + 5;
-    renderText(
-        _windowConfiguration->geometry.width() - width - 10,
-        height ,
-        _fpsString1,
-        _windowConfiguration->osdElapsedTimeFont);
+    // QFontMetrics fm(_windowConfiguration->osdFramePerSecondFont);
+    // int width  = fm.width(_fpsString1);
+    // height += fm.height() + 5;
+    // renderText(
+        // _windowConfiguration->geometry.width() - width - 10,
+        // height ,
+        // _fpsString1,
+        // _windowConfiguration->osdElapsedTimeFont);
 
-    width  = fm.width(_fpsString2);
-    height += fm.height() + 5;
-    renderText(
-        _windowConfiguration->geometry.width() - width - 10,
-        height ,
-        _fpsString2, _windowConfiguration->osdElapsedTimeFont);
+    // width  = fm.width(_fpsString2);
+    // height += fm.height() + 5;
+    // renderText(
+        // _windowConfiguration->geometry.width() - width - 10,
+        // height ,
+        // _fpsString2, _windowConfiguration->osdElapsedTimeFont);
   }
 }
 

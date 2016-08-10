@@ -72,11 +72,12 @@ set(GUI_SOURCES
   CenterOrbitCam.cpp
   TripodCam.cpp
   WindowConfiguration.cpp
+  WindowConfigurationDialog.cpp
   SceneGraphMeshNode.cpp
   SceneGraphPlyNode.cpp)
 
 add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} ${qtview_MOC_SRCS})
-qt5_use_modules(YarsGUI Core Gui Widgets OpenGL widgets)
+qt5_use_modules(YarsGUI Core Gui Widgets OpenGL)
 
 if(APPLE)
   # target_link_libraries(YarsGUI ${SDL2_LIBRARY})
@@ -91,6 +92,5 @@ else(APPLE)
     RenderSystem_GLStatic OgreMainStatic
     X11 GL z Xt pthread Xaw GLU
     zzip freeimage freetype quicktime)
-
 endif(APPLE)
 

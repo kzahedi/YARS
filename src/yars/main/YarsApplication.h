@@ -1,7 +1,7 @@
 /*************************************************************************
  *                                                                       *
  * This file is part of Yet Another Robot Simulator (YARS).              *
- * Copyright (C) 2003-2006 Keyan Zahedi and Arndt von Twickel.           *
+ * Copyright (C) 2003-2006 Keyan Zahedi, Arndt von Twickel.              *
  * All rights reserved.                                                  *
  * Email: {keyan,twickel}@users.sourceforge.net                          *
  * Web: http://sourceforge.net/projects/yars                             *
@@ -23,81 +23,20 @@
  * Boston, MA 02110-1301, USA                                            *
  *                                                                       *
  *************************************************************************/
+ 
 
-
-#include <yars/main/YarsMainControl.h>
-
-#include <yars/util/YarsException.h>
-#include <yars/view/console/ConsoleView.h>
-
-
-#ifdef USE_VISUALISATION
+#ifndef __YARS_APPLICATION_H__
+#define __YARS_APPLICATION_H__
 
 #include <QApplication>
 
-#include <yars/main/MainLoopThread.h>
-#include <yars/main/YarsApplication.h>
-#include <yars/view/YarsViewControl.h>
-#include <yars/view/YarsViewModel.h>
-
-#include <iostream>
-
-int mainFunction(int argc, char **argv)
+class YarsApplication : public QApplication
 {
-  YarsApplication app(argc, argv);
+  Q_OBJECT;
+  public:
+  YarsApplication(int &c, char **v);
 
-  MainLoopThread *mainLoop = new MainLoopThread(argc, argv);
+  bool notify(QObject *rec, QEvent *ev);
+};
 
-  if(__YARS_GET_USE_VISUALISATION)
-  {
-    ConsoleView     *cv  = ConsoleView::instance();
-    YarsViewControl *yvc = new YarsViewControl();
-    YarsViewModel   *yvm = new YarsViewModel();
-    yvc->setModel(yvm);
-#ifndef SUPPRESS_ALL_OUTPUT
-    yvm->addObserver(cv);
-#endif // SUPPRESS_ALL_OUTPUT
-    mainLoop->hookUp(yvc);
-  }
-
-  mainLoop->start();
-
-  return app.exec();
-}
-
-#else // NO VISUALISATION
-
-int mainFunction(int argc, char **argv)
-{
-  try
-  {
-    YarsMainControl *ymc = new YarsMainControl(argc, argv);
-    ymc->run();
-  }
-  catch(YarsException yse)
-  {
-    std::cerr << "Yars could not be started due to configuration errors:" << std::endl;
-    std::cerr << yse.what() << std::endl;
-    exit(-1);
-  }
-  Y_DEBUG("yarsMain: will delete yars main control.");
-  return 0;
-}
-#endif
-
-
-int main(int argc, char **argv)
-{  
-  //(void) signal(SIGINT,leave);
-  Y_DEBUG("yarsMain: starting with yars main control.");
-  int i = mainFunction(argc, argv);
-  Y_DEBUG("yarsMain: DONE. Will exit now.");
-  return i;
-}
-
-// void leave(int sig) {
-//         fprintf(temp_file,"\nInterrupted..\n");
-//         fclose(temp_file);
-//         exit(sig);
-// }
-
+#endif // __YARS_APPLICATION_H__

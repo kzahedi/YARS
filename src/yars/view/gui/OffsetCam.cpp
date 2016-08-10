@@ -29,9 +29,9 @@ void OffsetCam::init(DataObject *f, DataCamera *cam)
   _lookAtY.setInitialValue(followablePosition.y);
   _lookAtZ.setInitialValue(followablePosition.z);
 
-  _fromX.setInitialValue(configuration->cameraPosition.x);
-  _fromY.setInitialValue(configuration->cameraPosition.y);
-  _fromZ.setInitialValue(configuration->cameraPosition.z);
+  // _fromX.setInitialValue(configuration->cameraPosition.x);
+  // _fromY.setInitialValue(configuration->cameraPosition.y);
+  // _fromZ.setInitialValue(configuration->cameraPosition.z);
 
 }
 

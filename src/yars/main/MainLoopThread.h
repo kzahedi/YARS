@@ -2,9 +2,9 @@
 #define __MAIN_LOOP_THREAD__
 
 #include <yars/util/Observer.h>
-#include <yars/main/YarsMainControl.h>
-
-#include <boost/thread.hpp>
+#include "YarsMainControl.h"
+#include <QThread>
+#include <QObject>
 
 /** \brief This class is only required if YARS is compiled an run with GUI.
  *
@@ -13,8 +13,9 @@
  * desynchronised GUI updates.
  *
  */
-class MainLoopThread : public Observer
+class MainLoopThread : public QThread, public Observer
 {
+  Q_OBJECT
   public:
     /** \brief Standard constructor.
      *
@@ -42,11 +43,33 @@ class MainLoopThread : public Observer
      */
     void notify(ObservableMessage *m);
 
+    /** \brief Connects a GUI to this thread.
+     *
+     *
+     * \param[in] QtWidget, the widget to connect to.
+     *
+     */
+    void hookUp(QObject *w);
+
+  signals:
+    /** \brief Signal send to GUI.
+     *
+     * Sends an ObservableMessage to the GUI, packed into a Qt-Signal.
+     *
+     * \param[in] QtWidget, the widget to connect to.
+     *
+     */
+    void observerMessage(ObservableMessage *m);
+
+  public slots:
+    /** \brief Slot called, when the GUI finished processing the message.
+     */
+    void guiDoneSlot();
 
   private:
     int    _argc;
     char** _argv;
-    //bool   _guiReturned;
+    bool   _guiReturned;
     unsigned long _lastTime;
     YarsMainControl *_ymc;
 };

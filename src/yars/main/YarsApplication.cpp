@@ -1,7 +1,7 @@
 /*************************************************************************
  *                                                                       *
  * This file is part of Yet Another Robot Simulator (YARS).              *
- * Copyright (C) 2003-2006 Keyan Zahedi and Arndt von Twickel.           *
+ * Copyright (C) 2003-2006 Keyan Zahedi, Arndt von Twickel.              *
  * All rights reserved.                                                  *
  * Email: {keyan,twickel}@users.sourceforge.net                          *
  * Web: http://sourceforge.net/projects/yars                             *
@@ -23,81 +23,39 @@
  * Boston, MA 02110-1301, USA                                            *
  *                                                                       *
  *************************************************************************/
+ 
 
-
-#include <yars/main/YarsMainControl.h>
-
-#include <yars/util/YarsException.h>
+#include "YarsApplication.h" 
 #include <yars/view/console/ConsoleView.h>
 
+YarsApplication::YarsApplication(int &c, char **v)
+: QApplication(c, v)
+{}
 
-#ifdef USE_VISUALISATION
-
-#include <QApplication>
-
-#include <yars/main/MainLoopThread.h>
-#include <yars/main/YarsApplication.h>
-#include <yars/view/YarsViewControl.h>
-#include <yars/view/YarsViewModel.h>
-
-#include <iostream>
-
-int mainFunction(int argc, char **argv)
-{
-  YarsApplication app(argc, argv);
-
-  MainLoopThread *mainLoop = new MainLoopThread(argc, argv);
-
-  if(__YARS_GET_USE_VISUALISATION)
-  {
-    ConsoleView     *cv  = ConsoleView::instance();
-    YarsViewControl *yvc = new YarsViewControl();
-    YarsViewModel   *yvm = new YarsViewModel();
-    yvc->setModel(yvm);
-#ifndef SUPPRESS_ALL_OUTPUT
-    yvm->addObserver(cv);
-#endif // SUPPRESS_ALL_OUTPUT
-    mainLoop->hookUp(yvc);
-  }
-
-  mainLoop->start();
-
-  return app.exec();
-}
-
-#else // NO VISUALISATION
-
-int mainFunction(int argc, char **argv)
+// needs to be overwritten to catch the yars exceptions, which are otherwise not
+// shown
+bool YarsApplication::notify(QObject *rec, QEvent *ev)
 {
   try
   {
-    YarsMainControl *ymc = new YarsMainControl(argc, argv);
-    ymc->run();
+    return QApplication::notify(rec, ev);
   }
-  catch(YarsException yse)
+  catch (char const *str)
   {
-    std::cerr << "Yars could not be started due to configuration errors:" << std::endl;
-    std::cerr << yse.what() << std::endl;
-    exit(-1);
+    Y_FATAL("Exception caught: %s", str);
+    return false;
   }
-  Y_DEBUG("yarsMain: will delete yars main control.");
-  return 0;
+  catch (YarsException e) {
+    Y_FATAL("Exception caught: %s", e.what());
+    abort();
+  }
+  catch (std::exception std) {
+    Y_FATAL("Exception caught: %s", std.what());
+    abort();
+  }
+  catch (...) {
+    Y_FATAL("Unknown exception!");
+    abort();
+  }
 }
-#endif
-
-
-int main(int argc, char **argv)
-{  
-  //(void) signal(SIGINT,leave);
-  Y_DEBUG("yarsMain: starting with yars main control.");
-  int i = mainFunction(argc, argv);
-  Y_DEBUG("yarsMain: DONE. Will exit now.");
-  return i;
-}
-
-// void leave(int sig) {
-//         fprintf(temp_file,"\nInterrupted..\n");
-//         fclose(temp_file);
-//         exit(sig);
-// }
 

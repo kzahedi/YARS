@@ -20,9 +20,9 @@ YarsViewModel::YarsViewModel()
 
   if(__YARS_GET_USE_VISUALISATION)
   {
-    _ogreHandler = OgreHandler::instance();
-    initialiseView();
-    _ogreHandler->setupSceneManager();
+    // _ogreHandler = OgreHandler::instance();
+    // initialiseView();
+    // _ogreHandler->setupSceneManager();
     // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
   }
 }
@@ -54,7 +54,7 @@ void YarsViewModel::visualiseScene()
     YM_UNLOCK;
     return;
   }
-  _ogreHandler->step();
+  // _ogreHandler->step();
 
   // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
   // while(SDL_PollEvent(&_event))
@@ -66,7 +66,7 @@ void YarsViewModel::visualiseScene()
 
 void YarsViewModel::reset()
 {
-  _ogreHandler->reset();
+  // _ogreHandler->reset();
   // FOREACH(SdlWindow*, i, _windowManager) (*i)->reset();
 }
 
