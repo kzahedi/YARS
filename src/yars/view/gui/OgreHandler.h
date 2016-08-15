@@ -2,12 +2,12 @@
 #define __OGRE_HANDLER_H__
 
 #include <OGRE/Ogre.h>
-#include <OGRE/RenderSystems/GL/OgreGLPlugin.h>
-#include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
+// #include <RenderSystems/GL/OgreGLPlugin.h>
+// #include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
 // #include <OGRE/OgreStaticPluginLoader.h>
 
 #include "view/gui/SceneGraph.h"
-#include "view/gui/TextOverlay.h"
+// #include "view/gui/TextOverlay.h"
 
 class OgreHandler
 {
@@ -32,8 +32,8 @@ class OgreHandler
     Ogre::SceneManager* _sceneManager;
     Ogre::SceneNode*    _rootNode;
     SceneGraph*         _sceneGraph;
-    Ogre::GLPlugin*     _GLPlugin;
-    Ogre::ParticleFXPlugin*_particlePlugin;
+    // Ogre::GLPlugin*     _GLPlugin;
+    // Ogre::ParticleFXPlugin*_particlePlugin;
     Ogre::RenderWindow* _window;
 };
 

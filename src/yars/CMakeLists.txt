@@ -74,15 +74,7 @@ if(YARS_USE_VISUALISATION)
       # zzip freeimage freetype GLEW quicktime)
 
   else(UNIX AND NOT APPLE)
-    target_link_libraries(${YARS_TARGET}
-      Plugin_ParticleFXStatic
-      OgreMeshLodGeneratorStatic
-      Plugin_BSPSceneManagerStatic OgreOverlayStatic
-      OgrePagingStatic Plugin_OctreeSceneManagerStatic OgrePropertyStatic
-      Plugin_OctreeZoneStatic OgreRTShaderSystemStatic
-      Plugin_PCZSceneManagerStatic OgreTerrainStatic OgreVolumeStatic
-      RenderSystem_GLStatic OgreMainStatic
-      zzip freeimage freetype)
+    target_link_libraries(${YARS_TARGET} zzip freeimage freetype)
       # zzip freeimage freetype GLEW)
     # Plugin_CgProgramManagerStatic
   endif(UNIX AND NOT APPLE)
@@ -91,7 +83,7 @@ if(YARS_USE_VISUALISATION)
   # target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
 
   if(APPLE)
-    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework AGL -framework OpenGL -framework Cocoa -framework ApplicationServices")
+    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Ogre")
     # SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
   endif(APPLE)
 

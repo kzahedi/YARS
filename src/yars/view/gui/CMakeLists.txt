@@ -38,12 +38,14 @@
 set(GUI_HDRS
   QtWindowHandler.h
   QtGlPanel.h
+  QtOgreWindow.h
   WindowConfigurationDialog.h)
 
 QT5_WRAP_CPP(qtview_MOC_SRCS ${GUI_HDRS})
 
 set(GUI_SOURCES
   QtWindowHandler.cpp
+  QtOgreWindow.cpp
   QtGlPanel.cpp
   SceneGraph.cpp
   SceneGraphRobotNode.cpp
@@ -60,8 +62,8 @@ set(GUI_SOURCES
   SceneGraphLDRSensor.cpp
   SceneGraphJointAxisVisualisationNode.cpp
   SceneGraphSoftPlyNode.cpp
-  TextOverlay.cpp
-  ColoredTextAreaOverlayElement.cpp
+  # TextOverlay.cpp
+  # ColoredTextAreaOverlayElement.cpp
   OgreHandler.cpp
   KeyHandler.cpp
   FollowCamera.cpp
@@ -80,17 +82,22 @@ add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} ${qtview_MOC_SRCS})
 qt5_use_modules(YarsGUI Core Gui Widgets OpenGL)
 
 if(APPLE)
-  # target_link_libraries(YarsGUI ${SDL2_LIBRARY})
-else(APPLE)
-  target_link_libraries(YarsGUI 
-    Xrandr Plugin_ParticleFXStatic
-    OgreMeshLodGeneratorStatic
-    Plugin_BSPSceneManagerStatic OgreOverlayStatic
-    OgrePagingStatic Plugin_OctreeSceneManagerStatic OgrePropertyStatic
-    Plugin_OctreeZoneStatic OgreRTShaderSystemStatic
-    Plugin_PCZSceneManagerStatic OgreTerrainStatic OgreVolumeStatic
-    RenderSystem_GLStatic OgreMainStatic
-    X11 GL z Xt pthread Xaw GLU
-    zzip freeimage freetype quicktime)
+SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Ogre
+-framework RenderSystem_GL -framework Plugin_ParticleFX")
 endif(APPLE)
+
+# if(APPLE)
+  # target_link_libraries(YarsGUI ${SDL2_LIBRARY})
+# else(APPLE)
+  # target_link_libraries(YarsGUI 
+    # Xrandr Plugin_ParticleFXStatic
+    # OgreMeshLodGeneratorStatic
+    # Plugin_BSPSceneManagerStatic OgreOverlayStatic
+    # OgrePagingStatic Plugin_OctreeSceneManagerStatic OgrePropertyStatic
+    # Plugin_OctreeZoneStatic OgreRTShaderSystemStatic
+    # Plugin_PCZSceneManagerStatic OgreTerrainStatic OgreVolumeStatic
+    # RenderSystem_GLStatic OgreMainStatic
+    # X11 GL z Xt pthread Xaw GLU
+    # zzip freeimage freetype quicktime)
+# endif(APPLE)
 

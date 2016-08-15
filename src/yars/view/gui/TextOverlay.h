@@ -3,8 +3,8 @@
 
 //#include <OGRE/Ogre.h>
 #include <OGRE/Ogre.h>
-#include <OGRE/Overlay/OgreOverlay.h>
-#include <OGRE/Overlay/OgreOverlayManager.h>
+#include <OgreOverlay/OgreOverlay.h>
+#include <OgreOverlay/OgreOverlayManager.h>
 #include <string>
 #include <vector>
 

@@ -4,7 +4,8 @@
 #include "util/Observable.h"
 #include "console/ConsoleView.h"
 #include "view/gui/OgreHandler.h"
-#include "gui/QtWindowHandler.h"
+// #include "gui/QtWindowHandler.h"
+#include "gui/QtOgreWindow.h"
 // #include "gui/SdlWindow.h"
 
 class YarsViewModel : public Observable, public Observer
@@ -31,7 +32,8 @@ class YarsViewModel : public Observable, public Observer
     void __createNewWindow();
 
     // std::vector<SdlWindow*> _windowManager;
-    std::vector<QtWindowHandler*> _windowManager;
+    // std::vector<QtWindowHandler*> _windowManager;
+    std::vector<QtOgreWindow*> _windowManager;
     int                     _drawFequency;
     int                     _visualiseCalled;
     bool                    _run;
@@ -39,8 +41,8 @@ class YarsViewModel : public Observable, public Observer
     bool                    _syncedStep;
     bool                    _toggleVideo;
     OgreHandler*            _ogreHandler;
-    Ogre::GLPlugin*         _GLPlugin;
-    Ogre::ParticleFXPlugin* _particlePlugin;
+    // Ogre::GLPlugin*         _GLPlugin;
+    // Ogre::ParticleFXPlugin* _particlePlugin;
     Ogre::Root*             _root;
     pthread_mutex_t         _mutex;
     // SDL_Event               _event;

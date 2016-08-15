@@ -6,6 +6,7 @@
 
 #include "WindowConfiguration.h"
 #include "WindowConfigurationDialog.h"
+#include "OgreHandler.h"
 
 #include <QGLWidget>
 
@@ -80,8 +81,9 @@ class QtGlPanel : public QGLWidget
 
     unsigned long _lastTime;
 
-    WindowConfiguration       *_windowConfiguration;
-    WindowConfigurationDialog *_windowConfigurationDialog;
+    WindowConfiguration*       _windowConfiguration;
+    WindowConfigurationDialog* _windowConfigurationDialog;
+    OgreHandler*               _ogreHandler;
 
     // GlWrapper *_glWrapper;
 

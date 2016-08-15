@@ -8,7 +8,6 @@ add_library(YarsView ${LIBRARY_TYPE}
 
 qt5_use_modules(YarsView Core Widgets)
 
-
 include_directories(/usr/local/include/OGRE/)
 
 if(LIBRARY_TYPE EQUAL STATIC)

@@ -53,6 +53,10 @@ QtGlPanel::QtGlPanel(WindowConfiguration *windowConfiguration, QWidget *parent)
 
   _windowConfiguration = windowConfiguration;
   // _glWrapper = NULL;
+
+  _ogreHandler = OgreHandler::instance();
+
+  _ogreHandler->setupSceneManager();
 }
 
 void QtGlPanel::initializeGL()

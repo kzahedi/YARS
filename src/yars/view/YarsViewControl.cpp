@@ -54,11 +54,13 @@ void YarsViewControl::notify(ObservableMessage *message)
   P3D c_r;
   switch(message->type())
   {
-    case __M_INIT:
-      _model->initialiseView();
+    // case __M_INIT:
+      // cout << "init " << endl;
+      // _model->initialiseView();
       // _model->initialiseFollowables();
-      break;
+      // break;
     case __M_NEXT_STEP:
+      // cout << "next step " << endl;
       if(__YARS_GET_SYNC_GUI) // asynchronous mode
       {
         __drawSynchronousMode();
