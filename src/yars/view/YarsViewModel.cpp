@@ -41,11 +41,13 @@ void YarsViewModel::initialiseView()
   if(data->screens() == NULL) return;
   FOREACHP(DataScreen*, i, data->screens()) if((*i)->autoShow()) __createNewWindow();
   FOREACHP(DataScreen*, i, data->screens())
+  {
     if((*i)->autoShow())
     {
       cout << (*i)->name() << endl;
       __createNewWindow();
     }
+  }
 }
 
 void YarsViewModel::visualiseScene()
@@ -61,6 +63,8 @@ void YarsViewModel::visualiseScene()
     YM_UNLOCK;
     return;
   }
+
+  // cout << "Hier 0" << endl;
   // _ogreHandler->step();
 
   // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
@@ -100,7 +104,7 @@ void YarsViewModel::__createNewWindow()
   cout << "new window" << endl;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
-  QtOgreWindow *wm = new QtOgreWindow(); // _windowManager.size());
+  QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());
   wm->show();
   cout << "new window end" << endl;
   // wm->addObserver(this);

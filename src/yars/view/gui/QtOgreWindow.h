@@ -7,9 +7,22 @@
 /*
 Qt headers
 */
+
+#include <yars/view/gui/CameraHandler.h>
+#include <yars/view/gui/WindowConfiguration.h>
+#include <yars/view/gui/SceneGraph.h>
+
+#ifdef USE_CAPTURE_VIDEO
+#  include <lqt/lqt.h>
+#  include <lqt/quicktime.h>
+#  include <lqt/colormodels.h>
+#endif // USE_CAPTURE_VIDEO
+
 #include <QtWidgets/QApplication>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWindow>
+
+
  
 /*
 Ogre3D header
@@ -34,7 +47,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
   Q_OBJECT
  
 public:
-  explicit QtOgreWindow(QWindow *parent = NULL);
+  explicit QtOgreWindow(int index, QWindow *parent = NULL);
   ~QtOgreWindow();
  
   /*
@@ -103,6 +116,11 @@ protected:
   */
   void log(Ogre::String msg);
   void log(QString msg);
+
+  private:
+    int                  _index;
+    WindowConfiguration* _windowConfiguration;
+
 };
  
 #endif // QTOGREWINDOW_H

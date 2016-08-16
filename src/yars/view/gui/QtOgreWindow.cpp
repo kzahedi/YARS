@@ -7,7 +7,7 @@
    Note that we pass any supplied QWindow parent to the base QWindow class. This is necessary should we
    need to use our class within a container.
    */
-QtOgreWindow::QtOgreWindow(QWindow *parent)
+QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   : QWindow(parent)
   , m_update_pending(false)
   , m_animating(false)
@@ -16,6 +16,9 @@ QtOgreWindow::QtOgreWindow(QWindow *parent)
   , m_ogreCamera(NULL)
   // , m_cameraMan(NULL)
 {
+  _index                = index;
+  _windowConfiguration  = new WindowConfiguration(index);
+
   setAnimating(true);
   installEventFilter(this);
   m_ogreBackground = Ogre::ColourValue(0.0f, 0.5f, 1.0f);
@@ -50,7 +53,11 @@ void QtOgreWindow::initialize()
 #ifdef _MSC_VER
   m_ogreRoot = new Ogre::Root(Ogre::String("plugins" OGRE_BUILD_SUFFIX ".cfg"));
 #else
-  m_ogreRoot = new Ogre::Root(Ogre::String("plugins.cfg"));
+  Ogre::LogManager * lm = new Ogre::LogManager();
+  lm->createLog("ogre.log", true, false, false); // create silent logging
+  // TODO load resources.cfg
+  m_ogreRoot = new Ogre::Root( "plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
+  // m_ogreRoot = new Ogre::Root(Ogre::String("plugins.cfg"));
 #endif
   Ogre::ConfigFile ogreConfig;
 
@@ -117,7 +124,10 @@ void QtOgreWindow::initialize()
   /*
      Setting size and VSync on windows will solve a lot of problems
      */
-  QString dimensions = QString("%1 x %2").arg(this->width()).arg(this->height());
+
+  int w = _windowConfiguration->geometry.width();
+  int h = _windowConfiguration->geometry.height();
+  QString dimensions = QString("%1 x %2").arg(w).arg(h);
   rs->setConfigOption("Video Mode", dimensions.toStdString());
   rs->setConfigOption("Full Screen", "No");
   rs->setConfigOption("VSync", "Yes");
@@ -198,6 +208,8 @@ void QtOgreWindow::initialize()
   createScene();
 
   m_ogreRoot->addFrameListener(this);
+  resize(w,h);
+  setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
 void QtOgreWindow::createScene()
@@ -446,10 +458,10 @@ bool QtOgreWindow::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void QtOgreWindow::log(Ogre::String msg)
 {
-  if(Ogre::LogManager::getSingletonPtr() != NULL) Ogre::LogManager::getSingletonPtr()->logMessage(msg);
+  // if(Ogre::LogManager::getSingletonPtr() != NULL) Ogre::LogManager::getSingletonPtr()->logMessage(msg);
 }
 
 void QtOgreWindow::log(QString msg)
 {
-  log(Ogre::String(msg.toStdString().c_str()));
+  // log(Ogre::String(msg.toStdString().c_str()));
 }

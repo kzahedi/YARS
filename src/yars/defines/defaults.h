@@ -50,7 +50,7 @@
 #define DEFAULT_EXPORT_GRAPHVIZ                false
 #define DEFAULT_USE_FOLLOW_MODE                false
 #define DEFAULT_EXIT                           false
-#define DEFAULT_SYNC_GUI                       true
+#define DEFAULT_SYNC_GUI                       false
 #define DEFAULT_LIBRARIES                      ""
 #define DEFAULT_REALTIME_FACTOR                1.0
 #define DEFAULT_VIDEO_CODEC                    "avc1"
