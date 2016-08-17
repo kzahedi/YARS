@@ -120,8 +120,8 @@ protected:
   private:
     int                  _index;
     WindowConfiguration* _windowConfiguration;
-    SceneGraph*          _sceneGraph;
-    Ogre::SceneNode*     _rootNode;
+    // SceneGraph*          _sceneGraph;
+    // Ogre::SceneNode*     _rootNode;
 
 };
  

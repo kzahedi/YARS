@@ -60,7 +60,6 @@ void YarsViewControl::notify(ObservableMessage *message)
       // _model->initialiseFollowables();
       // break;
     case __M_NEXT_STEP:
-      // cout << "next step " << endl;
       if(__YARS_GET_SYNC_GUI) // asynchronous mode
       {
         __drawSynchronousMode();

@@ -134,33 +134,21 @@ void QtOgreWindow::initialize()
      Note below that we supply the creation function for the Ogre3D window the width and height
      from the current QWindow object using the "this" pointer.
      */
-  m_ogreWindow = m_ogreRoot->createRenderWindow("QT Window",
+  stringstream sst;
+  sst << "QT Window " << _index;
+  resize(w,h);
+  m_ogreWindow = m_ogreRoot->createRenderWindow(sst.str().c_str(),
                                                 this->width(),
                                                 this->height(),
                                                 false,
                                                 &parameters);
   m_ogreWindow->setVisible(true);
 
-  /*
-     The rest of the code in the initialization function is standard Ogre3D scene code. Consult other
-     tutorials for specifics.
-     */
-// #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
-  // const size_t numThreads = std::max<int>(1, Ogre::PlatformInformation::getNumLogicalCores());
-  // Ogre::InstancingTheadedCullingMethod threadedCullingMethod = Ogre::INSTANCING_CULLING_SINGLETHREAD;
-  // if (numThreads > 1)threadedCullingMethod = Ogre::INSTANCING_CULLING_THREADED;
-  // m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC, numThreads, threadedCullingMethod);
-// #else
-  // m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC);
-// #endif
-
   m_ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
 
-  m_ogreCamera = m_ogreSceneMgr->createCamera("MainCamera");
-  // m_ogreCamera->setPosition(Ogre::Vector3(0.0f, 0.0f, 10.0f));
-  // m_ogreCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, -300.0f));
-  cout << "Position: " << _windowConfiguration->cameraPosition << endl;
-  cout << "Look At: "  << _windowConfiguration->cameraLookAt   << endl;
+  sst.str("");
+  sst << "Camera " << _index;
+  m_ogreCamera = m_ogreSceneMgr->createCamera(sst.str().c_str());
   Ogre::Vector3 pos;
   Ogre::Vector3 lookAt;
   YARS_TO_OGRE(_windowConfiguration->cameraPosition, pos);
@@ -179,37 +167,23 @@ void QtOgreWindow::initialize()
   pViewPort->setBackgroundColour(m_ogreBackground);
 #endif
 
-
   m_ogreCamera->setAspectRatio(Ogre::Real(m_ogreWindow->getWidth()) / Ogre::Real(m_ogreWindow->getHeight()));
   m_ogreCamera->setAutoAspectRatio(true);
 
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-  createScene();
+  SceneGraphHandler::instance()->initialise();
 
   m_ogreRoot->addFrameListener(this);
-  resize(w,h);
   setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
 void QtOgreWindow::createScene()
 {
-  m_ogreSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
 
-  Ogre::SceneNode* childSceneNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
+  // Ogre::SceneNode* childSceneNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
 
-  _sceneGraph = new SceneGraph(childSceneNode, m_ogreSceneMgr);
-
-#if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
-  Ogre::SceneNode* pLightNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
-  Ogre::Light* light = m_ogreSceneMgr->createLight();
-  pLightNode->attachObject(light);
-  pLightNode->setPosition(20.0f, 80.0f, 50.0f);
-#else
-  Ogre::Light* light = m_ogreSceneMgr->createLight("MainLight");
-  light->setPosition(20.0f, 80.0f, 50.0f);
-#endif
 }
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
@@ -240,8 +214,8 @@ void QtOgreWindow::render()
      to keep things separate and keep the render function as simple as possible.
      */
   Ogre::WindowEventUtilities::messagePump();
-  _sceneGraph->update();
-  m_ogreRoot->renderOneFrame();
+  // _sceneGraph->update();
+  // m_ogreRoot->renderOneFrame();
 }
 
 void QtOgreWindow::renderLater()

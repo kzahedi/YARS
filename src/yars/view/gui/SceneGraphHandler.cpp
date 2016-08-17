@@ -53,8 +53,17 @@ SceneGraphHandler::SceneGraphHandler()
   _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC);
 #endif
 
-  // _rootNode   = _sceneManager->getRootSceneNode()->createChildSceneNode();
-  // _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
+#if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
+  Ogre::SceneNode* pLightNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
+  Ogre::Light* light = _sceneManager->createLight();
+  pLightNode->attachObject(light);
+  pLightNode->setPosition(20.0f, 80.0f, 50.0f);
+#else
+  Ogre::Light* light = _sceneManager->createLight("MainLight");
+  light->setPosition(20.0f, 80.0f, 50.0f);
+#endif
+
+  _sceneGraphInitialised = false;
 }
 
 void SceneGraphHandler::reset()
@@ -76,5 +85,14 @@ Ogre::Root* SceneGraphHandler::root()
 Ogre::SceneManager* SceneGraphHandler::sceneManager()
 {
   return _sceneManager;
+}
+
+void SceneGraphHandler::initialise()
+{
+  if(_sceneGraphInitialised == true) return;
+  _sceneManager->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+  _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
+  _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
+  _sceneGraphInitialised = true;
 }
 

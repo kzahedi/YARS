@@ -54,9 +54,9 @@ void YarsViewModel::visualiseScene()
     YM_UNLOCK;
     return;
   }
-
-  // cout << "Hier 0" << endl;
   // _ogreHandler->step();
+
+  SceneGraphHandler::instance()->step();
 
   // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
   // while(SDL_PollEvent(&_event))
@@ -91,6 +91,7 @@ void YarsViewModel::__newWindow()
 
 void YarsViewModel::__createNewWindow()
 {
+  cout << "create new window" << endl;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
   QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());

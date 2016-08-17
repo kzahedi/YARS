@@ -18,17 +18,17 @@
       </osd>
     </screen>
 
-    <!-- <screen name="Braiternberg 2" show="true" follow="false"> -->
-      <!-- <resolution name="vga"/> -->
-      <!-- <camera> -->
-        <!-- <position x="0.00" y="0.00" z="10"/> -->
-        <!-- <lookAt x="0.0" y="0.01" z="0.0"/> -->
-      <!-- </camera> -->
-      <!-- <osd> -->
-        <!-- <time  font="Time"  size="25" colour="FFFF00"/> -->
-        <!-- <robot font="Robot" size="25" colour="FFFFFF"/> -->
-      <!-- </osd> -->
-    <!-- </screen> -->
+    <screen name="Braiternberg 2" show="true" follow="false">
+      <resolution name="vga"/>
+      <camera>
+        <position x="0.00" y="0.00" z="10"/>
+        <lookAt x="0.0" y="0.01" z="0.0"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
 
     <cameras>
       <orbit speed="0.5">

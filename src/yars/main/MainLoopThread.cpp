@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#define __GUI_ASYNC_UPDATE_FRAME_RATE 1000.0/5.0 * 1000.0 // 25 fps in millis
+#define __GUI_ASYNC_UPDATE_FRAME_RATE 1.0/50.0 * 1000.0 // 25 fps in millis
 
 MainLoopThread::MainLoopThread(int argc, char **argv)
 {
@@ -17,6 +17,7 @@ MainLoopThread::MainLoopThread(int argc, char **argv)
   setStackSize(2097152);
   _ymc = new YarsMainControl(_argc, _argv);
   _ymc->addObserver(this);
+  _guiReturned = true;
 };
 
 void MainLoopThread::run()
