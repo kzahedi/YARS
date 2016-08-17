@@ -19,7 +19,8 @@ class WindowConfiguration
     WindowConfiguration(int index);
     void getNextCaptureName();
 
-    Pose           cameraPose;
+    P3D            cameraPosition;
+    P3D            cameraLookAt;
     ScreenGeometry geometry;
     bool           followObjects;
     bool           useTraces;

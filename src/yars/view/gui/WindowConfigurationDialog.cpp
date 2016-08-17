@@ -24,13 +24,13 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   QString maxTraceLines;
   QString maxTracePoints;
 
-  xyz_x.setNum(_windowConfiguration->cameraPose.position.x);
-  xyz_y.setNum(_windowConfiguration->cameraPose.position.y);
-  xyz_z.setNum(_windowConfiguration->cameraPose.position.z);
+  // xyz_x.setNum(_windowConfiguration->cameraPose.position.x);
+  // xyz_y.setNum(_windowConfiguration->cameraPose.position.y);
+  // xyz_z.setNum(_windowConfiguration->cameraPose.position.z);
 
-  hpr_h.setNum(_windowConfiguration->cameraPose.orientation.x);
-  hpr_p.setNum(_windowConfiguration->cameraPose.orientation.y);
-  hpr_r.setNum(_windowConfiguration->cameraPose.orientation.z);
+  // hpr_h.setNum(_windowConfiguration->cameraPose.orientation.x);
+  // hpr_p.setNum(_windowConfiguration->cameraPose.orientation.y);
+  // hpr_r.setNum(_windowConfiguration->cameraPose.orientation.z);
 
   maxTraceLines.setNum(_windowConfiguration->maxTraceLines);
   maxTracePoints.setNum(_windowConfiguration->maxTracePoints);
@@ -233,12 +233,12 @@ void WindowConfigurationDialog::heightChanged()
 
 void WindowConfigurationDialog::cameraPoseChanged()
 {
-  _windowConfiguration->cameraPose.position.x = _xyz_x->text().toDouble();
-  _windowConfiguration->cameraPose.position.y = _xyz_y->text().toDouble();
-  _windowConfiguration->cameraPose.position.z = _xyz_z->text().toDouble();
-  _windowConfiguration->cameraPose.orientation.x = _hpr_h->text().toDouble();
-  _windowConfiguration->cameraPose.orientation.y = _hpr_p->text().toDouble();
-  _windowConfiguration->cameraPose.orientation.z = _hpr_r->text().toDouble();
+  // _windowConfiguration->cameraPose.position.x = _xyz_x->text().toDouble();
+  // _windowConfiguration->cameraPose.position.y = _xyz_y->text().toDouble();
+  // _windowConfiguration->cameraPose.position.z = _xyz_z->text().toDouble();
+  // _windowConfiguration->cameraPose.orientation.x = _hpr_h->text().toDouble();
+  // _windowConfiguration->cameraPose.orientation.y = _hpr_p->text().toDouble();
+  // _windowConfiguration->cameraPose.orientation.z = _hpr_r->text().toDouble();
   emit dataChanged();
 }
 

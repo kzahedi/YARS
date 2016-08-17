@@ -64,7 +64,7 @@ set(GUI_SOURCES
   SceneGraphSoftPlyNode.cpp
   # TextOverlay.cpp
   # ColoredTextAreaOverlayElement.cpp
-  OgreHandler.cpp
+  SceneGraphHandler.cpp
   KeyHandler.cpp
   FollowCamera.cpp
   CameraFactory.cpp

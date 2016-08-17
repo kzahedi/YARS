@@ -12,6 +12,3 @@ IF(UNIX OR APPLE OR MINGW OR MSYS)
   link_directories(/usr/local/lib)
   link_directories(/usr/lib)
 ENDIF(UNIX OR APPLE OR MINGW OR MSYS)
-
-include_directories(/usr/local/include/OGRE)
-link_directories(/usr/local/lib/OGRE/)

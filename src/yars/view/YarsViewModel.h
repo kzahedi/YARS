@@ -3,7 +3,7 @@
 
 #include "util/Observable.h"
 #include "console/ConsoleView.h"
-#include "view/gui/OgreHandler.h"
+#include "view/gui/SceneGraphHandler.h"
 // #include "gui/QtWindowHandler.h"
 #include "gui/QtOgreWindow.h"
 // #include "gui/SdlWindow.h"
@@ -40,7 +40,7 @@ class YarsViewModel : public Observable, public Observer
     bool                    _sync;
     bool                    _syncedStep;
     bool                    _toggleVideo;
-    OgreHandler*            _ogreHandler;
+    SceneGraphHandler*      _ogreHandler;
     // Ogre::GLPlugin*         _GLPlugin;
     // Ogre::ParticleFXPlugin* _particlePlugin;
     Ogre::Root*             _root;

@@ -1,7 +1,20 @@
 #include "QtOgreWindow.h"
+
+#include "SceneGraphHandler.h"
+
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
 #include <Compositor/OgreCompositorManager2.h>
 #endif
+
+#define OGRE_TO_YARS(source, destination) \
+  destination.x =  source[0]; \
+destination.y = -source[2]; \
+destination.z =  source[1];
+
+#define YARS_TO_OGRE(source, destination) \
+  destination[0] =  source.x; \
+destination[1] =  source.z; \
+destination[2] = -source.y;
 
 /*
    Note that we pass any supplied QWindow parent to the base QWindow class. This is necessary should we
@@ -21,7 +34,7 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
 
   setAnimating(true);
   installEventFilter(this);
-  m_ogreBackground = Ogre::ColourValue(0.0f, 0.5f, 1.0f);
+  m_ogreBackground = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
 }
 
 /*
@@ -47,50 +60,19 @@ void QtOgreWindow::render(QPainter *painter)
    */
 void QtOgreWindow::initialize()
 {
-  /*
-     As shown Ogre3D is initialized normally; just like in other documentation.
-     */
+
 #ifdef _MSC_VER
   m_ogreRoot = new Ogre::Root(Ogre::String("plugins" OGRE_BUILD_SUFFIX ".cfg"));
 #else
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  // TODO load resources.cfg
-  m_ogreRoot = new Ogre::Root( "plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
-  // m_ogreRoot = new Ogre::Root(Ogre::String("plugins.cfg"));
+  m_ogreRoot = SceneGraphHandler::instance()->root();
 #endif
   Ogre::ConfigFile ogreConfig;
-
-  /*
-
-     Commended out for simplicity but should you need to initialize resources you can do so normally.
-
-     ogreConfig.load("resources/resource_configs/resources.cfg");
-
-     Ogre::ConfigFile::SectionIterator seci = ogreConfig.getSectionIterator();
-     Ogre::String secName, typeName, archName;
-     while (seci.hasMoreElements())
-     {
-     secName = seci.peekNextKey();
-     Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-     Ogre::ConfigFile::SettingsMultiMap::iterator i;
-     for (i = settings->begin(); i != settings->end(); ++i)
-     {
-     typeName = i->first;
-     archName = i->second;
-     Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-     archName, typeName, secName);
-     }
-     }
-
-*/
 
   const Ogre::RenderSystemList& rsList = m_ogreRoot->getAvailableRenderers();
   Ogre::RenderSystem* rs = rsList[0];
 
-  /*
-     This list setup the search order for used render system.
-     */
   Ogre::StringVector renderOrder;
 #if defined(Q_OS_WIN)
   renderOrder.push_back("Direct3D9");
@@ -121,32 +103,20 @@ void QtOgreWindow::initialize()
     }
   }
 
-  /*
-     Setting size and VSync on windows will solve a lot of problems
-     */
-
   int w = _windowConfiguration->geometry.width();
   int h = _windowConfiguration->geometry.height();
   QString dimensions = QString("%1 x %2").arg(w).arg(h);
-  rs->setConfigOption("Video Mode", dimensions.toStdString());
+  // rs->setConfigOption("Video Mode", dimensions.toStdString());
   rs->setConfigOption("Full Screen", "No");
   rs->setConfigOption("VSync", "Yes");
   m_ogreRoot->setRenderSystem(rs);
   m_ogreRoot->initialise(false);
 
   Ogre::NameValuePairList parameters;
-  /*
-     Flag within the parameters set so that Ogre3D initializes an OpenGL context on it's own.
-     */
+
   if (rs->getName().find("GL") <= rs->getName().size())
     parameters["currentGLContext"] = Ogre::String("false");
 
-  /*
-     We need to supply the low level OS window handle to this QWindow so that Ogre3D knows where to draw
-     the scene. Below is a cross-platform method on how to do this.
-     If you set both options (externalWindowHandle and parentWindowHandle) this code will work with OpenGL
-     and DirectX.
-     */
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
   parameters["externalWindowHandle"] = Ogre::StringConverter::toString((size_t)(this->winId()));
   parameters["parentWindowHandle"] = Ogre::StringConverter::toString((size_t)(this->winId()));
@@ -175,20 +145,31 @@ void QtOgreWindow::initialize()
      The rest of the code in the initialization function is standard Ogre3D scene code. Consult other
      tutorials for specifics.
      */
-#if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
-  const size_t numThreads = std::max<int>(1, Ogre::PlatformInformation::getNumLogicalCores());
-  Ogre::InstancingTheadedCullingMethod threadedCullingMethod = Ogre::INSTANCING_CULLING_SINGLETHREAD;
-  if (numThreads > 1)threadedCullingMethod = Ogre::INSTANCING_CULLING_THREADED;
-  m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC, numThreads, threadedCullingMethod);
-#else
-  m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC);
-#endif
+// #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
+  // const size_t numThreads = std::max<int>(1, Ogre::PlatformInformation::getNumLogicalCores());
+  // Ogre::InstancingTheadedCullingMethod threadedCullingMethod = Ogre::INSTANCING_CULLING_SINGLETHREAD;
+  // if (numThreads > 1)threadedCullingMethod = Ogre::INSTANCING_CULLING_THREADED;
+  // m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC, numThreads, threadedCullingMethod);
+// #else
+  // m_ogreSceneMgr = m_ogreRoot->createSceneManager(Ogre::ST_GENERIC);
+// #endif
+
+  m_ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
 
   m_ogreCamera = m_ogreSceneMgr->createCamera("MainCamera");
-  m_ogreCamera->setPosition(Ogre::Vector3(0.0f, 0.0f, 10.0f));
-  m_ogreCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, -300.0f));
-  m_ogreCamera->setNearClipDistance(0.1f);
-  m_ogreCamera->setFarClipDistance(200.0f);
+  // m_ogreCamera->setPosition(Ogre::Vector3(0.0f, 0.0f, 10.0f));
+  // m_ogreCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, -300.0f));
+  cout << "Position: " << _windowConfiguration->cameraPosition << endl;
+  cout << "Look At: "  << _windowConfiguration->cameraLookAt   << endl;
+  Ogre::Vector3 pos;
+  Ogre::Vector3 lookAt;
+  YARS_TO_OGRE(_windowConfiguration->cameraPosition, pos);
+  YARS_TO_OGRE(_windowConfiguration->cameraLookAt,   lookAt);
+  m_ogreCamera->setPosition(pos);
+  m_ogreCamera->lookAt(lookAt);
+  m_ogreCamera->setNearClipDistance(0.01f);
+  m_ogreCamera->setFarClipDistance(1000000.0f);
+
   // m_cameraMan = new OgreQtBites::SdkQtCameraMan(m_ogreCamera);   // create a default camera controller
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
@@ -198,8 +179,8 @@ void QtOgreWindow::initialize()
   pViewPort->setBackgroundColour(m_ogreBackground);
 #endif
 
-  m_ogreCamera->setAspectRatio(
-                               Ogre::Real(m_ogreWindow->getWidth()) / Ogre::Real(m_ogreWindow->getHeight()));
+
+  m_ogreCamera->setAspectRatio(Ogre::Real(m_ogreWindow->getWidth()) / Ogre::Real(m_ogreWindow->getHeight()));
   m_ogreCamera->setAutoAspectRatio(true);
 
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
@@ -214,35 +195,11 @@ void QtOgreWindow::initialize()
 
 void QtOgreWindow::createScene()
 {
-  /*
-     Example scene
-     Derive this class for your own purpose and overwite this function to have a working Ogre widget with
-     your own content.
-     */
   m_ogreSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-
-#if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
-  Ogre::Entity* sphereMesh = m_ogreSceneMgr->createEntity(Ogre::SceneManager::PT_SPHERE);
-#else
-  Ogre::Entity* sphereMesh = m_ogreSceneMgr->createEntity("mySphere", Ogre::SceneManager::PT_SPHERE);
-#endif
 
   Ogre::SceneNode* childSceneNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
 
-  childSceneNode->attachObject(sphereMesh);
-
-  Ogre::MaterialPtr sphereMaterial = Ogre::MaterialManager::getSingleton().create("SphereMaterial",
-                                                                                  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, true);
-
-  sphereMaterial->getTechnique(0)->getPass(0)->setAmbient(0.1f, 0.1f, 0.1f);
-  sphereMaterial->getTechnique(0)->getPass(0)->setDiffuse(0.2f, 0.2f, 0.2f, 1.0f);
-  sphereMaterial->getTechnique(0)->getPass(0)->setSpecular(0.9f, 0.9f, 0.9f, 1.0f);
-  //sphereMaterial->setAmbient(0.2f, 0.2f, 0.5f);
-  //sphereMaterial->setSelfIllumination(0.2f, 0.2f, 0.1f);
-
-  sphereMesh->setMaterialName("SphereMaterial");
-  childSceneNode->setPosition(Ogre::Vector3(0.0f, 0.0f, 0.0f));
-  childSceneNode->setScale(Ogre::Vector3(0.01f, 0.01f, 0.01f)); // Radius, in theory.
+  _sceneGraph = new SceneGraph(childSceneNode, m_ogreSceneMgr);
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
   Ogre::SceneNode* pLightNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -283,6 +240,7 @@ void QtOgreWindow::render()
      to keep things separate and keep the render function as simple as possible.
      */
   Ogre::WindowEventUtilities::messagePump();
+  _sceneGraph->update();
   m_ogreRoot->renderOneFrame();
 }
 

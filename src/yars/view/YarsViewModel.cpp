@@ -4,6 +4,8 @@
 #include <yars/configuration/YarsConfiguration.h>
 #include <yars/defines/mutex.h>
 
+#include "view/gui/SceneGraphHandler.h"
+
 #include <Ogre/Ogre.h>
 
 YarsViewModel::YarsViewModel()
@@ -20,9 +22,7 @@ YarsViewModel::YarsViewModel()
 
   if(__YARS_GET_USE_VISUALISATION)
   {
-    // _ogreHandler = OgreHandler::instance();
     initialiseView();
-    // _ogreHandler->setupSceneManager();
     // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
   }
 }
@@ -35,19 +35,10 @@ YarsViewModel::~YarsViewModel()
 
 void YarsViewModel::initialiseView()
 {
-  cout << "hier 0" << endl;
   DataRobotSimulationDescription *data = __YARS_CURRENT_DATA;
   if(!__YARS_GET_USE_VISUALISATION) return;
   if(data->screens() == NULL) return;
   FOREACHP(DataScreen*, i, data->screens()) if((*i)->autoShow()) __createNewWindow();
-  FOREACHP(DataScreen*, i, data->screens())
-  {
-    if((*i)->autoShow())
-    {
-      cout << (*i)->name() << endl;
-      __createNewWindow();
-    }
-  }
 }
 
 void YarsViewModel::visualiseScene()
@@ -93,7 +84,6 @@ void YarsViewModel::quit()
 
 void YarsViewModel::__newWindow()
 {
-  cout << "new window" << endl;
   YM_LOCK;
   __createNewWindow();
   YM_UNLOCK;
@@ -101,12 +91,10 @@ void YarsViewModel::__newWindow()
 
 void YarsViewModel::__createNewWindow()
 {
-  cout << "new window" << endl;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
   QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());
   wm->show();
-  cout << "new window end" << endl;
   // wm->addObserver(this);
 #ifdef USE_CAPTURE_VIDEO
   // if(wm->captureRunning())

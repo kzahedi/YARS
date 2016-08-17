@@ -38,9 +38,7 @@ IF(YARS_USE_VISUALISATION)
     # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
   # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
   # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
-  include_directories(/usr/local/include/OGRE/)
   link_directories(/usr/local/lib/)
-  link_directories(/usr/local/lib/OGRE)
 
   find_package(Qt5Widgets)
   set(CMAKE_AUTOMOC OFF)
@@ -66,7 +64,7 @@ IF(YARS_USE_VISUALISATION)
   if(UNIX AND NOT APPLE)
     # for ogre
     add_definitions(-pthread -D_FORTIFY_SOURCE=2)
-    include_directories(/usr/local/include /usr/local/include/OGRE /usr/include/freetype2 /usr/include/libdrm)
+    include_directories(/usr/local/include /usr/include/freetype2 /usr/include/libdrm)
   endif(UNIX AND NOT APPLE)
 
 ENDIF(YARS_USE_VISUALISATION)

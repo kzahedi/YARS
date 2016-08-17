@@ -54,7 +54,7 @@ QtGlPanel::QtGlPanel(WindowConfiguration *windowConfiguration, QWidget *parent)
   _windowConfiguration = windowConfiguration;
   // _glWrapper = NULL;
 
-  _ogreHandler = OgreHandler::instance();
+  _ogreHandler = SceneGraphHandler::instance();
 
   _ogreHandler->setupSceneManager();
 }
@@ -230,21 +230,23 @@ void QtGlPanel::__mouseMotion(int deltax, int deltay)
 {
   float side = 0.01f * float(deltax);
   float fwd = (true) ? (0.01f * float(deltay)) : 0.0f;
-  float s = (float) sin (_windowConfiguration->cameraPose.orientation.z);
-  float c = (float) cos (_windowConfiguration->cameraPose.orientation.z);
+  // float s = (float) sin (_windowConfiguration->cameraPose.orientation.z);
+  // float c = (float) cos (_windowConfiguration->cameraPose.orientation.z);
+  float s = 0.0;
+  float c = 1.0;
 
   switch(_metaKey)
   {
     case __NO_KEY:
-      _windowConfiguration->cameraPose.orientation.z += float (deltax) * 0.005f;
-      _windowConfiguration->cameraPose.orientation.y += float (deltay) * 0.005f;
+      // _windowConfiguration->cameraPose.orientation.z += float (deltax) * 0.005f;
+      // _windowConfiguration->cameraPose.orientation.y += float (deltay) * 0.005f;
       break;
     case __ALT:
-      _windowConfiguration->cameraPose.position.z += 0.01f * float(deltay);
+      _windowConfiguration->cameraPosition.z += 0.01f * float(deltay);
       break;
     case __CONTROL:
-      _windowConfiguration->cameraPose.position.x += -s*-side + c*-fwd;
-      _windowConfiguration->cameraPose.position.y +=  c*-side + s*-fwd;
+      _windowConfiguration->cameraPosition.x += -s*-side + c*-fwd;
+      _windowConfiguration->cameraPosition.y +=  c*-side + s*-fwd;
       break;
   }
   __wrapCameraAngles();

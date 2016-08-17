@@ -3,6 +3,7 @@
 #include "configuration/YarsConfiguration.h"
 
 #include <yars/view/console/ConsoleView.h>
+#include <yars/configuration/data/Data.h>
 
 #include <sstream>
 
@@ -14,10 +15,11 @@ using namespace std;
 
 WindowConfiguration::WindowConfiguration(int _i)
 {
-  this->index       = _i;
-  name              = __YARS_GET_VIEW_NAME(index);
-  geometry          = __YARS_GET_VIEW_GEOMETRY(index);
-  // cameraPose        = __YARS_GET_VIEW_POSE(index);
+  index          = _i;
+  name           = __YARS_GET_VIEW_NAME(index);
+  geometry       = __YARS_GET_VIEW_GEOMETRY(index);
+  cameraPosition = Data::instance()->current()->screens()->screen(index)->camera()->position();
+  cameraLookAt   = Data::instance()->current()->screens()->screen(index)->camera()->lookAt();
   // captureName       = __YARS_GET_CAPTURE_NAME;
   // useTextures       = __YARS_GET_USE_TEXTURES;
   // useTraces         = __YARS_GET_USE_TRACES;
