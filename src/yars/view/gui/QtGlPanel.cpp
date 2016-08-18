@@ -29,17 +29,17 @@ QtGlPanel::QtGlPanel(WindowConfiguration *windowConfiguration, QWidget *parent)
   _printRealTimeFactor       = 0.0;
   _printTimeLastStep         = 0;
 
-  connect(this, SIGNAL(toggleFollowMode()),   parent, SLOT(toggleFollowingOfObjects()));
-  connect(this, SIGNAL(previousFollowMode()), parent, SLOT(previousFollowMode()));
-  connect(this, SIGNAL(nextFollowMode()),     parent, SLOT(nextFollowMode()));
-  connect(this, SIGNAL(previousFollowable()), parent, SLOT(previousFollowable()));
-  connect(this, SIGNAL(nextFollowable()),     parent, SLOT(nextFollowable()));
-  connect(this, SIGNAL(writeFrames()),        parent, SLOT(toggleWriteFrames()));
-  connect(this, SIGNAL(openNewWindow()),      parent, SLOT(openNewWindow()));
-  connect(this, SIGNAL(setWindowTitle()),     parent, SLOT(openWindowTitleDialog()));
-  connect(this, SIGNAL(setWindowSize()),      parent, SLOT(setWindowSize()));
-  connect(this, SIGNAL(signalWindowConfigurationChanged()),
-      parent, SLOT(windowConfigurationChanged()));
+  // connect(this, SIGNAL(toggleFollowMode()),   parent, SLOT(toggleFollowingOfObjects()));
+  // connect(this, SIGNAL(previousFollowMode()), parent, SLOT(previousFollowMode()));
+  // connect(this, SIGNAL(nextFollowMode()),     parent, SLOT(nextFollowMode()));
+  // connect(this, SIGNAL(previousFollowable()), parent, SLOT(previousFollowable()));
+  // connect(this, SIGNAL(nextFollowable()),     parent, SLOT(nextFollowable()));
+  // connect(this, SIGNAL(writeFrames()),        parent, SLOT(toggleWriteFrames()));
+  // connect(this, SIGNAL(openNewWindow()),      parent, SLOT(openNewWindow()));
+  // connect(this, SIGNAL(setWindowTitle()),     parent, SLOT(openWindowTitleDialog()));
+  // connect(this, SIGNAL(setWindowSize()),      parent, SLOT(setWindowSize()));
+  // connect(this, SIGNAL(signalWindowConfigurationChanged()),
+      // parent, SLOT(windowConfigurationChanged()));
 #ifdef USE_CAPTURE_VIDEO
   connect(this, SIGNAL(captureVideo()),       parent, SLOT(toggleCaptureMovie()));
 #endif // USE_CAPTURE_VIDEO

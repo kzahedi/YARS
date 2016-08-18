@@ -2,6 +2,7 @@
 #include "configuration/data/Data.h"
 #include "util/Directories.h"
 #include "SceneGraph.h"
+#include <yars/defines/mutex.h>
 
 // #include <Overlay/OgreOverlaySystem.h>
 
@@ -17,7 +18,7 @@ SceneGraphHandler::SceneGraphHandler()
 {
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  _root = new Ogre::Root( "plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
+  _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
 
   // Load resource paths from config file
   if(Directories::doesFileExist("resources.cfg"))
@@ -73,8 +74,10 @@ void SceneGraphHandler::reset()
 
 void SceneGraphHandler::step()
 {
+  YM_LOCK;
   _sceneGraph->update();
   _root->renderOneFrame();
+  YM_UNLOCK;
 }
 
 Ogre::Root* SceneGraphHandler::root()

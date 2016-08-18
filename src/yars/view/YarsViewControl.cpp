@@ -82,6 +82,11 @@ void YarsViewControl::notify(ObservableMessage *message)
       Y_DEBUG("YarsViewControl quit called");
       _model->quit();
       break;
+    case __M_OPEN_NEW_WINDOW:
+      cout << "open new window" << endl;
+      _model->createNewWindow();
+      cout << "done open new window" << endl;
+      break;
     // case __M_INC_VISUALISATION_FREQUENCY:
       // _visualisationStep+= 10;
       // break;
@@ -114,3 +119,4 @@ void YarsViewControl::__drawAsynchoronousMode()
     drawMutex.unlock();
   }
 }
+

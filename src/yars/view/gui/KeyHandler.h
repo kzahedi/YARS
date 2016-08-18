@@ -49,6 +49,7 @@ class KeyHandler : public Observable
     static void         toggleDrawMode();
     static void         togglePrintTime();
     static void         toggleSyncedGui();
+    static void         openNewWindow();
 
   protected:
     KeyHandler();

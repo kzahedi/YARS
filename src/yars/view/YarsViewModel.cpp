@@ -38,7 +38,7 @@ void YarsViewModel::initialiseView()
   DataRobotSimulationDescription *data = __YARS_CURRENT_DATA;
   if(!__YARS_GET_USE_VISUALISATION) return;
   if(data->screens() == NULL) return;
-  FOREACHP(DataScreen*, i, data->screens()) if((*i)->autoShow()) __createNewWindow();
+  FOREACHP(DataScreen*, i, data->screens()) if((*i)->autoShow()) createNewWindow();
 }
 
 void YarsViewModel::visualiseScene()
@@ -82,16 +82,9 @@ void YarsViewModel::quit()
   Y_DEBUG("YarsViewModel::quit completed")
 }
 
-void YarsViewModel::__newWindow()
+void YarsViewModel::createNewWindow()
 {
   YM_LOCK;
-  __createNewWindow();
-  YM_UNLOCK;
-}
-
-void YarsViewModel::__createNewWindow()
-{
-  cout << "create new window" << endl;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
   QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());
@@ -105,13 +98,14 @@ void YarsViewModel::__createNewWindow()
   // }
 #endif // USE_CAPTURE_VIDEO
   _windowManager.push_back(wm);
+  YM_UNLOCK;
 }
 
 void YarsViewModel::notify(ObservableMessage *m)
 {
   switch(m->type())
   {
-    case __M_NEW_WINDOW:        __newWindow();           break; // new    window
+    case __M_NEW_WINDOW:        createNewWindow();           break; // new    window
     case -2:                    __removeClosedWindows(); break; // closed
     case __M_QUIT_CALLED:       _run = false;            break;
     case __M_TOGGLE_SYNCED_GUI: _sync = !_sync;          break;

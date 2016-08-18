@@ -24,12 +24,12 @@ class YarsViewModel : public Observable, public Observer
     void synched();
     void toggleShadows();
     void toggleCaptureVideo();
+    void createNewWindow();
+
 
   private:
     void __initialiseFollowable();
     void __removeClosedWindows();
-    void __newWindow();
-    void __createNewWindow();
 
     // std::vector<SdlWindow*> _windowManager;
     // std::vector<QtWindowHandler*> _windowManager;

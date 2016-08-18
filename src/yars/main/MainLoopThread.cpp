@@ -14,7 +14,7 @@ MainLoopThread::MainLoopThread(int argc, char **argv)
   _argv = argv;
   _lastTime = Timer::getTime();
   // for ode 0.11.1 
-  setStackSize(2097152);
+  // setStackSize(2097152);
   _ymc = new YarsMainControl(_argc, _argv);
   _ymc->addObserver(this);
   _guiReturned = true;

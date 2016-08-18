@@ -4,6 +4,8 @@
 #include <OGRE/Ogre.h>
 #include "SceneGraph.h"
 
+#include <pthread.h>
+
 class SceneGraphHandler
 {
   public:
@@ -31,6 +33,7 @@ class SceneGraphHandler
     Ogre::SceneNode*    _rootNode;
     SceneGraph*         _sceneGraph;
     bool                _sceneGraphInitialised;
+    pthread_mutex_t     _mutex;
 };
 
 

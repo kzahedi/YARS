@@ -1,6 +1,12 @@
 #include "QtOgreWindow.h"
 
 #include "SceneGraphHandler.h"
+#include "KeyHandler.h"
+#include "SdkQtCameraMan.h"
+
+#define __NO_KEY  -1
+#define __CONTROL  1
+#define __ALT      2 
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
 #include <Compositor/OgreCompositorManager2.h>
@@ -27,7 +33,7 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   , m_ogreRoot(NULL)
   , m_ogreWindow(NULL)
   , m_ogreCamera(NULL)
-  // , m_cameraMan(NULL)
+  , m_cameraMan(NULL)
 {
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
@@ -42,7 +48,7 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
    */
 QtOgreWindow::~QtOgreWindow()
 {
-  // if (m_cameraMan) delete m_cameraMan;
+  if (m_cameraMan) delete m_cameraMan;
   delete m_ogreRoot;
 }
 
@@ -134,6 +140,7 @@ void QtOgreWindow::initialize()
      Note below that we supply the creation function for the Ogre3D window the width and height
      from the current QWindow object using the "this" pointer.
      */
+
   stringstream sst;
   sst << "QT Window " << _index;
   resize(w,h);
@@ -158,7 +165,7 @@ void QtOgreWindow::initialize()
   m_ogreCamera->setNearClipDistance(0.01f);
   m_ogreCamera->setFarClipDistance(1000000.0f);
 
-  // m_cameraMan = new OgreQtBites::SdkQtCameraMan(m_ogreCamera);   // create a default camera controller
+  m_cameraMan = new SdkQtCameraMan(m_ogreCamera);   // create a default camera controller
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
   createCompositor();
@@ -179,12 +186,6 @@ void QtOgreWindow::initialize()
   setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
-void QtOgreWindow::createScene()
-{
-
-  // Ogre::SceneNode* childSceneNode = m_ogreSceneMgr->getRootSceneNode()->createChildSceneNode();
-
-}
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
 void QtOgreWindow::createCompositor()
@@ -234,14 +235,6 @@ void QtOgreWindow::renderLater()
 
 bool QtOgreWindow::event(QEvent *event)
 {
-  /*
-     QWindow's "message pump". The base method that handles all QWindow events. As you will see there
-     are other methods that actually process the keyboard/other events of Qt and the underlying OS.
-
-     Note that we call the renderNow() function which checks to see if everything is initialized, etc.
-     before calling the render() function.
-     */
-
   switch (event->type())
   {
     case QEvent::UpdateRequest:
@@ -249,10 +242,17 @@ bool QtOgreWindow::event(QEvent *event)
       renderNow();
       return true;
 
+    case QEvent::NativeGesture:
+      m_cameraMan->gesture((QNativeGestureEvent*)(event));
+      return true;
+      break;
+
     default:
       return QWindow::event(event);
   }
 }
+
+
 
 /*
    Called after the QWindow is reopened or when the QWindow is first opened.
@@ -308,17 +308,6 @@ bool QtOgreWindow::eventFilter(QObject *target, QEvent *event)
 /*
    How we handle keyboard and mouse events.
    */
-void QtOgreWindow::keyPressEvent(QKeyEvent * ev)
-{
-  // if(m_cameraMan)
-    // m_cameraMan->injectKeyDown(*ev);
-}
-
-void QtOgreWindow::keyReleaseEvent(QKeyEvent * ev)
-{
-  // if(m_cameraMan)
-    // m_cameraMan->injectKeyUp(*ev);
-}
 
 void QtOgreWindow::mouseMoveEvent( QMouseEvent* e )
 {
@@ -329,45 +318,45 @@ void QtOgreWindow::mouseMoveEvent( QMouseEvent* e )
   lastX = e->x();
   lastY = e->y();
 
-  // if(m_cameraMan && (e->buttons() & Qt::LeftButton))
-    // m_cameraMan->injectMouseMove(relX, relY);
+  if(m_cameraMan && (e->buttons() & Qt::LeftButton))
+    m_cameraMan->injectMouseMove(relX, relY);
 }
 
 void QtOgreWindow::wheelEvent(QWheelEvent *e)
 {
-  // if(m_cameraMan)
-    // m_cameraMan->injectWheelMove(*e);
+  if(m_cameraMan)
+    m_cameraMan->injectWheelMove(*e);
 }
 
 void QtOgreWindow::mousePressEvent( QMouseEvent* e )
 {
-  // if(m_cameraMan)
-    // m_cameraMan->injectMouseDown(*e);
+  if(m_cameraMan)
+    m_cameraMan->injectMouseDown(*e);
 }
 
 void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
 {
-  // if(m_cameraMan)
-    // m_cameraMan->injectMouseUp(*e);
+  if(m_cameraMan)
+    m_cameraMan->injectMouseUp(*e);
 
   QPoint pos = e->pos();
   Ogre::Ray mouseRay = m_ogreCamera->getCameraToViewportRay(
-                                                            (Ogre::Real)pos.x() / m_ogreWindow->getWidth(),
-                                                            (Ogre::Real)pos.y() / m_ogreWindow->getHeight());
-  Ogre::RaySceneQuery* pSceneQuery = m_ogreSceneMgr->createRayQuery(mouseRay);
-  pSceneQuery->setSortByDistance(true);
-  Ogre::RaySceneQueryResult vResult = pSceneQuery->execute();
-  for (size_t ui = 0; ui < vResult.size(); ui++)
-  {
-    if (vResult[ui].movable)
-    {
-      if (vResult[ui].movable->getMovableType().compare("Entity") == 0)
-      {
-        emit entitySelected((Ogre::Entity*)vResult[ui].movable);
-      }
-    }
-  }
-  m_ogreSceneMgr->destroyQuery(pSceneQuery);
+                            (Ogre::Real)pos.x() / m_ogreWindow->getWidth(),
+                            (Ogre::Real)pos.y() / m_ogreWindow->getHeight());
+  // Ogre::RaySceneQuery* pSceneQuery = m_ogreSceneMgr->createRayQuery(mouseRay);
+  // pSceneQuery->setSortByDistance(true);
+  // Ogre::RaySceneQueryResult vResult = pSceneQuery->execute();
+  // for (size_t ui = 0; ui < vResult.size(); ui++)
+  // {
+    // if (vResult[ui].movable)
+    // {
+      // if (vResult[ui].movable->getMovableType().compare("Entity") == 0)
+      // {
+        // emit entitySelected((Ogre::Entity*)vResult[ui].movable);
+      // }
+    // }
+  // }
+  // m_ogreSceneMgr->destroyQuery(pSceneQuery);
 }
 
 /*
@@ -384,7 +373,7 @@ void QtOgreWindow::setAnimating(bool animating)
 
 bool QtOgreWindow::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-  // m_cameraMan->frameRenderingQueued(evt);
+  m_cameraMan->frameRenderingQueued(evt);
   return true;
 }
 
@@ -397,3 +386,111 @@ void QtOgreWindow::log(QString msg)
 {
   // log(Ogre::String(msg.toStdString().c_str()));
 }
+
+void QtOgreWindow::keyPressEvent(QKeyEvent *event)
+{
+  if(m_cameraMan) m_cameraMan->injectKeyDown(*event);
+
+
+  int  modifiers = event->modifiers();
+  char key       = (char)event->key();
+
+  bool alt   = false;
+  bool ctrl  = false;
+  bool shift = false;
+
+  _metaKey = __NO_KEY;
+
+  if(modifiers & Qt::ControlModifier)
+  {
+    ctrl  = true;
+    _metaKey = __CONTROL;
+  }
+
+  if(modifiers & Qt::AltModifier)
+  {
+    alt   = true;
+    _metaKey = __ALT;
+  }
+
+  if(modifiers & Qt::ShiftModifier)
+  {
+    shift = true;
+  }
+
+  // int i = YarsContainers::KeyEventHandler()->handleKeyEvent(alt, ctrl, shift, key);
+  int i = KeyHandler::instance()->handleKeyEvent(alt, ctrl, shift, key);
+  __catchedLocally(i);
+}
+
+void QtOgreWindow::__catchedLocally(int key)
+{
+  switch(key)
+  {
+    // case 22: //YarsKeyFunction::PrintViewPoint:
+      // ConsoleView::printViewpoint(_windowConfiguration->cameraPose.position, _windowConfiguration->cameraPose.orientation);
+      // break;
+    // case YarsKeyFunction::CaptureVideo:
+      // emit captureVideo();
+      // break;
+    // case YarsKeyFunction::WriteFrames:
+      // emit writeFrames();
+      // break;
+    // case YarsKeyFunction::VisualiseAxes:
+      // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
+      // break;
+    case YarsKeyFunction::OpenNewWindow:
+      emit openNewWindow();
+      break;
+    // case YarsKeyFunction::SetWindowTitle:
+      // emit setWindowTitle();
+      // break;
+    // case YarsKeyFunction::ShowWindowConfigurationDialog:
+      // __showDialog();
+      // break;
+    // case YarsKeyFunction::SetWindowSize:
+      // emit setWindowSize();
+      // break;
+    // case YarsKeyFunction::OnScreenDisplay_FramesPerSecond:
+      // _windowConfiguration->osdFramePerSecond = !_windowConfiguration->osdFramePerSecond;
+      // break;
+    // case YarsKeyFunction::OnScreenDisplay_ElapsedTime:
+      // _windowConfiguration->osdElapsedTime = !_windowConfiguration->osdElapsedTime;
+      // break;
+    // case YarsKeyFunction::OnScreenDisplay:
+      // _windowConfiguration->onScreenDisplay = !_windowConfiguration->onScreenDisplay;
+      // break;
+    // case YarsKeyFunction::ToggleTextures:
+      // _windowConfiguration->useTextures = !_windowConfiguration->useTextures;
+      // break;
+    // case YarsKeyFunction::ToggleShadows:
+      // _windowConfiguration->useShadows = !_windowConfiguration->useShadows;
+      // break;
+    // case YarsKeyFunction::ToggleFollowMode:
+      // emit toggleFollowMode();
+      // break;
+    // case YarsKeyFunction::ToggleTraces:
+      // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
+      // break;
+    // case YarsKeyFunction::PreviousFollowable:
+      // emit previousFollowable();
+      // break;
+    // case YarsKeyFunction::NextFollowable:
+      // emit nextFollowable();
+      // break;
+    // case YarsKeyFunction::PreviousFollowMode:
+      // emit previousFollowMode();
+      // break;
+    // case YarsKeyFunction::NextFollowMode:
+      // emit nextFollowMode();
+      // break;
+  }
+}
+
+
+void QtOgreWindow::keyReleaseEvent(QKeyEvent *event)
+{
+  if(m_cameraMan) m_cameraMan->injectKeyUp(*event);
+  _metaKey = __NO_KEY;
+}
+

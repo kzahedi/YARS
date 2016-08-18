@@ -48,6 +48,7 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->increaseSimSpeed.function      = &increaseSimSpeed;
   _keyboardShortcuts->resetSimSpeed.function         = &resetSimSpeed;
   _keyboardShortcuts->restoreViewpoint.function      = &restoreInitialViewpoint;
+  _keyboardShortcuts->openNewWindow.function         = &openNewWindow;
   _keyboardShortcuts->printTime.function             = &togglePrintTime;
 
   _keyboardShortcuts->captureVideo.function          = NULL;
@@ -162,6 +163,11 @@ void KeyHandler::togglePause()
 void KeyHandler::toggleReloadOnReset()
 {
   notifyObservers(_m_toggleReload);
+}
+
+void KeyHandler::openNewWindow()
+{
+  notifyObservers(_m_openNewWindow);
 }
 
 void KeyHandler::toggleSyncedGui()
