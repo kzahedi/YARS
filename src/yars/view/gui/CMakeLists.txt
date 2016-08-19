@@ -36,17 +36,13 @@
 # endif(APPLE)
 
 set(GUI_HDRS
-  QtWindowHandler.h
-  QtGlPanel.h
   QtOgreWindow.h
   WindowConfigurationDialog.h)
 
 QT5_WRAP_CPP(qtview_MOC_SRCS ${GUI_HDRS})
 
 set(GUI_SOURCES
-  QtWindowHandler.cpp
   QtOgreWindow.cpp
-  QtGlPanel.cpp
   SceneGraph.cpp
   SceneGraphRobotNode.cpp
   SceneGraphObjectFactory.cpp
