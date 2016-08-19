@@ -256,14 +256,6 @@ class SdkQtCameraMan
        default:
          break;
      }
-     // if (QGesture *pan = event->gesture(Qt::PanGesture))
-     // {
-       // accel[1] = 1.0;
-     // }
-     // if (QGesture *pinch = event->gesture(Qt::PinchGesture))
-     // {
-       // accel[1] = -1.0;
-     // }
      mVelocity += accel;
    }
 
