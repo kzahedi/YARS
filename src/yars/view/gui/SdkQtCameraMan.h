@@ -13,6 +13,16 @@
 
 #include <iostream>
 
+#define OGRE_TO_YARS(source, destination) \
+  destination.x =  source[0]; \
+  destination.y = -source[2]; \
+  destination.z =  source[1];
+
+#define YARS_TO_OGRE(source, destination) \
+  destination[0] =  source.x; \
+  destination[1] =  source.z; \
+  destination[2] = -source.y;
+
 using namespace std;
 
 enum CameraStyle 
@@ -30,7 +40,7 @@ class SdkQtCameraMan
      , mTarget(0)
      , mOrbiting(false)
      , mZooming(false)
-     , mTopSpeed(5)
+     , mTopSpeed(50)
      , mVelocity(Ogre::Vector3::ZERO)
      , mGoingForward(false)
      , mGoingBack(false)
@@ -176,6 +186,7 @@ class SdkQtCameraMan
          mCamera->move(mVelocity * evt.timeSinceLastFrame);
        }
      }
+
      return true;
    }
 

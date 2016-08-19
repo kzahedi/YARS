@@ -1,8 +1,7 @@
 #ifndef __TEXT_OVERLAY_H__
 #define __TEXT_OVERLAY_H__
 
-//#include <OGRE/Ogre.h>
-#include <OGRE/Ogre.h>
+#include <Ogre/Ogre.h>
 #include <OgreOverlay/OgreOverlay.h>
 #include <OgreOverlay/OgreOverlayManager.h>
 #include <string>

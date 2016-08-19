@@ -11,7 +11,7 @@ using namespace std;
 class PID
 {
   public:
-    PID(yReal p = 1, yReal i = 0, yReal d = 0, yReal c = 0, int size = 10);
+    PID(yReal p = 1, yReal i = 0, yReal d = 0, yReal c = 0, int size = 3);
 
     PID(const PID &p);
     PID & operator=(const PID &b);
@@ -24,6 +24,7 @@ class PID
     void setD(yReal d);
     void setSize(int size);
     void setInitialValue(yReal value);
+    void reset();
 
     yReal p();
     yReal i();

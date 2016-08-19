@@ -10,30 +10,37 @@
 
 using namespace std;
 
-// : osdElapsedTimeFont("Helvetica", 15),
-// osdFramePerSecondFont("Helvetica", 15)
-
 WindowConfiguration::WindowConfiguration(int _i)
 {
-  index          = _i;
-  name           = __YARS_GET_VIEW_NAME(index);
-  geometry       = __YARS_GET_VIEW_GEOMETRY(index);
-  cameraPosition = Data::instance()->current()->screens()->screen(index)->camera()->position();
-  cameraLookAt   = Data::instance()->current()->screens()->screen(index)->camera()->lookAt();
-  captureName       = __YARS_GET_CAPTURE_NAME;
+  index                 = _i;
+  name                  = __YARS_GET_VIEW_NAME(index);
+  geometry              = __YARS_GET_VIEW_GEOMETRY(index);
+  cameraPosition        = Data::instance()->current()->screens()->screen(index)->camera()->position();
+  cameraLookAt          = Data::instance()->current()->screens()->screen(index)->camera()->lookAt();
+  captureName           = __YARS_GET_CAPTURE_NAME;
+  useFollow             = __YARS_GET_USE_FOLLOW_MODE(index);
+  osdElapsedTimeFont    = "Helvetica";
+  osdFramePerSecondFont = "Helvetica";
+  orgCaptureName        = captureName;
+  visualiseAxes         = true;
+  followModeChanged     = false;
+  osdFramePerSecond     = true;
+  osdElapsedTime        = true;
+  // useShadows        = __YARS_GET_USE_SHADOWS;
   // useTextures       = __YARS_GET_USE_TEXTURES;
   // useTraces         = __YARS_GET_USE_TRACES;
   // followMode        = __YARS_GET_FOLLOW_MODE;
   // followObjects     = __YARS_GET_USE_FOLLOW_MODE;
   // onScreenDisplay   = __YARS_GET_USE_OSD;
-  orgCaptureName    = captureName;
-  visualiseAxes     = true;
-  followModeChanged = false;
-  osdFramePerSecond = true;
-  osdElapsedTime    = true;
-  // useShadows        = __YARS_GET_USE_SHADOWS;
-  maxTraceLines     = -1;
-  maxTracePoints    = -1;
+
+  fontRobotName   = __YARS_GET_OSD_ROBOT_FONT_NAME(index);
+  fontRobotSize   = __YARS_GET_OSD_ROBOT_FONT_SIZE(index);
+  fontRobotColour = __YARS_GET_OSD_ROBOT_FONT_COLOR(index);
+
+  fontTimeName    = __YARS_GET_OSD_TIME_FONT_NAME(index);
+  fontTimeSize    = __YARS_GET_OSD_TIME_FONT_SIZE(index);
+  fontTimeColour  = __YARS_GET_OSD_TIME_FONT_COLOR(index);
+
   // if(index > 0)
   {
     string ext = captureName.substr(captureName.find_last_of("."), captureName.size() - 1);

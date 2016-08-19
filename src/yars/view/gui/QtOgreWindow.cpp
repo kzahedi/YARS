@@ -1,11 +1,13 @@
 #include "QtOgreWindow.h"
 
-#include "configuration/data/Data.h"
-#include "configuration/YarsConfiguration.h"
+#include <yars/configuration/data/Data.h>
+#include <yars/configuration/YarsConfiguration.h>
 #include "SceneGraphHandler.h"
 #include "KeyHandler.h"
 #include "SdkQtCameraMan.h"
-#include "view/console/ConsoleView.h"
+#include <yars/view/console/ConsoleView.h>
+#include <yars/util/Timer.h>
+#include <yars/util/OSD.h>
 
 #define __NO_KEY  -1
 #define __CONTROL  1
@@ -17,21 +19,25 @@
 
 #define OGRE_TO_YARS(source, destination) \
   destination.x =  source[0]; \
-destination.y = -source[2]; \
-destination.z =  source[1];
+  destination.y = -source[2]; \
+  destination.z =  source[1];
 
 #define YARS_TO_OGRE(source, destination) \
   destination[0] =  source.x; \
-destination[1] =  source.z; \
-destination[2] = -source.y;
+  destination[1] =  source.z; \
+  destination[2] = -source.y;
+
+# define CHECK_IF_THERE_ARE_FOLLOWABLES \
+  if(Data::instance()->current()->screens()->followables()           == NULL) return; \
+  if(Data::instance()->current()->screens()->followables()->o_size() == 0)    return;
+
+# define GET_FOLLOWABLE(a) \
+  Data::instance()->current()->screens()->followables()->followable(a)
+
 
 #include <iostream>
 #include <iomanip>
 
-/*
-   Note that we pass any supplied QWindow parent to the base QWindow class. This is necessary should we
-   need to use our class within a container.
-   */
 QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   : QWindow(parent)
   , _update_pending(false)
@@ -44,6 +50,8 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   setAnimating(true);
   installEventFilter(this);
 
+  _data                 = Data::instance()->current()->screens()->screen(index);
+  _camData              = Data::instance()->current()->screens()->screen(index)->camera();
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
   _ogreBackground       = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
@@ -53,6 +61,10 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   _frameIndex           = 0;
   _capturingOffset      = 0;
   _imgCaptureFrameIndex = 0;
+  _lastTime             = 0;
+  _followableIndex      = 0;
+  _followableObject     = NULL;
+  _cameraHandler        = new CameraHandler(_windowConfiguration);
 }
 
 /*
@@ -154,6 +166,8 @@ void QtOgreWindow::initialize()
   stringstream sst;
   sst << "QT Window " << _index;
   resize(w,h);
+  // _osdWidget->resize(200,50);
+  // _osdWidget->setGeometry(0,0,200,50);
   _ogreWindow = _ogreRoot->createRenderWindow(sst.str().c_str(),
                                               this->width(),
                                               this->height(),
@@ -193,6 +207,7 @@ void QtOgreWindow::initialize()
   SceneGraphHandler::instance()->initialise();
 
   _ogreRoot->addFrameListener(this);
+  // setWindowTitle(QString::fromStdString(_windowConfiguration->name));
   setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
@@ -215,18 +230,12 @@ void QtOgreWindow::createCompositor()
 
 void QtOgreWindow::render()
 {
-  /*
-     How we tied in the render function for OGre3D with QWindow's render function. This is what gets call
-     repeatedly. Note that we don't call this function directly; rather we use the renderNow() function
-     to call this method as we don't want to render the Ogre3D scene unless everything is set up first.
-     That is what renderNow() does.
-
-     Theoretically you can have one function that does this check but from my experience it seems better
-     to keep things separate and keep the render function as simple as possible.
-     */
   Ogre::WindowEventUtilities::messagePump();
-  // _sceneGraph->update();
-  // _ogreRoot->renderOneFrame();
+
+  if(_windowConfiguration->osdElapsedTime)
+  {
+  }
+
 }
 
 void QtOgreWindow::renderLater()
@@ -271,7 +280,7 @@ void QtOgreWindow::exposeEvent(QExposeEvent *event)
 {
   Q_UNUSED(event);
 
-  if (isExposed())
+  // if (isExposed())
     renderNow();
 }
 
@@ -281,8 +290,8 @@ void QtOgreWindow::exposeEvent(QExposeEvent *event)
    */
 void QtOgreWindow::renderNow()
 {
-  if (!isExposed())
-    return;
+  // if (!isExposed())
+    // return;
 
   if (_ogreRoot == NULL)
   {
@@ -305,7 +314,8 @@ bool QtOgreWindow::eventFilter(QObject *target, QEvent *event)
   {
     if (event->type() == QEvent::Resize)
     {
-      if (isExposed() && _ogreWindow != NULL)
+      // if (isExposed() && _ogreWindow != NULL)
+      if (_ogreWindow != NULL)
       {
         _ogreWindow->resize(this->width(), this->height());
       }
@@ -329,27 +339,42 @@ void QtOgreWindow::mouseMoveEvent( QMouseEvent* e )
   lastY = e->y();
 
   if(_cameraMan && (e->buttons() & Qt::LeftButton))
+  {
     _cameraMan->injectMouseMove(relX, relY);
+  }
   if(_cameraMan && (e->buttons() & Qt::RightButton))
+  {
     _cameraMan->injectMouseMoveRightButton(relX, relY);
+  }
+
+  __updateCamData();
+
+  if(_followableObject != NULL) _cameraHandler->follow(_followableObject);
 }
 
 void QtOgreWindow::wheelEvent(QWheelEvent *e)
 {
   if(_cameraMan)
+  {
     _cameraMan->injectWheelMove(*e);
+  }
+  __updateCamData();
 }
 
 void QtOgreWindow::mousePressEvent( QMouseEvent* e )
 {
   if(_cameraMan)
+  {
     _cameraMan->injectMouseDown(*e);
+  }
+  __updateCamData();
 }
 
 void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
 {
   if(_cameraMan)
     _cameraMan->injectMouseUp(*e);
+  __updateCamData();
 
   // QPoint pos = e->pos();
   // Ogre::Ray mouseRay = _ogreCamera->getCameraToViewportRay(
@@ -385,6 +410,25 @@ void QtOgreWindow::setAnimating(bool animating)
 
 bool QtOgreWindow::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+  if(_windowConfiguration->useFollow)
+  {
+    _cpos    = _ogreCamera->getPosition();
+    _cdir    = _ogreCamera->getDirection();
+    _clookAt = _cpos;
+    for(int i = 0; i < 3; i++) _clookAt[i] += _cdir[i];
+    OGRE_TO_YARS(_cpos, _ypos);
+    OGRE_TO_YARS(_clookAt, _ylookAt);
+    _camData->setPosition(_ypos);
+    _camData->setLookAt(_ylookAt);
+    _cameraHandler->update();
+    YARS_TO_OGRE(_camData->position(), _cpos);
+    YARS_TO_OGRE(_camData->lookAt(),   _clookAt);
+    _ogreCamera->setPosition(_cpos[0], _cpos[1],    _cpos[2]);
+    _ogreCamera->lookAt(_clookAt[0],   _clookAt[1], _clookAt[2]);
+  }
+
+  __updateCamData();
+
   _cameraMan->frameRenderingQueued(evt);
   return true;
 }
@@ -436,8 +480,8 @@ void QtOgreWindow::keyPressEvent(QKeyEvent *event)
 
 void QtOgreWindow::__catchedLocally(int key)
 {
-  // switch(key)
-  // {
+  switch(key)
+  {
     // case YarsKeyFunction::VisualiseAxes:
       // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
       // break;
@@ -465,25 +509,22 @@ void QtOgreWindow::__catchedLocally(int key)
     // case YarsKeyFunction::ToggleShadows:
       // _windowConfiguration->useShadows = !_windowConfiguration->useShadows;
       // break;
-    // case YarsKeyFunction::ToggleFollowMode:
-      // emit toggleFollowMode();
-      // break;
-    // case YarsKeyFunction::ToggleTraces:
-      // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
-      // break;
-    // case YarsKeyFunction::PreviousFollowable:
-      // emit previousFollowable();
-      // break;
-    // case YarsKeyFunction::NextFollowable:
-      // emit nextFollowable();
-      // break;
-    // case YarsKeyFunction::PreviousFollowMode:
-      // emit previousFollowMode();
-      // break;
-    // case YarsKeyFunction::NextFollowMode:
-      // emit nextFollowMode();
-      // break;
-  // }
+    case YarsKeyFunction::ToggleFollowMode:
+      __toggleFollowing();
+      break;
+    case YarsKeyFunction::PreviousFollowable:
+      __previousFollowable();
+      break;
+    case YarsKeyFunction::NextFollowable:
+      __nextFollowable();
+      break;
+    case YarsKeyFunction::PreviousFollowMode:
+      __nextFollowMode();
+      break;
+    case YarsKeyFunction::NextFollowMode:
+      __previousFollowMode();
+      break;
+  }
 }
 
 
@@ -643,3 +684,100 @@ void QtOgreWindow::quit()
   close();
 }
 
+void QtOgreWindow::__toggleFollowing()
+{
+  CHECK_IF_THERE_ARE_FOLLOWABLES;
+  _windowConfiguration->useFollow = !_windowConfiguration->useFollow;
+  if(_followableIndex == -1) _followableIndex = 0;
+  _followableObject = GET_FOLLOWABLE(_followableIndex);
+  if(_windowConfiguration->useFollow) _cameraHandler->follow(_followableObject);
+}
+
+void QtOgreWindow::__previousFollowable()
+{
+  _windowConfiguration->useFollow = true;
+  int nr = Data::instance()->current()->screens()->followables()->size() - 1;
+  _followableIndex--;
+  if(_followableIndex < 0) _followableIndex = nr;
+  _followableObject = GET_FOLLOWABLE(_followableIndex);
+  _cameraHandler->follow(_followableObject);
+}
+
+void QtOgreWindow::__nextFollowable()
+{
+  _windowConfiguration->useFollow = true;
+  int nr = Data::instance()->current()->screens()->followables()->size();
+  _followableIndex = (_followableIndex + 1) % nr;
+  _followableObject = GET_FOLLOWABLE(_followableIndex);
+  _cameraHandler->follow(_followableObject);
+}
+
+
+void QtOgreWindow::__previousFollowMode()
+{
+  cout << "previous follow mode" << endl;
+  _cameraHandler->previousFollowMode();
+  if(_windowConfiguration->useFollow)
+  {
+    _cameraHandler->follow(_followableObject);
+  }
+}
+
+void QtOgreWindow::__nextFollowMode()
+{
+  _cameraHandler->nextFollowMode();
+  if(_windowConfiguration->useFollow)
+  {
+    _cameraHandler->follow(_followableObject);
+  }
+}
+
+void QtOgreWindow::__updateCamData()
+{
+  _cpos    = _ogreCamera->getPosition();
+  _cdir    = _ogreCamera->getDirection();
+  _clookAt = _cpos;
+  for(int i = 0; i < 3; i++) _clookAt[i] += _cdir[i];
+  OGRE_TO_YARS(_cpos, _ypos);
+  OGRE_TO_YARS(_clookAt, _ylookAt);
+  _camData->setPosition(_ypos);
+  _camData->setLookAt(_ylookAt);
+}
+
+
+// void QtOgreWindow::setupOSD()
+// {
+
+  // Colour osdColour = _data->osdTimeFontColour();
+  // string osdFont = _data->osdTimeFontName();
+
+  // _textOverlay  = new TextOverlay(_index);
+
+  // stringstream oss;
+  // oss.str("");
+  // oss << _data->osdTimeFontSize();
+  // _textOverlay->addTextBox("time", "00d:00h:00m:00s", 10, 10,  100, 20,
+                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           // osdFont, oss.str());
+
+  // _textOverlay->addTextBox("stats", "", 10, 40,  100, 20,
+                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           // osdFont, "16");
+
+  // osdColour = _data->osdRobotFontColour();
+  // osdFont = _data->osdRobotFontName();
+  // oss.str("");
+  // oss << _data->osdRobotFontSize();
+
+  // _textOverlay->addTextBox("robot", "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
+                           // _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
+                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           // osdFont, oss.str());
+
+  // Ogre::Real x = _viewport->getActualWidth() - 140;
+  // Ogre::Real y = 10;
+  // _textOverlay->addTextBox("legend",
+                           // "^0YARS, Zahedi", x, y, 15, 10,
+                           // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
+                           // "Legend", "24");
+// }

@@ -140,3 +140,8 @@ void PID::__reset(yReal c)
   _integral          = 0;
   for(std::vector<yReal>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
 }
+
+void PID::reset()
+{
+  __resize(_errors.size());
+}

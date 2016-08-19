@@ -1,40 +1,3 @@
-# set(GUI_SOURCES SdlWindow.cpp
-                # SceneGraph.cpp
-                # SceneGraphRobotNode.cpp
-                # SceneGraphObjectFactory.cpp
-                # SceneGraphCapsuleNode.cpp
-                # SceneGraphCylinderNode.cpp
-                # SceneGraphSphereNode.cpp
-                # SceneGraphLightSourceNode.cpp
-                # SceneGraphObjectNode.cpp
-                # SceneGraphBoxNode.cpp
-                # SceneGraphEnvironmentNode.cpp
-                # SceneGraphTraceLineObject.cpp
-                # SceneGraphProximitySensor.cpp
-                # SceneGraphLDRSensor.cpp
-                # SceneGraphJointAxisVisualisationNode.cpp
-                # SceneGraphSoftPlyNode.cpp
-                # TextOverlay.cpp
-                # ColoredTextAreaOverlayElement.cpp
-                # OgreHandler.cpp
-                # KeyHandler.cpp
-                # FollowCamera.cpp
-                # CameraFactory.cpp
-                # OffsetCam.cpp
-                # CameraHandler.cpp
-                # OrbitCam.cpp
-                # CenterOrbitCam.cpp
-                # TripodCam.cpp
-                # WindowConfiguration.cpp
-                # SceneGraphMeshNode.cpp
-                # SceneGraphPlyNode.cpp)
-
-# if(APPLE)
-  # add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} OSX_wrap.mm)
-# else(APPLE)
-  # add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
-# endif(APPLE)
-
 set(GUI_HDRS
   QtOgreWindow.h
   WindowConfigurationDialog.h)
@@ -58,8 +21,8 @@ set(GUI_SOURCES
   SceneGraphLDRSensor.cpp
   SceneGraphJointAxisVisualisationNode.cpp
   SceneGraphSoftPlyNode.cpp
-  # TextOverlay.cpp
   # ColoredTextAreaOverlayElement.cpp
+  # TextOverlay.cpp
   SceneGraphHandler.cpp
   KeyHandler.cpp
   FollowCamera.cpp
@@ -78,22 +41,6 @@ add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} ${qtview_MOC_SRCS})
 qt5_use_modules(YarsGUI Core Gui Widgets OpenGL)
 
 if(APPLE)
-SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Ogre
--framework RenderSystem_GL -framework Plugin_ParticleFX")
+  SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
+    "-framework Ogre -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreOverlay")
 endif(APPLE)
-
-# if(APPLE)
-  # target_link_libraries(YarsGUI ${SDL2_LIBRARY})
-# else(APPLE)
-  # target_link_libraries(YarsGUI 
-    # Xrandr Plugin_ParticleFXStatic
-    # OgreMeshLodGeneratorStatic
-    # Plugin_BSPSceneManagerStatic OgreOverlayStatic
-    # OgrePagingStatic Plugin_OctreeSceneManagerStatic OgrePropertyStatic
-    # Plugin_OctreeZoneStatic OgreRTShaderSystemStatic
-    # Plugin_PCZSceneManagerStatic OgreTerrainStatic OgreVolumeStatic
-    # RenderSystem_GLStatic OgreMainStatic
-    # X11 GL z Xt pthread Xaw GLU
-    # zzip freeimage freetype quicktime)
-# endif(APPLE)
-

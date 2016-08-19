@@ -15,6 +15,7 @@ class CameraHandler
     void follow(DataObject *followable);
     void update();
     void reset();
+    void adapt();
 
   private:
 

@@ -8,6 +8,8 @@
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/SdkQtCameraMan.h>
+// #include <yars/view/gui/TextOverlay.h>
+#include <yars/configuration/data/DataScreen.h>
 
 #ifdef USE_CAPTURE_VIDEO
 #  include <lqt/lqt.h>
@@ -17,7 +19,8 @@
 
 #include <QtWidgets/QApplication>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QWindow>
+#include <QWindow>
+#include <QGLWidget>
  
 #include <OGRE/Ogre.h>
  
@@ -42,6 +45,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     void setAnimating(bool animating);
     void captureImageFrame();
     void quit();
+    void setupOSD();
 
 #ifdef USE_CAPTURE_VIDEO
     bool captureRunning();
@@ -61,15 +65,6 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     // void signalWindowConfigurationChanged();
 
     // void toggleFollowMode();
-
-    // void previousFollowable();
-    // void nextFollowable();
-
-    // void previousFollowMode();
-    // void nextFollowMode();
-
-    // void captureVideo();
-    // void writeFrames();
 
     // void openNewWindow();
 
@@ -117,6 +112,12 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
   private:
     void __initRenderFrame();
     void __catchedLocally(int i);
+    void __toggleFollowing();
+    void __previousFollowable();
+    void __nextFollowable();
+    void __previousFollowMode();
+    void __nextFollowMode();
+    void __updateCamData();
 
     int          _index;
     int          _metaKey;
@@ -126,10 +127,22 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     unsigned int _currentTime;
     unsigned int _lastStep;
 
+    QString _elapsedTimeString;
+    QString _fpsString1;
+    QString _fpsString2;
+    float _printTimeFPS;
+    float _printRealTimeFactor;
+    unsigned long _printTimeLastStep;
+
+    DataObject*          _followableObject;
+    CameraHandler*       _cameraHandler;
     WindowConfiguration* _windowConfiguration;
     Ogre::Viewport*      _viewport;
     Ogre::RenderTexture* _pRenderTex;
     Ogre::TexturePtr     _renderTexture;
+    int                  _followableIndex;
+
+    // TextOverlay*         _textOverlay;
 
 #ifdef USE_CAPTURE_VIDEO
     void __toggleCaptureMovie();
@@ -148,6 +161,14 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
 
     char                  *_buffer;
 #endif
+
+    DataScreen*   _data;
+    Ogre::Vector3 _cpos;
+    Ogre::Vector3 _cdir;
+    Ogre::Vector3 _clookAt;
+    P3D           _ypos;
+    P3D           _ylookAt;
+    DataCamera*   _camData;
 
 };
  

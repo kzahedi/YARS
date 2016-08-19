@@ -32,9 +32,6 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   // hpr_p.setNum(_windowConfiguration->cameraPose.orientation.y);
   // hpr_r.setNum(_windowConfiguration->cameraPose.orientation.z);
 
-  maxTraceLines.setNum(_windowConfiguration->maxTraceLines);
-  maxTracePoints.setNum(_windowConfiguration->maxTracePoints);
-
   QScrollArea *scrollArea = new QScrollArea();
 
   QWidget     *content    = new QWidget();
@@ -44,7 +41,7 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   _windowName             = new QLineEdit(QString(_windowConfiguration->name.c_str()));
   _captureName            = new QLineEdit(QString(_windowConfiguration->captureName.c_str()));
   _useTraces              = new QCheckBox();
-  _useTextures            = new QCheckBox();
+  // _useTextures            = new QCheckBox();
   _useFollowMode          = new QCheckBox();
   _useVisualeAxes         = new QCheckBox();
   _followModes            = new QComboBox();
@@ -56,8 +53,6 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   _hpr_h                  = new QLineEdit(hpr_h);
   _hpr_p                  = new QLineEdit(hpr_p);
   _hpr_r                  = new QLineEdit(hpr_r);
-  _maxTraceLines          = new QLineEdit(maxTraceLines);
-  _maxTracePoints         = new QLineEdit(maxTracePoints);
 
   for(vector<string>::iterator i = _windowConfiguration->camNames.begin();
       i != _windowConfiguration->camNames.end(); i++)
@@ -75,14 +70,14 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
     _useTraces->setCheckState(Qt::Unchecked);
   }
 
-  if(_windowConfiguration->useTextures)
-  {
-    _useTextures->setCheckState(Qt::Checked);
-  }
-  else
-  {
-    _useTextures->setCheckState(Qt::Unchecked);
-  }
+  // if(_windowConfiguration->useTextures)
+  // {
+    // _useTextures->setCheckState(Qt::Checked);
+  // }
+  // else
+  // {
+    // _useTextures->setCheckState(Qt::Unchecked);
+  // }
 
   if(_windowConfiguration->followObjects)
   {
@@ -133,9 +128,9 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   layout->addWidget(new QLabel("Visualise axes"),     row, 0, 1, 1);
   layout->addWidget(_useVisualeAxes,                  row, 1, 1, 3);
 
-  row++;
-  layout->addWidget(new QLabel("Use textures"),       row, 0, 1, 1);
-  layout->addWidget(_useTextures,                     row, 1, 1, 3);
+  // row++;
+  // layout->addWidget(new QLabel("Use textures"),       row, 0, 1, 1);
+  // layout->addWidget(_useTextures,                     row, 1, 1, 3);
 
   row++;
   layout->addWidget(new QLabel("Use traces"),         row, 0, 1, 1);
@@ -149,14 +144,6 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   layout->addWidget(new QLabel("Follow mode"),        row, 0, 1, 1);
   layout->addWidget(_followModes,                     row, 1, 1, 3);
 
-  row++;
-  layout->addWidget(new QLabel("Max Trace Lines"),    row, 0, 1, 1);
-  layout->addWidget(_maxTraceLines,                   row, 1, 1, 3);
-
-  row++;
-  layout->addWidget(new QLabel("Max Trace Points"),    row, 0, 1, 1);
-  layout->addWidget(_maxTracePoints,                   row, 1, 1, 3);
-
   content->setLayout(layout);
   scrollArea->setWidget(content);
   box->addWidget(scrollArea);
@@ -167,7 +154,7 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   connect(_width,          SIGNAL(editingFinished()),        this,   SLOT(widthChanged()));
   connect(_height,         SIGNAL(editingFinished()),        this,   SLOT(heightChanged()));
   connect(_useTraces,      SIGNAL(stateChanged(int)),        this,   SLOT(tracesChanged(int)));
-  connect(_useTextures,    SIGNAL(stateChanged(int)),        this,   SLOT(texturesChanged(int)));
+  // connect(_useTextures,    SIGNAL(stateChanged(int)),        this,   SLOT(texturesChanged(int)));
   connect(_useFollowMode,  SIGNAL(stateChanged(int)),        this,   SLOT(followModeChanged(int)));
   connect(_useVisualeAxes, SIGNAL(stateChanged(int)),        this,   SLOT(visualiseAxesChanged(int)));
   connect(_followModes,    SIGNAL(currentIndexChanged(int)), this,   SLOT(followModeSelected(int)));
@@ -177,8 +164,6 @@ WindowConfigurationDialog::WindowConfigurationDialog(WindowConfiguration *window
   connect(_hpr_h,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
   connect(_hpr_p,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
   connect(_hpr_r,          SIGNAL(editingFinished()),        this,   SLOT(cameraPoseChanged()));
-  connect(_maxTraceLines,  SIGNAL(editingFinished()),        this,   SLOT(maxTraceLinesChanged()));
-  connect(_maxTracePoints, SIGNAL(editingFinished()),        this,   SLOT(maxTracePointsChanged()));
   connect(this,            SIGNAL(dataChanged()),            parent, SLOT(windowConfigurationChanged()));
 }
 
@@ -198,10 +183,10 @@ void WindowConfigurationDialog::tracesChanged(int status)
   _windowConfiguration->useTraces = (status == Qt::Checked);
 }
 
-void WindowConfigurationDialog::texturesChanged(int status)
-{
-  _windowConfiguration->useTextures = (status == Qt::Checked);
-}
+// void WindowConfigurationDialog::texturesChanged(int status)
+// {
+  // _windowConfiguration->useTextures = (status == Qt::Checked);
+// }
 
 void WindowConfigurationDialog::followModeChanged(int status)
 {
@@ -241,15 +226,3 @@ void WindowConfigurationDialog::cameraPoseChanged()
   // _windowConfiguration->cameraPose.orientation.z = _hpr_r->text().toDouble();
   emit dataChanged();
 }
-
-void WindowConfigurationDialog::maxTraceLinesChanged()
-{
-  _windowConfiguration->maxTraceLines = _maxTraceLines->text().toInt();
-}
-
-void WindowConfigurationDialog::maxTracePointsChanged()
-{
-  _windowConfiguration->maxTracePoints = _maxTracePoints->text().toInt();
-}
-
-

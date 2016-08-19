@@ -1,5 +1,5 @@
 #include <vector>
-#include <Overlay/OgreTextAreaOverlayElement.h>
+#include <OgreOverlay/OgreTextAreaOverlayElement.h>
 
 
 

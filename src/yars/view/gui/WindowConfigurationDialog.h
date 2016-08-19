@@ -19,15 +19,13 @@ class WindowConfigurationDialog : public QFrame
     void windowNameChanged();
     void captureNameChanged();
     void tracesChanged(int status);
-    void texturesChanged(int status);
+    // void texturesChanged(int status);
     void followModeChanged(int status);
     void visualiseAxesChanged(int status);
     void followModeSelected(int index);
     void widthChanged();
     void heightChanged();
     void cameraPoseChanged();
-    void maxTraceLinesChanged();
-    void maxTracePointsChanged();
 
   signals:
     void dataChanged();
@@ -37,7 +35,7 @@ class WindowConfigurationDialog : public QFrame
     QLineEdit *_windowName;
     QLineEdit *_captureName;
     QCheckBox *_useTraces;
-    QCheckBox *_useTextures;
+    // QCheckBox *_useTextures;
     QCheckBox *_useFollowMode;
     QCheckBox *_useVisualeAxes;
     QComboBox *_followModes;
@@ -49,8 +47,6 @@ class WindowConfigurationDialog : public QFrame
     QLineEdit *_hpr_h;
     QLineEdit *_hpr_p;
     QLineEdit *_hpr_r;
-    QLineEdit *_maxTraceLines;
-    QLineEdit *_maxTracePoints;
 };
 
 #endif // __WINDOW_CONFIGURATIONS_DIALOG_H__
