@@ -12,7 +12,7 @@ RuntimeControl::RuntimeControl()
   _data           = Data::instance();
   _recording      = _data->current()->screens()->recording();
   _timer          = new Timer();
-  // _captureRunning = false;
+  _captureRunning = false;
 }
 
 RuntimeControl::~RuntimeControl()
@@ -35,9 +35,9 @@ void RuntimeControl::notify(ObservableMessage *m)
     case __M_NEXT_STEP:
 
 #ifdef USE_CAPTURE_VIDEO
-      // if(_captureRunning == true  && _recording->record() == false) notifyObservers(_m_toggleCaptureVideo);
-      // if(_captureRunning == false && _recording->record() == true)  notifyObservers(_m_toggleCaptureVideo);
-      // _captureRunning = _recording->record();
+      if(_captureRunning == true  && _recording->record() == false) notifyObservers(_m_toggleCaptureVideo);
+      if(_captureRunning == false && _recording->record() == true)  notifyObservers(_m_toggleCaptureVideo);
+      _captureRunning = _recording->record();
 #endif // USE_CAPTURE_VIDEO
 
 

@@ -24,6 +24,7 @@ YarsViewModel::YarsViewModel()
   YM_INIT;
 
   if(__YARS_GET_USE_VISUALISATION) initialiseView();
+  if(__YARS_GET_USE_CAPTURE_CL)    toggleCaptureVideo();
 }
 
 YarsViewModel::~YarsViewModel()

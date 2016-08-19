@@ -151,19 +151,14 @@ void QtOgreWindow::initialize()
   parameters["macAPICocoaUseNSView"] = "true";
 #endif
 
-  /*
-     Note below that we supply the creation function for the Ogre3D window the width and height
-     from the current QWindow object using the "this" pointer.
-     */
-
   stringstream sst;
   sst << "QT Window " << _index;
   resize(w,h);
   _ogreWindow = _ogreRoot->createRenderWindow(sst.str().c_str(),
-                                                this->width(),
-                                                this->height(),
-                                                false,
-                                                &parameters);
+                                              this->width(),
+                                              this->height(),
+                                              false,
+                                              &parameters);
   _ogreWindow->setVisible(true);
 
   _ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
@@ -651,5 +646,3 @@ void QtOgreWindow::captureImageFrame()
   _pRenderTex->update();
   _pRenderTex->writeContentsToFile(oss.str());
 }
-
-
