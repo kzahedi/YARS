@@ -231,6 +231,17 @@ class SdkQtCameraMan
      }
    }
 
+   virtual void injectMouseMoveRightButton(int relX, int relY)
+   {
+     if (mStyle == CS_FREELOOK)
+     {
+       Ogre::Vector3 accel(0,1,0);
+       if(relY > 0.0) accel[1] = -1.0 - relY;
+       else           accel[1] =  1.0 - relY;
+       mVelocity += accel;
+     }
+   }
+
    virtual void gesture(const QNativeGestureEvent* event) 
    {
      double v = 0.0;

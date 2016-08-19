@@ -330,6 +330,8 @@ void QtOgreWindow::mouseMoveEvent( QMouseEvent* e )
 
   if(_cameraMan && (e->buttons() & Qt::LeftButton))
     _cameraMan->injectMouseMove(relX, relY);
+  if(_cameraMan && (e->buttons() & Qt::RightButton))
+    _cameraMan->injectMouseMoveRightButton(relX, relY);
 }
 
 void QtOgreWindow::wheelEvent(QWheelEvent *e)
