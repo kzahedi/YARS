@@ -1,4 +1,4 @@
-#include "view/YarsViewModel.h"
+#include "YarsViewModel.h"
 
 #include <yars/configuration/data/Data.h>
 #include <yars/configuration/YarsConfiguration.h>
@@ -14,27 +14,22 @@ using namespace std;
 
 YarsViewModel::YarsViewModel()
 {
-  // SDL_Init( SDL_INIT_EVERYTHING );
   _drawFequency    = 1;
   _visualiseCalled = 0;
   _run             = true;
   _sync            = false;
   _syncedStep      = false;
   _toggleVideo     = false;
+  _toggleFrames    = false;
+  YM_INIT;
 
-  // YM_INIT;
-
-  if(__YARS_GET_USE_VISUALISATION)
-  {
-    initialiseView();
-    // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
-  }
+  if(__YARS_GET_USE_VISUALISATION) initialiseView();
 }
 
 YarsViewModel::~YarsViewModel()
 {
   Y_DEBUG("YarsViewModel destructor called.");
-  // YM_CLOSE;
+  YM_CLOSE;
 }
 
 void YarsViewModel::initialiseView()
@@ -58,17 +53,12 @@ void YarsViewModel::visualiseScene()
     YM_UNLOCK;
     return;
   }
-  // _ogreHandler->step();
 
   SceneGraphHandler::instance()->step();
 
-  // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->step();
-  // while(SDL_PollEvent(&_event))
-  // {
-    // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->parseEvent(_event);
-  // }
+  if(_toggleVideo  == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureVideo();
+  if(_toggleFrames == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureImageFrame();
 
-  if(_toggleVideo == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureVideo();
   YM_UNLOCK;
 }
 
@@ -93,7 +83,7 @@ void YarsViewModel::createNewWindow()
   YM_LOCK;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
-  cout << QThread::currentThreadId() << endl;
+  // cout << QThread::currentThreadId() << endl;
   QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());
   wm->show();
   // wm->addObserver(this);
@@ -112,7 +102,7 @@ void YarsViewModel::notify(ObservableMessage *m)
 {
   switch(m->type())
   {
-    case __M_NEW_WINDOW:        createNewWindow();           break; // new    window
+    case __M_NEW_WINDOW:        createNewWindow();       break; // new    window
     case -2:                    __removeClosedWindows(); break; // closed
     case __M_QUIT_CALLED:       _run = false;            break;
     case __M_TOGGLE_SYNCED_GUI: _sync = !_sync;          break;
@@ -187,16 +177,14 @@ void YarsViewModel::toggleCaptureVideo()
 {
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
-  cout << "toggle video:" << _toggleVideo << endl;
-  if(_toggleVideo == true)
-  {
-    cout << " staring video" << endl;
-    FOREACH(QtOgreWindow*, i, _windowManager) (*i)->startCaptureVideo();
-  }
-  else
-  {
-    cout << " stopped video" << endl;
-    FOREACH(QtOgreWindow*, i, _windowManager) (*i)->stopCaptureVideo();
-  }
+  __YARS_SET_SYNC_GUI(_sync);
+  if(_toggleVideo == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->startCaptureVideo();
+  else                     FOREACH(QtOgreWindow*, i, _windowManager) (*i)->stopCaptureVideo();
+}
+
+void YarsViewModel::toggleCaptureFrames()
+{
+  _sync         = !_sync;
+  _toggleFrames = !_toggleFrames;
   __YARS_SET_SYNC_GUI(_sync);
 }

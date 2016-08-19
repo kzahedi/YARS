@@ -2,7 +2,7 @@
 #include <yars/view/gui/KeyHandler.h>
 #include <yars/util/Random.h>
 
-#include <QThread>
+// #include <QThread>
 
 //#ifdef SUPPRESS_ALL_OUTPUT
 #  define PRINT_START_UP_MESSAGE(a) ;
@@ -92,7 +92,7 @@ void YarsMainControl::run()
   {
     notifyObservers(_m_toggleSyncedGui);
   }
-  cout << "main thread: " << QThread::currentThreadId() << endl;
+  // cout << "main thread: " << QThread::currentThreadId() << endl;
 
   while(_keepOnRunning)
   {
@@ -156,9 +156,9 @@ void YarsMainControl::notify(ObservableMessage *message)
       YarsConfiguration::instance()->reset();
       notifyObservers(_m_reset);
       break;
-    case __M_TOGGLE_CAPTURE_VIDEO:
-      notifyObservers(_m_toggleCaptureVideo); // pass it from RuntimeControl to others
-      break;
+    // case __M_TOGGLE_CAPTURE_VIDEO:
+      // notifyObservers(_m_toggleCaptureVideo); // pass it from RuntimeControl to others
+      // break;
     case __M_SIGNAL_HANDLER_ACTIVATED:
       notifyObservers(_m_quit_called);
       _keepOnRunning = false;

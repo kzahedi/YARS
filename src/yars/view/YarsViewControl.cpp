@@ -71,21 +71,23 @@ void YarsViewControl::notify(ObservableMessage *message)
       break;
     case __M_RESET:
       _model->reset(); // after model reset, also reset the viewpoint
-    case __M_RESET_VIEWPOINT:
-      __YARS_GET_CAMERA_POSITION(&c_p);
-      __YARS_GET_CAMERA_ROTATION(&c_r);
+      break;
+    // case __M_RESET_VIEWPOINT:
+      // __YARS_GET_CAMERA_POSITION(&c_p);
+      // __YARS_GET_CAMERA_ROTATION(&c_r);
       // TODO
       //__YARS_SET_VIEW_XYZ(c_p);
       //__YARS_SET_VIEW_HPR(c_r);
-      break;
+      // break;
     case __M_QUIT_GUI_CALLED:
       Y_DEBUG("YarsViewControl quit called");
       _model->quit();
       break;
-
     case __M_TOGGLE_CAPTURE_VIDEO:
-      cout << "toggling capture video" << endl;
       _model->toggleCaptureVideo();
+      break;
+    case __M_TOGGLE_CAPTURE_FRAME:
+      _model->toggleCaptureFrames();
       break;
 
     // case __M_OPEN_NEW_WINDOW:
@@ -94,15 +96,8 @@ void YarsViewControl::notify(ObservableMessage *message)
       // cout << "done open new window" << endl;
       // break;
 
-    // case __M_INC_VISUALISATION_FREQUENCY:
-      // _visualisationStep+= 10;
-      // break;
-    // case __M_DEC_VISUALISATION_FREQUENCY:
-      // _visualisationStep-= 10;
-      // _visualisationStep = MAX(1,_visualisationStep);
-      // break;
-    default:
-      cout << "Message type: " << message->type() << endl;
+    // default:
+      // cout << "Message type: " << message->type() << endl;
   }
   emit guiDoneSignal();
 }

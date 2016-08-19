@@ -14,14 +14,15 @@
 #define __M_RESET_VIEWPOINT             202
 
 #define __M_TOGGLE_RELOAD_MESSAGE       300
-#define __M_TOGGLE_PAUSE_MESSAGE        302
-#define __M_TOGGLE_REAL_TIME_MESSAGE    303
-#define __M_TOGGLE_SINGLE_STEP_MESSAGE  304
-#define __M_TOGGLE_VISUALISATION        305
-#define __M_TOGGLE_SYNCED_GUI           307
-#define __M_TOGGLE_SHADOWS              308
-#define __M_TOGGLE_CAPTURE_VIDEO        309
-#define __M_OPEN_NEW_WINDOW             310
+#define __M_TOGGLE_PAUSE_MESSAGE        301
+#define __M_TOGGLE_REAL_TIME_MESSAGE    302
+#define __M_TOGGLE_SINGLE_STEP_MESSAGE  303
+#define __M_TOGGLE_VISUALISATION        304
+#define __M_TOGGLE_SYNCED_GUI           305
+#define __M_TOGGLE_SHADOWS              306
+#define __M_TOGGLE_CAPTURE_VIDEO        307
+#define __M_TOGGLE_CAPTURE_FRAME        308
+#define __M_OPEN_NEW_WINDOW             309
 
 #define __M_QUIT_CALLED                 500
 #define __M_QUIT_GUI_CALLED             501
@@ -29,7 +30,7 @@
 
 #define __M_ERROR                       601
 
-#define __M_SIGNAL_HANDLER_ACTIVATED  -1001
+#define __M_SIGNAL_HANDLER_ACTIVATED    -1001
 
 class ObservableMessage
 {
@@ -90,6 +91,7 @@ static ObservableMessage *_m_error                    = new ObservableMessage("e
 static ObservableMessage *_m_newWindow                = new ObservableMessage("new window",                          __M_NEW_WINDOW);
 static ObservableMessage *_m_toggleShadow             = new ObservableMessage("toggle Shadows",                      __M_TOGGLE_SHADOWS);
 static ObservableMessage *_m_toggleCaptureVideo       = new ObservableMessage("toggle capture video",                __M_TOGGLE_CAPTURE_VIDEO);
+static ObservableMessage *_m_toggleCaptureFrame       = new ObservableMessage("toggle capture frames",               __M_TOGGLE_CAPTURE_FRAME);
 static ObservableMessage *_m_openNewWindow            = new ObservableMessage("open new window",                     __M_OPEN_NEW_WINDOW);
 
 #endif // __OBSERVABLE_MESSAGE_H__

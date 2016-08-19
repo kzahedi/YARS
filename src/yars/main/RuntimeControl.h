@@ -30,7 +30,7 @@ class RuntimeControl : public Observer, public Observable
     Data  *_data;
     Timer *_timer;
     DataRecording *_recording;
-    bool           _captureRunning;
+    // bool           _captureRunning;
 
 };
 #endif // __RUNTIME_CONTROL_H__

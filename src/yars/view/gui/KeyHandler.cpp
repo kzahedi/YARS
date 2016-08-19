@@ -51,6 +51,8 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->openNewWindow.function       = &openNewWindow;
   _keyboardShortcuts->printTime.function           = &togglePrintTime;
   _keyboardShortcuts->captureVideo.function        = &toggleCaptureVideo;
+  _keyboardShortcuts->writeFrames.function         = &toggleCaptureFrames;
+
 }
 
 
@@ -75,6 +77,7 @@ int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
   if(key == NULL) return -1;
   if(key->function != NULL)
   {
+    // cout << "Key " << *key << endl;
     key->function();
   }
   return key->id;
@@ -144,8 +147,12 @@ void KeyHandler::toggleDrawMode()
 
 void KeyHandler::toggleCaptureVideo()
 {
-  cout << "hier hier hier" << endl;
   _o->notifyObservers(_m_toggleCaptureVideo);
+}
+
+void KeyHandler::toggleCaptureFrames()
+{
+  _o->notifyObservers(_m_toggleCaptureFrame);
 }
 
 void KeyHandler::togglePrintTime()

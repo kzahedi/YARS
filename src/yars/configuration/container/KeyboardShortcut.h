@@ -29,6 +29,12 @@ class KeyboardShortcut
     FuncPtrVoidVoid function;
     int             id;
 
+    friend std::ostream& operator<<(std::ostream& str, const KeyboardShortcut& k)
+    {
+      str << k.key << ", " << k.description << ", " << k.keyCode;
+      return str;
+    };
+
   private:
     void __past(string s, string *t, int length);
 };

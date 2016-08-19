@@ -25,6 +25,9 @@ destination.z =  source[1];
 destination[1] =  source.z; \
 destination[2] = -source.y;
 
+#include <iostream>
+#include <iomanip>
+
 /*
    Note that we pass any supplied QWindow parent to the base QWindow class. This is necessary should we
    need to use our class within a container.
@@ -38,17 +41,18 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   , _ogreCamera(NULL)
   , _cameraMan(NULL)
 {
-  _index                = index;
-  _windowConfiguration  = new WindowConfiguration(index);
-
   setAnimating(true);
   installEventFilter(this);
-  _ogreBackground     = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
-  _captureRunning     = false;
-  _captureStep        = 0;
-  _capturedTenMinutes = 0;
-  _frameIndex         = 0;
-  _capturingOffset    = 0;
+
+  _index                = index;
+  _windowConfiguration  = new WindowConfiguration(index);
+  _ogreBackground       = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
+  _captureRunning       = false;
+  _captureStep          = 0;
+  _capturedTenMinutes   = 0;
+  _frameIndex           = 0;
+  _capturingOffset      = 0;
+  _imgCaptureFrameIndex = 0;
 }
 
 /*
@@ -350,10 +354,10 @@ void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
   if(_cameraMan)
     _cameraMan->injectMouseUp(*e);
 
-  QPoint pos = e->pos();
-  Ogre::Ray mouseRay = _ogreCamera->getCameraToViewportRay(
-                            (Ogre::Real)pos.x() / _ogreWindow->getWidth(),
-                            (Ogre::Real)pos.y() / _ogreWindow->getHeight());
+  // QPoint pos = e->pos();
+  // Ogre::Ray mouseRay = _ogreCamera->getCameraToViewportRay(
+                            // (Ogre::Real)pos.x() / _ogreWindow->getWidth(),
+                            // (Ogre::Real)pos.y() / _ogreWindow->getHeight());
   // Ogre::RaySceneQuery* pSceneQuery = _ogreSceneMgr->createRayQuery(mouseRay);
   // pSceneQuery->setSortByDistance(true);
   // Ogre::RaySceneQueryResult vResult = pSceneQuery->execute();
@@ -429,15 +433,14 @@ void QtOgreWindow::keyPressEvent(QKeyEvent *event)
     shift = true;
   }
 
-  // int i = YarsContainers::KeyEventHandler()->handleKeyEvent(alt, ctrl, shift, key);
   int i = KeyHandler::instance()->handleKeyEvent(alt, ctrl, shift, key);
-  __catchedLocally(i);
+  // __catchedLocally(i);
 }
 
-void QtOgreWindow::__catchedLocally(int key)
-{
-  switch(key)
-  {
+// void QtOgreWindow::__catchedLocally(int key)
+// {
+  // switch(key)
+  // {
     // case 22: //YarsKeyFunction::PrintViewPoint:
       // ConsoleView::printViewpoint(_windowConfiguration->cameraPose.position, _windowConfiguration->cameraPose.orientation);
       // break;
@@ -495,8 +498,8 @@ void QtOgreWindow::__catchedLocally(int key)
     // case YarsKeyFunction::NextFollowMode:
       // emit nextFollowMode();
       // break;
-  }
-}
+  // }
+// }
 
 
 void QtOgreWindow::keyReleaseEvent(QKeyEvent *event)
@@ -518,17 +521,17 @@ void QtOgreWindow::__initMovie()
   uint height = _viewport->getActualHeight();
   oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;
   _mov = quicktime_open(oss.str().c_str(),0,1);
-  cout << (char*)__YARS_GET_VIDEO_CODEC.c_str() << endl;
   lqt_codec_info_t **codec = lqt_find_video_codec((char*)__YARS_GET_VIDEO_CODEC.c_str(),1);
   if(codec == NULL)
   {
     YarsErrorHandler::push("Video codec %s not found.", __YARS_GET_VIDEO_CODEC.c_str());
     exit(0);
   }
-  cout << "capturing video with width " << width
-    << " and height " << height << " and codec " << __YARS_GET_VIDEO_CODEC.c_str() << " \n";
-  cout << "Starting video capture of " << oss.str().c_str() << " with frame rate "
-    << __YARS_GET_CAPTURE_FRAME_RATE << " and " << codec[0] << " codec." <<endl;
+  cout << "Starting video capture of " << oss.str().c_str()
+    << " with width " << width << ", height " << height
+    << ", frame rate " << __YARS_GET_CAPTURE_FRAME_RATE
+    << ", and " << __YARS_GET_VIDEO_CODEC.c_str()
+    << " codec." << endl; 
   lqt_add_video_track(_mov, width, height, 1, __YARS_GET_CAPTURE_FRAME_RATE, codec[0]);
   quicktime_set_cmodel(_mov, BC_RGB888);
   _captureRunning = true;
@@ -621,6 +624,7 @@ void QtOgreWindow::__initRenderFrame()
     vp->setBackgroundColour(Ogre::ColourValue::Black);
     vp->setOverlaysEnabled(true);
   }
+  __YARS_OPEN_FRAMES_DIRECTORY;
 }
 
 void QtOgreWindow::startCaptureVideo()
@@ -634,5 +638,18 @@ void QtOgreWindow::stopCaptureVideo()
 }
 
 #endif // USE_CAPTURE_VIDEO
+
+void QtOgreWindow::captureImageFrame()
+{
+  __initRenderFrame();
+  ConsoleView::printCapturingInformation(_imgCaptureFrameIndex);
+  _imgCaptureFrameIndex++;
+  stringstream oss;
+  oss << __YARS_GET_FRAMES_DIRECTORY << "/frame_" << setfill('0') << setw(8)
+    << _imgCaptureFrameIndex       << ".png";
+  _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
+  _pRenderTex->update();
+  _pRenderTex->writeContentsToFile(oss.str());
+}
 
 

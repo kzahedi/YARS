@@ -40,6 +40,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
 #endif
    
     void setAnimating(bool animating);
+    void captureImageFrame();
 
 #ifdef USE_CAPTURE_VIDEO
     bool captureRunning();
@@ -113,11 +114,12 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     void log(QString msg);
 
   private:
-    void __catchedLocally(int key);
+    void __initRenderFrame();
 
     int          _index;
     int          _metaKey;
     int          _fps;
+    int          _imgCaptureFrameIndex;
     unsigned int _lastTime;
     unsigned int _currentTime;
     unsigned int _lastStep;
@@ -133,7 +135,6 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     int  __milliSeconds();
     void __captureMovieFrame();
     void __initMovie();
-    void __initRenderFrame();
 
     quicktime_t           *_mov;
 

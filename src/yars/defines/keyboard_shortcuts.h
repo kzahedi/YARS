@@ -100,7 +100,7 @@
 #define __KEYBOARD_OPTIONS_WRITE_FRAMES_DESCRIPTION \
   "Start/Stop capturing of frames"
 #define __KEYBOARD_OPTIONS_WRITE_FRAMES_KEY \
-  "<S-F>"
+  "<C-F>"
 
 #define __KEYBOARD_OPTIONS_VISUALISE_AXES_KEY_OPTION \
   "visualise_axes"
