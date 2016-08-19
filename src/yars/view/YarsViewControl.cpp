@@ -89,6 +89,9 @@ void YarsViewControl::notify(ObservableMessage *message)
     case __M_TOGGLE_CAPTURE_FRAME:
       _model->toggleCaptureFrames();
       break;
+    case __M_QUIT_CALLED:
+      _model->quit();
+      break;
 
     // case __M_OPEN_NEW_WINDOW:
       // cout << "open new window" << endl;

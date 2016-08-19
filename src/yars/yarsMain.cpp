@@ -92,6 +92,7 @@ int main(int argc, char **argv)
   Y_DEBUG("yarsMain: starting with yars main control.");
   int i = mainFunction(argc, argv);
   Y_DEBUG("yarsMain: DONE. Will exit now.");
+  cout << "Good bye." << endl;
   return i;
 }
 

@@ -41,6 +41,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
    
     void setAnimating(bool animating);
     void captureImageFrame();
+    void quit();
 
 #ifdef USE_CAPTURE_VIDEO
     bool captureRunning();
@@ -115,6 +116,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
 
   private:
     void __initRenderFrame();
+    void __catchedLocally(int i);
 
     int          _index;
     int          _metaKey;

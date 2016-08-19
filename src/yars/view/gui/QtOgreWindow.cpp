@@ -429,27 +429,15 @@ void QtOgreWindow::keyPressEvent(QKeyEvent *event)
   }
 
   int i = KeyHandler::instance()->handleKeyEvent(alt, ctrl, shift, key);
-  // __catchedLocally(i);
+  __catchedLocally(i);
 }
 
-// void QtOgreWindow::__catchedLocally(int key)
-// {
+void QtOgreWindow::__catchedLocally(int key)
+{
   // switch(key)
   // {
-    // case 22: //YarsKeyFunction::PrintViewPoint:
-      // ConsoleView::printViewpoint(_windowConfiguration->cameraPose.position, _windowConfiguration->cameraPose.orientation);
-      // break;
-    // case YarsKeyFunction::CaptureVideo:
-      // emit captureVideo();
-      // break;
-    // case YarsKeyFunction::WriteFrames:
-      // emit writeFrames();
-      // break;
     // case YarsKeyFunction::VisualiseAxes:
       // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
-      // break;
-    // case YarsKeyFunction::OpenNewWindow:
-      // emit openNewWindow();
       // break;
     // case YarsKeyFunction::SetWindowTitle:
       // emit setWindowTitle();
@@ -494,7 +482,7 @@ void QtOgreWindow::keyPressEvent(QKeyEvent *event)
       // emit nextFollowMode();
       // break;
   // }
-// }
+}
 
 
 void QtOgreWindow::keyReleaseEvent(QKeyEvent *event)
@@ -646,3 +634,10 @@ void QtOgreWindow::captureImageFrame()
   _pRenderTex->update();
   _pRenderTex->writeContentsToFile(oss.str());
 }
+
+void QtOgreWindow::quit()
+{
+  if(_captureRunning) __closeMovie();
+  close();
+}
+

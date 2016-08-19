@@ -73,8 +73,7 @@ void YarsViewModel::quit()
 {
   Y_DEBUG("YarsViewModel::quit called")
   _run = false;
-  // FOREACH(SdlWindow*, i, _windowManager) (*i)->close();
-  // FOREACH(SdlWindow*, i, _windowManager) (*i)->quit();
+  FOREACH(QtOgreWindow*, i, _windowManager) (*i)->quit();
   _windowManager.clear();
   Y_DEBUG("YarsViewModel::quit completed")
 }
