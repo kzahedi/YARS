@@ -50,6 +50,7 @@ class KeyHandler : public Observable
     static void         togglePrintTime();
     static void         toggleSyncedGui();
     static void         openNewWindow();
+    static void         toggleCaptureVideo();
 
   protected:
     KeyHandler();

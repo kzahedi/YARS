@@ -1,8 +1,11 @@
 #include "QtOgreWindow.h"
 
+#include "configuration/data/Data.h"
+#include "configuration/YarsConfiguration.h"
 #include "SceneGraphHandler.h"
 #include "KeyHandler.h"
 #include "SdkQtCameraMan.h"
+#include "view/console/ConsoleView.h"
 
 #define __NO_KEY  -1
 #define __CONTROL  1
@@ -28,19 +31,24 @@ destination[2] = -source.y;
    */
 QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   : QWindow(parent)
-  , m_update_pending(false)
-  , m_animating(false)
-  , m_ogreRoot(NULL)
-  , m_ogreWindow(NULL)
-  , m_ogreCamera(NULL)
-  , m_cameraMan(NULL)
+  , _update_pending(false)
+  , _animating(false)
+  , _ogreRoot(NULL)
+  , _ogreWindow(NULL)
+  , _ogreCamera(NULL)
+  , _cameraMan(NULL)
 {
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
 
   setAnimating(true);
   installEventFilter(this);
-  m_ogreBackground = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
+  _ogreBackground     = Ogre::ColourValue(0.8f, 0.8f, 0.8f);
+  _captureRunning     = false;
+  _captureStep        = 0;
+  _capturedTenMinutes = 0;
+  _frameIndex         = 0;
+  _capturingOffset    = 0;
 }
 
 /*
@@ -48,8 +56,11 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
    */
 QtOgreWindow::~QtOgreWindow()
 {
-  if (m_cameraMan) delete m_cameraMan;
-  delete m_ogreRoot;
+  if (_cameraMan) delete _cameraMan;
+  delete _ogreRoot;
+#ifdef USE_CAPTURE_VIDEO
+  if(_captureRunning) __closeMovie();
+#endif // USE_CAPTURE_VIDEO
 }
 
 /*
@@ -68,15 +79,15 @@ void QtOgreWindow::initialize()
 {
 
 #ifdef _MSC_VER
-  m_ogreRoot = new Ogre::Root(Ogre::String("plugins" OGRE_BUILD_SUFFIX ".cfg"));
+  _ogreRoot = new Ogre::Root(Ogre::String("plugins" OGRE_BUILD_SUFFIX ".cfg"));
 #else
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  m_ogreRoot = SceneGraphHandler::instance()->root();
+  _ogreRoot = SceneGraphHandler::instance()->root();
 #endif
   Ogre::ConfigFile ogreConfig;
 
-  const Ogre::RenderSystemList& rsList = m_ogreRoot->getAvailableRenderers();
+  const Ogre::RenderSystemList& rsList = _ogreRoot->getAvailableRenderers();
   Ogre::RenderSystem* rs = rsList[0];
 
   Ogre::StringVector renderOrder;
@@ -100,9 +111,9 @@ void QtOgreWindow::initialize()
   }
   if (rs == NULL)
   {
-    if (!m_ogreRoot->restoreConfig())
+    if (!_ogreRoot->restoreConfig())
     {
-      if (!m_ogreRoot->showConfigDialog())
+      if (!_ogreRoot->showConfigDialog())
         OGRE_EXCEPT(Ogre::Exception::ERR_INVALIDPARAMS,
                     "Abort render system configuration",
                     "QtOgreWindow::initialize");
@@ -115,8 +126,8 @@ void QtOgreWindow::initialize()
   // rs->setConfigOption("Video Mode", dimensions.toStdString());
   rs->setConfigOption("Full Screen", "No");
   rs->setConfigOption("VSync", "Yes");
-  m_ogreRoot->setRenderSystem(rs);
-  m_ogreRoot->initialise(false);
+  _ogreRoot->setRenderSystem(rs);
+  _ogreRoot->initialise(false);
 
   Ogre::NameValuePairList parameters;
 
@@ -144,45 +155,45 @@ void QtOgreWindow::initialize()
   stringstream sst;
   sst << "QT Window " << _index;
   resize(w,h);
-  m_ogreWindow = m_ogreRoot->createRenderWindow(sst.str().c_str(),
+  _ogreWindow = _ogreRoot->createRenderWindow(sst.str().c_str(),
                                                 this->width(),
                                                 this->height(),
                                                 false,
                                                 &parameters);
-  m_ogreWindow->setVisible(true);
+  _ogreWindow->setVisible(true);
 
-  m_ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
+  _ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
 
   sst.str("");
   sst << "Camera " << _index;
-  m_ogreCamera = m_ogreSceneMgr->createCamera(sst.str().c_str());
+  _ogreCamera = _ogreSceneMgr->createCamera(sst.str().c_str());
   Ogre::Vector3 pos;
   Ogre::Vector3 lookAt;
   YARS_TO_OGRE(_windowConfiguration->cameraPosition, pos);
   YARS_TO_OGRE(_windowConfiguration->cameraLookAt,   lookAt);
-  m_ogreCamera->setPosition(pos);
-  m_ogreCamera->lookAt(lookAt);
-  m_ogreCamera->setNearClipDistance(0.01f);
-  m_ogreCamera->setFarClipDistance(1000000.0f);
+  _ogreCamera->setPosition(pos);
+  _ogreCamera->lookAt(lookAt);
+  _ogreCamera->setNearClipDistance(0.01f);
+  _ogreCamera->setFarClipDistance(1000000.0f);
 
-  m_cameraMan = new SdkQtCameraMan(m_ogreCamera);   // create a default camera controller
+  _cameraMan = new SdkQtCameraMan(_ogreCamera);   // create a default camera controller
 
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
   createCompositor();
 #else
-  Ogre::Viewport* pViewPort = m_ogreWindow->addViewport(m_ogreCamera);
-  pViewPort->setBackgroundColour(m_ogreBackground);
+  _viewport = _ogreWindow->addViewport(_ogreCamera);
+  _viewport->setBackgroundColour(_ogreBackground);
 #endif
 
-  m_ogreCamera->setAspectRatio(Ogre::Real(m_ogreWindow->getWidth()) / Ogre::Real(m_ogreWindow->getHeight()));
-  m_ogreCamera->setAutoAspectRatio(true);
+  _ogreCamera->setAspectRatio(Ogre::Real(_ogreWindow->getWidth()) / Ogre::Real(_ogreWindow->getHeight()));
+  _ogreCamera->setAutoAspectRatio(true);
 
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
   SceneGraphHandler::instance()->initialise();
 
-  m_ogreRoot->addFrameListener(this);
+  _ogreRoot->addFrameListener(this);
   setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
@@ -195,11 +206,11 @@ void QtOgreWindow::createCompositor()
      Derive this class for your own purpose and overwite this function to have a working Ogre
      widget with your own compositor.
      */
-  Ogre::CompositorManager2* compMan = m_ogreRoot->getCompositorManager2();
+  Ogre::CompositorManager2* compMan = _ogreRoot->getCompositorManager2();
   const Ogre::String workspaceName = "default scene workspace";
   const Ogre::IdString workspaceNameHash = workspaceName;
-  compMan->createBasicWorkspaceDef(workspaceName, m_ogreBackground);
-  compMan->addWorkspace(m_ogreSceneMgr, m_ogreWindow, m_ogreCamera, workspaceNameHash, true);
+  compMan->createBasicWorkspaceDef(workspaceName, _ogreBackground);
+  compMan->addWorkspace(_ogreSceneMgr, _ogreWindow, _ogreCamera, workspaceNameHash, true);
 }
 #endif
 
@@ -216,7 +227,7 @@ void QtOgreWindow::render()
      */
   Ogre::WindowEventUtilities::messagePump();
   // _sceneGraph->update();
-  // m_ogreRoot->renderOneFrame();
+  // _ogreRoot->renderOneFrame();
 }
 
 void QtOgreWindow::renderLater()
@@ -226,9 +237,9 @@ void QtOgreWindow::renderLater()
      only get called when the window is resized, moved, etc. as opposed to all of the time; which is
      generally what we need.
      */
-  if (!m_update_pending)
+  if (!_update_pending)
   {
-    m_update_pending = true;
+    _update_pending = true;
     QApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
   }
 }
@@ -238,12 +249,12 @@ bool QtOgreWindow::event(QEvent *event)
   switch (event->type())
   {
     case QEvent::UpdateRequest:
-      m_update_pending = false;
+      _update_pending = false;
       renderNow();
       return true;
 
     case QEvent::NativeGesture:
-      m_cameraMan->gesture((QNativeGestureEvent*)(event));
+      _cameraMan->gesture((QNativeGestureEvent*)(event));
       return true;
       break;
 
@@ -274,14 +285,14 @@ void QtOgreWindow::renderNow()
   if (!isExposed())
     return;
 
-  if (m_ogreRoot == NULL)
+  if (_ogreRoot == NULL)
   {
     initialize();
   }
 
   render();
 
-  if (m_animating)
+  if (_animating)
     renderLater();
 }
 
@@ -295,9 +306,9 @@ bool QtOgreWindow::eventFilter(QObject *target, QEvent *event)
   {
     if (event->type() == QEvent::Resize)
     {
-      if (isExposed() && m_ogreWindow != NULL)
+      if (isExposed() && _ogreWindow != NULL)
       {
-        m_ogreWindow->resize(this->width(), this->height());
+        _ogreWindow->resize(this->width(), this->height());
       }
     }
   }
@@ -318,32 +329,32 @@ void QtOgreWindow::mouseMoveEvent( QMouseEvent* e )
   lastX = e->x();
   lastY = e->y();
 
-  if(m_cameraMan && (e->buttons() & Qt::LeftButton))
-    m_cameraMan->injectMouseMove(relX, relY);
+  if(_cameraMan && (e->buttons() & Qt::LeftButton))
+    _cameraMan->injectMouseMove(relX, relY);
 }
 
 void QtOgreWindow::wheelEvent(QWheelEvent *e)
 {
-  if(m_cameraMan)
-    m_cameraMan->injectWheelMove(*e);
+  if(_cameraMan)
+    _cameraMan->injectWheelMove(*e);
 }
 
 void QtOgreWindow::mousePressEvent( QMouseEvent* e )
 {
-  if(m_cameraMan)
-    m_cameraMan->injectMouseDown(*e);
+  if(_cameraMan)
+    _cameraMan->injectMouseDown(*e);
 }
 
 void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
 {
-  if(m_cameraMan)
-    m_cameraMan->injectMouseUp(*e);
+  if(_cameraMan)
+    _cameraMan->injectMouseUp(*e);
 
   QPoint pos = e->pos();
-  Ogre::Ray mouseRay = m_ogreCamera->getCameraToViewportRay(
-                            (Ogre::Real)pos.x() / m_ogreWindow->getWidth(),
-                            (Ogre::Real)pos.y() / m_ogreWindow->getHeight());
-  // Ogre::RaySceneQuery* pSceneQuery = m_ogreSceneMgr->createRayQuery(mouseRay);
+  Ogre::Ray mouseRay = _ogreCamera->getCameraToViewportRay(
+                            (Ogre::Real)pos.x() / _ogreWindow->getWidth(),
+                            (Ogre::Real)pos.y() / _ogreWindow->getHeight());
+  // Ogre::RaySceneQuery* pSceneQuery = _ogreSceneMgr->createRayQuery(mouseRay);
   // pSceneQuery->setSortByDistance(true);
   // Ogre::RaySceneQueryResult vResult = pSceneQuery->execute();
   // for (size_t ui = 0; ui < vResult.size(); ui++)
@@ -356,7 +367,7 @@ void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
       // }
     // }
   // }
-  // m_ogreSceneMgr->destroyQuery(pSceneQuery);
+  // _ogreSceneMgr->destroyQuery(pSceneQuery);
 }
 
 /*
@@ -365,7 +376,7 @@ void QtOgreWindow::mouseReleaseEvent( QMouseEvent* e )
    */
 void QtOgreWindow::setAnimating(bool animating)
 {
-  m_animating = animating;
+  _animating = animating;
 
   if (animating)
     renderLater();
@@ -373,7 +384,7 @@ void QtOgreWindow::setAnimating(bool animating)
 
 bool QtOgreWindow::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-  m_cameraMan->frameRenderingQueued(evt);
+  _cameraMan->frameRenderingQueued(evt);
   return true;
 }
 
@@ -389,7 +400,7 @@ void QtOgreWindow::log(QString msg)
 
 void QtOgreWindow::keyPressEvent(QKeyEvent *event)
 {
-  if(m_cameraMan) m_cameraMan->injectKeyDown(*event);
+  if(_cameraMan) _cameraMan->injectKeyDown(*event);
 
 
   int  modifiers = event->modifiers();
@@ -439,9 +450,9 @@ void QtOgreWindow::__catchedLocally(int key)
     // case YarsKeyFunction::VisualiseAxes:
       // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
       // break;
-    case YarsKeyFunction::OpenNewWindow:
-      emit openNewWindow();
-      break;
+    // case YarsKeyFunction::OpenNewWindow:
+      // emit openNewWindow();
+      // break;
     // case YarsKeyFunction::SetWindowTitle:
       // emit setWindowTitle();
       // break;
@@ -490,7 +501,138 @@ void QtOgreWindow::__catchedLocally(int key)
 
 void QtOgreWindow::keyReleaseEvent(QKeyEvent *event)
 {
-  if(m_cameraMan) m_cameraMan->injectKeyUp(*event);
+  if(_cameraMan) _cameraMan->injectKeyUp(*event);
   _metaKey = __NO_KEY;
 }
+
+
+#ifdef USE_CAPTURE_VIDEO
+void QtOgreWindow::__initMovie()
+{
+  _windowConfiguration->getNextCaptureName();
+  std::stringstream oss;
+  __YARS_OPEN_CAPTURE_DIRECTORY;
+  _captureStep = __YARS_GET_SIMULATOR_FREQUENCY / __YARS_GET_CAPTURE_FRAME_RATE;
+  _capturedTenMinutes = 600 * __YARS_GET_CAPTURE_FRAME_RATE;
+  uint width  = _viewport->getActualWidth();
+  uint height = _viewport->getActualHeight();
+  oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;
+  _mov = quicktime_open(oss.str().c_str(),0,1);
+  cout << (char*)__YARS_GET_VIDEO_CODEC.c_str() << endl;
+  lqt_codec_info_t **codec = lqt_find_video_codec((char*)__YARS_GET_VIDEO_CODEC.c_str(),1);
+  if(codec == NULL)
+  {
+    YarsErrorHandler::push("Video codec %s not found.", __YARS_GET_VIDEO_CODEC.c_str());
+    exit(0);
+  }
+  cout << "capturing video with width " << width
+    << " and height " << height << " and codec " << __YARS_GET_VIDEO_CODEC.c_str() << " \n";
+  cout << "Starting video capture of " << oss.str().c_str() << " with frame rate "
+    << __YARS_GET_CAPTURE_FRAME_RATE << " and " << codec[0] << " codec." <<endl;
+  lqt_add_video_track(_mov, width, height, 1, __YARS_GET_CAPTURE_FRAME_RATE, codec[0]);
+  quicktime_set_cmodel(_mov, BC_RGB888);
+  _captureRunning = true;
+  _capturingOffset = __YARS_GET_STEP;
+  _frameIndex = 0;
+  __initRenderFrame();
+}
+
+void QtOgreWindow::__closeMovie()
+{
+  Ogre::TextureManager::getSingleton().remove("StreamTex");
+  quicktime_close(_mov);
+  _captureRunning = false;
+}
+
+void QtOgreWindow::__captureMovieFrame()
+{
+  if(__YARS_GET_STEP % _captureStep != 0) return;
+  if(__YARS_GET_USE_PAUSE) return;
+  if(_frameIndex > 0 && _frameIndex % _capturedTenMinutes == 0)
+  {
+    __closeMovie();
+    __initMovie();
+  }
+  uint width  = _viewport->getActualWidth();
+  uint height = _viewport->getActualHeight();
+
+  ConsoleView::printCapturingInformation(_frameIndex);
+
+  uint8_t **a;
+  int rowspan = 0;
+  int row_uv  = 0;
+
+  a = lqt_rows_alloc(width, height, BC_RGB888, &rowspan, &row_uv);
+  lqt_set_row_span(_mov, 0, rowspan);
+  lqt_set_row_span_uv(_mov, 0, row_uv);
+
+  _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
+  _pRenderTex->update();
+  Ogre::HardwarePixelBufferSharedPtr buffer = _renderTexture->getBuffer();
+  uint8_t *pData = (uint8_t*)buffer->lock(0, width*height*4, Ogre::HardwareBuffer::HBL_READ_ONLY);
+
+  for(uint x = 0; x < width; x++)
+  {
+    for(uint y = 0; y < height; y++)
+    {
+      a[y][3 * x]     = pData[4 * (y * width + x) + 2];
+      a[y][3 * x + 1] = pData[4 * (y * width + x) + 1];
+      a[y][3 * x + 2] = pData[4 * (y * width + x) + 0];
+    }
+  }
+  buffer->unlock();
+
+  lqt_encode_video(_mov, a, 0, _frameIndex);
+  lqt_rows_free(a);
+  _frameIndex++;
+}
+
+void QtOgreWindow::captureVideo()
+{
+  if(_captureRunning) __captureMovieFrame();
+}
+
+bool QtOgreWindow::captureRunning()
+{
+  return _captureRunning;
+}
+
+void QtOgreWindow::__initRenderFrame()
+{
+  stringstream oss;
+  oss << "render texture " << _index;
+  if(!Ogre::TextureManager::getSingleton().resourceExists(oss.str()))
+  {
+    _renderTexture =
+      Ogre::TextureManager::getSingleton().createManual(oss.str(),
+                                                        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                                                        Ogre::TEX_TYPE_2D,
+                                                        _viewport->getActualWidth(),
+                                                        _viewport->getActualHeight(),
+                                                        0,
+                                                        Ogre::PF_B8G8R8A8,
+                                                        Ogre::TU_RENDERTARGET);
+
+    _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
+    _pRenderTex->addViewport(_ogreCamera);
+
+    Ogre::Viewport *vp = _pRenderTex->getViewport(0);
+    vp->setClearEveryFrame(true);
+    vp->setBackgroundColour(Ogre::ColourValue::Black);
+    vp->setOverlaysEnabled(true);
+  }
+}
+
+void QtOgreWindow::startCaptureVideo()
+{
+  __initMovie();
+}
+
+void QtOgreWindow::stopCaptureVideo()
+{
+  __closeMovie();
+}
+
+#endif // USE_CAPTURE_VIDEO
+
 

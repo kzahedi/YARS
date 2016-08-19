@@ -2,6 +2,8 @@
 #include <yars/view/gui/KeyHandler.h>
 #include <yars/util/Random.h>
 
+#include <QThread>
+
 //#ifdef SUPPRESS_ALL_OUTPUT
 #  define PRINT_START_UP_MESSAGE(a) ;
 //#else
@@ -90,6 +92,7 @@ void YarsMainControl::run()
   {
     notifyObservers(_m_toggleSyncedGui);
   }
+  cout << "main thread: " << QThread::currentThreadId() << endl;
 
   while(_keepOnRunning)
   {

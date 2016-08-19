@@ -20,7 +20,7 @@ class YarsViewModel : public Observable, public Observer
 
     void quit();
     void notify(ObservableMessage *m);
-    void run();
+    // void run();
     void synched();
     void toggleShadows();
     void toggleCaptureVideo();
@@ -31,21 +31,17 @@ class YarsViewModel : public Observable, public Observer
     void __initialiseFollowable();
     void __removeClosedWindows();
 
-    // std::vector<SdlWindow*> _windowManager;
-    // std::vector<QtWindowHandler*> _windowManager;
     std::vector<QtOgreWindow*> _windowManager;
-    int                     _drawFequency;
-    int                     _visualiseCalled;
-    bool                    _run;
-    bool                    _sync;
-    bool                    _syncedStep;
-    bool                    _toggleVideo;
-    SceneGraphHandler*      _ogreHandler;
-    // Ogre::GLPlugin*         _GLPlugin;
-    // Ogre::ParticleFXPlugin* _particlePlugin;
-    Ogre::Root*             _root;
-    pthread_mutex_t         _mutex;
-    // SDL_Event               _event;
+
+    int                _drawFequency;
+    int                _visualiseCalled;
+    bool               _run;
+    bool               _sync;
+    bool               _syncedStep;
+    bool               _toggleVideo;
+    SceneGraphHandler* _ogreHandler;
+    Ogre::Root*        _root;
+    pthread_mutex_t    _mutex;
 };
 
 #endif // __YARS_VIEW_MODEL_H__

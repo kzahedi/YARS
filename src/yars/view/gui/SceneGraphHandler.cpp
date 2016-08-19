@@ -4,6 +4,8 @@
 #include "SceneGraph.h"
 #include <yars/defines/mutex.h>
 
+// #include <QThread>
+
 // #include <Overlay/OgreOverlaySystem.h>
 
 SceneGraphHandler* SceneGraphHandler::_me = NULL;
@@ -16,6 +18,8 @@ SceneGraphHandler* SceneGraphHandler::instance()
 
 SceneGraphHandler::SceneGraphHandler()
 {
+
+  // cout << "scene graph handler thread: " << QThread::currentThreadId() << endl;
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
   _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)

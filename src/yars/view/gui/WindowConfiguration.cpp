@@ -20,7 +20,7 @@ WindowConfiguration::WindowConfiguration(int _i)
   geometry       = __YARS_GET_VIEW_GEOMETRY(index);
   cameraPosition = Data::instance()->current()->screens()->screen(index)->camera()->position();
   cameraLookAt   = Data::instance()->current()->screens()->screen(index)->camera()->lookAt();
-  // captureName       = __YARS_GET_CAPTURE_NAME;
+  captureName       = __YARS_GET_CAPTURE_NAME;
   // useTextures       = __YARS_GET_USE_TEXTURES;
   // useTraces         = __YARS_GET_USE_TRACES;
   // followMode        = __YARS_GET_FOLLOW_MODE;
@@ -35,14 +35,14 @@ WindowConfiguration::WindowConfiguration(int _i)
   maxTraceLines     = -1;
   maxTracePoints    = -1;
   // if(index > 0)
-  // {
-    // string ext = captureName.substr(captureName.find_last_of("."), captureName.size() - 1);
-    // captureName = captureName.substr(0, captureName.find_last_of("."));
-    // stringstream oss;
-    // oss << captureName << "-" << index << ext;
-    // captureName = oss.str();
-    // orgCaptureName = captureName;
-  // }
+  {
+    string ext = captureName.substr(captureName.find_last_of("."), captureName.size() - 1);
+    captureName = captureName.substr(0, captureName.find_last_of("."));
+    stringstream oss;
+    oss << captureName << "-" << index << ext;
+    captureName = oss.str();
+    orgCaptureName = captureName;
+  }
   captureIndex     = 0;
 
   // TODO TODO overwrite values by DataScreen-values

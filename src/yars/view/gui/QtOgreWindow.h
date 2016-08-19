@@ -4,10 +4,6 @@
 // copied and adapted from
 // http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Integrating+Ogre+into+QT5
  
-/*
-Qt headers
-*/
-
 #include <yars/view/gui/CameraHandler.h>
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/SceneGraph.h>
@@ -17,27 +13,14 @@ Qt headers
 #  include <lqt/lqt.h>
 #  include <lqt/quicktime.h>
 #  include <lqt/colormodels.h>
-#endif // USE_CAPTURE_VIDEO
+#endif
 
 #include <QtWidgets/QApplication>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWindow>
-
-
  
-/*
-Ogre3D header
-*/
 #include <OGRE/Ogre.h>
  
-/*
-Changed SdkCameraMan implementation to work with QKeyEvent, QMouseEvent, QWheelEvent
-*/
-// #include "SdkQtCameraMan.h"
- 
-/*
-With the headers included we now need to inherit from QWindow.
-*/
 class QtOgreWindow : public QWindow, public Ogre::FrameListener
 {
   Q_OBJECT
@@ -57,6 +40,13 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
 #endif
    
     void setAnimating(bool animating);
+
+#ifdef USE_CAPTURE_VIDEO
+    bool captureRunning();
+    void startCaptureVideo();
+    void stopCaptureVideo();
+    void captureVideo();
+#endif // USE_CAPTURE_VIDEO
    
   public slots:
    
@@ -66,37 +56,37 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     virtual bool eventFilter(QObject *target, QEvent *event);
    
   signals:
-    void signalWindowConfigurationChanged();
+    // void signalWindowConfigurationChanged();
 
-    void toggleFollowMode();
+    // void toggleFollowMode();
 
-    void previousFollowable();
-    void nextFollowable();
+    // void previousFollowable();
+    // void nextFollowable();
 
-    void previousFollowMode();
-    void nextFollowMode();
+    // void previousFollowMode();
+    // void nextFollowMode();
 
-    void captureVideo();
-    void writeFrames();
+    // void captureVideo();
+    // void writeFrames();
 
-    void openNewWindow();
+    // void openNewWindow();
 
-    void setWindowTitle();
-    void setWindowSize();
+    // void setWindowTitle();
+    // void setWindowSize();
  
   protected:
     /*
     Ogre3D pointers added here. Useful to have the pointers here for use by the window later.
     */
-    Ogre::Root* m_ogreRoot;
-    Ogre::RenderWindow* m_ogreWindow;
-    Ogre::SceneManager* m_ogreSceneMgr;
-    Ogre::Camera* m_ogreCamera;
-    Ogre::ColourValue m_ogreBackground;
-    SdkQtCameraMan* m_cameraMan;
+    Ogre::Root* _ogreRoot;
+    Ogre::RenderWindow* _ogreWindow;
+    Ogre::SceneManager* _ogreSceneMgr;
+    Ogre::Camera* _ogreCamera;
+    Ogre::ColourValue _ogreBackground;
+    SdkQtCameraMan* _cameraMan;
    
-    bool m_update_pending;
-    bool m_animating;
+    bool _update_pending;
+    bool _animating;
    
     /*
     The below methods are what is actually fired when they keys on the keyboard are hit.
@@ -125,12 +115,36 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
   private:
     void __catchedLocally(int key);
 
-    int _index;
-    int _metaKey;
+    int          _index;
+    int          _metaKey;
+    int          _fps;
+    unsigned int _lastTime;
+    unsigned int _currentTime;
+    unsigned int _lastStep;
 
     WindowConfiguration* _windowConfiguration;
-    // SceneGraph*          _sceneGraph;
-    // Ogre::SceneNode*     _rootNode;
+    Ogre::Viewport*      _viewport;
+    Ogre::RenderTexture* _pRenderTex;
+    Ogre::TexturePtr     _renderTexture;
+
+#ifdef USE_CAPTURE_VIDEO
+    void __toggleCaptureMovie();
+    void __closeMovie();
+    int  __milliSeconds();
+    void __captureMovieFrame();
+    void __initMovie();
+    void __initRenderFrame();
+
+    quicktime_t           *_mov;
+
+    bool                   _captureRunning;
+    unsigned long          _captureStep;
+    unsigned long          _capturedTenMinutes;
+    unsigned long          _frameIndex;
+    unsigned long          _capturingOffset;
+
+    char                  *_buffer;
+#endif
 
 };
  

@@ -8,6 +8,10 @@
 
 #include <Ogre/Ogre.h>
 
+#include <iostream>
+
+using namespace std;
+
 YarsViewModel::YarsViewModel()
 {
   // SDL_Init( SDL_INIT_EVERYTHING );
@@ -63,6 +67,8 @@ void YarsViewModel::visualiseScene()
   // {
     // FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->parseEvent(_event);
   // }
+
+  if(_toggleVideo == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureVideo();
   YM_UNLOCK;
 }
 
@@ -87,6 +93,7 @@ void YarsViewModel::createNewWindow()
   YM_LOCK;
   // SdlWindow *wm = new SdlWindow(_windowManager.size());
   // QtWindowHandler *wm = new QtWindowHandler(_windowManager.size());
+  cout << QThread::currentThreadId() << endl;
   QtOgreWindow *wm = new QtOgreWindow(_windowManager.size());
   wm->show();
   // wm->addObserver(this);
@@ -126,41 +133,43 @@ void YarsViewModel::__removeClosedWindows()
   // }
 }
 
-void YarsViewModel::run()
-{
-  while(_run)
-  {
-    YM_LOCK;
-    if(_sync)
-    {
-      if(_syncedStep) 
-      {
-        visualiseScene();
-#ifdef USE_CAPTURE_VIDEO
-        if(_toggleVideo == true)
-        {
-          _toggleVideo = false;
-          // FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
-        }
-        // FOREACH(SdlWindow*, i, _windowManager) (*i)->captureVideo();
-#endif // USE_CAPTURE_VIDEO
-        _syncedStep = false;
-      }
-    }
-    else
-    {
-#ifdef USE_CAPTURE_VIDEO
-      if(_toggleVideo == true)
-      {
-        _toggleVideo = false;
-        // FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
-      }
-#endif // USE_CAPTURE_VIDEO
-      visualiseScene();
-    }
-    YM_UNLOCK;
-  }
-}
+// void YarsViewModel::run()
+// {
+  // while(_run)
+  // {
+    // YM_LOCK;
+    // if(_sync)
+    // {
+      // if(_syncedStep) 
+      // {
+        // visualiseScene();
+// #ifdef USE_CAPTURE_VIDEO
+        // if(_toggleVideo == true)
+        // {
+          // cout << " staring video" << endl;
+          // _toggleVideo = false;
+          // FOREACH(QtOgreWindow*, i, _windowManager) (*i)->startCaptureVideo();
+        // }
+          // cout << " capturing video" << endl;
+        // FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureVideo();
+// #endif // USE_CAPTURE_VIDEO
+        // _syncedStep = false;
+      // }
+    // }
+    // else
+    // {
+// #ifdef USE_CAPTURE_VIDEO
+      // if(_toggleVideo == true)
+      // {
+        // _toggleVideo = false;
+        // FOREACH(QtOgreWindow*, i, _windowManager) (*i)->stopCaptureVideo();
+      // }
+// #endif // USE_CAPTURE_VIDEO
+      // visualiseScene();
+    // }
+    // YM_UNLOCK;
+  // }
+// }
 
 void YarsViewModel::synched()
 {
@@ -178,4 +187,16 @@ void YarsViewModel::toggleCaptureVideo()
 {
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
+  cout << "toggle video:" << _toggleVideo << endl;
+  if(_toggleVideo == true)
+  {
+    cout << " staring video" << endl;
+    FOREACH(QtOgreWindow*, i, _windowManager) (*i)->startCaptureVideo();
+  }
+  else
+  {
+    cout << " stopped video" << endl;
+    FOREACH(QtOgreWindow*, i, _windowManager) (*i)->stopCaptureVideo();
+  }
+  __YARS_SET_SYNC_GUI(_sync);
 }

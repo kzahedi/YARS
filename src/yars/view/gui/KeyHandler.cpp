@@ -37,22 +37,20 @@ void KeyHandler::registerKeyboardShortcuts()
 
   _keyboardShortcuts = configuration->getKeyboardShortcuts();
 
-  _keyboardShortcuts->pause.function                 = &togglePause;
-  _keyboardShortcuts->quit.function                  = &exitSimulation;
-  _keyboardShortcuts->reset.function                 = &reinitAndResetSimulation;
+  _keyboardShortcuts->pause.function               = &togglePause;
+  _keyboardShortcuts->quit.function                = &exitSimulation;
+  _keyboardShortcuts->reset.function               = &reinitAndResetSimulation;
   //_keyboardShortcuts->printKeyCommands.function      = &printKeyCommands;
-  _keyboardShortcuts->toggleReloadOnReset.function   = &toggleReloadOnReset;
-  _keyboardShortcuts->realtime.function              = &toggleRealtimeMode;
-  _keyboardShortcuts->singleStep.function            = &activateSingleStep;
-  _keyboardShortcuts->decreaseSimSpeed.function      = &decreaseSimSpeed;
-  _keyboardShortcuts->increaseSimSpeed.function      = &increaseSimSpeed;
-  _keyboardShortcuts->resetSimSpeed.function         = &resetSimSpeed;
-  _keyboardShortcuts->restoreViewpoint.function      = &restoreInitialViewpoint;
-  _keyboardShortcuts->openNewWindow.function         = &openNewWindow;
-  _keyboardShortcuts->printTime.function             = &togglePrintTime;
-
-  _keyboardShortcuts->captureVideo.function          = NULL;
-
+  _keyboardShortcuts->toggleReloadOnReset.function = &toggleReloadOnReset;
+  _keyboardShortcuts->realtime.function            = &toggleRealtimeMode;
+  _keyboardShortcuts->singleStep.function          = &activateSingleStep;
+  _keyboardShortcuts->decreaseSimSpeed.function    = &decreaseSimSpeed;
+  _keyboardShortcuts->increaseSimSpeed.function    = &increaseSimSpeed;
+  _keyboardShortcuts->resetSimSpeed.function       = &resetSimSpeed;
+  _keyboardShortcuts->restoreViewpoint.function    = &restoreInitialViewpoint;
+  _keyboardShortcuts->openNewWindow.function       = &openNewWindow;
+  _keyboardShortcuts->printTime.function           = &togglePrintTime;
+  _keyboardShortcuts->captureVideo.function        = &toggleCaptureVideo;
 }
 
 
@@ -142,6 +140,12 @@ void KeyHandler::restoreInitialViewpoint()
 void KeyHandler::toggleDrawMode()
 {
   _o->notifyObservers(_m_toggleVisualisation);
+}
+
+void KeyHandler::toggleCaptureVideo()
+{
+  cout << "hier hier hier" << endl;
+  _o->notifyObservers(_m_toggleCaptureVideo);
 }
 
 void KeyHandler::togglePrintTime()
