@@ -20,7 +20,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   _manual->setVisible(true);\
   _manual->setCastShadows(true);
 
-  _manual->begin("face1", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Green", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(+dim.x, +dim.y, +dim.z); _manual->textureCoord(0,0); _manual->normal(0, 0, 1); 
   _manual->position(-dim.x, +dim.y, +dim.z); _manual->textureCoord(1,0); _manual->normal(0, 0, 1); 
   _manual->position(+dim.x, -dim.y, +dim.z); _manual->textureCoord(0,1); _manual->normal(0, 0, 1); 
@@ -28,7 +28,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
-  _manual->begin("face2", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Blue", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(-dim.x, +dim.y, +dim.z); _manual->textureCoord(0,0); _manual->normal(-1, 0, 0); 
   _manual->position(-dim.x, +dim.y, -dim.z); _manual->textureCoord(1,0); _manual->normal(-1, 0, 0); 
   _manual->position(-dim.x, -dim.y, +dim.z); _manual->textureCoord(0,1); _manual->normal(-1, 0, 0); 
@@ -36,7 +36,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
-  _manual->begin("face3", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Red", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(-dim.x, -dim.y, -dim.z); _manual->textureCoord(0,0); _manual->normal(0, 0, -1); 
   _manual->position(-dim.x, +dim.y, -dim.z); _manual->textureCoord(1,0); _manual->normal(0, 0, -1); 
   _manual->position(+dim.x, -dim.y, -dim.z); _manual->textureCoord(0,1); _manual->normal(0, 0, -1); 
@@ -44,7 +44,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
-  _manual->begin("face4", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Green", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(+dim.x, +dim.y, -dim.z); _manual->textureCoord(0,0); _manual->normal(1, 0, 0); 
   _manual->position(+dim.x, +dim.y, +dim.z); _manual->textureCoord(1,0); _manual->normal(1, 0, 0); 
   _manual->position(+dim.x, -dim.y, -dim.z); _manual->textureCoord(0,1); _manual->normal(1, 0, 0); 
@@ -52,7 +52,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
-  _manual->begin("face5", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Blue", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(+dim.x, +dim.y, +dim.z); _manual->textureCoord(0,0); _manual->normal(0, 1, 0); 
   _manual->position(+dim.x, +dim.y, -dim.z); _manual->textureCoord(1,0); _manual->normal(0, 1, 0); 
   _manual->position(-dim.x, +dim.y, +dim.z); _manual->textureCoord(0,1); _manual->normal(0, 1, 0); 
@@ -60,7 +60,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode* r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
-  _manual->begin("face6", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+  _manual->begin("YARS/Red", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(-dim.x, -dim.y, +dim.z); _manual->textureCoord(0,0); _manual->normal(0, -1, 0); 
   _manual->position(-dim.x, -dim.y, -dim.z); _manual->textureCoord(1,0); _manual->normal(0, -1, 0); 
   _manual->position(+dim.x, -dim.y, +dim.z); _manual->textureCoord(0,1); _manual->normal(0, -1, 0); 

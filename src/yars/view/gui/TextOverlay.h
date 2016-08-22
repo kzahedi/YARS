@@ -41,7 +41,7 @@ class TextOverlay
     Ogre::DisplayString stripColours(const Ogre::DisplayString& text);
 
     void setText(const std::string& ID, const std::string& Text, int windowHeight = 0);
-    const std::string& getText(const std::string& ID);
+    // const std::string& getText(const std::string& ID);
     static TextOverlay* _me;
     std::vector<unsigned char> _colors;
 

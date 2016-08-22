@@ -1,10 +1,11 @@
 #ifndef __SCENE_GRAPH_HANDLER_H__
 #define __SCENE_GRAPH_HANDLER_H__
 
-#include <OGRE/Ogre.h>
 #include "SceneGraph.h"
+#include "ColoredTextAreaOverlayElementFactory.h"
+#include "GuiMutex.h"
 
-#include <pthread.h>
+#include <OGRE/Ogre.h>
 
 class SceneGraphHandler
 {
@@ -33,7 +34,10 @@ class SceneGraphHandler
     Ogre::SceneNode*    _rootNode;
     SceneGraph*         _sceneGraph;
     bool                _sceneGraphInitialised;
-    pthread_mutex_t     _mutex;
+
+    ColoredTextAreaOverlayElementFactory* _coloredTextAreaOverlayElementFactory;
+    Ogre::OverlayManager*                 _overlayManager;
+    Ogre::FontManager*                    _fontManager;
 };
 
 

@@ -2,9 +2,14 @@
 #include "configuration/data/Data.h"
 #include "util/Directories.h"
 #include "SceneGraph.h"
-#include <yars/defines/mutex.h>
 
-// #include <QThread>
+#include <OgreOverlay/OgreOverlayManager.h>
+#include <OgreFontManager.h>
+#include <iostream>
+
+using namespace std;
+
+#include <QThread>
 
 // #include <Overlay/OgreOverlaySystem.h>
 
@@ -12,17 +17,24 @@ SceneGraphHandler* SceneGraphHandler::_me = NULL;
 
 SceneGraphHandler* SceneGraphHandler::instance()
 {
+  // cout << "SceneGraphHandler: " << getpid() << " " <<  pthread_self() << " " << QThread::currentThreadId() << endl;
+  // mLOCK;
   if(_me == NULL) _me = new SceneGraphHandler();
+  // mUNLOCK;
   return _me;
 }
 
 SceneGraphHandler::SceneGraphHandler()
 {
-
+  mLOCK;
+  cout << "SceneGraphHandler Constructor" << endl;
   // cout << "scene graph handler thread: " << QThread::currentThreadId() << endl;
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
+  // no log file created here (see 1 line above)
+  _root           = new Ogre::Root("plugins.cfg", "ogre.cfg", "");
+  _overlayManager = new Ogre::OverlayManager();
+  _fontManager    = new Ogre::FontManager();
 
   // Load resource paths from config file
   if(Directories::doesFileExist("resources.cfg"))
@@ -43,8 +55,7 @@ SceneGraphHandler::SceneGraphHandler()
       {
         typeName = i->first;
         archName = i->second;
-        Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-                                                                       archName, typeName, secName);
+        Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
       }
     }
   }
@@ -58,6 +69,7 @@ SceneGraphHandler::SceneGraphHandler()
   _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC);
 #endif
 
+
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
   Ogre::SceneNode* pLightNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
   Ogre::Light* light = _sceneManager->createLight();
@@ -68,20 +80,26 @@ SceneGraphHandler::SceneGraphHandler()
   light->setPosition(20.0f, 80.0f, 50.0f);
 #endif
 
+
   _sceneGraphInitialised = false;
+  mUNLOCK;
 }
 
 void SceneGraphHandler::reset()
 {
+  cout << "SceneGraphHandler reset" << endl;
+  mLOCK;
   _sceneGraph->reset();
+  mUNLOCK;
 }
 
 void SceneGraphHandler::step()
 {
-  YM_LOCK;
+  // cout << "SceneGraphHandler step" << endl;
+  mLOCK;
   _sceneGraph->update();
   _root->renderOneFrame();
-  YM_UNLOCK;
+  mUNLOCK;
 }
 
 Ogre::Root* SceneGraphHandler::root()
@@ -96,10 +114,15 @@ Ogre::SceneManager* SceneGraphHandler::sceneManager()
 
 void SceneGraphHandler::initialise()
 {
+  cout << "SceneGraphHandler initialise" << endl;
   if(_sceneGraphInitialised == true) return;
+  mLOCK;
   _sceneManager->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-  _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
+  _rootNode   = _sceneManager->getRootSceneNode()->createChildSceneNode();
   _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
-  _sceneGraphInitialised = true;
-}
 
+  _coloredTextAreaOverlayElementFactory = new ColoredTextAreaOverlayElementFactory();
+  Ogre::OverlayManager::getSingleton().addOverlayElementFactory(_coloredTextAreaOverlayElementFactory);
+  _sceneGraphInitialised = true;
+  mUNLOCK;
+}

@@ -3,15 +3,15 @@ Time
     type       truetype
     source     FreeSansBold.otf
     size       22
-    resolution 50
+    resolution 96
 }
 
 Robot
 {
     type       truetype
     source     FreeSansBold.otf
-    size       20
-    resolution 50
+    size       22
+    resolution 96
 }
 
 Legend
@@ -19,5 +19,13 @@ Legend
     type       truetype
     source     FreeSansBold.otf
     size       24
-    resolution 50
+    resolution 96
+}
+
+MyFont
+{
+    type       truetype
+    source     arial.ttf
+    size       16
+    resolution 72
 }

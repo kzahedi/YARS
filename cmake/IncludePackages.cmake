@@ -32,12 +32,12 @@ IF(YARS_USE_VISUALISATION)
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  find_package(Ogre)
+  find_package(Ogre REQUIRED Overlay Plugin_ParticleFX RenderSystem_GL)
   # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
     # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone
     # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
-  # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
-  # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
+  include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
+  include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
   link_directories(/usr/local/lib/)
 
   find_package(Qt5Widgets)

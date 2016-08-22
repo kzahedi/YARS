@@ -29,6 +29,7 @@ YarsViewModel::YarsViewModel()
 
 YarsViewModel::~YarsViewModel()
 {
+  // delete _coloredTextAreaOverlayElementFactory;
   Y_DEBUG("YarsViewModel destructor called.");
   YM_CLOSE;
 }
@@ -57,6 +58,7 @@ void YarsViewModel::visualiseScene()
 
   SceneGraphHandler::instance()->step();
 
+  // FOREACH(QtOgreWindow*, i, _windowManager) (*i)->osd();
   if(_toggleVideo  == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureVideo();
   if(_toggleFrames == true) FOREACH(QtOgreWindow*, i, _windowManager) (*i)->captureImageFrame();
 
@@ -95,6 +97,7 @@ void YarsViewModel::createNewWindow()
   // }
 #endif // USE_CAPTURE_VIDEO
   _windowManager.push_back(wm);
+  // wm->setupOSD();
   YM_UNLOCK;
 }
 

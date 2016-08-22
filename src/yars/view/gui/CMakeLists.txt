@@ -21,8 +21,9 @@ set(GUI_SOURCES
   SceneGraphLDRSensor.cpp
   SceneGraphJointAxisVisualisationNode.cpp
   SceneGraphSoftPlyNode.cpp
-  # ColoredTextAreaOverlayElement.cpp
-  # TextOverlay.cpp
+  TextOverlay.cpp
+  GuiMutex.cpp
+  ColoredTextAreaOverlayElement.cpp
   SceneGraphHandler.cpp
   KeyHandler.cpp
   FollowCamera.cpp
@@ -40,7 +41,4 @@ set(GUI_SOURCES
 add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} ${qtview_MOC_SRCS})
 qt5_use_modules(YarsGUI Core Gui Widgets OpenGL)
 
-if(APPLE)
-  SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
-    "-framework Ogre -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreOverlay")
-endif(APPLE)
+

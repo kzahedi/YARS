@@ -41,6 +41,7 @@
 #include <yars/view/YarsViewModel.h>
 
 #include <iostream>
+#include <pthread.h>
 
 int mainFunction(int argc, char **argv)
 {
@@ -50,6 +51,8 @@ int mainFunction(int argc, char **argv)
 
   if(__YARS_GET_USE_VISUALISATION)
   {
+    cout << "main: " << getpid() << " " <<  pthread_self() << " " << QThread::currentThreadId() << endl;
+    
     ConsoleView     *cv  = ConsoleView::instance();
     YarsViewControl *yvc = new YarsViewControl();
     YarsViewModel   *yvm = new YarsViewModel();

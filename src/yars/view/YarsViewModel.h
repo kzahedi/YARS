@@ -44,6 +44,7 @@ class YarsViewModel : public Observable, public Observer
     SceneGraphHandler* _ogreHandler;
     Ogre::Root*        _root;
     pthread_mutex_t    _mutex;
+
 };
 
 #endif // __YARS_VIEW_MODEL_H__

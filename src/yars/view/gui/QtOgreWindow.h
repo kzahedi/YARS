@@ -8,7 +8,8 @@
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/SdkQtCameraMan.h>
-// #include <yars/view/gui/TextOverlay.h>
+#include <yars/view/gui/TextOverlay.h>
+#include <yars/view/gui/SceneGraphHandler.h>
 #include <yars/configuration/data/DataScreen.h>
 
 #ifdef USE_CAPTURE_VIDEO
@@ -41,6 +42,8 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
 #if OGRE_VERSION >= ((2 << 16) | (0 << 8) | 0)
     virtual void createCompositor();
 #endif
+
+    void osd();
    
     void setAnimating(bool animating);
     void captureImageFrame();
@@ -142,7 +145,7 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     Ogre::TexturePtr     _renderTexture;
     int                  _followableIndex;
 
-    // TextOverlay*         _textOverlay;
+    TextOverlay*         _textOverlay;
 
 #ifdef USE_CAPTURE_VIDEO
     void __toggleCaptureMovie();
@@ -162,13 +165,16 @@ class QtOgreWindow : public QWindow, public Ogre::FrameListener
     char                  *_buffer;
 #endif
 
-    DataScreen*   _data;
-    Ogre::Vector3 _cpos;
-    Ogre::Vector3 _cdir;
-    Ogre::Vector3 _clookAt;
-    P3D           _ypos;
-    P3D           _ylookAt;
-    DataCamera*   _camData;
+    DataScreen*        _data;
+    Ogre::Vector3      _cpos;
+    Ogre::Vector3      _cdir;
+    Ogre::Vector3      _clookAt;
+    P3D                _ypos;
+    P3D                _ylookAt;
+    DataCamera*        _camData;
+    stringstream       _fpsString;
+    SceneGraphHandler* _sgh;
+    
 
 };
  

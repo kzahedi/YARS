@@ -83,8 +83,8 @@ if(YARS_USE_VISUALISATION)
   # target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
 
   if(APPLE)
-    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Ogre")
-    # SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
+    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
+      "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre")
   endif(APPLE)
 
 endif(YARS_USE_VISUALISATION)

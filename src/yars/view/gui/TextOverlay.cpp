@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <OgreFontManager.h>
 
 bool TextOverlay::_added = false;
 
@@ -14,7 +15,8 @@ TextOverlay::TextOverlay(int index)
 
   if(!_added)
   {
-    ColoredTextAreaOverlayElementFactory* pColoredTextAreaOverlayElementFactory = new ColoredTextAreaOverlayElementFactory();
+    ColoredTextAreaOverlayElementFactory* pColoredTextAreaOverlayElementFactory =
+      new ColoredTextAreaOverlayElementFactory();
     Ogre::OverlayManager::getSingleton().addOverlayElementFactory(pColoredTextAreaOverlayElementFactory);
   }
   _added         = true;
@@ -28,7 +30,7 @@ TextOverlay::TextOverlay(int index)
   _overlay = _overlayMgr->create(oss.str().c_str());
   oss.str("");
   oss << "container " << _index;
-  _panel   = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("Panel", oss.str().c_str()));
+  _panel   = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("ColoredTextArea", oss.str().c_str()));
   _panel->setDimensions(1, 1);
   _panel->setPosition(0, 0);
   _overlay->add2D(_panel);
@@ -36,15 +38,16 @@ TextOverlay::TextOverlay(int index)
 }
 
 void TextOverlay::addTextBox(const std::string& ID,
-    const std::string& text,
-    Ogre::Real x, Ogre::Real y,
-    Ogre::Real width, Ogre::Real height,
-    const Ogre::ColourValue& color,
-    std::string fontname,
-    std::string charheight)
+                             const std::string& text,
+                             Ogre::Real x, Ogre::Real y,
+                             Ogre::Real width, Ogre::Real height,
+                             const Ogre::ColourValue& color,
+                             std::string fontname,
+                             std::string charheight)
 {
   stringstream oss;
   oss << ID << " " << _index;
+  cout << "creating " << oss.str() << endl;
   ColoredTextAreaOverlayElement* textBox =
     (ColoredTextAreaOverlayElement*)_overlayMgr->createOverlayElement("ColoredTextArea", oss.str().c_str());
   textBox->setDimensions(width, height);
@@ -52,6 +55,7 @@ void TextOverlay::addTextBox(const std::string& ID,
   textBox->setPosition(x, y);
   textBox->setWidth(width);
   textBox->setHeight(height);
+  // Ogre::FontManager::getSingletonPtr()->load(fontname, "YARS" );
   textBox->setParameter("font_name", fontname);
   textBox->setParameter("char_height", charheight);
   textBox->setMainColour(color);
@@ -94,20 +98,23 @@ void TextOverlay::setText(const std::string& ID, const std::string& Text, int wi
 
   if(ID == "stats")
   {
+    cout << "TextOverlay: hier 0: " << textBox << endl;
     textBox->setPosition(10, 10 + _timeFontSize + 5);
+    cout << "TextOverlay: hier 1" << endl;
     textBox->setHeight((int)_statsFontSize);
+    cout << "TextOverlay: hier 2" << endl;
   }
 
   textBox->setCaption(c);
 }
 
-const std::string& TextOverlay::getText(const std::string& ID)
-{
-  stringstream oss;
-  oss << ID << " " << _index;
-  Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
-  return textBox->getCaption();
-}
+// const std::string& TextOverlay::getText(const std::string& ID)
+// {
+  // stringstream oss;
+  // oss << ID << " " << _index;
+  // Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
+  // return textBox->getCaption();
+// }
 
 void TextOverlay::printf(const std::string& ID,  const char *fmt, /* args*/ ...)
 {
@@ -137,7 +144,7 @@ Ogre::Real TextOverlay::getHeight(const std::string& ID)
   stringstream oss;
   oss << ID << " " << _index;
   Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(oss.str().c_str());
-  textBox->getHeight();
+  return textBox->getHeight();
 }
 
 Ogre::Real TextOverlay::getWidth(const std::string& ID)

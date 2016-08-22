@@ -9,6 +9,9 @@
 #include <yars/util/Timer.h>
 #include <yars/util/OSD.h>
 
+#include <OgreOverlay/OgreTextAreaOverlayElement.h>
+#include <OgreOverlay/OgreOverlayManager.h>
+
 #define __NO_KEY  -1
 #define __CONTROL  1
 #define __ALT      2 
@@ -61,10 +64,17 @@ QtOgreWindow::QtOgreWindow(int index, QWindow *parent)
   _frameIndex           = 0;
   _capturingOffset      = 0;
   _imgCaptureFrameIndex = 0;
-  _lastTime             = 0;
   _followableIndex      = 0;
   _followableObject     = NULL;
   _cameraHandler        = new CameraHandler(_windowConfiguration);
+  _fps                  = 0;
+  _lastTime             = 0;
+  _currentTime          = 0;
+  _lastStep             = 0;
+  _textOverlay          = NULL;
+
+  _sgh                  = SceneGraphHandler::instance();
+
 }
 
 /*
@@ -93,13 +103,12 @@ void QtOgreWindow::render(QPainter *painter)
    */
 void QtOgreWindow::initialize()
 {
-
 #ifdef _MSC_VER
   _ogreRoot = new Ogre::Root(Ogre::String("plugins" OGRE_BUILD_SUFFIX ".cfg"));
 #else
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  _ogreRoot = SceneGraphHandler::instance()->root();
+  _ogreRoot = _sgh->root();
 #endif
   Ogre::ConfigFile ogreConfig;
 
@@ -175,7 +184,7 @@ void QtOgreWindow::initialize()
                                               &parameters);
   _ogreWindow->setVisible(true);
 
-  _ogreSceneMgr = SceneGraphHandler::instance()->sceneManager();
+  _ogreSceneMgr = _sgh->sceneManager();
 
   sst.str("");
   sst << "Camera " << _index;
@@ -204,10 +213,9 @@ void QtOgreWindow::initialize()
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-  SceneGraphHandler::instance()->initialise();
+  _sgh->initialise();
 
   _ogreRoot->addFrameListener(this);
-  // setWindowTitle(QString::fromStdString(_windowConfiguration->name));
   setTitle(QString::fromStdString(_windowConfiguration->name));
 }
 
@@ -235,7 +243,6 @@ void QtOgreWindow::render()
   if(_windowConfiguration->osdElapsedTime)
   {
   }
-
 }
 
 void QtOgreWindow::renderLater()
@@ -406,6 +413,49 @@ void QtOgreWindow::setAnimating(bool animating)
 
   if (animating)
     renderLater();
+}
+
+void QtOgreWindow::osd()
+{
+  mLOCK;
+  if(_textOverlay != NULL)
+  {
+    if(_captureRunning)
+    {
+      cout << "1. QtOgreWindow " << getpid() << " " <<  pthread_self() << " " << QThread::currentThreadId() << endl;
+      _textOverlay->setText("stats","");
+    }
+    else
+    {
+      cout << "2. QtOgreWindow " << getpid() << " " <<  pthread_self() << " " << QThread::currentThreadId() << endl;
+
+      _fps++;
+      _currentTime = Timer::getUTime();
+      if(_currentTime > _lastTime + 500)
+      {
+        int step = __YARS_GET_CONTINOUS_STEP;
+
+        yReal rt   = (yReal)(step - _lastStep) / ((yReal)__YARS_GET_SIMULATOR_FREQUENCY);
+        // yReal f    = (yReal)_fps;
+        yReal diff = 1000.0/((yReal)(_currentTime - _lastTime));
+
+        // f  =  f * diff;
+        rt = rt * diff;
+        _fpsString.str("");
+
+        _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
+        _textOverlay->setText("stats", _fpsString.str());
+        _lastTime = _currentTime;
+        _lastStep = step;
+        _fps = 0;
+      }
+    }
+  }
+  else
+  {
+    setupOSD();
+  }
+  mUNLOCK;
 }
 
 bool QtOgreWindow::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -745,39 +795,38 @@ void QtOgreWindow::__updateCamData()
 }
 
 
-// void QtOgreWindow::setupOSD()
-// {
+void QtOgreWindow::setupOSD()
+{
+  Colour osdColour = _data->osdTimeFontColour();
+  string osdFont = _data->osdTimeFontName();
 
-  // Colour osdColour = _data->osdTimeFontColour();
-  // string osdFont = _data->osdTimeFontName();
+  _textOverlay  = new TextOverlay(_index);
 
-  // _textOverlay  = new TextOverlay(_index);
+  stringstream oss;
+  oss.str("");
+  oss << _data->osdTimeFontSize();
+  _textOverlay->addTextBox("time", "00d:00h:00m:00s", 10, 10,  100, 20,
+                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           osdFont, oss.str());
 
-  // stringstream oss;
-  // oss.str("");
-  // oss << _data->osdTimeFontSize();
-  // _textOverlay->addTextBox("time", "00d:00h:00m:00s", 10, 10,  100, 20,
-                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-                           // osdFont, oss.str());
+  _textOverlay->addTextBox("stats", "", 10, 40,  100, 20,
+                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           osdFont, "16");
 
-  // _textOverlay->addTextBox("stats", "", 10, 40,  100, 20,
-                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-                           // osdFont, "16");
+  osdColour = _data->osdRobotFontColour();
+  osdFont = _data->osdRobotFontName();
+  oss.str("");
+  oss << _data->osdRobotFontSize();
 
-  // osdColour = _data->osdRobotFontColour();
-  // osdFont = _data->osdRobotFontName();
-  // oss.str("");
-  // oss << _data->osdRobotFontSize();
+  _textOverlay->addTextBox("robot", "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
+                           _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
+                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                           osdFont, oss.str());
 
-  // _textOverlay->addTextBox("robot", "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
-                           // _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
-                           // Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-                           // osdFont, oss.str());
-
-  // Ogre::Real x = _viewport->getActualWidth() - 140;
-  // Ogre::Real y = 10;
-  // _textOverlay->addTextBox("legend",
-                           // "^0YARS, Zahedi", x, y, 15, 10,
-                           // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
-                           // "Legend", "24");
-// }
+  Ogre::Real x = _viewport->getActualWidth() - 140;
+  Ogre::Real y = 10;
+  _textOverlay->addTextBox("legend",
+                           "^0YARS, Zahedi", x, y, 15, 10,
+                           Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
+                           "Legend", "24");
+}
