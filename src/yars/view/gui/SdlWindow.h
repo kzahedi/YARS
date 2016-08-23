@@ -2,17 +2,17 @@
 #define __SDL_WINDOW_H__
 
 #include <OGRE/Ogre.h>
-#include "util/Observable.h"
-#include "util/ObservableMessage.h"
+#include <yars/util/Observable.h>
+#include <yars/util/ObservableMessage.h>
 #include "GuiMutex.h"
 
-#include "configuration/data/Data.h"
+#include <yars/configuration/data/Data.h>
 
-#include "view/gui/CameraHandler.h"
-#include "view/gui/WindowConfiguration.h"
-#include "view/gui/SceneGraph.h"
-#include "view/gui/TextOverlay.h"
-#include "view/gui/OgreHandler.h"
+#include <yars/view/gui/CameraHandler.h>
+#include <yars/view/gui/WindowConfiguration.h>
+#include <yars/view/gui/SceneGraph.h>
+#include <yars/view/gui/TextOverlay.h>
+#include <yars/view/gui/OgreHandler.h>
 
 #include "SDL2/SDL.h"
 
@@ -35,6 +35,9 @@ class SdlWindow : public Observable
     void step();
     void handleEvent(SDL_Event &event);
     bool visible();
+    void wait();
+    bool added();
+    void setAdded();
 
     void captureVideo();
 #ifdef USE_CAPTURE_VIDEO
@@ -59,6 +62,8 @@ class SdlWindow : public Observable
     void __previousFollowable();
     void __captureImageFrame();
     void __initRenderFrame();
+    void __handleFingerUp(SDL_Event &event);
+    void __handleFingerDown(SDL_Event &event);
 
 #ifdef USE_CAPTURE_VIDEO
     void __toggleCaptureMovie();
@@ -124,6 +129,7 @@ class SdlWindow : public Observable
     Uint32               _windowID;
     SDL_Window*          _sdlWindow;
     bool                 _visible;
+    bool                 _added;
 };
 
 #endif // __SDL_WINDOW_H__

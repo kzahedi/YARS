@@ -41,6 +41,9 @@ class YarsViewModel : public Observable, public Observer
     bool                    _toggleVideo;
     OgreHandler            *_ogreHandler;
     SDL_Event               _event;
+    unsigned long           _timeStamp;
+    int                     _first;
+    int                     _last;
 };
 
 #endif // __YARS_VIEW_MODEL_H__

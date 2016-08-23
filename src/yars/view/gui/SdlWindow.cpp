@@ -77,7 +77,8 @@ using namespace _SDL_;
 using namespace std;
 
 SdlWindow::SdlWindow(int index)
-  : _visible(false)
+  : _visible(false),
+    _added(false)
 {
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
@@ -122,13 +123,13 @@ SdlWindow::SdlWindow(int index)
   // stringstream oss;
   // oss << "StreamTex " << _index;
   // _renderTexture = Ogre::TextureManager::getSingleton().createManual(oss.str(),
-      // Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-      // Ogre::TEX_TYPE_2D,
-      // _window->getWidth(),
-      // _window->getHeight(),
-      // 0,
-      // Ogre::PF_B8G8R8A8,
-      // Ogre::TU_RENDERTARGET);
+  // Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+  // Ogre::TEX_TYPE_2D,
+  // _window->getWidth(),
+  // _window->getHeight(),
+  // 0,
+  // Ogre::PF_B8G8R8A8,
+  // Ogre::TU_RENDERTARGET);
 
   // _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   // _pRenderTex->addViewport(_camera);
@@ -138,7 +139,22 @@ SdlWindow::SdlWindow(int index)
   // vp->setBackgroundColour(Ogre::ColourValue::Black);
   // vp->setOverlaysEnabled(true);
 
-  _visible = true;
+}
+
+void SdlWindow::wait()
+{
+  SDL_Event event;
+  while(SDL_PollEvent(&event) && _visible == false)
+  {
+    if(event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SHOWN)
+    {
+      _visible = true;
+    }
+    cout << event.type << " == " << SDL_WINDOWEVENT << " && " <<
+      event.window.event << " == " << SDL_WINDOWEVENT_SHOWN << " -> " << _visible << endl;
+    usleep(100);
+    if(_visible == true) return;
+  }
 }
 
 void SdlWindow::step()
@@ -282,6 +298,9 @@ void SdlWindow::handleEvent(SDL_Event &event)
     case SDL_WINDOWEVENT:
       switch (event.window.event)
       {
+        case SDL_WINDOWEVENT_SHOWN:
+          _visible = true;
+          break;
         case SDL_WINDOWEVENT_RESIZED:
           _window->resize(event.window.data1, event.window.data2);
           _window->windowMovedOrResized();
@@ -294,6 +313,13 @@ void SdlWindow::handleEvent(SDL_Event &event)
           if(_index == 0) _textOverlay->setPosition(_legendString, x, y);
           break;
       }
+      // case SDL_MULTIGESTURE:
+    case SDL_FINGERUP:
+      __handleFingerUp(event);
+      // case SDL_FINGERMOTION:
+    case SDL_FINGERDOWN:
+      __handleFingerDown(event);
+      break;
   }
 }
 
@@ -306,6 +332,7 @@ SdlWindow::~SdlWindow()
 void SdlWindow::__setupSDL()
 {
   SDL_Init( SDL_INIT_EVERYTHING );
+  SDL_RecordGesture(-1);
 
   if(__YARS_GET_USE_WINDOW_GEOMETRY)
   {
@@ -418,6 +445,7 @@ void SdlWindow::__setupSDL()
   _viewport->setBackgroundColour(fadeColour);
 
   _windowID = SDL_GetWindowID(_sdlWindow);
+  cout << "SDL done" << endl;
 }
 
 
@@ -864,4 +892,40 @@ void SdlWindow::stopCaptureVideo()
 bool SdlWindow::visible()
 {
   return _visible;
+}
+
+void SdlWindow::__handleFingerUp(SDL_Event &event)
+{
+  //Rotation detected
+  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  // {
+    // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // }
+  // if( fabs( event.mgesture.dDist ) > 0.002 )
+  // {
+    // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // }
+}
+
+void SdlWindow::__handleFingerDown(SDL_Event &event)
+{
+  //Rotation detected
+  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  // {
+    // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // }
+  // if( fabs( event.mgesture.dDist ) > 0.002 )
+  // {
+    // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // }
+}
+
+void SdlWindow::setAdded()
+{
+  _added = true;
+}
+
+bool SdlWindow::added()
+{
+  return _added;
 }
