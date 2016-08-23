@@ -21,8 +21,9 @@
 #define __M_TOGGLE_SYNCED_GUI           305
 #define __M_TOGGLE_SHADOWS              306
 #define __M_TOGGLE_CAPTURE_VIDEO        307
-#define __M_TOGGLE_CAPTURE_FRAME        308
-#define __M_OPEN_NEW_WINDOW             309
+#define __M_TOGGLE_CAPTURE_FRAME        309
+#define __M_OPEN_NEW_WINDOW             310
+#define __M_AUTO_TOGGLE_CAPTURE_VIDEO   311
 
 #define __M_QUIT_CALLED                 500
 #define __M_QUIT_GUI_CALLED             501
@@ -91,6 +92,7 @@ static ObservableMessage *_m_error                    = new ObservableMessage("e
 static ObservableMessage *_m_newWindow                = new ObservableMessage("new window",                          __M_NEW_WINDOW);
 static ObservableMessage *_m_toggleShadow             = new ObservableMessage("toggle Shadows",                      __M_TOGGLE_SHADOWS);
 static ObservableMessage *_m_toggleCaptureVideo       = new ObservableMessage("toggle capture video",                __M_TOGGLE_CAPTURE_VIDEO);
+static ObservableMessage *_m_autoToggleCaptureVideo   = new ObservableMessage("auto toggle capture video",           __M_AUTO_TOGGLE_CAPTURE_VIDEO);
 static ObservableMessage *_m_toggleCaptureFrame       = new ObservableMessage("toggle capture frames",               __M_TOGGLE_CAPTURE_FRAME);
 static ObservableMessage *_m_openNewWindow            = new ObservableMessage("open new window",                     __M_OPEN_NEW_WINDOW);
 

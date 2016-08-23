@@ -150,8 +150,6 @@ void SdlWindow::wait()
     {
       _visible = true;
     }
-    cout << event.type << " == " << SDL_WINDOWEVENT << " && " <<
-      event.window.event << " == " << SDL_WINDOWEVENT_SHOWN << " -> " << _visible << endl;
     usleep(100);
     if(_visible == true) return;
   }
@@ -352,6 +350,7 @@ void SdlWindow::__setupSDL()
                               _windowConfiguration->geometry.height(),
                               SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
+
   if ( _sdlWindow == NULL ) {
     printf( "SDL_CreateWindow failed: %s\n", SDL_GetError() );
     return;
@@ -416,7 +415,7 @@ void SdlWindow::__setupSDL()
       false,
       &params);
 
-  // _window->setActive(true);
+  _window->setActive(true);
 
   // NOTE: since we are driving with SDL, we need to keep the Ogre side updated for window visibility
   _window->setVisible( true );
@@ -445,7 +444,6 @@ void SdlWindow::__setupSDL()
   _viewport->setBackgroundColour(fadeColour);
 
   _windowID = SDL_GetWindowID(_sdlWindow);
-  cout << "SDL done" << endl;
 }
 
 
@@ -534,14 +532,14 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
     case YarsKeyFunction::PrintViewPoint:
       ConsoleView::printViewpoint(_windowConfiguration->cameraPosition, _windowConfiguration->cameraLookAt);
       break;
-#ifdef USE_CAPTURE_VIDEO
-    case YarsKeyFunction::CaptureVideo:
-      __toggleCaptureMovie();
-      break;
-#endif // USE_CAPTURE_VIDEO
-    case YarsKeyFunction::WriteFrames:
-      __toggleWriteFrames();
-      break;
+// #ifdef USE_CAPTURE_VIDEO
+    // case YarsKeyFunction::CaptureVideo:
+      // __toggleCaptureMovie();
+      // break;
+// #endif // USE_CAPTURE_VIDEO
+    // case YarsKeyFunction::WriteFrames:
+      // __toggleWriteFrames();
+      // break;
     // case YarsKeyFunction::VisualiseAxes:
       // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
       // break;
@@ -612,7 +610,6 @@ void SdlWindow::__nextFollowable()
 
 void SdlWindow::__previousFollowMode()
 {
-  cout << "previous follow mode" << endl;
   _cameraHandler->previousFollowMode();
   if(_windowConfiguration->useFollow)
   {
@@ -678,7 +675,7 @@ void SdlWindow::__initMovie()
   uint height = _viewport->getActualHeight();
   oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;
   _mov = quicktime_open(oss.str().c_str(),0,1);
-  cout << (char*)__YARS_GET_VIDEO_CODEC.c_str() << endl;
+  // cout << (char*)__YARS_GET_VIDEO_CODEC.c_str() << endl;
   lqt_codec_info_t **codec = lqt_find_video_codec((char*)__YARS_GET_VIDEO_CODEC.c_str(),1);
   if(codec == NULL)
   {
@@ -880,11 +877,13 @@ void SdlWindow::toggleShadows()
 #ifdef USE_CAPTURE_VIDEO
 void SdlWindow::startCaptureVideo()
 {
+  _captureRunning = true;
   __initMovie();
 }
 
 void SdlWindow::stopCaptureVideo()
 {
+  _captureRunning = false;
   __closeMovie();
 }
 #endif // USE_CAPTURE_VIDEO

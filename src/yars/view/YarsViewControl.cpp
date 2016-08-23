@@ -48,7 +48,8 @@ void YarsViewControl::notify(ObservableMessage *message)
     case __M_TOGGLE_SHADOWS:
       _model->toggleShadows();
       break;
-      case __M_TOGGLE_CAPTURE_VIDEO:
+    case __M_AUTO_TOGGLE_CAPTURE_VIDEO:
+    case __M_TOGGLE_CAPTURE_VIDEO:
       _model->toggleCaptureVideo();
       break;
   }

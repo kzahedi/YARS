@@ -35,8 +35,8 @@ void RuntimeControl::notify(ObservableMessage *m)
     case __M_NEXT_STEP:
 
 #ifdef USE_CAPTURE_VIDEO
-      if(_captureRunning == true  && _recording->record() == false) notifyObservers(_m_toggleCaptureVideo);
-      if(_captureRunning == false && _recording->record() == true)  notifyObservers(_m_toggleCaptureVideo);
+      if(_captureRunning == true  && _recording->record() == false) notifyObservers(_m_autoToggleCaptureVideo);
+      if(_captureRunning == false && _recording->record() == true)  notifyObservers(_m_autoToggleCaptureVideo);
       _captureRunning = _recording->record();
 #endif // USE_CAPTURE_VIDEO
 

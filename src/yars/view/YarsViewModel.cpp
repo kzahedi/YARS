@@ -74,13 +74,6 @@ void YarsViewModel::__createWindow()
 {
   SdlWindow *wm = new SdlWindow(_windowManager.size());
   wm->addObserver(this);
-#ifdef USE_CAPTURE_VIDEO
-  if(wm->captureRunning())
-  {
-    _sync       = true;
-    _syncedStep = true;
-  }
-#endif // USE_CAPTURE_VIDEO
   _windowManager.push_back(wm);
 }
 
@@ -140,23 +133,14 @@ void YarsViewModel::run()
 #ifdef USE_CAPTURE_VIDEO
         if(_toggleVideo == true)
         {
-          _toggleVideo = false;
-          FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
+          FOREACH(SdlWindow*, i, _windowManager) (*i)->captureVideo();
         }
-        FOREACH(SdlWindow*, i, _windowManager) (*i)->captureVideo();
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
       }
     }
     else
     {
-#ifdef USE_CAPTURE_VIDEO
-      if(_toggleVideo == true)
-      {
-        _toggleVideo = false;
-        FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
-      }
-#endif // USE_CAPTURE_VIDEO
       visualiseScene();
     }
 
@@ -185,6 +169,18 @@ void YarsViewModel::toggleShadows()
 
 void YarsViewModel::toggleCaptureVideo()
 {
+  cout << "sync: " << _sync << endl;
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
+
+  cout << "sync: " << _sync << endl;
+
+  if(_toggleVideo == true)
+  {
+    FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
+  }
+  else
+  {
+    FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
+  }
 }
