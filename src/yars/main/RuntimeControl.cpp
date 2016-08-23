@@ -6,9 +6,6 @@
 #ifdef _WIN32
 #endif // _WIN32
 
-#include <QThread>
-#include <pthread.h>
-
 
 RuntimeControl::RuntimeControl()
 {
@@ -25,8 +22,6 @@ RuntimeControl::~RuntimeControl()
 
 void RuntimeControl::notify(ObservableMessage *m)
 {
-  // cout << "RuntimeControl " << getpid() << " " <<  pthread_self() << " " << QThread::currentThreadId() << endl;
-
   switch(m->type())
   {
     case __M_RESET:

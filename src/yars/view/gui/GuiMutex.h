@@ -3,14 +3,12 @@
 
 #include <yars/defines/mutex.h>
 
-#define LOCK       GuiMutex::lock()
-#define UNLOCK     GuiMutex::unlock()
+// #define LOCK       GuiMutex::lock()
+// #define UNLOCK     GuiMutex::unlock()
 
-// #define mLOCK   GuiMutex::lock(__FILE__,__LINE__)
-// #define mUNLOCK GuiMutex::unlock(__FILE__,__LINE__)
+#define LOCK   GuiMutex::lock(__FILE__,__LINE__)
+#define UNLOCK GuiMutex::unlock(__FILE__,__LINE__)
 
-#define mLOCK   LOCK
-#define mUNLOCK UNLOCK
 
 #include <string>
 

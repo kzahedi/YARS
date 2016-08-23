@@ -1,44 +1,37 @@
-set(GUI_HDRS
-  QtOgreWindow.h
-  WindowConfigurationDialog.h)
+set(GUI_SOURCES SdlWindow.cpp
+                SceneGraph.cpp
+                SceneGraphRobotNode.cpp
+                SceneGraphObjectFactory.cpp
+                SceneGraphCapsuleNode.cpp
+                SceneGraphCylinderNode.cpp
+                SceneGraphSphereNode.cpp
+                SceneGraphLightSourceNode.cpp
+                SceneGraphObjectNode.cpp
+                SceneGraphBoxNode.cpp
+                SceneGraphEnvironmentNode.cpp
+                SceneGraphTraceLineObject.cpp
+                SceneGraphProximitySensor.cpp
+                SceneGraphLDRSensor.cpp
+                SceneGraphJointAxisVisualisationNode.cpp
+                SceneGraphSoftPlyNode.cpp
+                TextOverlay.cpp
+                ColoredTextAreaOverlayElement.cpp
+                OgreHandler.cpp
+                KeyHandler.cpp
+                FollowCamera.cpp
+                GuiMutex.cpp
+                CameraFactory.cpp
+                OffsetCam.cpp
+                CameraHandler.cpp
+                OrbitCam.cpp
+                CenterOrbitCam.cpp
+                TripodCam.cpp
+                WindowConfiguration.cpp)
 
-QT5_WRAP_CPP(qtview_MOC_SRCS ${GUI_HDRS})
+set(GUI_SOURCES ${GUI_SOURCES} SceneGraphMeshNode.cpp SceneGraphPlyNode.cpp)
 
-set(GUI_SOURCES
-  QtOgreWindow.cpp
-  SceneGraph.cpp
-  SceneGraphRobotNode.cpp
-  SceneGraphObjectFactory.cpp
-  SceneGraphCapsuleNode.cpp
-  SceneGraphCylinderNode.cpp
-  SceneGraphSphereNode.cpp
-  SceneGraphLightSourceNode.cpp
-  SceneGraphObjectNode.cpp
-  SceneGraphBoxNode.cpp
-  SceneGraphEnvironmentNode.cpp
-  SceneGraphTraceLineObject.cpp
-  SceneGraphProximitySensor.cpp
-  SceneGraphLDRSensor.cpp
-  SceneGraphJointAxisVisualisationNode.cpp
-  SceneGraphSoftPlyNode.cpp
-  TextOverlay.cpp
-  GuiMutex.cpp
-  ColoredTextAreaOverlayElement.cpp
-  SceneGraphHandler.cpp
-  KeyHandler.cpp
-  FollowCamera.cpp
-  CameraFactory.cpp
-  OffsetCam.cpp
-  CameraHandler.cpp
-  OrbitCam.cpp
-  CenterOrbitCam.cpp
-  TripodCam.cpp
-  WindowConfiguration.cpp
-  WindowConfigurationDialog.cpp
-  SceneGraphMeshNode.cpp
-  SceneGraphPlyNode.cpp)
-
-add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} ${qtview_MOC_SRCS})
-qt5_use_modules(YarsGUI Core Gui Widgets OpenGL)
-
-
+if(APPLE)
+  add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} OSX_wrap.mm)
+else(APPLE)
+  add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
+endif(APPLE)

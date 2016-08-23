@@ -3,10 +3,9 @@
 
 #include "util/Observable.h"
 #include "console/ConsoleView.h"
-#include "view/gui/SceneGraphHandler.h"
-// #include "gui/QtWindowHandler.h"
-#include "gui/QtOgreWindow.h"
-// #include "gui/SdlWindow.h"
+#include "view/gui/OgreHandler.h"
+#include "gui/SdlWindow.h"
+#include "SDL2/SDL.h"
 
 class YarsViewModel : public Observable, public Observer
 {
@@ -20,31 +19,28 @@ class YarsViewModel : public Observable, public Observer
 
     void quit();
     void notify(ObservableMessage *m);
-    // void run();
+    void run();
     void synched();
     void toggleShadows();
     void toggleCaptureVideo();
-    void toggleCaptureFrames();
     void createNewWindow();
-
 
   private:
     void __initialiseFollowable();
     void __removeClosedWindows();
+    void __newWindow();
+    void __createWindow();
 
-    std::vector<QtOgreWindow*> _windowManager;
-
-    int                _drawFequency;
-    int                _visualiseCalled;
-    bool               _run;
-    bool               _sync;
-    bool               _syncedStep;
-    bool               _toggleVideo;
-    bool               _toggleFrames;
-    SceneGraphHandler* _ogreHandler;
-    Ogre::Root*        _root;
-    pthread_mutex_t    _mutex;
-
+    std::vector<SdlWindow*> _windowManager;
+    std::vector<SdlWindow*> _newWindows;
+    int                     _drawFequency;
+    int                     _visualiseCalled;
+    bool                    _run;
+    bool                    _sync;
+    bool                    _syncedStep;
+    bool                    _toggleVideo;
+    OgreHandler            *_ogreHandler;
+    SDL_Event               _event;
 };
 
 #endif // __YARS_VIEW_MODEL_H__

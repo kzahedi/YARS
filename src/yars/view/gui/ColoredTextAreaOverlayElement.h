@@ -1,7 +1,6 @@
 #include <vector>
 #include <OgreOverlay/OgreTextAreaOverlayElement.h>
 
-
 class ColoredTextAreaOverlayElement : public Ogre::TextAreaOverlayElement
 {
   public:

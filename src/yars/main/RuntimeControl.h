@@ -27,9 +27,9 @@ class RuntimeControl : public Observer, public Observable
     void notify(ObservableMessage *message);
   private:
 
-    Data*          _data;
-    Timer*         _timer;
-    DataRecording* _recording;
+    Data  *_data;
+    Timer *_timer;
+    DataRecording *_recording;
     bool           _captureRunning;
 
 };

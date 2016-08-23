@@ -10,12 +10,12 @@ FollowCamera::FollowCamera(WindowConfiguration *c, string name)
 
 void FollowCamera::moveCamera(P3D offset)
 {
-  // configuration->cameraPosition += offset;
+  configuration->cameraPosition += offset;
 }
 
 void FollowCamera::setCamera(P3D position, P3D angles)
 {
-  // configuration->cameraPosition = position;
+  configuration->cameraPosition = position;
 }
 
 void FollowCamera::updateFollowablePosition()
@@ -32,12 +32,12 @@ void FollowCamera::updatePositionOffset()
 {
   P3D x;
   x = followable->pose().position;
-  // positionOffset = configuration->cameraPosition - x;
+  positionOffset = configuration->cameraPosition - x;
 }
 
 void FollowCamera::setPosition(P3D position)
 {
-  // configuration->cameraPosition = position;
+  configuration->cameraPosition = position;
 }
 
 void FollowCamera::name(string *name)

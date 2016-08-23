@@ -1,7 +1,6 @@
 #ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_FACTORY_H__
 #define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_FACTORY_H__
 
-
 #include <OgreOverlay/OgreOverlayElementFactory.h>
 #include "view/gui/ColoredTextAreaOverlayElement.h"
 

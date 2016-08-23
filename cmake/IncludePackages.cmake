@@ -28,45 +28,35 @@ if(BULLET_FOUND)
   include_directories(${BULLET_INCLUDE_DIR})
 endif(BULLET_FOUND)
 
+if(YARS_DOCS)
+  find_package(LATEX)
+endif(YARS_DOCS)
+
 IF(YARS_USE_VISUALISATION)
+
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  find_package(Ogre REQUIRED Overlay Plugin_ParticleFX RenderSystem_GL)
+  find_package(OGRE REQUIRED Overlay Plugin_ParticleFX RenderSystem_GL)
+
   # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
     # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone
     # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
-  include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
-  include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
-  link_directories(/usr/local/lib/)
+  # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
+  # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
 
-  find_package(Qt5Widgets)
-  set(CMAKE_AUTOMOC OFF)
-  set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-  # Add the include directories for the Qt 5 Widgets module to
-  # the compile lines.
-  # include_directories(${Qt5Widgets_INCLUDE_DIRS})
-
-  # Use the compile definitions defined in the Qt 5 Widgets module
-  # add_definitions(${Qt5Widgets_DEFINITIONS})
-
-  # Add compiler flags for building executables (-fPIE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-
-  # find_package(Qt5 5.6.1)
-  # if(NOT QT5_FOUND)
-    # message("Qt5 not found")
-  # endif(NOT QT5_FOUND)
-  # include_directories(${QT_INCLUDE_DIR})
-  # link_libraries(${QT_LIBRARIES})
+  # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
+    # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone
+    # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
+  # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
+  # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
+  # message(${OGRE_Overlay_INCLUDE_DIRS}/OgreOverlay)
 
   if(UNIX AND NOT APPLE)
     # for ogre
     add_definitions(-pthread -D_FORTIFY_SOURCE=2)
-    include_directories(/usr/local/include /usr/include/freetype2 /usr/include/libdrm)
+    include_directories(/usr/local/include /usr/local/include/OGRE /usr/include/freetype2 /usr/include/libdrm)
   endif(UNIX AND NOT APPLE)
-
 ENDIF(YARS_USE_VISUALISATION)
 
 if(YARS_TESTCASES)
@@ -76,6 +66,7 @@ if(YARS_TESTCASES)
     link_directories(${UNITTEST++_LIBRARY_DIR})
   ENDIF(UNITTEST++_FOUND)
 endif(YARS_TESTCASES)
+
 
 if(NOT Boost_FOUND)
   set(stop TRUE)
@@ -89,6 +80,10 @@ IF(YARS_USE_VISUALISATION)
   if(NOT SDL2_FOUND)
     set(stop TRUE)
   endif(NOT SDL2_FOUND)
+  # if(NOT OGRE_FOUND)
+    # set(stop TRUE)
+    # MESSAGE("\nOGRE not found")
+  # endif(NOT OGRE_FOUND)
 ENDIF(YARS_USE_VISUALISATION)
 
 if(NOT BULLET_FOUND)

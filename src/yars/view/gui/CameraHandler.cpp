@@ -60,13 +60,6 @@ void CameraHandler::previousFollowMode()
   __CURRENT_CAM->init(_followable, __CURRENT_DATA);
 }
 
-void CameraHandler::adapt()
-{
-  if(_followable == NULL) return;
-  cout << " adapt called" << endl;
-  __CURRENT_CAM->init(_followable, __CURRENT_DATA);
-}
-
 void CameraHandler::reset()
 {
   _lastGeomPosition                            = 0.0;

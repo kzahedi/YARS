@@ -78,13 +78,14 @@ if(YARS_USE_VISUALISATION)
       # zzip freeimage freetype GLEW)
     # Plugin_CgProgramManagerStatic
   endif(UNIX AND NOT APPLE)
+  target_link_libraries(${YARS_TARGET} SDL2)
 
   # message("Ogre: ${OGRE_LIBRARIES}")
   # target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
 
   if(APPLE)
     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
-      "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre")
+      "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre -framework Cocoa")
   endif(APPLE)
 
 endif(YARS_USE_VISUALISATION)
