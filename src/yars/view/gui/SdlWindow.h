@@ -38,6 +38,7 @@ class SdlWindow : public Observable
     void wait();
     bool added();
     void setAdded();
+    bool closed();
 
     void captureVideo();
 #ifdef USE_CAPTURE_VIDEO
@@ -130,6 +131,7 @@ class SdlWindow : public Observable
     SDL_Window*          _sdlWindow;
     bool                 _visible;
     bool                 _added;
+    bool                 _closed;
 };
 
 #endif // __SDL_WINDOW_H__

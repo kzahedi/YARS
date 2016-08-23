@@ -96,6 +96,7 @@ SdlWindow::SdlWindow(int index)
   _imgCaptureRunning    = false;
   _imgCaptureFrameIndex = 0;
   _followableIndex      = 0;
+  _closed               = false;
   _fps                  = 0;
   _lastTime             = 0;
   _currentTime          = 0;
@@ -299,6 +300,10 @@ void SdlWindow::handleEvent(SDL_Event &event)
         case SDL_WINDOWEVENT_SHOWN:
           _visible = true;
           break;
+        // case SDL_WINDOWEVENT_CLOSE:
+          // _closed = true;
+          // notifyObservers(_m_closeWindow);
+          // break;
         case SDL_WINDOWEVENT_RESIZED:
           _window->resize(event.window.data1, event.window.data2);
           _window->windowMovedOrResized();
@@ -323,6 +328,8 @@ void SdlWindow::handleEvent(SDL_Event &event)
 
 SdlWindow::~SdlWindow()
 {
+  cout << "destructor" << endl;
+  SDL_DestroyWindow(_sdlWindow);
   // SDL_Quit();
 }
 
@@ -526,51 +533,51 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
   switch(KeyHandler::instance()->handleKeyEvent(alt, cmd, shift, chr))
   {
     // case YarsKeyFunction::Quit:
-      // close();
-      // notifyObservers(_m_quit_called);
-      // break;
+    // close();
+    // notifyObservers(_m_quit_called);
+    // break;
     case YarsKeyFunction::PrintViewPoint:
       ConsoleView::printViewpoint(_windowConfiguration->cameraPosition, _windowConfiguration->cameraLookAt);
       break;
-// #ifdef USE_CAPTURE_VIDEO
-    // case YarsKeyFunction::CaptureVideo:
+      // #ifdef USE_CAPTURE_VIDEO
+      // case YarsKeyFunction::CaptureVideo:
       // __toggleCaptureMovie();
       // break;
-// #endif // USE_CAPTURE_VIDEO
-    // case YarsKeyFunction::WriteFrames:
+      // #endif // USE_CAPTURE_VIDEO
+      // case YarsKeyFunction::WriteFrames:
       // __toggleWriteFrames();
       // break;
-    // case YarsKeyFunction::VisualiseAxes:
+      // case YarsKeyFunction::VisualiseAxes:
       // _windowConfiguration->visualiseAxes = !_windowConfiguration->visualiseAxes;
       // break;
-    // case YarsKeyFunction::OpenNewWindow:
+      // case YarsKeyFunction::OpenNewWindow:
       // __openNewWindow();
       // break;
-    // case YarsKeyFunction::SetWindowTitle:
+      // case YarsKeyFunction::SetWindowTitle:
       // __openWindowTitleDialog();
       // break;
-    // case YarsKeyFunction::ShowWindowConfigurationDialog:
+      // case YarsKeyFunction::ShowWindowConfigurationDialog:
       // __showDialog();
       // break;
-    // case YarsKeyFunction::SetWindowSize:
+      // case YarsKeyFunction::SetWindowSize:
       // __setWindowSize();
       // break;
-    // case YarsKeyFunction::OnScreenDisplay_FramesPerSecond:
+      // case YarsKeyFunction::OnScreenDisplay_FramesPerSecond:
       // _windowConfiguration->osdFramePerSecond = !_windowConfiguration->osdFramePerSecond;
       // break;
-    // case YarsKeyFunction::OnScreenDisplay_ElapsedTime:
+      // case YarsKeyFunction::OnScreenDisplay_ElapsedTime:
       // _windowConfiguration->osdElapsedTime = !_windowConfiguration->osdElapsedTime;
       // break;
-    // case YarsKeyFunction::OnScreenDisplay:
+      // case YarsKeyFunction::OnScreenDisplay:
       // _windowConfiguration->onScreenDisplay = !_windowConfiguration->onScreenDisplay;
       // break;
-    // case YarsKeyFunction::ToggleTextures:
+      // case YarsKeyFunction::ToggleTextures:
       // _windowConfiguration->useTextures = !_windowConfiguration->useTextures;
       // break;
     case YarsKeyFunction::ToggleFollowMode:
       __toggleFollowing();
       break;
-    // case YarsKeyFunction::ToggleTraces:
+      // case YarsKeyFunction::ToggleTraces:
       // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
       // break;
     case YarsKeyFunction::PreviousFollowable:
@@ -927,4 +934,9 @@ void SdlWindow::setAdded()
 bool SdlWindow::added()
 {
   return _added;
+}
+
+bool SdlWindow::closed()
+{
+  return _closed;
 }

@@ -21,8 +21,9 @@
 #define __M_TOGGLE_SYNCED_GUI           305
 #define __M_TOGGLE_SHADOWS              306
 #define __M_TOGGLE_CAPTURE_VIDEO        307
-#define __M_TOGGLE_CAPTURE_FRAME        309
-#define __M_OPEN_NEW_WINDOW             310
+#define __M_TOGGLE_CAPTURE_FRAME        308
+#define __M_OPEN_NEW_WINDOW             309
+#define __M_CLOSE_WINDOW                310
 #define __M_AUTO_TOGGLE_CAPTURE_VIDEO   311
 
 #define __M_QUIT_CALLED                 500
@@ -90,6 +91,7 @@ static ObservableMessage *_m_quit_gui_called          = new ObservableMessage("q
 static ObservableMessage *_m_signal_handler_activated = new ObservableMessage("signal handler was called",           __M_SIGNAL_HANDLER_ACTIVATED);
 static ObservableMessage *_m_error                    = new ObservableMessage("error",                               __M_ERROR);
 static ObservableMessage *_m_newWindow                = new ObservableMessage("new window",                          __M_NEW_WINDOW);
+static ObservableMessage *_m_closeWindow              = new ObservableMessage("close window",                        __M_CLOSE_WINDOW);
 static ObservableMessage *_m_toggleShadow             = new ObservableMessage("toggle Shadows",                      __M_TOGGLE_SHADOWS);
 static ObservableMessage *_m_toggleCaptureVideo       = new ObservableMessage("toggle capture video",                __M_TOGGLE_CAPTURE_VIDEO);
 static ObservableMessage *_m_autoToggleCaptureVideo   = new ObservableMessage("auto toggle capture video",           __M_AUTO_TOGGLE_CAPTURE_VIDEO);

@@ -24,10 +24,10 @@ class YarsViewModel : public Observable, public Observer
     void toggleShadows();
     void toggleCaptureVideo();
     void createNewWindow();
+    void cleanupWindows();
 
   private:
     void __initialiseFollowable();
-    void __removeClosedWindows();
     void __newWindow();
     void __createWindow();
 
