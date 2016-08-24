@@ -6,14 +6,14 @@
 #include "types/P3D.h"
 
 
-class CameraHandler
+class CameraMan
 {
   public:
-    CameraHandler(WindowConfiguration *windowConfiguration);
+    CameraMan(WindowConfiguration *windowConfiguration);
     void nextFollowMode();
     void previousFollowMode();
     void follow(DataObject *followable);
-    void update();
+    void update(P3D velo);
     void reset();
 
   private:

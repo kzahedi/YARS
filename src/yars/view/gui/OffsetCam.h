@@ -11,7 +11,7 @@ class OffsetCam : public FollowCamera
     OffsetCam(WindowConfiguration *configuration);
 
     void init(DataObject* f, DataCamera *cam);
-    void update();
+    void update(P3D vel);
     void name(string *name);
 
   private:

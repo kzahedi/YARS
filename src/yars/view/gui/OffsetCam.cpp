@@ -35,7 +35,7 @@ void OffsetCam::init(DataObject *f, DataCamera *cam)
 
 }
 
-void OffsetCam::update()
+void OffsetCam::update(P3D vel)
 {
   if(followable == NULL) return;
   updateFollowablePosition();
@@ -44,9 +44,9 @@ void OffsetCam::update()
   lookAtPosition.y = _lookAtY.update(followablePosition.y);
   lookAtPosition.z = _lookAtZ.update(followablePosition.z);
 
-  newCameraPosition.x = _fromX.update(followablePosition.x + distance.x);
-  newCameraPosition.y = _fromY.update(followablePosition.y + distance.y);
-  newCameraPosition.z = _fromZ.update(followablePosition.z + distance.z);
+  newCameraPosition.x = _fromX.update(followablePosition.x + distance.x + vel.x);
+  newCameraPosition.y = _fromY.update(followablePosition.y + distance.y + vel.y);
+  newCameraPosition.z = _fromZ.update(followablePosition.z + distance.z + vel.z);
 
   _camera->setPosition(newCameraPosition);
   _camera->setLookAt(lookAtPosition);

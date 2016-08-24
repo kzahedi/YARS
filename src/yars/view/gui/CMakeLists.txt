@@ -22,7 +22,7 @@ set(GUI_SOURCES SdlWindow.cpp
                 GuiMutex.cpp
                 CameraFactory.cpp
                 OffsetCam.cpp
-                CameraHandler.cpp
+                CameraMan.cpp
                 OrbitCam.cpp
                 CenterOrbitCam.cpp
                 TripodCam.cpp

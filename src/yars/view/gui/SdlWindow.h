@@ -8,7 +8,7 @@
 
 #include <yars/configuration/data/Data.h>
 
-#include <yars/view/gui/CameraHandler.h>
+#include <yars/view/gui/CameraMan.h>
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/TextOverlay.h>
@@ -97,7 +97,7 @@ class SdlWindow : public Observable
     DataCamera          *_camData;
     int                  _followableIndex;
     WindowConfiguration *_windowConfiguration;
-    CameraHandler       *_cameraHandler;
+    CameraMan           *_cameraMan;
     bool                 _mousePressed;
     bool                 _shiftPressed;
     bool                 _ctrlPressed;
@@ -125,8 +125,10 @@ class SdlWindow : public Observable
     Ogre::Vector3        _cpos;
     Ogre::Vector3        _cdir;
     Ogre::Vector3        _clookAt;
+    Ogre::Vector3        _cameraVelocity;
     P3D                  _ypos;
     P3D                  _ylookAt;
+    P3D                  _camVelocity;
     Uint32               _windowID;
     SDL_Window*          _sdlWindow;
     bool                 _visible;

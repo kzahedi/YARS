@@ -32,7 +32,7 @@ class FollowCamera
     yReal distXY(P3D a, P3D b);
 
     virtual void init(DataObject *f, DataCamera *cam) = 0;
-    virtual void update() = 0;
+    virtual void update(P3D currentCamVelocity) = 0;
 
   protected:
     DataObject          *followable;

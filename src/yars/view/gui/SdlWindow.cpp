@@ -27,7 +27,7 @@ using namespace _SDL_;
 
 #include "configuration/YarsConfiguration.h"
 
-#define FACTOR 0.01
+#define FACTOR 0.05
 
 #define __NO_KEY  0
 #define __CONTROL 1
@@ -82,7 +82,7 @@ SdlWindow::SdlWindow(int index)
 {
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
-  _cameraHandler        = new CameraHandler(_windowConfiguration);
+  _cameraMan            = new CameraMan(_windowConfiguration);
   _data                 = Data::instance()->current()->screens()->screen(index);
   _camData              = Data::instance()->current()->screens()->screen(index)->camera();
   _mousePressed         = false;
@@ -103,6 +103,7 @@ SdlWindow::SdlWindow(int index)
   _lastStep             = 0;
   _shadowMode           = __SHADOWTYPE_TEXTURE_ADDITIVE;
   _nextShadowMode       = __SHADOWTYPE_TEXTURE_ADDITIVE+1;
+  _cameraVelocity       = Ogre::Vector3::ZERO;
 
   __setupSDL();
   // __setScene();
@@ -192,6 +193,7 @@ void SdlWindow::step()
     }
   }
 
+
   if(_windowConfiguration->useFollow)
   {
     _cpos    = _camera->getPosition();
@@ -202,14 +204,37 @@ void SdlWindow::step()
     OGRE_TO_YARS(_clookAt, _ylookAt);
     _camData->setPosition(_ypos);
     _camData->setLookAt(_ylookAt);
-    _cameraHandler->update();
+    OGRE_TO_YARS(_cameraVelocity, _camVelocity);
+
+    _cameraMan->update(_camVelocity);
+
     YARS_TO_OGRE(_camData->position(), _cpos);
     YARS_TO_OGRE(_camData->lookAt(),   _clookAt);
     _camera->setPosition(_cpos[0], _cpos[1],    _cpos[2]);
     _camera->lookAt(_clookAt[0],   _clookAt[1], _clookAt[2]);
   }
+  else if(_cameraVelocity.length() > 0.01)
+  {
+    // cout << _cameraVelocity[0] << " " 
+      // << _cameraVelocity[1] << " " 
+      // << _cameraVelocity[2] << endl;
+
+    _camera->moveRelative(_cameraVelocity);
+
+    // HIER VELOCITY ZURUECKGEBEN
+    _cpos    = _camera->getPosition();
+    _cdir    = _camera->getDirection();
+    _clookAt = _cpos;
+    for(int i = 0; i < 3; i++) _clookAt[i] += _cdir[i];
+    OGRE_TO_YARS(_cpos, _ypos);
+    OGRE_TO_YARS(_clookAt, _ylookAt);
+    _camData->setPosition(_ypos);
+    _camData->setLookAt(_ylookAt);
+  }
+
   __osd();
 
+  _cameraVelocity *= 0.9;
 }
 
 void SdlWindow::handleEvent(SDL_Event &event)
@@ -258,34 +283,32 @@ void SdlWindow::handleEvent(SDL_Event &event)
       {
         if(_shiftPressed && _altPressed)
         {
-          _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
-                                              -event.motion.yrel * FACTOR));
+          _cameraVelocity[0] += -event.motion.xrel * FACTOR;
+          _cameraVelocity[2] += -event.motion.yrel * FACTOR;
+          // _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
+                                              // -event.motion.yrel * FACTOR));
         }
         if(_shiftPressed && !_altPressed)
         {
-          Ogre::Vector3 pos = _camera->getPosition();
-          _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
-                                              -event.motion.yrel * FACTOR));
-          Ogre::Vector3 pos2 = _camera->getPosition();
-          _camera->setPosition(pos2[0],pos[1],pos2[2]);
+          _cameraVelocity[0] += -event.motion.xrel * FACTOR;
+          _cameraVelocity[2] += -event.motion.yrel * FACTOR;
+
+          // Ogre::Vector3 pos = _camera->getPosition();
+          // _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
+                                              // -event.motion.yrel * FACTOR));
+          // Ogre::Vector3 pos2 = _camera->getPosition();
+          // _camera->setPosition(pos2[0],pos[1],pos2[2]);
         }
         if(_altPressed && !_shiftPressed)
         {
-          _camera->move(Ogre::Vector3(0.0, event.motion.yrel * FACTOR, 0.0));
+          // _camera->move(Ogre::Vector3(0.0, event.motion.yrel * FACTOR, 0.0));
+          _cameraVelocity[1] += event.motion.yrel * FACTOR;
         }
         if(_metaPressed && !_shiftPressed && !_altPressed)
         {
           _camera->yaw(Ogre::Radian(event.motion.xrel   * FACTOR));
           _camera->pitch(Ogre::Radian(event.motion.yrel * FACTOR));
         }
-        _cpos    = _camera->getPosition();
-        _cdir    = _camera->getDirection();
-        _clookAt = _cpos;
-        for(int i = 0; i < 3; i++) _clookAt[i] += _cdir[i];
-        OGRE_TO_YARS(_cpos, _ypos);
-        OGRE_TO_YARS(_clookAt, _ylookAt);
-        _camData->setPosition(_ypos);
-        _camData->setLookAt(_ylookAt);
       }
       break;
     case SDL_MOUSEBUTTONUP:
@@ -324,6 +347,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
       __handleFingerDown(event);
       break;
   }
+
 }
 
 SdlWindow::~SdlWindow()
@@ -602,7 +626,7 @@ void SdlWindow::__previousFollowable()
   _followableIndex--;
   if(_followableIndex < 0) _followableIndex = nr;
   _followableObject = GET_FOLLOWABLE(_followableIndex);
-  _cameraHandler->follow(_followableObject);
+  _cameraMan->follow(_followableObject);
 }
 
 void SdlWindow::__nextFollowable()
@@ -611,25 +635,25 @@ void SdlWindow::__nextFollowable()
   int nr = Data::instance()->current()->screens()->followables()->size();
   _followableIndex = (_followableIndex + 1) % nr;
   _followableObject = GET_FOLLOWABLE(_followableIndex);
-  _cameraHandler->follow(_followableObject);
+  _cameraMan->follow(_followableObject);
 }
 
 
 void SdlWindow::__previousFollowMode()
 {
-  _cameraHandler->previousFollowMode();
+  _cameraMan->previousFollowMode();
   if(_windowConfiguration->useFollow)
   {
-    _cameraHandler->follow(_followableObject);
+    _cameraMan->follow(_followableObject);
   }
 }
 
 void SdlWindow::__nextFollowMode()
 {
-  _cameraHandler->nextFollowMode();
+  _cameraMan->nextFollowMode();
   if(_windowConfiguration->useFollow)
   {
-    _cameraHandler->follow(_followableObject);
+    _cameraMan->follow(_followableObject);
   }
 }
 
@@ -639,7 +663,7 @@ void SdlWindow::__toggleFollowing()
   _windowConfiguration->useFollow = !_windowConfiguration->useFollow;
   if(_followableIndex == -1) _followableIndex = 0;
   _followableObject = GET_FOLLOWABLE(_followableIndex);
-  if(_windowConfiguration->useFollow) _cameraHandler->follow(_followableObject);
+  if(_windowConfiguration->useFollow) _cameraMan->follow(_followableObject);
 }
 
 // void SdlWindow::__openNewWindow()

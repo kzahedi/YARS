@@ -18,10 +18,10 @@
       </osd>
     </screen>
 
-    <screen name="Braiternberg 2" show="true" follow="false">
+    <screen name="Braiternberg 2" show="true" follow="true">
       <resolution name="vga"/>
       <camera>
-        <position x="0.00" y="0.00" z="10"/>
+        <position x="3.0" y="3.0" z="3.0"/>
         <lookAt x="0.0" y="0.01" z="0.0"/>
       </camera>
       <osd>

@@ -25,9 +25,11 @@ void CenterOrbitCam::init(DataObject *f, DataCamera *cam)
   _angle = atan2(x, y);
 }
 
-void CenterOrbitCam::update()
+void CenterOrbitCam::update(P3D vel)
 {
   _angle += _angularVelocity;
+  P3D pos = _camera->position() + vel;
+  _distance = distXY(_center, pos);
   _newCameraPosition.x = _center.x + sin(_angle) * _distance;
   _newCameraPosition.y = _center.y + cos(_angle) * _distance;
   _newCameraPosition.z = _camera->position().z;

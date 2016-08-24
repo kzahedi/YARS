@@ -10,7 +10,7 @@ void TripodCam::init(DataObject *f, DataCamera *cam)
   _camera = cam;
 }
 
-void TripodCam::update()
+void TripodCam::update(P3D vel)
 {
   if(followable == NULL) return;
   updateFollowablePosition();

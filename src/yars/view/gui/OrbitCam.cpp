@@ -47,18 +47,41 @@ void OrbitCam::init(DataObject *f, DataCamera *cam)
   _fromZ.setInitialValue(pos.z);
 }
 
-void OrbitCam::update()
+void OrbitCam::update(P3D vel)
 {
   updateFollowablePosition();
+
+
+  if(vel.length() > 0.01)
+  {
+    P3D pos = _camera->position() + vel;
+    _distance = distXY(pos, followablePosition);
+    newCameraPosition.x = pos.x;
+    newCameraPosition.y = pos.y;
+    newCameraPosition.z = pos.z;
+    _fromX.reset();
+    _fromY.reset();
+    _fromZ.reset();
+    _fromX.setInitialValue(pos.x);
+    _fromY.setInitialValue(pos.y);
+    _fromZ.setInitialValue(pos.z);
+    x = followablePosition.x - pos.x;
+    y = followablePosition.y - pos.y;
+    _zOffset   = pos.z - followablePosition.z ;
+    _angle = atan2(x, y) + M_PI;
+  }
+  else
+  {
+    _angle += _angularVelocity;
+
+    newCameraPosition.x = _fromX.update(followablePosition.x + sin(_angle) * _distance);
+    newCameraPosition.y = _fromY.update(followablePosition.y + cos(_angle) * _distance);
+    newCameraPosition.z = _fromZ.update(followablePosition.z + _zOffset);
+  }
 
   lookAtPosition.x = _lookAtX.update(followablePosition.x);
   lookAtPosition.y = _lookAtY.update(followablePosition.y);
   lookAtPosition.z = _lookAtZ.update(followablePosition.z);
-  _angle += _angularVelocity;
-
-  newCameraPosition.x = _fromX.update(followablePosition.x + sin(_angle) * _distance);
-  newCameraPosition.y = _fromY.update(followablePosition.y + cos(_angle) * _distance);
-  newCameraPosition.z = _fromZ.update(followablePosition.z + _zOffset);
 
   _camera->setPosition(newCameraPosition);
   _camera->setLookAt(lookAtPosition);
