@@ -3,7 +3,7 @@
 #include "configuration/data/Data.h"
 #include "view/gui/KeyHandler.h"
 #include "view/console/ConsoleView.h"
-// #include "view/gui/ogre3d/TraceLineManualObjectFactory.h"
+#include <yars/util/macros.h>
 
 #include "util/OSD.h"
 
@@ -42,23 +42,12 @@ using namespace _SDL_;
 #define __SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED 5
 #define __SHADOWTYPE_NONE                          6
 
-#define OGRE_TO_YARS(source, destination) \
-  destination.x =  source[0]; \
-  destination.y = -source[2]; \
-  destination.z =  source[1];
-
-#define YARS_TO_OGRE(source, destination) \
-  destination[0] =  source.x; \
-  destination[1] =  source.z; \
-  destination[2] = -source.y;
-
 # define CHECK_IF_THERE_ARE_FOLLOWABLES \
   if(Data::instance()->current()->screens()->followables()           == NULL) return; \
   if(Data::instance()->current()->screens()->followables()->o_size() == 0) return;
 
 # define GET_FOLLOWABLE(a) \
   Data::instance()->current()->screens()->followables()->followable(a)
-
 
 // bad SDL, bad.. seems to be Windows only at least
 #ifdef main
@@ -121,26 +110,6 @@ SdlWindow::SdlWindow(int index)
     __initMovie();
   }
 #endif // USE_CAPTURE_VIDEO
-
-  // stringstream oss;
-  // oss << "StreamTex " << _index;
-  // _renderTexture = Ogre::TextureManager::getSingleton().createManual(oss.str(),
-  // Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-  // Ogre::TEX_TYPE_2D,
-  // _window->getWidth(),
-  // _window->getHeight(),
-  // 0,
-  // Ogre::PF_B8G8R8A8,
-  // Ogre::TU_RENDERTARGET);
-
-  // _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
-  // _pRenderTex->addViewport(_camera);
-
-  // Ogre::Viewport *vp = _pRenderTex->getViewport(0);
-  // vp->setClearEveryFrame(true);
-  // vp->setBackgroundColour(Ogre::ColourValue::Black);
-  // vp->setOverlaysEnabled(true);
-
 }
 
 void SdlWindow::wait()
@@ -221,7 +190,6 @@ void SdlWindow::step()
 
     _camera->moveRelative(_cameraVelocity);
 
-    // HIER VELOCITY ZURUECKGEBEN
     _cpos    = _camera->getPosition();
     _cdir    = _camera->getDirection();
     _clookAt = _cpos;
@@ -239,11 +207,13 @@ void SdlWindow::step()
 
 void SdlWindow::handleEvent(SDL_Event &event)
 {
-  // cout << "my window id: " << _windowID << endl;
   if(event.window.windowID != _windowID) return;
 
   switch(event.type)
   {
+    case SDL_MULTIGESTURE:
+      cout << "multi gesture" << endl;
+      break;
     case SDL_QUIT:
       break;
     case SDL_KEYDOWN:
@@ -315,6 +285,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
       _mousePressed = false;
       break;
     case SDL_MOUSEBUTTONDOWN:
+      cout << event.button.which << endl;
       _mousePressed = true;
       break;
     case SDL_WINDOWEVENT:
@@ -323,10 +294,10 @@ void SdlWindow::handleEvent(SDL_Event &event)
         case SDL_WINDOWEVENT_SHOWN:
           _visible = true;
           break;
-        // case SDL_WINDOWEVENT_CLOSE:
-          // _closed = true;
-          // notifyObservers(_m_closeWindow);
-          // break;
+        case SDL_WINDOWEVENT_CLOSE:
+          _closed = true;
+          notifyObservers(_m_closeWindow);
+          break;
         case SDL_WINDOWEVENT_RESIZED:
           _window->resize(event.window.data1, event.window.data2);
           _window->windowMovedOrResized();
@@ -348,20 +319,21 @@ void SdlWindow::handleEvent(SDL_Event &event)
       break;
   }
 
+  step();
 }
 
 SdlWindow::~SdlWindow()
 {
-  cout << "destructor" << endl;
-  SDL_DestroyWindow(_sdlWindow);
+  // cout << "destructor" << endl;
+  // SDL_DestroyWindow(_sdlWindow);
   // SDL_Quit();
 }
 
 
 void SdlWindow::__setupSDL()
 {
-  SDL_Init( SDL_INIT_EVERYTHING );
-  SDL_RecordGesture(-1);
+  // SDL_Init(SDL_INIT_EVERYTHING);
+  SDL_Init(SDL_INIT_VIDEO);
 
   if(__YARS_GET_USE_WINDOW_GEOMETRY)
   {
@@ -370,16 +342,16 @@ void SdlWindow::__setupSDL()
                               _windowConfiguration->geometry.y(),
                               _windowConfiguration->geometry.width(),
                               _windowConfiguration->geometry.height(),
-                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                              SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
   else
   {
     _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
-                              SDL_WINDOWPOS_UNDEFINED,
-                              SDL_WINDOWPOS_UNDEFINED,
-                              _windowConfiguration->geometry.width(),
-                              _windowConfiguration->geometry.height(),
-                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  SDL_WINDOWPOS_CENTERED,
+                                  SDL_WINDOWPOS_CENTERED,
+                                  _windowConfiguration->geometry.width(),
+                                  _windowConfiguration->geometry.height(),
+                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
 
   if ( _sdlWindow == NULL ) {
@@ -475,6 +447,8 @@ void SdlWindow::__setupSDL()
   _viewport->setBackgroundColour(fadeColour);
 
   _windowID = SDL_GetWindowID(_sdlWindow);
+
+  SDL_RecordGesture(-1);
 }
 
 
@@ -600,6 +574,10 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
       // break;
     case YarsKeyFunction::ToggleFollowMode:
       __toggleFollowing();
+      break;
+    case YarsKeyFunction::CloseWindow:
+      _closed = true;
+      notifyObservers(_m_closeWindow);
       break;
       // case YarsKeyFunction::ToggleTraces:
       // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
@@ -963,4 +941,18 @@ bool SdlWindow::added()
 bool SdlWindow::closed()
 {
   return _closed;
+}
+
+void SdlWindow::close()
+{
+  _pRenderTex    = NULL; // might have to be removed from ogre first
+  // &_renderTexture = NULL; // might have to removed from ogre first
+
+  _window        = NULL; // might have to be removed from ogre first
+  _camera        = NULL; // might have to be removed from ogre first
+  _viewport      = NULL; // might have to be removed from ogre first
+  _sceneManager  = NULL; // might have to be removed from ogre first
+  _ogreHandler   = NULL; // might have to be removed from ogre first
+
+  SDL_DestroyWindow(_sdlWindow);
 }

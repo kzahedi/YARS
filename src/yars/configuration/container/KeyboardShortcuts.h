@@ -14,38 +14,39 @@ namespace YarsKeyFunction
   enum Keys
   {
     NoKeyFound                      = -1,
-    CaptureVideo                    = 1,
-    DecreaseSimSpeed                = 3,
-    IncreaseSimSpeed                = 5,
-    NextFollowMode                  = 6,
-    NextFollowable                  = 7,
-    OnScreenDisplay                 = 8,
-    OnScreenDisplay_ElapsedTime     = 9,
-    OnScreenDisplay_FramesPerSecond = 10,
-    OpenNewWindow                   = 11,
-    Pause                           = 12,
-    PreviousFollowMode              = 13,
-    PreviousFollowable              = 14,
-    PrintKeyboardShortcuts          = 15,
-    PrintTime                       = 16,
-    PrintViewPoint                  = 17,
-    Quit                            = 18,
-    Realtime                        = 19,
-    Reset                           = 20,
-    ResetSimSpeed                   = 21,
-    RestoreViewpoint                = 22,
-    SetWindowSize                   = 23,
-    SetWindowTitle                  = 24,
-    ShowWindowConfigurationDialog   = 25,
-    SingleStep                      = 26,
-    ToggleFollowMode                = 27,
-    ToggleReloadOnReset             = 28,
-    ToggleSyncedGui                 = 29,
-    ToggleTextures                  = 30,
-    ToggleTraces                    = 32,
-    VisualiseAxes                   = 33,
-    WriteFrames                     = 34,
-    ShootBox                        = 35
+    CaptureVideo                    = 0,
+    DecreaseSimSpeed                = 1,
+    IncreaseSimSpeed                = 2,
+    NextFollowMode                  = 3,
+    NextFollowable                  = 4,
+    OnScreenDisplay                 = 5,
+    OnScreenDisplay_ElapsedTime     = 6,
+    OnScreenDisplay_FramesPerSecond = 7,
+    OpenNewWindow                   = 8,
+    CloseWindow                     = 9,
+    Pause                           = 10,
+    PreviousFollowMode              = 11,
+    PreviousFollowable              = 12,
+    PrintKeyboardShortcuts          = 13,
+    PrintTime                       = 14,
+    PrintViewPoint                  = 15,
+    Quit                            = 16,
+    Realtime                        = 17,
+    Reset                           = 18,
+    ResetSimSpeed                   = 19,
+    RestoreViewpoint                = 20,
+    SetWindowSize                   = 21,
+    SetWindowTitle                  = 22,
+    ShowWindowConfigurationDialog   = 23,
+    SingleStep                      = 24,
+    ToggleFollowMode                = 25,
+    ToggleReloadOnReset             = 26,
+    ToggleSyncedGui                 = 27,
+    ToggleTextures                  = 28,
+    ToggleTraces                    = 29,
+    VisualiseAxes                   = 30,
+    WriteFrames                     = 31,
+    ShootBox                        = 32
   };
 }
 
@@ -74,6 +75,7 @@ class KeyboardShortcuts
     KeyboardShortcut writeFrames;
     KeyboardShortcut visualiseAxes;
     KeyboardShortcut openNewWindow;
+    KeyboardShortcut closeWindow;
     KeyboardShortcut setWindowTitle;
     KeyboardShortcut showWindowConfigurationDialog;
     KeyboardShortcut setWindowSize;

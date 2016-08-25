@@ -52,6 +52,7 @@ class KeyHandler : public Observable
     static void         openNewWindow();
     static void         toggleCaptureVideo();
     static void         toggleCaptureFrames();
+    // static void         closeWindow();
 
   protected:
     KeyHandler();

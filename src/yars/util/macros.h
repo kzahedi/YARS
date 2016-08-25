@@ -24,4 +24,15 @@
 #  define PNT3F_TO_P3D(a,b)         {a.x  =  b[0]; a.y  =  b[1]; a.z  =  b[2];} // one to one mapping
 #  define P3D_TO_PNT3F(a,b)         {a[0] =  b.x;  a[1] =  b.y;  a[2] =  b.z;}  // one to one mapping
 
+#define OGRE_TO_YARS(source, destination) \
+  destination.x =  source[0]; \
+  destination.y = -source[2]; \
+  destination.z =  source[1];
+
+#define YARS_TO_OGRE(source, destination) \
+  destination[0] =  source.x; \
+  destination[1] =  source.z; \
+  destination[2] = -source.y;
+
+
 #endif // __MACROS_H__

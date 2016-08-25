@@ -52,6 +52,7 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->printTime.function           = &togglePrintTime;
   _keyboardShortcuts->captureVideo.function        = &toggleCaptureVideo;
   _keyboardShortcuts->writeFrames.function         = &toggleCaptureFrames;
+  // _keyboardShortcuts->closeWindow.function         = &closeWindow;
 
 }
 
@@ -93,6 +94,11 @@ void KeyHandler::reinitAndResetSimulation()
 {
   _o->notifyObservers(_m_reset);
 }
+
+// void KeyHandler::closeWindow()
+// {
+  // _o->notifyObservers(_m_closeWindow);
+// }
 
 void KeyHandler::toggleRealtimeMode()
 {

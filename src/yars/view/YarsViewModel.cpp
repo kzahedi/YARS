@@ -104,28 +104,29 @@ void YarsViewModel::notify(ObservableMessage *m)
     // case -2:                    __removeClosedWindows(); break; // closed
     case __M_QUIT_CALLED:       _run = false;            break;
     case __M_TOGGLE_SYNCED_GUI: _sync = !_sync;          break;
-    // case __M_CLOSE_WINDOW:      cleanupWindows();        break;
+    case __M_CLOSE_WINDOW:      cleanupWindows();        break;
 
   }
 }
 
-// void YarsViewModel::cleanupWindows()
-// {
-  // vector<SdlWindow*> toBeDeleted;
-  // for(std::vector<SdlWindow*>::iterator i = _windowManager.begin(); i != _windowManager.end(); i++)
-  // {
-    // if((*i)->closed())
-    // {
-      // toBeDeleted.push_back(*i);
-    // }
-  // }
+void YarsViewModel::cleanupWindows()
+{
+  vector<SdlWindow*> toBeDeleted;
+  for(std::vector<SdlWindow*>::iterator i = _windowManager.begin(); i != _windowManager.end(); i++)
+  {
+    if((*i)->closed())
+    {
+      toBeDeleted.push_back(*i);
+    }
+  }
 
-  // for(std::vector<SdlWindow*>::iterator i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
-  // {
-    // _windowManager.erase(i);
+  for(std::vector<SdlWindow*>::iterator i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
+  {
+    (*i)->close();
+    _windowManager.erase(i);
     // _newWindows.erase(i);
-  // }
-// }
+  }
+}
 
 void YarsViewModel::run()
 {

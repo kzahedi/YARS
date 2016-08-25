@@ -84,11 +84,18 @@ class RobotControllerParameter : public map<string,string>
       return lst;
     }
 
-    double doubleValue(string name)
+    float floatValue(string name)
     {
       string s;
       get(name, &s);
       return atof(s.c_str());
+    }
+
+    double doubleValue(string name)
+    {
+      string s;
+      get(name, &s);
+      return (double)atof(s.c_str());
     }
 
     string stringValue(string name)
@@ -118,6 +125,12 @@ class RobotControllerParameter : public map<string,string>
     void set(string name, double &value, double def)
     {
       if(exists(name)) value = doubleValue(name);
+      else             value = def;
+    }
+
+    void set(string name, float &value, float def)
+    {
+      if(exists(name)) value = floatValue(name);
       else             value = def;
     }
 

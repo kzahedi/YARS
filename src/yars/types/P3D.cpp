@@ -36,7 +36,15 @@ P3D & P3D::operator=(const P3D &b)
   return *this;
 }
 
-P3D & P3D::operator=(const yReal value)
+P3D & P3D::operator=(const double value)
+{
+  x = value;
+  y = value;
+  z = value;
+  return *this;
+}
+
+P3D & P3D::operator=(const float value)
 {
   x = value;
   y = value;

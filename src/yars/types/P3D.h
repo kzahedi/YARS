@@ -102,8 +102,9 @@ class P3D
      *
      * \param[in] yReal value
      */
-    P3D & operator=(const yReal value);
-    P3D & operator=(const int   value);
+    P3D & operator=(const double value);
+    P3D & operator=(const float  value);
+    P3D & operator=(const int    value);
 
 
     /** \brief Copy operator with pointer to an array of length three.

@@ -2,6 +2,7 @@
 
 #include "util/macros.h"
 #include "configuration/YarsConfiguration.h"
+#include <yars/util/macros.h>
 #include <math.h>
 
 #include "configuration/data/Data.h"
@@ -50,7 +51,6 @@ void OrbitCam::init(DataObject *f, DataCamera *cam)
 void OrbitCam::update(P3D vel)
 {
   updateFollowablePosition();
-
 
   if(vel.length() > 0.01)
   {
