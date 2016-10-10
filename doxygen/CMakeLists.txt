@@ -38,7 +38,7 @@ IF(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/doc/latex)
   FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex)
 ENDIF(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/doc/latex)
 
-include(${CMAKE_SOURCE_DIR}/modules/UseDoxygen.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/UseDoxygen.cmake)
 
 # INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs/html
 #   CONFIGURATIONS Release Debug

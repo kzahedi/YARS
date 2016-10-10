@@ -1,6 +1,10 @@
 # YARS
 YARS - Yet Another Robot Simulator
 
+A selection of creatures in action can be found [here](https://www.youtube.com/watch?v=T3gDxaLcmUw).
+
+Other videos can be found [here](https://www.youtube.com/playlist?list=PLrIVgT56nVQ55q0DNvVbGHfMf87PBnOM-).
+
 
 ### Third party files
 <b> Fonts </b><br>

@@ -38,6 +38,7 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0002 OLD)
   cmake_policy(SET CMP0042 OLD)
   cmake_policy(SET CMP0009 NEW) # don't follow symlink for file(GLOB_RECURSE
+  cmake_policy(SET CMP0045 NEW) # don't follow symlink for file(GLOB_RECURSE
 endif(COMMAND cmake_policy)
 
 
@@ -55,9 +56,9 @@ INCLUDE(cmake/SetDefinitions.cmake)
 INCLUDE(cmake/PrintConfiguration.cmake)
 INCLUDE(cmake/CreateConfigFiles.cmake)
 
-if(YARS_DOXYGEN_DOCUMENTATION)
-  add_subdirectory(doxygen)
-endif(YARS_DOXYGEN_DOCUMENTATION)
+# if(YARS_DOXYGEN_DOCUMENTATION)
+  # add_subdirectory(doxygen)
+# endif(YARS_DOXYGEN_DOCUMENTATION)
 add_subdirectory(src/yars)
 add_subdirectory(contrib)
 
