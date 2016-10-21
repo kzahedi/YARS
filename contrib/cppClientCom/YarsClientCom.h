@@ -51,7 +51,8 @@ class YarsClientCom
     void getActuatorName(int, string*)              throw (YarsClientComException);
     void getActuatorRobotDomain(Domain*, int, int)  throw (YarsClientComException);
     void getActuatorMappedDomain(Domain*, int, int) throw (YarsClientComException);
-    void setActuatorValue(int, yReal);
+    void setActuatorValue(int, double);
+    void setActuatorValue(int, float);
 
     unsigned int getSensorDimension(int)            throw (YarsClientComException);
     void getSensorName(int, string*)                throw (YarsClientComException);

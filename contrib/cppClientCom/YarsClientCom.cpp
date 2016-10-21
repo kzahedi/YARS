@@ -371,7 +371,12 @@ void YarsClientCom::getSensorName(int index, string *name) throw (YarsClientComE
   *name = _sensors[index].name;
 }
 
-void YarsClientCom::setActuatorValue(int actuatorIndex, yReal value)
+void YarsClientCom::setActuatorValue(int actuatorIndex, float value)
+{
+  setActuatorValue(actuatorIndex, (double)value);
+}
+
+void YarsClientCom::setActuatorValue(int actuatorIndex, double value)
 {
   // if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   // {

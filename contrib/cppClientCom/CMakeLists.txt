@@ -1,4 +1,4 @@
-project(YarsClientCom)
+# project(YarsClientCom)
 
 add_library(YarsClientCom SHARED
   YarsClientCom.cpp
