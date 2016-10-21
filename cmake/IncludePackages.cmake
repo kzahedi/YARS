@@ -5,7 +5,9 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-set(Boost_USE_STATIC_LIBS ON)
+if(APPLE)
+  set(Boost_USE_STATIC_LIBS ON)
+endif(APPLE)
 find_package(Boost REQUIRED program_options filesystem date_time system thread)
 IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
