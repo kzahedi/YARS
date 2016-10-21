@@ -5,6 +5,8 @@ link_directories(/usr/local/lib/)
 IF(UNIX AND NOT APPLE)
   link_directories(/usr/lib/x86_64-linux-gnu/)
   link_directories(/lib/x86_64-linux-gnu/)
+  link_directories(/usr/lib/x86_64-linux-gnu/)
+  include_directories(/usr/include/OGRE)
 ENDIF(UNIX AND NOT APPLE)
 
 IF(UNIX OR APPLE OR MINGW OR MSYS)
@@ -13,3 +15,5 @@ IF(UNIX OR APPLE OR MINGW OR MSYS)
   link_directories(/usr/local/lib)
   link_directories(/usr/lib)
 ENDIF(UNIX OR APPLE OR MINGW OR MSYS)
+
+

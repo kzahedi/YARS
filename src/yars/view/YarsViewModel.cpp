@@ -5,7 +5,7 @@
 #include "gui/GuiMutex.h"
 #include "util/Timer.h"
 
-#include <Ogre/Ogre.h>
+#include <OGRE/Ogre.h>
 
 YarsViewModel::YarsViewModel()
 {

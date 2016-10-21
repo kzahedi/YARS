@@ -2,7 +2,7 @@
 #define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
 
 #include "ColoredTextAreaOverlayElement.h"
-#include <Ogre/OgreRoot.h>
+#include <OGRE/OgreRoot.h>
 #define POS_TEX_BINDING 0
 #define COLOUR_BINDING 1
 

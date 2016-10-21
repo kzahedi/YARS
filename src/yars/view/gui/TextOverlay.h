@@ -2,9 +2,14 @@
 #define __TEXT_OVERLAY_H__
 
 //#include <OGRE/Ogre.h>
-#include <Ogre/Ogre.h>
+#include <OGRE/Ogre.h>
+#if __APPLE__
 #include <OgreOverlay/OgreOverlay.h>
 #include <OgreOverlay/OgreOverlayManager.h>
+#else
+#include <OGRE/Overlay/OgreOverlay.h>
+#include <OGRE/Overlay/OgreOverlayManager.h>
+#endif
 #include <string>
 #include <vector>
 

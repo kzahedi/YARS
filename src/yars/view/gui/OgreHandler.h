@@ -1,9 +1,14 @@
 #ifndef __OGRE_HANDLER_H__
 #define __OGRE_HANDLER_H__
 
-#include <Ogre/Ogre.h>
+#include <OGRE/Ogre.h>
+#if __APPLE__
 #include <RenderSystem_GL/OgreGLPlugin.h>
 #include <Plugin_ParticleFX/OgreParticleFXPlugin.h>
+#else
+#include <RenderSystems/GL/OgreGLPlugin.h>
+#include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
+#endif
 // #include <OGRE/OgreStaticPluginLoader.h>
 
 #include "view/gui/SceneGraph.h"

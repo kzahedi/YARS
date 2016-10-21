@@ -1,5 +1,9 @@
 #include <vector>
+#if __APPLE__
 #include <OgreOverlay/OgreTextAreaOverlayElement.h>
+#else
+#include <OGRE/Overlay/OgreTextAreaOverlayElement.h>
+#endif
 
 class ColoredTextAreaOverlayElement : public Ogre::TextAreaOverlayElement
 {

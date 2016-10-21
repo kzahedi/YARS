@@ -2,7 +2,11 @@
 #include "configuration/data/Data.h"
 #include "util/Directories.h"
 
+#if __APPLE__
 #include <OgreOverlay/OgreOverlaySystem.h>
+#else
+#include <OGRE/Overlay/OgreOverlaySystem.h>
+#endif
 
 OgreHandler* OgreHandler::_me = NULL;
 
@@ -20,11 +24,13 @@ OgreHandler::OgreHandler()
   // _root = new Ogre::Root( "plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
   _root = new Ogre::Root("","",""); // no log file created here (see 1 line above)
 
+#ifdef __APPLE__
   _GLPlugin = new Ogre::GLPlugin();
   _GLPlugin->install();
 
   _particlePlugin = new Ogre::ParticleFXPlugin();
   _particlePlugin->install();
+#endif
 
 // #ifdef __APPLE__
   // if (!_root->restoreConfig())

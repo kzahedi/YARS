@@ -34,4 +34,14 @@ if(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} OSX_wrap.mm)
 else(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
+  target_link_libraries(YarsGUI OgreMain
+    OgreOverlay
+    zzip
+    freeimage
+    freetype
+    GLEW
+    /usr/lib/x86_64-linux-gnu/OGRE-1.9.0/Plugin_ParticleFX.so
+    /usr/lib/x86_64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so)
 endif(APPLE)
+
+

@@ -8,45 +8,46 @@ add_library(YarsControllerSinus SHARED SinusController.cpp)
 
 add_library(YarsControllerBraitenberg2b SHARED Braitenberg2b.cpp)
 target_link_libraries(YarsControllerBraitenberg2b
+  YarsRobotController
   boost_system
-  boost_date_time
-  YarsRobotController)
+  boost_date_time)
 
 add_library(YarsControllerBraitenberg2a SHARED Braitenberg2a.cpp)
 target_link_libraries(YarsControllerBraitenberg2a
+  YarsRobotController
   boost_system
   boost_date_time
-  YarsRobotController)
+  )
 
 add_library(YarsControllerBraitenberg3b SHARED Braitenberg3b.cpp)
 target_link_libraries(YarsControllerBraitenberg3b
+  YarsRobotController
   boost_system
-  boost_date_time
-  YarsRobotController)
+  boost_date_time)
 
 add_library(YarsControllerBraitenberg3a SHARED Braitenberg3a.cpp)
 target_link_libraries(YarsControllerBraitenberg3a
+  YarsRobotController
   boost_system
-  boost_date_time
-  YarsRobotController)
+  boost_date_time)
 
 add_library(YarsControllerHexapod SHARED Hexapod.cpp)
 target_link_libraries(YarsControllerHexapod
-  boost_system
+  YarsConfiguration
   YarsRobotController
-  YarsConfiguration)
+  boost_system)
 
 add_library(YarsControllerConstantValue SHARED ConstantValue.cpp)
 target_link_libraries(YarsControllerConstantValue
-  boost_system
-  YarsRobotController)
+  YarsRobotController
+  boost_system)
 
 add_library(YarsControllerNamedPipe SHARED NamedPipeController.cpp)
 target_link_libraries(YarsControllerNamedPipe
-  boost_system
   YarsRobotController
   YarsConfiguration
   YarsUtil
+  boost_system
   ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
@@ -59,12 +60,12 @@ endif(YARS_USE_MATLAB)
 
 add_library(YarsControllerTCPIP  SHARED TCPIP.cpp)
 target_link_libraries(YarsControllerTCPIP
-  boost_system
-  boost_filesystem
-  boost_date_time
   YarsRobotController
   YarsConfiguration
   YarsUtil
+  boost_system
+  boost_filesystem
+  boost_date_time
   ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_MATLAB "Compile MATLAB Controller" OFF)
