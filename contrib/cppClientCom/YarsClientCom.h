@@ -45,7 +45,7 @@ class YarsClientCom
     YarsClientCom();
 
     void init(const string host="localhost", const int port=9500);
-    void init(string workingDirectory, string xmlFile);
+    void init(string workingDirectory, string xmlFile, string path="");
 
     unsigned int getActuatorDimension(int)          throw (YarsClientComException);
     void getActuatorName(int, string*)              throw (YarsClientComException);

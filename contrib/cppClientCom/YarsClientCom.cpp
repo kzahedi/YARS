@@ -66,13 +66,13 @@ void YarsClientCom::init(const string host, const int port)
   // __printData();
 }
 
-void YarsClientCom::init(string workingDirectory, string xmlFile)
+void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
 {
   cout << "chaining to working directory: " << workingDirectory << endl;
   chdir(workingDirectory.c_str());
 
   stringstream sst;
-  sst << "yars " << xmlFile;
+  sst << path << "yars " << xmlFile;
   _yarsFD = popen(sst.str().c_str(), "r+");
   sst.str("");
 
