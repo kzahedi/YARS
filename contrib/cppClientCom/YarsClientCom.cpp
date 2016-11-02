@@ -73,7 +73,11 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
 
   stringstream sst;
   sst << path << "yars " << xmlFile;
-  _yarsFD = popen(sst.str().c_str(), "r+");
+  if((_yarsFD = popen(sst.str().c_str(), "r+")) == NULL)
+  {
+    cout << "Cannot open \"" << sst.str() << "\"" << endl;
+    exit(-1);
+  }
   sst.str("");
 
   string token;
