@@ -71,7 +71,8 @@ void TextOverlay::setText(const std::string& ID, const std::string& Text, int wi
     {
       if(c[i] == '\n') nr_of_lines++;
     }
-    float height = _robotFontSize * nr_of_lines;
+    // float height = _robotFontSize * nr_of_lines;
+    float height = 1.5 * _robotFontSize * nr_of_lines;
     textBox->setPosition(10, windowHeight-height-25);
     textBox->setHeight(height);
   }
@@ -84,7 +85,7 @@ void TextOverlay::setText(const std::string& ID, const std::string& Text, int wi
 
   if(ID.find("stats") != std::string::npos)
   {
-    textBox->setPosition(10, 10 + _timeFontSize + 5);
+    textBox->setPosition(10, 10 + 1.2 * _timeFontSize + 5);
     textBox->setHeight((int)_statsFontSize);
   }
 
