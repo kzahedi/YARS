@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 using namespace std;
 
@@ -73,7 +74,16 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
 
   stringstream sst;
   sst << path << "yars " << xmlFile;
-  _yarsFD = popen(sst.str().c_str(), "r+");
+#if __APPLE__
+  if((_yarsFD = popen(sst.str().c_str(), "r+")) == NULL)
+#else // __APPLE__
+  if((_yarsFD = popen(sst.str().c_str(), "r")) == NULL)
+#endif // __APPLE__
+  {
+    cout << "Cannot open \"" << sst.str() << "\"" << endl;
+    cout << "Error Nr.: " << errno << endl;
+    exit(-1);
+  }
   sst.str("");
 
   string token;

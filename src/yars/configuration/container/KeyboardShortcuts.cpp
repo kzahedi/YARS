@@ -88,10 +88,12 @@ KeyboardShortcuts::KeyboardShortcuts()
   openNewWindow.id                            = YarsKeyFunction::OpenNewWindow;
   _keys.push_back(&openNewWindow);
 
+#ifdef USE_VISUALISATION
   closeWindow.keyCode                         = __KEYBOARD_OPTIONS_CLOSE_WINDOW_KEY;
   closeWindow.description                     = __KEYBOARD_OPTIONS_CLOSE_WINDOW_DESCRIPTION;
   closeWindow.id                              = YarsKeyFunction::CloseWindow;
   _keys.push_back(&closeWindow);
+#endif // USE_VISUALISATION
 
   setWindowTitle.keyCode                      = __KEYBOARD_OPTIONS_SET_WINDOW_TITLE_KEY;
   setWindowTitle.description                  = __KEYBOARD_OPTIONS_SET_WINDOW_TITLE_DESCRIPTION;
