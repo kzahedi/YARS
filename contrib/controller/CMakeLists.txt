@@ -68,16 +68,16 @@ target_link_libraries(YarsControllerTCPIP
   boost_date_time
   ${Boost_LIBRARIES})
 
-OPTION(YARS_USE_MATLAB "Compile MATLAB Controller" OFF)
-if(YARS_USE_MATLAB)
+OPTION(YARS_USE_MATLAB_CONTROLLER "Compile MATLAB Controller" OFF)
+if(YARS_USE_MATLAB_CONTROLLER)
   include_directories(/Applications/MATLAB_R2015a.app/extern/include/)
   link_directories(/Applications/MATLAB_R2015a.app/bin/maci64)
   add_library(YarsControllerMATLAB SHARED MATLAB.cpp)
   target_link_libraries(YarsControllerMATLAB YarsRobotController eng mx m mat ut stdc++)
-endif(YARS_USE_MATLAB)
+endif(YARS_USE_MATLAB_CONTROLLER)
 
-OPTION(YARS_USE_JULIA "Compile Julia Controller" OFF)
-if(YARS_USE_JULIA)
+OPTION(YARS_USE_JULIA_CONTROLLER "Compile Julia Controller" OFF)
+if(YARS_USE_JULIA_CONTROLLER)
   SET(JULIA_DIR "/Applications/Julia.app/Contents/Resources/julia/" CACHE STRING "Where to find julia.")
   message("Julia include dir ${JULIA_DIR}/include/julia")
   add_definitions(-DJULIA_DIR='"${JULIA_DIR}"')
@@ -85,4 +85,15 @@ if(YARS_USE_JULIA)
   link_directories(${JULIA_DIR}/lib/julia)
   add_library(YarsControllerJulia                SHARED Julia.cpp)
   target_link_libraries(YarsControllerJulia                YarsRobotController julia)
-endif(YARS_USE_JULIA)
+endif(YARS_USE_JULIA_CONTROLLER)
+
+OPTION(YARS_USE_NMODE_CONTROLLER "Compile NMODE Controller" OFF)
+if(YARS_USE_NMODE_CONTROLLER)
+  add_library(YarsControllerNMODE SHARED NMODEController.cpp)
+  target_link_libraries(YarsControllerNMODE 
+    NMODEe
+    YarsRobotController
+    YarsConfiguration
+    YarsUtil
+    ${Boost_LIBRARIES})
+endif(YARS_USE_NMODE_CONTROLLER)

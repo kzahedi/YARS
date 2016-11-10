@@ -27,7 +27,7 @@ using namespace _SDL_;
 
 #include "configuration/YarsConfiguration.h"
 
-#define FACTOR 0.05
+#define FACTOR 0.01
 
 #define __NO_KEY  0
 #define __CONTROL 1
@@ -93,6 +93,7 @@ SdlWindow::SdlWindow(int index)
   _shadowMode           = __SHADOWTYPE_TEXTURE_ADDITIVE;
   _nextShadowMode       = __SHADOWTYPE_TEXTURE_ADDITIVE+1;
   _cameraVelocity       = Ogre::Vector3::ZERO;
+  _cameraVelocityApplied = Ogre::Vector3::ZERO;
 
   __setupSDL();
   // __setScene();
@@ -187,7 +188,6 @@ void SdlWindow::step()
     // cout << _cameraVelocity[0] << " " 
       // << _cameraVelocity[1] << " " 
       // << _cameraVelocity[2] << endl;
-
     _camera->moveRelative(_cameraVelocity);
 
     _cpos    = _camera->getPosition();
@@ -251,14 +251,12 @@ void SdlWindow::handleEvent(SDL_Event &event)
     case SDL_MOUSEMOTION:
       if(_mousePressed)
       {
-        if(_shiftPressed && _altPressed)
-        {
-          _cameraVelocity[0] += -event.motion.xrel * FACTOR;
-          _cameraVelocity[2] += -event.motion.yrel * FACTOR;
-          // _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
-                                              // -event.motion.yrel * FACTOR));
-        }
-        if(_shiftPressed && !_altPressed)
+        // if(_shiftPressed && _altPressed)
+        // {
+          // _cameraVelocity[0] += -event.motion.xrel * FACTOR;
+          // _cameraVelocity[2] += -event.motion.yrel * FACTOR;
+        // }
+        if(_metaPressed && !_altPressed)
         {
           _cameraVelocity[0] += -event.motion.xrel * FACTOR;
           _cameraVelocity[2] += -event.motion.yrel * FACTOR;
@@ -269,12 +267,12 @@ void SdlWindow::handleEvent(SDL_Event &event)
           // Ogre::Vector3 pos2 = _camera->getPosition();
           // _camera->setPosition(pos2[0],pos[1],pos2[2]);
         }
-        if(_altPressed && !_shiftPressed)
+        if(!_metaPressed && _altPressed)
         {
           // _camera->move(Ogre::Vector3(0.0, event.motion.yrel * FACTOR, 0.0));
           _cameraVelocity[1] += event.motion.yrel * FACTOR;
         }
-        if(_metaPressed && !_shiftPressed && !_altPressed)
+        if(!_metaPressed && !_altPressed)
         {
           _camera->yaw(Ogre::Radian(event.motion.xrel   * FACTOR));
           _camera->pitch(Ogre::Radian(event.motion.yrel * FACTOR));
@@ -285,7 +283,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
       _mousePressed = false;
       break;
     case SDL_MOUSEBUTTONDOWN:
-      cout << event.button.which << endl;
+      // cout << event.button.which << endl;
       _mousePressed = true;
       break;
     case SDL_WINDOWEVENT:

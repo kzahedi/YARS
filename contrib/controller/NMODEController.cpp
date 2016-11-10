@@ -9,7 +9,7 @@ void NMODEController::update()
   if(_debug)
   {
     cout << "Sensors: (" << sensors.size() << "):";
-    for(vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
+    for(vector<yReal>::iterator i = sensors.begin(); i != sensors.end(); i++)
     {
       cout << " " << *i;
     }
@@ -24,7 +24,7 @@ void NMODEController::update()
   if(_debug)
   {
     cout << "Motors: (" << motors.size() << "):";
-    for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
+    for(vector<yReal>::iterator i = motors.begin(); i != motors.end(); i++)
     {
       cout << " " << *i;
     }
