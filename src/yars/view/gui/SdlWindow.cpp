@@ -93,7 +93,7 @@ SdlWindow::SdlWindow(int index)
   _shadowMode           = __SHADOWTYPE_TEXTURE_ADDITIVE;
   _nextShadowMode       = __SHADOWTYPE_TEXTURE_ADDITIVE+1;
   _cameraVelocity       = Ogre::Vector3::ZERO;
-  _cameraVelocityApplied = Ogre::Vector3::ZERO;
+  _camAngularVelocity   = 0.0;
 
   __setupSDL();
   // __setScene();
@@ -163,7 +163,6 @@ void SdlWindow::step()
     }
   }
 
-
   if(_windowConfiguration->useFollow)
   {
     _cpos    = _camera->getPosition();
@@ -183,11 +182,16 @@ void SdlWindow::step()
     _camera->setPosition(_cpos[0], _cpos[1],    _cpos[2]);
     _camera->lookAt(_clookAt[0],   _clookAt[1], _clookAt[2]);
   }
-  else if(_cameraVelocity.length() > 0.01)
+  else if(_cameraVelocity.length() > 0.01 ||
+          _camAngularVelocity.length() > 0.0001)
   {
     // cout << _cameraVelocity[0] << " " 
       // << _cameraVelocity[1] << " " 
       // << _cameraVelocity[2] << endl;
+
+    _camera->yaw(Ogre::Radian(_camAngularVelocity.x   * FACTOR));
+    _camera->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
+
     _camera->moveRelative(_cameraVelocity);
 
     _cpos    = _camera->getPosition();
@@ -203,6 +207,7 @@ void SdlWindow::step()
   __osd();
 
   _cameraVelocity *= 0.9;
+  _camAngularVelocity *= 0.9;
 }
 
 void SdlWindow::handleEvent(SDL_Event &event)
@@ -251,31 +256,19 @@ void SdlWindow::handleEvent(SDL_Event &event)
     case SDL_MOUSEMOTION:
       if(_mousePressed)
       {
-        // if(_shiftPressed && _altPressed)
-        // {
-          // _cameraVelocity[0] += -event.motion.xrel * FACTOR;
-          // _cameraVelocity[2] += -event.motion.yrel * FACTOR;
-        // }
         if(_metaPressed && !_altPressed)
         {
           _cameraVelocity[0] += -event.motion.xrel * FACTOR;
           _cameraVelocity[2] += -event.motion.yrel * FACTOR;
-
-          // Ogre::Vector3 pos = _camera->getPosition();
-          // _camera->moveRelative(Ogre::Vector3(-event.motion.xrel * FACTOR, 0.0,
-                                              // -event.motion.yrel * FACTOR));
-          // Ogre::Vector3 pos2 = _camera->getPosition();
-          // _camera->setPosition(pos2[0],pos[1],pos2[2]);
         }
         if(!_metaPressed && _altPressed)
         {
-          // _camera->move(Ogre::Vector3(0.0, event.motion.yrel * FACTOR, 0.0));
           _cameraVelocity[1] += event.motion.yrel * FACTOR;
         }
         if(!_metaPressed && !_altPressed)
         {
-          _camera->yaw(Ogre::Radian(event.motion.xrel   * FACTOR));
-          _camera->pitch(Ogre::Radian(event.motion.yrel * FACTOR));
+          _camAngularVelocity.x += event.motion.xrel * 10.0 * FACTOR;
+          _camAngularVelocity.y += event.motion.yrel * 10.0 * FACTOR;
         }
       }
       break;
@@ -283,7 +276,6 @@ void SdlWindow::handleEvent(SDL_Event &event)
       _mousePressed = false;
       break;
     case SDL_MOUSEBUTTONDOWN:
-      // cout << event.button.which << endl;
       _mousePressed = true;
       break;
     case SDL_WINDOWEVENT:

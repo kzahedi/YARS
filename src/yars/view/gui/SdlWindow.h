@@ -127,10 +127,10 @@ class SdlWindow : public Observable
     Ogre::Vector3        _cdir;
     Ogre::Vector3        _clookAt;
     Ogre::Vector3        _cameraVelocity;
-    Ogre::Vector3        _cameraVelocityApplied;
     P3D                  _ypos;
     P3D                  _ylookAt;
     P3D                  _camVelocity;
+    P3D                  _camAngularVelocity;
     Uint32               _windowID;
     SDL_Window*          _sdlWindow;
     bool                 _visible;
