@@ -22,6 +22,7 @@ class LoggingHandler
     void init();
     void update();
     void close();
+    void reset();
 
     void addModule(LoggingModule *module);
     void addLogger(Logger        *logger);

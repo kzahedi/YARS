@@ -64,3 +64,9 @@ void LoggingHandler::close()
   FOREACH(LoggingModule*, l, _modules) delete (*l);
   FOREACH(Logger*, l, _logger)         delete (*l);
 }
+
+void LoggingHandler::reset()
+{
+  FOREACH(Logger*, l, _logger) (*l)->close();
+  FOREACH(Logger*, l, _logger) (*l)->init();
+}

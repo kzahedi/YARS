@@ -17,6 +17,8 @@ SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogr
     Ogre::Entity *entity = sm->createEntity(oss.str(), (*m)->name());
     _entities.push_back(entity);
 
+    entity->getMesh()->buildEdgeList();
+
     if((*m)->texture().size() > 0) entity->setMaterialName((*m)->texture());
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));

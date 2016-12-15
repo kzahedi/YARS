@@ -1,7 +1,5 @@
 #include <yars/logging/YarsLoggingModel.h>
 
-#include <yars/configuration/YarsConfiguration.h>
-
 #include <yars/util/stl_macros.h>
 
 #include <yars/logging/ConsoleLogger.h>
@@ -15,6 +13,9 @@
 #include <yars/logging/LoggingModuleSensor.h>
 #include <yars/logging/LoggingModuleActuator.h>
 #include <yars/logging/LoggingModuleController.h>
+#include <yars/configuration/data/DataLogging.h>
+#include <yars/configuration/data/Data.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 YarsLoggingModel::YarsLoggingModel()
 {
@@ -45,6 +46,11 @@ void YarsLoggingModel::reset()
       (*p)->reset();
       // (*p)->update();
     }
+  }
+  // TODO: this is a quick hack. needs to be set in RoSiML
+  if(_loggingHandler != NULL)
+  {
+    _loggingHandler->reset();
   }
 }
 
