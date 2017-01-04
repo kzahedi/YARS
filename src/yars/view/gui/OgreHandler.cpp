@@ -6,6 +6,7 @@
 #include <OgreOverlay/OgreOverlaySystem.h>
 #else
 #include <OGRE/Overlay/OgreOverlaySystem.h>
+#include <OGRE/RenderSystems/GL/OgreGLPlugin.h>
 #endif
 
 OgreHandler* OgreHandler::_me = NULL;
@@ -21,15 +22,16 @@ OgreHandler::OgreHandler()
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
 
-  _root = new Ogre::Root("","",""); // no log file created here (see 1 line above)
+  _root = new Ogre::Root("plugins.cfg","ogre.cfg",""); // no log file created here (see 1 line above)
 
-// #ifdef __APPLE__
+
+#ifdef __APPLE__
   _GLPlugin = new Ogre::GLPlugin();
   _GLPlugin->install();
 
   _particlePlugin = new Ogre::ParticleFXPlugin();
   _particlePlugin->install();
-// #endif // __APPLE__
+#endif // __APPLE__
 
   if ( _root->getAvailableRenderers().size() != 1 ) {
     OGRE_EXCEPT( Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL", "main" );

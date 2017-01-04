@@ -10,8 +10,8 @@
 #include <RenderSystem_GL/OgreGLPlugin.h>
 #include <Plugin_ParticleFX/OgreParticleFXPlugin.h>
 #else
-#include <RenderSystems/GL/OgreGLPlugin.h>
-#include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
+#include <OGRE/RenderSystems/GL/OgreGLPlugin.h>
+#include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #endif
 // #include <OGRE/OgreStaticPluginLoader.h>
 
