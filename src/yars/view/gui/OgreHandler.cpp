@@ -22,7 +22,11 @@ OgreHandler::OgreHandler()
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
 
+#ifdef __APPLE__
+  _root = new Ogre::Root("","",""); // no log file created here (see 1 line above)
+#else // __APPLE__
   _root = new Ogre::Root("plugins.cfg","ogre.cfg",""); // no log file created here (see 1 line above)
+#endif // __APPLE__
 
 
 #ifdef __APPLE__

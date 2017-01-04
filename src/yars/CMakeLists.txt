@@ -33,7 +33,7 @@ if(YARS_USE_VISUALISATION)
     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
       "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre -framework Cocoa")
   endif(APPLE)
-  if(UNIX)
+  if(UNIX AND NOT APPLE)
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt zzip freeimage freetype
       ${OGRE_LIBRARIES}
@@ -41,7 +41,7 @@ if(YARS_USE_VISUALISATION)
       ${OGRE_RenderSystem_GL_LIBRARIES}
       ${OGRE_Plugin_ParticleFX_LIBRARIES}
       )
-  endif(UNIX)
+  endif(UNIX AND NOT APPLE)
 
   target_link_libraries(${YARS_TARGET} SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)
