@@ -1,11 +1,12 @@
 #ifndef __YARS_VIEW_MODEL_H__
 #define __YARS_VIEW_MODEL_H__
 
-#include "util/Observable.h"
-#include "console/ConsoleView.h"
-#include "view/gui/OgreHandler.h"
-#include "gui/SdlWindow.h"
-#include "SDL2/SDL.h"
+#include <yars/util/Observable.h>
+#include <yars/view/console/ConsoleView.h>
+#include <yars/view/gui/OgreHandler.h>
+#include <yars/view/gui/SdlWindow.h>
+
+#include <SDL2/SDL.h>
 
 class YarsViewModel : public Observable, public Observer
 {

@@ -1,6 +1,8 @@
 #ifndef __TEXT_OVERLAY_H__
 #define __TEXT_OVERLAY_H__
 
+#include <yars/view/gui/ColoredTextAreaOverlayElementFactory.h>
+
 //#include <OGRE/Ogre.h>
 #include <OGRE/Ogre.h>
 #if __APPLE__
@@ -15,7 +17,6 @@
 
 using namespace std;
 
-#include "ColoredTextAreaOverlayElementFactory.h"
 
 class TextOverlay
 {

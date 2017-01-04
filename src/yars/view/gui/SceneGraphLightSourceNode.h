@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_LIGHT_SOURCE_NODE_H__
 #define __SCENE_GRAPH_LIGHT_SOURCE_NODE_H__
 
-#include "configuration/data/DataPointLightSource.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataPointLightSource.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
 
 class SceneGraphLightSourceNode : public SceneGraphObjectNode
 {

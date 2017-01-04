@@ -1,5 +1,5 @@
 #include "SceneGraphTraceLineObject.h"
-#include "configuration/YarsConfiguration.h"
+#include <yars/configuration/YarsConfiguration.h>
 
 #include <sstream>
 

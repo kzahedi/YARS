@@ -1,8 +1,8 @@
 #include "SceneGraphSoftPlyNode.h"
 
-#include "util/PlyLoader.h"
+#include <yars/util/PlyLoader.h>
 
-#include "configuration/YarsConfiguration.h"
+#include <yars/configuration/YarsConfiguration.h>
 
 
 SceneGraphSoftPlyNode::SceneGraphSoftPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::SceneManager* sm)

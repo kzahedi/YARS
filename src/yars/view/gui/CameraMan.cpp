@@ -1,7 +1,7 @@
 #include "CameraMan.h"
 
-#include "view/gui/CameraFactory.h"
-#include "configuration/data/Data.h"
+#include <yars/view/gui/CameraFactory.h>
+#include <yars/configuration/data/Data.h>
 
 #define __CURRENT_CAM  _followCameras[_windowConfiguration->followMode]
 #define __CURRENT_DATA Data::instance()->current()->screens()->screen(_windowConfiguration->index)->camera()

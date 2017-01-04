@@ -1,20 +1,18 @@
 #ifndef __SDL_WINDOW_H__
 #define __SDL_WINDOW_H__
 
-#include <OGRE/Ogre.h>
 #include <yars/util/Observable.h>
 #include <yars/util/ObservableMessage.h>
-#include "GuiMutex.h"
-
 #include <yars/configuration/data/Data.h>
-
 #include <yars/view/gui/CameraMan.h>
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/TextOverlay.h>
 #include <yars/view/gui/OgreHandler.h>
+#include <yars/view/gui/GuiMutex.h>
 
-#include "SDL2/SDL.h"
+#include <OGRE/Ogre.h>
+#include <SDL2/SDL.h>
 
 #ifdef USE_CAPTURE_VIDEO
 #  include <lqt/lqt.h>

@@ -1,6 +1,6 @@
 #include "OffsetCam.h"
 
-#include "configuration/data/Data.h"
+#include <yars/configuration/data/Data.h>
 
 OffsetCam::OffsetCam(WindowConfiguration *configuration)
   : FollowCamera(configuration, "Offset camera")

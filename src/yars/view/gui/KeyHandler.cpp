@@ -1,6 +1,6 @@
 #include "KeyHandler.h"
 
-#include "configuration/YarsConfiguration.h"
+#include <yars/configuration/YarsConfiguration.h>
 
 #include <boost/function.hpp>
 

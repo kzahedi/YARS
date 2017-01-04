@@ -1,6 +1,6 @@
 #include "SceneGraphLDRSensor.h"
 
-#include "types/Colour.h"
+#include <yars/types/Colour.h>
 
 #include <OGRE/Ogre.h>
 

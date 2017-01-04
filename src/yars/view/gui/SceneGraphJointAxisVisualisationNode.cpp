@@ -1,7 +1,7 @@
 #include "SceneGraphJointAxisVisualisationNode.h"
 
-#include "defines/defaults.h"
-#include "configuration/data/Data.h"
+#include <yars/defines/defaults.h>
+#include <yars/configuration/data/Data.h>
 
 #define SET_INDICES\
   for(unsigned int i = 0; i < indices.size()-2; i++)\

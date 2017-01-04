@@ -1,9 +1,8 @@
 #include "CenterOrbitCam.h"
 
-#include "util/macros.h"
-#include "configuration/YarsConfiguration.h"
-
-#include "configuration/data/Data.h"
+#include <yars/util/macros.h>
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/configuration/data/Data.h>
 
 CenterOrbitCam::CenterOrbitCam(WindowConfiguration *configuration)
   : FollowCamera(configuration, "CenterOrbit camera")

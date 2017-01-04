@@ -1,7 +1,7 @@
 #ifndef __TRIPOD_CAM_H__
 #define __TRIPOD_CAM_H__
 
-#include "FollowCamera.h"
+#include <yars/view/gui/FollowCamera.h>
 
 class TripodCam : public FollowCamera
 {

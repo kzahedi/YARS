@@ -1,9 +1,9 @@
-#include "view/YarsViewModel.h"
+#include "YarsViewModel.h"
 
-#include "configuration/data/Data.h"
-#include "configuration/YarsConfiguration.h"
-#include "gui/GuiMutex.h"
-#include "util/Timer.h"
+#include <yars/configuration/data/Data.h>
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/view/gui/GuiMutex.h>
+#include <yars/util/Timer.h>
 
 #include <OGRE/Ogre.h>
 

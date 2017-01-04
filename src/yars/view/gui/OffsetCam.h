@@ -1,9 +1,9 @@
 #ifndef __STATIC_FOLLOW_CAM_H__
 #define __STATIC_FOLLOW_CAM_H__
 
-#include "FollowCamera.h"
-#include "types/P3D.h"
-#include "util/PID.h"
+#include <yars/view/gui/FollowCamera.h>
+#include <yars/types/P3D.h>
+#include <yars/util/PID.h>
 
 class OffsetCam : public FollowCamera
 {

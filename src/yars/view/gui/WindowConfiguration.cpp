@@ -1,11 +1,9 @@
 #include "WindowConfiguration.h"
 
-#include "configuration/YarsConfiguration.h"
-
-#include "view/console/ConsoleView.h"
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/view/console/ConsoleView.h>
 
 #include <sstream>
-
 
 using namespace std;
 

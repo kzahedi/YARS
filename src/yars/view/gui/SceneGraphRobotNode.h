@@ -5,8 +5,8 @@
 #include <yars/view/gui/SceneGraphProximitySensor.h>
 #include <yars/view/gui/SceneGraphLDRSensor.h>
 #include <yars/view/gui/SceneGraphObjectNode.h>
-#include <OGRE/Ogre.h>
 
+#include <OGRE/Ogre.h>
 #include <vector>
 
 using namespace std;

@@ -1,9 +1,9 @@
 #ifndef __ORBIT_CAM_H__
 #define __ORBIT_CAM_H__
 
-#include "util/PID.h"
+#include <yars/view/gui/FollowCamera.h>
+#include <yars/util/PID.h>
 
-#include "FollowCamera.h"
 
 class OrbitCam : public FollowCamera
 {

@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_MESH_NODE_H__
 #define __SCENE_GRAPH_MESH_NODE_H__
 
-#include "configuration/data/DataObject.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataObject.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
 
 class SceneGraphMeshNode : public SceneGraphObjectNode
 {

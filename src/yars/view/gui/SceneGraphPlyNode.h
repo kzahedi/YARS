@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_PLY_NODE_H__
 #define __SCENE_GRAPH_PLY_NODE_H__
 
-#include "configuration/data/DataPly.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataPly.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
 
 class SceneGraphPlyNode : public SceneGraphObjectNode
 {

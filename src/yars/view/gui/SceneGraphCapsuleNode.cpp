@@ -1,6 +1,6 @@
 #include "SceneGraphCapsuleNode.h"
 
-#include "defines/defaults.h"
+#include <yars/defines/defaults.h>
 
 #include <sstream>
 

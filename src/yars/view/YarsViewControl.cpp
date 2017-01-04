@@ -1,8 +1,7 @@
-#include "view/YarsViewControl.h"
-#include "gui/KeyHandler.h"
-
-#include "configuration/YarsConfiguration.h"
-#include "util/macros.h"
+#include "YarsViewControl.h"
+#include <yars/view/gui/KeyHandler.h>
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/util/macros.h>
 
 
 YarsViewControl::YarsViewControl()

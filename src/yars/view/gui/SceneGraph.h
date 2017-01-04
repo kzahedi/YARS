@@ -1,15 +1,15 @@
 #ifndef __SCENE_GRAPH_H__
 #define __SCENE_GRAPH_H__
 
+#include <yars/view/gui/SceneGraphRobotNode.h>
+#include <yars/view/gui/SceneGraphEnvironmentNode.h>
+#include <yars/view/gui/SceneGraphTraceLineObject.h>
+
 #include <OGRE/Ogre.h>
 
 #include <vector>
 
 using namespace std;
-
-#include <yars/view/gui/SceneGraphRobotNode.h>
-#include <yars/view/gui/SceneGraphEnvironmentNode.h>
-#include <yars/view/gui/SceneGraphTraceLineObject.h>
 
 class SceneGraph
 {

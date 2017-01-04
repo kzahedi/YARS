@@ -1,6 +1,6 @@
-#include "view/gui/OgreHandler.h"
-#include "configuration/data/Data.h"
-#include "util/Directories.h"
+#include "OgreHandler.h"
+#include <yars/configuration/data/Data.h>
+#include <yars/util/Directories.h>
 
 #if __APPLE__
 #include <OgreOverlay/OgreOverlaySystem.h>

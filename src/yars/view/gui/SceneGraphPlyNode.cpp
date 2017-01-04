@@ -1,6 +1,6 @@
 #include "SceneGraphPlyNode.h"
 
-#include "util/PlyLoader.h"
+#include <yars/util/PlyLoader.h>
 
 SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::SceneManager* sm)
   : SceneGraphObjectNode(r, sm)

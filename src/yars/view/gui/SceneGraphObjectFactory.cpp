@@ -1,14 +1,14 @@
 #include "SceneGraphObjectFactory.h"
-#include "SceneGraphCapsuleNode.h"
-#include "SceneGraphBoxNode.h"
-#include "SceneGraphSphereNode.h"
-#include "SceneGraphCylinderNode.h"
-#include "SceneGraphSoftPlyNode.h"
+#include <yars/view/gui/SceneGraphCapsuleNode.h>
+#include <yars/view/gui/SceneGraphBoxNode.h>
+#include <yars/view/gui/SceneGraphSphereNode.h>
+#include <yars/view/gui/SceneGraphCylinderNode.h>
+#include <yars/view/gui/SceneGraphSoftPlyNode.h>
+#include <yars/view/gui/SceneGraphMeshNode.h>
+#include <yars/view/gui/SceneGraphPlyNode.h>
 
-#include "util/YarsErrorHandler.h"
+#include <yars/util/YarsErrorHandler.h>
 
-#include "SceneGraphMeshNode.h"
-#include "SceneGraphPlyNode.h"
 
 SceneGraphObjectNode* SceneGraphObjectFactory::create(
     DataObject* object, Ogre::SceneNode* r, Ogre::SceneManager* sm)

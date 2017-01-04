@@ -4,7 +4,6 @@
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/configuration/data/DataObject.h>
 #include <yars/configuration/data/DataCamera.h>
-
 #include <yars/defines/types.h>
 
 #include <string>

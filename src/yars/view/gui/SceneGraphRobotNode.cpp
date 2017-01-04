@@ -1,4 +1,5 @@
 #include "SceneGraphRobotNode.h"
+
 #include <yars/view/gui/SceneGraphObjectFactory.h>
 #include <yars/view/gui/SceneGraphJointAxisVisualisationNode.h>
 

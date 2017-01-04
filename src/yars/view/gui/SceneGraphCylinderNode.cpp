@@ -1,6 +1,6 @@
 #include "SceneGraphCylinderNode.h"
 
-#include "defines/defaults.h"
+#include <yars/defines/defaults.h>
 
 #define SET_INDICES\
   for(unsigned int i = 0; i < indices.size()-2; i++)\

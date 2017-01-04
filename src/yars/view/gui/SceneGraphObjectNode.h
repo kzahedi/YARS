@@ -3,7 +3,6 @@
 
 #include <yars/types/Pose.h>
 #include <yars/configuration/data/DataObject.h>
-
 #include <yars/defines/types.h>
 
 #include <OGRE/Ogre.h>

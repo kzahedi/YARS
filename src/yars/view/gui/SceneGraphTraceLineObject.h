@@ -7,8 +7,6 @@
 
 #include <OGRE/Ogre.h>
 
-
-
 class SceneGraphTraceLineObject : public SceneGraphObjectNode
 {
   public:

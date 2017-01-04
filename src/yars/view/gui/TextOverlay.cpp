@@ -1,6 +1,6 @@
 #include "TextOverlay.h"
 
-#include "ColoredTextAreaOverlayElementFactory.h"
+#include <yars/view/gui/ColoredTextAreaOverlayElementFactory.h>
 
 #include <stdio.h>
 #include <stdlib.h>

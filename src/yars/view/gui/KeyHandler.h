@@ -1,12 +1,11 @@
 #ifndef __KEY_HANDLER_H__
 #define __KEY_HANDLER_H__
 
-#include <vector>
-#include <map>
-
-//#include "types/GenericContainer.h"
 #include <yars/configuration/container/KeyboardShortcuts.h>
 #include <yars/util/Observable.h>
+
+#include <vector>
+#include <map>
 
 #define YARS_KEY_CODE_OFFSET_SHIFT 1000
 #define YARS_KEY_CODE_OFFSET_CTRL  2000

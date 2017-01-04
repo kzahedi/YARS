@@ -1,9 +1,9 @@
-#include "CameraFactory.h"
-#include "FollowCamera.h"
-#include "OffsetCam.h"
-#include "TripodCam.h"
-#include "OrbitCam.h"
-#include "CenterOrbitCam.h"
+#include <yars/view/gui/CameraFactory.h>
+#include <yars/view/gui/FollowCamera.h>
+#include <yars/view/gui/OffsetCam.h>
+#include <yars/view/gui/TripodCam.h>
+#include <yars/view/gui/OrbitCam.h>
+#include <yars/view/gui/CenterOrbitCam.h>
 
 void CameraFactory::create(std::vector<FollowCamera*> *list, WindowConfiguration *configuration)
 {

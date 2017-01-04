@@ -1,9 +1,9 @@
 #include "SceneGraphEnvironmentNode.h"
-#include "SceneGraphObjectFactory.h"
 
-#include "util/macros.h"
-#include "configuration/YarsConfiguration.h"
-#include "SceneGraphLightSourceNode.h"
+#include <yars/view/gui/SceneGraphObjectFactory.h>
+#include <yars/view/gui/SceneGraphLightSourceNode.h>
+#include <yars/util/macros.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     DataEnvironment *data, Ogre::SceneNode* root, Ogre::SceneManager* sm)

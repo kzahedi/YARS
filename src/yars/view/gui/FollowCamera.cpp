@@ -1,5 +1,5 @@
 #include "FollowCamera.h"
-#include "util/macros.h"
+#include <yars/util/macros.h>
 
 FollowCamera::FollowCamera(WindowConfiguration *c, string name)
 {
