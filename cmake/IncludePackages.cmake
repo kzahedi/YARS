@@ -13,8 +13,6 @@ IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 ENDIF(Boost_FOUND)
 
-#find_package(Subversion)
-
 find_package(XercesC)
 IF(XERCESC_FOUND)
   include_directories(${XERCESC_INCLUDE_DIR})
@@ -39,27 +37,10 @@ IF(YARS_USE_VISUALISATION)
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  # if(UNIX AND NOT APPLE)
-    # set(OGRE_STATIC true)
-  # endif(UNIX AND NOT APPLE)
+  find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX RenderSystem_GL)
 
-  find_package(OGRE REQUIRED Paging OgreOverlay Plugin_ParticleFX RenderSystem_GL)
-
-  # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
-    # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone
-    # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
-  # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
-  # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
-
-  # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
-    # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone
-    # Plugin_PCZSceneManager Plugin_ParticleFX RenderSystem_GL)
-  # include_directories("/Library/Frameworks/Ogre.framework/Versions/1.10.0/Headers")
-  # include_directories("/Library/Frameworks/OgreOverlay.framework/Versions/1.10.0/Headers")
-  # message(${OGRE_Overlay_INCLUDE_DIRS}/OgreOverlay)
 
   if(UNIX AND NOT APPLE)
-    # for ogre
     add_definitions(-pthread -D_FORTIFY_SOURCE=2)
     include_directories(/usr/local/include /usr/local/include/OGRE /usr/include/freetype2 /usr/include/libdrm)
   endif(UNIX AND NOT APPLE)

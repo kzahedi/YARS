@@ -34,11 +34,6 @@ if(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES} OSX_wrap.mm)
 else(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
-  target_link_libraries(YarsGUI
-      ${OGRE_RenderSystem_GL_LIBRARIES}
-      ${OGRE_Plugin_ParticleFX_LIBRARIES}
-      )
-
 endif(APPLE)
 
 
