@@ -13,6 +13,7 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0045 NEW) # don't follow symlink for file(GLOB_RECURSE
 endif(COMMAND cmake_policy)
 
+set(LIBRARY_TYPE STATIC)
 
 # Set Version Information
 # TODO: read this from defines/version.h

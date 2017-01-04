@@ -48,7 +48,7 @@
   </screens>
 
   <environment>
-    <gravitation x="0.0" y="0.0" z="-9.81"/>
+    <!-- <gravitation x="0.0" y="0.0" z="-9.81"/> -->
     <ground fixed="true" fog="false">
       <visualisation>
         <texture name="YARS/DryGroundSmall"/>

@@ -102,10 +102,10 @@ void DataHingeActuator::add(DataParseElement *element)
 
   if(element->opening(YARS_STRING_HINGE))
   {
-    element->set(YARS_STRING_NAME,   _name);
-    element->set(YARS_STRING_TYPE,   _jointType);
+    element->set(YARS_STRING_NAME,     _name);
+    element->set(YARS_STRING_TYPE,     _jointType);
     element->set(YARS_STRING_FRICTION, _friction);
-    element->set(YARS_STRING_MODE,   _mode);
+    element->set(YARS_STRING_MODE,     _mode);
     if(_mode == YARS_STRING_ACTIVE)  _isActive = true;
     if(_mode == YARS_STRING_PASSIVE) _isActive = false;
   }
@@ -241,7 +241,7 @@ void DataHingeActuator::applyOffset(Pose offset)
 void DataHingeActuator::createXsd(XsdSpecification *spec)
 {
   XsdSequence *hingeDefinition = new XsdSequence(YARS_STRING_HINGE_DEFINITION);
-  hingeDefinition->add(NA(YARS_STRING_NAME,          YARS_STRING_XSD_STRING,               false));
+  hingeDefinition->add(NA(YARS_STRING_NAME,          YARS_STRING_XSD_STRING,               true));
   hingeDefinition->add(NA(YARS_STRING_TYPE,          YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
   hingeDefinition->add(NA(YARS_STRING_FRICTION,      YARS_STRING_POSITIVE_DECIMAL,         false));
   hingeDefinition->add(NA(YARS_STRING_MODE,          YARS_STRING_ACTUATOR_MODE_DEFINITION, true));

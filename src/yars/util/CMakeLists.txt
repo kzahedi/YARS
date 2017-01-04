@@ -4,6 +4,9 @@ add_library(YarsUtil ${LIBRARY_TYPE} filter/MovingAverage.cpp
                                      StringTokeniser.cpp
                                      VideoCodecs.cpp
                                      Random.cpp
+                                     Socket.cpp
+                                     NamedPipe.cpp
+                                     PlyLoader.cpp
                                      Mapping.cpp
                                      YarsErrorHandler.cpp
                                      MappingFunction.cpp

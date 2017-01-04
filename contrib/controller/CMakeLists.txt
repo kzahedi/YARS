@@ -51,22 +51,22 @@ target_link_libraries(YarsControllerNamedPipe
   ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
-if(YARS_USE_MATLAB)
+if(YARS_USE_PHYTON)
   add_library(YarsControllerPython SHARED Python.cpp)
   target_link_libraries(YarsControllerPython
     YarsRobotController
     ${PYTHON_LIBRARIES})
-endif(YARS_USE_MATLAB)
+endif(YARS_USE_PHYTON)
 
-add_library(YarsControllerTCPIP  SHARED TCPIP.cpp)
+add_library(YarsControllerTCPIP SHARED TCPIP.cpp)
 target_link_libraries(YarsControllerTCPIP
-  YarsRobotController
-  YarsConfiguration
   YarsUtil
+  YarsConfiguration
+  YarsRobotController
   boost_system
   boost_filesystem
   boost_date_time
-  ${Boost_LIBRARIES})
+  )
 
 OPTION(YARS_USE_MATLAB_CONTROLLER "Compile MATLAB Controller" OFF)
 if(YARS_USE_MATLAB_CONTROLLER)
@@ -90,7 +90,7 @@ endif(YARS_USE_JULIA_CONTROLLER)
 OPTION(YARS_USE_NMODE_CONTROLLER "Compile NMODE Controller" OFF)
 if(YARS_USE_NMODE_CONTROLLER)
   add_library(YarsControllerNMODE SHARED NMODEController.cpp)
-  target_link_libraries(YarsControllerNMODE 
+  target_link_libraries(YarsControllerNMODE
     NMODEe
     YarsRobotController
     YarsConfiguration

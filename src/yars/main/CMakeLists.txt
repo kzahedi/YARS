@@ -5,4 +5,3 @@ if(YARS_USE_VISUALISATION)
 endif(YARS_USE_VISUALISATION)
 
 add_library(YarsMain ${LIBRARY_TYPE} ${SRC})
-

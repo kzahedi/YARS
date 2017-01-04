@@ -1,8 +1,8 @@
 add_executable(braitenberg-pipe Braitenberg.cpp)
 
-target_link_libraries(braitenberg-pipe YarsNamedPipeCom
+target_link_libraries(braitenberg-pipe YarsUtil
+                                       YarsNamedPipeCom
                                        YarsRobotController
                                        YarsConfiguration
-                                       YarsUtil
                                        ${Boost_LIBRARIES})
 
