@@ -1,14 +1,13 @@
 #ifndef __SCENE_GRAPH_OBJECT_FACTORY_H__
 #define __SCENE_GRAPH_OBJECT_FACTORY_H__
 
-#include "configuration/data/DataObject.h"
-#include "configuration/data/DataBox.h"
-#include "configuration/data/DataSphere.h"
-#include "configuration/data/DataCapsule.h"
-#include "configuration/data/DataCylinder.h"
-#include "SceneGraphObjectNode.h"
-
-#include "configuration/data/DataPly.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataObject.h>
+#include <yars/configuration/data/DataBox.h>
+#include <yars/configuration/data/DataSphere.h>
+#include <yars/configuration/data/DataCapsule.h>
+#include <yars/configuration/data/DataCylinder.h>
+#include <yars/configuration/data/DataPly.h>
 
 class SceneGraphObjectFactory
 {

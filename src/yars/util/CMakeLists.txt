@@ -2,7 +2,6 @@ add_library(YarsUtil ${LIBRARY_TYPE} filter/MovingAverage.cpp
                                      PID.cpp
                                      Filter.cpp
                                      StringTokeniser.cpp
-                                     MatrixFunctions.cpp
                                      VideoCodecs.cpp
                                      Random.cpp
                                      Mapping.cpp

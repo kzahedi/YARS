@@ -1,8 +1,9 @@
 #ifndef __SCENE_GRAPH_ENVIRONMENT_NODE_H__
 #define __SCENE_GRAPH_ENVIRONMENT_NODE_H__
 
-#include "configuration/data/DataEnvironment.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataEnvironment.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
+
 #include <OGRE/Ogre.h>
 
 #include <vector>

@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_SPHERE_NODE_H__
 #define __SCENE_GRAPH_SPHERE_NODE_H__
 
-#include "configuration/data/DataSphere.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataSphere.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
 
 class SceneGraphSphereNode : public SceneGraphObjectNode
 {

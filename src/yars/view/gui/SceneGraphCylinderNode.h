@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_CYLINDER_NODE_H__
 #define __SCENE_GRAPH_CYLINDER_NODE_H__
 
-#include "SceneGraphObjectNode.h"
-#include "configuration/data/DataCylinder.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataCylinder.h>
 
 #include <vector>
 

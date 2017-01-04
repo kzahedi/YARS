@@ -1,11 +1,11 @@
 #ifndef __SCENE_GRAPH_PROXIMITY_SENSOR_H__
 #define __SCENE_GRAPH_PROXIMITY_SENSOR_H__
 
-#include "SceneGraphObjectNode.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
 
-#include "configuration/data/DataGenericProximitySensor.h"
+#include <yars/configuration/data/DataGenericProximitySensor.h>
 
-#include "types/P3D.h"
+#include <yars/types/P3D.h>
 
 #include <OGRE/Ogre.h>
 

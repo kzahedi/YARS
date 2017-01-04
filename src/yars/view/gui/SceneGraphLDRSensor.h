@@ -1,11 +1,9 @@
 #ifndef __SCENE_GRAPH_LDRY_SENSOR_H__
 #define __SCENE_GRAPH_LDRY_SENSOR_H__
 
-#include "SceneGraphObjectNode.h"
-
-#include "configuration/data/DataGenericLightDependentResistorSensor.h"
-
-#include "types/P3D.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataGenericLightDependentResistorSensor.h>
+#include <yars/types/P3D.h>
 
 #include <OGRE/Ogre.h>
 

@@ -1,9 +1,9 @@
 #include "SceneGraphRobotNode.h"
-#include "SceneGraphObjectFactory.h"
-#include "SceneGraphJointAxisVisualisationNode.h"
+#include <yars/view/gui/SceneGraphObjectFactory.h>
+#include <yars/view/gui/SceneGraphJointAxisVisualisationNode.h>
 
-#include "util/macros.h"
-#include "configuration/YarsConfiguration.h"
+#include <yars/util/macros.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 SceneGraphRobotNode::SceneGraphRobotNode(
     DataRobot *robot, Ogre::SceneNode *root, Ogre::SceneManager *sm)

@@ -1,9 +1,9 @@
 #ifndef __CAMERA_HANDLER_H__
 #define __CAMERA_HANDLER_H__
 
-#include "view/gui/WindowConfiguration.h"
-#include "view/gui/FollowCamera.h"
-#include "types/P3D.h"
+#include <yars/view/gui/WindowConfiguration.h>
+#include <yars/view/gui/FollowCamera.h>
+#include <yars/types/P3D.h>
 
 
 class CameraMan

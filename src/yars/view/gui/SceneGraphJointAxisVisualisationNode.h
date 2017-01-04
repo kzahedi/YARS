@@ -1,9 +1,9 @@
 #ifndef __SCENE_GRAPH_JOINT_AXIS_VISUALISATION_NODE_H__
 #define __SCENE_GRAPH_JOINT_AXIS_VISUALISATION_NODE_H__
 
-#include "SceneGraphObjectNode.h"
-#include "configuration/data/DataActuator.h"
-#include "types/RHDimension.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataActuator.h>
+#include <yars/types/RHDimension.h>
 
 #include <vector>
 

@@ -7,9 +7,9 @@
 
 using namespace std;
 
-#include "view/gui/SceneGraphRobotNode.h"
-#include "view/gui/SceneGraphEnvironmentNode.h"
-#include "view/gui/SceneGraphTraceLineObject.h"
+#include <yars/view/gui/SceneGraphRobotNode.h>
+#include <yars/view/gui/SceneGraphEnvironmentNode.h>
+#include <yars/view/gui/SceneGraphTraceLineObject.h>
 
 class SceneGraph
 {

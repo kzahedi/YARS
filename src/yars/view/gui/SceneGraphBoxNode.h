@@ -1,8 +1,8 @@
 #ifndef __SCENE_GRAPH_BOX_NODE_H__
 #define __SCENE_GRAPH_BOX_NODE_H__
 
-#include "configuration/data/DataBox.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataBox.h>
 
 class SceneGraphBoxNode : public SceneGraphObjectNode
 {

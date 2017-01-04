@@ -1,10 +1,10 @@
 #ifndef __SCENE_GRAPH_ROBOT_NODE_H__
 #define __SCENE_GRAPH_ROBOT_NODE_H__
 
-#include "configuration/data/DataRobot.h"
-#include "SceneGraphProximitySensor.h"
-#include "SceneGraphLDRSensor.h"
-#include "SceneGraphObjectNode.h"
+#include <yars/configuration/data/DataRobot.h>
+#include <yars/view/gui/SceneGraphProximitySensor.h>
+#include <yars/view/gui/SceneGraphLDRSensor.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
 #include <OGRE/Ogre.h>
 
 #include <vector>

@@ -1,6 +1,10 @@
 #ifndef __OGRE_HANDLER_H__
 #define __OGRE_HANDLER_H__
 
+#include <yars/view/gui/SceneGraph.h>
+#include <yars/view/gui/TextOverlay.h>
+
+
 #include <OGRE/Ogre.h>
 #if __APPLE__
 #include <RenderSystem_GL/OgreGLPlugin.h>
@@ -10,9 +14,6 @@
 #include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #endif
 // #include <OGRE/OgreStaticPluginLoader.h>
-
-#include "view/gui/SceneGraph.h"
-#include "view/gui/TextOverlay.h"
 
 class OgreHandler
 {

@@ -39,10 +39,8 @@ IF(YARS_USE_VISUALISATION)
 
   find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX RenderSystem_GL)
 
-
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread -D_FORTIFY_SOURCE=2)
-    include_directories(/usr/local/include /usr/local/include/OGRE /usr/include/freetype2 /usr/include/libdrm)
   endif(UNIX AND NOT APPLE)
 ENDIF(YARS_USE_VISUALISATION)
 

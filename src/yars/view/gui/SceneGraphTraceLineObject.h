@@ -1,13 +1,12 @@
 #ifndef __SCENE_GRAPH_TRACE_LINE_OBJECT_H__
 #define __SCENE_GRAPH_TRACE_LINE_OBJECT_H__
 
-#include "SceneGraphObjectNode.h"
-
-#include "configuration/data/DataTraceLine.h"
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/configuration/data/DataTraceLine.h>
+#include <yars/types/Colour.h>
 
 #include <OGRE/Ogre.h>
 
-#include "types/Colour.h"
 
 
 class SceneGraphTraceLineObject : public SceneGraphObjectNode

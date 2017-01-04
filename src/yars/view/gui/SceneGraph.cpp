@@ -1,5 +1,5 @@
 #include "SceneGraph.h"
-#include "configuration/data/Data.h"
+#include <yars/configuration/data/Data.h>
 
 #include <sstream>
 

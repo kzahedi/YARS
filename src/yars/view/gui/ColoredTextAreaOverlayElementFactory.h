@@ -1,12 +1,14 @@
 #ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_FACTORY_H__
 #define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_FACTORY_H__
 
+#include <yars/view/gui/ColoredTextAreaOverlayElement.h>
+
 #if __APPLE__
 #include <OgreOverlay/OgreOverlayElementFactory.h>
 #else
 #include <OGRE/Overlay/OgreOverlayElementFactory.h>
 #endif
-#include "view/gui/ColoredTextAreaOverlayElement.h"
+
 
 /** Factory for creating TextAreaOverlayElement instances. */
 class ColoredTextAreaOverlayElementFactory : public Ogre::OverlayElementFactory

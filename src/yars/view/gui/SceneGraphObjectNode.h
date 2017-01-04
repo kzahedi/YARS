@@ -1,10 +1,10 @@
 #ifndef __SCENE_GRAPH_OBJECT_NODE_H__
 #define __SCENE_GRAPH_OBJECT_NODE_H__
 
-#include "types/Pose.h"
-#include "configuration/data/DataObject.h"
+#include <yars/types/Pose.h>
+#include <yars/configuration/data/DataObject.h>
 
-#include <defines/types.h>
+#include <yars/defines/types.h>
 
 #include <OGRE/Ogre.h>
 

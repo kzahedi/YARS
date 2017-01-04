@@ -1,9 +1,9 @@
 #ifndef __SCENE_GRAPH_SOFT_PLY_NODE_H__
 #define __SCENE_GRAPH_SOFT_PLY_NODE_H__
 
-#include "configuration/data/DataPly.h"
-#include "SceneGraphObjectNode.h"
-#include "types/Vertex.h"
+#include <yars/configuration/data/DataPly.h>
+#include <yars/view/gui/SceneGraphObjectNode.h>
+#include <yars/types/Vertex.h>
 
 
 class SceneGraphSoftPlyNode : public SceneGraphObjectNode

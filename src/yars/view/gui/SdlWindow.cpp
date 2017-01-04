@@ -1,11 +1,11 @@
 #include "SdlWindow.h"
 
-#include "configuration/data/Data.h"
-#include "view/gui/KeyHandler.h"
-#include "view/console/ConsoleView.h"
+#include <yars/configuration/data/Data.h>
+#include <yars/configuration/YarsConfiguration.h>
+#include <yars/view/gui/KeyHandler.h>
+#include <yars/view/console/ConsoleView.h>
 #include <yars/util/macros.h>
-
-#include "util/OSD.h"
+#include <yars/util/OSD.h>
 
 #include <OGRE/Ogre.h>
 
@@ -25,7 +25,6 @@ using namespace _SDL_;
 
 #include <math.h>
 
-#include "configuration/YarsConfiguration.h"
 
 #define FACTOR 0.01
 
