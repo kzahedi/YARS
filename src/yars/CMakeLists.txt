@@ -35,34 +35,24 @@ endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
   add_subdirectory(view)
-  target_link_libraries(${YARS_TARGET} YarsView)
-
-  link_directories("/usr/local/lib/")
-  if(UNIX AND NOT APPLE)
-    link_directories(/usr/local/lib /usr/local/lib/OGRE)
-    target_link_libraries(${YARS_TARGET}
-      X11 GL z Xt pthread ${OGRE_LIBRARIES}
-      zzip freeimage freetype quicktime)
-      # zzip freeimage freetype GLEW quicktime)
-
-  else(UNIX AND NOT APPLE)
-    target_link_libraries(${YARS_TARGET} zzip freeimage freetype)
-      # zzip freeimage freetype GLEW)
-    # Plugin_CgProgramManagerStatic
-  endif(UNIX AND NOT APPLE)
-  target_link_libraries(${YARS_TARGET} SDL2)
-
-  # message("Ogre: ${OGRE_LIBRARIES}")
-  # target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
-
   if(APPLE)
     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
       "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre -framework Cocoa")
   else(APPLE)
     message("Ogre: ${OGRE_LIBRARIES}")
-    #target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
-    target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} zzip freeimage freetype GLEW)
+
+    target_link_libraries(${YARS_TARGET} 
+      X11 GL z Xt zzip freeimage freetype 
+      ${OGRE_LIBRARIES}
+      ${OGRE_Overlay_LIBRARIES}
+      ${OGRE_RenderSystem_GL_LIBRARIES}
+      ${OGRE_Plugin_ParticleFX_LIBRARIES}
+      )
   endif(APPLE)
+
+  target_link_libraries(${YARS_TARGET} SDL2)
+  target_link_libraries(${YARS_TARGET} YarsView)
+  target_link_libraries(${YARS_TARGET} YarsGUI)
 
 endif(YARS_USE_VISUALISATION)
 

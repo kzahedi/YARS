@@ -20,28 +20,15 @@ OgreHandler::OgreHandler()
 {
   Ogre::LogManager * lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  // TODO load resources.cfg
-  // _root = new Ogre::Root( "plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
+
   _root = new Ogre::Root("","",""); // no log file created here (see 1 line above)
 
-#ifdef __APPLE__
+// #ifdef __APPLE__
   _GLPlugin = new Ogre::GLPlugin();
   _GLPlugin->install();
 
   _particlePlugin = new Ogre::ParticleFXPlugin();
   _particlePlugin->install();
-#endif
-
-// #ifdef __APPLE__
-  // if (!_root->restoreConfig())
-  // {
-    // YarsErrorHandler::push("Can't find ogre.cfg");
-  // }
-// #else // __APPLE__
-  // if (!_root->restoreConfig() && !_root->showConfigDialog())
-  // {
-    // YarsErrorHandler::push("User canceled the config dialog!", "Application::setupRenderSystem()");
-  // }
 // #endif // __APPLE__
 
   if ( _root->getAvailableRenderers().size() != 1 ) {
@@ -88,7 +75,7 @@ void OgreHandler::setupSceneManager()
   // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("meshes",    "FileSystem");
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-  
+
 
   _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);
   // _sceneManager->setSkyBox(true, "YARS/SkyBox", 100000.0);

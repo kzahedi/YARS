@@ -1,28 +1,7 @@
-#########################################################################
-#                                                                       #
-# This file is part of Yet Another Robot Simulator (YARS).              #
-# Copyright (C) 2003-2015 Keyan Ghazi-Zahedi.                           #
-# All rights reserved.                                                  #
-# Email: keyan.zahedi@googlemail.com                                    #
-# Web: https://github.com/kzahedi/YARS                                  #
-#                                                                       #
-# For a list of contributors see the file AUTHORS.                      #
-#                                                                       #
-# YARS is free software; you can redistribute it and/or modify it under #
-# the terms of the GNU General Public License as published by the Free  #
-# Software Foundation; either version 2 of the License, or (at your     #
-# option) any later version.                                            #
-#                                                                       #
-# YARS is distributed in the hope that it will be useful, but WITHOUT   #
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or #
-# FITNESS FOR A PARTICULAR PURPOSE.                                     #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with YARS in the file COPYING; if not, write to the Free        #
-# Software Foundation, Inc., 51 Franklin St, Fifth Floor,               #
-# Boston, MA 02110-1301, USA                                            #
-#                                                                       #
-#########################################################################
+if(UNIX AND NOT APPLE)
+  set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0  ${WARNINGS} -pthread -fPIC")
+  set(CMAKE_CXX_FLAGS_RELEASE "   -O3  ${WARNINGS} -pthread -fPIC")
+endif(UNIX AND NOT APPLE)
 
 ## if you change this list, please adapt modules/InstallConfiguration.cmake
 set(YARS_ROBOT_CONTROLLER_FILES "${CMAKE_SOURCE_DIR}/src/yars/configuration/data/DataNode.cpp"

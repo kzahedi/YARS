@@ -15,10 +15,10 @@ if(APPLE AND UNIX)
 endif(APPLE AND UNIX)
 
 if(UNIX AND NOT APPLE)
-  # set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 -W -Wall -fpermissive")
-  # set(CMAKE_CXX_FLAGS_RELEASE "   -O3 -W -Wall -fpermissive")
-  set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 -fpermissive ${WARNINGS} -pthread -fPIC")
-  set(CMAKE_CXX_FLAGS_RELEASE "   -O3 -fpermissive ${WARNINGS} -pthread -fPIC")
+  set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 ${WARNINGS}")
+  set(CMAKE_CXX_FLAGS_RELEASE "   -O3 ${WARNINGS}")
+  # set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 -fpermissive ${WARNINGS} -pthread -fPIC")
+  # set(CMAKE_CXX_FLAGS_RELEASE "   -O3 -fpermissive ${WARNINGS} -pthread -fPIC")
 endif(UNIX AND NOT APPLE)
 
 

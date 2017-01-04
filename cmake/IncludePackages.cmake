@@ -39,7 +39,11 @@ IF(YARS_USE_VISUALISATION)
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  find_package(OGRE REQUIRED Overlay Plugin_ParticleFX RenderSystem_GL)
+  # if(UNIX AND NOT APPLE)
+    # set(OGRE_STATIC true)
+  # endif(UNIX AND NOT APPLE)
+
+  find_package(OGRE REQUIRED Paging OgreOverlay Plugin_ParticleFX RenderSystem_GL)
 
   # find_package(OGRE REQUIRED Overlay Paging Terrain Volume Plugin_BSPSceneManager
     # Plugin_CgProgramManager Plugin_OctreeSceneManager Plugin_OctreeZone

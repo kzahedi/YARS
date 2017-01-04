@@ -147,5 +147,5 @@ set(CFG_SRC YarsConfiguration.cpp
             xsd/specification/XsdAttribute.cpp)
 
 
-add_library(YarsConfiguration STATIC ${CFG_SRC})
+add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})
 target_link_libraries(YarsConfiguration ${XERCESC_LIBRARY_FILE} ${Boost_LIBRARIES} YarsUtil)

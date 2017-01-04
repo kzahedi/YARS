@@ -61,4 +61,4 @@ add_library(YarsUtil ${LIBRARY_TYPE} filter/MovingAverage.cpp
                                      FileSystemOperations.cpp)
 endif(NOT WINDOWS)
 
-target_link_libraries(YarsUtil YarsConfiguration boost_filesystem)
+target_link_libraries(YarsUtil boost_filesystem)
