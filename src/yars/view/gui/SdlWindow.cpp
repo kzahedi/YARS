@@ -353,7 +353,7 @@ void SdlWindow::__setupSDL()
   // SDL_ShowCursor(SDL_ENABLE);
 
 
-#ifndef __APPLE__
+#ifdef __WINDOWS__
   SDL_GLContext glcontext = NULL;
   glcontext = SDL_GL_CreateContext( _sdlWindow );
   if ( glcontext == NULL ) {
@@ -383,11 +383,13 @@ void SdlWindow::__setupSDL()
   // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
   params["externalGLContext"] = Ogre::StringConverter::toString( (unsigned long)glcontext );
   params["externalWindowHandle"] = Ogre::StringConverter::toString( (unsigned long)syswm_info.info.win.window );
-#elif __LINUX__
+#endif
+#ifdef __linux__
   // params["externalGLControl"] = "1";
   // params["currentGLContext"] = "1";
   params["parentWindowHandle"] = Ogre::StringConverter::toString( (unsigned long)syswm_info.info.x11.window );
-#elif __APPLE__
+#endif
+#ifdef __APPLE__
   params["externalGLControl"] = "1";
   // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
   //    params["externalGLContext"] = Ogre::StringConverter::toString( glcontext );
