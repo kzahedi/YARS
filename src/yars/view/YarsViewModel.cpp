@@ -25,6 +25,7 @@ YarsViewModel::YarsViewModel()
     initialiseView();
     _ogreHandler->setupSceneManager();
     FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
+    if(__YARS_GET_USE_CAPTURE_CL) toggleCaptureVideo();
   }
 }
 
@@ -188,6 +189,7 @@ void YarsViewModel::toggleCaptureVideo()
   }
   else
   {
+    cout << "stopped video recording" << endl;
     FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
   }
 }

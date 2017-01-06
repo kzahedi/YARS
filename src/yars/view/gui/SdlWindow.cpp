@@ -104,11 +104,11 @@ SdlWindow::SdlWindow(int index)
   }
 
 #ifdef USE_CAPTURE_VIDEO
-  if(__YARS_GET_USE_CAPTURE(index))
-  {
-    _captureRunning = true;
-    __initMovie();
-  }
+  // if(__YARS_GET_USE_CAPTURE(index))
+  // {
+    // _captureRunning = true;
+    // __initMovie();
+  // }
 #endif // USE_CAPTURE_VIDEO
 }
 

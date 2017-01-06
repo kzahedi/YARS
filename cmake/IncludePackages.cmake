@@ -38,6 +38,7 @@ IF(YARS_USE_VISUALISATION)
   include_directories(${SDL2_INCLUDE_DIR})
 
   find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX RenderSystem_GL)
+  include_directories(${OGRE_INCLUDE_DIR})
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread -D_FORTIFY_SOURCE=2)

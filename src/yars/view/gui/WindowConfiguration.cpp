@@ -21,7 +21,7 @@ WindowConfiguration::WindowConfiguration(int i)
   followMode            = __YARS_GET_FOLLOW_MODE;
   useFollow             = __YARS_GET_USE_FOLLOW_MODE(index);
   onScreenDisplay       = __YARS_GET_USE_OSD;
-  useCapture            = __YARS_GET_USE_CAPTURE(index);
+  useCapture            = __YARS_GET_USE_CAPTURE(index) | __YARS_GET_USE_CAPTURE_CL;
   if(__YARS_GET_USE_WINDOW_GEOMETRY)
   {
     geometry.setX(__YARS_GET_X_POSITION);
