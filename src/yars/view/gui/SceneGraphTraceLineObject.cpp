@@ -82,7 +82,6 @@ void SceneGraphTraceLineObject::update()
     P3D p = _trace->position();
     _node->setPosition(p.x, p.y, p.z);
     if(_billboard != NULL) _billboard->getBillboard(0)->setPosition(p.x, p.z, -p.y);
-    
   }
   if(_reset == true)
   {

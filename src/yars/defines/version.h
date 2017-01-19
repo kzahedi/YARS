@@ -41,4 +41,5 @@ XmlChangeLog::add(0, 8, 37, "added tag for gravitation", false);
 XmlChangeLog::add(0, 8, 38, "moved force and velocity tags for <generic> actuator", true);
 XmlChangeLog::add(0, 8, 39, "generic spring actuator included", false);
 XmlChangeLog::add(0, 8, 40, "orbit speed is now given in degree per second", false);
+XmlChangeLog::add(0, 8, 41, "traces can now also be projected to xy,yz,xz plane", false);
 #endif // __VERSIONS_H__

@@ -177,11 +177,8 @@ void YarsViewModel::toggleShadows()
 
 void YarsViewModel::toggleCaptureVideo()
 {
-  cout << "sync: " << _sync << endl;
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
-
-  cout << "sync: " << _sync << endl;
 
   if(_toggleVideo == true)
   {

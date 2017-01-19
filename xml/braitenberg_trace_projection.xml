@@ -283,17 +283,19 @@
   </robots>
 
   <traces>
-    <trace  target="main body" length="5" max="300" time="5" particles="false">
+    <trace  target="main body" length="5" max="300" time="5" particles="false" project="xz">
       <init  colour="ff0000"    size="0.01"/>
       <final colour="ff000000"  size="0.00"/>
     </trace>
-    <trace  target="wheel right" length="5" max="200" time="5" particles="false">
+    <trace  target="wheel right" length="5" max="200" time="5" particles="false" project="yz">
       <init  colour="00ff00"    size="0.01"/>
       <final colour="00ff0000"  size="0.00"/>
+      <offset x="1.0"/>
     </trace>
-    <trace  target="wheel left" length="5" max="100" time="5" particles="false">
+    <trace  target="wheel left" length="5" max="100" time="5" particles="false" project="xy">
       <init  colour="0000ff"    size="0.01"/>
       <final colour="0000ff00"  size="0.00"/>
+      <offset z="0.1"/>
     </trace>
   </traces>
 </rosiml>

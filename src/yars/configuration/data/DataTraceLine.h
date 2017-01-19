@@ -35,6 +35,8 @@ class DataTraceLine : public DataTrace, public DataNode
     bool   useParticles();
     bool   useBillboard();
     int    nrOfElements();
+    bool   useProjection();
+    int    projectionPlane();
 
     static void createXsd(XsdSpecification *spec);
 
