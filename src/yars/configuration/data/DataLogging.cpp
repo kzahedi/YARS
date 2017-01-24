@@ -157,6 +157,7 @@ void DataLogging::createXsd(XsdSpecification *spec)
   DataLoggingFile::createXsd(spec);
   DataLoggingCSV::createXsd(spec);
   DataLoggingGnuplot::createXsd(spec);
+  DataLoggingBlender::createXsd(spec);
 
   DataLoggingObject::createXsd(spec);
   DataLoggingSensor::createXsd(spec);

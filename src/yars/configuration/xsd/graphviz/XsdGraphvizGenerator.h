@@ -23,8 +23,8 @@ class XsdGraphvizGenerator
   private:
     void __generate(XsdGraphNodeInstance *node, int depth);
 
-    stringstream  _dot;
-    XsdGraph     *_graph;
+    stringstream _dot;
+    XsdGraph*    _graph;
 };
 
 #endif // __YARS_XSD_GRAPHVIZ_GENERATOR_H__

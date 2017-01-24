@@ -97,3 +97,15 @@ if(YARS_USE_NMODE_CONTROLLER)
     YarsUtil
     ${Boost_LIBRARIES})
 endif(YARS_USE_NMODE_CONTROLLER)
+
+OPTION(YARS_USE_CRBM_CONTROLLER "Compile CRBM Controller" OFF)
+if(YARS_USE_CRBM_CONTROLLER)
+  add_library(YarsControllerCRBMCtrl SHARED CRBMCtrl.cpp)
+  target_link_libraries(YarsControllerCRBMCtrl
+    CRBM
+    YarsRobotController
+    YarsConfiguration
+    YarsUtil
+    Entropy++
+    ${Boost_LIBRARIES})
+endif(YARS_USE_CRBM_CONTROLLER)
