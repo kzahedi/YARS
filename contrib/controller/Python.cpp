@@ -13,17 +13,14 @@ void PythonController::update()
   _pSensors = PyList_New(10);
   if(_pSensors == NULL) PyErr_Print();
 
-  // cout << "Sensors:" << endl;
   for(int i = 0; i < (int)sensors.size(); i++)
   {
-    // cout << " " << sensors[i];
     _pValue = PyFloat_FromDouble(sensors[i]);
     if(_pValue == NULL) PyErr_Print();
-    PyList_SetItem(_pSensors, i, _pValue);    
+    PyList_SetItem(_pSensors, i, _pValue);
   }
   _pArgs = PyTuple_Pack(1, _pSensors);
-  // cout << endl;
-    
+
   _pActuators = PyObject_CallObject(_pUpdate, _pArgs);
   if(_pActuators == NULL) PyErr_Print();
 
@@ -111,43 +108,43 @@ extern "C" void destroy(RobotController* controller)
 //  int main(int argc, char *argv[])
 //  {
 //      PyObject *pName, *pModule, *pDict, *pFunc, *pValue;
-//  
-//      if (argc < 3) 
+//
+//      if (argc < 3)
 //      {
 //          printf("Usage: exe_name python_source function_name\n");
 //          return 1;
 //      }
-//  
+//
 //      // Initialize the Python Interpreter
 //      Py_Initialize();
-//  
+//
 //      // Build the name object
 //      pName = PyString_FromString(argv[1]);
-//  
+//
 //      // Load the module object
 //      pModule = PyImport_Import(pName);
-//  
-//      // pDict is a borrowed reference 
+//
+//      // pDict is a borrowed reference
 //      pDict = PyModule_GetDict(pModule);
-//  
-//      // pFunc is also a borrowed reference 
+//
+//      // pFunc is also a borrowed reference
 //      pFunc = PyDict_GetItemString(pDict, argv[2]);
-//  
-//      if (PyCallable_Check(pFunc)) 
+//
+//      if (PyCallable_Check(pFunc))
 //      {
 //          PyObject_CallObject(pFunc, NULL);
-//      } else 
+//      } else
 //      {
 //          PyErr_Print();
 //      }
-//  
+//
 //      // Clean up
 //      Py_DECREF(pModule);
 //      Py_DECREF(pName);
-//  
+//
 //      // Finish the Python Interpreter
 //      Py_Finalize();
-//  
+//
 //      return 0;
 //  }
-//  
+//

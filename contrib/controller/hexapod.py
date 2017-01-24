@@ -13,19 +13,24 @@ def update(sensors):
 
   t = t + 1
 
-  a1  = math.sin(                t/10.0)
-  a2  = math.sin(1.5 * math.pi + t/10.0)
-  a3  = math.sin(      math.pi + t/10.0)
-  a4  = math.sin(0.5 * math.pi + t/10.0)
+  s1 = math.sin(t * 2.0 * math.pi/50.0);
+  s2 = math.sin(t * 2.0 * math.pi/50.0 + 3.0 * math.pi/2.0);
+  s3 = math.sin(t * 2.0 * math.pi/50.0 +       math.pi);
+  s4 = math.sin(t * 2.0 * math.pi/50.0 + 5.0 * math.pi/2.0);
 
-  a5  = math.sin(      math.pi + t/10.0)
-  a6  = math.sin(0.5 * math.pi + t/10.0)
-  a7  = math.sin(                t/10.0)
-  a8  = math.sin(1.5 * math.pi + t/10.0)
+  a1  = s1
+  a2  = s2
+  a3  = s3
+  a4  = s4
 
-  a9  = math.sin(                t/10.0)
-  a10 = math.sin(1.5 * math.pi + t/10.0)
-  a11 = math.sin(      math.pi + t/10.0)
-  a12 = math.sin(0.5 * math.pi + t/10.0)
+  a5  = s3
+  a6  = s4
+  a7  = s1
+  a8  = s2
+
+  a9  = s1
+  a10 = s2
+  a11 = s3
+  a12 = s4
 
   return [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12]

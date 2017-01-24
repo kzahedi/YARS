@@ -51,12 +51,12 @@ target_link_libraries(YarsControllerNamedPipe
   ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
-if(YARS_USE_PHYTON)
+if(YARS_USE_PYTHON)
   add_library(YarsControllerPython SHARED Python.cpp)
   target_link_libraries(YarsControllerPython
     YarsRobotController
     ${PYTHON_LIBRARIES})
-endif(YARS_USE_PHYTON)
+endif(YARS_USE_PYTHON)
 
 add_library(YarsControllerTCPIP SHARED TCPIP.cpp)
 target_link_libraries(YarsControllerTCPIP
