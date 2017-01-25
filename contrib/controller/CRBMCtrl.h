@@ -28,4 +28,5 @@ class CRBMCtrl: public RobotController
 
     entropy::DContainer* Adata;
 
+    bool record;
 };

@@ -558,9 +558,10 @@
       </sensors>
 
       <controller  module="CRBMCtrl" frequency="10">
-        <parameter name="crbm" value="/Users/zahedi/projects/YARS/contrib/controller/mode_four.rbm"/>
-        <parameter name="A"    value="/Users/zahedi/projects/YARS/contrib/controller/mode_four_actuators.csv"/>
-        <parameter name="init" value="10"/>
+        <parameter name="crbm"   value="/Users/zahedi/projects/YARS/contrib/controller/mode_four.rbm"/>
+        <parameter name="A"      value="/Users/zahedi/projects/YARS/contrib/controller/actuators.csv"/>
+        <parameter name="init"   value="20"/>
+        <parameter name="record" value="false"/>
       </controller>
 
     </robot>
@@ -595,5 +596,64 @@
     </trace>
   </traces>
 
+  <logging>
+
+    <sensor target="front right z-axis sensor"  precision="8"> <external/> </sensor>
+    <sensor target="front right y-axis sensor"  precision="8"> <external/> </sensor>
+    <sensor target="front left z-axis sensor"   precision="8"> <external/> </sensor>
+    <sensor target="front left y-axis sensor"   precision="8"> <external/> </sensor>
+    <sensor target="centre right z-axis sensor" precision="8"> <external/> </sensor>
+    <sensor target="centre right y-axis sensor" precision="8"> <external/> </sensor>
+    <sensor target="centre left z-axis sensor"  precision="8"> <external/> </sensor>
+    <sensor target="centre left y-axis sensor"  precision="8"> <external/> </sensor>
+    <sensor target="rear right z-axis sensor"   precision="8"> <external/> </sensor>
+    <sensor target="rear right y-axis sensor"   precision="8"> <external/> </sensor>
+    <sensor target="rear left z-axis sensor"    precision="8"> <external/> </sensor>
+    <sensor target="rear left y-axis sensor"    precision="8"> <external/> </sensor>
+
+    <actuator target="front right z-axis"  precision="8"> <external/> </actuator>
+    <actuator target="front right y-axis"  precision="8"> <external/> </actuator>
+    <actuator target="front left z-axis"   precision="8"> <external/> </actuator>
+    <actuator target="front left y-axis"   precision="8"> <external/> </actuator>
+    <actuator target="centre right z-axis" precision="8"> <external/> </actuator>
+    <actuator target="centre right y-axis" precision="8"> <external/> </actuator>
+    <actuator target="centre left z-axis"  precision="8"> <external/> </actuator>
+    <actuator target="centre left y-axis"  precision="8"> <external/> </actuator>
+    <actuator target="rear right z-axis"   precision="8"> <external/> </actuator>
+    <actuator target="rear right y-axis"   precision="8"> <external/> </actuator>
+    <actuator target="rear left z-axis"    precision="8"> <external/> </actuator>
+    <actuator target="rear left y-axis"    precision="8"> <external/> </actuator>
+
+    <csv name="sensors" date="false">
+      <target name="front right z-axis sensor"/>
+      <target name="front right y-axis sensor"/>
+      <target name="front left z-axis sensor"/>
+      <target name="front left y-axis sensor"/>
+      <target name="centre right z-axis sensor"/>
+      <target name="centre right y-axis sensor"/>
+      <target name="centre left z-axis sensor"/>
+      <target name="centre left y-axis sensor"/>
+      <target name="rear right z-axis sensor"/>
+      <target name="rear right y-axis sensor"/>
+      <target name="rear left z-axis sensor"/>
+      <target name="rear left y-axis sensor"/>
+    </csv>
+
+    <csv name="actuators" date="false">
+      <target name="front right z-axis"/>
+      <target name="front right y-axis"/>
+      <target name="front left z-axis"/>
+      <target name="front left y-axis"/>
+      <target name="centre right z-axis"/>
+      <target name="centre right y-axis"/>
+      <target name="centre left z-axis"/>
+      <target name="centre left y-axis"/>
+      <target name="rear right z-axis"/>
+      <target name="rear right y-axis"/>
+      <target name="rear left z-axis"/>
+      <target name="rear left y-axis"/>
+    </csv>
+
+  </logging>
 
 </rosiml>

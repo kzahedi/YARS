@@ -10,16 +10,25 @@ using namespace std;
 
 void CRBMCtrl::update()
 {
-  if(t < T)
-  {
-    vector<double> tmp = Adata->row(t);
-    for(int i = 0; i < (int)motors.size(); i++) motors[i] = tmp[i];
-  }
-  else
+  if(record == false)
   {
     for(int i = 0; i < (int)sensors.size(); i++) S[i] = sensors[i];
     _crbm->update(S, A);
-    for(int i = 0; i < (int)motors.size(); i++) motors[i] = A[i];
+    for(int i = 0; i < (int)motors.size();   i++) motors[i] = A[i];
+    // for(int i = 0; i < (int)motors.size()-1; i++) cout << motors[i] << ",";
+    // cout << motors[motors.size()-1] << endl;
+
+    if(t < T)
+    {
+      vector<double> tmp = Adata->row(t);
+      for(int i = 0; i < (int)motors.size(); i++) motors[i] = tmp[i];
+    }
+  }
+  else
+  {
+    if(t >= Adata->rows()) exit(0);
+    vector<double> tmp = Adata->row(t);
+    for(int i = 0; i < (int)motors.size(); i++) motors[i] = tmp[i];
   }
   t++;
 }
@@ -28,9 +37,10 @@ void CRBMCtrl::init()
 {
   string crbm_filename;
   string a_filename;
-  parameter.set("crbm", crbm_filename, "");
-  parameter.set("A",    a_filename,    "");
-  parameter.set("init", T,             100);
+  parameter.set("crbm",   crbm_filename, "");
+  parameter.set("A",      a_filename,    "");
+  parameter.set("init",   T,             100);
+  parameter.set("record", record,        false);
 
   _crbm = new libcrbm::binary::CRBMController(crbm_filename);
   Adata = entropy::Csv::read(a_filename);
@@ -41,7 +51,6 @@ void CRBMCtrl::init()
   libcrbm::Random::initialise();
 
   t = 0;
-
 }
 
 void CRBMCtrl::reset()
