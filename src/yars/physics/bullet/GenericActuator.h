@@ -20,15 +20,15 @@ class GenericActuator : public Actuator
     DataGenericActuator* data();
 
   private:
-    void __prePhysicsRot(     int axisIndex, int index, AxisParameter p);
-    void __processAngular(    int axisIndex, int index, AxisParameter p);
-    void __processRotVelocity(int axisIndex, int index, AxisParameter p);
-    void __processRotForce(   int axisIndex, int index, AxisParameter p);
+    void __prePhysicsRot(int axisIndex, int index, AxisParameter p);
+    void __processAngular(int axisIndex, int index, AxisParameter p);
+    void __processRotVelocity(int index, AxisParameter p);
+    void __processRotForce(int index, AxisParameter p);
 
     void __prePhysicsTra(int axisIndex, int index, AxisParameter p);
     void __processPositional(int axisIndex, int index, AxisParameter p);
     void __processTraVelocity(int axisIndex, int index, AxisParameter p);
-    void __processTraForce(   int axisIndex, int index, AxisParameter p);
+    void __processTraForce(int axisIndex, int index, AxisParameter p);
 
     DataGenericActuator     *_data;
     btGeneric6DofConstraint *_genericConstraint;

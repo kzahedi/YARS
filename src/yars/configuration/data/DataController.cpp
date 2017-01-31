@@ -76,7 +76,6 @@ void DataController::createXsd(XsdSpecification *spec)
   parameterDefinition->add(NA(YARS_STRING_NAME,  YARS_STRING_XSD_STRING, true));
   parameterDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_STRING, true));
   spec->add(parameterDefinition);
-
 }
 
 string DataController::module()

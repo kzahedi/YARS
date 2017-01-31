@@ -234,6 +234,7 @@ void DataGenericActuator::setInternalValue(int index, yReal v)
 
 void DataGenericActuator::setExternalValue(int index, yReal v)
 {
+  // cout << "setting " << index << " to " << v << endl;
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::setExternalValue error");
   YM_LOCK;
   switch(_mapping[index])
@@ -331,6 +332,7 @@ Domain DataGenericActuator::getExternalDomain(int index)
 void DataGenericActuator::setDesiredValue(int index, yReal v)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::setDesiredValue error");
+  // cout << "DataGenericActuator: " << index << " " << v << endl;
   YM_LOCK;
   switch(_mapping[index])
   {
@@ -341,6 +343,10 @@ void DataGenericActuator::setDesiredValue(int index, yReal v)
     case 4: DO_DE(_parameter.translational.y, v); break;
     case 5: DO_DE(_parameter.translational.z, v); break;
   }
+  // cout << _parameter.rotational.x.exDesiredValue << " " << _parameter.rotational.y.exDesiredValue << " " << _parameter.rotational.z.exDesiredValue << endl;
+  // cout << _parameter.rotational.x.inDesiredValue << " " << _parameter.rotational.y.inDesiredValue << " " << _parameter.rotational.z.inDesiredValue << endl;
+
+
   YM_UNLOCK;
 }
 

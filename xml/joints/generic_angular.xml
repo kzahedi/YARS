@@ -1,0 +1,99 @@
+<rosiml version="0.8.40">
+
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+
+
+    <screen name="Generic Force" show="true" follow="false">
+      <size   width="800" height="800"/>
+      <camera>
+        <position x="3.00" y="3.00" z="3"/>
+        <lookAt x="0.0" y="0.01" z="0.0"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+    <sky name="YARS/CloudySky"/>
+    <cameras>
+      <centre speed="1.5"/>
+    </cameras>
+  </screens>
+
+  <environment>
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="Generic test">
+      <body>
+        <box name="base">
+          <dimension height="0.5" width="1.0" depth="1.0"/>
+          <pose x="0" y="0" z="0.25"/>
+          <visualisation>
+            <first  name="YARS/Blue"/>
+            <second name="YARS/Blue"/>
+            <third  name="YARS/Blue"/>
+            <fourth name="YARS/Blue"/>
+            <fifth  name="YARS/Blue"/>
+            <sixth  name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0"/>
+          </physics>
+        </box>
+        <box name="moving part">
+          <dimension height="0.5" width="0.5" depth="0.5"/>
+          <pose x="0" y="0" z="1.25"/>
+          <visualisation>
+            <first  name="YARS/Red"/>
+            <second name="YARS/Red"/>
+            <third  name="YARS/Red"/>
+            <fourth name="YARS/Red"/>
+            <fifth  name="YARS/Red"/>
+            <sixth  name="YARS/Red"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+          </physics>
+        </box>
+      </body>
+      <actuators>
+        <generic name="generic force joint" spring="false">
+          <source      name="moving part"/>
+          <destination name="base"/>
+          <pose        x="0.0" y="0.0" z="0.0"/>
+          <rotational>
+            <x type="angular" mode="active">
+              <force      max="100.0"/>
+              <velocity   max="0.5"/>
+              <deflection min="-45.0" max="45.0"/>
+              <mapping    min="-1"  max="1"/>
+            </x>
+            <y type="angular" mode="active">
+              <force      max="100.0"/>
+              <velocity   max="0.5"/>
+              <deflection min="-45.0" max="45.0"/>
+              <mapping    min="-1"  max="1"/>
+            </y>
+            <z type="angular" mode="active">
+              <force      max="100.0"/>
+              <velocity   max="0.5"/>
+              <deflection min="-45.0" max="45.0"/>
+              <mapping    min="-1"  max="1"/>
+            </z>
+          </rotational>
+        </generic>
+      </actuators>
+      <controller  module="Sine" frequency="10"/>
+    </robot>
+  </robots>
+</rosiml>

@@ -1,11 +1,11 @@
-#include "SinusController.h"
+#include "SineController.h"
 
 #include <math.h>
 #include <stdio.h>
 
 using namespace std;
 
-void SinusController::update()
+void SineController::update()
 {
   for(int i = 0; i < _nr_of_outputs; i++)
   {
@@ -14,7 +14,7 @@ void SinusController::update()
   _count += 1.0;
 }
 
-void SinusController::init()
+void SineController::init()
 {
   yReal globalPeriod     = 0.0;
   yReal globalPhaseShift = 0.0;
@@ -83,18 +83,18 @@ void SinusController::init()
   if(_debug) printSensorMotorConfiguration();
 }
 
-void SinusController::reset()
+void SineController::reset()
 {
   _count = 0;
 }
 
-void SinusController::close()
+void SineController::close()
 { }
 
 // the class factories
 extern "C" RobotController* create()
 {
-  SinusController *b = new SinusController();
+  SineController *b = new SineController();
   return (RobotController*)b;
 }
 

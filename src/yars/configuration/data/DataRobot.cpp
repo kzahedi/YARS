@@ -443,10 +443,12 @@ void DataRobot::updateActuatorValues()
   for(std::vector<DataActuator*>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
     int activeIndex = 0;
+    // cout << "dimension: " << (*i)->dimension() << endl;
     for(int j = 0; j < (*i)->dimension(); j++)
     {
       if((*i)->isActive(j))
       {
+        // cout << activeIndex << " set to " << _actuatorValues[index] << endl;
         (*i)->setDesiredValue(activeIndex++, _actuatorValues[index++]);
       }
     }

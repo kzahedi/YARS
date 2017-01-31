@@ -69,14 +69,14 @@ class AxisParameter
     bool          isDeflectionSet;
     bool          isActive;
     bool          isDefined;
-    DataNoise    *noise;
-    DataFilter   *filter;
+    DataNoise*    noise;
+    DataFilter*   filter;
     PID           pid;
     Domain        internalDomain;
     Domain        externalDomain;
     Mapping       internalExternalMapping;
     int           controlType;
-    Noise        *n;
+    Noise*        n;
     yReal         internalValue;
     yReal         externalValue;
     yReal         inDesiredValue;
@@ -85,7 +85,6 @@ class AxisParameter
 
     yReal         springDamping;
     yReal         springStiffness;
-    // bool          useSpring;
 
     AxisParameter()
     {

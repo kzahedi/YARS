@@ -222,9 +222,9 @@ void GenericActuator::__prePhysicsRot(int axisIndex, int index, AxisParameter p)
   {
     switch(_rotType[axisIndex])
     {
-      case ANGULAR:  __processAngular(     axisIndex, index, p); break;
-      case VELOCITY: __processRotVelocity( axisIndex, index, p); break;
-      case FORCE:    __processRotForce(    axisIndex, index, p); break;
+      case ANGULAR:  __processAngular(axisIndex, index, p); break;
+      case VELOCITY: __processRotVelocity(index, p); break;
+      case FORCE:    __processRotForce(index, p); break;
     }
   }
   else
@@ -340,24 +340,14 @@ void GenericActuator::__processAngular(int axisIndex, int index, AxisParameter)
 
   if(fc > 0.0)
   {
-    // cout << force << " -> ";
     force = force * MAX(0.01, fabs(tanh(fc * diff/M_PI)));
-    // cout << force << endl;
   }
-
-  // cout << robotValue << " " << _angle[axisIndex] << " " << velocity << endl;
 
   _genericConstraint->getRotationalLimitMotor(axisIndex)->m_targetVelocity = velocity;
   _genericConstraint->getRotationalLimitMotor(axisIndex)->m_maxMotorForce  = force;
-  // _genericConstraint->getRotationalLimitMotor(axisIndex)->m_maxLimitForce  = 0.0;
-  // if(axisIndex == 0)
-  // {
-    // cout << _data->name() << " " << axisIndex << " rv: " << robotValue << " angle: " << _angle[axisIndex] << " diff " << diff << " velocity " << velocity << " force: " << force << endl;
-  // }
-
 }
 
-void GenericActuator::__processRotVelocity(int /* axisIndex */, int index, AxisParameter p)
+void GenericActuator::__processRotVelocity(int index, AxisParameter p)
 {
   yReal velocity   = p.pid.update(_data->getInternalDesiredValue(index));
 
@@ -365,11 +355,13 @@ void GenericActuator::__processRotVelocity(int /* axisIndex */, int index, AxisP
   _genericConstraint->getRotationalLimitMotor(index)->m_maxMotorForce  = _data->force(index);
 }
 
-void GenericActuator::__processRotForce(int /* axisIndex */, int index, AxisParameter p)
+void GenericActuator::__processRotForce(int index, AxisParameter p)
 {
   yReal v        = _data->getInternalDesiredValue(index);
   yReal force    = fabs(v) * _data->force(index);
   yReal velocity = p.pid.update(v  * _data->velocity(index));
+
+  // cout << force << " " << velocity << endl;
 
   _genericConstraint->getRotationalLimitMotor(index)->m_targetVelocity = velocity;
   _genericConstraint->getRotationalLimitMotor(index)->m_maxMotorForce  = force;

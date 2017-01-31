@@ -74,7 +74,8 @@ void Robot::postPhysicsUpdate()
 {
   FOREACH(Object*,   o, _objects)   (*o)->postPhysicsUpdate();
   FOREACH(Object*,   o, _objects)
-    FOREACHP(Object*, oo, (*o))     (*oo)->postPhysicsUpdate();
+    FOREACHP(Object*, oo, (*o))
+    (*oo)->postPhysicsUpdate();
   FOREACH(Actuator*, a, _actuators) (*a)->postPhysicsUpdate();
   FOREACH(Sensor*,   s, _sensors)   (*s)->postPhysicsUpdate();
   _data->updateSensorValues();
@@ -82,13 +83,10 @@ void Robot::postPhysicsUpdate()
 
 void Robot::controllerUpdate()
 {
-  // cout << "hier 0: " << _controller << endl;
   if(_controller != NULL)
   {
-    // cout << "hier 1" << endl;
     if(__YARS_GET_STEP % _controllerFrequency == 0)
     {
-      // cout << "hier 2" << endl;
       _controller->setSensorValues(_data->sv_begin(), _data->sv_end());
       _controller->unsetStatus();
       _controller->update();
@@ -254,7 +252,8 @@ void Robot::__setupController()
   _controller->setFrequency(_controllerFrequency);
 
   RobotControllerParameter rcp;
-  for(std::vector<DataParameter*>::iterator i = _data->controller()->begin(); i != _data->controller()->end(); i++)
+  for(std::vector<DataParameter*>::iterator i = _data->controller()->begin();
+      i != _data->controller()->end(); i++)
   {
     rcp.add((*i)->name(), (*i)->value());
   }

@@ -4,7 +4,7 @@ include_directories(../namedPipeClientCom)
 include(${CMAKE_SOURCE_DIR}/cmake/SetCompilerSettings.cmake)
 
 add_library(YarsControllerNIL SHARED NIL.cpp)
-add_library(YarsControllerSinus SHARED SinusController.cpp)
+add_library(YarsControllerSine SHARED SineController.cpp)
 
 add_library(YarsControllerBraitenberg2b SHARED Braitenberg2b.cpp)
 target_link_libraries(YarsControllerBraitenberg2b

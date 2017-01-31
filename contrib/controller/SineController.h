@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class SinusController: public RobotController
+class SineController: public RobotController
 {
   public:
     void init();
