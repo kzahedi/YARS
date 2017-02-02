@@ -153,21 +153,22 @@ class DataSliderActuator : public DataActuator
     string          _name;
     string          _source;
 
-    yReal           _internalValue;
-    yReal           _externalValue;
-    yReal           _desiredValue;
-    yReal           _desiredExValue;
-    Mapping         _internalExternalMapping;
-    Domain          _internalDomain;
-    Domain          _externalDomain;
+    vector<yReal>   _internalValue;
+    vector<yReal>   _externalValue;
+    vector<yReal>   _desiredValue;
+    vector<yReal>   _desiredExValue;
+    vector<Mapping> _internalExternalMapping;
+    vector<Domain>  _internalDomain;
+    vector<Domain>  _externalDomain;
     Noise          *_n;
     bool            _isActive;
     yReal           _currentTransitionalVelocity;
+    bool            _poseInWorldCoordinates;
     yReal           _appliedForce;
     yReal           _appliedVelocity;
     yReal           _friction;
-    bool            _poseInWorldCoordinates;
     pthread_mutex_t _mutex;
+
 };
 
 #endif // __DATA_SLIDER_H__

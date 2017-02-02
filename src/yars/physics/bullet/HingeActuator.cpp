@@ -2,9 +2,11 @@
 #include <yars/util/macros.h>
 #include <math.h>
 
-#define ANGULAR              123400
-#define VELOCITY             123500
-#define FORCE                123600
+#define ANGULAR        123400
+#define VELOCITY       123500
+#define FORCE          123600
+#define FORCE_VELOCITY 123700
+#define FORCE_ANGULAR  123800
 
 #define MAP(min, max, value) ((value > max)?max:(value<min)?min:value)
 #define SET(a, b)            if(b >= 0.0) a(b)
@@ -30,9 +32,11 @@ HingeActuator::HingeActuator(DataHingeActuator *data, Robot *robot)
 
   switch(_data->controlType())
   {
-    case DATA_ACTUATOR_CONTROL_ANGULAR:  _hingeType = ANGULAR;  break;
-    case DATA_ACTUATOR_CONTROL_VELOCITY: _hingeType = VELOCITY; break;
-    case DATA_ACTUATOR_CONTROL_FORCE:    _hingeType = FORCE;    break;
+    case DATA_ACTUATOR_CONTROL_ANGULAR:        _hingeType = ANGULAR;        break;
+    case DATA_ACTUATOR_CONTROL_VELOCITY:       _hingeType = VELOCITY;       break;
+    case DATA_ACTUATOR_CONTROL_FORCE:          _hingeType = FORCE;          break;
+    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY: _hingeType = FORCE_VELOCITY; break;
+    case DATA_ACTUATOR_CONTROL_FORCE_ANGULAR:  _hingeType = FORCE_ANGULAR;  break;
   }
 
   for(int i = 0; i < 6; i++)
@@ -40,7 +44,7 @@ HingeActuator::HingeActuator(DataHingeActuator *data, Robot *robot)
     _hingeConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
     _hingeConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
   }
- 
+
   _parameter = _data->parameter();
 }
 
@@ -55,9 +59,11 @@ void HingeActuator::prePhysicsUpdate()
   {
     switch(_hingeType)
     {
-      case ANGULAR:  __processAngularHinge();  break;
-      case VELOCITY: __processVelocityHinge(); break;
-      case FORCE:    __processForceHinge();    break;
+      case ANGULAR:        __processAngularHinge();       break;
+      case VELOCITY:       __processVelocityHinge();      break;
+      case FORCE:          __processForceHinge();         break;
+      case FORCE_VELOCITY: __processForceVelocityHinge(); break;
+      case FORCE_ANGULAR:  __processForceAngularHinge(); break;
     }
   }
   else
@@ -79,7 +85,7 @@ void HingeActuator::postPhysicsUpdate()
   const btVector3 axisA1 = _hingeConstraint->getCalculatedTransformA().getBasis().getColumn(2);
   const btVector3 axisB0 = _hingeConstraint->getCalculatedTransformB().getBasis().getColumn(1);
 
-  _angle = btAtan2(axisB0.dot(axisA1), axisB0.dot(axisA0)); 
+  _angle = btAtan2(axisB0.dot(axisA1), axisB0.dot(axisA0));
   _data->setInternalValue(0, _angle);
   // inverted because its with respect to the second body (I guess)
   _angleDiff = _lastAngle - _angle;
@@ -139,13 +145,33 @@ void HingeActuator::__processAngularHinge()
   if(fabs(diff) < 0.0001) velocity = 0.0;
 
   yReal force = _data->force();
- 
+
   // if(_parameter.forceScaling > 0.0)
   // {
     // force = force * MAX(0.01, fabs(tanh(_parameter.forceScaling * diff/M_PI)));
   // }
 
   // cout << robotValue << " " << diff << " " << force << " " << velocity << endl;
+
+  _hingeConstraint->setMaxAngMotorForce(force);
+  _hingeConstraint->setTargetAngMotorVelocity(velocity);
+  _data->setAppliedForceAndVelocity(0, force, velocity);
+}
+
+void HingeActuator::__processForceAngularHinge()
+{
+  yReal force      = fabs(_data->getInternalDesiredValue(0));
+  yReal robotValue = _data->getInternalDesiredValue(1);
+
+  if(_data->isDeflectionSet())
+  {
+    robotValue = _data->deflection().cut(robotValue);
+    _angle     = _data->deflection().cut(_angle);
+  }
+
+  yReal diff       = _angle - robotValue;
+  yReal velocity   = SCALE(diff) * SIGN(diff) * _data->velocity();
+  if(fabs(diff) < 0.0001) velocity = 0.0;
 
   _hingeConstraint->setMaxAngMotorForce(force);
   _hingeConstraint->setTargetAngMotorVelocity(velocity);
@@ -174,6 +200,25 @@ void HingeActuator::__processForceHinge()
 {
   // Limits don't work well in bullet
 
+  yReal force    = _data->getInternalDesiredValue(0);
+  yReal velocity = _data->velocity() * tanh(2.0 * force / _data->force());
+  force = fabs(force);
+  // force          = _parameter.pid.update(force);
+  // velocity       = _parameter.pid.update(velocity);
+  // to avoid numerical instabilities
+  if (fabs(velocity) < 0.0001)               velocity = 0.0f;
+  if (fabs(force)    < 0.1 * _data->force()) force    = 0.1 * _data->force();
+  // cout << _data->name() << ": force: " << force << " velocity: " << velocity << endl;
+
+  _hingeConstraint->setMaxAngMotorForce(force);
+  _hingeConstraint->setTargetAngMotorVelocity(velocity);
+  _data->setAppliedForceAndVelocity(0, force, velocity);
+}
+
+void HingeActuator::__processForceVelocityHinge()
+{
+  // Limits don't work well in bullet
+
   yReal force    = fabs(_data->getInternalDesiredValue(0));
   yReal velocity = _data->getInternalDesiredValue(1);
   // force          = _parameter.pid.update(force);
@@ -191,7 +236,7 @@ void HingeActuator::__processForceHinge()
 void HingeActuator::__initHinge()
 {
   _axisPose = _data->pose();
-  
+
 
   if(_sourceObject != NULL && _destinationObject != NULL)
   {

@@ -28,7 +28,10 @@
 # define YARS_STRING_VELOCITY_DEFINITION           (char*)"actuator_velocity" DIVIDER DEFINITION
 # define YARS_STRING_FORCE                         (char*)"force"
 # define YARS_STRING_FORCE_DEFINITION              (char*)"actuator_force" DIVIDER DEFINITION
+# define YARS_STRING_FORCE_VELOCITY                (char*)"force and velocity"
+# define YARS_STRING_FORCE_ANGULAR                 (char*)"force and angle"
 # define YARS_STRING_MAXIMUM                       (char*)"max"
+# define YARS_STRING_MINIMUM                       (char*)"min"
 # define YARS_STRING_SCALING                       (char*)"scaling"
 # define YARS_STRING_GLOBAL                        (char*)"global"
 # define YARS_STRING_ACTIVE                        (char*)"active"
@@ -113,7 +116,6 @@ void DataHingeActuator::add(DataParseElement *element)
   if(element->opening(YARS_STRING_FORCE))
   {
     element->set(YARS_STRING_MAXIMUM, _parameter.maxForce);
-    element->set(YARS_STRING_SCALING, _parameter.forceScaling);
     // cout << "Hinge force " << _parameter.maxForce << " " << _parameter.forceScaling << endl;
   }
 
@@ -271,6 +273,8 @@ void DataHingeActuator::createXsd(XsdSpecification *spec)
   actuatorTypeDefinition->add(YARS_STRING_VELOCITY);
   actuatorTypeDefinition->add(YARS_STRING_ANGULAR);
   actuatorTypeDefinition->add(YARS_STRING_FORCE);
+  actuatorTypeDefinition->add(YARS_STRING_FORCE_VELOCITY);
+  actuatorTypeDefinition->add(YARS_STRING_FORCE_ANGULAR);
   spec->add(actuatorTypeDefinition);
 
   XsdSequence *poseDefinition = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
@@ -298,7 +302,7 @@ void DataHingeActuator::createXsd(XsdSpecification *spec)
 
   XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
-  forceParameter->add(NA(YARS_STRING_SCALING, YARS_STRING_POSITIVE_DECIMAL, false));
+  // forceParameter->add(NA(YARS_STRING_MINIMUM, YARS_STRING_POSITIVE_DECIMAL, false));
   spec->add(forceParameter);
 
   XsdSequence *velocityParameter = new XsdSequence(YARS_STRING_VELOCITY_DEFINITION);
@@ -308,9 +312,11 @@ void DataHingeActuator::createXsd(XsdSpecification *spec)
 
 void DataHingeActuator::__close()
 {
-  if(_jointType == YARS_STRING_ANGULAR)  _controlType = DATA_ACTUATOR_CONTROL_ANGULAR;
-  if(_jointType == YARS_STRING_VELOCITY) _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
-  if(_jointType == YARS_STRING_FORCE)    _controlType = DATA_ACTUATOR_CONTROL_FORCE;
+  if(_jointType == YARS_STRING_ANGULAR)        _controlType = DATA_ACTUATOR_CONTROL_ANGULAR;
+  if(_jointType == YARS_STRING_VELOCITY)       _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
+  if(_jointType == YARS_STRING_FORCE)          _controlType = DATA_ACTUATOR_CONTROL_FORCE;
+  if(_jointType == YARS_STRING_FORCE_VELOCITY) _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
+  if(_jointType == YARS_STRING_FORCE_ANGULAR)  _controlType = DATA_ACTUATOR_CONTROL_FORCE_ANGULAR;
 
   _deflection.min = DEG_TO_RAD(_deflection.min);
   _deflection.max = DEG_TO_RAD(_deflection.max);
@@ -405,7 +411,8 @@ void DataHingeActuator::setExternalValue(int index, yReal v)
 
 void DataHingeActuator::__setMapping()
 {
-  if(_controlType == DATA_ACTUATOR_CONTROL_FORCE)
+  if(_controlType == DATA_ACTUATOR_CONTROL_FORCE_VELOCITY ||
+     _controlType == DATA_ACTUATOR_CONTROL_FORCE_ANGULAR)
   {
     _internalValue.resize(2);
     _externalValue.resize(2);
@@ -442,6 +449,26 @@ void DataHingeActuator::__setMapping()
       _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
       break;
     case DATA_ACTUATOR_CONTROL_FORCE:
+      _externalDomain[0]     =  _mapping;
+      _internalDomain[0].min = -_parameter.maxForce;
+      _internalDomain[0].max =  _parameter.maxForce;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+      break;
+    case DATA_ACTUATOR_CONTROL_FORCE_ANGULAR:
+      _internalDomain[0].min =   0.0;
+      _internalDomain[0].max =  _parameter.maxForce;
+      _externalDomain[0]     =  _mapping;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+
+      _internalDomain[1]     = _deflection;
+      _externalDomain[1]     = _mapping;
+      // cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << endl;
+      _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
+      _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
+      break;
+    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
       _internalDomain[0].min =   0.0;
       _internalDomain[0].max =  _parameter.maxForce;
       _externalDomain[0]     =  _mapping;
@@ -562,9 +589,11 @@ int DataHingeActuator::dimension()
   {
     case DATA_ACTUATOR_CONTROL_ANGULAR:
     case DATA_ACTUATOR_CONTROL_VELOCITY:
+    case DATA_ACTUATOR_CONTROL_FORCE:
       return 1;
       break;
-    case DATA_ACTUATOR_CONTROL_FORCE:
+    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
+    case DATA_ACTUATOR_CONTROL_FORCE_ANGULAR:
       return 2;
       break;
     default:

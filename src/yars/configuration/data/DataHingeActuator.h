@@ -35,7 +35,6 @@ class HingeParameter
 
       maxVelocity      =  0.0;
       maxForce         =  0.0;
-      forceScaling     = -1.0;
     }
 
     HingeParameter& operator=(const HingeParameter &p)
@@ -54,7 +53,6 @@ class HingeParameter
 
       maxVelocity      = p.maxVelocity;
       maxForce         = p.maxForce;
-      forceScaling     = p.forceScaling;
 
       pid              = p.pid;
 
@@ -75,7 +73,6 @@ class HingeParameter
 
     yReal maxVelocity;
     yReal maxForce;
-    yReal forceScaling;
 
     PID pid;
 };

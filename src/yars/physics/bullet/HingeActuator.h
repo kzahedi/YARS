@@ -23,6 +23,8 @@ class HingeActuator : public Actuator
     void __processAngularHinge();
     void __processVelocityHinge();
     void __processForceHinge();
+    void __processForceVelocityHinge();
+    void __processForceAngularHinge();
     void __initHinge();
 
     DataHingeActuator  *_data;

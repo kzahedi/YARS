@@ -26,6 +26,7 @@
 # define YARS_STRING_VELOCITY_DEFINITION      (char*)"slider_velocity" DIVIDER DEFINITION
 # define YARS_STRING_FORCE                    (char*)"force"
 # define YARS_STRING_FORCE_DEFINITION         (char*)"force" DIVIDER DEFINITION
+# define YARS_STRING_FORCE_VELOCITY           (char*)"force and velocity"
 # define YARS_STRING_MAXIMUM                  (char*)"max"
 # define YARS_STRING_SCALING                  (char*)"scaling"
 # define YARS_STRING_ACTIVE                   (char*)"active"
@@ -52,16 +53,29 @@
 DataSliderActuator::DataSliderActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_SLIDER)
 {
-  _noise                       = NULL;
+  _noise                       = new DataNoise(this);
   _filter                      = NULL;
   _deflectionSet               = false;
-  _desiredValue                = 0.0;
   _isActive                    = true;
   _currentTransitionalVelocity = 0.0;
   _poseInWorldCoordinates      = false;
   _appliedForce                = 0.0;
   _appliedVelocity             = 0.0;
   _friction                    = 0.0;
+  _n                           = NULL;
+
+  _internalValue.resize(1);
+  _externalValue.resize(1);
+  _desiredValue.resize(1);
+  _desiredExValue.resize(1);
+  _internalExternalMapping.resize(1);
+  _internalDomain.resize(1);
+  _externalDomain.resize(1);
+
+  _internalValue[0]  = 0.0;
+  _externalValue[0]  = 0.0;
+  _desiredValue[0]   = 0.0;
+  _desiredExValue[0] = 0.0;
 
   YM_INIT;
 }
@@ -270,6 +284,7 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
   actuatorTypeDefinition->add(YARS_STRING_VELOCITY);
   actuatorTypeDefinition->add(YARS_STRING_POSITIONAL);
   actuatorTypeDefinition->add(YARS_STRING_FORCE);
+  actuatorTypeDefinition->add(YARS_STRING_FORCE_VELOCITY);
   spec->add(actuatorTypeDefinition);
 
   XsdEnumeration *actuatorModeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_MODE_DEFINITION,
@@ -298,9 +313,10 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
 
 void DataSliderActuator::__close()
 {
-  if(_jointType == YARS_STRING_POSITIONAL) _controlType = DATA_ACTUATOR_CONTROL_POSITIONAL;
-  if(_jointType == YARS_STRING_VELOCITY)   _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
-  if(_jointType == YARS_STRING_FORCE)      _controlType = DATA_ACTUATOR_CONTROL_FORCE;
+  if(_jointType == YARS_STRING_POSITIONAL)     _controlType = DATA_ACTUATOR_CONTROL_POSITIONAL;
+  if(_jointType == YARS_STRING_VELOCITY)       _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
+  if(_jointType == YARS_STRING_FORCE)          _controlType = DATA_ACTUATOR_CONTROL_FORCE;
+  if(_jointType == YARS_STRING_FORCE_VELOCITY) _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
 
   __setMapping();
 }
@@ -367,7 +383,7 @@ yReal DataSliderActuator::force()
 yReal DataSliderActuator::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  yReal r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -375,7 +391,7 @@ yReal DataSliderActuator::internalValue(int index)
 yReal DataSliderActuator::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  yReal r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -383,45 +399,85 @@ yReal DataSliderActuator::externalValue(int index)
 void DataSliderActuator::setInternalValue(int index, yReal v)
 {
   YM_LOCK;
-  _internalValue = _internalDomain.cut(v);
-  _externalValue = _internalExternalMapping.map(_internalValue);
+  _internalValue[index] = _internalDomain[index].cut(v);
+  _externalValue[index] = _internalExternalMapping[index].map(_internalValue[index]);
   YM_UNLOCK;
 }
 
 void DataSliderActuator::setExternalValue(int index, yReal v)
 {
   YM_LOCK;
-  _externalValue = _externalDomain.cut(_n->calculate(v));
-  _internalValue = _internalExternalMapping.invMap(_externalValue);
+  _externalValue[index] = _externalDomain[index].cut(_n->calculate(v));
+  _internalValue[index] = _internalExternalMapping[index].invMap(_externalValue[index]);
   YM_UNLOCK;
 }
 
 void DataSliderActuator::__setMapping()
 {
-  _externalDomain = _mapping;
+  if(_controlType == DATA_ACTUATOR_CONTROL_FORCE_VELOCITY)
+  {
+    _internalValue.resize(2);
+    _externalValue.resize(2);
+    _desiredValue.resize(2);
+    _desiredExValue.resize(2);
+    _internalExternalMapping.resize(2);
+    _internalDomain.resize(2);
+    _externalDomain.resize(2);
+  }
+  else
+  {
+    _internalValue.resize(1);
+    _externalValue.resize(1);
+    _desiredValue.resize(1);
+    _desiredExValue.resize(1);
+    _internalExternalMapping.resize(1);
+    _internalDomain.resize(1);
+    _externalDomain.resize(1);
+  }
+
   switch(_controlType)
   {
     case DATA_ACTUATOR_CONTROL_POSITIONAL:
-      _internalDomain = _deflection;
+      _externalDomain[0] = _mapping;
+      _internalDomain[0] = _deflection;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
       break;
     case DATA_ACTUATOR_CONTROL_VELOCITY:
-      _internalDomain.min = -velocity();
-      _internalDomain.max =  velocity();
+      _externalDomain[0]     =  _mapping;
+      _internalDomain[0].min = -_parameter.maxVelocity;
+      _internalDomain[0].max =  _parameter.maxVelocity;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
       break;
     case DATA_ACTUATOR_CONTROL_FORCE:
-      _internalDomain.min = -1;
-      _internalDomain.max =  1;
+      _externalDomain[0]     =  _mapping;
+      _internalDomain[0].min = -_parameter.maxForce;
+      _internalDomain[0].max =  _parameter.maxForce;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+      break;
+    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
+      _internalDomain[0].min =   0.0;
+      _internalDomain[0].max =  _parameter.maxForce;
+      _externalDomain[0]     =  _mapping;
+      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+
+      _internalDomain[1].min = -_parameter.maxVelocity;
+      _internalDomain[1].max =  _parameter.maxVelocity;
+      _externalDomain[1]     =  _mapping;
+      // cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << endl;
+      _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
+      _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
       break;
   }
-  _internalExternalMapping.setInputDomain(_internalDomain);
-  _internalExternalMapping.setOutputDomain(_externalDomain);
   _n = NoiseFactory::create(_noise);
 }
-
 Domain DataSliderActuator::getInternalDomain(int index)
 {
   YM_LOCK;
-  Domain r = _internalDomain;
+  Domain r = _internalDomain[index];
   YM_UNLOCK;
   return r;
 }
@@ -429,7 +485,7 @@ Domain DataSliderActuator::getInternalDomain(int index)
 Domain DataSliderActuator::getExternalDomain(int index)
 {
   YM_LOCK;
-  Domain r = _externalDomain;
+  Domain r = _externalDomain[index];
   YM_UNLOCK;
   return r;
 }
@@ -437,15 +493,15 @@ Domain DataSliderActuator::getExternalDomain(int index)
 void DataSliderActuator::setDesiredValue(int index, yReal value)
 {
   YM_LOCK;
-  _desiredExValue = _externalDomain.cut(value);
-  _desiredValue = _internalExternalMapping.invMap(_desiredExValue);
+  _desiredExValue[index] = _externalDomain[index].cut(value);
+  _desiredValue[index] = _internalExternalMapping[index].invMap(_desiredExValue[index]);
   YM_UNLOCK;
 }
 
 yReal DataSliderActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredValue;
+  yReal r = _desiredValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -467,7 +523,7 @@ void DataSliderActuator::setForce(yReal f)
 yReal DataSliderActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredExValue;
+  yReal r = _desiredExValue[index];
   YM_UNLOCK;
   return r;
 }
