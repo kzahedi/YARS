@@ -41,7 +41,10 @@ IF(YARS_USE_VISUALISATION)
   include_directories(${OGRE_INCLUDE_DIR})
 
   if(UNIX AND NOT APPLE)
-    add_definitions(-pthread -D_FORTIFY_SOURCE=2)
+    add_definitions(-pthread)
+    if(CMAKE_BUILD_TYPE MATCHES Release)
+      add_definitions(-D_FORTIFY_SOURCE=2)
+    endif(CMAKE_BUILD_TYPE MATCHES Release)
   endif(UNIX AND NOT APPLE)
 ENDIF(YARS_USE_VISUALISATION)
 
