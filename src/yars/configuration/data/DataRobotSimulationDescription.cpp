@@ -28,7 +28,6 @@ DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)
   _geoms       = new DataObjects();
   _sensors     = new DataSensors();
   _actuators   = new DataActuators();
-  _sensors     = new DataSensors();
   _controllers = new DataControllers();
 
   current      = this;
