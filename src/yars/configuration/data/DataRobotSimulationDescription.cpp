@@ -1,26 +1,25 @@
-#include <yars/configuration/data/DataRobotSimulationDescription.h>
+#include "yars/configuration/data/DataRobotSimulationDescription.h"
 
-#include <yars/configuration/data/XmlChangeLog.h>
+#include "yars/configuration/data/XmlChangeLog.h"
 
-#include <yars/util/stl_macros.h>
-#include <yars/util/StringTokeniser.h>
+#include "yars/util/stl_macros.h"
+#include "yars/util/StringTokeniser.h"
 
 #include <cstdlib>
 
 # define YARS_STRING_VERSION_REGULAR_EXPRESSION (char*)"[0-9]+.[0-9]+.[0-9]+"
 # define YARS_STRING_VERSION_DEFINITION         (char*)"version" DIVIDER DEFINITION
 
-
 DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)
   : DataNode(NULL)
 {
 
-#include <yars/defines/version.h> // do not move from here
+#include "yars/defines/version.h" // do not move from here
 
   _simulator   = NULL;
   _screens     = NULL;
   _macros      = NULL;
-  _robots    = NULL;
+  _robots      = NULL;
   _environment = NULL;
   _signals     = NULL;
   _traces      = NULL;
@@ -345,8 +344,8 @@ void DataRobotSimulationDescription::createXsd(XsdSpecification *spec)
   _root->add(NE(YARS_STRING_SCREEN_CONFIG, YARS_STRING_SCREEN_CONFIG_DEFINITION, 0, 1));
   _root->add(NE(YARS_STRING_MACROS,        YARS_STRING_MACROS_DEFINITION,        0, 1));
   //_root->add(NE(YARS_STRING_ENVIRONMENTS,  YARS_STRING_ENVIRONMENTS_DEFINITION,  0, 1));
-  _root->add(NE(YARS_STRING_ENVIRONMENT,   YARS_STRING_ENVIRONMENT_DEFINITION,  0, 1));
-  _root->add(NE(YARS_STRING_ROBOTS,      YARS_STRING_ROBOTS_DEFINITION,      0, 1));
+  _root->add(NE(YARS_STRING_ENVIRONMENT,   YARS_STRING_ENVIRONMENT_DEFINITION,   0, 1));
+  _root->add(NE(YARS_STRING_ROBOTS,        YARS_STRING_ROBOTS_DEFINITION,        0, 1));
   // _root->add(NE(YARS_STRING_SIGNALS_LIST,  YARS_STRING_SIGNALS_LIST_DEFINITION,  0, 1));
   _root->add(NE(YARS_STRING_TRACES,        YARS_STRING_TRACES_DEFINITION,        0, 1));
   _root->add(NE(YARS_STRING_LOGGING,       YARS_STRING_LOGGING_DEFINITION,       0, 1));
@@ -376,14 +375,14 @@ void DataRobotSimulationDescription::createXsd(XsdSpecification *spec)
 void DataRobotSimulationDescription::clear()
 {
   if(_screens     != NULL) delete _screens;
-  if(_robots    != NULL) delete _robots;
+  if(_robots      != NULL) delete _robots;
   if(_macros      != NULL) delete _macros;
   if(_environment != NULL) delete _environment;
   if(_signals     != NULL) delete _signals;
   if(_simulator   != NULL) delete _simulator;
   if(_logging     != NULL) delete _logging;
   _screens     = NULL;
-  _robots    = NULL;
+  _robots      = NULL;
   _macros      = NULL;
   _environment = NULL;
   _signals     = NULL;
@@ -400,7 +399,7 @@ DataRobotSimulationDescription* DataRobotSimulationDescription::copy()
   if(_simulator   != NULL) copy->_simulator   = _simulator->copy();
   if(_screens     != NULL) copy->_screens     = _screens->copy();
   if(_macros      != NULL) copy->_macros      = _macros->copy();
-  if(_robots    != NULL) copy->_robots    = _robots->copy();
+  if(_robots      != NULL) copy->_robots      = _robots->copy();
   if(_environment != NULL) copy->_environment = _environment->copy();
   if(_signals     != NULL) copy->_signals     = _signals->copy();
   if(_traces      != NULL) copy->_traces      = _traces->copy();

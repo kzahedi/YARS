@@ -1,26 +1,26 @@
 #ifndef __DATA_ROBOT_SIMULATION_DESCRIPTION_H__
 #define __DATA_ROBOT_SIMULATION_DESCRIPTION_H__
 
-#include <yars/configuration/data/DataComment.h>
-#include <yars/configuration/data/DataSimulator.h>
-#include <yars/configuration/data/DataScreens.h>
-#include <yars/configuration/data/DataRobots.h>
-#include <yars/configuration/data/DataSignals.h>
-#include <yars/configuration/data/DataMacros.h>
-#include <yars/configuration/data/DataEnvironment.h>
-#include <yars/configuration/data/DataNode.h>
-#include <yars/configuration/data/DataParseElement.h>
-#include <yars/configuration/data/DataConstraints.h>
-#include <yars/configuration/data/DataTraces.h>
-#include <yars/configuration/data/DataLogging.h>
-#include <yars/configuration/data/DataObjects.h>
-#include <yars/configuration/data/DataSensors.h>
-#include <yars/configuration/data/DataActuators.h>
-#include <yars/configuration/data/DataControllers.h>
-#include <yars/configuration/xsd/specification/XsdSpecification.h>
+#include "yars/configuration/data/DataComment.h"
+#include "yars/configuration/data/DataSimulator.h"
+#include "yars/configuration/data/DataScreens.h"
+#include "yars/configuration/data/DataRobots.h"
+#include "yars/configuration/data/DataSignals.h"
+#include "yars/configuration/data/DataMacros.h"
+#include "yars/configuration/data/DataEnvironment.h"
+#include "yars/configuration/data/DataNode.h"
+#include "yars/configuration/data/DataParseElement.h"
+#include "yars/configuration/data/DataConstraints.h"
+#include "yars/configuration/data/DataTraces.h"
+#include "yars/configuration/data/DataLogging.h"
+#include "yars/configuration/data/DataObjects.h"
+#include "yars/configuration/data/DataSensors.h"
+#include "yars/configuration/data/DataActuators.h"
+#include "yars/configuration/data/DataControllers.h"
+#include "yars/configuration/xsd/specification/XsdSpecification.h"
 
-#include <yars/types/Version.h>
-#include <yars/defines/types.h>
+#include "yars/types/Version.h"
+#include "yars/defines/types.h"
 
 #include <string>
 
@@ -29,8 +29,6 @@
 # define YARS_STRING_ROSIML  (char*)ROSIML
 # define ROSIML_VERSION      "version"
 # define YARS_STRING_VERSION (char*)ROSIML_VERSION
-
-using namespace std;
 
 /**
  * @brief This is the entry point to the data representation.
@@ -56,7 +54,7 @@ class DataRobotSimulationDescription : public DataNode
     /**
      * \brief Version only has major and minor part.
      *
-     * Major = Interface chance, and hence, incompatibility.
+     * Major = Interface change, and hence, incompatibility.
      * Minor = Additional options, and hence higher minor number are not
      *         incompatible to lower minor numbers
      *
@@ -168,7 +166,7 @@ class DataRobotSimulationDescription : public DataNode
     void __convertForces();
 
     Version          _version;
-    string           _comment;
+    std::string      _comment;
 
     DataSimulator   *_simulator;
     DataScreens     *_screens;
