@@ -16,7 +16,7 @@ BulletPhysics::~BulletPhysics()
 
 void BulletPhysics::init()
 {
-  Y_DEBUG("BulletPhysics init done.");
+  Y_DEBUG("BulletPhysics init called.");
   _reset = false;
   _quit  = false;
   _world       = World::instance();
