@@ -19,6 +19,7 @@
 #endif // USE_VISUALISATION
 
 #include <fstream>
+#include <memory>
 
 
 YarsConfiguration* YarsConfiguration::_me = NULL;
@@ -216,18 +217,19 @@ void YarsConfiguration::__readXmlFiles()
   Data::instance()->clear();
   string xml = getXml();
 
-  YarsXSDSaxParser *parser = new YarsXSDSaxParser();
+  std::unique_ptr<YarsXSDSaxParser> parser(new YarsXSDSaxParser());
   // TODO parser should add new xml files to current data-structure (might already be the case?)
   parser->read(xml);
   if(parser->errors() > 0)
   {
-    for(std::vector<string>::iterator i = parser->w_begin(); i != parser->w_end(); i++) cout << "WARNING: " << *i << endl;
-    for(std::vector<string>::iterator i = parser->e_begin(); i != parser->e_end(); i++) cout << "ERROR: "   << *i << endl;
-    for(std::vector<string>::iterator i = parser->f_begin(); i != parser->f_end(); i++) cout << "FATAL: "   << *i << endl;
-    delete parser;
+    for(std::vector<string>::iterator i = parser->w_begin(); i != parser->w_end(); i++)
+      cout << "WARNING: " << *i << endl;
+    for(std::vector<string>::iterator i = parser->e_begin(); i != parser->e_end(); i++)
+      cout << "ERROR: "   << *i << endl;
+    for(std::vector<string>::iterator i = parser->f_begin(); i != parser->f_end(); i++)
+      cout << "FATAL: "   << *i << endl;
     exit(-1);
   }
-  delete parser;
 
   if(useRandomSeed()) Data::instance()->last()->simulator()->setRandomSeed(getRandomSeed());
 

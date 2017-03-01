@@ -20,8 +20,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class DataEnvironment : public DataNode, public MacroUserInterface
 {
   public:
