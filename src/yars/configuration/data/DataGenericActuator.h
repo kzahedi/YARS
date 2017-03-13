@@ -184,14 +184,14 @@ class DOFParameter
 
 };
 
-class GenericParamter
+class GenericParameter
 {
   public:
     DOFParameter rotational;
     DOFParameter translational;
     // bool usesSprings;
 
-    GenericParamter & operator=(const GenericParamter &g)
+    GenericParameter & operator=(const GenericParameter &g)
     {
       rotational    = g.rotational;
       translational = g.translational;
@@ -199,7 +199,7 @@ class GenericParamter
       return *this;
     }
 
-    friend std::ostream& operator<<(std::ostream& str, const GenericParamter& p)
+    friend std::ostream& operator<<(std::ostream& str, const GenericParameter& p)
     {
       str << endl << endl;
       // str << "Uses springs:"  << p.usesSprings?"true":"false" << endl;
@@ -224,7 +224,7 @@ class DataGenericActuator : public DataActuator
     // P3D            anchor();
     // P3D            axis();
     Pose            pose();
-    GenericParamter parameter();
+    GenericParameter parameter();
 
     void applyOffset(Pose offset);
     static void createXsd(XsdSpecification *spec);
@@ -281,7 +281,7 @@ class DataGenericActuator : public DataActuator
     void             __setAxisForceParameters(AxisParameter &p, DataParseElement *element);
     void             __setAxisVelocityParameters(AxisParameter &p, DataParseElement *element);
     Pose             _pose;
-    GenericParamter  _parameter;
+    GenericParameter  _parameter;
     string           _destination;
     string           _source;
     string           _name;

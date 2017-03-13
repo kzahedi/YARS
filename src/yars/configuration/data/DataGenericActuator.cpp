@@ -154,10 +154,10 @@ void DataGenericActuator::applyOffset(Pose offset)
   _axisOrientation   = _pose.orientation;
 }
 
-GenericParamter DataGenericActuator::parameter()
+GenericParameter DataGenericActuator::parameter()
 {
   YM_LOCK;
-  GenericParamter r = _parameter;
+  GenericParameter r = _parameter;
   YM_UNLOCK;
   return r;
 }
