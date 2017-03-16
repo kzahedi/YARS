@@ -32,7 +32,7 @@ class GenericActuator : public Actuator
 
     DataGenericActuator     *_data;
     btGeneric6DofConstraint *_genericConstraint;
-    GenericParamter          _parameter;
+    GenericParameter         _parameter;
     int                      _dimension;
     vector<int>              _rotType;
     vector<int>              _traType;
