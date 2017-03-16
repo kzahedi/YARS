@@ -8,8 +8,6 @@ class Robot;
 
 #include <string>
 
-using namespace std;
-
 class Actuator
 {
   public:
