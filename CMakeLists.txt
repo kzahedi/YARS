@@ -1,7 +1,7 @@
 project(yars)
 
 # check for cmake version first:
-cmake_minimum_required(VERSION 2.4.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0005 OLD)
   cmake_policy(SET CMP0003 NEW)
@@ -29,9 +29,9 @@ INCLUDE(cmake/SetDefinitions.cmake)
 INCLUDE(cmake/PrintConfiguration.cmake)
 INCLUDE(cmake/CreateConfigFiles.cmake)
 
-# if(YARS_DOXYGEN_DOCUMENTATION)
-  # add_subdirectory(doxygen)
-# endif(YARS_DOXYGEN_DOCUMENTATION)
+if(YARS_DOXYGEN_DOCUMENTATION)
+  add_subdirectory(doxygen)
+endif(YARS_DOXYGEN_DOCUMENTATION)
 add_subdirectory(src/yars)
 add_subdirectory(contrib)
 
