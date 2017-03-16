@@ -26,6 +26,7 @@ set(PHYSICS_SRC YarsPhysicsModel.cpp
                 bullet/FixedActuator.cpp
                 bullet/GenericActuator.cpp
                 bullet/GenericSpringActuator.cpp
+                bullet/MuscleActuator.cpp
 
                 bullet/Sensor.cpp
                 bullet/SensorFactory.cpp

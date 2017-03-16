@@ -54,6 +54,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataMacro.cpp
             data/DataMacroInstance.cpp
             data/DataMacros.cpp
+            data/DataMuscleActuator.cpp
             data/DataNode.cpp
             data/DataNoise.cpp
             data/DataObject.cpp
