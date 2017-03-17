@@ -1,0 +1,59 @@
+<rosiml version="0.8.41">
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+
+
+    <screen name="Braiternberg" show="true" follow="false">
+      <camera>
+        <position x="-1.5" y="0.00" z="2"/>
+        <lookAt x="0.0" y="0.00" z="2"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+
+    <sky name="YARS/CloudySky"/>
+  </screens>
+
+  <environment>
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="muscle_contraption">
+      <body>
+        <box name="anchor">
+          <dimension height="0.2" width="0.2" depth="0.2"/>
+          <pose x="0" y="0" z="0.3" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="0"/>
+          </physics>
+        </box>
+        <sphere name="sphere" visualise="true">
+          <dimension radius="0.075"/>
+          <pose x="0" y="0" z="0" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="1"/>
+          </physics>
+        </sphere>
+      </body>
+      <pose z="2"/>
+      <actuators>
+        <muscle name="muscle">
+          <physics>
+            <mass kg="0"/>
+          </physics>
+        </muscle>
+      </actuators>
+    </robot>
+  </robots>
+</rosiml>
