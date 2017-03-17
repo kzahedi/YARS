@@ -14,7 +14,6 @@
 # define DEFINITION "definition"
 
 #include <vector>
-using namespace std;
 
 # define YARS_STRING_XSD_DECIMAL               (char*)"xs:decimal"
 # define YARS_STRING_XSD_INTEGER               (char*)"xs:integer"
