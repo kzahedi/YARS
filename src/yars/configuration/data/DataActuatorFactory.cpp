@@ -1,5 +1,7 @@
 #include "DataActuatorFactory.h"
 
+#include "DataMuscleActuator.h"
+
 #include <sstream>
 
 using namespace std;
@@ -51,6 +53,7 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   actuatorListDefinition->add(NE(YARS_STRING_SLIDER,  YARS_STRING_SLIDER_DEFINITION,  0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_FIXED,   YARS_STRING_FIXED_DEFINITION,   0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_GENERIC, YARS_STRING_GENERIC_DEFINITION, 0 ,1));
+  actuatorListDefinition->add(NE("muscle", "muscle_actuator_definition", 0 ,1));
   spec->add(actuatorListDefinition);
   stringstream comment;
   comment << "The list of actuators (joints, motors, ...)." << endl;
@@ -64,4 +67,5 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   DataSliderActuator::createXsd(spec);
   DataFixedActuator::createXsd(spec);
   DataGenericActuator::createXsd(spec);
+  DataMuscleActuator::createXsd(*spec);
 }
