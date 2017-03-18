@@ -2,41 +2,48 @@
 #define __DATA_MUSCLE_ACTUATOR__
 
 #include "yars/configuration/data/DataActuator.h"
-#include "yars/configuration/data/DataNode.h"
+// TODO: noexcept, const
+// noexcept: for getter functions
 
 class DataMuscleActuator : public DataActuator
 {
   public:
-    DataMuscleActuator(DataNode* parent);
+    // TODO: Try with reference
+    DataMuscleActuator(DataNode *parent);
     ~DataMuscleActuator();
 
-    void applyOffset(Pose pose);
-    string source();
-    string destination();
-    string name();
+    // TODO: Most should be const. But we would have to change super classes.
+    void applyOffset(Pose pose) override;
+    std::string source() override;
+    std::string destination() const;
+    std::string name() override;
 
-    void setInternalValue(int index, yReal value);
-    void setExternalValue(int index, yReal value);
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    int dimension();
-    void setDesiredValue(int index, yReal value);
-    yReal getInternalDesiredValue(int index);
-    yReal getExternalDesiredValue(int index);
+    void setInternalValue(int index, yReal value) override;
+    void setExternalValue(int index, yReal value) override;
+    yReal internalValue(int index) override;
+    yReal externalValue(int index) override;
+    int dimension() override;
+    void setDesiredValue(int index, yReal value) override;
+    yReal getInternalDesiredValue(int index) override;
+    yReal getExternalDesiredValue(int index) override;
 
-    Domain getInternalDomain(int index);
-    Domain getExternalDomain(int index);
-    bool isActive(int index);
+    Domain getInternalDomain(int index) override;
+    Domain getExternalDomain(int index) override;
+    bool isActive(int index) override;
 
-    yReal getAppliedForce(int index);
-    yReal getAppliedVelocity(int index);
+    yReal getAppliedForce(int index) override;
+    yReal getAppliedVelocity(int index) override;
 
-    void setAppliedForceAndVelocity(int index, yReal force, yReal velocity);
+    void setAppliedForceAndVelocity(int index, yReal force, yReal velocity)
+      override;
 
-    Pose pose();
-    DataActuator* _copy();
+    Pose pose() override;
+    DataActuator* _copy() override;
+
+    static void createXsd(XsdSpecification& spec);
 
   private:
+    std::string _destination;
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__

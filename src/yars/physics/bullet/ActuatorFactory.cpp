@@ -4,6 +4,10 @@
 #include "FixedActuator.h"
 #include "GenericActuator.h"
 #include "GenericSpringActuator.h"
+#include "MuscleActuator.h"
+#include "yars/configuration/data/DataMuscleActuator.h"
+
+#include <memory>
 
 Actuator* ActuatorFactory::create(DataActuator *actuator, Robot *robot)
 {
@@ -13,6 +17,7 @@ Actuator* ActuatorFactory::create(DataActuator *actuator, Robot *robot)
     case DATA_ACTUATOR_SLIDER:  return __createSlider(actuator,  robot); break;
     case DATA_ACTUATOR_FIXED:   return __createFixed(actuator,   robot); break;
     case DATA_ACTUATOR_GENERIC: return __createGeneric(actuator, robot); break;
+    case DATA_ACTUATOR_MUSCLE:  return __createMuscle(actuator,  robot); break;
   }
   YarsErrorHandler::push("Actuator error. Unknown type given.");
   return NULL;
@@ -54,4 +59,10 @@ Actuator* ActuatorFactory::__createGeneric(DataActuator *actuator, Robot *robot)
   }
   YarsErrorHandler::push("Unknown generic actuator selected");
   return NULL;
+}
+
+Actuator* ActuatorFactory::__createMuscle(DataActuator *actuator, Robot *robot)
+{
+  return new MuscleActuator(*static_cast<DataMuscleActuator*>(actuator),
+      *robot);
 }

@@ -11,11 +11,6 @@
 # define DIVIDER                        "_"
 # define DEFINITION                     "definition"
 
-
-
-
-using namespace std;
-
 /**
  * @brief Basic class for all objects that store XML data.
  */
@@ -33,7 +28,7 @@ class DataNode
     /**
      * @brief Destructor, does nothing
      */
-    ~DataNode();
+    virtual ~DataNode();
 
     /**
      * @brief This function must be implemented by every data storing class. It

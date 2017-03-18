@@ -49,6 +49,10 @@
       <pose z="2"/>
       <actuators>
         <muscle name="muscle">
+          <source name="anchor"/>
+          <destination name="sphere"/>
+          <force-length_model type="linear"/>
+          <force-velocity_model type="linear"/>
           <physics>
             <mass kg="0"/>
           </physics>

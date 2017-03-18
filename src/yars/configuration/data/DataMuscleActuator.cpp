@@ -27,6 +27,7 @@ std::string DataMuscleActuator::source()
 
 std::string DataMuscleActuator::destination() const
 {
+  return _destination;
 }
 
 std::string DataMuscleActuator::name()

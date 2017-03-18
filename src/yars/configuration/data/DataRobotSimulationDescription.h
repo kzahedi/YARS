@@ -42,7 +42,7 @@ class DataRobotSimulationDescription : public DataNode
      *
      * @param parent
      */
-    DataRobotSimulationDescription(DataNode *parent = NULL);
+    DataRobotSimulationDescription(DataNode *parent = nullptr);
     //DataRobotSimulationDescription(DataRobotSimulationDescription *other);
     //DataRobotSimulationDescription&    operator=(const Matrix &m);
 
