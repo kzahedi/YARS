@@ -5,8 +5,10 @@
 #include "yars/physics/bullet/Robot.h"
 
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
-  : Actuator("MuscleActuator", data.source(), data.destination(), &robot),
-    _data(data)
+  : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
+    _data{data},
+    _l0{0},
+    _lopt{0.9 * _l0}
 {
 }
 

@@ -34,6 +34,8 @@ class DataActuator : public DataNode
     int type();
     int controlType();
 
+    virtual void add(DataParseElement* element) = 0;
+
     virtual void applyOffset(Pose pose)                   = 0;
     virtual string source()                               = 0; // TODO: move from actuators here
     virtual string name()                                 = 0;

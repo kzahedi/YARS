@@ -2,15 +2,15 @@
 #define __DATA_MUSCLE_ACTUATOR__
 
 #include "yars/configuration/data/DataActuator.h"
-// TODO: noexcept, const
-// noexcept: for getter functions
+// TODO: documentation
 
 class DataMuscleActuator : public DataActuator
 {
   public:
     // TODO: Try with reference
-    DataMuscleActuator(DataNode *parent);
-    ~DataMuscleActuator();
+    DataMuscleActuator(DataNode* parent);
+
+    void add(DataParseElement* element) override;
 
     // TODO: Most should be const. But we would have to change super classes.
     void applyOffset(Pose pose) override;
@@ -43,7 +43,10 @@ class DataMuscleActuator : public DataActuator
     static void createXsd(XsdSpecification& spec);
 
   private:
-    std::string _destination;
+    void close();
+
+    const std::string _destination;
+
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__

@@ -19,6 +19,19 @@ class MuscleActuator : public Actuator
 
   private:
     DataMuscleActuator& _data;
+
+    const double _l0;
+    const double _lopt;
+    const double _m;
+    const double _fmax;
+    const double _w;
+    const double _c;
+    const double _vmax;
+    const double _K;
+    const double _n;
+    const double _k;
+    const double _mu;
+    constexpr static double g = 9.81;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__
