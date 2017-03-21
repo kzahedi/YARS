@@ -24,7 +24,6 @@
 # define YARS_STRING_XSD_HEX_COLOR                 (char*)"[A-Fa-f0-9]{6}([A-Fa-f0-9]{2}){0,1}"
 # define YARS_STRING_TRUE_FALSE_DEFINITION         (char*)"true" DIVIDER "false" DIVIDER DEFINITION
 # define YARS_STRING_POSITIVE_NON_ZERO_INTEGER     (char*)"positive_non_zero_integer" DIVIDER DEFINITION
-# define YARS_STRING_NAME                          (char*)"name"
 # define YARS_STRING_LINE                          (char*)"line"
 # define YARS_STRING_TIME                          (char*)"time"
 # define YARS_STRING_PARTICLES                     (char*)"particles"

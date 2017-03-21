@@ -6,7 +6,6 @@
 
 # define YARS_STRING_POSE                     (char*)"pose"
 # define YARS_STRING_OBJECT                   (char*)"object"
-# define YARS_STRING_NAME                     (char*)"name"
 # define YARS_STRING_GEOMETRY                 (char*)"geometry"
 # define YARS_STRING_BODY                     (char*)"body"
 # define YARS_STRING_VISUALISE                (char*)"visualise"

@@ -5,7 +5,6 @@
 
 # define YARS_STRING_POSE              (char*)"pose"
 # define YARS_STRING_TARGET            (char*)"target"
-# define YARS_STRING_NAME              (char*)"name"
 # define YARS_STRING_OBJECT            (char*)"object"
 # define YARS_STRING_REF               (char*)"ref"
 # define YARS_STRING_POSE_DEFINITION   (char*)"pose"                  DIVIDER DEFINITION
@@ -21,7 +20,6 @@
 # define YARS_STRING_BOTTOM_TEXTURE  (char*)"bottom"
 # define YARS_STRING_BODY_TEXTURE    (char*)"body"
 # define YARS_STRING_TEXTURE         (char*)"texture"
-# define YARS_STRING_NAME_DEFINITION (char*)"name" DIVIDER DEFINITION
 
 # define OPTION_1 (char*)"option1"
 # define OPTION_2 (char*)"option2"

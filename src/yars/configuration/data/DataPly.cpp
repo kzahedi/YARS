@@ -4,7 +4,6 @@
 
 
 # define YARS_STRING_POSE                     (char*)"pose"
-# define YARS_STRING_NAME                     (char*)"name"
 # define YARS_STRING_POSE_DEFINITION          (char*)"pose"          DIVIDER DEFINITION
 # define YARS_STRING_VISUALISE                (char*)"visualise"
 # define YARS_STRING_CONVEX                   (char*)"convex"

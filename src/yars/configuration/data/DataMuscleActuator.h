@@ -47,9 +47,37 @@ class DataMuscleActuator : public DataActuator
 
   private:
     void close();
+    // TODO: Decide what's needed.
+    //void __setMapping();
 
-    const std::string _destination;
+    //DataFilter     *_filter;
+    //DataNoise      *_noise;
+    //Domain          _deflection;
+    //Domain          _mapping;
+    //SliderParameter _parameter;
+    //Pose            _pose;
+    //bool            _deflectionSet;
+    std::string _source;
+    std::string _destination;
+    //string          _jointType;
+    //string          _mode;
+    std::string _name;
 
+    //vector<yReal>   _internalValue;
+    //vector<yReal>   _externalValue;
+    //vector<yReal>   _desiredValue;
+    //vector<yReal>   _desiredExValue;
+    //vector<Mapping> _internalExternalMapping;
+    //vector<Domain>  _internalDomain;
+    //vector<Domain>  _externalDomain;
+    //Noise          *_n;
+    //bool            _isActive;
+    //yReal           _currentTransitionalVelocity;
+    //bool            _poseInWorldCoordinates;
+    //yReal           _appliedForce;
+    //yReal           _appliedVelocity;
+    //yReal           _friction;
+    //pthread_mutex_t _mutex;
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__

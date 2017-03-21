@@ -12,7 +12,6 @@
 # define YARS_STRING_JOINTS_AXIS_DEFINITION (char*)"joints_visualisation" DIVIDER DEFINITION
 # define YARS_STRING_HEIGHT                 (char*)"height"
 # define YARS_STRING_RADIUS                 (char*)"radius"
-# define YARS_STRING_NAME                   (char*)"name"
 # define YARS_STRING_X                      (char*)"x"
 # define YARS_STRING_Y                      (char*)"y"
 # define YARS_STRING_Z                      (char*)"z"

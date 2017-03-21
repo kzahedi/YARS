@@ -9,7 +9,6 @@
 #include <yars/defines/defaults.h>
 
 # define YARS_STRING_MODULE    (char*)"module"
-# define YARS_STRING_NAME      (char*)"name"
 # define YARS_STRING_FREQUENCY (char*)"frequency"
 # define YARS_STRING_POSITIVE_NON_ZERO_INTEGER     (char*)"positive_non_zero_integer" DIVIDER DEFINITION
 

@@ -1,6 +1,8 @@
-#include <yars/configuration/xsd/specification/XsdSpecification.h>
+#include "yars/configuration/xsd/specification/XsdSpecification.h"
 
-#include <yars/util/stl_macros.h>
+#include "yars/configuration/xsd/specification/XsdEnumeration.h"
+#include "yars/configuration/xsd/specification/XsdSequence.h"
+#include "yars/util/stl_macros.h"
 
 #include <sstream>
 
@@ -27,12 +29,10 @@
 # define YARS_STRING_XY_DEFINITION                 (char*)"xy"               DIVIDER DEFINITION
 # define YARS_STRING_FALSE                         (char*)"false"
 # define YARS_STRING_TRUE                          (char*)"true"
-# define YARS_STRING_NAME                          (char*)"name"
 # define YARS_STRING_MIN                           (char*)"min"
 # define YARS_STRING_MAX                           (char*)"max"
 # define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min"              DIVIDER "max"       DIVIDER DEFINITION
 # define YARS_STRING_POSITIVE_MIN_MAX_DEFINITION   (char*)"positive" DIVIDER "min"              DIVIDER "max"       DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION               (char*)"name"             DIVIDER DEFINITION
 # define WIDTH                                     "width"
 # define RADIUS                                    "radius"
 # define HEIGHT                                    "height"

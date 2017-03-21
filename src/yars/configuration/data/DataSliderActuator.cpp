@@ -13,8 +13,6 @@
 # define YARS_STRING_MODE                     (char*)"mode"
 # define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
 # define YARS_STRING_ACTUATOR_MODE_DEFINITION (char*)"actuator" DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER DEFINITION
-# define YARS_STRING_SOURCE                   (char*)"source"
-# define YARS_STRING_DESTINATION              (char*)"destination"
 # define YARS_STRING_MAPPING                  (char*)"mapping"
 # define YARS_STRING_POSE                     (char*)"pose"
 # define YARS_STRING_POSEG_DEFINITION         (char*)"pose_with_global" DIVIDER DEFINITION
@@ -31,10 +29,8 @@
 # define YARS_STRING_SCALING                  (char*)"scaling"
 # define YARS_STRING_ACTIVE                   (char*)"active"
 # define YARS_STRING_PASSIVE                  (char*)"passive"
-# define YARS_STRING_NAME                     (char*)"name"
 # define YARS_STRING_XYZ_DEFINITION           (char*)"xyz" DIVIDER DEFINITION
 # define YARS_STRING_MIN_MAX_DEFINITION       (char*)"min"           DIVIDER "max"      DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION          (char*)"name"          DIVIDER DEFINITION
 # define YARS_STRING_ACTUATOR_PARAMETER_DEFINITION (char*) "actuator" DIVIDER "parameter" DIVIDER DEFINITION
 # define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
 

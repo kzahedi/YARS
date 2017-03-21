@@ -25,6 +25,9 @@
 # define DATA_ACTUATOR_CONTROL_FORCE_VELOCITY 100005
 # define DATA_ACTUATOR_CONTROL_FORCE_ANGULAR  100006
 
+# define YARS_STRING_SOURCE (char*)"source"
+# define YARS_STRING_DESTINATION (char*)"destination"
+
 class DataActuator : public DataNode
 {
   public:

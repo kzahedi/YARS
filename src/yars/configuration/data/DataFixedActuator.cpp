@@ -2,8 +2,6 @@
 
 # define YARS_STRING_SOURCE          (char*)"source"
 # define YARS_STRING_DESTINATION     (char*)"destination"
-# define YARS_STRING_NAME            (char*)"name"
-# define YARS_STRING_NAME_DEFINITION (char*)"name" DIVIDER DEFINITION
 
 DataFixedActuator::DataFixedActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_FIXED)

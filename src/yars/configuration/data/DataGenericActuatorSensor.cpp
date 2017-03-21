@@ -7,13 +7,11 @@
 
 # define YARS_STRING_MAPPING            (char*)"mapping"
 # define YARS_STRING_POSE               (char*)"pose"
-# define YARS_STRING_NAME               (char*)"name"
 # define YARS_STRING_OBJECT             (char*)"object"
 # define YARS_STRING_TYPE               (char*)"type"
 # define YARS_STRING_TYPE_DEFINITION    (char*)"type"                         DIVIDER DEFINITION
 # define YARS_STRING_DOMAIN             (char*)"domain"
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max"                      DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION    (char*)"name"                         DIVIDER DEFINITION
 
 # define YARS_STRING_X                  (char*)"x"
 # define YARS_STRING_Y                  (char*)"y"

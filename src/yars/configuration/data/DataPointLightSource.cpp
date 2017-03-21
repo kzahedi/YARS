@@ -9,7 +9,6 @@
 
 # define YARS_STRING_DRAW                         (char*)"draw"
 # define YARS_STRING_SIZE                         (char*)"size"
-# define YARS_STRING_NAME                         (char*)"name"
 
 # define YARS_STRING_COLOR                        (char*)"colour"
 # define YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION (char*)"colour_hex_rgb_definition"

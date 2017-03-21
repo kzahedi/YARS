@@ -6,7 +6,6 @@
 
 #define YARS_STRING_TARGET                    (char*)"target"
 #define YARS_STRING_MODULE                    (char*)"module"
-#define YARS_STRING_NAME                      (char*)"name"
 #define YARS_STRING_SIZE                      (char*)"size"
 #define YARS_STRING_DELAY                     (char*)"delay"
 #define YARS_STRING_PAIRWISE                  (char*)"pairwise"

@@ -2,8 +2,6 @@
 
 #include <yars/util/macros.h>
 
-# define YARS_STRING_NAME                          (char*)"name"
-# define YARS_STRING_NAME_DEFINITION               (char*)"name" DIVIDER DEFINITION
 # define YARS_STRING_X                             (char*)"x"
 # define YARS_STRING_Y                             (char*)"y"
 # define YARS_STRING_Z                             (char*)"z"

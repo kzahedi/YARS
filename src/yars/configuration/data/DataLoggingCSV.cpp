@@ -2,7 +2,6 @@
 
 #define YARS_STRING_TARGET                (char*)"target"
 #define YARS_STRING_MODULE                (char*)"module"
-#define YARS_STRING_NAME                  (char*)"name"
 
 #define YARS_STRING_DEBUG                 (char*)"debug"
 #define YARS_STRING_START                 (char*)"start"

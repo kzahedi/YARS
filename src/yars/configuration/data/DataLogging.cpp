@@ -17,7 +17,6 @@ using namespace std;
 // #define YARS_STRING_CONTROLLER_DEFINITION (char*)"controller" DIVIDER "logging" DIVIDER DEFINITION
 
 #define YARS_STRING_REF               (char*)"ref"
-#define YARS_STRING_NAME              (char*)"name"
 #define YARS_STRING_PIPE              (char*)"pipe"
 #define YARS_STRING_TYPE              (char*)"type"
 #define YARS_STRING_LOGGING_TYPE_ENUM (char*)"logging_type_enum"

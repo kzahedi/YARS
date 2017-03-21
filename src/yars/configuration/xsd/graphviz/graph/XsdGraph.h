@@ -8,7 +8,9 @@
 #include <ostream>
 #include <sstream>
 
-using namespace std;
+class XsdAttribute;
+class XsdElement;
+class XsdNode;
 
 class XsdGraph
 {

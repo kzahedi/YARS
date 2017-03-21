@@ -6,12 +6,10 @@
 # define YARS_STRING_MAPPING            (char*)"mapping"
 # define YARS_STRING_DIMENSION          (char*)"dimension"
 # define YARS_STRING_POSE               (char*)"pose"
-# define YARS_STRING_NAME               (char*)"name"
 # define YARS_STRING_OBJECT             (char*)"object"
 # define YARS_STRING_POSE_DEFINITION    (char*)"pose"          DIVIDER DEFINITION
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min"           DIVIDER "max"      DIVIDER DEFINITION
 # define YARS_STRING_XY_DEFINITION      (char*)"xy"            DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION    (char*)"name"          DIVIDER DEFINITION
 
 
 DataGenericCameraSensor::DataGenericCameraSensor(DataNode *parent)

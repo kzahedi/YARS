@@ -5,7 +5,8 @@
 
 #include <memory>
 
-#define YARS_STRING_ACTUATOR_MODE_DEFINITION "actuator" \
+// TODO: check which definitions can be put to higher level in class hierarchy.
+//#define YARS_STRING_ACTUATOR_MODE_DEFINITION "actuator" \
   DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER "definition"
 #define YARS_STRING_FORCE_DEFINITION "actuator_force" DIVIDER "definition"
 
@@ -14,7 +15,6 @@
 DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   : DataActuator{parent, DATA_ACTUATOR_MUSCLE}
 {
-
 }
 
 void DataMuscleActuator::add(DataParseElement* element)
@@ -23,12 +23,19 @@ void DataMuscleActuator::add(DataParseElement* element)
     close();
     current = parent;
   } else if (element->opening(YARS_STRING_MUSCLE)) {
+    element->set(YARS_STRING_NAME, _name);
+  } else if (element->opening(YARS_STRING_SOURCE)) {
+    element->set(YARS_STRING_NAME, _source);
+  } else if (element->opening(YARS_STRING_DESTINATION)) {
+    element->set(YARS_STRING_NAME, _destination);
+  //} else if (element->opening(YARS_STRING_NOISE)) {
   } else {
   }
 }
 
 void DataMuscleActuator::close()
 {
+  // TODO: _control_type?
 }
 
 void DataMuscleActuator::applyOffset(Pose pose)
@@ -37,6 +44,7 @@ void DataMuscleActuator::applyOffset(Pose pose)
 
 std::string DataMuscleActuator::source()
 {
+  return _source;
 }
 
 std::string DataMuscleActuator::destination() const
@@ -46,6 +54,7 @@ std::string DataMuscleActuator::destination() const
 
 std::string DataMuscleActuator::name()
 {
+  return _name;
 }
 
 void DataMuscleActuator::setInternalValue(int index, yReal value)
@@ -66,6 +75,7 @@ yReal DataMuscleActuator::externalValue(int index)
 
 int DataMuscleActuator::dimension()
 {
+  return 1;
 }
 
 void DataMuscleActuator::setDesiredValue(int index, yReal value)
@@ -119,7 +129,7 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   auto muscleDef = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDef->add(NA("name", "xs:string", false));
   muscleDef->add(NA("type", "xs:string", false));
-  muscleDef->add(NA("mode", YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
+  //muscleDef->add(NA("mode", YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
   muscleDef->add(NE("source",      YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE("destination", YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE("force-length_model", "force-length_model_definition", 1,

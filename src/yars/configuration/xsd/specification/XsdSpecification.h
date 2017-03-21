@@ -1,12 +1,12 @@
 #ifndef __YARS_XSD_SPECIFICATION_H__
 #define __YARS_XSD_SPECIFICATION_H__
 
-#include "XsdSequence.h"
-#include "XsdEnumeration.h"
-#include "XsdChoice.h"
-#include "XsdInterval.h"
-#include "XsdRegularExpression.h"
-
+class XsdSequence;
+class XsdEnumeration;
+class XsdChoice;
+class XsdInterval;
+class XsdNode;
+class XsdRegularExpression;
 
 # define NE new XsdElement
 # define NA new XsdAttribute
@@ -26,7 +26,8 @@
 # define YARS_STRING_UNIT_INTERVAL             (char*)"unit_interval"             DIVIDER DEFINITION
 # define YARS_STRING_POSITIVE_NON_ZERO_DECIMAL (char*)"positive_non_zero_decimal" DIVIDER DEFINITION
 # define YARS_STRING_POSITIVE_DECIMAL          (char*)"positive_decimal"          DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION           (char*)"name"                      DIVIDER DEFINITION
+# define YARS_STRING_NAME (char*)"name"
+# define YARS_STRING_NAME_DEFINITION YARS_STRING_NAME DIVIDER DEFINITION
 
 # define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true"   DIVIDER "false" DIVIDER DEFINITION
 

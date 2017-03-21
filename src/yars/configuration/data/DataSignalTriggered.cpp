@@ -3,7 +3,6 @@
 # define YARS_STRING_SOURCE (char*)"source"
 # define YARS_STRING_MODULE (char*)"module"
 # define YARS_STRING_KEY    (char*)"key"
-# define YARS_STRING_NAME   (char*)"name"
 
 DataSignalTriggered::DataSignalTriggered(DataNode *parent)
   : DataSignal(parent)

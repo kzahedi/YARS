@@ -7,7 +7,6 @@
 #define YARS_STRING_POSE_DEFINITION (char*)"pose"      DIVIDER DEFINITION
 #define YARS_STRING_VISUALISE       (char*)"visualise" //      for        composite objects
 #define YARS_STRING_SCALE           (char*)"scale"
-#define YARS_STRING_NAME            (char*)"name"
 
 #define YARS_STRING_USE             (char*)"use"
 #define YARS_STRING_TEXTURE         (char*)"texture"

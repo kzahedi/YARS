@@ -2,7 +2,6 @@
 
 # define YARS_STRING_MODULE (char*)"module"
 # define YARS_STRING_KEY    (char*)"key"
-# define YARS_STRING_NAME   (char*)"name"
 
 DataSignalKeyboard::DataSignalKeyboard(DataNode *parent)
   : DataSignal(parent)

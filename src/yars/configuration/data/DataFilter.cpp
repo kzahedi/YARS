@@ -1,7 +1,6 @@
 #include "DataFilter.h"
 
 # define YARS_STRING_MODULE (char*)"module"
-# define YARS_STRING_NAME   (char*)"name"
 
 DataFilter::DataFilter(DataNode *parent)
   : DataNode(parent)

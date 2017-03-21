@@ -36,10 +36,8 @@
 # define YARS_STRING_MAXIMUM                       (char*)"max"
 # define YARS_STRING_SCALING                       (char*)"scaling"
 # define YARS_STRING_PASSIVE                       (char*)"passive"
-# define YARS_STRING_NAME                          (char*)"name"
 # define YARS_STRING_JOINT_AXIS_DEFINITION         (char*)"joint"    DIVIDER "axis"      DIVIDER DEFINITION
 # define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min"      DIVIDER "max"       DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION               (char*)"name"     DIVIDER DEFINITION
 # define YARS_STRING_ACTUATOR_PARAMETER_DEFINITION (char*)"actuator" DIVIDER "parameter" DIVIDER DEFINITION
 # define YARS_STRING_GLOBAL                        (char*)"global"
 # define YARS_STRING_XYZG_DEFINITION          (char*)"xyzg"             DIVIDER DEFINITION
