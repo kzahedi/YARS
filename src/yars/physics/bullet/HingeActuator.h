@@ -1,8 +1,8 @@
 #ifndef __HINGE_ACTUATOR_H__
 #define __HINGE_ACTUATOR_H__
 
-#include <yars/physics/bullet/Actuator.h>
-#include <yars/configuration/YarsConfiguration.h>
+#include "yars/configuration/data/DataHingeActuator.h"
+#include "yars/physics/bullet/Actuator.h"
 
 #include <btBulletDynamicsCommon.h>
 
@@ -17,7 +17,7 @@ class HingeActuator : public Actuator
     void reset();
     btTypedConstraint* constraint();
 
-    DataHingeActuator* data();
+    DataActuator* data();
 
   private:
     void __processAngularHinge();

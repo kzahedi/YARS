@@ -1,10 +1,12 @@
 #ifndef __GENERIC_SPRING_ACTUATOR_H__
 #define __GENERIC_SPRING_ACTUATOR_H__
 
+#include "yars/configuration/data/DataGenericActuator.h"
 #include <yars/physics/bullet/Actuator.h>
-#include <yars/configuration/YarsConfiguration.h>
 
 #include <btBulletDynamicsCommon.h>
+
+class AxisParameter;
 
 class GenericSpringActuator : public Actuator
 {

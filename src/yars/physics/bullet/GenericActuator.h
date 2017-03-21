@@ -1,10 +1,12 @@
 #ifndef __GENERIC_ACTUATOR_H__
 #define __GENERIC_ACTUATOR_H__
 
-#include <yars/physics/bullet/Actuator.h>
-#include <yars/configuration/YarsConfiguration.h>
+#include "yars/configuration/data/DataGenericActuator.h"
+#include "yars/physics/bullet/Actuator.h"
 
 #include <btBulletDynamicsCommon.h>
+
+class AxisParameter;
 
 class GenericActuator : public Actuator
 {
@@ -17,7 +19,7 @@ class GenericActuator : public Actuator
     void reset();
     btTypedConstraint* constraint();
 
-    DataGenericActuator* data();
+    DataActuator* data();
 
   private:
     void __prePhysicsRot(int axisIndex, int index, AxisParameter p);

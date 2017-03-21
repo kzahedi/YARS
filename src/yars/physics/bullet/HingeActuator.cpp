@@ -109,7 +109,7 @@ void HingeActuator::postPhysicsUpdate()
   }
 }
 
-DataHingeActuator* HingeActuator::data()
+DataActuator* HingeActuator::data()
 {
   return _data;
 }

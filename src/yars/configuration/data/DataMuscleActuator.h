@@ -4,6 +4,9 @@
 #include "yars/configuration/data/DataActuator.h"
 // TODO: documentation
 
+#define YARS_STRING_MUSCLE (char*)"muscle"
+#define YARS_STRING_MUSCLE_DEFINITION YARS_STRING_MUSCLE DIVIDER "definition"
+
 class DataMuscleActuator : public DataActuator
 {
   public:

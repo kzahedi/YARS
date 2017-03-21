@@ -16,12 +16,12 @@ class FixedActuator : public Actuator
     void postPhysicsUpdate();
     void reset();
 
-    DataFixedActuator* data();
+    DataActuator* data();
     btTypedConstraint* constraint();
 
   private:
 
-    DataFixedActuator *_data;
+    DataActuator *_data;
     btSliderConstraint *_fixedConstraint;
 };
 

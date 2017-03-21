@@ -1,13 +1,15 @@
 #ifndef __DATA_ACTUATOR_FACTOR_H__
 #define __DATA_ACTUATOR_FACTOR_H__
 
-#include "DataNode.h"
-#include "DataParseElement.h"
-#include "DataActuator.h"
-#include "DataHingeActuator.h"
-#include "DataSliderActuator.h"
-#include "DataFixedActuator.h"
-#include "DataGenericActuator.h"
+class DataNode;
+class DataParseElement;
+class DataActuator;
+class DataHingeActuator;
+class DataSliderActuator;
+class DataFixedActuator;
+class DataGenericActuator;
+class DataMuscleActuator;
+class XsdSpecification;
 
 # define ACTUATORS                            "actuators"
 # define YARS_STRING_ACTUATOR_LIST            (char*)ACTUATORS
@@ -24,6 +26,8 @@ class DataActuatorFactory
     static DataSliderActuator*  __generateSliderActuator(DataParseElement  *element, DataNode *parent);
     static DataFixedActuator*   __generateFixedActuator(DataParseElement   *element, DataNode *parent);
     static DataGenericActuator* __generateGenericActuator(DataParseElement *element, DataNode *parent);
+    static DataMuscleActuator* __generateMuscleActuator(
+      DataParseElement *element, DataNode *parent);
 };
 
 #endif // __DATA_ACTUATOR_FACTOR_H__

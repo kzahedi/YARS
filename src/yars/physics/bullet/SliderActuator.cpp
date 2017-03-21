@@ -149,7 +149,7 @@ void SliderActuator::postPhysicsUpdate()
   }
 }
 
-DataSliderActuator* SliderActuator::data()
+DataActuator* SliderActuator::data()
 {
   return _data;
 }

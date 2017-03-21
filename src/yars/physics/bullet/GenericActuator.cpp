@@ -287,7 +287,7 @@ void GenericActuator::postPhysicsUpdate()
   }
 }
 
-DataGenericActuator* GenericActuator::data()
+DataActuator* GenericActuator::data()
 {
   return _data;
 }

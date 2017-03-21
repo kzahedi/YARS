@@ -1,4 +1,5 @@
 #include "FixedActuator.h"
+#include "yars/configuration/data/DataFixedActuator.h"
 #include <math.h>
 
 #define ANGULAR  1234
@@ -47,7 +48,7 @@ FixedActuator::FixedActuator(DataFixedActuator *data, Robot *robot)
 
 }
 
-DataFixedActuator* FixedActuator::data()
+DataActuator* FixedActuator::data()
 {
   return _data;
 }

@@ -5,8 +5,6 @@
 
 #include <memory>
 
-#define YARS_STRING_MUSCLE (char*)"muscle"
-#define YARS_STRING_MUSCLE_DEFINITION "muscle" DIVIDER "definition"
 #define YARS_STRING_ACTUATOR_MODE_DEFINITION "actuator" \
   DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER "definition"
 #define YARS_STRING_FORCE_DEFINITION "actuator_force" DIVIDER "definition"

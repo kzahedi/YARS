@@ -1,4 +1,6 @@
 #include "ActuatorVelocitySensor.h"
+#include "yars/configuration/data/DataHingeActuator.h"
+#include "yars/configuration/data/DataSliderActuator.h"
 
 ActuatorVelocitySensor::ActuatorVelocitySensor(DataGenericVelocitySensor *data, Robot *robot)
   : Sensor(data->name(), data->object(), robot)

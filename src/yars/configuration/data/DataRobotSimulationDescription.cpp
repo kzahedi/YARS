@@ -1,5 +1,8 @@
 #include "yars/configuration/data/DataRobotSimulationDescription.h"
 
+#include "yars/configuration/data/DataGenericActuator.h"
+#include "yars/configuration/data/DataHingeActuator.h"
+#include "yars/configuration/data/DataSliderActuator.h"
 #include "yars/configuration/data/XmlChangeLog.h"
 
 #include "yars/util/stl_macros.h"
@@ -583,6 +586,7 @@ void DataRobotSimulationDescription::__convertForces()
           ga->setForce(i, ga->force(i) * ((yReal) _simulator->simulatorFrequency()));
           // cout << "Set data generic force to " << i << " : " << ga->force(i) << endl;
         }
+        // TODO: Muscle?
         break;
     }
   }

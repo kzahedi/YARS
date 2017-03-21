@@ -1,8 +1,9 @@
 #ifndef __SLIDER_ACTUATOR_H__
 #define __SLIDER_ACTUATOR_H__
 
-#include <yars/physics/bullet/Actuator.h>
-#include <yars/configuration/YarsConfiguration.h>
+#include "yars/configuration/data/DataSliderActuator.h"
+#include "yars/configuration/YarsConfiguration.h"
+#include "yars/physics/bullet/Actuator.h"
 
 #include <btBulletDynamicsCommon.h>
 
@@ -17,7 +18,7 @@ class SliderActuator : public Actuator
     void reset();
     btTypedConstraint* constraint();
 
-    DataSliderActuator* data();
+    DataActuator* data();
 
   private:
     void __processPositional();
