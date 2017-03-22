@@ -137,10 +137,6 @@ XsdSpecification::XsdSpecification()
         YARS_STRING_XSD_DECIMAL,
         YARS_STRING_XSD_POSITIVE_DECIMAL);
   add(positiveDecimal);
-
-  XsdSequence *nameDefinition = new XsdSequence(YARS_STRING_NAME_DEFINITION);
-  nameDefinition->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, true));
-  add(nameDefinition);
 }
 
 XsdSpecification::~XsdSpecification()
