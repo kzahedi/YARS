@@ -12,7 +12,6 @@
 # define YARS_STRING_ALPHA  (char*)"alpha"
 # define YARS_STRING_BETA   (char*)"beta"
 # define YARS_STRING_GAMMA  (char*)"gamma"
-# define YARS_STRING_TYPE   (char*)"type"
 # define YARS_STRING_DEGREE (char*)"deg"
 
 class DataPoseFactory

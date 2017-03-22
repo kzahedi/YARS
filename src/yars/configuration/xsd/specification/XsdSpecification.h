@@ -28,6 +28,7 @@ class XsdRegularExpression;
 # define YARS_STRING_POSITIVE_DECIMAL          (char*)"positive_decimal"          DIVIDER DEFINITION
 # define YARS_STRING_NAME (char*)"name"
 # define YARS_STRING_NAME_DEFINITION YARS_STRING_NAME DIVIDER DEFINITION
+# define YARS_STRING_TYPE                      (char*)"type"
 
 # define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true"   DIVIDER "false" DIVIDER DEFINITION
 

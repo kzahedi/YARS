@@ -20,7 +20,6 @@
 # define YARS_STRING_ALPHA                         (char*)"alpha"
 # define YARS_STRING_BETA                          (char*)"beta"
 # define YARS_STRING_GAMMA                         (char*)"gamma"
-# define YARS_STRING_TYPE                          (char*)"type"
 # define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
 # define YARS_STRING_RAD                           (char*)"rad"
 # define YARS_STRING_DEG                           (char*)"deg"

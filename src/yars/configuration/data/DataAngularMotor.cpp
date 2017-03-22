@@ -8,7 +8,6 @@
 #include "util/noise/NoiseFactory.h"
 #include "defines/mutex.h"
 
-# define YARS_STRING_TYPE                     (char*)"type"
 # define YARS_STRING_MODE                     (char*)"mode"
 # define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" DIVIDER "angular" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
 # define YARS_STRING_ACTUATOR_MODE_DEFINITION (char*)"actuator" DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER DEFINITION

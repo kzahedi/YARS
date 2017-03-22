@@ -18,7 +18,6 @@
 # define YARS_STRING_FORCE_DEFINITION              (char*)"actuator_force"          DIVIDER DEFINITION
 # define YARS_STRING_FORCE_SCALING                 (char*)"scaling"
 # define YARS_STRING_BIAS                          (char*)"bias"
-# define YARS_STRING_TYPE                          (char*)"type"
 # define YARS_STRING_MODE                          (char*)"mode"
 # define YARS_STRING_SOURCE                        (char*)"source"
 # define YARS_STRING_DESTINATION                   (char*)"destination"

@@ -20,7 +20,6 @@
 # define YARS_STRING_RAD                    (char*)"rad"
 # define YARS_STRING_DEG                    (char*)"deg"
 
-# define YARS_STRING_TYPE                   (char*)"type"
 
 DataGenericOrientationSensor::DataGenericOrientationSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_ORIENTATION_SENSOR)

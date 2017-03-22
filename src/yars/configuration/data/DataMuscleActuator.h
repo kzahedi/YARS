@@ -7,6 +7,8 @@
 #define YARS_STRING_MUSCLE (char*)"muscle"
 #define YARS_STRING_MUSCLE_DEFINITION YARS_STRING_MUSCLE DIVIDER "definition"
 
+class Mapping;
+
 class DataMuscleActuator : public DataActuator
 {
   public:
@@ -47,9 +49,9 @@ class DataMuscleActuator : public DataActuator
 
   private:
     void close();
-    // TODO: Decide what's needed.
-    //void __setMapping();
+    void setMapping();
 
+    // TODO: Decide what's needed.
     //DataFilter     *_filter;
     //DataNoise      *_noise;
     //Domain          _deflection;
@@ -59,17 +61,17 @@ class DataMuscleActuator : public DataActuator
     //bool            _deflectionSet;
     std::string _source;
     std::string _destination;
-    //string          _jointType;
+    std::string _jointType;
     //string          _mode;
     std::string _name;
 
-    //vector<yReal>   _internalValue;
-    //vector<yReal>   _externalValue;
-    //vector<yReal>   _desiredValue;
-    //vector<yReal>   _desiredExValue;
-    //vector<Mapping> _internalExternalMapping;
-    //vector<Domain>  _internalDomain;
-    //vector<Domain>  _externalDomain;
+    std::vector<yReal> _internalValue;
+    std::vector<yReal> _externalValue;
+    std::vector<yReal> _desiredValue;
+    std::vector<yReal> _desiredExValue;
+    std::vector<Mapping> _internalExternalMapping;
+    std::vector<Domain> _internalDomain;
+    std::vector<Domain> _externalDomain;
     //Noise          *_n;
     //bool            _isActive;
     //yReal           _currentTransitionalVelocity;

@@ -18,7 +18,6 @@ using namespace std;
 
 #define YARS_STRING_REF               (char*)"ref"
 #define YARS_STRING_PIPE              (char*)"pipe"
-#define YARS_STRING_TYPE              (char*)"type"
 #define YARS_STRING_LOGGING_TYPE_ENUM (char*)"logging_type_enum"
 
 DataLogging::DataLogging(DataNode *parent)
