@@ -11,11 +11,8 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class XsdSequence : public XsdNode
 {
-
   public:
     XsdSequence();
     XsdSequence(string name);

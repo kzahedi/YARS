@@ -2,18 +2,28 @@
 
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/configuration/xsd/specification/XsdSpecification.h"
+#include "yars/util/YarsErrorHandler.h"
+#include "yars/view/console/ConsoleView.h"
 
 #include <memory>
 
-#define YARS_STRING_MUSCLE (char*)"muscle"
-#define YARS_STRING_MUSCLE_DEFINITION YARS_STRING_MUSCLE DIVIDER "definition"
+using namespace std;
 
 // TODO: check which definitions can be put to higher level in class hierarchy.
-//#define YARS_STRING_ACTUATOR_MODE_DEFINITION "actuator" \
-  DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER "definition"
-#define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER \
-  "definition"
+#define YARS_STRING_VELOCITY (char*)"velocity"
+#define YARS_STRING_FORCE (char*)"force"
+#define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER DEFINITION
 #define YARS_STRING_FORCE_VELOCITY (char*)"force and velocity"
+#define YARS_STRING_SCALING (char*)"scaling"
+#define YARS_STRING_MAXIMUM (char*)"max"
+#define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" \
+  DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
+#define YARS_STRING_FORCE_LENGTH_MODEL (char*)"force-length" DIVIDER "model"
+#define YARS_STRING_FORCE_LENGTH_MODEL_DEFINITION (char*)"force-length" \
+  DIVIDER "model" DIVIDER DEFINITION
+#define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
+#define YARS_STRING_FORCE_VELOCITY_MODEL_DEFINITION (char*)"force-velocity" \
+  DIVIDER "model" DIVIDER DEFINITION
 
 // Probably will need to be constexpr because of g. Think what to do with g
 // then.
@@ -32,21 +42,30 @@ DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   _externalValue[0] = 0.0;
   _desiredValue[0] = 0.0;
   _desiredExValue[0] = 0.0;
+
+  _maxVelocity = 0.0;
+  _maxForce = 0.0;
+  _forceScaling = -1.0;
 }
 
 void DataMuscleActuator::add(DataParseElement* element)
 {
+  cout << "adding elements from xml. current elem:" << element->name() << endl;
   if (element->closing(YARS_STRING_MUSCLE)) {
     close();
     current = parent;
   } else if (element->opening(YARS_STRING_MUSCLE)) {
     element->set(YARS_STRING_NAME, _name);
+    element->set(YARS_STRING_TYPE, _jointType);
   } else if (element->opening(YARS_STRING_SOURCE)) {
     element->set(YARS_STRING_NAME, _source);
   } else if (element->opening(YARS_STRING_DESTINATION)) {
     element->set(YARS_STRING_NAME, _destination);
-  //} else if (element->opening(YARS_STRING_NOISE)) {
-  } else {
+  } else if (element->opening(YARS_STRING_FORCE)) {
+    element->set(YARS_STRING_MAXIMUM, _maxForce);
+    element->set(YARS_STRING_SCALING, _forceScaling);
+  } else if (element->opening(YARS_STRING_VELOCITY)) {
+    element->set(YARS_STRING_MAXIMUM, _maxVelocity);
   }
 }
 
@@ -69,6 +88,23 @@ void DataMuscleActuator::setMapping()
     _internalExternalMapping.resize(2);
     _internalDomain.resize(2);
     _externalDomain.resize(2);
+  }
+
+  switch(_controlType) {
+  case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
+    _internalDomain[0].min =  0.0;
+    _internalDomain[0].max = _maxForce;
+    _externalDomain[0] = _mapping;
+    _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+    _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+
+    _internalDomain[1].min = -_maxVelocity;
+    _internalDomain[1].max = _maxVelocity;
+    _externalDomain[1] = _mapping;
+    std::cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << std::endl;
+    _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
+    _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
+    break;
   }
 }
 
@@ -155,6 +191,19 @@ Pose DataMuscleActuator::pose()
 
 DataActuator* DataMuscleActuator::_copy()
 {
+  auto copy = new DataMuscleActuator(nullptr);
+
+  copy->_mapping = _mapping;
+  copy->_destination = _destination;
+  copy->_jointType = _jointType;
+  copy->_name = _name;
+  copy->_source = _source;
+  copy->_controlType = _controlType;
+  copy->_axisOrientation = _axisOrientation;
+  copy->_axisPosition = _axisPosition;
+  copy->setMapping();
+
+  return copy;
 }
 
 void DataMuscleActuator::createXsd(XsdSpecification& spec)
@@ -162,27 +211,30 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   // TODO: smart pointer?
   auto muscleDef = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDef->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
-  muscleDef->add(NA(YARS_STRING_TYPE, YARS_STRING_XSD_STRING, false));
-  //muscleDef->add(NA("mode", YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
-  muscleDef->add(NE("source",      YARS_STRING_NAME_DEFINITION, 1, 1));
-  muscleDef->add(NE("destination", YARS_STRING_NAME_DEFINITION, 1, 1));
-  muscleDef->add(NE("force-length model", "force-length_model_definition", 1,
+  muscleDef->add(NA(YARS_STRING_TYPE, YARS_STRING_ACTUATOR_TYPE_DEFINITION,
+    false));
+  muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
     1));
-  muscleDef->add(NE("force-velocity model", "force-velocity_model_definition",
-        1, 1));
+  muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL,
+    "muscle_model_definition", 1, 1));
+  muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL,
+    "muscle_model_definition", 1, 1));
   spec.add(muscleDef);
 
-  auto forceLengthModelDef = new XsdEnumeration(
-    "force-length_model_definition","xs:string");
-  forceLengthModelDef->add("constant");
-  forceLengthModelDef->add("linear");
-  forceLengthModelDef->add("hill");
-  spec.add(forceLengthModelDef);
+  auto actuatorTypeDef = new XsdEnumeration(
+      YARS_STRING_ACTUATOR_TYPE_DEFINITION, YARS_STRING_XSD_STRING);
+  actuatorTypeDef->add(YARS_STRING_FORCE_VELOCITY);
+  spec.add(actuatorTypeDef);
 
-  auto forceVelocityModelDef = new XsdEnumeration(
-    "force-length_model_definition","xs:string");
-  forceVelocityModelDef->add("constant");
-  forceVelocityModelDef->add("linear");
-  forceVelocityModelDef->add("hill");
-  spec.add(forceVelocityModelDef);
+  auto muscleModelDef = new XsdSequence("muscle_model_definition");
+  muscleModelDef->add(NA("model", "muscle_type_definition", true));
+  spec.add(muscleModelDef);
+
+  auto muscleTypeDef = new XsdEnumeration("muscle_type_definition",
+    YARS_STRING_XSD_STRING);
+  muscleTypeDef->add("constant");
+  muscleTypeDef->add("linear");
+  muscleTypeDef->add("hill");
+  spec.add(muscleTypeDef);
 }

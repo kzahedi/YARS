@@ -23,8 +23,8 @@ DataActuator* DataActuatorFactory::actuator(DataParseElement *element, DataNode 
   if(element->opening(YARS_STRING_FIXED))   return __generateFixedActuator(element,   parent);
   if(element->opening(YARS_STRING_GENERIC)) return __generateGenericActuator(element, parent);
   if(element->opening(YARS_STRING_MUSCLE))
-    return __generateGenericActuator(element, parent);
-  return NULL;
+    return __generateMuscleActuator(element, parent);
+  return nullptr;
 }
 
 DataHingeActuator* DataActuatorFactory::__generateHingeActuator(DataParseElement *element, DataNode *parent)

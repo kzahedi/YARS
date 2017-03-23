@@ -48,14 +48,11 @@
       </body>
       <pose z="2"/>
       <actuators>
-        <muscle name="muscle">
+        <muscle name="muscle" type="force and velocity">
           <source name="anchor"/>
           <destination name="sphere"/>
-          <force-length_model type="linear"/>
-          <force-velocity_model type="linear"/>
-          <physics>
-            <mass kg="0"/>
-          </physics>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
         </muscle>
       </actuators>
     </robot>

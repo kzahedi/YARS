@@ -2,12 +2,12 @@
 #define __DATA_MUSCLE_ACTUATOR__
 
 #include "yars/configuration/data/DataActuator.h"
+#include "yars/types/Domain.h"
+#include "yars/util/Mapping.h"
 // TODO: documentation
 
 #define YARS_STRING_MUSCLE (char*)"muscle"
 #define YARS_STRING_MUSCLE_DEFINITION YARS_STRING_MUSCLE DIVIDER "definition"
-
-class Mapping;
 
 class DataMuscleActuator : public DataActuator
 {
@@ -55,7 +55,7 @@ class DataMuscleActuator : public DataActuator
     //DataFilter     *_filter;
     //DataNoise      *_noise;
     //Domain          _deflection;
-    //Domain          _mapping;
+    Domain          _mapping;
     //SliderParameter _parameter;
     //Pose            _pose;
     //bool            _deflectionSet;
@@ -80,6 +80,10 @@ class DataMuscleActuator : public DataActuator
     //yReal           _appliedVelocity;
     //yReal           _friction;
     //pthread_mutex_t _mutex;
+    
+    yReal _maxForce;
+    yReal _maxVelocity;
+    yReal _forceScaling;
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__
