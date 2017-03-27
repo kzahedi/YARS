@@ -5,8 +5,6 @@
 #include "yars/util/YarsErrorHandler.h"
 #include "yars/view/console/ConsoleView.h"
 
-#include <memory>
-
 using namespace std;
 
 // TODO: check which definitions can be put to higher level in class hierarchy.
@@ -46,6 +44,16 @@ DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   _maxVelocity = 0.0;
   _maxForce = 0.0;
   _forceScaling = -1.0;
+}
+
+yReal DataMuscleActuator::velocity() const
+{
+  return _maxVelocity;
+}
+
+yReal DataMuscleActuator::force() const
+{
+  return _maxForce;
 }
 
 void DataMuscleActuator::add(DataParseElement* element)
@@ -101,7 +109,7 @@ void DataMuscleActuator::setMapping()
     _internalDomain[1].min = -_maxVelocity;
     _internalDomain[1].max = _maxVelocity;
     _externalDomain[1] = _mapping;
-    std::cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << std::endl;
+    cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << endl;
     _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
     _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
     break;
@@ -198,7 +206,6 @@ DataActuator* DataMuscleActuator::_copy()
   copy->_jointType = _jointType;
   copy->_name = _name;
   copy->_source = _source;
-  copy->_controlType = _controlType;
   copy->_axisOrientation = _axisOrientation;
   copy->_axisPosition = _axisPosition;
   copy->setMapping();
