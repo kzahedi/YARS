@@ -15,6 +15,9 @@ class DataMuscleActuator : public DataActuator
     // TODO: Try with reference
     DataMuscleActuator(DataNode* parent);
 
+    yReal velocity() const;
+    yReal force() const;
+
     void add(DataParseElement* element) override;
 
     // TODO: Most should be const. But we would have to change super classes.

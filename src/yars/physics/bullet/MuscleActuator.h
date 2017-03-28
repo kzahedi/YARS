@@ -5,7 +5,7 @@
 
 class DataMuscleActuator;
 
-enum SliderType { positional, velocity, force };
+enum SliderType { positional, velocity, force, force_velocity };
 
 class MuscleActuator : public Actuator
 {
@@ -20,6 +20,10 @@ class MuscleActuator : public Actuator
     btTypedConstraint* constraint() override;
 
   private:
+    void processPositional();
+    void processVelocitySlider();
+    void processForceSlider();
+
     btSliderConstraint* sliderConstraint(DataMuscleActuator& _data);
 
     DataMuscleActuator& _data;

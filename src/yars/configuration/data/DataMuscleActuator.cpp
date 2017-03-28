@@ -81,6 +81,8 @@ void DataMuscleActuator::close()
 {
   if (_jointType == YARS_STRING_FORCE_VELOCITY)
     _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
+  else
+    cout << "Unkown _jointType: " << _jointType << endl;
 
   setMapping();
 }
@@ -113,6 +115,7 @@ void DataMuscleActuator::setMapping()
     _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
     _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
     break;
+  default: cout << __LINE__ << " Unkown _controlType: " << _controlType << endl;
   }
 }
 
@@ -208,6 +211,8 @@ DataActuator* DataMuscleActuator::_copy()
   copy->_source = _source;
   copy->_axisOrientation = _axisOrientation;
   copy->_axisPosition = _axisPosition;
+  // Duplicate in DataActuator::copy. But necessarry for setMapping()
+  copy->_controlType = _controlType; 
   copy->setMapping();
 
   return copy;

@@ -116,9 +116,9 @@ void SliderActuator::prePhysicsUpdate()
   {
     switch(_sliderType)
     {
-      case POSITIONAL: __processPositional();     break; // !
+      case POSITIONAL: __processPositional();     break;
       case VELOCITY:   __processVelocitySlider(); break;
-      case FORCE:      __processForceSlider();    break; // !
+      case FORCE:      __processForceSlider();    break;
     }
   }
   else
@@ -199,8 +199,6 @@ void SliderActuator::__processVelocitySlider()
 void SliderActuator::__processForceSlider()
 {
   yReal v        = _data->getInternalDesiredValue(0);
-  // controller gibt externen wert. data mapt internen desired.
-  // aktivierung z.B.
   yReal force    = fabs(v) * _data->force();
   yReal velocity = _parameter.pid.update(v  * _data->velocity());
   _sliderConstraint->setMaxLinMotorForce(force);

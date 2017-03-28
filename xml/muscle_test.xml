@@ -55,6 +55,8 @@
           <force-velocity_model model="linear"/>
         </muscle>
       </actuators>
+
+      <controller module="Sine" frequency="10"/>
     </robot>
   </robots>
 </rosiml>

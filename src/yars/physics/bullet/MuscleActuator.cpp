@@ -32,10 +32,15 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
     //_sliderConstraint->setUpperLinLimit(0);
   //}
 
+  cout << "Data control type: " << _data.controlType() << endl;
   switch(_data.controlType()) {
   case DATA_ACTUATOR_CONTROL_POSITIONAL: _sliderType = positional; break;
   case DATA_ACTUATOR_CONTROL_VELOCITY: _sliderType = velocity; break;
   case DATA_ACTUATOR_CONTROL_FORCE: _sliderType = force; break;
+  case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
+    _sliderType = force_velocity;
+    break;
+  default: cout << "unkown type: " << _data.controlType() << endl;
   }
 }
 
@@ -71,6 +76,33 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
+  //switch(_sliderType) {
+  //case positional: processPositional();     break; // !
+  //case velocity:   processVelocitySlider(); break;
+  //case force:      processForceSlider();    break; // !
+  //case force_velocity:      processForceSlider();    break; // !
+  //}
+
+  yReal v = _data.getInternalDesiredValue(0);
+  // controller gibt externen wert. data mapt internen desired.
+  // aktivierung z.B.
+  yReal force = fabs(v) * _data.force();
+  yReal velocity = _data.velocity();
+  _sliderConstraint->setMaxLinMotorForce(force);
+  _sliderConstraint->setTargetLinMotorVelocity(velocity);
+}
+
+void MuscleActuator::processPositional()
+{
+}
+
+void MuscleActuator::processVelocitySlider()
+{
+}
+
+void MuscleActuator::processForceSlider()
+{
+  cout << "process force slider" << endl;
 }
 
 void MuscleActuator::postPhysicsUpdate()

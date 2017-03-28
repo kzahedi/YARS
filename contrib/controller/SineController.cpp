@@ -10,6 +10,7 @@ void SineController::update()
   for(int i = 0; i < _nr_of_outputs; i++)
   {
     motors[i] = sin(_count / _period[i] + _phaseShift[i]) * _amplitude[i];
+    cout << motors[i] << endl;
   }
   _count += 1.0;
 }
