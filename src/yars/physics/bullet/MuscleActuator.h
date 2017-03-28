@@ -32,7 +32,7 @@ class MuscleActuator : public Actuator
     //yReal               _position;
     //yReal               _lastPosition;
     //yReal               _friction;
-    //bool                _isActive;
+    // bool                _isActive;
     //bool                _isVisualised;
     //bool                _hasFriction;
 

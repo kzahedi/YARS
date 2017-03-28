@@ -51,6 +51,9 @@
         <muscle name="muscle" type="force and velocity">
           <source name="anchor"/>
           <destination name="sphere"/>
+          <force    max="10"/>
+          <velocity max="10"/>
+          <mapping  min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
           <force-velocity_model model="linear"/>
         </muscle>

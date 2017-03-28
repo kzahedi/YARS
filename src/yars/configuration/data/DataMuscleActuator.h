@@ -54,39 +54,41 @@ class DataMuscleActuator : public DataActuator
     void close();
     void setMapping();
 
+    Domain               _mapping;
+    Pose                 _pose;
+    std::string          _source;
+    std::string          _destination;
+    std::string          _jointType;
+    std::string          _name;
+
+    std::vector<yReal>   _internalValue;
+    std::vector<yReal>   _externalValue;
+    std::vector<yReal>   _desiredValue;
+    std::vector<yReal>   _desiredExValue;
+    std::vector<Mapping> _internalExternalMapping;
+    std::vector<Domain>  _internalDomain;
+    std::vector<Domain>  _externalDomain;
+    bool                 _isActive;
+    bool                 _poseInWorldCoordinates;
+    pthread_mutex_t      _mutex;
+
+    yReal                _maxForce;
+    yReal                _maxVelocity;
+    yReal                _forceScaling;
+
+    yReal           _appliedForce;
+    yReal           _appliedVelocity;
+
     // TODO: Decide what's needed.
     //DataFilter     *_filter;
     //DataNoise      *_noise;
     //Domain          _deflection;
-    Domain          _mapping;
     //SliderParameter _parameter;
-    //Pose            _pose;
     //bool            _deflectionSet;
-    std::string _source;
-    std::string _destination;
-    std::string _jointType;
-    //string          _mode;
-    std::string _name;
-
-    std::vector<yReal> _internalValue;
-    std::vector<yReal> _externalValue;
-    std::vector<yReal> _desiredValue;
-    std::vector<yReal> _desiredExValue;
-    std::vector<Mapping> _internalExternalMapping;
-    std::vector<Domain> _internalDomain;
-    std::vector<Domain> _externalDomain;
-    //Noise          *_n;
-    //bool            _isActive;
     //yReal           _currentTransitionalVelocity;
-    //bool            _poseInWorldCoordinates;
-    //yReal           _appliedForce;
-    //yReal           _appliedVelocity;
+    //Noise          *_n;
     //yReal           _friction;
-    //pthread_mutex_t _mutex;
-    
-    yReal _maxForce;
-    yReal _maxVelocity;
-    yReal _forceScaling;
+    //string          _mode;
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__

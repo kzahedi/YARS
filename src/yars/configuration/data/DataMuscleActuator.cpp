@@ -4,11 +4,14 @@
 #include "yars/configuration/xsd/specification/XsdSpecification.h"
 #include "yars/util/YarsErrorHandler.h"
 #include "yars/view/console/ConsoleView.h"
+#include <yars/defines/mutex.h>
+#include <yars/configuration/data/DataDomainFactory.h>
 
 using namespace std;
 
 // TODO: check which definitions can be put to higher level in class hierarchy.
 #define YARS_STRING_VELOCITY (char*)"velocity"
+#define YARS_STRING_VELOCITY_DEFINITION      (char*)"slider_velocity" DIVIDER DEFINITION
 #define YARS_STRING_FORCE (char*)"force"
 #define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER DEFINITION
 #define YARS_STRING_FORCE_VELOCITY (char*)"force and velocity"
@@ -22,12 +25,17 @@ using namespace std;
 #define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
 #define YARS_STRING_FORCE_VELOCITY_MODEL_DEFINITION (char*)"force-velocity" \
   DIVIDER "model" DIVIDER DEFINITION
+# define YARS_STRING_MAPPING                  (char*)"mapping"
+# define YARS_STRING_MIN_MAX_DEFINITION       (char*)"min"           DIVIDER "max"      DIVIDER DEFINITION
 
 // Probably will need to be constexpr because of g. Think what to do with g
 // then.
 DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   : DataActuator{parent, DATA_ACTUATOR_MUSCLE}
 {
+  _isActive = true;
+  _poseInWorldCoordinates = false;
+
   _internalValue.resize(1);
   _externalValue.resize(1);
   _desiredValue.resize(1);
@@ -36,14 +44,15 @@ DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   _internalDomain.resize(1);
   _externalDomain.resize(1);
 
-  _internalValue[0] = 0.0;
-  _externalValue[0] = 0.0;
-  _desiredValue[0] = 0.0;
+  _internalValue[0]  = 0.0;
+  _externalValue[0]  = 0.0;
+  _desiredValue[0]   = 0.0;
   _desiredExValue[0] = 0.0;
 
-  _maxVelocity = 0.0;
-  _maxForce = 0.0;
-  _forceScaling = -1.0;
+  _maxVelocity       = 0.0;
+  _maxForce          = 0.0;
+  _forceScaling      = -1.0;
+  YM_INIT;
 }
 
 yReal DataMuscleActuator::velocity() const
@@ -74,6 +83,8 @@ void DataMuscleActuator::add(DataParseElement* element)
     element->set(YARS_STRING_SCALING, _forceScaling);
   } else if (element->opening(YARS_STRING_VELOCITY)) {
     element->set(YARS_STRING_MAXIMUM, _maxVelocity);
+  } else if(element->opening(YARS_STRING_MAPPING)) {
+    DataDomainFactory::set(_mapping, element);
   }
 }
 
@@ -89,38 +100,27 @@ void DataMuscleActuator::close()
 
 void DataMuscleActuator::setMapping()
 {
-  // Assume force-velocity for now
-  if (_controlType == DATA_ACTUATOR_CONTROL_FORCE_VELOCITY) {
-    _internalValue.resize(2);
-    _externalValue.resize(2);
-    _desiredValue.resize(2);
-    _desiredExValue.resize(2);
-    _internalExternalMapping.resize(2);
-    _internalDomain.resize(2);
-    _externalDomain.resize(2);
-  }
-
-  switch(_controlType) {
-  case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
-    _internalDomain[0].min =  0.0;
-    _internalDomain[0].max = _maxForce;
-    _externalDomain[0] = _mapping;
-    _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-    _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
-
-    _internalDomain[1].min = -_maxVelocity;
-    _internalDomain[1].max = _maxVelocity;
-    _externalDomain[1] = _mapping;
-    cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << endl;
-    _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
-    _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
-    break;
-  default: cout << __LINE__ << " Unkown _controlType: " << _controlType << endl;
-  }
+  _internalValue.resize(1);
+  _externalValue.resize(1);
+  _desiredValue.resize(1);
+  _desiredExValue.resize(1);
+  _internalExternalMapping.resize(1);
+  _internalDomain.resize(1);
+  _externalDomain.resize(1);
+  _internalDomain[0].min =  -1.0; // A(t)
+  _internalDomain[0].max =  1.0;
+  // cout << "setting force to " << _internalDomain[0] << " " << _externalDomain[0] << endl;
+  _externalDomain[0] = _mapping;
+  _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+  _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
 }
 
-void DataMuscleActuator::applyOffset(Pose pose)
+void DataMuscleActuator::applyOffset(Pose offset)
 {
+  if(_poseInWorldCoordinates) return;
+  _pose << offset;
+  _axisPosition      = _pose.position;
+  _axisOrientation   = _pose.orientation;
 }
 
 std::string DataMuscleActuator::source()
@@ -140,18 +140,34 @@ std::string DataMuscleActuator::name()
 
 void DataMuscleActuator::setInternalValue(int index, yReal value)
 {
+  YM_LOCK;
+  _internalValue[index] = _internalDomain[index].cut(value);
+  _externalValue[index] = _internalExternalMapping[index].map(_internalValue[index]);
+  YM_UNLOCK;
 }
 
 void DataMuscleActuator::setExternalValue(int index, yReal value)
 {
+  YM_LOCK;
+  _externalValue[index] = _externalDomain[index].cut(value);
+  _internalValue[index] = _internalExternalMapping[index].invMap(_externalValue[index]);
+  YM_UNLOCK;
 }
 
 yReal DataMuscleActuator::internalValue(int index)
 {
+  YM_LOCK;
+  yReal r = _internalValue[index];
+  YM_UNLOCK;
+  return r;
 }
 
 yReal DataMuscleActuator::externalValue(int index)
 {
+  YM_LOCK;
+  yReal r = _externalValue[index];
+  YM_UNLOCK;
+  return r;
 }
 
 int DataMuscleActuator::dimension()
@@ -161,34 +177,58 @@ int DataMuscleActuator::dimension()
 
 void DataMuscleActuator::setDesiredValue(int index, yReal value)
 {
+  YM_LOCK;
+  cout << value << endl;
+  _desiredExValue[index] = _externalDomain[index].cut(value);
+  _desiredValue[index] = _internalExternalMapping[index].invMap(_desiredExValue[index]);
+  YM_UNLOCK;
 }
 
 yReal DataMuscleActuator::getInternalDesiredValue(int index)
 {
+  YM_LOCK;
+  yReal r = _desiredValue[index];
+  YM_UNLOCK;
+  return r;
 }
 
 yReal DataMuscleActuator::getExternalDesiredValue(int index)
 {
+  YM_LOCK;
+  yReal r = _desiredExValue[index];
+  YM_UNLOCK;
+  return r;
 }
 
 Domain DataMuscleActuator::getInternalDomain(int index)
 {
+  YM_LOCK;
+  Domain r = _internalDomain[index];
+  YM_UNLOCK;
+  return r;
 }
 
 Domain DataMuscleActuator::getExternalDomain(int index)
 {
+  YM_LOCK;
+  Domain r = _externalDomain[index];
+  YM_UNLOCK;
+  return r;
 }
 
 bool DataMuscleActuator::isActive(int index)
 {
+  return _isActive;
 }
 
 yReal DataMuscleActuator::getAppliedForce(int index)
 {
+  return _appliedForce;
 }
 
 yReal DataMuscleActuator::getAppliedVelocity(int index)
 {
+  return _appliedVelocity;
 }
 
 void DataMuscleActuator::setAppliedForceAndVelocity(int index, yReal force,
@@ -198,21 +238,27 @@ void DataMuscleActuator::setAppliedForceAndVelocity(int index, yReal force,
 
 Pose DataMuscleActuator::pose()
 {
+  YM_LOCK;
+  Pose r = _pose;
+  YM_UNLOCK;
+  return r;
 }
 
 DataActuator* DataMuscleActuator::_copy()
 {
   auto copy = new DataMuscleActuator(nullptr);
 
-  copy->_mapping = _mapping;
-  copy->_destination = _destination;
-  copy->_jointType = _jointType;
-  copy->_name = _name;
-  copy->_source = _source;
+  copy->_mapping         = _mapping;
+  copy->_destination     = _destination;
+  copy->_jointType       = _jointType;
+  copy->_name            = _name;
+  copy->_source          = _source;
+  copy->_maxForce        = _maxForce;
+  copy->_maxVelocity     = _maxVelocity;
   copy->_axisOrientation = _axisOrientation;
-  copy->_axisPosition = _axisPosition;
+  copy->_axisPosition    = _axisPosition;
   // Duplicate in DataActuator::copy. But necessarry for setMapping()
-  copy->_controlType = _controlType; 
+  copy->_controlType = _controlType;
   copy->setMapping();
 
   return copy;
@@ -228,6 +274,9 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
     1));
+  muscleDef->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
+  muscleDef->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
+  muscleDef->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
   muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL,
     "muscle_model_definition", 1, 1));
   muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL,

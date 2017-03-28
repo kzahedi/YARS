@@ -131,7 +131,7 @@ int Socket::accept(const int port)
   exit(-1);
 #else
   do { _peer.sin_port = htons(++p); }
-  while(bind(_mysock, (struct sockaddr *) &_peer, sizeof(_peer)) < 0 );
+  while(::bind(_mysock, (struct sockaddr *) &_peer, sizeof(_peer)) < 0 );
 #endif
 
   cout << "  --> port " << p << " opened" << endl;

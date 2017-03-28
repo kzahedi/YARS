@@ -10,9 +10,9 @@ set(LIBRARY_OUTPUT_PATH          ${PROJECT_BINARY_DIR}/lib)
 set(WARNINGS "")
 
 if(APPLE AND UNIX)
-  set(CMAKE_CXX_FLAGS_DEBUG        "-g  -fPIC ${WARNINGS}")
-  set(CMAKE_CXX_FLAGS_RELEASE      "-O3 -fPIC ${WARNINGS}")
-  set(CMAKE_CXX_FLAGS_DISTRIBUTION "-O3 -fPIC ${WARNINGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG        "-g  -fPIC ${WARNINGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS_RELEASE      "-O3 -fPIC ${WARNINGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS_DISTRIBUTION "-O3 -fPIC ${WARNINGS} -std=c++11")
 endif(APPLE AND UNIX)
 
 if(UNIX AND NOT APPLE)
@@ -21,5 +21,3 @@ if(UNIX AND NOT APPLE)
   # set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 -fpermissive ${WARNINGS} -pthread -fPIC")
   # set(CMAKE_CXX_FLAGS_RELEASE "   -O3 -fpermissive ${WARNINGS} -pthread -fPIC")
 endif(UNIX AND NOT APPLE)
-
-

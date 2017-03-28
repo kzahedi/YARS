@@ -76,18 +76,13 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  //switch(_sliderType) {
-  //case positional: processPositional();     break; // !
-  //case velocity:   processVelocitySlider(); break;
-  //case force:      processForceSlider();    break; // !
-  //case force_velocity:      processForceSlider();    break; // !
-  //}
-
-  yReal v = _data.getInternalDesiredValue(0);
+  yReal v = _data.getInternalDesiredValue(0) / 10.0; // A(t)
+  cout << "Input: " << v << endl;
   // controller gibt externen wert. data mapt internen desired.
   // aktivierung z.B.
-  yReal force = fabs(v) * _data.force();
-  yReal velocity = _data.velocity();
+  yReal force = fabs(v) * _data.force(); // _data.force() * xyz * A(t)
+  yReal velocity = v * _data.velocity(); // _data.velcity() * abc * A(T)
+  cout << force << " " << velocity << endl;
   _sliderConstraint->setMaxLinMotorForce(force);
   _sliderConstraint->setTargetLinMotorVelocity(velocity);
 }

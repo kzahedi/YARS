@@ -5,9 +5,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#ifndef __APPLE__
 #include <string.h>
-#endif // __APPLE__
 
 YarsErrorHandler* YarsErrorHandler::_me = NULL;
 
