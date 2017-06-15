@@ -1,4 +1,4 @@
-<rosiml version="0.8.40">
+<rosiml version="0.8.41">
 
   <simulator frequency="100">
     <solver  iterations="10"/>
@@ -273,7 +273,7 @@
         </position>
       </sensors>
 
-      <controller  module="Braitenberg" frequency="10">
+      <controller  module="Braitenberg3b" frequency="10">
         <parameter name="debug" value="true"/>
       </controller>
     </robot>
@@ -304,54 +304,56 @@
     <sensor target="right 3" precision="3"> <external/> <internal/> </sensor>
     <sensor target="right 2" precision="3"> <external/> <internal/> </sensor>
     <sensor target="right 1" precision="3"> <external/> <internal/> </sensor>
+    <sensor target="main body velocity" precision="3"> <external/> </sensor>
 
     <actuator target="wheel left hinge" precision="3"> <internal/> <external/> <appliedForce/> <appliedVelocity/> </actuator>
     <actuator target="wheel right hinge" precision="3"> <internal/> <external/> <appliedForce/> <appliedVelocity/> </actuator>
 
     <console>
-      <target name="main body"/>
-      <target name="wheel left hinge"/>
-      <target name="wheel right hinge"/>
-      <target name="right 1"/>
-      <target name="right 2"/>
-      <target name="right wheel hinge sensor"/>
-      <target name="wheel left hinge"/>
-      <target name="wheel right hinge"/>
+      <!-- <target name="main body"/> -->
+      <!-- <target name="wheel left hinge"/> -->
+      <!-- <target name="wheel right hinge"/> -->
+      <!-- <target name="right 1"/> -->
+      <!-- <target name="right 2"/> -->
+      <!-- <target name="right wheel hinge sensor"/> -->
+      <!-- <target name="wheel left hinge"/> -->
+      <!-- <target name="wheel right hinge"/> -->
+      <target name="main body velocity"/>
     </console>
 
-    <gnuplot size="100000" delay="100" pairwise="true">
-      <target name="main body"/>
-      <target name="wheel left"/>
-      <target name="wheel right"/>
-    </gnuplot>
+    <!-- <gnuplot size="100000" delay="100" pairwise="true"> -->
+      <!-- <target name="main body"/> -->
+      <!-- <target name="wheel left"/> -->
+      <!-- <target name="wheel right"/> -->
+    <!-- </gnuplot> -->
 
-    <gnuplot name="braitenberg sensors" size="5" delay="50" term="aqua">
-      <target name="right 1"/>
-      <target name="left 1"/>
-      <target name="wheel left hinge"/>
-      <target name="wheel right hinge"/>
-    </gnuplot>
+    <!-- <gnuplot name="braitenberg sensors" size="5" delay="50" term="aqua"> -->
+      <!-- <target name="right 1"/> -->
+      <!-- <target name="left 1"/> -->
+      <!-- <target name="wheel left hinge"/> -->
+      <!-- <target name="wheel right hinge"/> -->
+    <!-- </gnuplot> -->
 
-    <file name="braitenberg">
-      <target name="main body"/>
-      <target name="wheel left"/>
-      <target name="wheel right"/>
-      <target name="right 1"/>
-      <target name="wheel left hinge"/>
-      <target name="wheel right hinge"/>
-    </file>
+    <!-- <file name="braitenberg"> -->
+      <!-- <target name="main body"/> -->
+      <!-- <target name="wheel left"/> -->
+      <!-- <target name="wheel right"/> -->
+      <!-- <target name="right 1"/> -->
+      <!-- <target name="wheel left hinge"/> -->
+      <!-- <target name="wheel right hinge"/> -->
+    <!-- </file> -->
 
-    <csv name="braitenberg">
-      <target name="main body"/>
-      <target name="wheel left"/>
-      <target name="wheel right"/>
-      <target name="right 1"/>
-      <target name="wheel left hinge"/>
-      <target name="wheel right hinge"/>
-    </csv>
+    <!-- <csv name="braitenberg"> -->
+      <!-- <target name="main body"/> -->
+      <!-- <target name="wheel left"/> -->
+      <!-- <target name="wheel right"/> -->
+      <!-- <target name="right 1"/> -->
+      <!-- <target name="wheel left hinge"/> -->
+      <!-- <target name="wheel right hinge"/> -->
+    <!-- </csv> -->
 
-    <blender name="braitenberg_blender.csv" cfg="braitenberg_blender.cfg" framerate="10"/>
-    <blender name="braitenberg_blender.txt"/>
+    <!-- <blender name="braitenberg_blender.csv" cfg="braitenberg_blender.cfg" framerate="10"/> -->
+    <!-- <blender name="braitenberg_blender.txt"/> -->
 
   </logging>
 </rosiml>
