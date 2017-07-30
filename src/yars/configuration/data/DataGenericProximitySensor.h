@@ -47,7 +47,7 @@ class DataGenericProximitySensor : public DataSensor
      * @return domain
      * @sa Domain
      */
-    yReal distance();
+    double distance();
 
     /**
      * @brief Returns the opening angles in x and y direction.
@@ -69,15 +69,15 @@ class DataGenericProximitySensor : public DataSensor
 
     DataGenericProximitySensor *_copy();
 
-    void setMeasuredDistance(yReal length);
-    yReal getMeasuredDistance();
+    void setMeasuredDistance(double length);
+    double getMeasuredDistance();
 
     int dimension() { return 1; }
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
 
@@ -86,12 +86,12 @@ class DataGenericProximitySensor : public DataSensor
   private:
     void       __setMapping();
     Pose        _pose;
-    yReal    _distance;
+    double    _distance;
     P2D         _openingAngles;
-    yReal    _measuredDistance;
+    double    _measuredDistance;
 
-    yReal _internalValue;
-    yReal _externalValue;
+    double _internalValue;
+    double _externalValue;
     Mapping  _internalExternalMapping;
     Domain   _internalDomain;
     Domain   _externalDomain;

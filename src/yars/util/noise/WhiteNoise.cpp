@@ -27,9 +27,9 @@ WhiteNoise::WhiteNoise(DataNoise *data)
   }
 }
 
-yReal WhiteNoise::calculate(yReal in)
+double WhiteNoise::calculate(double in)
 {
-  yReal v = (yReal)((_sigma * 2.0 * ((yReal)rand() / (yReal)RAND_MAX)) - _sigma + _mean);
+  double v = (double)((_sigma * 2.0 * ((double)rand() / (double)RAND_MAX)) - _sigma + _mean);
   return in + v;
 }
 

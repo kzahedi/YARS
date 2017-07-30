@@ -30,13 +30,13 @@ using namespace std;
 class MovingAverage
 {
  public:
-   MovingAverage(int numberOfPoints, yReal initialValue,
+   MovingAverage(int numberOfPoints, double initialValue,
        bool recursive, unsigned int itersBeforeFullRecalc);
   ~MovingAverage();
 
-  yReal getFilteredOutput(yReal unfilteredInput);
+  double getFilteredOutput(double unfilteredInput);
 
-  void   reset(yReal resetValue);
+  void   reset(double resetValue);
 
  private:
   int  numPoints_;
@@ -45,10 +45,10 @@ class MovingAverage
                           //   increase this value (via the constructor)
   int  iters_;            // iterations passed without full new recalc
 
-  std::vector<yReal> points_; // vector holding the raw input values
+  std::vector<double> points_; // vector holding the raw input values
   int pointPos_;          // keep track of where we are
 
-  yReal accumulator_;    // holds the actual accumulated sum
+  double accumulator_;    // holds the actual accumulated sum
 };
 
 #endif

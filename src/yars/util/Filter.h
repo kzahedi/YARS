@@ -8,7 +8,7 @@ class Filter
   public:
     Filter();
 
-    yReal calculate(yReal in);
+    double calculate(double in);
 };
 
 #endif // __FILTER_H__

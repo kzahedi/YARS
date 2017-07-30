@@ -3,8 +3,8 @@
 
 #include <sstream>
 
-MappingFunction::MappingFunction(yReal inStartVal, yReal inEndVal, yReal
-    outStartVal, yReal outEndVal)
+MappingFunction::MappingFunction(double inStartVal, double inEndVal, double
+    outStartVal, double outEndVal)
 {
   addMap(inStartVal, inEndVal, outStartVal, outEndVal);
 }
@@ -13,7 +13,7 @@ MappingFunction::~MappingFunction()
 {
 }
 
-yReal MappingFunction::map(yReal value)
+double MappingFunction::map(double value)
 {
   // checkValueRange(&value);
 
@@ -32,7 +32,7 @@ yReal MappingFunction::map(yReal value)
   return value;
 }
 
-yReal MappingFunction::map(int mapNum, yReal value)
+double MappingFunction::map(int mapNum, double value)
 {
   if(doesMapNumExist(mapNum))
   {
@@ -55,17 +55,17 @@ yReal MappingFunction::map(int mapNum, yReal value)
   else
   {
     std::stringstream oss;
-    oss << "MappingFunction::map(int, yReal) mapNum " << mapNum << " does not exist.";
+    oss << "MappingFunction::map(int, double) mapNum " << mapNum << " does not exist.";
     throw(oss.str().c_str());
   }
 }
 
-void MappingFunction::map(std::vector<yReal> *values)
+void MappingFunction::map(std::vector<double> *values)
 {
   if(mapData_.size() < (*values).size())
   {
     std::stringstream oss;
-    oss << "MappingFunction::map(std::vector<yReal>) mapData.size(" << mapData_.size() << ") < values.size(" << (*values).size() << ")";
+    oss << "MappingFunction::map(std::vector<double>) mapData.size(" << mapData_.size() << ") < values.size(" << (*values).size() << ")";
     throw(oss.str().c_str());
   }
   else
@@ -89,8 +89,8 @@ void MappingFunction::map(std::vector<yReal> *values)
   }
 }
 
-void MappingFunction::addMap(yReal inStartVal, yReal inEndVal,
-    yReal outStartVal, yReal outEndVal)
+void MappingFunction::addMap(double inStartVal, double inEndVal,
+    double outStartVal, double outEndVal)
 {
   int newMapNum = mapData_.size();
 
@@ -101,14 +101,14 @@ void MappingFunction::addMap(yReal inStartVal, yReal inEndVal,
       outEndVal);
 }
 
-void MappingFunction::setInputOutputRange(yReal inStartVal, yReal inEndVal,
-    yReal outStartVal, yReal outEndVal)
+void MappingFunction::setInputOutputRange(double inStartVal, double inEndVal,
+    double outStartVal, double outEndVal)
 {
   setInputOutputRange(0, inStartVal, inEndVal, outStartVal, outEndVal);
 }
 
-void MappingFunction::setInputOutputRange(int mapNum, yReal inStartVal,
-    yReal inEndVal, yReal outStartVal, yReal outEndVal)
+void MappingFunction::setInputOutputRange(int mapNum, double inStartVal,
+    double inEndVal, double outStartVal, double outEndVal)
 {
   if(doesMapNumExist(mapNum))
   {
@@ -161,12 +161,12 @@ void MappingFunction::calculateConstants(int mapNum)
                       );
 }
 
-yReal MappingFunction::getInStartVal()
+double MappingFunction::getInStartVal()
 {
   return mapData_[0].inStartVal;
 }
 
-yReal MappingFunction::getInStartVal(int mapNum)
+double MappingFunction::getInStartVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
@@ -177,12 +177,12 @@ yReal MappingFunction::getInStartVal(int mapNum)
   return mapData_[mapNum].inStartVal;
 }
 
-yReal MappingFunction::getInEndVal()
+double MappingFunction::getInEndVal()
 {
   return mapData_[0].inEndVal;
 }
 
-yReal MappingFunction::getInEndVal(int mapNum)
+double MappingFunction::getInEndVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
@@ -193,12 +193,12 @@ yReal MappingFunction::getInEndVal(int mapNum)
   return mapData_[mapNum].inEndVal;
 }
 
-yReal MappingFunction::getOutStartVal()
+double MappingFunction::getOutStartVal()
 {
   return mapData_[0].outStartVal;
 }
 
-yReal MappingFunction::getOutStartVal(int mapNum)
+double MappingFunction::getOutStartVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
@@ -209,12 +209,12 @@ yReal MappingFunction::getOutStartVal(int mapNum)
   return mapData_[mapNum].outStartVal;
 }
 
-yReal MappingFunction::getOutEndVal()
+double MappingFunction::getOutEndVal()
 {
   return mapData_[0].outEndVal;
 }
 
-yReal MappingFunction::getOutEndVal(int mapNum)
+double MappingFunction::getOutEndVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
@@ -226,7 +226,7 @@ yReal MappingFunction::getOutEndVal(int mapNum)
 }
 
 // depreceated
-void MappingFunction::checkValueRange(yReal *value)
+void MappingFunction::checkValueRange(double *value)
 {
   if(mapData_[0].inStartVal < mapData_[0].inEndVal)
   {
@@ -253,7 +253,7 @@ void MappingFunction::checkValueRange(yReal *value)
 }
 
 // depreceated
-void MappingFunction::checkValueRange(int mapNum, yReal *value)
+void MappingFunction::checkValueRange(int mapNum, double *value)
 {
   if(mapData_[mapNum].inStartVal < mapData_[mapNum].inEndVal)
   {

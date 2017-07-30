@@ -26,17 +26,17 @@ GaussianNoise::GaussianNoise(DataNoise *data)
   }
 }
 
-yReal GaussianNoise::calculate(yReal in)
+double GaussianNoise::calculate(double in)
 {
-  yReal rnd1, rnd2, x, y, z, radius;
+  double rnd1, rnd2, x, y, z, radius;
 
   radius = 1.0;
   do
   {
     rnd1 = Random::unit();
-    rnd1 = rnd1/(yReal)RAND_MAX;
+    rnd1 = rnd1/(double)RAND_MAX;
     rnd2 = Random::unit();
-    rnd2 = rnd2/(yReal)RAND_MAX;
+    rnd2 = rnd2/(double)RAND_MAX;
 
     x = 2.0 * rnd1 - 1.0;
     y = 2.0 * rnd2 - 1.0;

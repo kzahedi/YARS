@@ -10,11 +10,11 @@ class WhiteNoise : public Noise
   public:
     WhiteNoise(DataNoise *data);
 
-    yReal calculate(yReal in);
+    double calculate(double in);
 
   private:
-    yReal _mean;
-    yReal _sigma;
+    double _mean;
+    double _sigma;
 
 };
 

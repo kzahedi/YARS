@@ -20,7 +20,7 @@ void OrbitCam::init(DataObject *f, DataCamera *cam)
   P3D pos = _camera->position();
 
   _angularVelocity = config->speed();
-  _angularVelocity = _angularVelocity * 0.1 * M_PI / (yReal)__YARS_GET_SIMULATOR_FREQUENCY;
+  _angularVelocity = _angularVelocity * 0.1 * M_PI / (double)__YARS_GET_SIMULATOR_FREQUENCY;
 
   _lookAtX = config->lookAtX();
   _lookAtY = config->lookAtY();

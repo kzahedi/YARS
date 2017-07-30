@@ -97,42 +97,42 @@ class RobotController
     }
 
     // gives access to the vector motors
-    void getMotorValues(std::vector<yReal> *values)
+    void getMotorValues(std::vector<double> *values)
     {
       *values = motors;
     }
 
-    std::vector<yReal>::const_iterator m_begin()
+    std::vector<double>::const_iterator m_begin()
     {
       return motors.begin();
     }
 
-    std::vector<yReal>::const_iterator m_end()
+    std::vector<double>::const_iterator m_end()
     {
       return motors.end();
     }
 
-    std::vector<yReal> getMotorValues()
+    std::vector<double> getMotorValues()
     {
       return motors;
     }
 
     // change the value of sensors, e.g. in case of updated/changed sensor-values
-    void setSensorValues(std::vector<yReal> values)
+    void setSensorValues(std::vector<double> values)
     {
       sensors = values;
     }
 
-    void setSensorValues(std::vector<yReal>::const_iterator begin, std::vector<yReal>::const_iterator end)
+    void setSensorValues(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end)
     {
       int index = 0;
-      for(std::vector<yReal>::const_iterator s = begin; s != end; s++) sensors[index++] = (*s);
+      for(std::vector<double>::const_iterator s = begin; s != end; s++) sensors[index++] = (*s);
     }
 
-    void setMotorValues(std::vector<yReal>::iterator begin, std::vector<yReal>::iterator end)
+    void setMotorValues(std::vector<double>::iterator begin, std::vector<double>::iterator end)
     {
       int index = 0;
-      for(std::vector<yReal>::iterator v = begin; v != end; v++) (*v) = motors[index++];
+      for(std::vector<double>::iterator v = begin; v != end; v++) (*v) = motors[index++];
     }
 
     // define the number of Output values that are necessary for the given robot
@@ -267,12 +267,12 @@ class RobotController
       _data = controller;
     }
 
-    void addLoggable(string name, yReal *value)
+    void addLoggable(string name, double *value)
     {
       _data->addLoggable(name, value);
     }
 
-    void addLoggable(string name, std::vector<yReal> *vector)
+    void addLoggable(string name, std::vector<double> *vector)
     {
       _data->addLoggable(name, vector);
     }
@@ -322,10 +322,10 @@ class RobotController
   protected:
 
     // field of motor values. e.g. for controlling all motors
-    std::vector<yReal> motors;
+    std::vector<double> motors;
 
     // field of sensor values e.g. using all/parts of the sensors
-    std::vector<yReal> sensors;
+    std::vector<double> sensors;
 
     // configurations
     std::vector<NameDimensionDomain> motorConfiguration;

@@ -50,8 +50,8 @@ bool DataParseAttribute::boolValue()
   return _value == "true";
 }
 
-yReal DataParseAttribute::realValue()
+double DataParseAttribute::realValue()
 {
-  return (yReal)atof(_value.c_str());
+  return (double)atof(_value.c_str());
 }
 

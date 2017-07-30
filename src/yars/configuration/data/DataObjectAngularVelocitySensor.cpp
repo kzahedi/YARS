@@ -73,7 +73,7 @@ void DataObjectAngularVelocitySensor::add(DataParseElement *element)
     if(_x) _dimension++;
     if(_y) _dimension++;
     if(_z) _dimension++;
-    _value = new yReal[_dimension];
+    _value = new double[_dimension];
   }
 }
 
@@ -144,34 +144,34 @@ DataObjectAngularVelocitySensor* DataObjectAngularVelocitySensor::_copy()
   copy->_z         = _z;
   copy->_dimension = _dimension;
   copy->_global    = _global;
-  copy->_value     = new yReal[_dimension];
+  copy->_value     = new double[_dimension];
   return copy;
 }
 
-yReal DataObjectAngularVelocitySensor::internalValue(int index)
+double DataObjectAngularVelocitySensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataObjectAngularVelocitySensor::externalValue(int index)
+double DataObjectAngularVelocitySensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataObjectAngularVelocitySensor::setInternalValue(int index, yReal v)
+void DataObjectAngularVelocitySensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;
   YM_UNLOCK;
 }
 
-void DataObjectAngularVelocitySensor::setExternalValue(int index, yReal v)
+void DataObjectAngularVelocitySensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;

@@ -81,14 +81,14 @@ class ConsoleView : public Observer
     static int __milliSeconds();
 
 
-    yReal _framePerSecondInterval;
+    double _framePerSecondInterval;
 
     static unsigned long _printTimeLastMeasurement;
     static unsigned long _printTimeLastStep;
     static unsigned long _captureTimeLastMeasurement;
     static unsigned long _captureTimeLastStep;
-    static yReal _printTimeUPS;
-    static yReal _printRealTimeFactor;
+    static double _printTimeUPS;
+    static double _printRealTimeFactor;
 };
 
 #endif // __CONSOLE_VIEW_H__

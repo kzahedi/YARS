@@ -77,16 +77,16 @@ class DataObject : public DataNode
     void setPose(Pose pose);
 
 
-    void setCurrentForce(yReal x, yReal y, yReal z);
+    void setCurrentForce(double x, double y, double z);
     P3D  getCurrentForce();
 
-    void setCurrentVelocity(yReal x, yReal y, yReal z);
+    void setCurrentVelocity(double x, double y, double z);
     P3D  getCurrentVelocity();
 
-    void setCurrentTorque(yReal x, yReal y, yReal z);
+    void setCurrentTorque(double x, double y, double z);
     P3D  getCurrentTorque();
 
-    void setCurrentAngularVelocity(yReal x, yReal y, yReal z);
+    void setCurrentAngularVelocity(double x, double y, double z);
     P3D  getCurrentAngularVelocity();
 
 

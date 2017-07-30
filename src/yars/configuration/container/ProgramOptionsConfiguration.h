@@ -29,7 +29,7 @@ class ProgramOptionsConfiguration
     int      cappedCylinderQuality;
     int      randomSeed;
     int      maxIterations;
-    yReal    orbitSpeed;
+    double    orbitSpeed;
     string   captureDirectory;
     string   captureName;
     string   configFile;
@@ -44,7 +44,7 @@ class ProgramOptionsConfiguration
     string   geometrydebug;
     string   videoCodec;
     string   geometryString;
-    yReal    realtimeFactor;
+    double    realtimeFactor;
     bool     useRealtime;
 
     string   xml;

@@ -158,14 +158,14 @@ void DataPly::setNumberOfIndices(int n)
   _indices.resize(n);
 }
 
-void DataPly::setVertex(int i, yReal x, yReal y, yReal z)
+void DataPly::setVertex(int i, double x, double y, double z)
 {
   _vertices[i].x = x;
   _vertices[i].y = y;
   _vertices[i].z = z;
 }
 
-void DataPly::setNormal(int i, yReal x, yReal y, yReal z)
+void DataPly::setNormal(int i, double x, double y, double z)
 {
   _normals[i].x = x;
   _normals[i].y = y;

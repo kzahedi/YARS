@@ -44,9 +44,9 @@ bool DataParameter::boolValue()
   return _value == "true";
 }
 
-yReal DataParameter::realValue()
+double DataParameter::realValue()
 {
-  return (yReal)atof(_value.c_str());
+  return (double)atof(_value.c_str());
 }
 
 void DataParameter::createXsd()

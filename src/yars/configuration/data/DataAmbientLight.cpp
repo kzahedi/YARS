@@ -43,7 +43,7 @@ Colour DataAmbientLight::color()
   return _color;
 }
 
-yReal DataAmbientLight::brightness()
+double DataAmbientLight::brightness()
 {
   return _brightness;
 }

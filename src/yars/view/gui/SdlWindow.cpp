@@ -145,9 +145,9 @@ void SdlWindow::step()
     {
       int step = __YARS_GET_CONTINOUS_STEP;
 
-      yReal rt   = (yReal)(step - _lastStep) / ((yReal)__YARS_GET_SIMULATOR_FREQUENCY);
-      // yReal f    = (yReal)_fps;
-      yReal diff = 1000.0/((yReal)(_currentTime - _lastTime));
+      double rt   = (double)(step - _lastStep) / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
+      // double f    = (double)_fps;
+      double diff = 1000.0/((double)(_currentTime - _lastTime));
 
       // f  =  f * diff;
       rt = rt * diff;

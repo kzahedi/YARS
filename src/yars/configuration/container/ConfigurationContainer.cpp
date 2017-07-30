@@ -219,19 +219,19 @@ void ConfigurationContainer::setContinousTimeStep(unsigned long continousTimeSte
 #endif // USE_THREAD_SAFE
 }
 
-yReal ConfigurationContainer::getCurrentRealTime()
+double ConfigurationContainer::getCurrentRealTime()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_currentRealTimeMutex);
 #endif // USE_THREAD_SAFE
-  yReal r = _currentRealTime;
+  double r = _currentRealTime;
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_currentRealTimeMutex);
 #endif // USE_THREAD_SAFE
   return r;
 }
 
-void ConfigurationContainer::setCurrentRealTime(yReal currentRealTime)
+void ConfigurationContainer::setCurrentRealTime(double currentRealTime)
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_currentRealTimeMutex);
@@ -1066,7 +1066,7 @@ string ConfigurationContainer::getFramesDirectory()
   return returnvalue;
 }
 
-void ConfigurationContainer::setRealTimeFactor(yReal realtimeFactor)
+void ConfigurationContainer::setRealTimeFactor(double realtimeFactor)
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_realtimeFactorMutex);
@@ -1077,12 +1077,12 @@ void ConfigurationContainer::setRealTimeFactor(yReal realtimeFactor)
 #endif // USE_THREAD_SAFE
 }
 
-yReal ConfigurationContainer::getRealTimeFactor()
+double ConfigurationContainer::getRealTimeFactor()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_realtimeFactorMutex);
 #endif // USE_THREAD_SAFE
-  yReal d = _realtimeFactor;
+  double d = _realtimeFactor;
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_realtimeFactorMutex);
 #endif // USE_THREAD_SAFE

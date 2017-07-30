@@ -44,15 +44,15 @@ class DataPhysicsParameter : public DataNode
     virtual ~DataPhysicsParameter();
     void add(DataParseElement *element);
 
-    yReal   linearDamping();
-    yReal   mass();
-    yReal   angularDamping();
-    yReal   friction();
-    yReal   rollingFriction();
-    yReal   restitution();
+    double   linearDamping();
+    double   mass();
+    double   angularDamping();
+    double   friction();
+    double   rollingFriction();
+    double   restitution();
     P3D        centreOfMass();
 
-    void setMass(yReal mass);
+    void setMass(double mass);
 
     bool      useLinearDamping();
     bool      useAngularDamping();
@@ -65,12 +65,12 @@ class DataPhysicsParameter : public DataNode
     DataPhysicsParameter* copy();
 
   private:
-    yReal  _linearDamping;
-    yReal  _mass;
-    yReal  _angularDamping;
-    yReal  _friction;
-    yReal  _rollingFriction;
-    yReal  _restitution;
+    double  _linearDamping;
+    double  _mass;
+    double  _angularDamping;
+    double  _friction;
+    double  _rollingFriction;
+    double  _restitution;
     P3D       _centreOfMass;
 
     bool      _useLinearDamping;

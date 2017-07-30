@@ -61,21 +61,21 @@ class SliderParameter
       return *this;
     };
 
-    yReal softnessDir;
-    yReal restitutionDir;
-    yReal dampingDir;
+    double softnessDir;
+    double restitutionDir;
+    double dampingDir;
 
-    yReal softnessLim;
-    yReal restitutionLim;
-    yReal dampingLim;
+    double softnessLim;
+    double restitutionLim;
+    double dampingLim;
 
-    yReal softnessOrtho;
-    yReal restitutionOrtho;
-    yReal dampingOrtho;
+    double softnessOrtho;
+    double restitutionOrtho;
+    double dampingOrtho;
 
-    yReal maxVelocity;
-    yReal maxForce;
-    yReal forceScaling;
+    double maxVelocity;
+    double maxForce;
+    double forceScaling;
 
     PID pid;
 };
@@ -103,25 +103,25 @@ class DataSliderActuator : public DataActuator
     string mode();
     void setPosition(P3D position);
 
-    yReal velocity();
-    yReal force();
-    void setVelocity(yReal v);
-    void setForce(yReal f);
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
-    void setDesiredValue(int index, yReal v);
-    yReal getInternalDesiredValue(int index);
-    yReal getExternalDesiredValue(int index);
-    yReal getCurrentTransitionalVelocity();
-    void  setCurrentTransitionalVelocity(yReal v);
+    double velocity();
+    double force();
+    void setVelocity(double v);
+    void setForce(double f);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
+    void setDesiredValue(int index, double v);
+    double getInternalDesiredValue(int index);
+    double getExternalDesiredValue(int index);
+    double getCurrentTransitionalVelocity();
+    void  setCurrentTransitionalVelocity(double v);
 
-    yReal getAppliedForce(int index);
-    yReal getAppliedVelocity(int index);
-    void setAppliedForceAndVelocity(int index, yReal force, yReal velocity);
+    double getAppliedForce(int index);
+    double getAppliedVelocity(int index);
+    void setAppliedForceAndVelocity(int index, double force, double velocity);
 
-    yReal friction();
+    double friction();
 
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
@@ -153,20 +153,20 @@ class DataSliderActuator : public DataActuator
     string          _name;
     string          _source;
 
-    vector<yReal>   _internalValue;
-    vector<yReal>   _externalValue;
-    vector<yReal>   _desiredValue;
-    vector<yReal>   _desiredExValue;
+    vector<double>   _internalValue;
+    vector<double>   _externalValue;
+    vector<double>   _desiredValue;
+    vector<double>   _desiredExValue;
     vector<Mapping> _internalExternalMapping;
     vector<Domain>  _internalDomain;
     vector<Domain>  _externalDomain;
     Noise          *_n;
     bool            _isActive;
-    yReal           _currentTransitionalVelocity;
+    double           _currentTransitionalVelocity;
     bool            _poseInWorldCoordinates;
-    yReal           _appliedForce;
-    yReal           _appliedVelocity;
-    yReal           _friction;
+    double           _appliedForce;
+    double           _appliedVelocity;
+    double           _friction;
     pthread_mutex_t _mutex;
 
 };

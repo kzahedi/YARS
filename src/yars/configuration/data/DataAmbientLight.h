@@ -60,7 +60,7 @@ class DataAmbientLight : public DataNode
      *
      * @return brightness
      */
-    yReal brightness();
+    double brightness();
 
     DataAmbientLight *copy();
 
@@ -69,7 +69,7 @@ class DataAmbientLight : public DataNode
   private:
     P3D      _position;
     Colour    _color;
-    yReal _brightness;
+    double _brightness;
 };
 
 typedef vector<DataAmbientLight*> DataAmbientLights;

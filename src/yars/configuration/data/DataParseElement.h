@@ -121,7 +121,7 @@ class DataParseElement : public std::vector<DataParseAttribute*>
      */
     bool closing(string name);
 
-    void set(string name, yReal &value);
+    void set(string name, double &value);
     void set(string name, string &value);
     void set(string name, bool &value);
     void set(string name, int &value);

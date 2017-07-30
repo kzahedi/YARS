@@ -14,10 +14,10 @@ LoggingModuleController::LoggingModuleController(DataLoggingController *data)
 void LoggingModuleController::useVariable(string variable)
 {
   DataController *controller = _data->controller();
-  yReal real;
+  double real;
   int      integer;
   ::Matrix m;
-  std::vector<yReal> v;
+  std::vector<double> v;
   if(controller->getLoggable(variable, real) || controller->getLoggable(variable, integer))
   {
     stringstream oss;

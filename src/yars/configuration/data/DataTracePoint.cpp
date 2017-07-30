@@ -79,7 +79,7 @@ string DataTracePoint::target()
   return _target;
 }
 
-yReal DataTracePoint::pointSize()
+double DataTracePoint::pointSize()
 {
   return _pointSize;
 }

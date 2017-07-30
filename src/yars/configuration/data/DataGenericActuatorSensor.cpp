@@ -253,23 +253,23 @@ DataGenericActuatorSensor* DataGenericActuatorSensor::_copy()
   return copy;
 }
 
-yReal DataGenericActuatorSensor::internalValue(int index)
+double DataGenericActuatorSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue[index];
+  double r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericActuatorSensor::externalValue(int index)
+double DataGenericActuatorSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue[index];
+  double r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericActuatorSensor::setInternalValue(int index, yReal v)
+void DataGenericActuatorSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   // cout << "internal domain " << index << " = " << _internalDomain[index] << endl;
@@ -278,7 +278,7 @@ void DataGenericActuatorSensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericActuatorSensor::setExternalValue(int index, yReal v)
+void DataGenericActuatorSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(v);

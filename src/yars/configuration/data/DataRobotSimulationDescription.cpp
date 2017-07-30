@@ -569,19 +569,19 @@ void DataRobotSimulationDescription::__convertForces()
     {
       case DATA_ACTUATOR_HINGE:
         ha = (DataHingeActuator*)(*i);
-        ha->setForce(ha->force() * ((yReal) _simulator->simulatorFrequency()));
+        ha->setForce(ha->force() * ((double) _simulator->simulatorFrequency()));
         // cout << "Set data hinge force to " << ha->force() << endl;
         break;
       case DATA_ACTUATOR_SLIDER:
         sa = (DataSliderActuator*)(*i);
-        sa->setForce(sa->force() * ((yReal) _simulator->simulatorFrequency()));
+        sa->setForce(sa->force() * ((double) _simulator->simulatorFrequency()));
         // cout << "Set data slider force to " << ha->force() << endl;
         break;
       case DATA_ACTUATOR_UNIVERSAL:
         ga = (DataGenericActuator*)(*i);
         for(int i = 0; i < ga->dimension(); i++)
         {
-          ga->setForce(i, ga->force(i) * ((yReal) _simulator->simulatorFrequency()));
+          ga->setForce(i, ga->force(i) * ((double) _simulator->simulatorFrequency()));
           // cout << "Set data generic force to " << i << " : " << ga->force(i) << endl;
         }
         break;

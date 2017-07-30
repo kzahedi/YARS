@@ -46,7 +46,7 @@ SceneGraphProximitySensor::~SceneGraphProximitySensor()
 
 void SceneGraphProximitySensor::update()
 {
-  yReal min = MIN(_data->distance(), _data->getMeasuredDistance());
+  double min = MIN(_data->distance(), _data->getMeasuredDistance());
   for(int i = 0; i < 5; i++) __setRay(i, min);
   __updateContainers();
 }
@@ -65,7 +65,7 @@ void SceneGraphProximitySensor::__updateRayColour(int index, bool collided)
   // }
 }
 
-void SceneGraphProximitySensor::__setRay(int index, yReal length)
+void SceneGraphProximitySensor::__setRay(int index, double length)
 {
   P3D ray(0, 0, length);
   ray *= _quaternions[index];

@@ -33,8 +33,8 @@ class SelforgLogger : public Logger
     bool                _useMatrixviz;
     bool                _useGuilogger;
     string              _filename;
-    yReal               _time;
-    yReal               _dtime;
+    double               _time;
+    double               _dtime;
     int                 _matrixvizStepSize;
     int                 _guiloggerStepSize;
     int                 _frequency;

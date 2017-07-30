@@ -157,7 +157,7 @@ class DataEnvironment : public DataNode, public MacroUserInterface
     bool groundIsFixed();
 
     bool useFog();
-    yReal fogIntensity();
+    double fogIntensity();
 
     P3D normal();
     bool groundGiven();
@@ -172,7 +172,7 @@ class DataEnvironment : public DataNode, public MacroUserInterface
     static void createXsd(XsdSpecification *spec);
 
     void resetTo(DataEnvironment *other);
-    yReal gravitation(int index);
+    double gravitation(int index);
 
   protected:
     void                       __gatherGeoms();
@@ -189,11 +189,11 @@ class DataEnvironment : public DataNode, public MacroUserInterface
     P3D                              _normal;
     bool                             _fixedGround;
     bool                             _useFog;
-    yReal                            _fogIntensity;
+    double                            _fogIntensity;
     string                           _texture;
     vector<DataMeshVisualisation*>   _meshes;
     bool                             _groundGiven;
-    yReal                           *_gravitation;
+    double                           *_gravitation;
     DataAmbientLight*                _ambientLight;
 };
 

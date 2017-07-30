@@ -41,10 +41,10 @@ class DataColourFactory
         alpha[0] = value[6];
         alpha[1] = value[7];
       }
-      yReal r = ((yReal)strtol(red,   NULL, 16)) / (yReal)255;
-      yReal g = ((yReal)strtol(green, NULL, 16)) / (yReal)255;
-      yReal b = ((yReal)strtol(blue,  NULL, 16)) / (yReal)255;
-      yReal a = ((yReal)strtol(alpha, NULL, 16)) / (yReal)255;
+      double r = ((double)strtol(red,   NULL, 16)) / (double)255;
+      double g = ((double)strtol(green, NULL, 16)) / (double)255;
+      double b = ((double)strtol(blue,  NULL, 16)) / (double)255;
+      double a = ((double)strtol(alpha, NULL, 16)) / (double)255;
       color.setRed(r);
       color.setGreen(g);
       color.setBlue(b);

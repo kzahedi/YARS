@@ -276,13 +276,13 @@ void GenericSpringActuator::postPhysicsUpdate()
   {
     _angle[i] = _genericConstraint->getAngle(i);
     _data->setAngle(i, _angle[i]);
-    _data->setAngularVelocity(i, (_angle[i] - _lastAngle[i]) * (yReal)__YARS_GET_SIMULATOR_FREQUENCY);
+    _data->setAngularVelocity(i, (_angle[i] - _lastAngle[i]) * (double)__YARS_GET_SIMULATOR_FREQUENCY);
     _lastAngle[i] = _angle[i];
   }
   for(int i = 0; i < 3; i++)
   {
     _position[i] = _genericConstraint->getRelativePivotPosition(i);
-    _data->setLinearVelocity(i, (_position[i] - _lastPosition[i]) * (yReal)__YARS_GET_SIMULATOR_FREQUENCY);
+    _data->setLinearVelocity(i, (_position[i] - _lastPosition[i]) * (double)__YARS_GET_SIMULATOR_FREQUENCY);
     _data->setPosition(i, _position[i]);
     _lastPosition[i] = _position[i];
   }
@@ -313,7 +313,7 @@ btTypedConstraint* GenericSpringActuator::constraint()
 
 void GenericSpringActuator::__processAngular(int axisIndex, int index, AxisParameter)
 {
-  yReal robotValue = _data->getInternalDesiredValue(index);
+  double robotValue = _data->getInternalDesiredValue(index);
 
   // cout << robotValue << endl;
 
@@ -323,17 +323,17 @@ void GenericSpringActuator::__processAngular(int axisIndex, int index, AxisParam
     // _angle[axisIndex] = p.deflection.cut(_angle[axisIndex]);
   // }
 
-  yReal diff       = robotValue - _angle[axisIndex];
-  // yReal velocity   = p.pid.update(SIGN(diff) * _data->velocity(index));
-  yReal velocity   = SCALE(diff) * _SIGN(diff) * _data->velocity(index);
+  double diff       = robotValue - _angle[axisIndex];
+  // double velocity   = p.pid.update(SIGN(diff) * _data->velocity(index));
+  double velocity   = SCALE(diff) * _SIGN(diff) * _data->velocity(index);
 
   if(fabs(diff) < 0.01) velocity = 0.0;
 
-  yReal force = _data->force(index);
+  double force = _data->force(index);
   // cout << "Force: " << force << endl;
   // cout << _data->parameter();
 
-  yReal fc = 0.0;
+  double fc = 0.0;
   switch(axisIndex)
   {
     case 0:
@@ -368,7 +368,7 @@ void GenericSpringActuator::__processAngular(int axisIndex, int index, AxisParam
 
 void GenericSpringActuator::__processRotVelocity(int /* axisIndex */, int index, AxisParameter p)
 {
-  yReal velocity   = p.pid.update(_data->getInternalDesiredValue(index));
+  double velocity   = p.pid.update(_data->getInternalDesiredValue(index));
 
   _genericConstraint->getRotationalLimitMotor(index)->m_targetVelocity = velocity;
   _genericConstraint->getRotationalLimitMotor(index)->m_maxMotorForce  = _data->force(index);
@@ -376,9 +376,9 @@ void GenericSpringActuator::__processRotVelocity(int /* axisIndex */, int index,
 
 void GenericSpringActuator::__processRotForce(int /* axisIndex */, int index, AxisParameter p)
 {
-  yReal v        = _data->getInternalDesiredValue(index);
-  yReal force    = fabs(v) * _data->force(index);
-  yReal velocity = p.pid.update(v  * _data->velocity(index));
+  double v        = _data->getInternalDesiredValue(index);
+  double force    = fabs(v) * _data->force(index);
+  double velocity = p.pid.update(v  * _data->velocity(index));
 
   _genericConstraint->getRotationalLimitMotor(index)->m_targetVelocity = velocity;
   _genericConstraint->getRotationalLimitMotor(index)->m_maxMotorForce  = force;
@@ -386,15 +386,15 @@ void GenericSpringActuator::__processRotForce(int /* axisIndex */, int index, Ax
 
 void GenericSpringActuator::__processPositional(int axisIndex, int index, AxisParameter p)
 {
-  yReal robotValue = _data->getInternalDesiredValue(index);
+  double robotValue = _data->getInternalDesiredValue(index);
 
   if(p.isDeflectionSet)
   {
     robotValue           = p.deflection.cut(robotValue);
     _position[axisIndex] = p.deflection.cut(_position[axisIndex]);
   }
-  yReal diff       = _position[axisIndex] - robotValue;
-  yReal velocity   = p.pid.update(SIGN(diff) * _data->velocity(index));
+  double diff       = _position[axisIndex] - robotValue;
+  double velocity   = p.pid.update(SIGN(diff) * _data->velocity(index));
 
 
   _genericConstraint->getTranslationalLimitMotor()->m_maxMotorForce[axisIndex]  = _data->force(index);
@@ -403,7 +403,7 @@ void GenericSpringActuator::__processPositional(int axisIndex, int index, AxisPa
 
 void GenericSpringActuator::__processTraVelocity(int axisIndex, int index, AxisParameter p)
 {
-  yReal velocity;
+  double velocity;
   if(p.isActive)
     velocity = p.pid.update(_data->getInternalDesiredValue(index));
   else
@@ -417,9 +417,9 @@ void GenericSpringActuator::__processTraVelocity(int axisIndex, int index, AxisP
 
 void GenericSpringActuator::__processTraForce(int axisIndex, int index, AxisParameter p)
 {
-  yReal v        = _data->getInternalDesiredValue(index);
-  yReal force    = fabs(v) * _data->force(index);
-  yReal velocity = p.pid.update(v  * _data->velocity(index));
+  double v        = _data->getInternalDesiredValue(index);
+  double force    = fabs(v) * _data->force(index);
+  double velocity = p.pid.update(v  * _data->velocity(index));
   _genericConstraint->getTranslationalLimitMotor()->m_maxMotorForce[axisIndex]  = force;
   _genericConstraint->getTranslationalLimitMotor()->m_targetVelocity[axisIndex] = velocity;
 }

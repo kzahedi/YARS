@@ -23,37 +23,37 @@ class DataSoftBodyParameters : public DataNode
 
     void resetTo(const DataSoftBodyParameters *other);
 
-    yReal kVCF;
-    yReal kDP;
-    yReal kDG;
-    yReal kLF;
-    yReal kPR;
-    yReal kVC;
-    yReal kDF;
-    yReal kMT;
-    yReal kCHR;
-    yReal kKHR;
-    yReal kSHR;
-    yReal kAHR;
-    yReal kSRHR_CL;
-    yReal kSKHR_CL;
-    yReal kSSHR_CL;
-    yReal kSR_SPLT_CL;
-    yReal kSK_SPLT_CL;
-    yReal kSS_SPLT_CL;
-    yReal maxvolume;
-    yReal timescale;
-    yReal viterations;
-    yReal piterations;
-    yReal diterations;
-    yReal citerations;
+    double kVCF;
+    double kDP;
+    double kDG;
+    double kLF;
+    double kPR;
+    double kVC;
+    double kDF;
+    double kMT;
+    double kCHR;
+    double kKHR;
+    double kSHR;
+    double kAHR;
+    double kSRHR_CL;
+    double kSKHR_CL;
+    double kSSHR_CL;
+    double kSR_SPLT_CL;
+    double kSK_SPLT_CL;
+    double kSS_SPLT_CL;
+    double maxvolume;
+    double timescale;
+    double viterations;
+    double piterations;
+    double diterations;
+    double citerations;
 
-    yReal kLST;
-    yReal kAST;
-    yReal kVST;
+    double kLST;
+    double kAST;
+    double kVST;
 
-    yReal matching;
-    yReal ndamping;
+    double matching;
+    double ndamping;
 
 };
 

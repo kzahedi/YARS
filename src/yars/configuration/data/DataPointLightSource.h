@@ -60,10 +60,10 @@ class DataPointLightSource : public DataNode
      *
      * @return brightness
      */
-    yReal brightness();
+    double brightness();
 
     bool draw();
-    yReal size();
+    double size();
     string name();
 
     DataPointLightSource *copy();
@@ -73,9 +73,9 @@ class DataPointLightSource : public DataNode
   private:
     P3D    _position;
     Colour _color;
-    yReal  _brightness;
+    double  _brightness;
     bool   _draw;
-    yReal  _size;
+    double  _size;
     string _name;
 };
 

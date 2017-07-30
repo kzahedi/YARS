@@ -101,7 +101,7 @@ DataController* DataController::copy()
   return copy;
 }
 
-void DataController::addLoggable(string name, yReal *value)
+void DataController::addLoggable(string name, double *value)
 {
   _reals.insert(std::make_pair(name, value));
 }
@@ -116,15 +116,15 @@ void DataController::addLoggable(string name, ::Matrix *value)
   _matrices.insert(std::make_pair(name, value));
 }
 
-void DataController::addLoggable(string name, std::vector<yReal> *vector)
+void DataController::addLoggable(string name, std::vector<double> *vector)
 {
   _vectors.insert(std::make_pair(name, vector));
 }
 
 
-bool DataController::getLoggable(string name, yReal &real)
+bool DataController::getLoggable(string name, double &real)
 {
-  for(map<string, yReal*>::iterator i = _reals.begin(); i != _reals.end(); i++)
+  for(map<string, double*>::iterator i = _reals.begin(); i != _reals.end(); i++)
   {
     if(i->first == name)
     {
@@ -161,9 +161,9 @@ bool DataController::getLoggable(string name, ::Matrix &matrix)
   return false;
 }
 
-bool DataController::getLoggable(string name, std::vector<yReal> &vec)
+bool DataController::getLoggable(string name, std::vector<double> &vec)
 {
-  for(map<string, std::vector<yReal>* >::iterator i = _vectors.begin(); i != _vectors.end(); i++)
+  for(map<string, std::vector<double>* >::iterator i = _vectors.begin(); i != _vectors.end(); i++)
   {
     if(i->first == name)
     {

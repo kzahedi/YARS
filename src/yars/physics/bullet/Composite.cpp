@@ -15,7 +15,7 @@ Composite::Composite(DataComposite *data) : Object(data, true)
   MyCompositeMotionState *myMotionState = new MyCompositeMotionState(data, btTransform::getIdentity());
   setMotionState(myMotionState);
 
-  yReal mass = 0;
+  double mass = 0;
   btScalar *masses = new btScalar[data->g_size()];
   int index = 0;
   for(DataObjects::iterator oo = data->g_begin(); oo != data->g_end(); oo++)

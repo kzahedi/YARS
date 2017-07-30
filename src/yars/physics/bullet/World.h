@@ -25,7 +25,7 @@ class World
     static P3D rayTest(P3D start, P3D end);
 
     // proceeds one simulation step
-    void step(yReal stepSize);
+    void step(double stepSize);
     void reset();
     void addRigidBody(btRigidBody *rigidBody, unsigned int mask, unsigned int with);
     void addRigidBody(btRigidBody *rigidBody);

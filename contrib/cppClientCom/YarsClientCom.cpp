@@ -409,7 +409,7 @@ void YarsClientCom::setActuatorValue(int actuatorIndex, double value)
   _actuatorValues[actuatorIndex] = value;
 }
 
-yReal YarsClientCom::getSensorValue(int sensorIndex)
+double YarsClientCom::getSensorValue(int sensorIndex)
 {
   // if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   // {
@@ -487,10 +487,10 @@ void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueI
 
 void YarsClientCom::__sendMotorCommand() throw (YarsClientComException)
 {
-  // std::vector<yReal> values;
+  // std::vector<double> values;
   // for(std::vector<Actuator>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   // {
-    // for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     // {
       // values.push_back(*d);
     // }
@@ -509,7 +509,7 @@ void YarsClientCom::__receiveSensorData() throw (YarsClientComException)
   // int index = 0;
   // for(std::vector<Sensor>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   // {
-    // for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     // {
       // *d = values[index];
       // index++;
@@ -521,7 +521,7 @@ void YarsClientCom::configuration(string *configurationString)
 {
   stringstream oss;
   oss << "integer: " << _sizeOfInt << endl;
-  oss << "yReal:  " << _sizeOfDouble << endl;
+  oss << "double:  " << _sizeOfDouble << endl;
   oss << "Sensors: (" << _sensors.size() << ")" << endl;
   for(std::vector<Sensor>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
@@ -567,7 +567,7 @@ void YarsClientCom::data(string *dataString)
   {
     oss << "  Sensor name:       " << i->name << endl;
     oss << "    Values:  ";
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       oss << (*d) << " ";
     }
@@ -577,7 +577,7 @@ void YarsClientCom::data(string *dataString)
   {
     oss << "  Actuator name:       " << i->name << endl;
     oss << "    Values:  ";
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       oss << (*d) << " ";
     }

@@ -27,11 +27,11 @@ class DataCenterOrbitCam : public DataNode
 
     static void createXsd(XsdSpecification *spec);
 
-    yReal speed();
+    double speed();
 
   private:
 
-    yReal _speed;
+    double _speed;
 
 };
 

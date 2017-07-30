@@ -21,7 +21,7 @@ class Braitenberg3a: public RobotController
     void update();
 
   private:
-    yReal i1;
-    yReal i2;
+    double i1;
+    double i2;
     bool  osd;
 };

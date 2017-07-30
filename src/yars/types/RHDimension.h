@@ -16,7 +16,7 @@
  p.height;
  p.radius; \endverbatim
  *
- * P3D is pre-defined to __RHDimension<yReal>
+ * P3D is pre-defined to __RHDimension<double>
  *
  * \todo Unit test
  */
@@ -290,12 +290,12 @@ class __RHDimension
 
     void normalise()
     {
-      yReal l = sqrt(height * height + radius * radius);
+      double l = sqrt(height * height + radius * radius);
       height /= l;
       radius /= l;
     }
 
-    yReal length()
+    double length()
     {
       return sqrt(height * height + radius * radius);
     }
@@ -310,7 +310,7 @@ class __RHDimension
      * Gives the values as an input to an ostream:
      *
      \verbatim
-     __RHDimension<yReal> p;
+     __RHDimension<double> p;
      cout << p << endl; \endverbatim
      * which gives
      \verbatim
@@ -332,8 +332,8 @@ class __RHDimension
 
 };
 
-/** Pre-defined standard __RHDimension class with yReal values */
-typedef __RHDimension<yReal> RHDimension;
+/** Pre-defined standard __RHDimension class with double values */
+typedef __RHDimension<double> RHDimension;
 
 #endif // __RADIUS_HEIGHT_DIMENSION_H__
 

@@ -84,12 +84,12 @@ class DataSimulator : public DataNode
      */
     int autoReset();
 
-    yReal stepSize();
+    double stepSize();
 
     int count();
 
     void setSimulatorFrequency(int frequency);
-    void setStepSize(yReal stepSize);
+    void setStepSize(double stepSize);
     bool useRandomSeed();
     void setRandomSeed(int seed);
     int  getRandomSeed();
@@ -124,7 +124,7 @@ class DataSimulator : public DataNode
     int      _solverIterations;
     bool     _useRandomSeed;
 
-    yReal _stepSize;
+    double _stepSize;
 
 };
 

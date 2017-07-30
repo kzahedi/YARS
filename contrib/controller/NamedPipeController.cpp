@@ -37,7 +37,7 @@ void NamedPipeController::update()
         if(debug)
         {
           cout << "values: ";
-          for(vector<yReal>::iterator i = motors.begin(); i != motors.end(); i++)
+          for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -49,7 +49,7 @@ void NamedPipeController::update()
         if(debug)
         {
           cout << "sending sensors: ";
-          for(vector<yReal>::iterator i = sensors.begin(); i != sensors.end(); i++)
+          for(vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -132,12 +132,12 @@ void NamedPipeController::__configuration()
   oss << "INTEGER " << sizeof(int) << " bytes, little endian";
   string s_integer = oss.str();
   oss.str("");
-  oss << "DOUBLE " << sizeof(yReal) << " bytes, little endian";
-  string s_yReal = oss.str();
+  oss << "DOUBLE " << sizeof(double) << " bytes, little endian";
+  string s_double = oss.str();
   pipe << "BEGIN CONFIGURATION";
   pipe << "BEGIN DATA TYPES";
   pipe << s_integer;
-  pipe << s_yReal;
+  pipe << s_double;
   pipe << "END DATA TYPES";
   pipe << "BEGIN ROBOT DATA";
   oss.str("");

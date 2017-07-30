@@ -49,7 +49,7 @@ void TCPIP::update()
         if(debug)
         {
           cout << "values: ";
-          for(vector<yReal>::iterator i = motors.begin(); i != motors.end(); i++)
+          for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -61,7 +61,7 @@ void TCPIP::update()
         if(debug)
         {
           cout << "sending sensors: ";
-          for(vector<yReal>::iterator i = sensors.begin(); i != sensors.end(); i++)
+          for(vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -106,7 +106,8 @@ void TCPIP::update()
 
 }
 
-void TCPIP::init(){
+void TCPIP::init()
+{
   parameter.set("port",  port,  4500);
   parameter.set("debug", debug, false);
   parameter.set("log",   log,   false);
@@ -169,12 +170,12 @@ void TCPIP::__configuration()
   oss << "INTEGER " << sizeof(int) << " bytes, little endian";
   string s_integer = oss.str();
   oss.str("");
-  oss << "DOUBLE " << sizeof(yReal) << " bytes, little endian";
-  string s_yReal = oss.str();
+  oss << "DOUBLE " << sizeof(double) << " bytes, little endian";
+  string s_double = oss.str();
   socket << "BEGIN CONFIGURATION";
   socket << "BEGIN DATA TYPES";
   socket << s_integer;
-  socket << s_yReal;
+  socket << s_double;
   socket << "END DATA TYPES";
   socket << "BEGIN ROBOT DATA";
   oss.str("");

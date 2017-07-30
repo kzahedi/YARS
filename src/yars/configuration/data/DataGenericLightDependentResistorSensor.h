@@ -59,7 +59,7 @@ class DataGenericLightDependentResistorSensor : public DataSensor
      * @return opening angles
      * @sa P2D
      */
-    yReal opening();
+    double opening();
 
     /**
      * @brief Returns the domain of the sensor, i.e. which light values can be
@@ -75,10 +75,10 @@ class DataGenericLightDependentResistorSensor : public DataSensor
 
     int dimension() { return 1; } // not implemented yet
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
 
@@ -87,11 +87,11 @@ class DataGenericLightDependentResistorSensor : public DataSensor
   private:
     void __setMapping();
     Pose            _pose;
-    yReal           _openingAngle;
+    double           _openingAngle;
     Colour          _colour;
 
-    yReal           _internalValue;
-    yReal           _externalValue;
+    double           _internalValue;
+    double           _externalValue;
     Mapping         _internalExternalMapping;
     Domain          _internalDomain;
     Domain          _externalDomain;

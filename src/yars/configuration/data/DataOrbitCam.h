@@ -36,7 +36,7 @@ class DataOrbitCam : public DataNode
     PID fromY();
     PID fromZ();
 
-    yReal speed();
+    double speed();
 
   private:
 
@@ -49,7 +49,7 @@ class DataOrbitCam : public DataNode
     PID _fromY;
     PID _fromZ;
 
-    yReal _speed;
+    double _speed;
 
 };
 

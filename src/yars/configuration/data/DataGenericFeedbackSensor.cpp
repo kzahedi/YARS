@@ -75,23 +75,23 @@ DataGenericFeedbackSensor*  DataGenericFeedbackSensor::_copy()
   return copy;
 }
 
-yReal DataGenericFeedbackSensor::internalValue(int index)
+double DataGenericFeedbackSensor::internalValue(int index)
 {
   return _internalValue;
 }
 
-yReal DataGenericFeedbackSensor::externalValue(int index)
+double DataGenericFeedbackSensor::externalValue(int index)
 {
   return _externalValue;
 }
 
-void DataGenericFeedbackSensor::setInternalValue(int index, yReal v)
+void DataGenericFeedbackSensor::setInternalValue(int index, double v)
 {
   _internalValue = _internalDomain.cut(v);
   _externalValue = _internalExternalMapping.map(_internalValue);
 }
 
-void DataGenericFeedbackSensor::setExternalValue(int index, yReal v)
+void DataGenericFeedbackSensor::setExternalValue(int index, double v)
 {
   _externalValue = _externalDomain.cut(v);
   _internalValue = _internalExternalMapping.invMap(_externalValue);

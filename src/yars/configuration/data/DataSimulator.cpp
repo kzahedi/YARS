@@ -79,7 +79,7 @@ void DataSimulator::add(DataParseElement *element)
   {
 
     if(_simulatorFrequency == 0) _simulatorFrequency = DEFAULT_SIMULATION_FREQUENCY;
-    _stepSize = 1.0 / ((yReal) _simulatorFrequency);
+    _stepSize = 1.0 / ((double) _simulatorFrequency);
 
     current = parent;
   }
@@ -118,7 +118,7 @@ void DataSimulator::createXsd(XsdSpecification *spec)
   spec->add(controlCount);
 }
 
-yReal DataSimulator::stepSize()
+double DataSimulator::stepSize()
 {
   return _stepSize;
 }
@@ -128,7 +128,7 @@ void DataSimulator::setSimulatorFrequency(int frequency)
   _simulatorFrequency = frequency;
 }
 
-void DataSimulator::setStepSize(yReal stepSize)
+void DataSimulator::setStepSize(double stepSize)
 {
   _stepSize = stepSize;
 }

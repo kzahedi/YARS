@@ -44,7 +44,7 @@ class DataSphere : public DataObject
      *
      * @return radius
      */
-    yReal radius();
+    double radius();
 
     /**
      * @brief Adds DataParseElement to this element. Used during parsing.
@@ -58,14 +58,14 @@ class DataSphere : public DataObject
     void _resetTo(const DataObject* other);
 
     static void createXsd(XsdSpecification *spec);
-    void setRadius(yReal radius);
+    void setRadius(double radius);
 
     string texture();
     void setTexture(string texture);
 
 
   private:
-    yReal _radius;
+    double _radius;
     string   _texture;
 };
 

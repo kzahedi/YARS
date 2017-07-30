@@ -5,7 +5,7 @@ NoNoise::NoNoise(DataNoise *data)
   : Noise(data)
 { }
 
-yReal NoNoise::calculate(yReal in)
+double NoNoise::calculate(double in)
 {
   return in;
 }

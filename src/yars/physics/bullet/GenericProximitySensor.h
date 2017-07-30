@@ -33,7 +33,7 @@ class GenericProximitySensor : public Sensor
   private:
 
    void __createRays();
-   void __getEndP3D(P3D &p, P3D direction, yReal length);
+   void __getEndP3D(P3D &p, P3D direction, double length);
 
    DataGenericProximitySensor *_data;
    Pose                       *_rayPose;

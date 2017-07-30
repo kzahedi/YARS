@@ -43,36 +43,36 @@ class Colour
      *
      * Values are in the unit interval.
      *
-     * \param[out] red, yReal
+     * \param[out] red, double
      */
-    yReal red();
+    double red();
     /** \brief Returns the green-value.
      *
      * Values are in the unit interval.
      *
-     * \param[out] green, yReal
+     * \param[out] green, double
      */
-    yReal green();
+    double green();
     /** \brief Returns the blue-value.
      *
      * Values are in the unit interval.
      *
-     * \param[out] blue, yReal
+     * \param[out] blue, double
      */
-    yReal blue();
+    double blue();
     /** \brief Returns the alpha-value.
      *
      * Values are in the unit interval.
      *
-     * \param[out] yReal alpha
+     * \param[out] double alpha
      */
-    yReal alpha();
+    double alpha();
 
     /** \brief Sets the red-value.
      *
      * Value has to be in the unit interval.
      *
-     * \param[out] red, yReal
+     * \param[out] red, double
      */
     void setRed(double red);
     void setRed(float red);
@@ -80,7 +80,7 @@ class Colour
      *
      * Value has to be in the unit interval.
      *
-     * \param[in] green, yReal
+     * \param[in] green, double
      * \exception YarsException with detailed message about the cause.
      */
     void setGreen(double green);
@@ -89,7 +89,7 @@ class Colour
      *
      * Value has to be in the unit interval.
      *
-     * \param[in] blue, yReal
+     * \param[in] blue, double
      */
     void setBlue(double blue);
     void setBlue(float blue);
@@ -97,7 +97,7 @@ class Colour
      *
      * Value has to be in the unit interval.
      *
-     * \param[in] alpha, yReal
+     * \param[in] alpha, double
      * \exception YarsException with detailed message about the cause.
      */
     void setAlpha(double alpha);
@@ -151,17 +151,17 @@ class Colour
     };
 
   private:
-    void __init(yReal red, yReal green, yReal blue, yReal alpha);
-    void __check(std::string name, yReal value);
-    void __setRed(yReal red);
-    void __setGreen(yReal green);
-    void __setBlue(yReal blue);
-    void __setAlpha(yReal alpha);
+    void __init(double red, double green, double blue, double alpha);
+    void __check(std::string name, double value);
+    void __setRed(double red);
+    void __setGreen(double green);
+    void __setBlue(double blue);
+    void __setAlpha(double alpha);
 
-    yReal _red;
-    yReal _green;
-    yReal _blue;
-    yReal _alpha;
+    double _red;
+    double _green;
+    double _blue;
+    double _alpha;
 #ifdef USE_THREAD_SAFE
     pthread_mutex_t _colorMutex;
 #endif // USE_THREAD_SAFE

@@ -154,32 +154,32 @@ DataPhysicsParameter* DataPhysicsParameter::copy()
 }
 
 
-yReal DataPhysicsParameter::linearDamping()
+double DataPhysicsParameter::linearDamping()
 {
   return _linearDamping;
 }
 
-yReal DataPhysicsParameter::mass()
+double DataPhysicsParameter::mass()
 {
   return _mass;
 }
 
-yReal DataPhysicsParameter::angularDamping()
+double DataPhysicsParameter::angularDamping()
 {
   return _angularDamping;
 }
 
-yReal DataPhysicsParameter::friction()
+double DataPhysicsParameter::friction()
 {
   return _friction;
 }
 
-yReal DataPhysicsParameter::rollingFriction()
+double DataPhysicsParameter::rollingFriction()
 {
   return _rollingFriction;
 }
 
-yReal DataPhysicsParameter::restitution()
+double DataPhysicsParameter::restitution()
 {
   return _restitution;
 }
@@ -215,7 +215,7 @@ bool DataPhysicsParameter::useRestitution()
 }
 
 
-void DataPhysicsParameter::setMass(yReal mass)
+void DataPhysicsParameter::setMass(double mass)
 {
   _mass = mass;
 }

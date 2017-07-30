@@ -21,13 +21,13 @@ class DataTraceLine : public DataTrace, public DataNode
     DataTraceLine(DataNode *parent);
 
     string target();
-    yReal  lineWidth();
+    double  lineWidth();
     void   add(DataParseElement *element);
 
     Colour finalColour();
-    yReal  finalWidth();
-    yReal  length();
-    yReal  time();
+    double  finalWidth();
+    double  length();
+    double  time();
     string texture();
     string particles();
     string billboard();
@@ -46,10 +46,10 @@ class DataTraceLine : public DataTrace, public DataNode
 
   private:
     string _target;
-    yReal  _lineWidth;
-    yReal  _finalWidth;
-    yReal  _length;
-    yReal  _time;
+    double  _lineWidth;
+    double  _finalWidth;
+    double  _length;
+    double  _time;
     string _texture;
     string _particles;
     string _billboard;

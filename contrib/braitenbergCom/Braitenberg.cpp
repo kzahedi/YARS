@@ -13,16 +13,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-  yReal l1 = 0;
-  yReal l2 = 0;
-  yReal l3 = 0;
-  yReal r1 = 0;
-  yReal r2 = 0;
-  yReal r3 = 0;
-  yReal leftOutput = 0;
-  yReal rightOutput = 0;
-  yReal leftInput = 0;
-  yReal rightInput = 0;
+  double l1 = 0;
+  double l2 = 0;
+  double l3 = 0;
+  double r1 = 0;
+  double r2 = 0;
+  double r3 = 0;
+  double leftOutput = 0;
+  double rightOutput = 0;
+  double leftInput = 0;
+  double rightInput = 0;
   std::cout << "starting client" << std::endl;
   YarsClientCom *com = new YarsClientCom();
 

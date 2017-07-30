@@ -70,23 +70,23 @@ DataSharpGP2D12_37Sensor* DataSharpGP2D12_37Sensor::_copy()
   return copy;
 }
 
-yReal DataSharpGP2D12_37Sensor::internalValue(int index)
+double DataSharpGP2D12_37Sensor::internalValue(int index)
 {
   return _internalValue;
 }
 
-yReal DataSharpGP2D12_37Sensor::externalValue(int index)
+double DataSharpGP2D12_37Sensor::externalValue(int index)
 {
   return _externalValue;
 }
 
-void DataSharpGP2D12_37Sensor::setInternalValue(int index, yReal v)
+void DataSharpGP2D12_37Sensor::setInternalValue(int index, double v)
 {
   _internalValue = _internalDomain.cut(v);
   _externalValue = _internalExternalMapping.map(_internalValue);
 }
 
-void DataSharpGP2D12_37Sensor::setExternalValue(int index, yReal v)
+void DataSharpGP2D12_37Sensor::setExternalValue(int index, double v)
 {
   _externalValue = _externalDomain.cut(v);
   _internalValue = _internalExternalMapping.invMap(_externalValue);

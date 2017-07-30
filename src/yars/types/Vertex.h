@@ -8,14 +8,14 @@
 class Vertex 
 {
   public:
-    yReal x;
-    yReal y;
-    yReal z;
-    yReal nx;
-    yReal ny;
-    yReal nz;
-    yReal s;
-    yReal t;
+    double x;
+    double y;
+    double z;
+    double nx;
+    double ny;
+    double nz;
+    double s;
+    double t;
     bool  stGiven;
 
     Vertex();

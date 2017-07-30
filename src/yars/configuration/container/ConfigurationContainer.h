@@ -106,8 +106,8 @@ class ConfigurationContainer
     void          setCurrentTimeStep(unsigned long currentTimeStep);
     unsigned long getContinousTimeStep();
     void          setContinousTimeStep(unsigned long currentTimeStep);
-    yReal         getCurrentRealTime();
-    void          setCurrentRealTime(yReal currentRealTime);
+    double         getCurrentRealTime();
+    void          setCurrentRealTime(double currentRealTime);
     bool          getUsePause();
     void          setUsePause(bool usePause);
     bool          getUseOsd();
@@ -199,8 +199,8 @@ class ConfigurationContainer
     void          setSkyColour(Colour  skyColour);
     void          getSkyColour(Colour *skyColour);
 
-    yReal         getRealTimeFactor();
-    void          setRealTimeFactor(yReal realtimeFactor);
+    double         getRealTimeFactor();
+    void          setRealTimeFactor(double realtimeFactor);
 
     int           getDefaultControllerFrequency();
     void          setDefaultControllerFrequency(int defaultControllerFrequency);
@@ -256,7 +256,7 @@ class ConfigurationContainer
     bool                      _usePrintKeyboardShortcuts;
     bool                      _useCR;
     bool                      _silent;
-    yReal                     _currentRealTime;
+    double                     _currentRealTime;
     int                       _captureFrameRate;
     int                       _followMode;
     int                       _reset;
@@ -277,7 +277,7 @@ class ConfigurationContainer
     bool                      _paused;
     Colour                    _groundColour;
     Colour                    _skyColour;
-    yReal                     _realtimeFactor;
+    double                     _realtimeFactor;
     int                       _defaultSimulatorFrequency;
     int                       _defaultControllerFrequency;
     string                    _videoCodec;

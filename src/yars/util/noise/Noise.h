@@ -10,7 +10,7 @@ class Noise
     Noise(DataNoise *data) { _data = data; }
     virtual ~Noise() { };
 
-    virtual yReal calculate(yReal in) = 0;
+    virtual double calculate(double in) = 0;
 
   protected:
     DataNoise *_data;

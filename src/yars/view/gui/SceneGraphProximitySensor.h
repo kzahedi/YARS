@@ -25,7 +25,7 @@ class SceneGraphProximitySensor : public SceneGraphObjectNode
     void __body();
     void __rays();
 
-    void __setRay(int index, yReal length);
+    void __setRay(int index, double length);
     void __updateContainers();
     void __updateRayColour(int index, bool collided);
 

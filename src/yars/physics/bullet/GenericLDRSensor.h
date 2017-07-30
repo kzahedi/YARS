@@ -22,7 +22,7 @@ class GenericLDRSensor : public Sensor
     DataEnvironment*  _env;
     DataAmbientLight* _ambientLight;
     Pose              _pose;
-    yReal             _z;
+    double             _z;
 };
 #endif // __GENERIC_LDR_SENSOR_H__
 

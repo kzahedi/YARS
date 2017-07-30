@@ -10,7 +10,7 @@
  * - recursive calculation on / off
  * - iterations after wich full calculation is redone (0 means never)
  */
-MovingAverage::MovingAverage(int numberOfPoints, yReal initialValue,
+MovingAverage::MovingAverage(int numberOfPoints, double initialValue,
     bool recursive, unsigned int itersBeforeFullRecalc)
 {
   numPoints_     = numberOfPoints;
@@ -33,7 +33,7 @@ MovingAverage::~MovingAverage()
 {
 }
 
-yReal MovingAverage::getFilteredOutput(yReal unfilteredInput)
+double MovingAverage::getFilteredOutput(double unfilteredInput)
 {
   if(!recursive_ || iters_ >= maxIters_)
   {
@@ -64,7 +64,7 @@ yReal MovingAverage::getFilteredOutput(yReal unfilteredInput)
   return (accumulator_ / numPoints_);
 }
 
-void MovingAverage::reset(yReal resetValue)
+void MovingAverage::reset(double resetValue)
 {
   for(unsigned int i=0; i < points_.size(); i++)
   {

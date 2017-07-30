@@ -27,7 +27,7 @@ void Random::initialise()
 
 }
 
-yReal Random::unit()
+double Random::unit()
 {
   return drand48();
 }

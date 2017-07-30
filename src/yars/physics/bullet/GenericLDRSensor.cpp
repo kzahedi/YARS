@@ -35,23 +35,23 @@ void GenericLDRSensor::postPhysicsUpdate()
   z *= r;
   z.normalise();
 
-  yReal red   = 0.0;
-  yReal green = 0.0;
-  yReal blue  = 0.0;
+  double red   = 0.0;
+  double green = 0.0;
+  double blue  = 0.0;
 
   P3D o = _targetObject->data()->pose().position + _pose.position;
 
   for(DataPointLightSources::iterator l = _env->l_begin(); l != _env->l_end(); l++)
   {
-    yReal dist     = o.dist((*l)->position());
+    double dist     = o.dist((*l)->position());
 
     P3D hit        = World::rayTest(o, (*l)->position());
-    yReal hit_dist = hit.dist(o);
+    double hit_dist = hit.dist(o);
 
     P3D d = (*l)->position() - o;
     d.normalise();
 
-    yReal angle = acos(d.x * z.x + d.y * z.y + d.z * z.z);
+    double angle = acos(d.x * z.x + d.y * z.y + d.z * z.z);
 
     if(fabs(dist - hit_dist) < 0.00001 && fabs(angle) < _data->opening())
     {
@@ -61,7 +61,7 @@ void GenericLDRSensor::postPhysicsUpdate()
     }
   }
 
-  yReal value =
+  double value =
     (MIN(red,   _data->colour().red())   +
      MIN(green, _data->colour().green()) +
      MIN(blue,  _data->colour().blue())) / _z;

@@ -14,9 +14,9 @@ class DataPIDFactory
   public:
     static void set(PID &pid, DataParseElement *element)
     {
-      yReal p = pid.p();
-      yReal i = pid.i();
-      yReal d = pid.d();
+      double p = pid.p();
+      double i = pid.i();
+      double d = pid.d();
       int size = pid.size();
 
       element->set(YARS_STRING_P, p);

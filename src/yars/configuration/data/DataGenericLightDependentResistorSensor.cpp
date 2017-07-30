@@ -93,7 +93,7 @@ Pose DataGenericLightDependentResistorSensor::pose()
   return _pose;
 }
 
-yReal DataGenericLightDependentResistorSensor::opening()
+double DataGenericLightDependentResistorSensor::opening()
 {
   return _openingAngle;
 }
@@ -157,23 +157,23 @@ void DataGenericLightDependentResistorSensor::_resetTo(const DataSensor *sensor)
   _colour        = other->colour();
 }
 
-yReal DataGenericLightDependentResistorSensor::internalValue(int index)
+double DataGenericLightDependentResistorSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericLightDependentResistorSensor::externalValue(int index)
+double DataGenericLightDependentResistorSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericLightDependentResistorSensor::setInternalValue(int index, yReal v)
+void DataGenericLightDependentResistorSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -181,7 +181,7 @@ void DataGenericLightDependentResistorSensor::setInternalValue(int index, yReal 
   YM_UNLOCK;
 }
 
-void DataGenericLightDependentResistorSensor::setExternalValue(int index, yReal v)
+void DataGenericLightDependentResistorSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(v);

@@ -53,9 +53,9 @@ void SceneGraphSphereNode::update()
 
 void SceneGraphSphereNode::__topCap()
 {
-  yReal z     = 0;
-  yReal delta = 2.0 * M_PI / (yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal r     = _data->radius();
+  double z     = 0;
+  double delta = 2.0 * M_PI / (double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double r     = _data->radius();
   for(int i = 1; i <= DEFAULT_CAPPED_CYLINDER_QUALITY / 2; i++)
   {
     stringstream oss;
@@ -65,22 +65,22 @@ void SceneGraphSphereNode::__topCap()
     _manual->begin(oss.str().c_str(), Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     for(int j = 0; j <= DEFAULT_CAPPED_CYLINDER_QUALITY; j++)
     {
-      yReal sj = sin(delta * j);
-      yReal cj = cos(delta * j);
-      yReal c1 = cos(delta * 0.5 * (i-1));
-      yReal c2 = cos(delta * 0.5 * i);
+      double sj = sin(delta * j);
+      double cj = cos(delta * j);
+      double c1 = cos(delta * 0.5 * (i-1));
+      double c2 = cos(delta * 0.5 * i);
 
-      yReal x1 = sj * c1;
-      yReal y1 = cj * c1;
-      yReal z1 = sin(delta * 0.5 * (i-1));
-      yReal u1 = sj * c1 * 0.5 + 0.5;
-      yReal v1 = cj * c1 * 0.5 + 0.5;
+      double x1 = sj * c1;
+      double y1 = cj * c1;
+      double z1 = sin(delta * 0.5 * (i-1));
+      double u1 = sj * c1 * 0.5 + 0.5;
+      double v1 = cj * c1 * 0.5 + 0.5;
 
-      yReal x2 = sj * c2;
-      yReal y2 = cj * c2;
-      yReal z2 = sin(delta * 0.5 * i);
-      yReal u2 = sj * c2 * 0.5 + 0.5;
-      yReal v2 = cj * c2 * 0.5 + 0.5;
+      double x2 = sj * c2;
+      double y2 = cj * c2;
+      double z2 = sin(delta * 0.5 * i);
+      double u2 = sj * c2 * 0.5 + 0.5;
+      double v2 = cj * c2 * 0.5 + 0.5;
 
       _manual->position(x1*r,y1*r,z + z1 * r);
       _manual->normal(x1,y1,z1);
@@ -103,9 +103,9 @@ void SceneGraphSphereNode::__topCap()
 
 void SceneGraphSphereNode::__bottomCap()
 {
-  yReal z     = 0;
-  yReal delta = 2.0 * M_PI / (yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal r     = _data->radius();
+  double z     = 0;
+  double delta = 2.0 * M_PI / (double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double r     = _data->radius();
   for(int i = 1; i <= DEFAULT_CAPPED_CYLINDER_QUALITY / 2; i++)
   {
     stringstream oss;
@@ -115,22 +115,22 @@ void SceneGraphSphereNode::__bottomCap()
     _manual->begin(oss.str().c_str(), Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     for(int j = 0; j <= DEFAULT_CAPPED_CYLINDER_QUALITY; j++)
     {
-      yReal sj = sin(delta * j);
-      yReal cj = cos(delta * j);
-      yReal c1 = cos(delta * 0.5 * (i-1));
-      yReal c2 = cos(delta * 0.5 * i);
+      double sj = sin(delta * j);
+      double cj = cos(delta * j);
+      double c1 = cos(delta * 0.5 * (i-1));
+      double c2 = cos(delta * 0.5 * i);
 
-      yReal x1 = sj * c1;
-      yReal y1 = cj * c1;
-      yReal z1 = - sin(delta * 0.5 * (i-1));
-      yReal u1 = sj * c1 * 0.5 + 0.5;
-      yReal v1 = cj * c1 * 0.5 + 0.5;
+      double x1 = sj * c1;
+      double y1 = cj * c1;
+      double z1 = - sin(delta * 0.5 * (i-1));
+      double u1 = sj * c1 * 0.5 + 0.5;
+      double v1 = cj * c1 * 0.5 + 0.5;
 
-      yReal x2 = sj * c2;
-      yReal y2 = cj * c2;
-      yReal z2 = - sin(delta * 0.5 * i);
-      yReal u2 = sj * c2 * 0.5 + 0.5;
-      yReal v2 = cj * c2 * 0.5 + 0.5;
+      double x2 = sj * c2;
+      double y2 = cj * c2;
+      double z2 = - sin(delta * 0.5 * i);
+      double u2 = sj * c2 * 0.5 + 0.5;
+      double v2 = cj * c2 * 0.5 + 0.5;
 
       _manual->position(x2*r,y2*r,z + z2 * r);
       _manual->normal(x2,y2,z2);

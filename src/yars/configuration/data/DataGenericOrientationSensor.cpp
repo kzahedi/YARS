@@ -42,7 +42,7 @@ void DataGenericOrientationSensor::add(DataParseElement *element)
 {
   if(element->closing(YARS_STRING_GENERIC_ORIENTATION_SENSOR))
   {
-    _value  = new yReal[_dimension];
+    _value  = new double[_dimension];
     current = parent;
   }
   if(element->opening(YARS_STRING_GENERIC_ORIENTATION_SENSOR))
@@ -167,34 +167,34 @@ DataGenericOrientationSensor* DataGenericOrientationSensor::_copy()
   copy->_z = _z;
   copy->_dimension = _dimension;
   copy->_useDegree = _useDegree;
-  copy->_value = new yReal[_dimension];
+  copy->_value = new double[_dimension];
   return copy;
 }
 
-yReal DataGenericOrientationSensor::internalValue(int index)
+double DataGenericOrientationSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericOrientationSensor::externalValue(int index)
+double DataGenericOrientationSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericOrientationSensor::setInternalValue(int index, yReal v)
+void DataGenericOrientationSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;
   YM_UNLOCK;
 }
 
-void DataGenericOrientationSensor::setExternalValue(int index, yReal v)
+void DataGenericOrientationSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;

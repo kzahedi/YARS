@@ -261,7 +261,7 @@ void YarsNamedPipeCom::getSensorName(int index, string *name) throw (YarsNamedPi
   *name = _sensors[index].name;
 }
 
-void YarsNamedPipeCom::setJointValue(yReal value, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
@@ -283,7 +283,7 @@ void YarsNamedPipeCom::setJointValue(yReal value, int jointIndex, int valueIndex
   _joints[jointIndex].value[valueIndex] = value;
 }
 
-void YarsNamedPipeCom::getSensorValue(yReal *value, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
@@ -360,10 +360,10 @@ void YarsNamedPipeCom::getSensorMappedDomain(Domain *d, int sensorIndex, int val
 void YarsNamedPipeCom::__sendMotorCommand()
 {
   _namedPipe << "ACTUATORS";
-  std::vector<yReal> values;
+  std::vector<double> values;
   for(std::vector<Joint>::iterator i = _joints.begin(); i != _joints.end(); i++)
   {
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       values.push_back(*d);
     }
@@ -373,13 +373,13 @@ void YarsNamedPipeCom::__sendMotorCommand()
 
 void YarsNamedPipeCom::__receiveSensorData()
 {
-  std::vector<yReal> values;
+  std::vector<double> values;
   _namedPipe << "SENSORS";
   _namedPipe >> values;
   int index = 0;
   for(std::vector<Sensor>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       *d = values[index];
       index++;
@@ -391,7 +391,7 @@ void YarsNamedPipeCom::configuration(string *configurationString)
 {
   stringstream oss;
   oss << "integer: " << _sizeOfInt << endl;
-  oss << "yReal:  " << _sizeOfDouble << endl;
+  oss << "double:  " << _sizeOfDouble << endl;
   oss << "Sensors:   " << endl;
   for(std::vector<Sensor>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
@@ -435,7 +435,7 @@ void YarsNamedPipeCom::data(string *dataString)
   {
     oss << "  Sensor name:       " << i->name << endl;
     oss << "    Values:  ";
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       oss << (*d) << " ";
     }
@@ -445,7 +445,7 @@ void YarsNamedPipeCom::data(string *dataString)
   {
     oss << "  Joint name:       " << i->name << endl;
     oss << "    Values:  ";
-    for(std::vector<yReal>::iterator d = i->value.begin(); d != i->value.end(); d++)
+    for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
     {
       oss << (*d) << " ";
     }

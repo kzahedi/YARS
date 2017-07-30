@@ -21,7 +21,7 @@ class DataTracePoint : public DataTrace, public DataNode
     DataTracePoint(DataNode *parent);
 
     string   target();
-    yReal pointSize();
+    double pointSize();
     void add(DataParseElement *element);
 
     static void createXsd(XsdSpecification *spec);
@@ -30,7 +30,7 @@ class DataTracePoint : public DataTrace, public DataNode
 
   private:
     string   _target;
-    yReal _pointSize;
+    double _pointSize;
 };
 
 #endif // __DATA_TRACE_POINT_H__

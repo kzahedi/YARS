@@ -48,10 +48,10 @@ class DataGenericPositionSensor : public DataSensor
 
     DataGenericPositionSensor *_copy();
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index) { return Domain(__Y_REAL_MIN, __Y_REAL_MAX); };
     Domain getExternalDomain(int index) { return Domain(__Y_REAL_MIN, __Y_REAL_MAX); };
 
@@ -63,7 +63,7 @@ class DataGenericPositionSensor : public DataSensor
     bool      _z;
     int       _dimension;
 
-    yReal* _value;
+    double* _value;
     pthread_mutex_t _mutex;
 };
 

@@ -38,18 +38,18 @@ World::World()
 #ifdef USE_SOFT_BODIES
   _softBodySolver         = new btDefaultSoftBodySolver();
   _world                  = new btSoftRigidDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration, _softBodySolver);
-  yReal x = Data::instance()->current()->environment()->gravitation(0);
-  yReal y = Data::instance()->current()->environment()->gravitation(1);
-  yReal z = Data::instance()->current()->environment()->gravitation(2);
+  double x = Data::instance()->current()->environment()->gravitation(0);
+  double y = Data::instance()->current()->environment()->gravitation(1);
+  double z = Data::instance()->current()->environment()->gravitation(2);
   _world->setGravity(btVector3(x, y, z));
   _world->getWorldInfo().m_gravity.setValue(x, y, z);
 
   _world->getSolverInfo().m_numIterations = Data::instance()->current()->simulator()->getSolverIterations();
 #else // USE_SOFT_BODIES
   _world                  = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
-  yReal x = Data::instance()->current()->environment()->gravitation(0);
-  yReal y = Data::instance()->current()->environment()->gravitation(1);
-  yReal z = Data::instance()->current()->environment()->gravitation(2);
+  double x = Data::instance()->current()->environment()->gravitation(0);
+  double y = Data::instance()->current()->environment()->gravitation(1);
+  double z = Data::instance()->current()->environment()->gravitation(2);
 
   _world->setGravity(btVector3(x, y, z));
   _world->getSolverInfo().m_numIterations = Data::instance()->current()->simulator()->getSolverIterations();
@@ -74,7 +74,7 @@ void World::reset()
   _broadphase->resetPool(_dispatcher);
 }
 
-void World::step(yReal stepSize)
+void World::step(double stepSize)
 {
   _world->stepSimulation(__YARS_GET_STEP_SIZE, 10, __YARS_GET_STEP_SIZE);
 }

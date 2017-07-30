@@ -8,7 +8,7 @@
 Pose::Pose()
 { }
 
-Pose::Pose(yReal x, yReal y, yReal z, yReal ox, yReal oy, yReal oz)
+Pose::Pose(double x, double y, double z, double ox, double oy, double oz)
 {
   position.x    = x;
   position.y    = y;
@@ -19,7 +19,7 @@ Pose::Pose(yReal x, yReal y, yReal z, yReal ox, yReal oy, yReal oz)
   q << orientation;
 }
 
-Pose::Pose(yReal x, yReal y, yReal z, yReal qx, yReal qy, yReal qz, yReal qw)
+Pose::Pose(double x, double y, double z, double qx, double qy, double qz, double qw)
 {
   position.x = x;
   position.y = y;

@@ -10,11 +10,11 @@ class Mapping
 
     void setInputDomain(Domain in);
     void setOutputDomain(Domain out);
-    void setInputDomain(yReal  min, yReal max);
-    void setOutputDomain(yReal min, yReal max);
+    void setInputDomain(double  min, double max);
+    void setOutputDomain(double min, double max);
 
-    yReal map(yReal value);
-    yReal invMap(yReal value);
+    double map(double value);
+    double invMap(double value);
 
   private:
     Domain _in;
