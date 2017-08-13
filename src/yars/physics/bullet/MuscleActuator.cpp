@@ -4,6 +4,8 @@
 #include "yars/physics/bullet/Actuator.h"
 #include "yars/physics/bullet/Robot.h"
 
+using namespace std;
+
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
     _data{data}
@@ -16,8 +18,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _sliderConstraint->setUpperAngLimit(0.0);
   _sliderConstraint->setPoweredAngMotor(false);
 
-  for(int i = 0; i < 6; i++)
-  {
+  for(int i = 0; i < 6; i++) {
     _sliderConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
     _sliderConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
   }
@@ -52,6 +53,7 @@ MuscleActuator::~MuscleActuator()
 btSliderConstraint* MuscleActuator::sliderConstraint(DataMuscleActuator& _data)
 {
   Pose axis = _data.pose();
+  cout << "Pose: " << axis << endl;
 
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
@@ -76,13 +78,71 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  yReal v = _data.getInternalDesiredValue(0) / 10.0; // A(t)
-  cout << "Input: " << v << endl;
-  // controller gibt externen wert. data mapt internen desired.
-  // aktivierung z.B.
-  yReal force = fabs(v) * _data.force(); // _data.force() * xyz * A(t)
-  yReal velocity = v * _data.velocity(); // _data.velcity() * abc * A(T)
-  cout << force << " " << velocity << endl;
+  yReal a_t = _data.getInternalDesiredValue(0) / 10.0; // A(t)
+  cout << "Input: " << a_t << endl;
+  // Controller gibt externen Wert. _data mapt internalDesired.
+
+  // _data.force() returns Fmax and _data.velocity() vmax. For now it's
+  // hardcoded in the class.
+  //yReal force = * _data.force(); // _data.force() * xyz * A(t)
+
+  // TODO: Only needed once. Move somewhere else.
+  _forceVelocityModel = linear;
+  _forceLengthModel = linear;
+  yReal _Fv, _Fl;
+  yReal v = a_t;
+  yReal _mu = 0.25;
+  yReal _k = 10;
+  yReal _L0 = 1;
+  cout << "LinearPos: " << _sliderConstraint->getLinearPos() << endl;
+  yReal _L = min(_sliderConstraint->getLinearPos(), _L0);
+  switch (_forceVelocityModel) {
+    case constant:
+      _Fv = 1;
+      break;
+    case linear:
+      _Fv = 1 - _mu * v;
+      break;
+    case hill:
+      //if (v > 0) {
+        //_Fv = (vmax + v) / (vmax - K * v);
+      //} else {
+        //_Fv = N + (N - 1) * ((vmax - v) / (-7.56 * K * v - vmax));
+      //}
+      break;
+    //default:
+      //error
+  }
+  switch (_forceLengthModel) {
+    case constant:
+      _Fl = 1;
+      break;
+    case linear:
+      _Fl = _k * (_L0 - _L);
+      break;
+    case hill:
+      //_Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
+      break;
+    //default:
+      //error
+  }
+  yReal _Fmax = 2500;
+  yReal _Fm = a_t * _Fl * _Fv * _Fmax;
+  cout << "Fv: " << _Fv << endl;
+  cout << "Fl: " << _Fl << endl;
+
+  yReal _m = 80;
+  yReal _g = 9.81;
+  yReal force = _m * _g + _Fm;
+
+
+  //yReal velocity = fabs(a_t) * _data.velocity(); // _data.velocity() * abc * A(T)
+  // Force = -mg + Fm (Force at ground contact. Else it's 0.)
+  // Fm = A(t) * Fl * Fv * Fmax
+
+  yReal velocity = 1;
+  cout << "F: " << force << " " << "v: " << velocity << endl;
+
   _sliderConstraint->setMaxLinMotorForce(force);
   _sliderConstraint->setTargetLinMotorVelocity(velocity);
 }

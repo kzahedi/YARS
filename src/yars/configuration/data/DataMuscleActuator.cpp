@@ -1,6 +1,7 @@
 #include "DataMuscleActuator.h"
 
 #include "yars/configuration/data/DataActuator.h"
+#include "yars/configuration/data/DataPoseFactory.h"
 #include "yars/configuration/xsd/specification/XsdSpecification.h"
 #include "yars/util/YarsErrorHandler.h"
 #include "yars/view/console/ConsoleView.h"
@@ -27,6 +28,12 @@ using namespace std;
   DIVIDER "model" DIVIDER DEFINITION
 # define YARS_STRING_MAPPING                  (char*)"mapping"
 # define YARS_STRING_MIN_MAX_DEFINITION       (char*)"min"           DIVIDER "max"      DIVIDER DEFINITION
+
+// Fos XSD Pose.
+# define YARS_STRING_POSE                     (char*)"pose"
+# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
+# define YARS_STRING_GLOBAL      (char*)"global"
+# define YARS_STRING_POSEG_DEFINITION         (char*)"pose_with_global" DIVIDER DEFINITION
 
 // Probably will need to be constexpr because of g. Think what to do with g
 // then.
@@ -83,7 +90,12 @@ void DataMuscleActuator::add(DataParseElement* element)
     element->set(YARS_STRING_SCALING, _forceScaling);
   } else if (element->opening(YARS_STRING_VELOCITY)) {
     element->set(YARS_STRING_MAXIMUM, _maxVelocity);
-  } else if(element->opening(YARS_STRING_MAPPING)) {
+  } else if (element->opening(YARS_STRING_POSE)) {
+    DataPoseFactory::set(_pose, element);
+    element->set(YARS_STRING_GLOBAL, _poseInWorldCoordinates);
+    _axisPosition    = _pose.position;
+    _axisOrientation = _pose.orientation;
+  } else if (element->opening(YARS_STRING_MAPPING)) {
     DataDomainFactory::set(_mapping, element);
   }
 }
@@ -249,6 +261,7 @@ DataActuator* DataMuscleActuator::_copy()
   auto copy = new DataMuscleActuator(nullptr);
 
   copy->_mapping         = _mapping;
+  copy->_pose               = _pose;
   copy->_destination     = _destination;
   copy->_jointType       = _jointType;
   copy->_name            = _name;
@@ -276,6 +289,7 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
     1));
   muscleDef->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
   muscleDef->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
+  muscleDef->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
   muscleDef->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
   muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL,
     "muscle_model_definition", 1, 1));
@@ -298,4 +312,15 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleTypeDef->add("linear");
   muscleTypeDef->add("hill");
   spec.add(muscleTypeDef);
+
+  auto poseDef = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
+  poseDef->add(NA(YARS_STRING_X,     YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_Y,     YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_Z,     YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_ALPHA, YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_BETA,  YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_TYPE,  YARS_STRING_RAD_DEG_DEFINITION, false));
+  poseDef->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION, false));
+  spec.add(poseDef);
 }

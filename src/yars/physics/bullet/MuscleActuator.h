@@ -7,6 +7,8 @@ class DataMuscleActuator;
 
 enum SliderType { positional, velocity, force, force_velocity };
 
+enum RelationModel { constant, linear, hill };
+
 class MuscleActuator : public Actuator
 {
   public:
@@ -29,6 +31,9 @@ class MuscleActuator : public Actuator
     DataMuscleActuator& _data;
     btSliderConstraint* _sliderConstraint;
     SliderType _sliderType;
+    RelationModel _forceVelocityModel;
+    RelationModel _forceLengthModel;
+
     //yReal               _position;
     //yReal               _lastPosition;
     //yReal               _friction;
