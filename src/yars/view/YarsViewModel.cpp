@@ -180,6 +180,7 @@ void YarsViewModel::toggleCaptureVideo()
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
 
+#ifdef USE_CAPTURE_VIDEO
   if(_toggleVideo == true)
   {
     FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
@@ -189,4 +190,5 @@ void YarsViewModel::toggleCaptureVideo()
     cout << "stopped video recording" << endl;
     FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
   }
+#endif // USE_CAPTURE_VIDEO
 }

@@ -49,7 +49,7 @@ class SdlWindow : public Observable
     void setupOSD();
 
   private:
-    
+
     void __osd();
     void __setupSDL();
     void __processKeyEvent(char, int);
