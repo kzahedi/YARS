@@ -79,7 +79,7 @@ DataActuator* MuscleActuator::data()
 void MuscleActuator::prePhysicsUpdate()
 {
   // Sine controller return values from -1 to 1. But we need positive ones only.
-  yReal a_t = abs(_data.getInternalDesiredValue(0) / 1.0); // A(t)
+  yReal a_t = fabs(_data.getInternalDesiredValue(0) / 1.0); // A(t)
   cout << "Input: " << a_t << endl;
   // Controller gibt externen Wert. _data mapt internalDesired.
 
