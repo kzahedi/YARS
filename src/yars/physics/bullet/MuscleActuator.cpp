@@ -78,13 +78,20 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  yReal a_t = _data.getInternalDesiredValue(0) / 10.0; // A(t)
+  // Sine controller return values from -1 to 1. But we need positive ones only.
+  yReal a_t = abs(_data.getInternalDesiredValue(0) / 1.0); // A(t)
   cout << "Input: " << a_t << endl;
   // Controller gibt externen Wert. _data mapt internalDesired.
 
   // _data.force() returns Fmax and _data.velocity() vmax. For now it's
   // hardcoded in the class.
   //yReal force = * _data.force(); // _data.force() * xyz * A(t)
+
+  // In this model elasticity isn't considered. The actuator simply stops at max
+  // length.
+  _sliderConstraint->setLowerLinLimit(0.0);
+  _sliderConstraint->setUpperLinLimit(1.0); // Only works with values >= 1.
+  _sliderConstraint->setDbgDrawSize(btScalar(1.0));
 
   // TODO: Only needed once. Move somewhere else.
   _forceVelocityModel = linear;
@@ -94,8 +101,8 @@ void MuscleActuator::prePhysicsUpdate()
   yReal _mu = 0.25;
   yReal _k = 10;
   yReal _L0 = 1;
-  cout << "LinearPos: " << _sliderConstraint->getLinearPos() << endl;
   yReal _L = min(_sliderConstraint->getLinearPos(), _L0);
+  //yReal _L = 0.4;
   switch (_forceVelocityModel) {
     case constant:
       _Fv = 1;
@@ -128,19 +135,26 @@ void MuscleActuator::prePhysicsUpdate()
   }
   yReal _Fmax = 2500;
   yReal _Fm = a_t * _Fl * _Fv * _Fmax;
-  cout << "Fv: " << _Fv << endl;
-  cout << "Fl: " << _Fl << endl;
 
-  yReal _m = 80;
-  yReal _g = 9.81;
-  yReal force = _m * _g + _Fm;
-
+  yReal _m = 80; // Adult man.
+  yReal _g = 10; // Rounded gravitational constant as in paper.
+  yReal force = - _m * _g + _Fm;
 
   //yReal velocity = fabs(a_t) * _data.velocity(); // _data.velocity() * abc * A(T)
   // Force = -mg + Fm (Force at ground contact. Else it's 0.)
   // Fm = A(t) * Fl * Fv * Fmax
 
-  yReal velocity = 1;
+  //yReal velocity = _data.velocity();
+  yReal velocity = 0.01;
+
+  cout << "Fv: " << _Fv << endl;
+  cout << "Fl: " << _Fl << endl;
+  cout << "LinearPos: " << _sliderConstraint->getLinearPos() << endl;
+  cout << "L: " << _L << endl;
+  cout << "_data->force(): " << _data.force() << endl;
+  cout << "_data->velocity(): " << _data.velocity() << endl;
+  cout << "a_t: " << a_t << endl;
+  cout << "_Fm: " << _Fm << endl;
   cout << "F: " << force << " " << "v: " << velocity << endl;
 
   _sliderConstraint->setMaxLinMotorForce(force);
