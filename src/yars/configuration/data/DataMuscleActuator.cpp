@@ -246,6 +246,8 @@ yReal DataMuscleActuator::getAppliedVelocity(int index)
 void DataMuscleActuator::setAppliedForceAndVelocity(int index, yReal force,
                                                     yReal velocity)
 {
+  _appliedForce    = force;
+  _appliedVelocity = velocity;
 }
 
 Pose DataMuscleActuator::pose()

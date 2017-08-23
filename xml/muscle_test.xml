@@ -4,9 +4,7 @@
   </simulator>
 
   <screens>
-
-
-    <screen name="Braiternberg" show="true" follow="false">
+    <screen name="Muscle actuator test" show="true" follow="false">
       <camera>
         <position x="-2.5" y="0.00" z="1.0"/>
         <lookAt x="0.0" y="0.00" z="1.0"/>
@@ -63,4 +61,34 @@
       <controller module="Sine" frequency="10"/>
     </robot>
   </robots>
+
+  <logging>
+    <object target="anchor" precision="3"> <use value="x"/> <use value="y"/> </object>
+    <object target="sphere" precision="3"> <use value="x"/> <use value="y"/> </object>
+
+    <actuator target="muscle" precision="3"> <internal/> <external/> <appliedForce/> <appliedVelocity/> </actuator>
+
+    <console>
+      <target name="sphere"/>
+      <target name="muscle"/>
+    </console>
+
+    <!--<gnuplot size="100000" delay="100" pairwise="true">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</gnuplot>-->
+
+    <file name="muscle_log">
+      <target name="sphere"/>
+      <target name="muscle"/>
+    </file>
+
+    <csv name="muscle_log">
+      <target name="sphere"/>
+      <target name="muscle"/>
+    </csv>
+
+    <blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>
+    <blender name="muscle_log.txt"/>
+  </logging>
 </rosiml>
