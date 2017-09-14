@@ -1,8 +1,13 @@
 #include "YarsViewModel.h"
 
+#include <LinearMath/btIDebugDraw.h>
+
 #include <yars/configuration/data/Data.h>
 #include <yars/configuration/YarsConfiguration.h>
+#include "yars/physics/bullet/World.h"
+#include "yars/view/gui/DebugDrawer.h"
 #include <yars/view/gui/GuiMutex.h>
+#include "yars/view/gui/OgreHandler.h"
 #include <yars/util/Timer.h>
 
 #include <OGRE/Ogre.h>
@@ -24,6 +29,11 @@ YarsViewModel::YarsViewModel()
     _ogreHandler = OgreHandler::instance();
     initialiseView();
     _ogreHandler->setupSceneManager();
+
+    _debugDrawer = new DebugDrawer(_ogreHandler->getSceneManager());
+    _debugDrawer->setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
+    World::instance()->world()->setDebugDrawer(_debugDrawer);
+
     FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->setupOSD();
     if(__YARS_GET_USE_CAPTURE_CL) toggleCaptureVideo();
   }
@@ -32,6 +42,7 @@ YarsViewModel::YarsViewModel()
 YarsViewModel::~YarsViewModel()
 {
   Y_DEBUG("YarsViewModel destructor called.");
+  delete _debugDrawer;
 }
 
 void YarsViewModel::initialiseView()

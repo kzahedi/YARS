@@ -16,6 +16,7 @@ set(GUI_SOURCES SdlWindow.cpp
                 SceneGraphSoftPlyNode.cpp
                 TextOverlay.cpp
                 ColoredTextAreaOverlayElement.cpp
+                DebugDrawer.cpp
                 OgreHandler.cpp
                 KeyHandler.cpp
                 FollowCamera.cpp

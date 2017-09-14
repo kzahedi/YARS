@@ -1,5 +1,6 @@
 #include "OgreHandler.h"
 #include <yars/configuration/data/Data.h>
+#include "yars/physics/bullet/World.h"
 #include <yars/util/Directories.h>
 
 #if __APPLE__
@@ -153,6 +154,9 @@ void OgreHandler::step()
   _sceneGraph->update();
   // cout << "OgreHandler 1" << endl;
   _root->renderOneFrame();
+  // TODO: Decide if this is the right place to call the function. It must be
+  // called after all models, actuators etc. are drawn.
+  World::instance()->world()->debugDrawWorld();
   // cout << "OgreHandler 2" << endl;
 }
 

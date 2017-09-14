@@ -1,6 +1,8 @@
 #ifndef __YARS_VIEW_MODEL_H__
 #define __YARS_VIEW_MODEL_H__
 
+class DebugDrawer;
+
 #include <yars/util/Observable.h>
 #include <yars/view/console/ConsoleView.h>
 #include <yars/view/gui/OgreHandler.h>
@@ -41,6 +43,7 @@ class YarsViewModel : public Observable, public Observer
     bool                    _syncedStep;
     bool                    _toggleVideo;
     OgreHandler            *_ogreHandler;
+    DebugDrawer            *_debugDrawer;
     SDL_Event               _event;
     unsigned long           _timeStamp;
     int                     _first;
