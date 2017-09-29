@@ -1,0 +1,189 @@
+<rosiml version="0.8.41">
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+    <screen name="Muscle actuators - Humanoid" show="true" follow="false">
+      <resolution name="1080p"/>
+      <camera>
+        <!-- Presentation View -->
+        <position x="-2.5" y="-1.3" z="1.0"/>
+        <lookAt x="0.0" y="0.00" z="0.5"/>
+        <!-- Front View -->
+        <!--<position x="-2.5" y="0" z="0.5"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
+        <!-- Side View -->
+        <!--<position x="0" y="-2.5" z="0.5"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+
+    <sky name="YARS/CloudySky"/>
+
+    <visualise>
+      <joints />
+    </visualise>
+  </screens>
+
+  <environment>
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="Humanoid">
+      <body>
+        <cylinder name="hip" visualise="true">
+          <dimension radius="0.1" height="0.394"/>
+          <pose x="0" y="0" z="1.055" alpha="90" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="0"/>
+          </physics>
+        </cylinder>
+
+        <!-- TODO: Change mass -->
+        <!-- TODO: Set centre of mass -->
+        <cylinder name="thigh_left" visualise="true">
+          <dimension radius="0.02" height="0.422"/> <!-- -20mm for joint space. -->
+          <pose x="0" y="-0.172" z="0.734" alpha="0" gamma="0"/>
+          <physics>
+            <mass kg="10"/>
+            <!--<centreOfMass x="0" y="0" z="0">-->
+          </physics>
+        </cylinder>
+        <!--<cylinder name="thigh_right" visualise="true">-->
+          <!--<dimension radius="0.02" height="0.42"/>-->
+          <!--<pose x="0" y="0.2" z="0.68" alpha="0" beta="0" gamma="0"/>-->
+          <!--<physics>-->
+            <!--<mass kg="0"/>-->
+          <!--</physics>-->
+        <!--</cylinder>-->
+
+        <cylinder name="shank_left" visualise="true">
+          <dimension radius="0.02" height="0.423"/> <!-- -20mm for joint space. -->
+          <pose x="0" y="-0.172" z="0.2915" alpha="0" gamma="0"/>
+          <physics>
+            <mass kg="5"/>
+            <!--<centreOfMass x="0" y="0" z="0">-->
+          </physics>
+        </cylinder>
+        <!--<cylinder name="shank_right" visualise="true">-->
+          <!--<dimension radius="0.02" height="0.38"/>-->
+          <!--<pose x="0" y="0.2" z="0.23" alpha="0" beta="0" gamma="0"/>-->
+          <!--<physics>-->
+            <!--<mass kg="0"/>-->
+          <!--</physics>-->
+        <!--</cylinder>-->
+
+        <box name="foot_left">
+          <dimension height="0.03" width="0.0991" depth="0.2738"/>
+          <pose x="-0.1" y="-0.172" z="0" alpha="0" gamma="90"/>
+          <physics>
+            <mass kg="2"/>
+            <!--<centreOfMass x="0" y="0" z="0">-->
+          </physics>
+        </box>
+        <!--<box name="foot_right">-->
+          <!--<dimension height="0.01" width="0.1" depth="0.25"/>-->
+          <!--<pose x="-0.06" y="0.2" z="0" alpha="0" beta="0" gamma="90"/>-->
+          <!--<physics>-->
+            <!--<mass kg="2"/>-->
+          <!--</physics>-->
+        <!--</box>-->
+      </body>
+
+      <pose z="0.015"/> <!-- Elevate robot so it's not inside the ground. -->
+
+      <actuators>
+        <!-- TODO: Change to spherical joint later? -->
+        <hinge name="hip_left" type="angular" mode="passive">
+          <source      name="hip"/>
+          <destination name="thigh_left"/>
+          <force       max="20.0"/>
+          <velocity    max="0.75"/>
+          <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for
+               joints -->
+          <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
+          <!--Sets the angle range?-->
+          <!--<deflection  min="-35" max="35"/>-->
+          <!--<mapping     min="-1"  max="1"/>-->
+          <regular     softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/>
+          <!--<pid         p="0.9" i="0.0" d="0.0" size="1"/>-->
+        </hinge>
+        <hinge name="knee_left" type="angular" mode="passive">
+          <source      name="thigh_left"/>
+          <destination name="shank_left"/>
+          <force       max="20.0"/>
+          <velocity    max="0.75"/>
+          <pose        x="0" y="0" z="-0.226" alpha="0" beta="0" gamma="90"/>
+          <regular     softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/>
+        </hinge>
+        <hinge name="ankle_left" type="angular" mode="passive">
+          <source      name="shank_left"/>
+          <destination name="foot_left"/>
+          <force       max="20.0"/>
+          <velocity    max="0.75"/>
+          <pose        x="0" y="0" z="-0.2165" alpha="0" beta="0" gamma="90"/>
+          <regular     softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/>
+        </hinge>
+
+        <!--<muscle name="muscle_thigh_left" type="force and velocity">-->
+          <!--<source name="thigh_left"/>-->
+          <!--<destination name="shank_left"/>-->
+          <!--<force    max="10"/>-->
+          <!--<velocity max="10"/>-->
+          <!--<pose x="0" y="-0.2" z="45" gamma="90"/>-->
+          <!--[><mapping  min="-1.0" max="1.0"/><]-->
+          <!--<force-length_model model="linear"/>-->
+          <!--<force-velocity_model model="linear"/>-->
+        <!--</muscle>-->
+      </actuators>
+
+      <controller module="Sine" frequency="10"/>
+    </robot>
+  </robots>
+
+  <!--<logging>-->
+    <!--<object target="anchor" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+    <!--<object target="sphere" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+
+    <!--<actuator target="muscle" precision="3"> <internal/> <external/> <desired/> <appliedForce/> <appliedVelocity/> </actuator>-->
+
+    <!--<console>-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</console>-->
+
+    <!--[><gnuplot size="100000" delay="100" pairwise="true"><]-->
+      <!--[><target name="sphere"/><]-->
+      <!--[><target name="muscle"/><]-->
+    <!--[></gnuplot><]-->
+
+    <!--<file name="muscle_log">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</file>-->
+
+    <!--[><csv name="muscle_log"><]-->
+      <!--[><target name="sphere"/><]-->
+      <!--[><target name="muscle"/><]-->
+    <!--[></csv><]-->
+
+    <!--<blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>-->
+    <!--<blender name="muscle_log.txt"/>-->
+  <!--</logging>-->
+</rosiml>
