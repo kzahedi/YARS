@@ -11,6 +11,16 @@ void SineController::update()
   {
     motors[i] = sin(_count / _period[i] + _phaseShift[i]) * _amplitude[i];
   }
+  if(_debug)
+  {
+    cout << "Time step: " << _count << " - ";
+    cout << motors[0];
+    for(int i = 1; i < _nr_of_outputs; i++)
+    {
+      cout << "," << motors[i];
+    }
+    cout << endl;
+  }
   _count += 1.0;
 }
 

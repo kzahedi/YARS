@@ -49,6 +49,7 @@ ConfigurationContainer::ConfigurationContainer()
   _usePrintConfiguration      = DEFAULT_PRINT_CONFIGURATION;
   _useRandomSeed              = DEFAULT_USE_RANDOM_SEED;
   _randomSeed                 = DEFAULT_RANDOM_SEED;
+  _useController              = DEFAULT_USE_CONTROLLER;
 
 
   _reset                      = -1;
@@ -1386,3 +1387,13 @@ int  ConfigurationContainer::getWindowWidth()
 #endif // USE_THREAD_SAFE
   return r;
 }
+
+bool ConfigurationContainer::getUseController()
+{
+  return _useController;
+}
+void ConfigurationContainer::setUseController(bool useController)
+{
+  _useController = useController;
+}
+

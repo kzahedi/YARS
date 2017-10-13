@@ -46,6 +46,7 @@ class ProgramOptions
     void __realTime();
     void __texture();
     void __gui();
+    void __controller();
     void __trace();
     void __printTime();
     void __onScreenDisplay();

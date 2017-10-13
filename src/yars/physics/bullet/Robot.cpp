@@ -103,6 +103,7 @@ void Robot::controllerUpdate()
 
 void Robot::__createController()
 {
+  if(__YARS_GET_USE_CONTROLLER == false) return;
   if(_data->controller() == NULL) return;
   string c = _data->controller()->module();
   _controllerLib = dlopen(c.c_str(),RTLD_LAZY);

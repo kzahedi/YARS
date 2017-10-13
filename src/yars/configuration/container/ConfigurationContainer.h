@@ -51,6 +51,7 @@ class YarsConfiguration; // forward declaration
 #  define __YARS_GET_USE_TEXTURES                      YarsConfiguration::instance()->getUseTextures()
 #  define __YARS_GET_USE_TRACES                        YarsConfiguration::instance()->getUseTraces()
 #  define __YARS_GET_USE_VISUALISATION                 YarsConfiguration::instance()->getUseVisualisation()
+#  define __YARS_GET_USE_CONTROLLER                    YarsConfiguration::instance()->getUseController()
 #  define __YARS_GET_REAL_TIME_FACTOR                  YarsConfiguration::instance()->getRealTimeFactor()
 #  define __YARS_GET_CAPTURE_OPTION_SET                YarsConfiguration::instance()->getUseCapture()
 
@@ -124,6 +125,8 @@ class ConfigurationContainer
     void          setUsePrintTimeInformation(bool usePrintTimeInformation);
     bool          getUseVisualisation();
     void          setUseVisualisation(bool useVisualisation);
+    bool          getUseController();
+    void          setUseController(bool useController);
     bool          getUseTraces();
     void          setUsePrintConfiguration(bool usePrintConfiguration);
     bool          getUsePrintConfiguration();
@@ -285,6 +288,7 @@ class ConfigurationContainer
     bool                      _exportXSD;
     bool                      _useRandomSeed;
     bool                      _useWindowGeometry;
+    bool                      _useController;
     int                       _winPositionX;
     int                       _winPositionY;
     int                       _winHeight;
