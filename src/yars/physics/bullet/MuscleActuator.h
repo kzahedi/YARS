@@ -5,10 +5,6 @@
 
 class DataMuscleActuator;
 
-enum SliderType { positional, velocity, force, force_velocity };
-
-enum RelationModel { constant, linear, hill };
-
 class MuscleActuator : public Actuator
 {
   public:
@@ -22,23 +18,26 @@ class MuscleActuator : public Actuator
     btTypedConstraint* constraint() override;
 
   private:
+    enum Type { positional, velocity, force, force_velocity };
+    enum RelationModel { constant, linear, hill };
+
     void processPositional();
     void processVelocitySlider();
     void processForceSlider();
 
-    btSliderConstraint* sliderConstraint(DataMuscleActuator& _data);
+    btSliderConstraint* createConstraint();
 
     DataMuscleActuator& _data;
-    btSliderConstraint* _sliderConstraint;
-    SliderType _sliderType;
+    btSliderConstraint* _constraint;
+    Type _type;
     RelationModel _forceVelocityModel;
     RelationModel _forceLengthModel;
 
     //yReal               _position;
     //yReal               _lastPosition;
     //yReal               _friction;
-    // bool                _isActive;
-    //bool                _isVisualised;
+    /*bool                _isActive;*/
+    bool                _isVisualised;
     //bool                _hasFriction;
 
     // TODO: implement calculation

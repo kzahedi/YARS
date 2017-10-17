@@ -1,5 +1,6 @@
 #include "MuscleActuator.h"
 
+#include <cmath>
 #include "yars/configuration/data/DataMuscleActuator.h"
 #include "yars/physics/bullet/Actuator.h"
 #include "yars/physics/bullet/Robot.h"
@@ -12,63 +13,96 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
     //_l0{0},
     //_lopt{0.9 * _l0}
 {
-  _sliderConstraint = sliderConstraint(_data);
+  _constraint = createConstraint();
 
-  _sliderConstraint->setLowerAngLimit(0.0);
-  _sliderConstraint->setUpperAngLimit(0.0);
-  _sliderConstraint->setPoweredAngMotor(false);
+  // Disable rotation.
+  _constraint->setLowerAngLimit(0.0);
+  _constraint->setUpperAngLimit(0.0);
+  _constraint->setPoweredAngMotor(false);
 
-  for(int i = 0; i < 6; i++) {
-    _sliderConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
-    _sliderConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
-  }
+  _constraint->setLowerLinLimit(0.2);
+  _constraint->setUpperLinLimit(1.0);
 
-  _sliderConstraint->setPoweredLinMotor(true);
+  // Enable/Disable active movement. Can always be changed during simulation.
+  _constraint->setPoweredLinMotor(false);
+
+  //for(int i = 0; i < 6; i++) {
+    //_constraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
+    //_constraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
+  //}
 
   //if (_data.isDeflectionSet()) {
-    //_sliderConstraint->setLowerLinLimit(_data.deflection().min);
-    //_sliderConstraint->setUpperLinLimit(_data.deflection().max);
-  //} else {
-    //_sliderConstraint->setLowerLinLimit(1); // unset limit solving
-    //_sliderConstraint->setUpperLinLimit(0);
-  //}
+  //_constraint->setLowerLinLimit(_data.deflection().min);
+  //_constraint->setUpperLinLimit(_data.deflection().max); } else {
+  //_constraint->setLowerLinLimit(1); // unset limit solving
+  //_constraint->setUpperLinLimit(0); }
 
   cout << "Data control type: " << _data.controlType() << endl;
   switch(_data.controlType()) {
-  case DATA_ACTUATOR_CONTROL_POSITIONAL: _sliderType = positional; break;
-  case DATA_ACTUATOR_CONTROL_VELOCITY: _sliderType = velocity; break;
-  case DATA_ACTUATOR_CONTROL_FORCE: _sliderType = force; break;
-  case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
-    _sliderType = force_velocity;
-    break;
-  default: cout << "unkown type: " << _data.controlType() << endl;
+    case DATA_ACTUATOR_CONTROL_POSITIONAL:
+      _type = positional;
+      break;
+    case DATA_ACTUATOR_CONTROL_VELOCITY:
+      _type = velocity;
+      break;
+    case DATA_ACTUATOR_CONTROL_FORCE:
+      _type = force;
+      break;
+    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
+      _type = force_velocity;
+      break;
+    default:
+      cout << "unkown type: " << _data.controlType() << endl;
   }
+
+  _isVisualised = Data::instance()->current()->screens()->visualiseJoints();
+}
+
+btSliderConstraint* MuscleActuator::createConstraint()
+{
+  btRigidBody* source = _sourceObject->rigidBody();
+  btRigidBody* destination = _destinationObject->rigidBody();
+
+  // Get direction from source x-Axis to destination.
+  btVector3 direction = (destination->getWorldTransform().getOrigin() -
+      source->getWorldTransform().getOrigin()).normalize();
+
+  btVector3 sourceAxis = source->getOrientation().getAxis().normalize();
+
+  btVector3 rotationAxis = sourceAxis.cross(direction);
+  btScalar dotProduct = sourceAxis.dot(direction);
+
+  // Formula: sqrt(|a|^2 * |b|^2 + dotproduct). In our case the magnitude is
+  // 1 because of normalization.
+  btScalar rotation = std::sqrt(1 + dotProduct);
+
+  // In case vectors are perpendicular there is no unique solution. We choose an
+  // arbitrary rotation then.
+  btQuaternion q;
+  if (dotProduct < 0.0 && rotationAxis == btVector3(0.0, 0.0, 0.0)) 
+  {
+    q = btQuaternion(sourceAxis.getX(), sourceAxis.getY(), sourceAxis.getZ(),
+        0.0);
+  }
+  else
+  {
+    q = btQuaternion(rotationAxis.getX(), rotationAxis.getY(),
+        rotationAxis.getZ(), rotation);
+  }
+
+  // Positions are relative to the rigid bodies local origin.
+  btTransform frameInA = btTransform::getIdentity();
+  btTransform frameInB = btTransform::getIdentity();
+
+  frameInA.setRotation(q * frameInA.getRotation());
+
+  return new btSliderConstraint(*source, *destination, frameInA, frameInB,
+      true);
 }
 
 MuscleActuator::~MuscleActuator()
 {
-  if (_sliderConstraint != nullptr) delete _sliderConstraint;
-}
-
-btSliderConstraint* MuscleActuator::sliderConstraint(DataMuscleActuator& _data)
-{
-  Pose axis = _data.pose();
-  cout << "Pose: " << axis << endl;
-
-  btRigidBody* source = _sourceObject->rigidBody();
-  btRigidBody* destination = _destinationObject->rigidBody();
-
-  ::Quaternion qa(axis.orientation);
-  btQuaternion q(qa.x, qa.y, qa.z, qa.w);
-
-  btTransform transformA(q,
-    btVector3(axis.position.x, axis.position.y, axis.position.z));
-
-  auto transformB = destination->getWorldTransform().inverse() * transformA;
-  transformA = source->getWorldTransform().inverse() * transformA;
-
-  return new btSliderConstraint(*source, *destination, transformA, transformB,
-      true);
+  if (_constraint != nullptr) delete _constraint;
 }
 
 DataActuator* MuscleActuator::data()
@@ -78,10 +112,50 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  // Sine controller return values from -1 to 1. But we need positive ones only.
-  yReal a_t = fabs(_data.getInternalDesiredValue(0) / 1.0); // A(t)
-  cout << "Input: " << a_t << endl;
-  // Controller gibt externen Wert. _data mapt internalDesired.
+  { // visualize contact points.
+
+    //btTransform  pose = _constraint->getCalculatedTransformA(); // Same as for B.
+    //
+    // That's how it's calculated. transA and transB seem to be the world
+    // transform. m_frameInA is transformA at passing to the constructor in our case.
+      //m_calculatedTransformA = transA * m_frameInA;
+      //m_calculatedTransformB = transB * m_frameInB;
+      //
+      //m_frameInA = rbB.getCenterOfMassTransform() * m_frameInB;
+      //oder wird beim Initialisieren direkt mitgegenben. 
+
+    //btTransform  pose = _constraint->getFrameOffsetA(); // At point of origin.
+    //btVector3    vec  = pose.getOrigin();
+    //btQuaternion q    = pose.getRotation();
+    // Coordinates are relative to world.
+    //_data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+    //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+    cout << "Visual Output:\n" << endl;
+  }
+  
+  /** 
+   * To make the constraint move passively the motor has to be disabled and only
+   * enabled when there is a force to put on the body.
+   * **/
+
+  yReal internalDesired = _data.getInternalDesiredValue(0);
+  cout << "Internal Desired: " << internalDesired << endl;
+
+  if (internalDesired <= 0.5)
+  {
+    if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
+    {
+      _constraint->setPoweredLinMotor(true);
+    }
+  }
+  else
+  {
+    _constraint->setPoweredLinMotor(false);
+  }
+
+  // Sine controller returns values from -1 to 1 after mapping. But we need
+  // positive ones only.
+  yReal a_t = fabs(internalDesired / 10.0); // A(t)
 
   // _data.force() returns Fmax and _data.velocity() vmax. For now it's
   // hardcoded in the class.
@@ -89,9 +163,6 @@ void MuscleActuator::prePhysicsUpdate()
 
   // In this model elasticity isn't considered. The actuator simply stops at max
   // length.
-  _sliderConstraint->setLowerLinLimit(0.0);
-  _sliderConstraint->setUpperLinLimit(1.0); // Only works with values >= 1.
-  _sliderConstraint->setDbgDrawSize(btScalar(1.0));
 
   // TODO: Only needed once. Move somewhere else.
   _forceVelocityModel = linear;
@@ -101,7 +172,7 @@ void MuscleActuator::prePhysicsUpdate()
   yReal _mu = 0.25;
   yReal _k = 10;
   yReal _L0 = 1;
-  yReal _L = min(_sliderConstraint->getLinearPos(), _L0);
+  yReal _L = min(_constraint->getLinearPos(), _L0);
   //yReal _L = 0.4;
   switch (_forceVelocityModel) {
     case constant:
@@ -145,11 +216,14 @@ void MuscleActuator::prePhysicsUpdate()
   // Fm = A(t) * Fl * Fv * Fmax
 
   //yReal velocity = _data.velocity();
-  yReal velocity = 0.01;
-
+  /*yReal velocity = 0.5 * a_t; // Speed of movement.*/
+  yReal velocity = -0.5 * internalDesired; // Speed of movement.
+  force = 10000;
+ 
   cout << "Fv: " << _Fv << endl;
   cout << "Fl: " << _Fl << endl;
-  cout << "LinearPos: " << _sliderConstraint->getLinearPos() << endl;
+  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
+  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
   cout << "L: " << _L << endl;
   cout << "_data->force(): " << _data.force() << endl;
   cout << "_data->velocity(): " << _data.velocity() << endl;
@@ -157,8 +231,8 @@ void MuscleActuator::prePhysicsUpdate()
   cout << "_Fm: " << _Fm << endl;
   cout << "F: " << force << " " << "v: " << velocity << endl;
 
-  _sliderConstraint->setMaxLinMotorForce(force);
-  _sliderConstraint->setTargetLinMotorVelocity(velocity);
+  _constraint->setMaxLinMotorForce(force);
+  _constraint->setTargetLinMotorVelocity(velocity);
   _data.setAppliedForceAndVelocity(0, force, velocity);
 }
 
@@ -177,6 +251,14 @@ void MuscleActuator::processForceSlider()
 
 void MuscleActuator::postPhysicsUpdate()
 {
+  if(_isVisualised)
+  {
+    btTransform  pose = _constraint->getCalculatedTransformA();
+    btVector3    vec  = pose.getOrigin();
+    btQuaternion q    = pose.getRotation();
+    _data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+    _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+  }
 }
 
 void MuscleActuator::reset()
@@ -185,5 +267,5 @@ void MuscleActuator::reset()
 
 btTypedConstraint* MuscleActuator::constraint()
 {
-  return _sliderConstraint;
+  return _constraint;
 }
