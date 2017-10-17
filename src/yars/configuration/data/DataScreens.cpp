@@ -29,7 +29,7 @@ DataScreens::DataScreens(DataNode *parent)
   _xTexture                   = "YARS/Red";
   _yTexture                   = "YARS/Green";
   _zTexture                   = "YARS/Blue";
-  _jointsAxisDimension.radius = 0.1;
+  _jointsAxisDimension.radius = 0.02;
   _jointsAxisDimension.height = 1.0;
   _recording                  = new DataRecording(this);
 }
