@@ -8,6 +8,8 @@
 #include <yars/defines/mutex.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 
+// TODO: Remove pose. Positions for this constraint are generated automatically.
+
 using namespace std;
 
 // TODO: check which definitions can be put to higher level in class hierarchy.
@@ -75,27 +77,42 @@ yReal DataMuscleActuator::force() const
 void DataMuscleActuator::add(DataParseElement* element)
 {
   cout << "adding elements from xml. current elem:" << element->name() << endl;
-  if (element->closing(YARS_STRING_MUSCLE)) {
+  if (element->closing(YARS_STRING_MUSCLE))
+  {
     close();
     current = parent;
-  } else if (element->opening(YARS_STRING_MUSCLE)) {
+  }
+  else if (element->opening(YARS_STRING_MUSCLE))
+  {
     element->set(YARS_STRING_NAME, _name);
     element->set(YARS_STRING_TYPE, _jointType);
-  } else if (element->opening(YARS_STRING_SOURCE)) {
+  }
+  else if (element->opening(YARS_STRING_SOURCE))
+  {
     element->set(YARS_STRING_NAME, _source);
-  } else if (element->opening(YARS_STRING_DESTINATION)) {
+  }
+  else if (element->opening(YARS_STRING_DESTINATION))
+  {
     element->set(YARS_STRING_NAME, _destination);
-  } else if (element->opening(YARS_STRING_FORCE)) {
+  }
+  else if (element->opening(YARS_STRING_FORCE))
+  {
     element->set(YARS_STRING_MAXIMUM, _maxForce);
     element->set(YARS_STRING_SCALING, _forceScaling);
-  } else if (element->opening(YARS_STRING_VELOCITY)) {
+  }
+  else if (element->opening(YARS_STRING_VELOCITY))
+  {
     element->set(YARS_STRING_MAXIMUM, _maxVelocity);
-  } else if (element->opening(YARS_STRING_POSE)) {
+  }
+  else if (element->opening(YARS_STRING_POSE))
+  {
     DataPoseFactory::set(_pose, element);
     element->set(YARS_STRING_GLOBAL, _poseInWorldCoordinates);
     _axisPosition    = _pose.position;
     _axisOrientation = _pose.orientation;
-  } else if (element->opening(YARS_STRING_MAPPING)) {
+  }
+  else if (element->opening(YARS_STRING_MAPPING))
+  {
     DataDomainFactory::set(_mapping, element);
   }
 }
@@ -103,9 +120,13 @@ void DataMuscleActuator::add(DataParseElement* element)
 void DataMuscleActuator::close()
 {
   if (_jointType == YARS_STRING_FORCE_VELOCITY)
+  {
     _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
+  }
   else
+  {
     cout << "Unkown _jointType: " << _jointType << endl;
+  }
 
   setMapping();
 }
@@ -285,18 +306,19 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   auto muscleDef = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDef->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
   muscleDef->add(NA(YARS_STRING_TYPE, YARS_STRING_ACTUATOR_TYPE_DEFINITION,
-    false));
+        false));
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
-    1));
-  muscleDef->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
-  muscleDef->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
-  muscleDef->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
-  muscleDef->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-  muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL,
-    "muscle_model_definition", 1, 1));
-  muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL,
-    "muscle_model_definition", 1, 1));
+        1));
+  muscleDef->add(NE(YARS_STRING_FORCE, YARS_STRING_FORCE_DEFINITION, 1, 1));
+  muscleDef->add(NE(YARS_STRING_VELOCITY, YARS_STRING_VELOCITY_DEFINITION, 1,
+        1));
+  muscleDef->add(NE(YARS_STRING_POSE, YARS_STRING_POSEG_DEFINITION, 0, 1));
+  muscleDef->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
+  muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL, "muscle_model_definition",
+        1, 1));
+  muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL, "muscle_model_definition",
+        1, 1));
   spec.add(muscleDef);
 
   auto actuatorTypeDef = new XsdEnumeration(
@@ -316,13 +338,14 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   spec.add(muscleTypeDef);
 
   auto poseDef = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
-  poseDef->add(NA(YARS_STRING_X,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDef->add(NA(YARS_STRING_Y,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDef->add(NA(YARS_STRING_Z,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDef->add(NA(YARS_STRING_ALPHA, YARS_STRING_XSD_DECIMAL,        false));
-  poseDef->add(NA(YARS_STRING_BETA,  YARS_STRING_XSD_DECIMAL,        false));
-  poseDef->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL,        false));
+  poseDef->add(NA(YARS_STRING_X, YARS_STRING_XSD_DECIMAL, false));
+  poseDef->add(NA(YARS_STRING_Y, YARS_STRING_XSD_DECIMAL, false));
+  poseDef->add(NA(YARS_STRING_Z, YARS_STRING_XSD_DECIMAL, false));
+  poseDef->add(NA(YARS_STRING_ALPHA, YARS_STRING_XSD_DECIMAL, false));
+  poseDef->add(NA(YARS_STRING_BETA, YARS_STRING_XSD_DECIMAL, false));
+  poseDef->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL, false));
   poseDef->add(NA(YARS_STRING_TYPE,  YARS_STRING_RAD_DEG_DEFINITION, false));
-  poseDef->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION, false));
+  poseDef->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION,
+        false));
   spec.add(poseDef);
 }
