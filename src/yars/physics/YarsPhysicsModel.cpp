@@ -1,3 +1,4 @@
+#include <yars/physics/PhysicsInterface.h>
 #include <yars/physics/YarsPhysicsModel.h>
 #include <yars/view/console/ConsoleView.h>
 
