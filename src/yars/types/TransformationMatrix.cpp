@@ -2,6 +2,8 @@
 
 #include <math.h>
 
+using namespace std;
+
 TransformationMatrix::TransformationMatrix()
   : Matrix(4, 4, 0.0)
 {

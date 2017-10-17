@@ -451,7 +451,7 @@ class Socket
     const Socket& operator<<(const Buffer&) const;
     const Socket& operator>>(Buffer&) const;
 
-    void __check(const char a, const char b) throw (YarsClientComException);
+    void __check(const char a, const char b) noexcept(false);
     void __readDouble(yReal *d, Buffer b, int startIndex);
     void __readInteger(int *i, Buffer b, int startIndex);
     void __writeDouble(Buffer *b, yReal d);

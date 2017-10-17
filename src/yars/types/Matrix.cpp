@@ -92,7 +92,7 @@ void Matrix::__init(const int rows, const int cols, yReal initialValue)
 }
 
 
-yReal Matrix::operator()(int row, int col) const throw(MatrixException)
+yReal Matrix::operator()(int row, int col) const noexcept(false)
 {
   if(row >= _rows || col >= _cols || row < 0 || col < 0)
   {
@@ -119,7 +119,7 @@ yReal Matrix::operator()(int row, int col) const throw(MatrixException)
   return _cell[row][col];
 }
 
-yReal& Matrix::operator()(int row, int col) throw(MatrixException)
+yReal& Matrix::operator()(int row, int col) noexcept(false)
 {
   __check(row,col);
   return _cell[row][col];
@@ -167,7 +167,7 @@ int Matrix::rows() const
   return _rows;
 }
 
-void Matrix::__check(int row, int col) throw(MatrixException)
+void Matrix::__check(int row, int col) noexcept(false)
 {
   if(row >= _rows || col >= _cols || row < 0 || col < 0)
   {
@@ -193,7 +193,7 @@ void Matrix::__check(int row, int col) throw(MatrixException)
   }
 }
 
-Matrix& Matrix::operator+=(const Matrix &m) throw(MatrixException)
+Matrix& Matrix::operator+=(const Matrix &m) noexcept(false)
 {
   if(_rows != m.rows() || _cols != m.cols())
   {
@@ -220,7 +220,7 @@ Matrix& Matrix::operator+=(const Matrix &m) throw(MatrixException)
   return *this;
 }
 
-Matrix& Matrix::operator-=(const Matrix &m) throw(MatrixException)
+Matrix& Matrix::operator-=(const Matrix &m) noexcept(false)
 {
   if(_rows != m.rows() || _cols != m.cols())
   {
@@ -439,7 +439,7 @@ yReal Matrix::L2()
   return sqrt(d);
 }
 
-yReal Matrix::det() throw(MatrixException)
+yReal Matrix::det() noexcept(false)
 {
   if(cols() != rows())
   {

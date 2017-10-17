@@ -40,9 +40,9 @@ void TCPIP::update()
   while(!motorCommandsGiven && !isQuit())
   {
     socket >> s;
+    cout << "Command " << s << endl;
     switch(commands[s])
     {
-      cout << "Command " << s << endl;
       case __ACTUATORS:
         if(debug) cout << "receiving motors" << endl;
         socket >> motors;

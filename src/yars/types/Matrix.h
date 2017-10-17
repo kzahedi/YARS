@@ -11,31 +11,29 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
-class MatrixException : public exception
+class MatrixException : public std::exception
 {
   public:
-    explicit MatrixException(const string& what)
+    explicit MatrixException(const std::string& what)
       :
         m_what(what)
   {}
 
-    virtual ~MatrixException() throw() {}
+    virtual ~MatrixException() noexcept {}
 
-    virtual const char * what() const throw()
+    virtual const char * what() const noexcept
     {
       return m_what.c_str();
     }
 
-    virtual void message() const throw()
+    virtual void message() const noexcept
     {
-      cout << "MatrixException: " << m_what << endl;
+      std::cout << "MatrixException: " << m_what << std::endl;
     }
 
 
   private:
-    string m_what;
+    std::string m_what;
 };
 
 class Matrix
@@ -60,10 +58,10 @@ class Matrix
     ~Matrix();
 
     /** Allows to access and modify the values by indexing */
-    yReal& operator()(int row, int col) throw(MatrixException);
-    yReal  operator()(int row, int col) const throw(MatrixException);
-    Matrix& operator+=(const Matrix &m)  throw(MatrixException);
-    Matrix& operator-=(const Matrix &m)  throw(MatrixException);
+    yReal& operator()(int row, int col) noexcept(false);
+    yReal  operator()(int row, int col) const noexcept(false);
+    Matrix& operator+=(const Matrix &m)  noexcept(false);
+    Matrix& operator-=(const Matrix &m)  noexcept(false);
 
     // TODO: Matrix A(10,10); Matrix A = B; does not work
     const Matrix operator* (const yReal factor);
@@ -94,13 +92,13 @@ class Matrix
     void   reset(int rows, int cols, yReal value = 0.0);
     void   rescaleRows(yReal value, bool verbose);
 
-    yReal det() throw(MatrixException);
+    yReal det() noexcept(false);
     void   inverse();
     void   transpose();
     void   adjunct();
     void   cut(int r_index = -1, int c_index = -1);
 
-    friend ostream& operator<<(ostream& str, const Matrix& m)
+    friend std::ostream& operator<<(std::ostream& str, const Matrix& m)
     {
       for(int r = 0; r < m.rows(); r++)
       {
@@ -108,7 +106,7 @@ class Matrix
         {
           str << m(r,c) << " ";
         }
-        str << endl;
+        str << std::endl;
       }
       return str;
     };
@@ -122,7 +120,7 @@ class Matrix
   private:
     void __setDiagonalMatrix(yReal value);
     void __copy(const Matrix &m);
-    void __check(int row, int col) throw(MatrixException);
+    void __check(int row, int col) noexcept(false);
     int _rows;
     int _cols;
     yReal **_cell;

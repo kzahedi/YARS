@@ -28,7 +28,7 @@ string YarsErrorHandler::message()
   return str();
 }
 
-void YarsErrorHandler::push() throw (YarsException)
+void YarsErrorHandler::push() noexcept(false)
 {
   // cout << _me->str() << endl;
   throw YarsException(_me->str().c_str());

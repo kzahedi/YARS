@@ -531,7 +531,7 @@ void Socket::__coneverToInt(char *c, int *i)
   }
 }
 
-void Socket::__check(const char a, const char b) throw (YarsClientComException)
+void Socket::__check(const char a, const char b) noexcept(false)
 {
   if(a == b) return; // everything ok
   stringstream oss;

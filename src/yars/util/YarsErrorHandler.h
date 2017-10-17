@@ -17,7 +17,7 @@ class YarsErrorHandler : public stringstream, public Observable
   public:
     static YarsErrorHandler* instance();
 
-    static void push() throw (YarsException);
+    static void push() noexcept(false);
     static void push(const char *string, ...);
     static void push(string message);
 
