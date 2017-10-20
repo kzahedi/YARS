@@ -305,8 +305,7 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   // TODO: smart pointer?
   auto muscleDef = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDef->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
-  muscleDef->add(NA(YARS_STRING_TYPE, YARS_STRING_ACTUATOR_TYPE_DEFINITION,
-        false));
+  muscleDef->add(NA(YARS_STRING_TYPE, "muscle_type_definition", false));
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
         1));
@@ -320,11 +319,6 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL, "muscle_model_definition",
         1, 1));
   spec.add(muscleDef);
-
-  auto actuatorTypeDef = new XsdEnumeration(
-      YARS_STRING_ACTUATOR_TYPE_DEFINITION, YARS_STRING_XSD_STRING);
-  actuatorTypeDef->add(YARS_STRING_FORCE_VELOCITY);
-  spec.add(actuatorTypeDef);
 
   auto muscleModelDef = new XsdSequence("muscle_model_definition");
   muscleModelDef->add(NA("model", "muscle_type_definition", true));
