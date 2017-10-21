@@ -9,6 +9,7 @@ class DataSliderActuator;
 class DataFixedActuator;
 class DataGenericActuator;
 class DataMuscleActuator;
+class DataPointConstraint;
 class XsdSpecification;
 
 # define ACTUATORS                            "actuators"
@@ -27,6 +28,8 @@ class DataActuatorFactory
     static DataFixedActuator*   __generateFixedActuator(DataParseElement   *element, DataNode *parent);
     static DataGenericActuator* __generateGenericActuator(DataParseElement *element, DataNode *parent);
     static DataMuscleActuator* __generateMuscleActuator(
+      DataParseElement *element, DataNode *parent);
+    static DataPointConstraint* __generatePointConstraint(
       DataParseElement *element, DataNode *parent);
 };
 

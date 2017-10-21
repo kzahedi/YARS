@@ -19,6 +19,7 @@ class ActuatorFactory
     static Actuator* __createFixed(DataActuator   *actuator, Robot *robot);
     static Actuator* __createGeneric(DataActuator *actuator, Robot *robot);
     static Actuator* __createMuscle(DataActuator  *actuator, Robot *robot);
+    static Actuator* __createPointConstraint(DataActuator  *actuator, Robot *robot);
 };
 
 #endif // __ACTUATOR_FACTORY_H__
