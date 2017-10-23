@@ -3,24 +3,20 @@
 
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/types/Domain.h"
-#include "yars/util/Mapping.h"
-// TODO: documentation
 
-#define YARS_STRING_POINT_CONSTRAINT (char*)"point_constraint"
-#define YARS_STRING_POINT_CONSTRAINT_DEFINITION YARS_STRING_POINT_CONSTRAINT DIVIDER "definition"
+class Mapping;
+
+#define YARS_STRING_POINT_CONSTRAINT (char*)"pointConstraint"
+#define YARS_STRING_POINT_CONSTRAINT_DEFINITION YARS_STRING_POINT_CONSTRAINT \
+  DIVIDER "definition"
 
 class DataPointConstraint : public DataActuator
 {
   public:
-    // TODO: Try with reference
     DataPointConstraint(DataNode* parent);
-
-    yReal velocity() const;
-    yReal force() const;
 
     void add(DataParseElement* element) override;
 
-    // TODO: Most should be const. But we would have to change super classes.
     void applyOffset(Pose pose) override;
     std::string source() override;
     std::string destination() const;
@@ -52,7 +48,6 @@ class DataPointConstraint : public DataActuator
 
   private:
     void close();
-    void setMapping();
 
     Domain               _mapping;
     Pose                 _pose;
@@ -72,23 +67,10 @@ class DataPointConstraint : public DataActuator
     bool                 _poseInWorldCoordinates;
     pthread_mutex_t      _mutex;
 
-    yReal                _maxForce;
-    yReal                _maxVelocity;
     yReal                _forceScaling;
 
     yReal           _appliedForce;
     yReal           _appliedVelocity;
-
-    // TODO: Decide what's needed.
-    //DataFilter     *_filter;
-    //DataNoise      *_noise;
-    //Domain          _deflection;
-    //SliderParameter _parameter;
-    //bool            _deflectionSet;
-    //yReal           _currentTransitionalVelocity;
-    //Noise          *_n;
-    //yReal           _friction;
-    //string          _mode;
 };
 
 #endif // __DATA_POINT_CONSTRAINT__

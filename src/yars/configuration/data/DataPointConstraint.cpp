@@ -3,6 +3,7 @@
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/configuration/data/DataPoseFactory.h"
 #include "yars/configuration/xsd/specification/XsdSpecification.h"
+#include "yars/util/Mapping.h"
 #include "yars/util/YarsErrorHandler.h"
 #include "yars/view/console/ConsoleView.h"
 #include <yars/configuration/data/DataDomainFactory.h>
@@ -56,20 +57,8 @@ DataPointConstraint::DataPointConstraint(DataNode* parent)
   _desiredValue[0]   = 0.0;
   _desiredExValue[0] = 0.0;
 
-  _maxVelocity       = 0.0;
-  _maxForce          = 0.0;
   _forceScaling      = -1.0;
   YM_INIT;
-}
-
-yReal DataPointConstraint::velocity() const
-{
-  return _maxVelocity;
-}
-
-yReal DataPointConstraint::force() const
-{
-  return _maxForce;
 }
 
 void DataPointConstraint::add(DataParseElement* element)
@@ -93,25 +82,12 @@ void DataPointConstraint::add(DataParseElement* element)
   {
     element->set(YARS_STRING_NAME, _destination);
   }
-  else if (element->opening(YARS_STRING_FORCE))
-  {
-    element->set(YARS_STRING_MAXIMUM, _maxForce);
-    element->set(YARS_STRING_SCALING, _forceScaling);
-  }
-  else if (element->opening(YARS_STRING_VELOCITY))
-  {
-    element->set(YARS_STRING_MAXIMUM, _maxVelocity);
-  }
   else if (element->opening(YARS_STRING_POSE))
   {
     DataPoseFactory::set(_pose, element);
     element->set(YARS_STRING_GLOBAL, _poseInWorldCoordinates);
     _axisPosition    = _pose.position;
     _axisOrientation = _pose.orientation;
-  }
-  else if (element->opening(YARS_STRING_MAPPING))
-  {
-    DataDomainFactory::set(_mapping, element);
   }
 }
 
@@ -125,25 +101,6 @@ void DataPointConstraint::close()
   {
     cout << "Unkown _jointType: " << _jointType << endl;
   }
-
-  setMapping();
-}
-
-void DataPointConstraint::setMapping()
-{
-  _internalValue.resize(1);
-  _externalValue.resize(1);
-  _desiredValue.resize(1);
-  _desiredExValue.resize(1);
-  _internalExternalMapping.resize(1);
-  _internalDomain.resize(1);
-  _externalDomain.resize(1);
-  _internalDomain[0].min =  -1.0; // A(t)
-  _internalDomain[0].max =  1.0;
-  // cout << "setting force to " << _internalDomain[0] << " " << _externalDomain[0] << endl;
-  _externalDomain[0] = _mapping;
-  _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-  _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
 }
 
 void DataPointConstraint::applyOffset(Pose offset)
@@ -263,10 +220,8 @@ yReal DataPointConstraint::getAppliedVelocity(int index)
 }
 
 void DataPointConstraint::setAppliedForceAndVelocity(int index, yReal force,
-                                                    yReal velocity)
+    yReal velocity)
 {
-  _appliedForce    = force;
-  _appliedVelocity = velocity;
 }
 
 Pose DataPointConstraint::pose()
@@ -281,19 +236,10 @@ DataActuator* DataPointConstraint::_copy()
 {
   auto copy = new DataPointConstraint(nullptr);
 
-  copy->_mapping         = _mapping;
-  copy->_pose               = _pose;
-  copy->_destination     = _destination;
-  copy->_jointType       = _jointType;
-  copy->_name            = _name;
-  copy->_source          = _source;
-  copy->_maxForce        = _maxForce;
-  copy->_maxVelocity     = _maxVelocity;
-  copy->_axisOrientation = _axisOrientation;
-  copy->_axisPosition    = _axisPosition;
-  // Duplicate in DataActuator::copy. But necessarry for setMapping()
-  copy->_controlType = _controlType;
-  copy->setMapping();
+  copy->_source      = _source;
+  copy->_destination = _destination;
+  copy->_pose        = _pose;
+  copy->_name        = _name;
 
   return copy;
 }
