@@ -10,8 +10,6 @@ using namespace std;
 PointConstraint::PointConstraint(DataPointConstraint& data, Robot& robot)
   : Actuator{"PointConstraint", data.source(), data.destination(), &robot},
     _data{data}
-    //_l0{0},
-    //_lopt{0.9 * _l0}
 {
   _constraint = createConstraint();
   _constraint->setEnabled(true);
@@ -19,7 +17,7 @@ PointConstraint::PointConstraint(DataPointConstraint& data, Robot& robot)
   _isVisualised = Data::instance()->current()->screens()->visualiseJoints();
 }
 
-btPoint2PointConstraint* PointConstraint::createConstraint()
+std::unique_ptr<btPoint2PointConstraint> PointConstraint::createConstraint()
 {
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
@@ -27,14 +25,12 @@ btPoint2PointConstraint* PointConstraint::createConstraint()
 
   //return new btPoint2PointConstraint(*source, *destination, btVector3(0,0.5,-0.01),
       //btVector3(0,0.5,0.1));
-  return new btPoint2PointConstraint(*source, *destination, btVector3(0,0,-0.2),
-      btVector3(0,0,0.01));
-  //return new btPoint2PointConstraint(*destination, btVector3(0,0,-0.01));
+  return std::make_unique<btPoint2PointConstraint>(*source, *destination,
+      btVector3(0,0,-0.2), btVector3(0,0,0.01));
 }
 
 PointConstraint::~PointConstraint()
 {
-  if (_constraint != nullptr) delete _constraint;
 }
 
 DataActuator* PointConstraint::data()
@@ -67,5 +63,5 @@ void PointConstraint::reset()
 
 btTypedConstraint* PointConstraint::constraint()
 {
-  return _constraint;
+  return _constraint.get();
 }
