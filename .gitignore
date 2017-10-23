@@ -3,3 +3,4 @@ tags
 .vimprj/settings.vim
 
 build
+cscope.*
