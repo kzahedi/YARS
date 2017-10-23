@@ -11,6 +11,7 @@
 
 using namespace std;
 
+#define YARS_STRING_MODE (char*)"mode"
 #define YARS_STRING_VELOCITY (char*)"velocity"
 #define YARS_STRING_VELOCITY_DEFINITION (char*)"slider_velocity" DIVIDER \
   DEFINITION
@@ -61,6 +62,11 @@ DataPointConstraint::DataPointConstraint(DataNode* parent)
   YM_INIT;
 }
 
+DataPointConstraint::~DataPointConstraint()
+{
+  YM_CLOSE;
+}
+
 void DataPointConstraint::add(DataParseElement* element)
 {
   cout << "adding elements from xml. current elem:" << element->name() << endl;
@@ -72,7 +78,7 @@ void DataPointConstraint::add(DataParseElement* element)
   else if (element->opening(YARS_STRING_POINT_CONSTRAINT))
   {
     element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_TYPE, _jointType);
+    element->set(YARS_STRING_MODE, _mode);
   }
   else if (element->opening(YARS_STRING_SOURCE))
   {
@@ -93,14 +99,6 @@ void DataPointConstraint::add(DataParseElement* element)
 
 void DataPointConstraint::close()
 {
-  if (_jointType == YARS_STRING_FORCE_VELOCITY)
-  {
-    _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
-  }
-  else
-  {
-    cout << "Unkown _jointType: " << _jointType << endl;
-  }
 }
 
 void DataPointConstraint::applyOffset(Pose offset)
@@ -219,6 +217,11 @@ yReal DataPointConstraint::getAppliedVelocity(int index)
   return _appliedVelocity;
 }
 
+std::string DataPointConstraint::mode() const
+{
+  return _mode;
+}
+
 void DataPointConstraint::setAppliedForceAndVelocity(int index, yReal force,
     yReal velocity)
 {
@@ -240,15 +243,22 @@ DataActuator* DataPointConstraint::_copy()
   copy->_destination = _destination;
   copy->_pose        = _pose;
   copy->_name        = _name;
+  copy->_mode        = _mode;
 
   return copy;
 }
 
+/**
+ * If used with MuscleActuator:
+ * "source" should always be the segment. "destination" the sphere that connects
+ * the segment to the MuscleActuator.
+ */
 void DataPointConstraint::createXsd(XsdSpecification& spec)
 {
-  // TODO: smart pointer?
   auto constraintDefinition = new XsdSequence(YARS_STRING_POINT_CONSTRAINT_DEFINITION);
   constraintDefinition->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING,
+        false));
+  constraintDefinition->add(NA(YARS_STRING_MODE, YARS_STRING_XSD_STRING,
         false));
   constraintDefinition->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION,
         1, 1));

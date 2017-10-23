@@ -103,22 +103,20 @@
           <!--<pose        x="0" y="0" z="0.1" gamma="0"/>-->
         <!--</hinge>-->
 
-        <point_constraint name="constraint_base">
+        <pointConstraint name="constraint_base" mode="muscle">
           <source name="anchor"/>
           <destination name="muscle_base"/>
           <pose x="0" y="0.0" z="-0.2" gamma="0"/>
-        </point_constraint>
-        <point_constraint name="constraint_end">
+        </pointConstraint>
+        <pointConstraint name="constraint_end" mode="muscle">
           <source name="sphere"/>
           <destination name="muscle_end"/>
           <pose x="0" y="0" z="0.1" gamma="0"/>
-        </point_constraint>
+        </pointConstraint>
 
         <muscle name="muscle" type="hill">
           <source name="muscle_base"/>
           <destination name="muscle_end"/>
-          <!--[><source name="anchor"/><]-->
-          <!--[><destination name="sphere"/><]-->
           <force    max="10"/>
           <velocity max="10"/>
           <mapping  min="-1.0" max="1.0"/>

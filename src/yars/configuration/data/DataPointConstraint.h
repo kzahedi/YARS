@@ -14,6 +14,7 @@ class DataPointConstraint : public DataActuator
 {
   public:
     DataPointConstraint(DataNode* parent);
+    ~DataPointConstraint();
 
     void add(DataParseElement* element) override;
 
@@ -44,6 +45,8 @@ class DataPointConstraint : public DataActuator
     Pose pose() override;
     DataActuator* _copy() override;
 
+    std::string mode() const;
+
     static void createXsd(XsdSpecification& spec);
 
   private:
@@ -51,10 +54,12 @@ class DataPointConstraint : public DataActuator
 
     Domain               _mapping;
     Pose                 _pose;
+
     std::string          _source;
     std::string          _destination;
     std::string          _jointType;
     std::string          _name;
+    std::string          _mode;
 
     std::vector<yReal>   _internalValue;
     std::vector<yReal>   _externalValue;
