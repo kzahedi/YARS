@@ -55,59 +55,12 @@
             <mass kg="10.1"/>
           </physics>
         </sphere>
-
-        <!--<sphere name="muscle_base" visualise="true">-->
-          <!--<dimension radius="0.01"/>-->
-          <!--[><pose x="0" y="0.05" z="1.29" alpha="0" beta="0" gamma="0"/><]-->
-          <!--<pose x="0" y="0.0" z="1.29" alpha="0" beta="0" gamma="0"/>-->
-          <!--<physics>-->
-            <!--[>Too little weight makes it too prone to perturbations.<]-->
-            <!--<mass kg="5"/>-->
-          <!--</physics>-->
-        <!--</sphere>-->
-        <!--<sphere name="muscle_end" visualise="true">-->
-          <!--<dimension radius="0.01"/>-->
-          <!--<pose x="0" y="0" z="0.11" alpha="0" beta="0" gamma="0"/>-->
-          <!--<physics>-->
-            <!--<mass kg="5"/>-->
-          <!--</physics>-->
-        <!--</sphere>-->
       </body>
 
       <pose z="0.1"/>
 
       <actuators>
-        <!--<generic name="constraint_base">-->
-          <!--<source      name="anchor"/>-->
-          <!--<destination name="muscle_base"/>-->
-          <!--[><pose        x="0" y="0.05" z="-0.2" gamma="0"/><]-->
-          <!--<pose        x="0" y="0.0" z="-0.2" gamma="0"/>-->
-        <!--</generic>-->
-        <!--<generic name="constraint_end">-->
-          <!--<source      name="sphere"/>-->
-          <!--<destination name="muscle_end"/>-->
-          <!--<pose        x="0" y="0" z="0.1" gamma="0"/>-->
-        <!--</generic>-->
-
-        <!--<hinge name="constraint_base" type="angular" mode="passive">-->
-          <!--<source      name="anchor"/>-->
-          <!--<destination name="muscle_base"/>-->
-          <!--<force    max="10"/>-->
-          <!--<velocity max="10"/>-->
-          <!--[><pose        x="0" y="0.05" z="-0.2" gamma="0"/><]-->
-          <!--<pose        x="0" y="0.0" z="-0.2" gamma="0"/>-->
-        <!--</hinge>-->
-        <!--<hinge name="constraint_end" type="angular" mode="passive">-->
-          <!--<source      name="sphere"/>-->
-          <!--<destination name="muscle_end"/>-->
-          <!--<force    max="10"/>-->
-          <!--<velocity max="10"/>-->
-          <!--<pose        x="0" y="0" z="0.1" gamma="0"/>-->
-        <!--</hinge>-->
-
-        <muscle name="muscle" type="force and velocity">
-          <!--<source name="muscle_base"/>-->
-          <!--<destination name="muscle_end"/>-->
+        <muscle name="muscle" type="linear">
           <source name="anchor"/>
           <destination name="sphere"/>
           <force    max="10"/>
