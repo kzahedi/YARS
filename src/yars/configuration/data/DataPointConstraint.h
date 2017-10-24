@@ -10,6 +10,10 @@ class Mapping;
 #define YARS_STRING_POINT_CONSTRAINT_DEFINITION YARS_STRING_POINT_CONSTRAINT \
   DIVIDER "definition"
 
+//! Contains data for PointConstraint. 
+/*! If you use this with MuscleActuator you have to add a 'mode="muscle"'
+ * attribute to the pointConstraint tag to get the correct positioning.
+ */
 class DataPointConstraint : public DataActuator
 {
   public:

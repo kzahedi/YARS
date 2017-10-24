@@ -12,25 +12,6 @@
 using namespace std;
 
 #define YARS_STRING_MODE (char*)"mode"
-#define YARS_STRING_VELOCITY (char*)"velocity"
-#define YARS_STRING_VELOCITY_DEFINITION (char*)"slider_velocity" DIVIDER \
-  DEFINITION
-#define YARS_STRING_FORCE (char*)"force"
-#define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER DEFINITION
-#define YARS_STRING_FORCE_VELOCITY (char*)"force and velocity"
-#define YARS_STRING_SCALING (char*)"scaling"
-#define YARS_STRING_MAXIMUM (char*)"max"
-#define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" \
-  DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
-#define YARS_STRING_FORCE_LENGTH_MODEL (char*)"force-length" DIVIDER "model"
-#define YARS_STRING_FORCE_LENGTH_MODEL_DEFINITION (char*)"force-length" \
-  DIVIDER "model" DIVIDER DEFINITION
-#define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
-#define YARS_STRING_FORCE_VELOCITY_MODEL_DEFINITION (char*)"force-velocity" \
-  DIVIDER "model" DIVIDER DEFINITION
-#define YARS_STRING_MAPPING (char*)"mapping"
-#define YARS_STRING_MIN_MAX_DEFINITION (char*)"min" DIVIDER "max" DIVIDER \
-  DEFINITION
 
 // For XSD Pose.
 #define YARS_STRING_POSE (char*)"pose"
@@ -101,12 +82,12 @@ void DataPointConstraint::close()
 {
 }
 
+/*!
+ * In this case we always want the local coordinates. Therefore, we do nothing
+ * in this function.
+ */
 void DataPointConstraint::applyOffset(Pose offset)
 {
-  if(_poseInWorldCoordinates) return;
-  _pose << offset;
-  _axisPosition      = _pose.position;
-  _axisOrientation   = _pose.orientation;
 }
 
 std::string DataPointConstraint::source()

@@ -21,12 +21,21 @@ std::unique_ptr<btPoint2PointConstraint> PointConstraint::createConstraint()
 {
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
-  Pose pose = _data.pose();
 
-  //return new btPoint2PointConstraint(*source, *destination, btVector3(0,0.5,-0.01),
-      //btVector3(0,0.5,0.1));
-  return std::make_unique<btPoint2PointConstraint>(*source, *destination,
-      btVector3(0,0,-0.2), btVector3(0,0,0.01));
+  Pose pose = _data.pose();
+  btVector3 position(pose.position.x, pose.position.y, pose.position.z);
+
+ if (_data.mode() == "muscle")
+  {
+    // destination is the sphere that connects source to MuscleActuator.
+    // TODO: Verify that destination is the correct object?
+    return std::make_unique<btPoint2PointConstraint>(*source, *destination,
+        position, btVector3(0,0,0));
+  }
+  else
+  {
+    return std::make_unique<btPoint2PointConstraint>(*source, position);
+  }
 }
 
 PointConstraint::~PointConstraint()
@@ -40,23 +49,13 @@ DataActuator* PointConstraint::data()
 
 void PointConstraint::prePhysicsUpdate()
 {
-  cout << "PointConstraint Impulse: " << _constraint->getAppliedImpulse() << endl;
 }
 
 void PointConstraint::postPhysicsUpdate()
 {
-  if(_isVisualised)
-  {
-    //_constraint->getPivontInA();
-
-    //btTransform  pose = _constraint->getCalculatedTransformA();
-    //btVector3    vec  = pose.getOrigin();
-    //btQuaternion q    = pose.getRotation();
-    //_data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
-    //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-  }
 }
 
+/// TODO
 void PointConstraint::reset()
 {
 }
