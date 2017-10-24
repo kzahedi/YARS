@@ -27,6 +27,7 @@ set(PHYSICS_SRC YarsPhysicsModel.cpp
                 bullet/GenericActuator.cpp
                 bullet/GenericSpringActuator.cpp
                 bullet/MuscleActuator.cpp
+                bullet/PointConstraint.cpp # TODO: Doesn't really fit.
 
                 bullet/Sensor.cpp
                 bullet/SensorFactory.cpp

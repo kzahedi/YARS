@@ -8,6 +8,7 @@
 #include "DataFixedActuator.h"
 #include "DataGenericActuator.h"
 #include "DataMuscleActuator.h"
+#include "DataPointConstraint.h"
 
 #include <sstream>
 
@@ -24,6 +25,8 @@ DataActuator* DataActuatorFactory::actuator(DataParseElement *element, DataNode 
   if(element->opening(YARS_STRING_GENERIC)) return __generateGenericActuator(element, parent);
   if(element->opening(YARS_STRING_MUSCLE))
     return __generateMuscleActuator(element, parent);
+  if(element->opening(YARS_STRING_POINT_CONSTRAINT))
+    return __generatePointConstraint(element, parent);
   return nullptr;
 }
 
@@ -63,6 +66,14 @@ DataMuscleActuator* DataActuatorFactory::__generateMuscleActuator(
   return actuator;
 }
 
+DataPointConstraint* DataActuatorFactory::__generatePointConstraint(
+    DataParseElement *element, DataNode *parent)
+{
+  auto constraint = new DataPointConstraint(parent);
+  constraint->add(element);
+  return constraint;
+}
+
 void DataActuatorFactory::createXsd(XsdSpecification *spec)
 {
   XsdChoice *actuatorListDefinition = new XsdChoice(YARS_STRING_ACTUATOR_LIST_DEFINITION, "1", YARS_STRING_XSD_UNBOUNDED);
@@ -71,7 +82,9 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   actuatorListDefinition->add(NE(YARS_STRING_FIXED,   YARS_STRING_FIXED_DEFINITION,   0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_GENERIC, YARS_STRING_GENERIC_DEFINITION, 0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_MUSCLE,
-    YARS_STRING_MUSCLE_DEFINITION, 0 ,1));
+        YARS_STRING_MUSCLE_DEFINITION, 0 ,1));
+  actuatorListDefinition->add(NE(YARS_STRING_POINT_CONSTRAINT,
+        YARS_STRING_POINT_CONSTRAINT_DEFINITION, 0 ,1));
   spec->add(actuatorListDefinition);
   stringstream comment;
   comment << "The list of actuators (joints, motors, ...)." << endl;
@@ -86,4 +99,5 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   DataFixedActuator::createXsd(spec);
   DataGenericActuator::createXsd(spec);
   DataMuscleActuator::createXsd(*spec);
+  DataPointConstraint::createXsd(*spec);
 }

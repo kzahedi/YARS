@@ -1,0 +1,161 @@
+<rosiml version="0.8.41">
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+    <screen name="Muscle actuator test" show="true" follow="false">
+      <resolution name="1080p"/>
+      <camera>
+        <!-- Presentation View -->
+        <position x="-3" y="-3" z="1.0"/>
+        <lookAt x="0.0" y="0.00" z="0.5"/>
+        <!-- Front View -->
+        <!--<position x="-3.0" y="0" z="0.5"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
+        <!-- Side View -->
+        <!--<position x="0" y="-2.5" z="0.6"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.7"/>-->
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+
+    <sky name="YARS/CloudySky"/>
+
+    <visualise>
+      <joints />
+    </visualise>
+  </screens>
+
+  <environment>
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="muscle_contraption">
+      <body>
+        <box name="anchor">
+          <dimension height="0.4" width="0.4" depth="0.4"/>
+          <pose x="0" y="0" z="1.5" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="0"/>
+          </physics>
+        </box>
+        <sphere name="sphere" visualise="true">
+          <dimension radius="0.1"/>
+          <pose x="0" y="0.0" z="0" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="10"/>
+          </physics>
+        </sphere>
+
+        <sphere name="muscle_base" visualise="true">
+          <dimension radius="0.01"/>
+          <!--<pose x="0" y="0.05" z="1.29" alpha="0" beta="0" gamma="0"/>-->
+          <pose x="0" y="0.0" z="1.29" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <!--Too little weight makes it too prone to perturbations.-->
+            <mass kg="5"/>
+          </physics>
+        </sphere>
+        <sphere name="muscle_end" visualise="true">
+          <dimension radius="0.01"/>
+          <pose x="0" y="0.0" z="0.11" alpha="0" beta="0" gamma="0"/>
+          <physics>
+            <mass kg="5"/>
+          </physics>
+        </sphere>
+      </body>
+
+      <pose z="0.1"/>
+
+      <actuators>
+        <!--<generic name="constraint_base">-->
+          <!--<source      name="anchor"/>-->
+          <!--<destination name="muscle_base"/>-->
+          <!--<pose        x="0" y="0.0" z="-0.2" gamma="0"/>-->
+        <!--</generic>-->
+        <!--<generic name="constraint_end">-->
+          <!--<source      name="sphere"/>-->
+          <!--<destination name="muscle_end"/>-->
+          <!--<pose        x="0" y="0" z="0.1" gamma="0"/>-->
+        <!--</generic>-->
+
+        <!--<hinge name="constraint_base" type="angular" mode="passive">-->
+          <!--<source      name="anchor"/>-->
+          <!--<destination name="muscle_base"/>-->
+          <!--<force    max="10"/>-->
+          <!--<velocity max="10"/>-->
+          <!--<pose        x="0" y="0.0" z="-0.2" gamma="0"/>-->
+        <!--</hinge>-->
+        <!--<hinge name="constraint_end" type="angular" mode="passive">-->
+          <!--<source      name="sphere"/>-->
+          <!--<destination name="muscle_end"/>-->
+          <!--<force    max="10"/>-->
+          <!--<velocity max="10"/>-->
+          <!--<pose        x="0" y="0" z="0.1" gamma="0"/>-->
+        <!--</hinge>-->
+
+        <pointConstraint name="constraint_base" mode="muscle">
+          <source name="anchor"/>
+          <destination name="muscle_base"/>
+          <pose x="0" y="0.0" z="-0.2" gamma="0"/>
+        </pointConstraint>
+        <pointConstraint name="constraint_end" mode="muscle">
+          <source name="sphere"/>
+          <destination name="muscle_end"/>
+          <pose x="0" y="0" z="0.1" gamma="0"/>
+        </pointConstraint>
+
+        <muscle name="muscle" type="hill">
+          <source name="muscle_base"/>
+          <destination name="muscle_end"/>
+          <force    max="10"/>
+          <velocity max="10"/>
+          <mapping  min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
+      </actuators>
+
+      <controller module="Sine" frequency="10"/>
+    </robot>
+  </robots>
+
+  <logging>
+    <!--<object target="anchor" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+    <!--<object target="sphere" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+
+    <!--<actuator target="muscle" precision="3"> <internal/> <external/> <desired/> <appliedForce/> <appliedVelocity/> </actuator>-->
+
+    <!--<console>-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</console>-->
+
+    <!--<gnuplot size="100000" delay="100" pairwise="true">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</gnuplot>-->
+
+    <!--<file name="muscle_log">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</file>-->
+
+    <!--<csv name="muscle_log">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</csv>-->
+
+    <!--<blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>-->
+    <!--<blender name="muscle_log.txt"/>-->
+  </logging>
+</rosiml>

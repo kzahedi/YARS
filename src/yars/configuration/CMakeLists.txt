@@ -67,6 +67,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataParseAttribute.cpp
             data/DataParseElement.cpp
             data/DataPhysicsParameter.cpp
+            data/DataPointConstraint.cpp
             data/DataRecording.cpp
             data/DataRobot.cpp
             data/DataRobotSimulationDescription.cpp
