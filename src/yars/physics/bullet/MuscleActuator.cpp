@@ -20,8 +20,8 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _constraint->setUpperAngLimit(0.0);
   _constraint->setPoweredAngMotor(false);
 
-  _constraint->setLowerLinLimit(0.2);
-  _constraint->setUpperLinLimit(1.0);
+  _constraint->setLowerLinLimit(0.0);
+  _constraint->setUpperLinLimit(2.0);
 
   // Enable/Disable active movement. Can always be changed during simulation.
   _constraint->setPoweredLinMotor(false);
@@ -141,7 +141,7 @@ void MuscleActuator::prePhysicsUpdate()
   yReal internalDesired = _data.getInternalDesiredValue(0);
   cout << "Internal Desired: " << internalDesired << endl;
 
-  if (internalDesired <= 0.5)
+  if (internalDesired > 0.1 && internalDesired <= 0.7)
   {
     if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
     {
@@ -216,10 +216,19 @@ void MuscleActuator::prePhysicsUpdate()
   // Fm = A(t) * Fl * Fv * Fmax
 
   //yReal velocity = _data.velocity();
-  /*yReal velocity = 0.5 * a_t; // Speed of movement.*/
-  yReal velocity = -0.5 * internalDesired; // Speed of movement.
-  force = 10000;
+  yReal velocity = 10 * -a_t;
+  force = 2000;
  
+  // The velocity is the maximum speed of the contraction. It is slowed down, if
+  // there is not enough force generated to move the bodypart.
+  _constraint->setMaxLinMotorForce(force);
+  // The maximum force to Seems to make no difference in movement after a
+  // certain threshold.
+  _constraint->setTargetLinMotorVelocity(velocity);
+
+  // Logging.
+  _data.setAppliedForceAndVelocity(0, force, velocity);
+
   cout << "Fv: " << _Fv << endl;
   cout << "Fl: " << _Fl << endl;
   cout << "LinearPos: " << _constraint->getLinearPos() << endl;
@@ -230,10 +239,6 @@ void MuscleActuator::prePhysicsUpdate()
   cout << "a_t: " << a_t << endl;
   cout << "_Fm: " << _Fm << endl;
   cout << "F: " << force << " " << "v: " << velocity << endl;
-
-  _constraint->setMaxLinMotorForce(force);
-  _constraint->setTargetLinMotorVelocity(velocity);
-  _data.setAppliedForceAndVelocity(0, force, velocity);
 }
 
 void MuscleActuator::processPositional()
