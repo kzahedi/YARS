@@ -1,6 +1,7 @@
-tags
-
-.vimprj/settings.vim
-
 build
+cmake-build-debug
+
+.idea
+.vimprj/settings.vim
 cscope.*
+tags

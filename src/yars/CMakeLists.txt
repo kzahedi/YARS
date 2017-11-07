@@ -46,6 +46,7 @@ if(YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET} SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
+  target_link_libraries(${YARS_TARGET} OgreMain)
 endif(YARS_USE_VISUALISATION)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)
