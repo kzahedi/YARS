@@ -40,13 +40,13 @@ if(YARS_USE_VISUALISATION)
       ${OGRE_Overlay_LIBRARIES}
       ${OGRE_RenderSystem_GL_LIBRARIES}
       ${OGRE_Plugin_ParticleFX_LIBRARIES}
+      OgreMain
       )
   endif(UNIX AND NOT APPLE)
 
   target_link_libraries(${YARS_TARGET} SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
-  target_link_libraries(${YARS_TARGET} OgreMain)
 endif(YARS_USE_VISUALISATION)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)
