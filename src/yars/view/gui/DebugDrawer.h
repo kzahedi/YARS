@@ -2,7 +2,7 @@
 #define __DEBUG_DRAWER_H__
 
 #include <LinearMath/btIDebugDraw.h>
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 class DebugDrawer: public btIDebugDraw, public Ogre::FrameListener
 {

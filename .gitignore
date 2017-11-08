@@ -1,5 +1,5 @@
 build
-cmake-build-debug
+cmake-build*
 
 .idea
 .vimprj/settings.vim

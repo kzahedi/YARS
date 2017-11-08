@@ -77,25 +77,25 @@
         </box>
 
         <!--<cylinder name="thigh_right" visualise="true">-->
-          <!--<dimension radius="0.02" height="0.42"/>-->
-          <!--<pose x="0" y="0.2" z="0.68" alpha="0" beta="0" gamma="0"/>-->
-          <!--<physics>-->
-            <!--<mass kg="0"/>-->
-          <!--</physics>-->
+        <!--<dimension radius="0.02" height="0.42"/>-->
+        <!--<pose x="0" y="0.2" z="0.68" alpha="0" beta="0" gamma="0"/>-->
+        <!--<physics>-->
+        <!--<mass kg="0"/>-->
+        <!--</physics>-->
         <!--</cylinder>-->
         <!--<cylinder name="shank_right" visualise="true">-->
-          <!--<dimension radius="0.02" height="0.38"/>-->
-          <!--<pose x="0" y="0.2" z="0.23" alpha="0" beta="0" gamma="0"/>-->
-          <!--<physics>-->
-            <!--<mass kg="0"/>-->
-          <!--</physics>-->
+        <!--<dimension radius="0.02" height="0.38"/>-->
+        <!--<pose x="0" y="0.2" z="0.23" alpha="0" beta="0" gamma="0"/>-->
+        <!--<physics>-->
+        <!--<mass kg="0"/>-->
+        <!--</physics>-->
         <!--</cylinder>-->
         <!--<box name="foot_right">-->
-          <!--<dimension height="0.01" width="0.1" depth="0.25"/>-->
-          <!--<pose x="-0.06" y="0.2" z="0" alpha="0" beta="0" gamma="90"/>-->
-          <!--<physics>-->
-            <!--<mass kg="2"/>-->
-          <!--</physics>-->
+        <!--<dimension height="0.01" width="0.1" depth="0.25"/>-->
+        <!--<pose x="-0.06" y="0.2" z="0" alpha="0" beta="0" gamma="90"/>-->
+        <!--<physics>-->
+        <!--<mass kg="2"/>-->
+        <!--</physics>-->
         <!--</box>-->
 
         <!-- MUSCLE ENDINGS: LEFT SIDE - FRONT -->
@@ -209,7 +209,7 @@
 
       <actuators>
         <!-- JOINTS -->
-        
+
         <!-- TODO: Change to spherical joint later? It would be the -->
         <!-- btPoint2PointConstraint. -->
         <hinge name="hip_left" type="angular" mode="passive">
@@ -356,13 +356,13 @@
 
         <!-- Model for tibialis anterior -->
         <!-- <muscle name="muscle_shank_front_left" type="hill"> -->
-          <!-- <source name="muscle_base_shank_front_left"/> -->
-          <!-- <destination name="muscle_end_foot_front_left"/> -->
-          <!-- <force max="10"/> -->
-          <!-- <velocity max="10"/> -->
-          <!-- <mapping min="-1.0" max="1.0"/> -->
-          <!-- <force-length_model model="linear"/> -->
-          <!-- <force-velocity_model model="linear"/> -->
+        <!-- <source name="muscle_base_shank_front_left"/> -->
+        <!-- <destination name="muscle_end_foot_front_left"/> -->
+        <!-- <force max="10"/> -->
+        <!-- <velocity max="10"/> -->
+        <!-- <mapping min="-1.0" max="1.0"/> -->
+        <!-- <force-length_model model="linear"/> -->
+        <!-- <force-velocity_model model="linear"/> -->
         <!-- </muscle> -->
 
         <!-- MUSCLES: LEFT - BACK -->
@@ -390,19 +390,56 @@
         <!-- </muscle> -->
 
         <!-- Model for tibialis posterior -->
-        <!-- <muscle name="muscle_shank_back_left" type="hill"> -->
-        <!--   <source name="muscle_base_shank_back_left"/> -->
-        <!--   <destination name="muscle_end_foot_back_left"/> -->
-        <!--   <force max="10"/> -->
-        <!--   <velocity max="10"/> -->
-        <!--   <mapping min="-1.0" max="1.0"/> -->
-        <!--   <force-length_model model="linear"/> -->
-        <!--   <force-velocity_model model="linear"/> -->
-        <!-- </muscle> -->
+        <!--<muscle name="muscle_shank_back_left" type="hill">-->
+          <!--<source name="muscle_base_shank_back_left"/>-->
+          <!--<destination name="muscle_end_foot_back_left"/>-->
+          <!--<force max="10"/>-->
+          <!--<velocity max="10"/>-->
+          <!--<mapping min="-1.0" max="1.0"/>-->
+          <!--<force-length_model model="linear"/>-->
+          <!--<force-velocity_model model="linear"/>-->
+        <!--</muscle> -->
 
       </actuators>
 
-      <controller module="Sine" frequency="10"/>
+
+      <sensors>
+
+        <!-- TODO: Sensoren für Muskeln? Spaeter evtl. -->
+
+        <deflection name="hip_left_sensor">
+          <object   name="hip_left"/>
+          <domain   min="-90" max="170"/>
+          <mapping  min="-1"  max="1"/>
+        </deflection>
+        <deflection name="knee_left_sensor">
+          <object   name="knee_left"/>
+          <domain   min="-150" max="5"/>
+          <mapping  min="-1"  max="1"/>
+        </deflection>
+        <deflection name="ankle_left_sensor">
+          <object   name="ankle_left"/>
+          <domain   min="-90" max="20"/>
+          <mapping  min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="foot_left_sensor">
+          <object name="foot_left"/>
+          <domain min="-1" max="1"/>
+        </binaryContact>
+
+        <position name="xyz_position_main">
+          <object name="hip"/>
+          <coordinates x="true" y="true" z="true"/>
+        </position>
+        <orientation name="xyz_orientation_main">
+          <object name="hip"/>
+          <coordinates x="true" y="true" z="true"/>
+        </orientation>
+
+      </sensors>
+
+      <controller module="TCPIP" frequency="10"/>
+      <!--<controller module="Sine" frequency="10"/>-->
 
     </robot>
   </robots>
@@ -418,22 +455,23 @@
       <!--<target name="muscle"/>-->
     <!--</console>-->
 
-    <!--[><gnuplot size="100000" delay="100" pairwise="true"><]-->
-      <!--[><target name="sphere"/><]-->
-      <!--[><target name="muscle"/><]-->
-    <!--[></gnuplot><]-->
+    <!--<gnuplot size="100000" delay="100" pairwise="true">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</gnuplot><]-->
 
     <!--<file name="muscle_log">-->
       <!--<target name="sphere"/>-->
       <!--<target name="muscle"/>-->
     <!--</file>-->
 
-    <!--[><csv name="muscle_log"><]-->
-      <!--[><target name="sphere"/><]-->
-      <!--[><target name="muscle"/><]-->
-    <!--[></csv><]-->
+    <!--<csv name="muscle_log">-->
+      <!--<target name="sphere"/>-->
+      <!--<target name="muscle"/>-->
+    <!--</csv>-->
 
     <!--<blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>-->
     <!--<blender name="muscle_log.txt"/>-->
   <!--</logging>-->
+
 </rosiml>
