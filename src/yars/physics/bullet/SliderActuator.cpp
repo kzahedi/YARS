@@ -78,11 +78,6 @@ SliderActuator::SliderActuator(DataSliderActuator *data, Robot *robot)
     _sliderConstraint->setLowerLinLimit(_data->deflection().min);
     _sliderConstraint->setUpperLinLimit(_data->deflection().max);
   }
-  else
-  {
-    _sliderConstraint->setLowerLinLimit(1); // unset limit solving
-    _sliderConstraint->setUpperLinLimit(0);
-  }
 
   SET(_sliderConstraint->setSoftnessDirLin,    _parameter.softnessDir);
   SET(_sliderConstraint->setRestitutionDirLin, _parameter.restitutionDir);
