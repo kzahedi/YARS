@@ -8,14 +8,14 @@
       <resolution name="1080p"/>
       <camera>
         <!-- Presentation View -->
-        <position x="-2.5" y="-1.8" z="1.0"/>
-        <lookAt x="0.0" y="0.00" z="0.5"/>
+        <!--<position x="-2.5" y="-1.8" z="1.0"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
         <!-- Front View -->
         <!-- <position x="-2.0" y="0" z="0.5"/> -->
         <!-- <lookAt x="0.0" y="0.00" z="0.5"/> -->
         <!-- Side View -->
-        <!-- <position x="0" y="-2.5" z="0.5"/> -->
-        <!-- <lookAt x="0.0" y="0.00" z="0.5"/> -->
+         <position x="0" y="-2.5" z="0.5"/>
+         <lookAt x="0.0" y="0.00" z="0.5"/>
       </camera>
       <osd>
         <time  font="Time"  size="25" colour="FFFF00"/>
@@ -45,7 +45,7 @@
           <dimension radius="0.1" height="0.394"/>
           <pose x="0" y="0" z="1.055" alpha="90" beta="0" gamma="0"/>
           <physics>
-            <mass kg="0"/>
+            <mass kg="10"/>
           </physics>
         </cylinder>
 
@@ -97,6 +97,14 @@
         <!--<mass kg="2"/>-->
         <!--</physics>-->
         <!--</box>-->
+
+        <sphere name="robot_rail_connection" visualise="true">
+          <dimension radius="0.01"/>
+          <pose x="0" y="0" z="1.155"/>
+          <physics>
+            <mass kg="5"/>
+          </physics>
+        </sphere>
 
         <!-- MUSCLE ENDINGS: LEFT SIDE - FRONT -->
 
@@ -208,6 +216,19 @@
       <pose z="0.015"/> <!-- Elevate robot so it's not inside the ground. -->
 
       <actuators>
+        <slider name="robot_rail" type="force" mode="passive">
+          <source      name="robot_rail_connection"/>
+          <force       max="1.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0" y="0" z="0" alpha="0" beta="0" gamma="180"/>
+        </slider>
+        <pointConstraint name="anchor_robot_rail" mode="muscle">
+          <source name="hip"/>
+          <destination name="robot_rail_connection"/>
+          <pose x="0" y="0.1" z="0"/>
+        </pointConstraint>
+
+
         <!-- JOINTS -->
 
         <!-- TODO: Change to spherical joint later? It would be the -->
@@ -438,8 +459,8 @@
 
       </sensors>
 
-      <controller module="TCPIP" frequency="10"/>
-      <!--<controller module="Sine" frequency="10"/>-->
+      <!--<controller module="TCPIP" frequency="10"/>-->
+      <controller module="Sine" frequency="10"/>
 
     </robot>
   </robots>
