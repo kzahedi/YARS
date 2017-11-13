@@ -39,6 +39,8 @@ class MuscleActuator : public Actuator
     /*bool                _isActive;*/
     bool                _isVisualised;
     //bool                _hasFriction;
+    double _lastTime;
+    double _lastPos;
 
     // TODO: implement calculation
     //const double _l0;

@@ -4,6 +4,7 @@
 #include "yars/configuration/data/DataMuscleActuator.h"
 #include "yars/physics/bullet/Actuator.h"
 #include "yars/physics/bullet/Robot.h"
+#include "yars/util/Timer.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
 {
   _constraint = createConstraint();
 
+
   // Disable rotation.
   _constraint->setLowerAngLimit(0.0);
   _constraint->setUpperAngLimit(0.0);
@@ -25,6 +27,9 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
 
   // Enable/Disable active movement.
   _constraint->setPoweredLinMotor(false);
+
+  _lastTime = Timer::getTime() / 1000.0;
+  _lastPos = _constraint->getLinearPos();
 
   //for(int i = 0; i < 6; i++) {
     //_constraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
@@ -77,7 +82,7 @@ btSliderConstraint* MuscleActuator::createConstraint()
   // In case vectors are perpendicular there is no unique solution. In that case
   // we choose an arbitrary rotation.
   btQuaternion q;
-  if (dotProduct < 0.0 && rotationAxis == btVector3(0.0, 0.0, 0.0)) 
+  if (dotProduct < 0.0 && rotationAxis == btVector3(0.0, 0.0, 0.0))
   {
     q = btQuaternion(sourceAxis.getX(), sourceAxis.getY(), sourceAxis.getZ(),
         0.0);
@@ -119,7 +124,7 @@ void MuscleActuator::prePhysicsUpdate()
       //m_calculatedTransformB = transB * m_frameInB;
       //
       //m_frameInA = rbB.getCenterOfMassTransform() * m_frameInB;
-      //oder wird beim Initialisieren direkt mitgegenben. 
+      //oder wird beim Initialisieren direkt mitgegenben.
 
     //btTransform  pose = _constraint->getFrameOffsetA(); // At point of origin.
     //btVector3    vec  = pose.getOrigin();
@@ -146,11 +151,17 @@ void MuscleActuator::prePhysicsUpdate()
   _forceVelocityModel = linear;
   _forceLengthModel = linear;
   double _Fv, _Fl;
-  // TODO: Check if its the current velocity and not the max.
-  double v = _constraint->getTargetLinMotorVelocity();
+
+  double crntTime = Timer::getTime();
+  double crntPos = _constraint->getLinearPos();
+  double v = (_lastPos - crntPos) / (_lastTime - crntTime);
+  _lastPos = crntPos;
+  _lastTime = crntTime;
+
   double _mu = 0.25;
   double _k = 10;
   double _L0 = 1;
+  double vmax = -3.5; // Unit: m/s
 //  double _L = min(_constraint->getLinearPos(), _L0);
   double _L = 0.4;
 
@@ -197,19 +208,24 @@ void MuscleActuator::prePhysicsUpdate()
   // Fm = A(t) * Fl * Fv * Fmax
 
   double velocity = 10 * -a_t;
-  force = 2000;
- 
+  force = 1500;
+
   // The velocity is the maximum speed of the contraction. It is slowed down if
   // there is not enough force generated to move the bodypart. The controller
   // should only tell the desired velocity.
   _constraint->setMaxLinMotorForce(force);
-  _constraint->setTargetLinMotorVelocity(velocity);
+  _constraint->setTargetLinMotorVelocity(vmax);
 
   // Logging.
   _data.setAppliedForceAndVelocity(0, force, velocity);
 
-//  cout << "Internal Desired: " << internalDesired << endl;
-//  cout << "Current velocity: " << v << "; Target Velocity: " << endl;
+  cout << "Force: " << force << endl;
+  cout << "Velocity: " << v << endl;
+  cout << "Max velocity: " << vmax << "; A(t): " << a_t << endl;
+  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
+  cout << "Linear position: " << _constraint->getLinearPos() << endl;
+  cout << "Time: " << Timer::getTime() << endl;
+
 //  cout << "Fv: " << _Fv << endl;
 //  cout << "Fl: " << _Fl << endl;
 //  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
@@ -220,6 +236,7 @@ void MuscleActuator::prePhysicsUpdate()
 //  cout << "a_t: " << a_t << endl;
 //  cout << "_Fm: " << _Fm << endl;
 //  cout << "F: " << force << " " << "v: " << velocity << endl;
+  cout << "--------------------------------------------------" << endl;
 }
 
 void MuscleActuator::processPositional()
