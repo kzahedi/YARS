@@ -39,22 +39,27 @@ class MuscleActuator : public Actuator
     /*bool                _isActive;*/
     bool                _isVisualised;
     //bool                _hasFriction;
-    double _lastTime;
+    unsigned long _lastTime;
     double _lastPos;
 
     // TODO: implement calculation
-    //const double _l0;
+    double _L0; // Rest length of muscle.
     //const double _lopt;
     //const double _m;
     //const double _fmax;
     //const double _w;
     //const double _c;
-    //const double _vmax;
+    const double _vmax;
     //const double _K;
     //const double _n;
     //const double _k;
     //const double _mu;
     //constexpr static double g = 9.81;
+    double calcVelocity();
+
+    double calcForce();
+
+    unsigned long _startTime;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

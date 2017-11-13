@@ -10,12 +10,11 @@ using namespace std;
 
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
-    _data{data}
-    //_l0{0},
+    _data{data},
+    _vmax{-3.5}
     //_lopt{0.9 * _l0}
 {
   _constraint = createConstraint();
-
 
   // Disable rotation.
   _constraint->setLowerAngLimit(0.0);
@@ -28,8 +27,11 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   // Enable/Disable active movement.
   _constraint->setPoweredLinMotor(false);
 
-  _lastTime = Timer::getTime() / 1000.0;
+  _lastTime = Timer::getTime();
   _lastPos = _constraint->getLinearPos();
+  _startTime = _lastTime;
+
+  _L0 = 0;
 
   //for(int i = 0; i < 6; i++) {
     //_constraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
@@ -134,109 +136,23 @@ void MuscleActuator::prePhysicsUpdate()
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
   }
 
-  double internalDesired = _data.getInternalDesiredValue(0);
+  if (Timer::getTime() - _startTime > 1000) {
+    if (_L0 == 0)
+    {
+      _L0 = _constraint->getLinearPos();
+    }
 
-  if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
-  {
-    _constraint->setPoweredLinMotor(true);
+    double Fm = calcForce();
+    
+    cout << "Force: " << Fm << endl;
+    cout << "--------------------------------------------------" << endl;
+
+    // The velocity is the maximum speed of the contraction. It is slowed down if
+    // there is not enough force generated to move the bodypart. The controller
+    // should only tell the desired velocity.
+    _constraint->setMaxLinMotorForce(Fm);
+    _constraint->setTargetLinMotorVelocity(_vmax);
   }
-
-  double a_t = internalDesired;
-
-  // _data.force() returns Fmax and _data.velocity() vmax. For now it's
-  // hardcoded in the class.
-  //double force = * _data.force(); // _data.force() * xyz * A(t)
-
-  // TODO: Only needed once. Move somewhere else.
-  _forceVelocityModel = linear;
-  _forceLengthModel = linear;
-  double _Fv, _Fl;
-
-  double crntTime = Timer::getTime();
-  double crntPos = _constraint->getLinearPos();
-  double v = (_lastPos - crntPos) / (_lastTime - crntTime);
-  _lastPos = crntPos;
-  _lastTime = crntTime;
-
-  double _mu = 0.25;
-  double _k = 10;
-  double _L0 = 1;
-  double vmax = -3.5; // Unit: m/s
-//  double _L = min(_constraint->getLinearPos(), _L0);
-  double _L = 0.4;
-
-  switch (_forceVelocityModel) {
-    case constant:
-      _Fv = 1;
-      break;
-    case linear:
-      _Fv = 1 - _mu * v;
-      break;
-    case hill:
-      //if (v > 0) {
-        //_Fv = (vmax + v) / (vmax - K * v);
-      //} else {
-        //_Fv = N + (N - 1) * ((vmax - v) / (-7.56 * K * v - vmax));
-      //}
-      break;
-    //default:
-      //error
-  }
-  switch (_forceLengthModel) {
-    case constant:
-      _Fl = 1;
-      break;
-    case linear:
-      _Fl = _k * (_L0 - _L);
-      break;
-    case hill:
-      //_Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
-      break;
-    //default:
-      //error
-  }
-
-  double _Fmax = 2500;
-  double _Fm = a_t * _Fl * _Fv * _Fmax;
-
-  double _m = 80; // Adult man.
-  double _g = 10; // Rounded gravitational constant as in paper.
-  double force = - _m * _g + _Fm;
-
-  //double velocity = fabs(a_t) * _data.velocity(); // _data.velocity() * abc * A(T)
-  // Force = -mg + Fm (Force at ground contact. Else it's 0.)
-  // Fm = A(t) * Fl * Fv * Fmax
-
-  double velocity = 10 * -a_t;
-  force = 1500;
-
-  // The velocity is the maximum speed of the contraction. It is slowed down if
-  // there is not enough force generated to move the bodypart. The controller
-  // should only tell the desired velocity.
-  _constraint->setMaxLinMotorForce(force);
-  _constraint->setTargetLinMotorVelocity(vmax);
-
-  // Logging.
-  _data.setAppliedForceAndVelocity(0, force, velocity);
-
-  cout << "Force: " << force << endl;
-  cout << "Velocity: " << v << endl;
-  cout << "Max velocity: " << vmax << "; A(t): " << a_t << endl;
-  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
-  cout << "Linear position: " << _constraint->getLinearPos() << endl;
-  cout << "Time: " << Timer::getTime() << endl;
-
-//  cout << "Fv: " << _Fv << endl;
-//  cout << "Fl: " << _Fl << endl;
-//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
-//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
-//  cout << "L: " << _L << endl;
-//  cout << "_data->force(): " << _data.force() << endl;
-//  cout << "_data->velocity(): " << _data.velocity() << endl;
-//  cout << "a_t: " << a_t << endl;
-//  cout << "_Fm: " << _Fm << endl;
-//  cout << "F: " << force << " " << "v: " << velocity << endl;
-  cout << "--------------------------------------------------" << endl;
 }
 
 void MuscleActuator::processPositional()
@@ -271,4 +187,92 @@ void MuscleActuator::reset()
 btTypedConstraint* MuscleActuator::constraint()
 {
   return _constraint;
+}
+
+double MuscleActuator::calcVelocity() {
+  unsigned long crntTime = Timer::getTime();
+  double crntPos = _constraint->getLinearPos();
+  double v = (_lastPos - crntPos) / (_lastTime - crntTime) / 1000.0;
+  _lastPos = crntPos;
+  _lastTime = crntTime;
+  return v;
+}
+
+double MuscleActuator::calcForce() {
+  double internalDesired = _data.getInternalDesiredValue(0);
+
+  if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
+  {
+    _constraint->setPoweredLinMotor(true);
+  }
+
+  double a_t = internalDesired;
+
+  // TODO:
+  // _data.force() returns Fmax and _data.velocity() _vmax. For now it's
+  // hardcoded in the class.
+
+  _forceVelocityModel = linear;
+  _forceLengthModel = linear;
+
+  // TODO: Refactor.
+  double _Fv, _Fl;
+  double v = calcVelocity();
+  double _mu = 0.25;
+  double _k = 10;
+  double L = _constraint->getLinearPos();
+  double _Fmax = 5000;
+
+  switch (_forceVelocityModel) {
+    case constant:
+      _Fv = 1;
+      break;
+    case linear:
+      _Fv = 1 - _mu * v;
+      break;
+    case hill:
+      //if (v > 0) {
+      //_Fv = (_vmax + v) / (_vmax - K * v);
+      //} else {
+      //_Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
+      //}
+      break;
+      //default:
+      //error
+  }
+  switch (_forceLengthModel) {
+    case constant:
+      _Fl = 1;
+      break;
+    case linear:
+      _Fl = _k * (_L0 - L);
+      break;
+    case hill:
+      //_Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
+      break;
+      //default:
+      //error
+  }
+
+  cout << "Velocity: " << v << endl;
+  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
+  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
+  cout << "L:  " << _constraint->getLinearPos() << endl;
+  cout << "L0: " << _L0 << endl;
+
+  return a_t * _Fl * _Fv * _Fmax; // Resulting muscle force.
+
+//  cout << "Fv: " << _Fv << endl;
+//  cout << "Fl: " << _Fl << endl;
+//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
+//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
+//  cout << "L: " << L << endl;
+//  cout << "_data->force(): " << _data.force() << endl;
+//  cout << "_data->velocity(): " << _data.velocity() << endl;
+//  cout << "a_t: " << a_t << endl;
+//  cout << "_Fm: " << _Fm << endl;
+//  cout << "F: " << force << " " << "v: " << velocity << endl;
+
+  // Logging.
+//  _data.setAppliedForceAndVelocity(0, Fm, v);
 }
