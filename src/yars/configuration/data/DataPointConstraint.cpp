@@ -145,7 +145,6 @@ int DataPointConstraint::dimension()
 void DataPointConstraint::setDesiredValue(int index, yReal value)
 {
   YM_LOCK;
-  cout << value << endl;
   _desiredExValue[index] = _externalDomain[index].cut(value);
   _desiredValue[index] = _internalExternalMapping[index].invMap(_desiredExValue[index]);
   YM_UNLOCK;

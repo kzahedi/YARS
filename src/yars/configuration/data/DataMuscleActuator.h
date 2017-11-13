@@ -3,8 +3,9 @@
 
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/types/Domain.h"
-#include "yars/util/Mapping.h"
 // TODO: documentation
+
+class Mapping;
 
 #define YARS_STRING_MUSCLE (char*)"muscle"
 #define YARS_STRING_MUSCLE_DEFINITION YARS_STRING_MUSCLE DIVIDER "definition"
@@ -14,6 +15,7 @@ class DataMuscleActuator : public DataActuator
   public:
     // TODO: Try with reference
     DataMuscleActuator(DataNode* parent);
+    ~DataMuscleActuator();
 
     yReal velocity() const;
     yReal force() const;
@@ -58,7 +60,7 @@ class DataMuscleActuator : public DataActuator
     Pose                 _pose;
     std::string          _source;
     std::string          _destination;
-    std::string          _jointType;
+    std::string          _type;
     std::string          _name;
 
     std::vector<yReal>   _internalValue;

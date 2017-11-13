@@ -3,10 +3,11 @@
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/configuration/data/DataPoseFactory.h"
 #include "yars/configuration/xsd/specification/XsdSpecification.h"
+#include "yars/util/Mapping.h"
 #include "yars/util/YarsErrorHandler.h"
 #include "yars/view/console/ConsoleView.h"
-#include <yars/defines/mutex.h>
 #include <yars/configuration/data/DataDomainFactory.h>
+#include <yars/defines/mutex.h>
 
 // TODO: Remove pose. Positions for this constraint are generated automatically.
 
@@ -14,7 +15,8 @@ using namespace std;
 
 // TODO: check which definitions can be put to higher level in class hierarchy.
 #define YARS_STRING_VELOCITY (char*)"velocity"
-#define YARS_STRING_VELOCITY_DEFINITION      (char*)"slider_velocity" DIVIDER DEFINITION
+#define YARS_STRING_VELOCITY_DEFINITION (char*)"slider_velocity" DIVIDER \
+  DEFINITION
 #define YARS_STRING_FORCE (char*)"force"
 #define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER DEFINITION
 #define YARS_STRING_FORCE_VELOCITY (char*)"force and velocity"
@@ -28,14 +30,16 @@ using namespace std;
 #define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
 #define YARS_STRING_FORCE_VELOCITY_MODEL_DEFINITION (char*)"force-velocity" \
   DIVIDER "model" DIVIDER DEFINITION
-# define YARS_STRING_MAPPING                  (char*)"mapping"
-# define YARS_STRING_MIN_MAX_DEFINITION       (char*)"min"           DIVIDER "max"      DIVIDER DEFINITION
+#define YARS_STRING_MAPPING (char*)"mapping"
+#define YARS_STRING_MIN_MAX_DEFINITION (char*)"min" DIVIDER "max" DIVIDER \
+  DEFINITION
 
-// Fos XSD Pose.
-# define YARS_STRING_POSE                     (char*)"pose"
-# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
-# define YARS_STRING_GLOBAL      (char*)"global"
-# define YARS_STRING_POSEG_DEFINITION         (char*)"pose_with_global" DIVIDER DEFINITION
+// For XSD Pose.
+#define YARS_STRING_POSE (char*)"pose"
+#define YARS_STRING_RAD_DEG_DEFINITION (char*)"radOrDeg" DIVIDER DEFINITION
+#define YARS_STRING_GLOBAL (char*)"global"
+#define YARS_STRING_POSEG_DEFINITION (char*)"pose_with_global" DIVIDER \
+  DEFINITION
 
 // Probably will need to be constexpr because of g. Think what to do with g
 // then.
@@ -64,6 +68,11 @@ DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   YM_INIT;
 }
 
+DataMuscleActuator::~DataMuscleActuator()
+{
+  YM_CLOSE;
+}
+
 yReal DataMuscleActuator::velocity() const
 {
   return _maxVelocity;
@@ -85,7 +94,7 @@ void DataMuscleActuator::add(DataParseElement* element)
   else if (element->opening(YARS_STRING_MUSCLE))
   {
     element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_TYPE, _jointType);
+    element->set(YARS_STRING_TYPE, _type);
   }
   else if (element->opening(YARS_STRING_SOURCE))
   {
@@ -119,15 +128,6 @@ void DataMuscleActuator::add(DataParseElement* element)
 
 void DataMuscleActuator::close()
 {
-  if (_jointType == YARS_STRING_FORCE_VELOCITY)
-  {
-    _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
-  }
-  else
-  {
-    cout << "Unkown _jointType: " << _jointType << endl;
-  }
-
   setMapping();
 }
 
@@ -211,7 +211,7 @@ int DataMuscleActuator::dimension()
 void DataMuscleActuator::setDesiredValue(int index, yReal value)
 {
   YM_LOCK;
-  cout << value << endl;
+//  cout << value << endl;
   _desiredExValue[index] = _externalDomain[index].cut(value);
   _desiredValue[index] = _internalExternalMapping[index].invMap(_desiredExValue[index]);
   YM_UNLOCK;
@@ -284,16 +284,16 @@ DataActuator* DataMuscleActuator::_copy()
   auto copy = new DataMuscleActuator(nullptr);
 
   copy->_mapping         = _mapping;
-  copy->_pose               = _pose;
+  copy->_pose            = _pose;
   copy->_destination     = _destination;
-  copy->_jointType       = _jointType;
+  copy->_type            = _type;
   copy->_name            = _name;
   copy->_source          = _source;
   copy->_maxForce        = _maxForce;
   copy->_maxVelocity     = _maxVelocity;
   copy->_axisOrientation = _axisOrientation;
   copy->_axisPosition    = _axisPosition;
-  // Duplicate in DataActuator::copy. But necessarry for setMapping()
+
   copy->_controlType = _controlType;
   copy->setMapping();
 

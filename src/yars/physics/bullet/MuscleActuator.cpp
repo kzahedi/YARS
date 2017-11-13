@@ -14,7 +14,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
     //_lopt{0.9 * _l0}
 {
   _constraint = createConstraint();
-
+  
   // Disable rotation.
   _constraint->setLowerAngLimit(0.0);
   _constraint->setUpperAngLimit(0.0);
@@ -23,7 +23,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _constraint->setLowerLinLimit(0.0);
   _constraint->setUpperLinLimit(2.0);
 
-  // Enable/Disable active movement. Can always be changed during simulation.
+  // Enable/Disable active movement.
   _constraint->setPoweredLinMotor(false);
 
   //for(int i = 0; i < 6; i++) {
@@ -32,12 +32,10 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   //}
 
   //if (_data.isDeflectionSet()) {
-  //_constraint->setLowerLinLimit(_data.deflection().min);
   //_constraint->setUpperLinLimit(_data.deflection().max); } else {
   //_constraint->setLowerLinLimit(1); // unset limit solving
   //_constraint->setUpperLinLimit(0); }
 
-  cout << "Data control type: " << _data.controlType() << endl;
   switch(_data.controlType()) {
     case DATA_ACTUATOR_CONTROL_POSITIONAL:
       _type = positional;
@@ -76,8 +74,8 @@ btSliderConstraint* MuscleActuator::createConstraint()
   // 1 because of normalization.
   btScalar rotation = std::sqrt(1 + dotProduct);
 
-  // In case vectors are perpendicular there is no unique solution. We choose an
-  // arbitrary rotation then.
+  // In case vectors are perpendicular there is no unique solution. In that case
+  // we choose an arbitrary rotation.
   btQuaternion q;
   if (dotProduct < 0.0 && rotationAxis == btVector3(0.0, 0.0, 0.0)) 
   {
@@ -102,7 +100,6 @@ btSliderConstraint* MuscleActuator::createConstraint()
 
 MuscleActuator::~MuscleActuator()
 {
-  if (_constraint != nullptr) delete _constraint;
 }
 
 DataActuator* MuscleActuator::data()
@@ -130,50 +127,37 @@ void MuscleActuator::prePhysicsUpdate()
     // Coordinates are relative to world.
     //_data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-    cout << "Visual Output:\n" << endl;
+//    cout << "Visual Output:\n" << endl;
   }
   
-  /** 
-   * To make the constraint move passively the motor has to be disabled and only
-   * enabled when there is a force to put on the body.
-   * **/
-
   yReal internalDesired = _data.getInternalDesiredValue(0);
-  cout << "Internal Desired: " << internalDesired << endl;
 
-  if (internalDesired > 0.1 && internalDesired <= 0.7)
+  if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
   {
-    if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
-    {
-      _constraint->setPoweredLinMotor(true);
-    }
+    _constraint->setPoweredLinMotor(true);
   }
   else
   {
     _constraint->setPoweredLinMotor(false);
   }
 
-  // Sine controller returns values from -1 to 1 after mapping. But we need
-  // positive ones only.
-  yReal a_t = fabs(internalDesired / 10.0); // A(t)
+  yReal a_t = internalDesired;
 
   // _data.force() returns Fmax and _data.velocity() vmax. For now it's
   // hardcoded in the class.
   //yReal force = * _data.force(); // _data.force() * xyz * A(t)
 
-  // In this model elasticity isn't considered. The actuator simply stops at max
-  // length.
-
   // TODO: Only needed once. Move somewhere else.
   _forceVelocityModel = linear;
   _forceLengthModel = linear;
   yReal _Fv, _Fl;
-  yReal v = a_t;
+  // TODO: Check if its the current velocity and not the max.
+  yReal v = _constraint->getTargetLinMotorVelocity();
   yReal _mu = 0.25;
   yReal _k = 10;
   yReal _L0 = 1;
-  yReal _L = min(_constraint->getLinearPos(), _L0);
-  //yReal _L = 0.4;
+//  yReal _L = min(_constraint->getLinearPos(), _L0);
+  yReal _L = 0.4;
   switch (_forceVelocityModel) {
     case constant:
       _Fv = 1;
@@ -215,30 +199,29 @@ void MuscleActuator::prePhysicsUpdate()
   // Force = -mg + Fm (Force at ground contact. Else it's 0.)
   // Fm = A(t) * Fl * Fv * Fmax
 
-  //yReal velocity = _data.velocity();
   yReal velocity = 10 * -a_t;
   force = 2000;
  
-  // The velocity is the maximum speed of the contraction. It is slowed down, if
+  // The velocity is the maximum speed of the contraction. It is slowed down if
   // there is not enough force generated to move the bodypart.
   _constraint->setMaxLinMotorForce(force);
-  // The maximum force to Seems to make no difference in movement after a
-  // certain threshold.
   _constraint->setTargetLinMotorVelocity(velocity);
 
   // Logging.
   _data.setAppliedForceAndVelocity(0, force, velocity);
 
-  cout << "Fv: " << _Fv << endl;
-  cout << "Fl: " << _Fl << endl;
-  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
-  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
-  cout << "L: " << _L << endl;
-  cout << "_data->force(): " << _data.force() << endl;
-  cout << "_data->velocity(): " << _data.velocity() << endl;
-  cout << "a_t: " << a_t << endl;
-  cout << "_Fm: " << _Fm << endl;
-  cout << "F: " << force << " " << "v: " << velocity << endl;
+//  cout << "Internal Desired: " << internalDesired << endl;
+//  cout << "Current velocity: " << v << "; Target Velocity: " << endl;
+//  cout << "Fv: " << _Fv << endl;
+//  cout << "Fl: " << _Fl << endl;
+//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
+//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
+//  cout << "L: " << _L << endl;
+//  cout << "_data->force(): " << _data.force() << endl;
+//  cout << "_data->velocity(): " << _data.velocity() << endl;
+//  cout << "a_t: " << a_t << endl;
+//  cout << "_Fm: " << _Fm << endl;
+//  cout << "F: " << force << " " << "v: " << velocity << endl;
 }
 
 void MuscleActuator::processPositional()
@@ -251,7 +234,6 @@ void MuscleActuator::processVelocitySlider()
 
 void MuscleActuator::processForceSlider()
 {
-  cout << "process force slider" << endl;
 }
 
 void MuscleActuator::postPhysicsUpdate()
