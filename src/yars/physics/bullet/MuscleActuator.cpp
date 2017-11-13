@@ -14,7 +14,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
     //_lopt{0.9 * _l0}
 {
   _constraint = createConstraint();
-  
+
   // Disable rotation.
   _constraint->setLowerAngLimit(0.0);
   _constraint->setUpperAngLimit(0.0);
@@ -127,9 +127,8 @@ void MuscleActuator::prePhysicsUpdate()
     // Coordinates are relative to world.
     //_data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-//    cout << "Visual Output:\n" << endl;
   }
-  
+
   yReal internalDesired = _data.getInternalDesiredValue(0);
 
   if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
@@ -244,7 +243,8 @@ void MuscleActuator::postPhysicsUpdate()
     btVector3    vec  = pose.getOrigin();
     btQuaternion q    = pose.getRotation();
     _data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
-    _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+    _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(),
+                                                 q.getZ()));
   }
 }
 

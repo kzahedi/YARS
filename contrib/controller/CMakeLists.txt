@@ -31,13 +31,6 @@ target_link_libraries(YarsControllerBraitenberg3a
   boost_system
   boost_date_time)
 
-add_library(YarsControllerMuscle SHARED muscle.cpp)
-target_link_libraries(YarsControllerMuscle
-  YarsRobotController
-  boost_system
-  boost_date_time
-  )
-
 add_library(YarsControllerHexapod SHARED Hexapod.cpp)
 target_link_libraries(YarsControllerHexapod
   YarsConfiguration
