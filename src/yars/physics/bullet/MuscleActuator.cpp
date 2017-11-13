@@ -136,14 +136,14 @@ void MuscleActuator::prePhysicsUpdate()
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
   }
 
-  if (Timer::getTime() - _startTime > 1000) {
+  if (Timer::getTime() - _startTime > 2000) {
     if (_L0 == 0)
     {
       _L0 = _constraint->getLinearPos();
     }
 
     double Fm = calcForce();
-    
+
     cout << "Force: " << Fm << endl;
     cout << "--------------------------------------------------" << endl;
 
