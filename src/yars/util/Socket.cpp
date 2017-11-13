@@ -218,13 +218,13 @@ const Socket& Socket::operator>>(Buffer &b) const
       recv(_sock, sizeBytes, 4, MSG_WAITALL);
       for(int i = 0; i < 4; i++) b.push_back(sizeBytes[i]);
       ((Socket*)this)->__coneverToInt(sizeBytes, &size);
-      size *= sizeof(yReal);
+      size *= sizeof(double);
       break;
     case __INTEGER_VALUE:
       size = sizeof(int);
       break;
     case __DOUBLE_VALUE:
-      size = sizeof(yReal);
+      size = sizeof(double);
       break;
   }
 
@@ -259,7 +259,7 @@ const Socket& Socket::operator>>(Buffer &b) const
 // DOUBLE - SEND
 ////////////////////////////////////////////////////////////////////////////////
 
-const Socket& Socket::operator<<(const yReal &d) const
+const Socket& Socket::operator<<(const double &d) const
 {
   Buffer b;
   b.resize(0);
@@ -273,10 +273,10 @@ const Socket& Socket::operator<<(const yReal &d) const
 // DOUBLE - RECEIVE
 ////////////////////////////////////////////////////////////////////////////////
 
-const Socket& Socket::operator>>(yReal& d) const
+const Socket& Socket::operator>>(double& d) const
 {
   d = 0;
-  int size = sizeof(yReal);
+  int size = sizeof(double);
   Buffer b;
   b.resize(size);
   b.label = __DOUBLE_VALUE;
@@ -429,7 +429,7 @@ const Socket& Socket::operator>>(std::vector<int>& v) const
 ////////////////////////////////////////////////////////////////////////////////
 // VECTOR OF DOUBLES - SEND
 ////////////////////////////////////////////////////////////////////////////////
-const Socket& Socket::operator<<(const std::vector<yReal>& v) const
+const Socket& Socket::operator<<(const std::vector<double>& v) const
 {
   Buffer b;
   b.label = __DOUBLE_VECTOR;
@@ -438,9 +438,9 @@ const Socket& Socket::operator<<(const std::vector<yReal>& v) const
 
   ((Socket*)this)->__writeInteger(&b, s);
 
-  for(std::vector<yReal>::const_iterator i = v.begin(); i != v.end(); i++)
+  for(std::vector<double>::const_iterator i = v.begin(); i != v.end(); i++)
   {
-    yReal value = *i;
+    double value = *i;
     ((Socket*)this)->__writeDouble(&b, value);
   }
   *this << b;
@@ -452,7 +452,7 @@ const Socket& Socket::operator<<(const std::vector<yReal>& v) const
 // VECTOR OF DOUBLES - RECEIVE
 ////////////////////////////////////////////////////////////////////////////////
 
-const Socket& Socket::operator>>(std::vector<yReal>& v) const
+const Socket& Socket::operator>>(std::vector<double>& v) const
 {
   v.clear();
   Buffer b;
@@ -467,8 +467,8 @@ const Socket& Socket::operator>>(std::vector<yReal>& v) const
 
   for(int i = 0; i < vectorSize; i++)
   {
-    yReal value = 0;
-    ((Socket*)this)->__readDouble(&value, b, i * sizeof(yReal) + sizeof(int));
+    double value = 0;
+    ((Socket*)this)->__readDouble(&value, b, i * sizeof(double) + sizeof(int));
     v.push_back(value);
   }
   return *this;
@@ -480,20 +480,20 @@ const Socket& Socket::operator>>(std::vector<yReal>& v) const
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-void Socket::__writeDouble(Buffer *b, yReal d)
+void Socket::__writeDouble(Buffer *b, double d)
 {
   char *x_ptr=reinterpret_cast<char*>(&d);
-  for(unsigned int count = 0;count < sizeof(yReal); count++)
+  for(unsigned int count = 0;count < sizeof(double); count++)
   {
     b->push_back(*(x_ptr+count));
   }
 }
 
-void Socket::__readDouble(yReal *d, Buffer b, int startIndex)
+void Socket::__readDouble(double *d, Buffer b, int startIndex)
 {
   *d = 0;
   char *x_ptr=reinterpret_cast<char *>(d);
-  for(int count = sizeof(yReal)-1; count >= 0; count--)
+  for(int count = sizeof(double)-1; count >= 0; count--)
   {
     *(x_ptr+count)|=b[startIndex + count];
   }
@@ -539,7 +539,7 @@ void Socket::__check(const char a, const char b) noexcept(false)
   switch(a)
   {
     case __DOUBLE_VALUE:
-      oss << "<yReal value> '"    << __DOUBLE_VALUE   << "'";
+      oss << "<double value> '"    << __DOUBLE_VALUE   << "'";
       break;
     case __INTEGER_VALUE:
       oss << "<integer value> '"  << __INTEGER_VALUE  << "'";
@@ -548,7 +548,7 @@ void Socket::__check(const char a, const char b) noexcept(false)
       oss << "<string value> '"   << __STRING_VALUE   << "'";
       break;
     case __DOUBLE_VECTOR:
-      oss << "<yReal vector> '"   << __DOUBLE_VECTOR  << "'";
+      oss << "<double vector> '"   << __DOUBLE_VECTOR  << "'";
       break;
     case __INTEGER_VECTOR:
       oss << "<integer vector> '" << __INTEGER_VECTOR << "'";
@@ -561,7 +561,7 @@ void Socket::__check(const char a, const char b) noexcept(false)
   switch(b)
   {
     case __DOUBLE_VALUE:
-      oss << "<yReal value> '"    << __DOUBLE_VALUE   << "'";
+      oss << "<double value> '"    << __DOUBLE_VALUE   << "'";
       break;
     case __INTEGER_VALUE:
       oss << "<integer value> '"  << __INTEGER_VALUE  << "'";
@@ -570,7 +570,7 @@ void Socket::__check(const char a, const char b) noexcept(false)
       oss << "<string value> '"   << __STRING_VALUE   << "'";
       break;
     case __DOUBLE_VECTOR:
-      oss << "<yReal vector> '"   << __DOUBLE_VALUE   << "'";
+      oss << "<double vector> '"   << __DOUBLE_VALUE   << "'";
       break;
     case __INTEGER_VECTOR:
       oss << "<integer vector> '" << __INTEGER_VECTOR << "'";

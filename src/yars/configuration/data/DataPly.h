@@ -32,8 +32,8 @@ class DataPly : public DataObject
     bool   isSoft();
 
     void   lock();
-    void   setVertex(int i, yReal x, yReal y, yReal z);
-    void   setNormal(int i, yReal x, yReal y, yReal z);
+    void   setVertex(int i, double x, double y, double z);
+    void   setNormal(int i, double x, double y, double z);
     void   setIndex(int i, int index);
     void   unlock();
 

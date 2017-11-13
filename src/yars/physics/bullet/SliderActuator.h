@@ -30,9 +30,9 @@ class SliderActuator : public Actuator
     btSliderConstraint *_sliderConstraint;
     SliderParameter     _parameter;
     int                 _sliderType;
-    yReal               _position;
-    yReal               _lastPosition;
-    yReal               _friction;
+    double               _position;
+    double               _lastPosition;
+    double               _friction;
     bool                _isActive;
     bool                _isVisualised;
     bool                _hasFriction;

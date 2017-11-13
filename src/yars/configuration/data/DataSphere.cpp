@@ -24,7 +24,7 @@ DataSphere::~DataSphere()
 }
 
 
-yReal DataSphere::radius()
+double DataSphere::radius()
 {
   return _radius;
 }
@@ -67,7 +67,7 @@ void DataSphere::add(DataParseElement *element)
 
 }
 
-void DataSphere::setRadius(yReal radius)
+void DataSphere::setRadius(double radius)
 {
   _radius = radius;
 }

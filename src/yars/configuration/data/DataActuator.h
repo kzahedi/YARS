@@ -44,23 +44,23 @@ class DataActuator : public DataNode
     virtual string source()                               = 0; // TODO: move from actuators here
     virtual string name()                                 = 0;
 
-    virtual void setInternalValue(int index, yReal value) = 0;
-    virtual void setExternalValue(int index, yReal value) = 0;
-    virtual yReal internalValue(int index)                = 0;
-    virtual yReal externalValue(int index)                = 0;
+    virtual void setInternalValue(int index, double value) = 0;
+    virtual void setExternalValue(int index, double value) = 0;
+    virtual double internalValue(int index)                = 0;
+    virtual double externalValue(int index)                = 0;
     virtual int dimension()                               = 0;
-    virtual void setDesiredValue(int index, yReal value)  = 0;
-    virtual yReal getInternalDesiredValue(int index)      = 0;
-    virtual yReal getExternalDesiredValue(int index)      = 0;
+    virtual void setDesiredValue(int index, double value)  = 0;
+    virtual double getInternalDesiredValue(int index)      = 0;
+    virtual double getExternalDesiredValue(int index)      = 0;
 
     virtual Domain getInternalDomain(int index)           = 0;
     virtual Domain getExternalDomain(int index)           = 0;
     virtual bool isActive(int index)                      = 0;
 
-    virtual yReal getAppliedForce(int index)              = 0;
-    virtual yReal getAppliedVelocity(int index)           = 0;
+    virtual double getAppliedForce(int index)              = 0;
+    virtual double getAppliedVelocity(int index)           = 0;
 
-    virtual void setAppliedForceAndVelocity(int index, yReal force, yReal velocity) = 0;
+    virtual void setAppliedForceAndVelocity(int index, double force, double velocity) = 0;
 
     virtual Pose       pose()                             = 0;
     virtual DataActuator* _copy()                         = 0;

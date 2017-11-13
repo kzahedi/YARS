@@ -35,13 +35,13 @@ Matrix::Matrix(int rows, int cols)
   __init(rows,cols,0.0); // standard matrix
 }
 
-Matrix::Matrix(int rows, int cols, yReal initialValue)
+Matrix::Matrix(int rows, int cols, double initialValue)
 {
   _cell = NULL;
   __init(rows,cols,initialValue); // standard matrix
 }
 
-Matrix::Matrix(int rows, int cols, std::vector<yReal> initialValues)
+Matrix::Matrix(int rows, int cols, std::vector<double> initialValues)
 {
   _cell = NULL;
   __init(rows,cols, 0.0);
@@ -66,7 +66,7 @@ Matrix::~Matrix()
   __deleteCells();
 }
 
-void Matrix::__init(const int rows, const int cols, yReal initialValue)
+void Matrix::__init(const int rows, const int cols, double initialValue)
 {
   if(_cell != NULL)
   {
@@ -76,10 +76,10 @@ void Matrix::__init(const int rows, const int cols, yReal initialValue)
   _rows = rows;
   _cols = cols;
 
-  _cell = new yReal* [rows];
+  _cell = new double* [rows];
   for(int i=0; i<rows; i++)
   {
-    _cell[i] = new yReal [cols];
+    _cell[i] = new double [cols];
   }
 
   for(int i = 0; i < rows; i++)
@@ -92,7 +92,7 @@ void Matrix::__init(const int rows, const int cols, yReal initialValue)
 }
 
 
-yReal Matrix::operator()(int row, int col) const noexcept(false)
+double Matrix::operator()(int row, int col) const noexcept(false)
 {
   if(row >= _rows || col >= _cols || row < 0 || col < 0)
   {
@@ -119,27 +119,27 @@ yReal Matrix::operator()(int row, int col) const noexcept(false)
   return _cell[row][col];
 }
 
-yReal& Matrix::operator()(int row, int col) noexcept(false)
+double& Matrix::operator()(int row, int col) noexcept(false)
 {
   __check(row,col);
   return _cell[row][col];
 }
 
-void Matrix::__set(const int row, const int col, const yReal value)
+void Matrix::__set(const int row, const int col, const double value)
 {
   __check(row,col);
   _cell[row][col] = value;
 }
 
-yReal Matrix::__get(int row, int col)
+double Matrix::__get(int row, int col)
 {
   __check(row,col);
   return _cell[row][col];
 }
 
-yReal Matrix::rowSum(int row)
+double Matrix::rowSum(int row)
 {
-  yReal sum = 0;
+  double sum = 0;
   for(int c = 0; c < _cols; c++)
   {
     sum += _cell[row][c];
@@ -147,9 +147,9 @@ yReal Matrix::rowSum(int row)
   return sum;
 }
 
-yReal Matrix::colSum(int col)
+double Matrix::colSum(int col)
 {
-  yReal sum = 0;
+  double sum = 0;
   for(int r = 0; r < _rows; r++)
   {
     sum += _cell[r][col];
@@ -247,7 +247,7 @@ Matrix& Matrix::operator-=(const Matrix &m) noexcept(false)
   return *this;
 }
 
-Matrix& Matrix::operator*=(const yReal factor)
+Matrix& Matrix::operator*=(const double factor)
 {
   for(int r = 0; r < _rows; r++)
   {
@@ -273,7 +273,7 @@ const Matrix Matrix::operator-(const Matrix &m)
   return r;
 }
 
-const Matrix Matrix::operator*(const yReal factor)
+const Matrix Matrix::operator*(const double factor)
 {
   Matrix r = *this;
   r *= factor;
@@ -331,7 +331,7 @@ void Matrix::setDiagonalMatrix(float value)
   __setDiagonalMatrix(value);
 }
 
-void Matrix::__setDiagonalMatrix(yReal value)
+void Matrix::__setDiagonalMatrix(double value)
 {
   for(int r = 0; r < _rows; r++)
   {
@@ -349,12 +349,12 @@ void Matrix::__setDiagonalMatrix(yReal value)
   }
 }
 
-void Matrix::reset(int rows, int cols, yReal value)
+void Matrix::reset(int rows, int cols, double value)
 {
   __init(rows, cols, value);
 }
 
-Matrix& Matrix::operator=(const yReal d)
+Matrix& Matrix::operator=(const double d)
 {
   for(int r = 0; r < _rows; r++)
   {
@@ -366,7 +366,7 @@ Matrix& Matrix::operator=(const yReal d)
   return *this;
 }
 
-Matrix& Matrix::operator-=(const yReal d)
+Matrix& Matrix::operator-=(const double d)
 {
   for(int r = 0; r < _rows; r++)
   {
@@ -378,7 +378,7 @@ Matrix& Matrix::operator-=(const yReal d)
   return *this;
 }
 
-Matrix& Matrix::operator/=(const yReal d)
+Matrix& Matrix::operator/=(const double d)
 {
   for(int r = 0; r < _rows; r++)
   {
@@ -391,11 +391,11 @@ Matrix& Matrix::operator/=(const yReal d)
 }
 
 
-void Matrix::rescaleRows(yReal value, bool verbose)
+void Matrix::rescaleRows(double value, bool verbose)
 {
   for(int r = 0; r < _rows; r++)
   {
-    yReal sum = 0;
+    double sum = 0;
     for(int c = 0; c < _cols; c++)
     {
       sum += __get(r,c);
@@ -424,10 +424,10 @@ void Matrix::rescaleRows(yReal value, bool verbose)
   }
 }
 
-yReal Matrix::L2()
+double Matrix::L2()
 {
-  yReal d = 0.0;
-  yReal v = 0.0;
+  double d = 0.0;
+  double v = 0.0;
   for(int r = 0; r < _rows; r++)
   {
     for(int c = 0; c < _cols; c++)
@@ -439,14 +439,14 @@ yReal Matrix::L2()
   return sqrt(d);
 }
 
-yReal Matrix::det() noexcept(false)
+double Matrix::det() noexcept(false)
 {
   if(cols() != rows())
   {
     throw MatrixException("Determinant is only implemented for quadratic matrices");
   }
 
-  yReal result = 0;
+  double result = 0;
 
   if(_rows == 1)
   {
@@ -477,7 +477,7 @@ yReal Matrix::det() noexcept(false)
         }
       }
     }
-    result += __get(0,i) * pow(-1, (yReal)i) * tmp.det();
+    result += __get(0,i) * pow(-1, (double)i) * tmp.det();
   }
   return result;
 }
@@ -508,7 +508,7 @@ void Matrix::adjunct()
     {
       Matrix ij = m;
       ij.cut(r,c);
-      yReal v = pow(-1, (yReal)((r+1)+(c+1))) * ij.det();
+      double v = pow(-1, (double)((r+1)+(c+1))) * ij.det();
       __set(r, c, v);
     }
   }
@@ -579,7 +579,7 @@ void Matrix::inverse()
 
   m = *this;
 
-  yReal det = m.det();
+  double det = m.det();
   m.adjunct();
 
   m *= 1.0/det;
@@ -595,7 +595,7 @@ Matrix& Matrix::operator*=(const Matrix &m)
   {
     for(int c = 0; c < _cols; c++)
     {
-      yReal v = 0.0;
+      double v = 0.0;
       for(int k = 0; k < _rows; k++)
       {
         v += (__get(r,k) * m(k,c));

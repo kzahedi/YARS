@@ -33,9 +33,9 @@ class MuscleActuator : public Actuator
     RelationModel _forceVelocityModel;
     RelationModel _forceLengthModel;
 
-    //yReal               _position;
-    //yReal               _lastPosition;
-    //yReal               _friction;
+    //double               _position;
+    //double               _lastPosition;
+    //double               _friction;
     /*bool                _isActive;*/
     bool                _isVisualised;
     //bool                _hasFriction;

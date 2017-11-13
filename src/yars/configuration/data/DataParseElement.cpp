@@ -70,7 +70,7 @@ bool DataParseElement::closing(char *name)
   return closing(string(name));
 }
 
-void DataParseElement::set(string name, yReal &value)
+void DataParseElement::set(string name, double &value)
 {
   if(attribute(name) != NULL)
   {

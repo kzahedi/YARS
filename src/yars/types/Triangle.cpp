@@ -9,9 +9,9 @@ Triangle::Triangle(
     int first, int second, int third,
     P3D first_normal, P3D second_normal, P3D third_normal,
     P3D first_pos, P3D second_pos, P3D third_pos,
-    yReal a_s, yReal a_t,
-    yReal b_s, yReal b_t,
-    yReal c_s, yReal c_t,
+    double a_s, double a_t,
+    double b_s, double b_t,
+    double c_s, double c_t,
     bool given)
 {
   a        = first;

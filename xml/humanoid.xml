@@ -459,8 +459,8 @@
 
       </sensors>
 
-      <!--<controller module="TCPIP" frequency="10"/>-->
-      <controller module="Sine" frequency="10"/>
+      <controller module="TCPIP" frequency="10"/>
+      <!--<controller module="Sine" frequency="10"/>-->
 
     </robot>
   </robots>

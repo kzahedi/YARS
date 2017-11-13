@@ -29,14 +29,14 @@ class DataController : public DataNode, public std::vector<DataParameter*>
     void setModule(string module);
     DataController* copy();
 
-    void addLoggable(string name, yReal              *value);
+    void addLoggable(string name, double              *value);
     void addLoggable(string name, int                *value);
-    void addLoggable(string name, std::vector<yReal> *vector);
+    void addLoggable(string name, std::vector<double> *vector);
     void addLoggable(string name, ::Matrix           *matrix);
 
-    bool getLoggable(string name, yReal              &real);
+    bool getLoggable(string name, double              &real);
     bool getLoggable(string name, int                &real);
-    bool getLoggable(string name, std::vector<yReal> &vector);
+    bool getLoggable(string name, std::vector<double> &vector);
     bool getLoggable(string name, ::Matrix           &matrix);
 
     void resetTo(const DataController *other);
@@ -59,10 +59,10 @@ class DataController : public DataNode, public std::vector<DataParameter*>
     string                            _module;
     string                            _name;
 
-    map<string, yReal*>               _reals;
+    map<string, double*>               _reals;
     map<string, int*>                 _ints;
     map<string, ::Matrix*>            _matrices;
-    map<string, std::vector<yReal>* > _vectors;
+    map<string, std::vector<double>* > _vectors;
 
     std::vector<string>               _osd;
     std::vector<DataActuator*>        _actuators;

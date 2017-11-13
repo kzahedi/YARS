@@ -15,7 +15,7 @@
  p.x;
  p.y; \endverbatim
  *
- * P2D is pre-defined to __Point2D<yReal>
+ * P2D is pre-defined to __Point2D<double>
  *
  * \todo Unit test
  */
@@ -289,12 +289,12 @@ class __Point2D
 
     void normalise()
     {
-      yReal l = sqrt(x * x + y * y);
+      double l = sqrt(x * x + y * y);
       x /= l;
       y /= l;
     }
 
-    yReal length()
+    double length()
     {
       return sqrt(x * x + y * y);
     }
@@ -309,7 +309,7 @@ class __Point2D
      * Gives the values as an input to an ostream:
      *
      \verbatim
-     __Point2D<yReal> p;
+     __Point2D<double> p;
      cout << p << endl; \endverbatim
      * which gives
      \verbatim
@@ -326,8 +326,8 @@ class __Point2D
 
 };
 
-/** Pre-defined standard __Point2D class with yReal values */
-typedef __Point2D<yReal> P2D;
+/** Pre-defined standard __Point2D class with double values */
+typedef __Point2D<double> P2D;
 
 #endif // __POINT_2D_H__
 

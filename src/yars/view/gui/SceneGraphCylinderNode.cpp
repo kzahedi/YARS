@@ -65,9 +65,9 @@ void SceneGraphCylinderNode::update()
 
 void SceneGraphCylinderNode::__topCap()
 {
-  yReal z     = _dimension.height / 2.0;
-  yReal delta = M_PI / (yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal r     = _dimension.radius;
+  double z     = _dimension.height / 2.0;
+  double delta = M_PI / (double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double r     = _dimension.radius;
 
   int index = 0;
   std::vector<int> indices;
@@ -78,10 +78,10 @@ void SceneGraphCylinderNode::__topCap()
   indices.push_back(index++);
   for(int i = 0; i < 2*DEFAULT_CAPPED_CYLINDER_QUALITY + 1; i++)
   {
-    yReal x = sin(delta * i) * r;
-    yReal y = cos(delta * i) * r;
-    yReal u = sin(delta * i) * 0.5 + 0.5;
-    yReal v = cos(delta * i) * 0.5 + 0.5;
+    double x = sin(delta * i) * r;
+    double y = cos(delta * i) * r;
+    double u = sin(delta * i) * 0.5 + 0.5;
+    double v = cos(delta * i) * 0.5 + 0.5;
 
     _manual->position(x,y,z);
     _manual->normal(0,0,1);
@@ -108,9 +108,9 @@ void SceneGraphCylinderNode::__topCap()
 void SceneGraphCylinderNode::__bottomCap()
 {
 
-  yReal z     = -_dimension.height / 2.0;
-  yReal delta = M_PI / (yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal r     = _dimension.radius;
+  double z     = -_dimension.height / 2.0;
+  double delta = M_PI / (double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double r     = _dimension.radius;
 
   int index = 0;
   std::vector<int> indices;
@@ -121,10 +121,10 @@ void SceneGraphCylinderNode::__bottomCap()
   indices.push_back(index++);
   for(int i = 0; i < 2*DEFAULT_CAPPED_CYLINDER_QUALITY + 1; i++)
   {
-    yReal x = sin(delta * i) * r;
-    yReal y = cos(delta * i) * r;
-    yReal u = sin(delta * i) * 0.5 + 0.5;
-    yReal v = cos(delta * i) * 0.5 + 0.5;
+    double x = sin(delta * i) * r;
+    double y = cos(delta * i) * r;
+    double u = sin(delta * i) * 0.5 + 0.5;
+    double v = cos(delta * i) * 0.5 + 0.5;
 
     _manual->position(x,y,z);
     _manual->normal(0,0,-1);
@@ -150,12 +150,12 @@ void SceneGraphCylinderNode::__bottomCap()
 
 void SceneGraphCylinderNode::__body()
 {
-  yReal x, y;
-  yReal z     = _dimension.height / 2.0;
-  yReal delta = 2.0 * M_PI / (yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal r     = _dimension.radius;
-  yReal du    = 1.0/(yReal)DEFAULT_CAPPED_CYLINDER_QUALITY;
-  yReal u     = 0.0;
+  double x, y;
+  double z     = _dimension.height / 2.0;
+  double delta = 2.0 * M_PI / (double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double r     = _dimension.radius;
+  double du    = 1.0/(double)DEFAULT_CAPPED_CYLINDER_QUALITY;
+  double u     = 0.0;
 
   _manual->begin("body", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   std::vector<int> indices;

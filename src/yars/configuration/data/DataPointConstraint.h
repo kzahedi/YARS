@@ -27,23 +27,23 @@ class DataPointConstraint : public DataActuator
     std::string destination() const;
     std::string name() override;
 
-    void setInternalValue(int index, yReal value) override;
-    void setExternalValue(int index, yReal value) override;
-    yReal internalValue(int index) override;
-    yReal externalValue(int index) override;
+    void setInternalValue(int index, double value) override;
+    void setExternalValue(int index, double value) override;
+    double internalValue(int index) override;
+    double externalValue(int index) override;
     int dimension() override;
-    void setDesiredValue(int index, yReal value) override;
-    yReal getInternalDesiredValue(int index) override;
-    yReal getExternalDesiredValue(int index) override;
+    void setDesiredValue(int index, double value) override;
+    double getInternalDesiredValue(int index) override;
+    double getExternalDesiredValue(int index) override;
 
     Domain getInternalDomain(int index) override;
     Domain getExternalDomain(int index) override;
     bool isActive(int index) override;
 
-    yReal getAppliedForce(int index) override;
-    yReal getAppliedVelocity(int index) override;
+    double getAppliedForce(int index) override;
+    double getAppliedVelocity(int index) override;
 
-    void setAppliedForceAndVelocity(int index, yReal force, yReal velocity)
+    void setAppliedForceAndVelocity(int index, double force, double velocity)
       override;
 
     Pose pose() override;
@@ -65,10 +65,10 @@ class DataPointConstraint : public DataActuator
     std::string          _name;
     std::string          _mode;
 
-    std::vector<yReal>   _internalValue;
-    std::vector<yReal>   _externalValue;
-    std::vector<yReal>   _desiredValue;
-    std::vector<yReal>   _desiredExValue;
+    std::vector<double>   _internalValue;
+    std::vector<double>   _externalValue;
+    std::vector<double>   _desiredValue;
+    std::vector<double>   _desiredExValue;
     std::vector<Mapping> _internalExternalMapping;
     std::vector<Domain>  _internalDomain;
     std::vector<Domain>  _externalDomain;
@@ -76,10 +76,10 @@ class DataPointConstraint : public DataActuator
     bool                 _poseInWorldCoordinates;
     pthread_mutex_t      _mutex;
 
-    yReal                _forceScaling;
+    double                _forceScaling;
 
-    yReal           _appliedForce;
-    yReal           _appliedVelocity;
+    double           _appliedForce;
+    double           _appliedVelocity;
 };
 
 #endif // __DATA_POINT_CONSTRAINT__

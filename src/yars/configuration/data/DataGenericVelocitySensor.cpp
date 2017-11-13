@@ -93,23 +93,23 @@ DataGenericVelocitySensor* DataGenericVelocitySensor::_copy()
   return copy;
 }
 
-yReal DataGenericVelocitySensor::internalValue(int index)
+double DataGenericVelocitySensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericVelocitySensor::externalValue(int index)
+double DataGenericVelocitySensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericVelocitySensor::setInternalValue(int index, yReal v)
+void DataGenericVelocitySensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -117,7 +117,7 @@ void DataGenericVelocitySensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericVelocitySensor::setExternalValue(int index, yReal v)
+void DataGenericVelocitySensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(v);

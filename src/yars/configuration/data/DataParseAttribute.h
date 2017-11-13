@@ -82,9 +82,9 @@ class DataParseAttribute
      * @brief Returns the value converted by atof. DataParseAttribute cannot know
      * of which type the value is. Therefore, there is no error handling.
      *
-     * @return value (yReal)
+     * @return value (double)
      */
-    yReal realValue();
+    double realValue();
 
   private:
     string _name;

@@ -92,10 +92,10 @@ class DataSensor : public DataNode
     virtual void _resetTo(const DataSensor* other)       = 0;
     virtual int dimension()                              = 0;
 
-    virtual yReal internalValue(int index)            = 0;
-    virtual yReal externalValue(int index)            = 0;
-    virtual void setInternalValue(int index, yReal v) = 0;
-    virtual void setExternalValue(int index, yReal v) = 0;
+    virtual double internalValue(int index)            = 0;
+    virtual double externalValue(int index)            = 0;
+    virtual void setInternalValue(int index, double v) = 0;
+    virtual void setExternalValue(int index, double v) = 0;
 
     virtual Domain getInternalDomain(int index)          = 0;
     virtual Domain getExternalDomain(int index)          = 0;

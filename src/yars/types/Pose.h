@@ -21,8 +21,8 @@ class Pose
     ::Quaternion q;
 
     Pose();
-    Pose(yReal x, yReal y, yReal z, yReal qx, yReal qy, yReal qz, yReal qw);
-    Pose(yReal x, yReal y, yReal z, yReal rx, yReal ry, yReal rz);
+    Pose(double x, double y, double z, double qx, double qy, double qz, double qw);
+    Pose(double x, double y, double z, double rx, double ry, double rz);
 
     friend std::ostream& operator<<(std::ostream& str, const Pose& p)
     {

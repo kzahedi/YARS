@@ -67,7 +67,7 @@ void RuntimeControl::notify(ObservableMessage *m)
 
       if(__YARS_GET_USE_REAL_TIME)
       {
-        long remaining = (900000.0 / (yReal)__YARS_GET_SIMULATOR_FREQUENCY * __YARS_GET_REAL_TIME_FACTOR) - _timer->get();
+        long remaining = (900000.0 / (double)__YARS_GET_SIMULATOR_FREQUENCY * __YARS_GET_REAL_TIME_FACTOR) - _timer->get();
         if(remaining > 0)
         {
           _timer->sleep(remaining);

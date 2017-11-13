@@ -55,10 +55,10 @@ class Buffer : public std::vector<char>
 {
   public:
     char label;
-    // d = yReal
+    // d = double
     // i = int
     // s = string
-    // D = vector of yReal
+    // D = vector of double
     // I = vector of int
     //
     // in case of D, I, s the first sizeof(int) bytes give the size of the
@@ -78,7 +78,7 @@ class Buffer : public std::vector<char>
  * \li Double
  * \li String
  * \li std::vector<int>
- * \li std::vector<yReal>
+ * \li std::vector<double>
  *
  * The interface is the same for all the data types above. Example for a server
  * is:
@@ -195,9 +195,9 @@ class Socket
 
 
 
-    /** \brief Send a yReal.
+    /** \brief Send a double.
      *
-     * This functions sends a yReal over the communication port. A yReal is
+     * This functions sends a double over the communication port. A double is
      * given by 8 bytes.
      *
      * Packing and unpacking of the data is done by the Socket-class, in the
@@ -205,7 +205,7 @@ class Socket
      *
      * \verbatim
      <type char>
-     <yReal bytes> \endverbatim
+     <double bytes> \endverbatim
      *
      * which, in details, is:
      *
@@ -220,14 +220,14 @@ class Socket
      <byte 6>
      <high byte = byte 7>\endverbatim
      *
-     * \param[in] yReal d, the yReal to be send
+     * \param[in] double d, the double to be send
      */
-    const Socket& operator<<(const yReal&) const;
+    const Socket& operator<<(const double&) const;
 
 
-    /** \brief Receives a yReal.
+    /** \brief Receives a double.
      *
-     * This functions receives a yReal over the communication port. A yReal is
+     * This functions receives a double over the communication port. A double is
      * given by 8 bytes.
      *
      * Packing and unpacking of the data is done by the Socket-class, in the
@@ -235,7 +235,7 @@ class Socket
      *
      * \verbatim
      <type char>
-     <yReal bytes> \endverbatim
+     <double bytes> \endverbatim
      *
      * which, in details, is:
      *
@@ -250,9 +250,9 @@ class Socket
      <byte 6>
      <high byte = byte 7>\endverbatim
      *
-     * \param[out] yReal d, the yReal to be send
+     * \param[out] double d, the double to be send
      */
-    const Socket& operator>>(yReal&) const;
+    const Socket& operator>>(double&) const;
 
 
 
@@ -372,7 +372,7 @@ class Socket
     /** \brief Send a vector of yReals.
      *
      * This functions sends several yReals of the communication port, which
-     * are given to the function in form of a std::vector<yReal>. Each yReal is
+     * are given to the function in form of a std::vector<double>. Each double is
      * given by 8 bytes.
      *
      * Packing and unpacking of the data is done by the Socket-class, in the
@@ -381,8 +381,8 @@ class Socket
      * \verbatim
      <type char>
      <vector size bytes>
-     <first yReal bytes>
-     <second yReal bytes> ...\endverbatim
+     <first double bytes>
+     <second double bytes> ...\endverbatim
      *
      * which, in details, is:
      *
@@ -392,24 +392,24 @@ class Socket
      <byte 1>
      <byte 2>
      <size high byte = byte 3>
-     <first yReal low byte = byte 0>
-     <first yReal byte 1>
-     <first yReal byte 2>
-     <first yReal byte 3>
-     <first yReal byte 4>
-     <first yReal byte 5>
-     <first yReal byte 6>
-     <first yReal high byte = byte 7>
+     <first double low byte = byte 0>
+     <first double byte 1>
+     <first double byte 2>
+     <first double byte 3>
+     <first double byte 4>
+     <first double byte 5>
+     <first double byte 6>
+     <first double high byte = byte 7>
      <second yReals bytes> ... \endverbatim
      *
-     * \param[in] std::vector<yReal> vd, the vector of yReals to be send
+     * \param[in] std::vector<double> vd, the vector of yReals to be send
      */
-    const Socket& operator<<(const std::vector<yReal>&) const;
+    const Socket& operator<<(const std::vector<double>&) const;
 
     /** \brief Receives a vector of yReals.
      *
      * This functions receives several yReals of the communication port, which
-     * are then stored by the function in form of a std::vector<yReal>. Each yReal is
+     * are then stored by the function in form of a std::vector<double>. Each double is
      * given by 8 bytes.
      *
      * Packing and unpacking of the data is done by the Socket-class, in the
@@ -418,8 +418,8 @@ class Socket
      * \verbatim
      <type char>
      <vector size bytes>
-     <first yReal bytes>
-     <second yReal bytes> ...\endverbatim
+     <first double bytes>
+     <second double bytes> ...\endverbatim
      *
      * which, in details, is:
      *
@@ -429,19 +429,19 @@ class Socket
      <byte 1>
      <byte 2>
      <size high byte = byte 3>
-     <first yReal low byte = byte 0>
-     <first yReal byte 1>
-     <first yReal byte 2>
-     <first yReal byte 3>
-     <first yReal byte 4>
-     <first yReal byte 5>
-     <first yReal byte 6>
-     <first yReal high byte = byte 7>
+     <first double low byte = byte 0>
+     <first double byte 1>
+     <first double byte 2>
+     <first double byte 3>
+     <first double byte 4>
+     <first double byte 5>
+     <first double byte 6>
+     <first double high byte = byte 7>
      <second yReals bytes> ... \endverbatim
      *
      * \param[out] std::vector<yReals> vd, the vector of integers to be received
      */
-    const Socket& operator>>(std::vector<yReal>&) const;
+    const Socket& operator>>(std::vector<double>&) const;
 
     void close();
 
@@ -452,9 +452,9 @@ class Socket
     const Socket& operator>>(Buffer&) const;
 
     void __check(const char a, const char b) noexcept(false);
-    void __readDouble(yReal *d, Buffer b, int startIndex);
+    void __readDouble(double *d, Buffer b, int startIndex);
     void __readInteger(int *i, Buffer b, int startIndex);
-    void __writeDouble(Buffer *b, yReal d);
+    void __writeDouble(Buffer *b, double d);
     void __writeInteger(Buffer *b, int i);
     void __coneverToInt(char *c, int *i);
 

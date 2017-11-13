@@ -13,7 +13,7 @@ using namespace std;
   class Quaternion
 {
   public:
-    Quaternion(yReal _w = 1, yReal _x = 0, yReal _y = 0, yReal _z = 0);
+    Quaternion(double _w = 1, double _x = 0, double _y = 0, double _z = 0);
 #ifndef _MSC_VER
     Quaternion(Quaternion &q);
 #endif // _MSC_VER
@@ -77,10 +77,10 @@ using namespace std;
       return str;
     };
 
-    yReal w;
-    yReal x;
-    yReal y;
-    yReal z;
+    double w;
+    double x;
+    double y;
+    double z;
 
 };
 

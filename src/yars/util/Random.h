@@ -8,7 +8,7 @@ class Random
   public:
     static void  initialise();
     static void  initialise(int seed);
-    static yReal unit();
+    static double unit();
     static int   rand(int min, int max);
 };
 

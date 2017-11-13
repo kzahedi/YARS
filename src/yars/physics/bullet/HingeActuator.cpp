@@ -93,10 +93,10 @@ void HingeActuator::postPhysicsUpdate()
   if(_angleDiff >  M_PI) _angleDiff -= 2.0*M_PI;
   if(_angleDiff < -M_PI) _angleDiff += 2.0*M_PI;
 
-  _data->setCurrentAngularVelocity(_angleDiff * (yReal)__YARS_GET_SIMULATOR_FREQUENCY);
+  _data->setCurrentAngularVelocity(_angleDiff * (double)__YARS_GET_SIMULATOR_FREQUENCY);
 
   // cout << _angleDiff << " ";
-  // cout << _angleDiff * (yReal)__YARS_GET_SIMULATOR_FREQUENCY << endl;
+  // cout << _angleDiff * (double)__YARS_GET_SIMULATOR_FREQUENCY << endl;
 
   _lastAngle = _angle;
   if(_isVisualised)
@@ -127,7 +127,7 @@ btTypedConstraint* HingeActuator::constraint()
 
 void HingeActuator::__processAngularHinge()
 {
-  yReal robotValue = _data->getInternalDesiredValue(0);
+  double robotValue = _data->getInternalDesiredValue(0);
 
   // Limits don't work well in bullet
   if(_data->isDeflectionSet())
@@ -138,13 +138,13 @@ void HingeActuator::__processAngularHinge()
 
 
   // inverted because its with respect to the second body (I guess)
-  yReal diff       = _angle - robotValue;
-  // yReal velocity   = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
-  // yReal velocity   = _parameter.pid.update(SIGN(diff) * _data->velocity());
-  yReal velocity   = SCALE(diff) * SIGN(diff) * _data->velocity();
+  double diff       = _angle - robotValue;
+  // double velocity   = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
+  // double velocity   = _parameter.pid.update(SIGN(diff) * _data->velocity());
+  double velocity   = SCALE(diff) * SIGN(diff) * _data->velocity();
   if(fabs(diff) < 0.0001) velocity = 0.0;
 
-  yReal force = _data->force();
+  double force = _data->force();
 
   // if(_parameter.forceScaling > 0.0)
   // {
@@ -160,8 +160,8 @@ void HingeActuator::__processAngularHinge()
 
 void HingeActuator::__processForceAngularHinge()
 {
-  yReal force      = fabs(_data->getInternalDesiredValue(0));
-  yReal robotValue = _data->getInternalDesiredValue(1);
+  double force      = fabs(_data->getInternalDesiredValue(0));
+  double robotValue = _data->getInternalDesiredValue(1);
 
   if(_data->isDeflectionSet())
   {
@@ -169,8 +169,8 @@ void HingeActuator::__processForceAngularHinge()
     _angle     = _data->deflection().cut(_angle);
   }
 
-  yReal diff       = _angle - robotValue;
-  yReal velocity   = SCALE(diff) * SIGN(diff) * _data->velocity();
+  double diff       = _angle - robotValue;
+  double velocity   = SCALE(diff) * SIGN(diff) * _data->velocity();
   if(fabs(diff) < 0.0001) velocity = 0.0;
 
   _hingeConstraint->setMaxAngMotorForce(force);
@@ -180,9 +180,9 @@ void HingeActuator::__processForceAngularHinge()
 
 void HingeActuator::__processVelocityHinge()
 {
-  // yReal velocity = _parameter.pid.update(_data->getInternalDesiredValue(0));
-  yReal velocity = _data->getInternalDesiredValue(0);
-  yReal force    = _data->force();
+  // double velocity = _parameter.pid.update(_data->getInternalDesiredValue(0));
+  double velocity = _data->getInternalDesiredValue(0);
+  double force    = _data->force();
 
   // cout << "setting velocity to " << velocity << " and force to " << _data->force() << endl;
 
@@ -200,8 +200,8 @@ void HingeActuator::__processForceHinge()
 {
   // Limits don't work well in bullet
 
-  yReal force    = _data->getInternalDesiredValue(0);
-  yReal velocity = _data->velocity() * tanh(2.0 * force / _data->force());
+  double force    = _data->getInternalDesiredValue(0);
+  double velocity = _data->velocity() * tanh(2.0 * force / _data->force());
   force = fabs(force);
   // force          = _parameter.pid.update(force);
   // velocity       = _parameter.pid.update(velocity);
@@ -219,8 +219,8 @@ void HingeActuator::__processForceVelocityHinge()
 {
   // Limits don't work well in bullet
 
-  yReal force    = fabs(_data->getInternalDesiredValue(0));
-  yReal velocity = _data->getInternalDesiredValue(1);
+  double force    = fabs(_data->getInternalDesiredValue(0));
+  double velocity = _data->getInternalDesiredValue(1);
   // force          = _parameter.pid.update(force);
   // velocity       = _parameter.pid.update(velocity);
   // to avoid numerical instabilities

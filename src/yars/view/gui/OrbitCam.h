@@ -17,10 +17,10 @@ class OrbitCam : public FollowCamera
   private:
     P3D newCameraPosition;
     P3D lookAtPosition;
-    yReal _distance;
-    yReal _angle;
-    yReal _angularVelocity;
-    yReal _zOffset;
+    double _distance;
+    double _angle;
+    double _angularVelocity;
+    double _zOffset;
 
     DataCamera *_camera;
 
@@ -32,8 +32,8 @@ class OrbitCam : public FollowCamera
     PID _fromY;
     PID _fromZ;
 
-    yReal x;
-    yReal y;
+    double x;
+    double y;
 
 };
 

@@ -71,7 +71,7 @@ void DataObjectVelocitySensor::add(DataParseElement *element)
     if(_x) _dimension++;
     if(_y) _dimension++;
     if(_z) _dimension++;
-    _value = new yReal[_dimension];
+    _value = new double[_dimension];
   }
 }
 
@@ -142,34 +142,34 @@ DataObjectVelocitySensor* DataObjectVelocitySensor::_copy()
   copy->_z         = _z;
   copy->_dimension = _dimension;
   copy->_global    = _global;
-  copy->_value     = new yReal[_dimension];
+  copy->_value     = new double[_dimension];
   return copy;
 }
 
-yReal DataObjectVelocitySensor::internalValue(int index)
+double DataObjectVelocitySensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataObjectVelocitySensor::externalValue(int index)
+double DataObjectVelocitySensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataObjectVelocitySensor::setInternalValue(int index, yReal v)
+void DataObjectVelocitySensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;
   YM_UNLOCK;
 }
 
-void DataObjectVelocitySensor::setExternalValue(int index, yReal v)
+void DataObjectVelocitySensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;

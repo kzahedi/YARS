@@ -18,20 +18,20 @@ class MappingFunction
      * e.g. for input range: 255.0 (start) -255.0 (end)
      *      and output range: -1.0 (start) 1.0 (end)
      *      you will get an inverse linear mapping*/
-    MappingFunction(yReal inStartVal, yReal inEndVal, yReal outStartVal,
-        yReal outEndVal);
+    MappingFunction(double inStartVal, double inEndVal, double outStartVal,
+        double outEndVal);
 
     /* Destructor */
     ~MappingFunction();
 
     /* map to a specific transfer function type, linear
      * returns a value in the range of outStartVal and outEndVal */
-    yReal map(yReal value);
-    yReal map(int mapNum, yReal value);
-    void   map(std::vector<yReal> *values);
+    double map(double value);
+    double map(int mapNum, double value);
+    void   map(std::vector<double> *values);
 
-    void addMap(yReal inStartVal, yReal inEndVal, yReal outStartVal,
-        yReal outEndVal);
+    void addMap(double inStartVal, double inEndVal, double outStartVal,
+        double outEndVal);
 
     /* you have to set the range of the input values and the range of the
      * output values
@@ -39,30 +39,30 @@ class MappingFunction
      * e.g. for input range: 255.0 (start) -255.0 (end)
      *      and output range: -1.0 (start) 1.0 (end)
      *      you will get an inverse linear mapping*/
-    void setInputOutputRange(yReal inStartVal, yReal inEndVal, yReal outStartVal,
-        yReal outEndVal);
-    void setInputOutputRange(int mapNum, yReal inStartVal, yReal inEndVal,
-        yReal outStartVal, yReal outEndVal);
+    void setInputOutputRange(double inStartVal, double inEndVal, double outStartVal,
+        double outEndVal);
+    void setInputOutputRange(int mapNum, double inStartVal, double inEndVal,
+        double outStartVal, double outEndVal);
 
     /* returns the start value of input range */
-    yReal getInStartVal();
-    yReal getInStartVal(int mapNum);
+    double getInStartVal();
+    double getInStartVal(int mapNum);
 
     /* returns the end value of input range */
-    yReal getInEndVal();
-    yReal getInEndVal(int mapNum);
+    double getInEndVal();
+    double getInEndVal(int mapNum);
 
     /* returns the start value of output range */
-    yReal getOutStartVal();
-    yReal getOutStartVal(int mapNum);
+    double getOutStartVal();
+    double getOutStartVal(int mapNum);
     /* returns the end value of output range */
-    yReal getOutEndVal();
-    yReal getOutEndVal(int mapNum);
+    double getOutEndVal();
+    double getOutEndVal(int mapNum);
 
     /* checks if the value which has to be mapped is within the input range
      * if not, than the value is adjusted to the correct limit respectivly */
-    void checkValueRange(yReal *value);
-    void checkValueRange(int mapNum, yReal *value);
+    void checkValueRange(double *value);
+    void checkValueRange(int mapNum, double *value);
 
     int getNumberOfMaps();
 
@@ -75,18 +75,18 @@ class MappingFunction
 
     struct MapStruct
     {
-      yReal inStartVal;
-      yReal inEndVal;
-      yReal outStartVal;
-      yReal outEndVal;
+      double inStartVal;
+      double inEndVal;
+      double outStartVal;
+      double outEndVal;
 
-      yReal inMin;       // TODO: we should be able to do this more efficiently
-      yReal inMax;       //       i.e. without these 4 extra variables
-      yReal outMin;
-      yReal outMax;
+      double inMin;       // TODO: we should be able to do this more efficiently
+      double inMax;       //       i.e. without these 4 extra variables
+      double outMin;
+      double outMax;
 
-      yReal a;           // mapping constants
-      yReal b;
+      double a;           // mapping constants
+      double b;
     };
 
     std::vector<struct MapStruct> mapData_;

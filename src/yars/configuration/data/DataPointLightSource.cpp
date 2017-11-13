@@ -54,7 +54,7 @@ Colour DataPointLightSource::colour()
   return _color;
 }
 
-yReal DataPointLightSource::brightness()
+double DataPointLightSource::brightness()
 {
   return _brightness;
 }
@@ -97,7 +97,7 @@ bool DataPointLightSource::draw()
   return _draw;
 }
 
-yReal DataPointLightSource::size()
+double DataPointLightSource::size()
 {
   return _size;
 }

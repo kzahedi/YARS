@@ -50,10 +50,10 @@ class DataGenericOrientationSensor : public DataSensor
 
     DataGenericOrientationSensor *_copy();
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index) { return Domain(__Y_REAL_MIN, __Y_REAL_MAX); };
     Domain getExternalDomain(int index) { return Domain(__Y_REAL_MIN, __Y_REAL_MAX); };
 
@@ -66,7 +66,7 @@ class DataGenericOrientationSensor : public DataSensor
     int  _dimension;
     bool _useDegree;
 
-    yReal* _value;
+    double* _value;
     pthread_mutex_t _mutex;
 };
 

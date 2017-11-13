@@ -5,7 +5,7 @@ Filter::Filter()
 
 }
 
-yReal Filter::calculate(yReal in)
+double Filter::calculate(double in)
 {
   return in;
 }

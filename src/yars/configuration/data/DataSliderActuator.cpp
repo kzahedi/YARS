@@ -176,7 +176,7 @@ string DataSliderActuator::name()
   return _name;
 }
 
-yReal DataSliderActuator::friction()
+double DataSliderActuator::friction()
 {
   return _friction;
 }
@@ -359,39 +359,39 @@ DataSliderActuator* DataSliderActuator::_copy()
   return copy;
 }
 
-yReal DataSliderActuator::velocity()
+double DataSliderActuator::velocity()
 {
   YM_LOCK;
-  yReal r = _parameter.maxVelocity;
+  double r = _parameter.maxVelocity;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataSliderActuator::force()
+double DataSliderActuator::force()
 {
   YM_LOCK;
-  yReal r = _parameter.maxForce;
+  double r = _parameter.maxForce;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataSliderActuator::internalValue(int index)
+double DataSliderActuator::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue[index];
+  double r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataSliderActuator::externalValue(int index)
+double DataSliderActuator::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue[index];
+  double r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataSliderActuator::setInternalValue(int index, yReal v)
+void DataSliderActuator::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue[index] = _internalDomain[index].cut(v);
@@ -399,7 +399,7 @@ void DataSliderActuator::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataSliderActuator::setExternalValue(int index, yReal v)
+void DataSliderActuator::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(_n->calculate(v));
@@ -485,7 +485,7 @@ Domain DataSliderActuator::getExternalDomain(int index)
   return r;
 }
 
-void DataSliderActuator::setDesiredValue(int index, yReal value)
+void DataSliderActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
   _desiredExValue[index] = _externalDomain[index].cut(value);
@@ -493,32 +493,32 @@ void DataSliderActuator::setDesiredValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataSliderActuator::getInternalDesiredValue(int index)
+double DataSliderActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredValue[index];
+  double r = _desiredValue[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataSliderActuator::setVelocity(yReal v)
+void DataSliderActuator::setVelocity(double v)
 {
   YM_LOCK;
   _parameter.maxVelocity = v;
   YM_UNLOCK;
 }
 
-void DataSliderActuator::setForce(yReal f)
+void DataSliderActuator::setForce(double f)
 {
   YM_LOCK;
   _parameter.maxForce = f;
   YM_UNLOCK;
 }
 
-yReal DataSliderActuator::getExternalDesiredValue(int index)
+double DataSliderActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredExValue[index];
+  double r = _desiredExValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -528,15 +528,15 @@ bool DataSliderActuator::isActive(int index)
   return _isActive;
 }
 
-yReal DataSliderActuator::getCurrentTransitionalVelocity()
+double DataSliderActuator::getCurrentTransitionalVelocity()
 {
   YM_LOCK;
-  yReal r = _currentTransitionalVelocity;
+  double r = _currentTransitionalVelocity;
   YM_UNLOCK;
   return r;
 }
 
-void DataSliderActuator::setCurrentTransitionalVelocity(yReal v)
+void DataSliderActuator::setCurrentTransitionalVelocity(double v)
 {
   YM_LOCK;
   _currentTransitionalVelocity = v;
@@ -550,17 +550,17 @@ void DataSliderActuator::setPosition(P3D position)
   YM_UNLOCK;
 }
 
-yReal DataSliderActuator::getAppliedForce(int index)
+double DataSliderActuator::getAppliedForce(int index)
 {
   return _appliedForce;
 }
 
-yReal DataSliderActuator::getAppliedVelocity(int index)
+double DataSliderActuator::getAppliedVelocity(int index)
 {
   return _appliedVelocity;
 }
 
-void DataSliderActuator::setAppliedForceAndVelocity(int index, yReal force, yReal velocity)
+void DataSliderActuator::setAppliedForceAndVelocity(int index, double force, double velocity)
 {
   _appliedForce    = force;
   _appliedVelocity = velocity;

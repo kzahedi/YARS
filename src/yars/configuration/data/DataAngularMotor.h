@@ -34,19 +34,19 @@ class DataAngularMotor : public DataActuator
     HingeParameter parameter();
     string mode();
 
-    yReal velocity();
-    yReal force();
-    void setVelocity(yReal v);
-    void setForce(yReal f);
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
-    void setDesiredValue(int index, yReal v);
-    yReal getInternalDesiredValue(int index);
-    yReal getExternalDesiredValue(int index);
-    yReal getCurrentAngularVelocity();
-    void  setCurrentAngularVelocity(yReal v);
+    double velocity();
+    double force();
+    void setVelocity(double v);
+    void setForce(double f);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
+    void setDesiredValue(int index, double v);
+    double getInternalDesiredValue(int index);
+    double getExternalDesiredValue(int index);
+    double getCurrentAngularVelocity();
+    void  setCurrentAngularVelocity(double v);
 
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
@@ -78,16 +78,16 @@ class DataAngularMotor : public DataActuator
     string         _name;
     string         _source;
 
-    yReal       _internalValue;
-    yReal       _externalValue;
-    yReal       _desiredValue;
-    yReal       _desiredExValue;
+    double       _internalValue;
+    double       _externalValue;
+    double       _desiredValue;
+    double       _desiredExValue;
     Mapping     _internalExternalMapping;
     Domain      _internalDomain;
     Domain      _externalDomain;
     Noise      *_n;
     bool        _isActive;
-    yReal       _currentAngularVelocity;
+    double       _currentAngularVelocity;
     bool        _poseInWorldCoordinates;
 
     pthread_mutex_t _mutex;

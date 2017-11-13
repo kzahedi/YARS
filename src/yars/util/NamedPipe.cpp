@@ -126,13 +126,13 @@ const NamedPipe& NamedPipe::operator>>(Buffer &b) const
       read(_fdIn, sizeBytes, 4);
       for(int i = 0; i < 4; i++) b.push_back(sizeBytes[i]);
       ((NamedPipe*)this)->__coneverToInt(sizeBytes, &size);
-      size *= sizeof(yReal);
+      size *= sizeof(double);
       break;
     case __INTEGER_VALUE:
       size = sizeof(int);
       break;
     case __DOUBLE_VALUE:
-      size = sizeof(yReal);
+      size = sizeof(double);
       break;
   }
 
@@ -166,7 +166,7 @@ const NamedPipe& NamedPipe::operator>>(Buffer &b) const
 ////////////////////////////////////////////////////////////////////////////////
 // DOUBLE - SEND
 ////////////////////////////////////////////////////////////////////////////////
-const NamedPipe& NamedPipe::operator<<(const yReal &d) const
+const NamedPipe& NamedPipe::operator<<(const double &d) const
 {
   Buffer b;
   b.resize(0);
@@ -179,10 +179,10 @@ const NamedPipe& NamedPipe::operator<<(const yReal &d) const
 ////////////////////////////////////////////////////////////////////////////////
 // DOUBLE - RECEIVE
 ////////////////////////////////////////////////////////////////////////////////
-const NamedPipe& NamedPipe::operator>>(yReal& d) const
+const NamedPipe& NamedPipe::operator>>(double& d) const
 {
   d = 0;
-  int size = sizeof(yReal);
+  int size = sizeof(double);
   Buffer b;
   b.resize(size);
   b.label = __DOUBLE_VALUE;
@@ -345,7 +345,7 @@ const NamedPipe& NamedPipe::operator>>(std::vector<int>& v) const
 ////////////////////////////////////////////////////////////////////////////////
 // VECTOR OF DOUBLES - SEND
 ////////////////////////////////////////////////////////////////////////////////
-const NamedPipe& NamedPipe::operator<<(const std::vector<yReal>& v) const
+const NamedPipe& NamedPipe::operator<<(const std::vector<double>& v) const
 {
   Buffer b;
   b.label = __DOUBLE_VECTOR;
@@ -354,9 +354,9 @@ const NamedPipe& NamedPipe::operator<<(const std::vector<yReal>& v) const
 
   ((NamedPipe*)this)->__writeInteger(&b, s);
 
-  for(std::vector<yReal>::const_iterator i = v.begin(); i != v.end(); i++)
+  for(std::vector<double>::const_iterator i = v.begin(); i != v.end(); i++)
   {
-    yReal value = *i;
+    double value = *i;
     ((NamedPipe*)this)->__writeDouble(&b, value);
   }
   *this << b;
@@ -367,7 +367,7 @@ const NamedPipe& NamedPipe::operator<<(const std::vector<yReal>& v) const
 ////////////////////////////////////////////////////////////////////////////////
 // VECTOR OF DOUBLES - RECEIVE
 ////////////////////////////////////////////////////////////////////////////////
-const NamedPipe& NamedPipe::operator>>(std::vector<yReal>& v) const
+const NamedPipe& NamedPipe::operator>>(std::vector<double>& v) const
 {
   v.clear();
   Buffer b;
@@ -382,8 +382,8 @@ const NamedPipe& NamedPipe::operator>>(std::vector<yReal>& v) const
 
   for(int i = 0; i < vectorSize; i++)
   {
-    yReal value = 0;
-    ((NamedPipe*)this)->__readDouble(&value, b, i * sizeof(yReal) + sizeof(int));
+    double value = 0;
+    ((NamedPipe*)this)->__readDouble(&value, b, i * sizeof(double) + sizeof(int));
     v.push_back(value);
   }
   return *this;
@@ -397,20 +397,20 @@ const NamedPipe& NamedPipe::operator>>(std::vector<yReal>& v) const
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-void NamedPipe::__writeDouble(Buffer *b, yReal d)
+void NamedPipe::__writeDouble(Buffer *b, double d)
 {
   char *x_ptr=reinterpret_cast<char*>(&d);
-  for(unsigned int count = 0;count < sizeof(yReal); count++)
+  for(unsigned int count = 0;count < sizeof(double); count++)
   {
     b->push_back(*(x_ptr+count));
   }
 }
 
-void NamedPipe::__readDouble(yReal *d, Buffer b, int startIndex)
+void NamedPipe::__readDouble(double *d, Buffer b, int startIndex)
 {
   *d = 0;
   char *x_ptr=reinterpret_cast<char *>(d);
-  for(int count = sizeof(yReal)-1; count >= 0; count--)
+  for(int count = sizeof(double)-1; count >= 0; count--)
   {
     *(x_ptr+count)|=b[startIndex + count];
   }
@@ -456,7 +456,7 @@ void NamedPipe::__check(const char a, const char b)
   switch(a)
   {
     case __DOUBLE_VALUE:
-      oss << "<yReal value> '" << __DOUBLE_VALUE << "'";
+      oss << "<double value> '" << __DOUBLE_VALUE << "'";
       break;
     case __INTEGER_VALUE:
       oss << "<integer value> '" << __INTEGER_VALUE << "'";
@@ -465,7 +465,7 @@ void NamedPipe::__check(const char a, const char b)
       oss << "<string value> '" << __STRING_VALUE << "'";
       break;
     case __DOUBLE_VECTOR:
-      oss << "<yReal vector> '" << __DOUBLE_VECTOR << "'";
+      oss << "<double vector> '" << __DOUBLE_VECTOR << "'";
       break;
     case __INTEGER_VECTOR:
       oss << "<integer vector> '" << __INTEGER_VECTOR << "'";
@@ -478,7 +478,7 @@ void NamedPipe::__check(const char a, const char b)
   switch(b)
   {
     case __DOUBLE_VALUE:
-      oss << "<yReal value> '" << __DOUBLE_VALUE << "'";
+      oss << "<double value> '" << __DOUBLE_VALUE << "'";
       break;
     case __INTEGER_VALUE:
       oss << "<integer value> '" << __INTEGER_VALUE << "'";
@@ -487,7 +487,7 @@ void NamedPipe::__check(const char a, const char b)
       oss << "<string value> '" << __STRING_VALUE << "'";
       break;
     case __DOUBLE_VECTOR:
-      oss << "<yReal vector> '" << __DOUBLE_VALUE << "'";
+      oss << "<double vector> '" << __DOUBLE_VALUE << "'";
       break;
     case __INTEGER_VECTOR:
       oss << "<integer vector> '" << __INTEGER_VECTOR << "'";

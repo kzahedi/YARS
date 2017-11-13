@@ -21,14 +21,14 @@ class Triangle
     P3D b_normal;
     P3D c_normal;
 
-    yReal a_u;
-    yReal a_v;
+    double a_u;
+    double a_v;
 
-    yReal b_u;
-    yReal b_v;
+    double b_u;
+    double b_v;
 
-    yReal c_u;
-    yReal c_v;
+    double c_u;
+    double c_v;
 
     bool uvGiven;
 
@@ -39,9 +39,9 @@ class Triangle
     Triangle(int a, int b, int c,
         P3D a_normal, P3D b_normal, P3D c_normal,
         P3D p_a, P3D p_b, P3D p_c,
-        yReal a_u = 0.0, yReal a_v = 0.0,
-        yReal b_u = 0.0, yReal b_v = 0.0,
-        yReal c_u = 0.0, yReal c_v = 0.0,
+        double a_u = 0.0, double a_v = 0.0,
+        double b_u = 0.0, double b_v = 0.0,
+        double c_u = 0.0, double c_v = 0.0,
         bool uvGiven = false);
 
     friend std::ostream& operator<<(std::ostream& str, const Triangle& t)

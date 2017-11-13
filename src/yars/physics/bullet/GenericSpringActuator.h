@@ -38,10 +38,10 @@ class GenericSpringActuator : public Actuator
     int                            _dimension;
     vector<int>                    _rotType;
     vector<int>                    _traType;
-    vector<yReal>                  _angle;
-    vector<yReal>                  _position;
-    vector<yReal>                  _lastAngle;
-    vector<yReal>                  _lastPosition;
+    vector<double>                  _angle;
+    vector<double>                  _position;
+    vector<double>                  _lastAngle;
+    vector<double>                  _lastPosition;
     vector<int>                    _mapping;
     btRigidBody                   *_source;
     bool                           _isVisualised;

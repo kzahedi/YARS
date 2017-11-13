@@ -44,10 +44,10 @@ class DataGenericInternalEnergySensor : public DataSensor
 
     int dimension() { return 1; }
 
-    yReal internalValue(int index) {return 0;};
-    yReal externalValue(int index) {return 0;};
-    void setInternalValue(int index, yReal v) { };
-    void setExternalValue(int index, yReal v) { };
+    double internalValue(int index) {return 0;};
+    double externalValue(int index) {return 0;};
+    void setInternalValue(int index, double v) { };
+    void setExternalValue(int index, double v) { };
     Domain getInternalDomain(int index) { return Domain(); };
     Domain getExternalDomain(int index) { return Domain(); };
 

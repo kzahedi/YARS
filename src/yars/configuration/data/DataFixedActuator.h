@@ -26,15 +26,15 @@ class DataFixedActuator : public DataActuator
 
     DataFixedActuator* _copy();
 
-    void setInternalValue(int, yReal)  { };
-    void setExternalValue(int, yReal)  { };
-    yReal internalValue(int)           { return 0.0; };
-    yReal externalValue(int)           { return 0.0; };
+    void setInternalValue(int, double)  { };
+    void setExternalValue(int, double)  { };
+    double internalValue(int)           { return 0.0; };
+    double externalValue(int)           { return 0.0; };
     Domain getInternalDomain(int)      { return Domain(); };
     Domain getExternalDomain(int)      { return Domain(); };
-    void setDesiredValue(int, yReal)   { };
-    yReal getInternalDesiredValue(int) { return (yReal)0.0;};
-    yReal getExternalDesiredValue(int) { return 0.0; };
+    void setDesiredValue(int, double)   { };
+    double getInternalDesiredValue(int) { return (double)0.0;};
+    double getExternalDesiredValue(int) { return 0.0; };
 
     int dimension()                    { return 0; }
     bool isActive(int)                 { return false; }
@@ -45,9 +45,9 @@ class DataFixedActuator : public DataActuator
     P3D  getCurrentPosition()          { return P3D(); };
     P3D  getCurrentOrientation()       { return P3D(); };
 
-    yReal getAppliedForce(int)                         {return 0.0;};
-    yReal getAppliedVelocity(int)                      {return 0.0;};
-    void setAppliedForceAndVelocity(int, yReal, yReal) {};
+    double getAppliedForce(int)                         {return 0.0;};
+    double getAppliedVelocity(int)                      {return 0.0;};
+    void setAppliedForceAndVelocity(int, double, double) {};
 
 
   private:

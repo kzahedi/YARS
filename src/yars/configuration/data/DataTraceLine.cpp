@@ -166,7 +166,7 @@ string DataTraceLine::target()
   return _target;
 }
 
-yReal DataTraceLine::lineWidth()
+double DataTraceLine::lineWidth()
 {
   return _lineWidth;
 }
@@ -201,7 +201,7 @@ P3D DataTraceLine::position()
   return back();
 }
 
-yReal DataTraceLine::finalWidth()
+double DataTraceLine::finalWidth()
 {
   return _finalWidth;
 }
@@ -211,12 +211,12 @@ Colour DataTraceLine::finalColour()
   return _finalColour;
 }
 
-yReal DataTraceLine::length()
+double DataTraceLine::length()
 {
   return _length;
 }
 
-yReal DataTraceLine::time()
+double DataTraceLine::time()
 {
   return _time;
 }

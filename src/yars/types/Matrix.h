@@ -48,32 +48,32 @@ class Matrix
     Matrix(int rows, int cols);
     /** Most simple constructor. Every cell is initialised with the given
      * value.*/
-    Matrix(int rows, int cols, yReal initialValue);
+    Matrix(int rows, int cols, double initialValue);
     /** Most simple constructor. The cells are initialised with the values of
      * the vector. If the vector is smaller than the numbers of cells, the
      * remaining cells are filled with 0. The filling occurs rows first.
      */
-    Matrix(int rows, int cols, std::vector<yReal> initialValues);
+    Matrix(int rows, int cols, std::vector<double> initialValues);
     /** Destructor. */
     ~Matrix();
 
     /** Allows to access and modify the values by indexing */
-    yReal& operator()(int row, int col) noexcept(false);
-    yReal  operator()(int row, int col) const noexcept(false);
+    double& operator()(int row, int col) noexcept(false);
+    double  operator()(int row, int col) const noexcept(false);
     Matrix& operator+=(const Matrix &m)  noexcept(false);
     Matrix& operator-=(const Matrix &m)  noexcept(false);
 
     // TODO: Matrix A(10,10); Matrix A = B; does not work
-    const Matrix operator* (const yReal factor);
-    Matrix&      operator*=(const yReal factor);
+    const Matrix operator* (const double factor);
+    Matrix&      operator*=(const double factor);
     const Matrix operator* (const Matrix &m);
 
     Matrix&      operator= (const Matrix &m);
     Matrix&      operator*=(const Matrix &m);
 
-    Matrix&      operator= (const yReal d);
-    Matrix&      operator-=(const yReal d);
-    Matrix&      operator/=(const yReal d);
+    Matrix&      operator= (const double d);
+    Matrix&      operator-=(const double d);
+    Matrix&      operator/=(const double d);
 
     const Matrix operator-(const Matrix &m);
     const Matrix operator+(const Matrix &m);
@@ -84,15 +84,15 @@ class Matrix
     void   setDiagonalMatrix(double value);
     void   setDiagonalMatrix(float value);
 
-    yReal rowSum(const int row);
-    yReal colSum(const int col);
+    double rowSum(const int row);
+    double colSum(const int col);
 
-    yReal L2();
+    double L2();
 
-    void   reset(int rows, int cols, yReal value = 0.0);
-    void   rescaleRows(yReal value, bool verbose);
+    void   reset(int rows, int cols, double value = 0.0);
+    void   rescaleRows(double value, bool verbose);
 
-    yReal det() noexcept(false);
+    double det() noexcept(false);
     void   inverse();
     void   transpose();
     void   adjunct();
@@ -112,18 +112,18 @@ class Matrix
     };
 
   protected:
-    void   __set(const int row, const int col, const yReal value);
-    yReal __get(const int row, const int col);
+    void   __set(const int row, const int col, const double value);
+    double __get(const int row, const int col);
     void   __deleteCells();
-    void __init(const int rows, const int cols, yReal initialValue);
+    void __init(const int rows, const int cols, double initialValue);
 
   private:
-    void __setDiagonalMatrix(yReal value);
+    void __setDiagonalMatrix(double value);
     void __copy(const Matrix &m);
     void __check(int row, int col) noexcept(false);
     int _rows;
     int _cols;
-    yReal **_cell;
+    double **_cell;
 
 };
 #endif // __MIS_MATRIX_H__

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-PID::PID(yReal p, yReal i, yReal d, yReal c, int size)
+PID::PID(double p, double i, double d, double c, int size)
 {
   _p                 = p;
   _i                 = i;
@@ -47,7 +47,7 @@ PID & PID::operator=(const PID &p)
   return *this;
 }
 
-yReal PID::update(yReal value, bool debug)
+double PID::update(double value, bool debug)
 {
   _lastError                    = _error;
   _error                        = value - _currentValue;
@@ -66,7 +66,7 @@ yReal PID::update(yReal value, bool debug)
   return _currentValue;
 }
 
-void PID::setPID(yReal p, yReal i, yReal d, int size)
+void PID::setPID(double p, double i, double d, int size)
 {
   _p = p;
   _i = i;
@@ -74,47 +74,47 @@ void PID::setPID(yReal p, yReal i, yReal d, int size)
   __resize(size);
 }
 
-void PID::setInitialValue(yReal c)
+void PID::setInitialValue(double c)
 {
   __reset(c);
 }
 
-void PID::setP(yReal p)
+void PID::setP(double p)
 {
   _p = p;
 }
 
-void PID::setI(yReal i)
+void PID::setI(double i)
 {
   _i = i;
 }
 
-void PID::setD(yReal d)
+void PID::setD(double d)
 {
   _d = d;
 }
 
-yReal PID::p()
+double PID::p()
 {
   return _p;
 }
 
-yReal PID::i()
+double PID::i()
 {
   return _i;
 }
 
-yReal PID::d()
+double PID::d()
 {
   return _d;
 }
 
-yReal PID::c()
+double PID::c()
 {
   return _currentValue;
 }
 
-yReal PID::e()
+double PID::e()
 {
   return _error;
 }
@@ -127,18 +127,18 @@ int PID::size()
 void PID::__resize(int size)
 {
   _errors.resize(size);
-  for(std::vector<yReal>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
+  for(std::vector<double>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
 }
 
 
-void PID::__reset(yReal c)
+void PID::__reset(double c)
 {
   _currentValue      = c;
   _currentErrorIndex = 0;
   _error             = 0;
   _lastError         = 0;
   _integral          = 0;
-  for(std::vector<yReal>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
+  for(std::vector<double>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
 }
 
 void PID::reset()

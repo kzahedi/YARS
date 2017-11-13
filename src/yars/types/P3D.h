@@ -18,7 +18,7 @@
  p.y;
  p.z; \endverbatim
  *
- * P3D is pre-defined to __Point3D<yReal>
+ * P3D is pre-defined to __Point3D<double>
  *
  * \todo Unit test
  */
@@ -27,13 +27,13 @@ class P3D
   public:
     /** \brief x-value of the three dimension point.
      */
-    yReal x;
+    double x;
     /** \brief y-value of the three dimension point.
      */
-    yReal y;
+    double y;
     /** \brief z-value of the three dimension point.
      */
-    yReal z;
+    double z;
     /** \brief Standard constructor.
      *
      * Sets x, y, z to 0.0
@@ -50,9 +50,9 @@ class P3D
      *
      * Note that this function is not fault tolerant, as the length of the array
      * cannot be checked.
-     * \param[in] yReal* pointer, pointer to the array of length 3
+     * \param[in] double* pointer, pointer to the array of length 3
      */
-    P3D(const yReal* p);
+    P3D(const double* p);
 
 
     /** \brief Copy constructor with the values.
@@ -63,11 +63,11 @@ class P3D
      y = _y;
      z = _z; \endverbatim
      *
-     * \param[in] yReal _x, x-value
-     * \param[in] yReal _y, y-value
-     * \param[in] yReal _z, z-value
+     * \param[in] double _x, x-value
+     * \param[in] double _y, y-value
+     * \param[in] double _z, z-value
      */
-    P3D(const yReal _x, const yReal _y, const yReal _z);
+    P3D(const double _x, const double _y, const double _z);
 
     /** \brief Copy constructor.
      *
@@ -100,7 +100,7 @@ class P3D
       \verbatim
      a.x = a.y = a.z = value; \endverbatim
      *
-     * \param[in] yReal value
+     * \param[in] double value
      */
     P3D & operator=(const double value);
     P3D & operator=(const float  value);
@@ -120,7 +120,7 @@ class P3D
      *
      * \param[in] P3D &b
      */
-    P3D & operator=(const yReal* values);
+    P3D & operator=(const double* values);
 
     /** \brief Multiplication operator.
      *
@@ -135,9 +135,9 @@ class P3D
      a.y *= b;
      a.z *= b; \endverbatim
      *
-     * \param[in] yReal b
+     * \param[in] double b
      */
-    P3D & operator*=(const yReal value);
+    P3D & operator*=(const double value);
 
 
     /** \brief Division operator.
@@ -153,9 +153,9 @@ class P3D
      a.y /= b;
      a.z /= b; \endverbatim
      *
-     * \param[in] yReal b
+     * \param[in] double b
      */
-    P3D & operator/=(const yReal value);
+    P3D & operator/=(const double value);
 
 
     /** \brief Addition operator.
@@ -190,7 +190,7 @@ class P3D
      *
      * \param[in] P3D b
      */
-    P3D & operator+=(yReal a);
+    P3D & operator+=(double a);
 
 
     /** \brief Subtraction operator.
@@ -257,32 +257,32 @@ class P3D
      c.y = a.y * b;
      c.z = a.z * b; \endverbatim
      *
-     * \param[in] yReal value
+     * \param[in] double value
      */
-    const P3D operator*(const yReal value) const;
+    const P3D operator*(const double value) const;
     /* cross product */
     const P3D operator*(const P3D &b) const;
 
     /* dot product */
-    yReal dot(const P3D &b) const;
+    double dot(const P3D &b) const;
 
 
     void normalise();
 
-    yReal length();
+    double length();
 
     bool operator==(const P3D a);
 
     bool operator!=(const P3D a);
 
-    yReal dist(P3D p);
+    double dist(P3D p);
 
     /** \brief Debug function.
      *
      * Gives the values as an input to an ostream:
      *
      \verbatim
-     __Point3D<yReal> p;
+     __Point3D<double> p;
      cout << p << endl; \endverbatim
      * which gives
      \verbatim

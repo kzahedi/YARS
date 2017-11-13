@@ -16,11 +16,11 @@ void CenterOrbitCam::init(DataObject *f, DataCamera *cam)
 {
   DataCenterOrbitCam *data = Data::instance()->current()->screens()->cameraConfig()->center();
   _camera = cam;
-  _angularVelocity = data->speed() * 0.1 * M_PI / (yReal)__YARS_GET_SIMULATOR_FREQUENCY;
+  _angularVelocity = data->speed() * 0.1 * M_PI / (double)__YARS_GET_SIMULATOR_FREQUENCY;
   P3D pos = _camera->position();
   _distance = distXY(_center, pos);
-  yReal x = _center.x - pos.x;
-  yReal y = _center.y - pos.y;
+  double x = _center.x - pos.x;
+  double y = _center.y - pos.y;
   _angle = atan2(x, y);
 }
 

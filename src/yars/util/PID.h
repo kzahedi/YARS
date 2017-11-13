@@ -11,27 +11,27 @@ using namespace std;
 class PID
 {
   public:
-    PID(yReal p = 1, yReal i = 0, yReal d = 0, yReal c = 0, int size = 3);
+    PID(double p = 1, double i = 0, double d = 0, double c = 0, int size = 3);
 
     PID(const PID &p);
     PID & operator=(const PID &b);
 
-    yReal update(yReal value, bool debug = false);
+    double update(double value, bool debug = false);
 
-    void setPID(yReal p, yReal i, yReal d, int size = 3);
-    void setP(yReal p);
-    void setI(yReal i);
-    void setD(yReal d);
+    void setPID(double p, double i, double d, int size = 3);
+    void setP(double p);
+    void setI(double i);
+    void setD(double d);
     void setSize(int size);
-    void setInitialValue(yReal value);
+    void setInitialValue(double value);
     void reset();
 
-    yReal p();
-    yReal i();
-    yReal d();
+    double p();
+    double i();
+    double d();
 
-    yReal c(); // current value
-    yReal e(); // error value
+    double c(); // current value
+    double e(); // error value
 
     int size();
 
@@ -45,19 +45,19 @@ class PID
   private:
 
     void __resize(int size);
-    void __reset(yReal c);
+    void __reset(double c);
 
-    yReal         _currentValue;
-    yReal         _error;
-    yReal         _lastError;
-    yReal         _errorSum;
-    yReal         _derivative;
-    yReal         _integral;
-    std::vector<yReal> _errors;
+    double         _currentValue;
+    double         _error;
+    double         _lastError;
+    double         _errorSum;
+    double         _derivative;
+    double         _integral;
+    std::vector<double> _errors;
 
-    yReal _p;
-    yReal _i;
-    yReal _d;
+    double _p;
+    double _i;
+    double _d;
 
     int _currentErrorIndex;
 

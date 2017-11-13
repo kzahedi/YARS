@@ -29,7 +29,7 @@ class Entity
     string name;
     unsigned int dimension;
     std::vector<Domain> domain;
-    std::vector<yReal> value;        // values only delivered in (mapped) domain
+    std::vector<double> value;        // values only delivered in (mapped) domain
     std::vector<Domain> robotDomain; // just to read out, nothing else
 };
 
@@ -58,7 +58,7 @@ class YarsClientCom
     void getSensorName(int, string*)                throw (YarsClientComException);
     void getSensorRobotDomain(Domain*, int, int)    throw (YarsClientComException);
     void getSensorMappedDomain(Domain*, int, int)   throw (YarsClientComException);
-    yReal getSensorValue(int);
+    double getSensorValue(int);
 
     void sendMessage(string) throw (YarsClientComException);
 
@@ -122,8 +122,8 @@ class YarsClientCom
     int                   _nrOfSensorValues;
     bool                  _throwException;
 
-    std::vector<yReal>    _actuatorValues;
-    std::vector<yReal>    _sensorValues;
+    std::vector<double>    _actuatorValues;
+    std::vector<double>    _sensorValues;
 };
 
 #endif // __YARS_CLIENT_COM_H__

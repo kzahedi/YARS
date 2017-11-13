@@ -309,23 +309,23 @@ DataHingeActuator* DataHingeActuator::_copy()
   return copy;
 }
 
-yReal DataHingeActuator::internalValue(int index)
+double DataHingeActuator::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataHingeActuator::externalValue(int index)
+double DataHingeActuator::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataHingeActuator::setInternalValue(int index, yReal v)
+void DataHingeActuator::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -333,7 +333,7 @@ void DataHingeActuator::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setExternalValue(int index, yReal v)
+void DataHingeActuator::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(_n->calculate(v));
@@ -379,7 +379,7 @@ Domain DataHingeActuator::getExternalDomain(int index)
   return r;
 }
 
-void DataHingeActuator::setDesiredValue(int index, yReal value)
+void DataHingeActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
   _desiredExValue = _externalDomain.cut(value);
@@ -387,7 +387,7 @@ void DataHingeActuator::setDesiredValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataHingeActuator::getInternalDesiredValue(int index)
+double DataHingeActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
   r = _desiredValue;
@@ -395,7 +395,7 @@ yReal DataHingeActuator::getInternalDesiredValue(int index)
   return r;
 }
 
-yReal DataHingeActuator::getExternalDesiredValue(int index)
+double DataHingeActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
   r = _desiredExValue;
@@ -408,7 +408,7 @@ bool DataHingeActuator::isActive(int index)
   return _isActive;
 }
 
-yReal DataHingeActuator::getCurrentAngularVelocity()
+double DataHingeActuator::getCurrentAngularVelocity()
 {
   YM_LOCK;
   r = _currentAngularVelocity;
@@ -416,28 +416,28 @@ yReal DataHingeActuator::getCurrentAngularVelocity()
   return r;
 }
 
-void DataHingeActuator::setCurrentAngularVelocity(yReal v)
+void DataHingeActuator::setCurrentAngularVelocity(double v)
 {
   YM_LOCK;
   _currentAngularVelocity = v;
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setVelocity(yReal v)
+void DataHingeActuator::setVelocity(double v)
 {
   YM_LOCK;
   _parameter.maxVelocity = v;
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setForce(yReal f)
+void DataHingeActuator::setForce(double f)
 {
   YM_LOCK;
   _parameter.maxForce = f;
   YM_UNLOCK;
 }
 
-yReal DataHingeActuator::velocity()
+double DataHingeActuator::velocity()
 {
   YM_LOCK;
   r = _parameter.maxVelocity;
@@ -445,7 +445,7 @@ yReal DataHingeActuator::velocity()
   return r;
 }
 
-yReal DataHingeActuator::force()
+double DataHingeActuator::force()
 {
   YM_LOCK;
   r = _parameter.maxForce;

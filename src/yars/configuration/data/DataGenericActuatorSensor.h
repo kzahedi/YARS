@@ -131,10 +131,10 @@ class DataGenericActuatorSensor : public DataSensor
 
     int dimension();
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     void setInternalDomain(int index, Domain d);
     void setExternalDomain(int index, Domain d);
     Domain getInternalDomain(int index);
@@ -150,8 +150,8 @@ class DataGenericActuatorSensor : public DataSensor
     void __setMapping();
     vector<Domain>      _domain;
     vector<Domain>      _mapping;
-    vector<yReal>       _internalValue;
-    vector<yReal>       _externalValue;
+    vector<double>       _internalValue;
+    vector<double>       _externalValue;
     vector<Mapping>     _internalExternalMapping;
     vector<Domain>      _internalDomain;
     vector<Domain>      _externalDomain;

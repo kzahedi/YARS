@@ -106,10 +106,10 @@ Pose DataGenericProximitySensor::pose()
   return r;
 }
 
-yReal DataGenericProximitySensor::distance()
+double DataGenericProximitySensor::distance()
 {
   YM_LOCK;
-  yReal r = _distance;
+  double r = _distance;
   YM_UNLOCK;
   return r;
 }
@@ -165,38 +165,38 @@ DataGenericProximitySensor* DataGenericProximitySensor::_copy()
   return copy;
 }
 
-void DataGenericProximitySensor::setMeasuredDistance(yReal dist)
+void DataGenericProximitySensor::setMeasuredDistance(double dist)
 {
   YM_LOCK;
   _measuredDistance = MIN(_distance, dist);
   YM_UNLOCK;
 }
 
-yReal DataGenericProximitySensor::getMeasuredDistance()
+double DataGenericProximitySensor::getMeasuredDistance()
 {
   YM_LOCK;
-  yReal r = _measuredDistance;
+  double r = _measuredDistance;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericProximitySensor::internalValue(int index)
+double DataGenericProximitySensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericProximitySensor::externalValue(int index)
+double DataGenericProximitySensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericProximitySensor::setInternalValue(int index, yReal v)
+void DataGenericProximitySensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -204,7 +204,7 @@ void DataGenericProximitySensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericProximitySensor::setExternalValue(int index, yReal v)
+void DataGenericProximitySensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(v);

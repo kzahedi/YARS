@@ -20,9 +20,9 @@
 class TypeParameter
 {
   public:
-    yReal softness;
-    yReal damping;
-    yReal restitution;
+    double softness;
+    double damping;
+    double restitution;
     bool useResitution;
     bool useDamping;
     bool useSoftness;
@@ -60,10 +60,10 @@ class AxisParameter
   public:
     string        type;
     string        mode;
-    yReal         maxForce;
-    yReal         forceScaling;
-    yReal         velocity;
-    yReal         friction;
+    double         maxForce;
+    double         forceScaling;
+    double         velocity;
+    double         friction;
     Domain        mapping;
     Domain        deflection;
     bool          isDeflectionSet;
@@ -77,14 +77,14 @@ class AxisParameter
     Mapping       internalExternalMapping;
     int           controlType;
     Noise*        n;
-    yReal         internalValue;
-    yReal         externalValue;
-    yReal         inDesiredValue;
-    yReal         exDesiredValue;
+    double         internalValue;
+    double         externalValue;
+    double         inDesiredValue;
+    double         exDesiredValue;
     TypeParameter parameter;
 
-    yReal         springDamping;
-    yReal         springStiffness;
+    double         springDamping;
+    double         springStiffness;
 
     AxisParameter()
     {
@@ -231,42 +231,42 @@ class DataGenericActuator : public DataActuator
 
     DataGenericActuator* _copy();
 
-    yReal velocity(int index);
-    yReal force(int index);
-    void setVelocity(int index, yReal v);
-    void setForce(int index, yReal f);
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double velocity(int index);
+    double force(int index);
+    void setVelocity(int index, double v);
+    void setForce(int index, double f);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
-    void setDesiredValue(int index, yReal value);
-    yReal getInternalDesiredValue(int index);
-    yReal getExternalDesiredValue(int index);
+    void setDesiredValue(int index, double value);
+    double getInternalDesiredValue(int index);
+    double getExternalDesiredValue(int index);
 
     int dimension();
     bool isActive(int index);
     vector<int> mapping();
 
 
-    void  setAngularVelocity(int index, yReal v);
-    yReal getAngularVelocity(int index);
-    void  setLinearVelocity(int index, yReal v);
-    yReal getLinearVelocity(int index);
+    void  setAngularVelocity(int index, double v);
+    double getAngularVelocity(int index);
+    void  setLinearVelocity(int index, double v);
+    double getLinearVelocity(int index);
 
-    void  setAngle(int index, yReal v);
-    yReal getAngle(int index);
-    void  setPosition(int index, yReal v);
-    yReal getPosition(int index);
+    void  setAngle(int index, double v);
+    double getAngle(int index);
+    void  setPosition(int index, double v);
+    double getPosition(int index);
 
-    yReal springDamping(int index);
-    yReal springStiffness(int index);
+    double springDamping(int index);
+    double springStiffness(int index);
     // bool  useSpring(int index);
 
-    yReal getAppliedForce(int);
-    yReal getAppliedVelocity(int);
-    void setAppliedForceAndVelocity(int, yReal, yReal);
+    double getAppliedForce(int);
+    double getAppliedVelocity(int);
+    void setAppliedForceAndVelocity(int, double, double);
 
     bool usesSprings();
     int mapping(int);
@@ -293,12 +293,12 @@ class DataGenericActuator : public DataActuator
     bool             _useSpring;
     int              _dimension;
     vector<int>      _mapping;
-    vector<yReal>    _angularVelocity;
-    vector<yReal>    _linearVelocity;
-    vector<yReal>    _angle;
-    vector<yReal>    _position;
-    vector<yReal>    _appliedForce;
-    vector<yReal>    _appliedVelocity;
+    vector<double>    _angularVelocity;
+    vector<double>    _linearVelocity;
+    vector<double>    _angle;
+    vector<double>    _position;
+    vector<double>    _appliedForce;
+    vector<double>    _appliedVelocity;
     bool             _poseInWorldCoordinates;
 
     pthread_mutex_t _mutex;

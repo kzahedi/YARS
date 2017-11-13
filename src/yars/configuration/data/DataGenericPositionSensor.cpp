@@ -68,7 +68,7 @@ void DataGenericPositionSensor::add(DataParseElement *element)
     if(_x) _dimension++;
     if(_y) _dimension++;
     if(_z) _dimension++;
-    _value = new yReal[_dimension];
+    _value = new double[_dimension];
   }
 }
 
@@ -137,34 +137,34 @@ DataGenericPositionSensor* DataGenericPositionSensor::_copy()
   copy->_y = _y;
   copy->_z = _z;
   copy->_dimension = _dimension;
-  copy->_value = new yReal[_dimension];
+  copy->_value = new double[_dimension];
   return copy;
 }
 
-yReal DataGenericPositionSensor::internalValue(int index)
+double DataGenericPositionSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericPositionSensor::externalValue(int index)
+double DataGenericPositionSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value[index];
+  double r = _value[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericPositionSensor::setInternalValue(int index, yReal v)
+void DataGenericPositionSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;
   YM_UNLOCK;
 }
 
-void DataGenericPositionSensor::setExternalValue(int index, yReal v)
+void DataGenericPositionSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _value[index] = v;

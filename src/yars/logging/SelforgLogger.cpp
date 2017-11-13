@@ -81,7 +81,7 @@ string SelforgLogger::__convert(string in)
 
 void SelforgLogger::update()
 {
-  _time = ((yReal)__YARS_GET_STEP) * _dtime;
+  _time = ((double)__YARS_GET_STEP) * _dtime;
   std::vector<string> values;
   _oss.str("");
   for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)

@@ -105,7 +105,7 @@ std::string DataPointConstraint::name()
   return _name;
 }
 
-void DataPointConstraint::setInternalValue(int index, yReal value)
+void DataPointConstraint::setInternalValue(int index, double value)
 {
   YM_LOCK;
   _internalValue[index] = _internalDomain[index].cut(value);
@@ -113,7 +113,7 @@ void DataPointConstraint::setInternalValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-void DataPointConstraint::setExternalValue(int index, yReal value)
+void DataPointConstraint::setExternalValue(int index, double value)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(value);
@@ -121,18 +121,18 @@ void DataPointConstraint::setExternalValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataPointConstraint::internalValue(int index)
+double DataPointConstraint::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue[index];
+  double r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataPointConstraint::externalValue(int index)
+double DataPointConstraint::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue[index];
+  double r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -142,7 +142,7 @@ int DataPointConstraint::dimension()
   return 1;
 }
 
-void DataPointConstraint::setDesiredValue(int index, yReal value)
+void DataPointConstraint::setDesiredValue(int index, double value)
 {
   YM_LOCK;
   _desiredExValue[index] = _externalDomain[index].cut(value);
@@ -150,18 +150,18 @@ void DataPointConstraint::setDesiredValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataPointConstraint::getInternalDesiredValue(int index)
+double DataPointConstraint::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredValue[index];
+  double r = _desiredValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataPointConstraint::getExternalDesiredValue(int index)
+double DataPointConstraint::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredExValue[index];
+  double r = _desiredExValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -187,12 +187,12 @@ bool DataPointConstraint::isActive(int index)
   return _isActive;
 }
 
-yReal DataPointConstraint::getAppliedForce(int index)
+double DataPointConstraint::getAppliedForce(int index)
 {
   return _appliedForce;
 }
 
-yReal DataPointConstraint::getAppliedVelocity(int index)
+double DataPointConstraint::getAppliedVelocity(int index)
 {
   return _appliedVelocity;
 }
@@ -202,8 +202,8 @@ std::string DataPointConstraint::mode() const
   return _mode;
 }
 
-void DataPointConstraint::setAppliedForceAndVelocity(int index, yReal force,
-    yReal velocity)
+void DataPointConstraint::setAppliedForceAndVelocity(int index, double force,
+    double velocity)
 {
 }
 

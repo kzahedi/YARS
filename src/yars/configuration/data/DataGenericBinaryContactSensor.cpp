@@ -77,23 +77,23 @@ DataGenericBinaryContactSensor* DataGenericBinaryContactSensor::_copy()
   return copy;
 }
 
-yReal DataGenericBinaryContactSensor::internalValue(int index)
+double DataGenericBinaryContactSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value;
+  double r = _value;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericBinaryContactSensor::externalValue(int index)
+double DataGenericBinaryContactSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _value;
+  double r = _value;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericBinaryContactSensor::setInternalValue(int index, yReal v)
+void DataGenericBinaryContactSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   if(v < 0.5) _value = _domain.min;
@@ -101,7 +101,7 @@ void DataGenericBinaryContactSensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericBinaryContactSensor::setExternalValue(int index, yReal v)
+void DataGenericBinaryContactSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _value = v;

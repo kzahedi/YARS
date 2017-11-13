@@ -82,10 +82,10 @@ class LoggingModule : public std::vector<string>
     stringstream       _out;
     string             _delimiter;
     int                _precision;
-    yReal              _real;
+    double              _real;
     int                _integer;
     ::Matrix           _matrix;
-    std::vector<yReal> _vector;
+    std::vector<double> _vector;
 };
 
 #endif // __LOGGING_MODULE_H__

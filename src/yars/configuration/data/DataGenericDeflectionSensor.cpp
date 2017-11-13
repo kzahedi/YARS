@@ -98,23 +98,23 @@ DataGenericDeflectionSensor* DataGenericDeflectionSensor::_copy()
   return copy;
 }
 
-yReal DataGenericDeflectionSensor::internalValue(int index)
+double DataGenericDeflectionSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericDeflectionSensor::externalValue(int index)
+double DataGenericDeflectionSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericDeflectionSensor::setInternalValue(int index, yReal v)
+void DataGenericDeflectionSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -122,7 +122,7 @@ void DataGenericDeflectionSensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericDeflectionSensor::setExternalValue(int index, yReal v)
+void DataGenericDeflectionSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(v);

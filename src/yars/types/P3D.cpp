@@ -7,14 +7,14 @@ P3D::P3D()
   z = 0;
 }
 
-P3D::P3D(const yReal* p)
+P3D::P3D(const double* p)
 {
   x = p[0];
   y = p[1];
   z = p[2];
 }
 
-P3D::P3D(const yReal _x, const yReal _y, const yReal _z)
+P3D::P3D(const double _x, const double _y, const double _z)
 {
   x = _x;
   y = _y;
@@ -54,11 +54,11 @@ P3D & P3D::operator=(const float value)
 
 P3D & P3D::operator=(const int value)
 {
-  *this = (yReal)value;
+  *this = (double)value;
   return *this;
 }
 
-P3D & P3D::operator=(const yReal* values)
+P3D & P3D::operator=(const double* values)
 {
   x = values[0];
   y = values[1];
@@ -67,7 +67,7 @@ P3D & P3D::operator=(const yReal* values)
 }
 
 
-P3D & P3D::operator*=(const yReal value)
+P3D & P3D::operator*=(const double value)
 {
   x *= value;
   y *= value;
@@ -75,7 +75,7 @@ P3D & P3D::operator*=(const yReal value)
   return *this;
 }
 
-P3D & P3D::operator/=(const yReal value)
+P3D & P3D::operator/=(const double value)
 {
   x /= value;
   y /= value;
@@ -91,7 +91,7 @@ P3D & P3D::operator+=(const P3D &a)
   return *this;
 }
 
-P3D & P3D::operator+=(yReal value)
+P3D & P3D::operator+=(double value)
 {
   x += value;
   y += value;
@@ -130,16 +130,16 @@ const P3D P3D::operator*(const P3D &b) const
   return r;
 }
 
-yReal P3D::dot(const P3D &b) const
+double P3D::dot(const P3D &b) const
 {
-  yReal r = 0.0;
+  double r = 0.0;
   r += x * b.x;
   r += y * b.y;
   r += z * b.z;
   return r;
 }
 
-const P3D P3D::operator*(const yReal value) const
+const P3D P3D::operator*(const double value) const
 {
   P3D r = *this;
   r *= value;
@@ -148,13 +148,13 @@ const P3D P3D::operator*(const yReal value) const
 
 void P3D::normalise()
 {
-  yReal l = sqrt(x * x + y * y + z * z);
+  double l = sqrt(x * x + y * y + z * z);
   x /= l;
   y /= l;
   z /= l;
 }
 
-yReal P3D::length()
+double P3D::length()
 {
   return sqrt(x * x + y * y + z * z);
 }
@@ -180,13 +180,13 @@ void P3D::invert()
 
 void P3D::rotate(P3D p)
 {
-  yReal sx = sin(p.x); yReal cx = cos(p.x);
-  yReal sy = sin(p.y); yReal cy = cos(p.y);
-  yReal sz = sin(p.z); yReal cz = cos(p.z);
+  double sx = sin(p.x); double cx = cos(p.x);
+  double sy = sin(p.y); double cy = cos(p.y);
+  double sz = sin(p.z); double cz = cos(p.z);
 
-  yReal n_x = x * cy * cz + z * sy - y * cy * sz;
-  yReal n_y = -z * cy * sx + x * (cz * sx * sy + cx * sz) + y * (cx * cz - sx * sy * sz);
-  yReal n_z = z * cx * cy + x * (-cx * cz * sy + sx * sz) + y * (cz * sx + cx * sy * sz);
+  double n_x = x * cy * cz + z * sy - y * cy * sz;
+  double n_y = -z * cy * sx + x * (cz * sx * sy + cx * sz) + y * (cx * cz - sx * sy * sz);
+  double n_z = z * cx * cy + x * (-cx * cz * sy + sx * sz) + y * (cz * sx + cx * sy * sz);
 
   x = n_x;
   y = n_y;
@@ -195,23 +195,23 @@ void P3D::rotate(P3D p)
 
 void P3D::rotateInv(P3D p)
 {
-  yReal sx = sin(p.x); yReal cx = cos(p.x);
-  yReal sy = sin(p.y); yReal cy = cos(p.y);
-  yReal sz = sin(p.z); yReal cz = cos(p.z);
+  double sx = sin(p.x); double cx = cos(p.x);
+  double sy = sin(p.y); double cy = cos(p.y);
+  double sz = sin(p.z); double cz = cos(p.z);
 
-  yReal n_x = x * cy * cz + y * (cz * sx * sy - cx * sz) + z * (cx * cz * sy + sx * sz);
-  yReal n_y = x * cy * sz + z * (-cz * sx + cx * sy * sz) + y * (cx * cz + sx * sy * sz);
-  yReal n_z = z * cx * cy + y * cy * sx - x * sy;
+  double n_x = x * cy * cz + y * (cz * sx * sy - cx * sz) + z * (cx * cz * sy + sx * sz);
+  double n_y = x * cy * sz + z * (-cz * sx + cx * sy * sz) + y * (cx * cz + sx * sy * sz);
+  double n_z = z * cx * cy + y * cy * sx - x * sy;
 
   x = n_x;
   y = n_y;
   z = n_z;
 }
 
-yReal P3D::dist(P3D p)
+double P3D::dist(P3D p)
 {
-  yReal x2 = (x - p.x) * (x - p.x);
-  yReal y2 = (y - p.y) * (y - p.y);
-  yReal z2 = (z - p.z) * (z - p.z);
+  double x2 = (x - p.x) * (x - p.x);
+  double y2 = (y - p.y) * (y - p.y);
+  double z2 = (z - p.z) * (z - p.z);
   return sqrt(x2+y2+z2);
 }

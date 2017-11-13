@@ -11,7 +11,7 @@ class NoNoise : public Noise
   public:
     NoNoise(DataNoise *data);
 
-    yReal calculate(yReal in);
+    double calculate(double in);
 
   private:
 

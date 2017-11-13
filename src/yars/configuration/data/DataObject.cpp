@@ -146,7 +146,7 @@ bool DataObject::isSoft()
 }
 
 
-void DataObject::setCurrentForce(yReal x, yReal y, yReal z)
+void DataObject::setCurrentForce(double x, double y, double z)
 {
   YM_LOCK;
   _force.x = x;
@@ -164,7 +164,7 @@ P3D DataObject::getCurrentForce()
 }
 
 
-void DataObject::setCurrentVelocity(yReal x, yReal y, yReal z)
+void DataObject::setCurrentVelocity(double x, double y, double z)
 {
   YM_LOCK;
   _velocity.x = x;
@@ -184,7 +184,7 @@ P3D DataObject::getCurrentVelocity()
 
 
 
-void DataObject::setCurrentAngularVelocity(yReal x, yReal y, yReal z)
+void DataObject::setCurrentAngularVelocity(double x, double y, double z)
 {
   YM_LOCK;
   _angularVelocity.x = x;
@@ -203,7 +203,7 @@ P3D DataObject::getCurrentAngularVelocity()
 }
 
 
-void DataObject::setCurrentTorque(yReal x, yReal y, yReal z)
+void DataObject::setCurrentTorque(double x, double y, double z)
 {
   YM_LOCK;
   _torque.x = x;

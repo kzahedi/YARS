@@ -23,15 +23,15 @@ SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor
   ::Quaternion q(_data->pose().orientation);
   _node->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
 
-  yReal oa = _data->opening();
+  double oa = _data->opening();
 
   _points.push_back(P3D(0.0, 0.0, 0.0));
-  yReal radius = tan(oa) * LENGTH;
+  double radius = tan(oa) * LENGTH;
   // for(int i = RESOLUTION+2; i >= 0; i--)
   for(int i = 0; i < RESOLUTION+2; i++)
   {
-    yReal x = sin((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
-    yReal y = cos((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
+    double x = sin((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
+    double y = cos((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
     // _quaternions.push_back(::Quaternion(P3D(-oa,   oa, 0.0)));
     // _quaternions.push_back(::Quaternion(P3D( oa,   oa, 0.0)));
     // _quaternions.push_back(::Quaternion(P3D( oa,  -oa, 0.0)));

@@ -40,7 +40,7 @@ void TCPIP::update()
   while(!motorCommandsGiven && !isQuit())
   {
     socket >> s;
-    cout << "Command " << s << endl;
+    if (debug) { cout << "Command " << s << endl; }
     switch(commands[s])
     {
       case __ACTUATORS:
@@ -49,7 +49,7 @@ void TCPIP::update()
         if(debug)
         {
           cout << "values: ";
-          for(vector<yReal>::iterator i = motors.begin(); i != motors.end(); i++)
+          for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -61,7 +61,7 @@ void TCPIP::update()
         if(debug)
         {
           cout << "sending sensors: ";
-          for(vector<yReal>::iterator i = sensors.begin(); i != sensors.end(); i++)
+          for(vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
           {
             cout << *i << " ";
           }
@@ -169,7 +169,7 @@ void TCPIP::__configuration()
   oss << "INTEGER " << sizeof(int) << " bytes, little endian";
   string s_integer = oss.str();
   oss.str("");
-  oss << "DOUBLE " << sizeof(yReal) << " bytes, little endian";
+  oss << "DOUBLE " << sizeof(double) << " bytes, little endian";
   string s_yReal = oss.str();
   socket << "BEGIN CONFIGURATION";
   socket << "BEGIN DATA TYPES";

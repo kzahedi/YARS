@@ -181,12 +181,12 @@ class DataRobot : public DataNode, public MacroUserInterface
     DataMacros* macros();
     DataRobot* copy();
 
-    std::vector<yReal>::iterator av_begin();
-    std::vector<yReal>::iterator av_end();
+    std::vector<double>::iterator av_begin();
+    std::vector<double>::iterator av_end();
     int                          av_size();
 
-    std::vector<yReal>::iterator sv_begin();
-    std::vector<yReal>::iterator sv_end();
+    std::vector<double>::iterator sv_begin();
+    std::vector<double>::iterator sv_end();
     int                          sv_size();
 
     void updateSensorValues();
@@ -218,8 +218,8 @@ class DataRobot : public DataNode, public MacroUserInterface
     bool                       _processingSensors;
     bool                       _processingActuators;
 
-    std::vector<yReal>         _actuatorValues;
-    std::vector<yReal>         _sensorValues;
+    std::vector<double>         _actuatorValues;
+    std::vector<double>         _sensorValues;
 };
 
 #endif // __DATA_ROBOT_H__

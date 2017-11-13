@@ -23,7 +23,7 @@ class DataParameter : public DataNode
     void add(DataParseElement *element);
 
     string name();
-    yReal realValue();
+    double realValue();
     int intValue();
     string value();
     bool boolValue();

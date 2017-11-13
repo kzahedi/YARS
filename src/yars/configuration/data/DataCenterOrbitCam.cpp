@@ -45,7 +45,7 @@ void DataCenterOrbitCam::createXsd(XsdSpecification *spec)
   spec->add(orbitCamConfig);
 }
 
-yReal DataCenterOrbitCam::speed()
+double DataCenterOrbitCam::speed()
 {
   return _speed;
 }

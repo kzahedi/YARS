@@ -80,23 +80,23 @@ void DataGenericAmbientLightSensor::_resetTo(const DataSensor *sensor)
   _filter = other->filter();
 }
 
-yReal DataGenericAmbientLightSensor::internalValue(int index)
+double DataGenericAmbientLightSensor::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue;
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericAmbientLightSensor::externalValue(int index)
+double DataGenericAmbientLightSensor::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue;
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericAmbientLightSensor::setInternalValue(int index, yReal v)
+void DataGenericAmbientLightSensor::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue = _internalDomain.cut(v);
@@ -104,7 +104,7 @@ void DataGenericAmbientLightSensor::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericAmbientLightSensor::setExternalValue(int index, yReal v)
+void DataGenericAmbientLightSensor::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue = _externalDomain.cut(v);

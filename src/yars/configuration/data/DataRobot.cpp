@@ -397,12 +397,12 @@ void DataRobot::__assignSensorsToObjects()
   }
 }
 
-std::vector<yReal>::iterator DataRobot::av_begin()
+std::vector<double>::iterator DataRobot::av_begin()
 {
   return _actuatorValues.begin();
 }
 
-std::vector<yReal>::iterator DataRobot::av_end()
+std::vector<double>::iterator DataRobot::av_end()
 {
   return _actuatorValues.end();
 }
@@ -412,12 +412,12 @@ int DataRobot::av_size()
   return _actuatorValues.size();
 }
 
-std::vector<yReal>::iterator DataRobot::sv_begin()
+std::vector<double>::iterator DataRobot::sv_begin()
 {
   return _sensorValues.begin();
 }
 
-std::vector<yReal>::iterator DataRobot::sv_end()
+std::vector<double>::iterator DataRobot::sv_end()
 {
   return _sensorValues.end();
 }

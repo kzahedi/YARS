@@ -46,10 +46,10 @@ class DataGenericBinaryContactSensor : public DataSensor
 
     int dimension() { return 1; }
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index) { return Domain(0,1); };
     Domain getExternalDomain(int index) { return Domain(0,1); };
 
@@ -57,7 +57,7 @@ class DataGenericBinaryContactSensor : public DataSensor
 
   private:
 
-    yReal _value;
+    double _value;
     pthread_mutex_t _mutex;
     Domain _domain;
 

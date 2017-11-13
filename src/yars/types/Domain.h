@@ -282,7 +282,7 @@ class __Domain
 
 };
 
-typedef __Domain<yReal> Domain;
+typedef __Domain<double> Domain;
 
 #endif // __DOMAIN_H__
 

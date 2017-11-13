@@ -139,7 +139,7 @@ ProgramOptions::ProgramOptions(int argc, char **argv,
      __PO_OPTION_CONTROL_FREQUENCY_DESCRIPTION)
 
     (__PO_OPTION_REALTIME,
-     value<yReal>(&(_configuration->realtimeFactor))->implicit_value(1.0),
+     value<double>(&(_configuration->realtimeFactor))->implicit_value(1.0),
      __PO_OPTION_REALTIME_DESCRIPTION);
 
 //#if USE_VISUALISATION

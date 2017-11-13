@@ -19,24 +19,24 @@ void Mapping::setOutputDomain(Domain out)
   _out = out;
 }
 
-void Mapping::setInputDomain(yReal min, yReal max)
+void Mapping::setInputDomain(double min, double max)
 {
   _in.min = min;
   _in.max = max;
 }
 
-void Mapping::setOutputDomain(yReal min, yReal max)
+void Mapping::setOutputDomain(double min, double max)
 {
   _out.min = min;
   _out.max = max;
 }
 
-yReal Mapping::map(yReal value)
+double Mapping::map(double value)
 {
   return _out.remap(_in.map(value));
 }
 
-yReal Mapping::invMap(yReal value)
+double Mapping::invMap(double value)
 {
   return _in.remap(_out.map(value));
 }

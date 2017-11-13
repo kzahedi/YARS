@@ -132,7 +132,7 @@ void SliderActuator::postPhysicsUpdate()
   _position = _sliderConstraint->getLinearPos();
 
   _data->setCurrentTransitionalVelocity((_position - _lastPosition)
-      * (yReal)__YARS_GET_SIMULATOR_FREQUENCY);
+      * (double)__YARS_GET_SIMULATOR_FREQUENCY);
   _lastPosition = _position;
   if(_isVisualised)
   {
@@ -160,7 +160,7 @@ btTypedConstraint* SliderActuator::constraint()
 
 void SliderActuator::__processPositional()
 {
-  yReal robotValue = _data->getInternalDesiredValue(0);
+  double robotValue = _data->getInternalDesiredValue(0);
 
   if(_data->isDeflectionSet())
   {
@@ -168,11 +168,11 @@ void SliderActuator::__processPositional()
     _position  = _data->deflection().cut(_position);
   }
 
-  yReal diff       = _position - robotValue;
-  yReal velocity   = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
+  double diff       = _position - robotValue;
+  double velocity   = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
 
 
-  yReal force = _data->force();
+  double force = _data->force();
  
   if(_parameter.forceScaling > 0.0)
   {
@@ -185,7 +185,7 @@ void SliderActuator::__processPositional()
 
 void SliderActuator::__processVelocitySlider()
 {
-  yReal velocity   = _parameter.pid.update(_data->getInternalDesiredValue(0));
+  double velocity   = _parameter.pid.update(_data->getInternalDesiredValue(0));
 
   _sliderConstraint->setMaxLinMotorForce(_parameter.maxForce);
   _sliderConstraint->setTargetLinMotorVelocity(velocity);
@@ -193,9 +193,9 @@ void SliderActuator::__processVelocitySlider()
 
 void SliderActuator::__processForceSlider()
 {
-  yReal v        = _data->getInternalDesiredValue(0);
-  yReal force    = fabs(v) * _data->force();
-  yReal velocity = _parameter.pid.update(v  * _data->velocity());
+  double v        = _data->getInternalDesiredValue(0);
+  double force    = fabs(v) * _data->force();
+  double velocity = _parameter.pid.update(v  * _data->velocity());
   _sliderConstraint->setMaxLinMotorForce(force);
   _sliderConstraint->setTargetLinMotorVelocity(velocity);
 }

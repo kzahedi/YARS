@@ -13,8 +13,8 @@ unsigned long ConsoleView::_printTimeLastMeasurement   = 0;
 unsigned long ConsoleView::_captureTimeLastMeasurement = 0;
 unsigned long ConsoleView::_captureTimeLastStep        = 0;
 unsigned long ConsoleView::_printTimeLastStep          = 0;
-yReal         ConsoleView::_printTimeUPS               = 0.0;
-yReal         ConsoleView::_printRealTimeFactor        = 0.0;
+double         ConsoleView::_printTimeUPS               = 0.0;
+double         ConsoleView::_printRealTimeFactor        = 0.0;
 
 ConsoleView* ConsoleView::instance()
 {

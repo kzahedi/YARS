@@ -22,12 +22,12 @@ SceneGraphTraceLineObject::SceneGraphTraceLineObject(
   {
     oss << _trace->target() << " trace line " << index << endl;
     Colour fc = _trace->finalColour();
-    yReal f = (yReal)_trace->length();
-    yReal r = (c.red()   - fc.red())   / f;
-    yReal g = (c.green() - fc.green()) / f;
-    yReal b = (c.blue()  - fc.blue())  / f;
-    yReal a = (c.alpha() - fc.alpha()) / f;
-    yReal w = (_trace->lineWidth() - trace->finalWidth()) / f;
+    double f = (double)_trace->length();
+    double r = (c.red()   - fc.red())   / f;
+    double g = (c.green() - fc.green()) / f;
+    double b = (c.blue()  - fc.blue())  / f;
+    double a = (c.alpha() - fc.alpha()) / f;
+    double w = (_trace->lineWidth() - trace->finalWidth()) / f;
     _trail = sceneManager->createRibbonTrail(oss.str());
     _trail->setVisible(true);
     _trail->setMaterialName(_trace->texture());

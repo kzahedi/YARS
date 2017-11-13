@@ -176,12 +176,12 @@ DataGenericActuator* DataGenericActuator::_copy()
   return copy;
 }
 
-yReal DataGenericActuator::internalValue(int index)
+double DataGenericActuator::internalValue(int index)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::internalValue error");
 
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.internalValue;    break;
@@ -195,11 +195,11 @@ yReal DataGenericActuator::internalValue(int index)
   return r;
 }
 
-yReal DataGenericActuator::externalValue(int index)
+double DataGenericActuator::externalValue(int index)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::externalValue error");
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.externalValue;    break;
@@ -213,7 +213,7 @@ yReal DataGenericActuator::externalValue(int index)
   return r;
 }
 
-void DataGenericActuator::setInternalValue(int index, yReal v)
+void DataGenericActuator::setInternalValue(int index, double v)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::setInternalValue error");
   YM_LOCK;
@@ -229,7 +229,7 @@ void DataGenericActuator::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataGenericActuator::setExternalValue(int index, yReal v)
+void DataGenericActuator::setExternalValue(int index, double v)
 {
   // cout << "setting " << index << " to " << v << endl;
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::setExternalValue error");
@@ -326,7 +326,7 @@ Domain DataGenericActuator::getExternalDomain(int index)
   return d;
 }
 
-void DataGenericActuator::setDesiredValue(int index, yReal v)
+void DataGenericActuator::setDesiredValue(int index, double v)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::setDesiredValue error");
   // cout << "DataGenericActuator: " << index << " " << v << endl;
@@ -347,11 +347,11 @@ void DataGenericActuator::setDesiredValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-yReal DataGenericActuator::getInternalDesiredValue(int index)
+double DataGenericActuator::getInternalDesiredValue(int index)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::getInternalDesiredValue error");
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.inDesiredValue;    break;
@@ -365,11 +365,11 @@ yReal DataGenericActuator::getInternalDesiredValue(int index)
   return r;
 }
 
-yReal DataGenericActuator::getExternalDesiredValue(int index)
+double DataGenericActuator::getExternalDesiredValue(int index)
 {
   if(index < 0 || index >= _dimension) YarsErrorHandler::push("DataGenericActuator::getExternalDesiredValue error");
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.exDesiredValue;    break;
@@ -483,10 +483,10 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   spec->add(velocityParameter);
 }
 
-yReal DataGenericActuator::velocity(int index)
+double DataGenericActuator::velocity(int index)
 {
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.velocity;    break;
@@ -500,10 +500,10 @@ yReal DataGenericActuator::velocity(int index)
   return r;
 }
 
-yReal DataGenericActuator::force(int index)
+double DataGenericActuator::force(int index)
 {
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.maxForce;    break;
@@ -517,12 +517,12 @@ yReal DataGenericActuator::force(int index)
   return r;
 }
 
-void DataGenericActuator::setVelocity(int index, yReal v)
+void DataGenericActuator::setVelocity(int index, double v)
 {
 
 }
 
-void DataGenericActuator::setForce(int index, yReal f)
+void DataGenericActuator::setForce(int index, double f)
 {
 
 }
@@ -769,70 +769,70 @@ vector<int> DataGenericActuator::mapping()
   return _mapping;
 }
 
-void DataGenericActuator::setAngularVelocity(int index, yReal v)
+void DataGenericActuator::setAngularVelocity(int index, double v)
 {
   YM_LOCK;
   _angularVelocity[index] = v;
   YM_UNLOCK;
 }
 
-void DataGenericActuator::setLinearVelocity(int index, yReal v)
+void DataGenericActuator::setLinearVelocity(int index, double v)
 {
   YM_LOCK;
   _linearVelocity[index] = v;
   YM_UNLOCK;
 }
 
-yReal DataGenericActuator::getAngularVelocity(int index)
+double DataGenericActuator::getAngularVelocity(int index)
 {
   YM_LOCK;
-  yReal r = _angularVelocity[index];
+  double r = _angularVelocity[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericActuator::getLinearVelocity(int index)
+double DataGenericActuator::getLinearVelocity(int index)
 {
   YM_LOCK;
-  yReal r = _linearVelocity[index];
+  double r = _linearVelocity[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericActuator::setAngle(int i, yReal v)
+void DataGenericActuator::setAngle(int i, double v)
 {
   YM_LOCK;
   _angle[i] = v;
   YM_UNLOCK;
 }
 
-yReal DataGenericActuator::getAngle(int i)
+double DataGenericActuator::getAngle(int i)
 {
   YM_LOCK;
-  yReal r = _angle[i];
+  double r = _angle[i];
   YM_UNLOCK;
   return r;
 }
 
-void DataGenericActuator::setPosition(int i, yReal v)
+void DataGenericActuator::setPosition(int i, double v)
 {
   YM_LOCK;
   _position[i] = v;
   YM_UNLOCK;
 }
 
-yReal DataGenericActuator::getPosition(int i)
+double DataGenericActuator::getPosition(int i)
 {
   YM_LOCK;
-  yReal r = _position[i];
+  double r = _position[i];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataGenericActuator::springDamping(int index)
+double DataGenericActuator::springDamping(int index)
 {
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.springDamping;    break;
@@ -849,10 +849,10 @@ yReal DataGenericActuator::springDamping(int index)
   return r;
 }
 
-yReal DataGenericActuator::springStiffness(int index)
+double DataGenericActuator::springStiffness(int index)
 {
   YM_LOCK;
-  yReal r = 0.0;
+  double r = 0.0;
   switch(_mapping[index])
   {
     case 0: r = _parameter.rotational.x.springStiffness;    break;
@@ -948,17 +948,17 @@ int DataGenericActuator::mapping(int index)
   return _mapping[index];
 }
 
-yReal DataGenericActuator::getAppliedForce(int index)
+double DataGenericActuator::getAppliedForce(int index)
 {
   return _appliedForce[index];
 }
 
-yReal DataGenericActuator::getAppliedVelocity(int index)
+double DataGenericActuator::getAppliedVelocity(int index)
 {
   return _appliedVelocity[index];
 }
 
-void DataGenericActuator::setAppliedForceAndVelocity(int index, yReal force, yReal velocity)
+void DataGenericActuator::setAppliedForceAndVelocity(int index, double force, double velocity)
 {
   _appliedForce[index]    = force;
   _appliedVelocity[index] = velocity;

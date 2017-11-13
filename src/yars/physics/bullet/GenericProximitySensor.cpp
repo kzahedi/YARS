@@ -38,12 +38,12 @@ void GenericProximitySensor::prePhysicsUpdate()
 
 void GenericProximitySensor::postPhysicsUpdate()
 {
-  yReal length = _data->distance();
+  double length = _data->distance();
   for(int i = 0; i < 5; i++)
   {
     P3D hit = World::rayTest(_rayCoordinates[i].pose.position, _rayCoordinates[i].end);
     P3D diff = hit - _rayCoordinates[i].pose.position;
-    yReal distance = diff.length();
+    double distance = diff.length();
     if(distance < length) length = distance;
   }
   _data->setMeasuredDistance(length);

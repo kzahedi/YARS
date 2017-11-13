@@ -31,10 +31,10 @@ class HingeActuator : public Actuator
     btSliderConstraint *_hingeConstraint;
     HingeParameter      _parameter;
     int                 _hingeType;
-    yReal               _angle;
-    yReal               _lastAngle;
-    yReal               _angleDiff;
-    yReal               _friction;
+    double               _angle;
+    double               _lastAngle;
+    double               _angleDiff;
+    double               _friction;
     bool                _isActive;
     bool                _isVisualised;
     bool                _hasFriction;

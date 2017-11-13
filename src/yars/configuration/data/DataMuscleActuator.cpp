@@ -73,12 +73,12 @@ DataMuscleActuator::~DataMuscleActuator()
   YM_CLOSE;
 }
 
-yReal DataMuscleActuator::velocity() const
+double DataMuscleActuator::velocity() const
 {
   return _maxVelocity;
 }
 
-yReal DataMuscleActuator::force() const
+double DataMuscleActuator::force() const
 {
   return _maxForce;
 }
@@ -171,7 +171,7 @@ std::string DataMuscleActuator::name()
   return _name;
 }
 
-void DataMuscleActuator::setInternalValue(int index, yReal value)
+void DataMuscleActuator::setInternalValue(int index, double value)
 {
   YM_LOCK;
   _internalValue[index] = _internalDomain[index].cut(value);
@@ -179,7 +179,7 @@ void DataMuscleActuator::setInternalValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-void DataMuscleActuator::setExternalValue(int index, yReal value)
+void DataMuscleActuator::setExternalValue(int index, double value)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(value);
@@ -187,18 +187,18 @@ void DataMuscleActuator::setExternalValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataMuscleActuator::internalValue(int index)
+double DataMuscleActuator::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue[index];
+  double r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataMuscleActuator::externalValue(int index)
+double DataMuscleActuator::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue[index];
+  double r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -208,7 +208,7 @@ int DataMuscleActuator::dimension()
   return 1;
 }
 
-void DataMuscleActuator::setDesiredValue(int index, yReal value)
+void DataMuscleActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
 //  cout << value << endl;
@@ -217,18 +217,18 @@ void DataMuscleActuator::setDesiredValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataMuscleActuator::getInternalDesiredValue(int index)
+double DataMuscleActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredValue[index];
+  double r = _desiredValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataMuscleActuator::getExternalDesiredValue(int index)
+double DataMuscleActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredExValue[index];
+  double r = _desiredExValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -254,18 +254,18 @@ bool DataMuscleActuator::isActive(int index)
   return _isActive;
 }
 
-yReal DataMuscleActuator::getAppliedForce(int index)
+double DataMuscleActuator::getAppliedForce(int index)
 {
   return _appliedForce;
 }
 
-yReal DataMuscleActuator::getAppliedVelocity(int index)
+double DataMuscleActuator::getAppliedVelocity(int index)
 {
   return _appliedVelocity;
 }
 
-void DataMuscleActuator::setAppliedForceAndVelocity(int index, yReal force,
-                                                    yReal velocity)
+void DataMuscleActuator::setAppliedForceAndVelocity(int index, double force,
+                                                    double velocity)
 {
   _appliedForce    = force;
   _appliedVelocity = velocity;

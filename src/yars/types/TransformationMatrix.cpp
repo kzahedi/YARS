@@ -22,12 +22,12 @@ TransformationMatrix::TransformationMatrix(TransformationMatrix &t)
   }
 }
 
-TransformationMatrix::TransformationMatrix(yReal x, yReal y, yReal z, int mode)
+TransformationMatrix::TransformationMatrix(double x, double y, double z, int mode)
 {
    setRotation(x, y, z, mode);
 }
 
-TransformationMatrix::TransformationMatrix(yReal alpha, yReal beta, yReal gamma, yReal x, yReal y, yReal z, int mode)
+TransformationMatrix::TransformationMatrix(double alpha, double beta, double gamma, double x, double y, double z, int mode)
 {
   // CHECKED 01.07.11
   setTranformation(alpha, beta, gamma, x, y, z, mode);
@@ -43,19 +43,19 @@ void TransformationMatrix::__checkMode(int mode)
   }
 }
 
-void TransformationMatrix::setRotation(yReal alpha, yReal beta, yReal gamma, int mode)
+void TransformationMatrix::setRotation(double alpha, double beta, double gamma, int mode)
 {
   // CHECKED 01.07.11
   setTranformation(alpha, beta, gamma, 0, 0, 0, mode);
 }
 
-void TransformationMatrix::setTranslation(yReal x, yReal y, yReal z)
+void TransformationMatrix::setTranslation(double x, double y, double z)
 {
   // CHECKED 01.07.11
   setTranformation(0, 0, 0, x, y, z);
 }
 
-void TransformationMatrix::setTranformation(yReal alpha, yReal beta, yReal gamma, yReal x, yReal y, yReal z, int mode)
+void TransformationMatrix::setTranformation(double alpha, double beta, double gamma, double x, double y, double z, int mode)
 {
   __checkMode(mode);
   __init(4, 4, 0.0);
@@ -63,12 +63,12 @@ void TransformationMatrix::setTranformation(yReal alpha, yReal beta, yReal gamma
   if(mode == TM_ZYX) __setZYX(alpha, beta, gamma, x, y, z);
 }
 
-void TransformationMatrix::__setXYZ(yReal alpha, yReal beta, yReal gamma, yReal x, yReal y, yReal z)
+void TransformationMatrix::__setXYZ(double alpha, double beta, double gamma, double x, double y, double z)
 {
   // CHECKED 01.07.11
-  yReal sa = sin(alpha); yReal ca = cos(alpha);
-  yReal sb = sin(beta);  yReal cb = cos(beta);
-  yReal sg = sin(gamma); yReal cg = cos(gamma);
+  double sa = sin(alpha); double ca = cos(alpha);
+  double sb = sin(beta);  double cb = cos(beta);
+  double sg = sin(gamma); double cg = cos(gamma);
 
 
   // first row
@@ -96,11 +96,11 @@ void TransformationMatrix::__setXYZ(yReal alpha, yReal beta, yReal gamma, yReal 
   __set(3, 3, 1.0);
 }
 
-void TransformationMatrix::__setZYX(yReal alpha, yReal beta, yReal gamma, yReal x, yReal y, yReal z)
+void TransformationMatrix::__setZYX(double alpha, double beta, double gamma, double x, double y, double z)
 {
-  yReal sa = sin(alpha); yReal ca = cos(alpha);
-  yReal sb = sin(beta);  yReal cb = cos(beta);
-  yReal sg = sin(gamma); yReal cg = cos(gamma);
+  double sa = sin(alpha); double ca = cos(alpha);
+  double sb = sin(beta);  double cb = cos(beta);
+  double sg = sin(gamma); double cg = cos(gamma);
 
   // first row
   __set(0, 0, cb * cg);

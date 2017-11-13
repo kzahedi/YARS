@@ -17,9 +17,9 @@ void SineController::update()
 
 void SineController::init()
 {
-  yReal globalPeriod     = 0.0;
-  yReal globalPhaseShift = 0.0;
-  yReal globalAmplitude  = 0.0;
+  double globalPeriod     = 0.0;
+  double globalPhaseShift = 0.0;
+  double globalAmplitude  = 0.0;
   _count = 0.0;
 
   parameter.set("period",        globalPeriod,     100.0);

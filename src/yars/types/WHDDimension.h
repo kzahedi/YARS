@@ -16,7 +16,7 @@
  p.height;
  p.depth; \endverbatim
  *
- * P3D is pre-defined to __WHDDimension<yReal>
+ * P3D is pre-defined to __WHDDimension<double>
  *
  * \todo Unit test
  */
@@ -316,13 +316,13 @@ class __WHDDimension
 
     void normalise()
     {
-      yReal l = sqrt(width * width + height * height + depth * depth);
+      double l = sqrt(width * width + height * height + depth * depth);
       width /= l;
       height /= l;
       depth /= l;
     }
 
-    yReal length()
+    double length()
     {
       return sqrt(width * width + height * height + depth * depth);
     }
@@ -347,7 +347,7 @@ class __WHDDimension
      * Gives the values as an input to an ostream:
      *
      \verbatim
-     __WHDDimension<yReal> p;
+     __WHDDimension<double> p;
      cout << p << endl; \endverbatim
      * which gives
      \verbatim
@@ -364,8 +364,8 @@ class __WHDDimension
 
 };
 
-/** Pre-defined standard __WHDDimension class with yReal values */
-typedef __WHDDimension<yReal> WHDDimension;
+/** Pre-defined standard __WHDDimension class with double values */
+typedef __WHDDimension<double> WHDDimension;
 
 #endif // __WIDHT_HEIGHT_DEPTH_DIMENSION_H__
 

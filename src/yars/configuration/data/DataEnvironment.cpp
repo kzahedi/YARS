@@ -37,7 +37,7 @@ DataEnvironment::DataEnvironment(DataNode *parent)
   _useFog         = true;
   _fogIntensity   = 0.15;
   _groundGiven    = false;
-  _gravitation    = new yReal[3];
+  _gravitation    = new double[3];
   _gravitation[0] = 0.0;
   _gravitation[1] = 0.0;
   _gravitation[2] = -9.81;
@@ -346,7 +346,7 @@ bool DataEnvironment::useFog()
   return _useFog;
 }
 
-yReal DataEnvironment::fogIntensity()
+double DataEnvironment::fogIntensity()
 {
   return _fogIntensity;
 }
@@ -381,7 +381,7 @@ void DataEnvironment::resetTo(DataEnvironment *other)
   for(int i = 0; i < (int)_objects.size(); i++) _objects[i]->resetTo(other->_objects[i]);
 }
 
-yReal DataEnvironment::gravitation(int index)
+double DataEnvironment::gravitation(int index)
 {
   return _gravitation[index];
 }

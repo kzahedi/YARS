@@ -50,14 +50,14 @@ void FollowCamera::updateFollowableName()
   followableName = followable->name();
 }
 
-yReal FollowCamera::distXY(P3D a, P3D b)
+double FollowCamera::distXY(P3D a, P3D b)
 {
-  yReal x = a.x - b.x;
-  yReal y = a.y - b.y;
+  double x = a.x - b.x;
+  double y = a.y - b.y;
   return sqrt( x*x + y*y );
 }
 
-// yReal FollowCamera::__wrapAngle(yReal a, yReal b)
+// double FollowCamera::__wrapAngle(double a, double b)
 // {
 //   if(fabs(a - b) < 180) return a;
 //   if(a < b)

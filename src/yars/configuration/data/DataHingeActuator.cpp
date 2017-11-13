@@ -342,7 +342,7 @@ string DataHingeActuator::mode()
   return _mode;
 }
 
-yReal DataHingeActuator::friction()
+double DataHingeActuator::friction()
 {
   return _friction;
 }
@@ -374,23 +374,23 @@ DataHingeActuator* DataHingeActuator::_copy()
   return copy;
 }
 
-yReal DataHingeActuator::internalValue(int index)
+double DataHingeActuator::internalValue(int index)
 {
   YM_LOCK;
-  yReal r = _internalValue[index];
+  double r = _internalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataHingeActuator::externalValue(int index)
+double DataHingeActuator::externalValue(int index)
 {
   YM_LOCK;
-  yReal r = _externalValue[index];
+  double r = _externalValue[index];
   YM_UNLOCK;
   return r;
 }
 
-void DataHingeActuator::setInternalValue(int index, yReal v)
+void DataHingeActuator::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue[index] = _internalDomain[index].cut(v);
@@ -398,7 +398,7 @@ void DataHingeActuator::setInternalValue(int index, yReal v)
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setExternalValue(int index, yReal v)
+void DataHingeActuator::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(_n->calculate(v));
@@ -499,7 +499,7 @@ Domain DataHingeActuator::getExternalDomain(int index)
   return d;
 }
 
-void DataHingeActuator::setDesiredValue(int index, yReal value)
+void DataHingeActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
   // cout << "DataHingeActuator::setDesiredValue: " << index << " = " << value;
@@ -510,18 +510,18 @@ void DataHingeActuator::setDesiredValue(int index, yReal value)
   YM_UNLOCK;
 }
 
-yReal DataHingeActuator::getInternalDesiredValue(int index)
+double DataHingeActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredValue[index];
+  double r = _desiredValue[index];
   YM_UNLOCK;
   return r;
 }
 
-yReal DataHingeActuator::getExternalDesiredValue(int index)
+double DataHingeActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  yReal r = _desiredExValue[index];
+  double r = _desiredExValue[index];
   YM_UNLOCK;
   return r;
 }
@@ -534,48 +534,48 @@ bool DataHingeActuator::isActive(int)
   return r;
 }
 
-yReal DataHingeActuator::getCurrentAngularVelocity()
+double DataHingeActuator::getCurrentAngularVelocity()
 {
   YM_LOCK;
-  yReal r = _currentAngularVelocity;
+  double r = _currentAngularVelocity;
   YM_UNLOCK;
   return r;
 }
 
-void DataHingeActuator::setCurrentAngularVelocity(yReal v)
+void DataHingeActuator::setCurrentAngularVelocity(double v)
 {
   YM_LOCK;
   _currentAngularVelocity = v;
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setVelocity(yReal v)
+void DataHingeActuator::setVelocity(double v)
 {
   YM_LOCK;
   _parameter.maxVelocity = v;
   YM_UNLOCK;
 }
 
-void DataHingeActuator::setForce(yReal f)
+void DataHingeActuator::setForce(double f)
 {
   YM_LOCK;
   _parameter.maxForce = f;
   YM_UNLOCK;
 }
 
-yReal DataHingeActuator::velocity()
+double DataHingeActuator::velocity()
 {
   YM_LOCK;
-  yReal r = _parameter.maxVelocity;
+  double r = _parameter.maxVelocity;
   YM_UNLOCK;
   return r;
 }
 
-yReal DataHingeActuator::force()
+double DataHingeActuator::force()
 {
   YM_LOCK;
   // cout << _name << " force: " << _parameter.maxForce << endl;
-  yReal r = _parameter.maxForce;
+  double r = _parameter.maxForce;
   YM_UNLOCK;
   return r;
 }
@@ -599,17 +599,17 @@ int DataHingeActuator::dimension()
   return -1;
 }
 
-yReal DataHingeActuator::getAppliedForce(int)
+double DataHingeActuator::getAppliedForce(int)
 {
   return _appliedForce;
 }
 
-yReal DataHingeActuator::getAppliedVelocity(int)
+double DataHingeActuator::getAppliedVelocity(int)
 {
   return _appliedVelocity;
 }
 
-void DataHingeActuator::setAppliedForceAndVelocity(int, yReal force, yReal velocity)
+void DataHingeActuator::setAppliedForceAndVelocity(int, double force, double velocity)
 {
   _appliedForce    = force;
   _appliedVelocity = velocity;

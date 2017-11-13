@@ -17,8 +17,8 @@ class DataMuscleActuator : public DataActuator
     DataMuscleActuator(DataNode* parent);
     ~DataMuscleActuator();
 
-    yReal velocity() const;
-    yReal force() const;
+    double velocity() const;
+    double force() const;
 
     void add(DataParseElement* element) override;
 
@@ -28,23 +28,23 @@ class DataMuscleActuator : public DataActuator
     std::string destination() const;
     std::string name() override;
 
-    void setInternalValue(int index, yReal value) override;
-    void setExternalValue(int index, yReal value) override;
-    yReal internalValue(int index) override;
-    yReal externalValue(int index) override;
+    void setInternalValue(int index, double value) override;
+    void setExternalValue(int index, double value) override;
+    double internalValue(int index) override;
+    double externalValue(int index) override;
     int dimension() override;
-    void setDesiredValue(int index, yReal value) override;
-    yReal getInternalDesiredValue(int index) override;
-    yReal getExternalDesiredValue(int index) override;
+    void setDesiredValue(int index, double value) override;
+    double getInternalDesiredValue(int index) override;
+    double getExternalDesiredValue(int index) override;
 
     Domain getInternalDomain(int index) override;
     Domain getExternalDomain(int index) override;
     bool isActive(int index) override;
 
-    yReal getAppliedForce(int index) override;
-    yReal getAppliedVelocity(int index) override;
+    double getAppliedForce(int index) override;
+    double getAppliedVelocity(int index) override;
 
-    void setAppliedForceAndVelocity(int index, yReal force, yReal velocity)
+    void setAppliedForceAndVelocity(int index, double force, double velocity)
       override;
 
     Pose pose() override;
@@ -63,10 +63,10 @@ class DataMuscleActuator : public DataActuator
     std::string          _type;
     std::string          _name;
 
-    std::vector<yReal>   _internalValue;
-    std::vector<yReal>   _externalValue;
-    std::vector<yReal>   _desiredValue;
-    std::vector<yReal>   _desiredExValue;
+    std::vector<double>   _internalValue;
+    std::vector<double>   _externalValue;
+    std::vector<double>   _desiredValue;
+    std::vector<double>   _desiredExValue;
     std::vector<Mapping> _internalExternalMapping;
     std::vector<Domain>  _internalDomain;
     std::vector<Domain>  _externalDomain;
@@ -74,12 +74,12 @@ class DataMuscleActuator : public DataActuator
     bool                 _poseInWorldCoordinates;
     pthread_mutex_t      _mutex;
 
-    yReal                _maxForce;
-    yReal                _maxVelocity;
-    yReal                _forceScaling;
+    double                _maxForce;
+    double                _maxVelocity;
+    double                _forceScaling;
 
-    yReal           _appliedForce;
-    yReal           _appliedVelocity;
+    double           _appliedForce;
+    double           _appliedVelocity;
 
     // TODO: Decide what's needed.
     //DataFilter     *_filter;
@@ -87,9 +87,9 @@ class DataMuscleActuator : public DataActuator
     //Domain          _deflection;
     //SliderParameter _parameter;
     //bool            _deflectionSet;
-    //yReal           _currentTransitionalVelocity;
+    //double           _currentTransitionalVelocity;
     //Noise          *_n;
-    //yReal           _friction;
+    //double           _friction;
     //string          _mode;
 };
 

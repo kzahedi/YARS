@@ -129,7 +129,7 @@ PID DataOrbitCam::fromZ()
   return _fromZ;
 }
 
-yReal DataOrbitCam::speed()
+double DataOrbitCam::speed()
 {
   return _speed;
 }

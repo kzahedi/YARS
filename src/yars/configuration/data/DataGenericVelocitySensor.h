@@ -60,10 +60,10 @@ class DataGenericVelocitySensor : public DataSensor
 
     int dimension() { return 1; }
 
-    yReal internalValue(int index);
-    yReal externalValue(int index);
-    void setInternalValue(int index, yReal v);
-    void setExternalValue(int index, yReal v);
+    double internalValue(int index);
+    double externalValue(int index);
+    void setInternalValue(int index, double v);
+    void setExternalValue(int index, double v);
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
 
@@ -72,8 +72,8 @@ class DataGenericVelocitySensor : public DataSensor
   private:
     void __setMapping();
     Domain      _domain;
-    yReal _internalValue;
-    yReal _externalValue;
+    double _internalValue;
+    double _externalValue;
     Mapping  _internalExternalMapping;
     Domain   _internalDomain;
     Domain   _externalDomain;

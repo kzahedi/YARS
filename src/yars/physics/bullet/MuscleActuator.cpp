@@ -129,34 +129,31 @@ void MuscleActuator::prePhysicsUpdate()
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
   }
 
-  yReal internalDesired = _data.getInternalDesiredValue(0);
+  double internalDesired = _data.getInternalDesiredValue(0);
 
   if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
   {
     _constraint->setPoweredLinMotor(true);
   }
-  else
-  {
-    _constraint->setPoweredLinMotor(false);
-  }
 
-  yReal a_t = internalDesired;
+  double a_t = internalDesired;
 
   // _data.force() returns Fmax and _data.velocity() vmax. For now it's
   // hardcoded in the class.
-  //yReal force = * _data.force(); // _data.force() * xyz * A(t)
+  //double force = * _data.force(); // _data.force() * xyz * A(t)
 
   // TODO: Only needed once. Move somewhere else.
   _forceVelocityModel = linear;
   _forceLengthModel = linear;
-  yReal _Fv, _Fl;
+  double _Fv, _Fl;
   // TODO: Check if its the current velocity and not the max.
-  yReal v = _constraint->getTargetLinMotorVelocity();
-  yReal _mu = 0.25;
-  yReal _k = 10;
-  yReal _L0 = 1;
-//  yReal _L = min(_constraint->getLinearPos(), _L0);
-  yReal _L = 0.4;
+  double v = _constraint->getTargetLinMotorVelocity();
+  double _mu = 0.25;
+  double _k = 10;
+  double _L0 = 1;
+//  double _L = min(_constraint->getLinearPos(), _L0);
+  double _L = 0.4;
+
   switch (_forceVelocityModel) {
     case constant:
       _Fv = 1;
@@ -187,22 +184,24 @@ void MuscleActuator::prePhysicsUpdate()
     //default:
       //error
   }
-  yReal _Fmax = 2500;
-  yReal _Fm = a_t * _Fl * _Fv * _Fmax;
 
-  yReal _m = 80; // Adult man.
-  yReal _g = 10; // Rounded gravitational constant as in paper.
-  yReal force = - _m * _g + _Fm;
+  double _Fmax = 2500;
+  double _Fm = a_t * _Fl * _Fv * _Fmax;
 
-  //yReal velocity = fabs(a_t) * _data.velocity(); // _data.velocity() * abc * A(T)
+  double _m = 80; // Adult man.
+  double _g = 10; // Rounded gravitational constant as in paper.
+  double force = - _m * _g + _Fm;
+
+  //double velocity = fabs(a_t) * _data.velocity(); // _data.velocity() * abc * A(T)
   // Force = -mg + Fm (Force at ground contact. Else it's 0.)
   // Fm = A(t) * Fl * Fv * Fmax
 
-  yReal velocity = 10 * -a_t;
+  double velocity = 10 * -a_t;
   force = 2000;
  
   // The velocity is the maximum speed of the contraction. It is slowed down if
-  // there is not enough force generated to move the bodypart.
+  // there is not enough force generated to move the bodypart. The controller
+  // should only tell the desired velocity.
   _constraint->setMaxLinMotorForce(force);
   _constraint->setTargetLinMotorVelocity(velocity);
 

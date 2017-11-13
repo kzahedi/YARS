@@ -69,23 +69,23 @@ DataSharpDM2Y3A003K0FSensor* DataSharpDM2Y3A003K0FSensor::_copy()
 
 
 
-yReal DataSharpDM2Y3A003K0FSensor::internalValue(int index)
+double DataSharpDM2Y3A003K0FSensor::internalValue(int index)
 {
   return _internalValue;
 }
 
-yReal DataSharpDM2Y3A003K0FSensor::externalValue(int index)
+double DataSharpDM2Y3A003K0FSensor::externalValue(int index)
 {
   return _externalValue;
 }
 
-void DataSharpDM2Y3A003K0FSensor::setInternalValue(int index, yReal v)
+void DataSharpDM2Y3A003K0FSensor::setInternalValue(int index, double v)
 {
   _internalValue = _internalDomain.cut(v);
   _externalValue = _internalExternalMapping.map(_internalValue);
 }
 
-void DataSharpDM2Y3A003K0FSensor::setExternalValue(int index, yReal v)
+void DataSharpDM2Y3A003K0FSensor::setExternalValue(int index, double v)
 {
   _externalValue = _externalDomain.cut(v);
   _internalValue = _internalExternalMapping.invMap(_externalValue);

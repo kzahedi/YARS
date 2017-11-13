@@ -33,7 +33,7 @@ Colour::Colour(double red, double green, double blue, double alpha)
   __init(red, green, blue, alpha);
 }
 
-void Colour::__init(yReal red, yReal green, yReal blue, yReal alpha)
+void Colour::__init(double red, double green, double blue, double alpha)
 {
   __check("red",   red);
   __check("green", green);
@@ -45,7 +45,7 @@ void Colour::__init(yReal red, yReal green, yReal blue, yReal alpha)
   _alpha = alpha;
 }
 
-void Colour::__check(std::string name, yReal value)
+void Colour::__check(std::string name, double value)
 {
   if(value < 0.0 || value > 1.0)
   {
@@ -71,7 +71,7 @@ void Colour::setRed(float red)
 {
   __setRed(red);
 }
-void Colour::__setRed(yReal red)
+void Colour::__setRed(double red)
 {
   __check("red", red);
 #ifdef USE_THREAD_SAFE
@@ -93,7 +93,7 @@ void Colour::setGreen(float green)
 {
   __setGreen(green);
 }
-void Colour::__setGreen(yReal green)
+void Colour::__setGreen(double green)
 {
   __check("green", green);
 #ifdef USE_THREAD_SAFE
@@ -115,7 +115,7 @@ void Colour::setBlue(float blue)
 {
   __setBlue(blue);
 }
-void Colour::__setBlue(yReal blue)
+void Colour::__setBlue(double blue)
 {
   __check("blue", blue);
 #ifdef USE_THREAD_SAFE
@@ -137,7 +137,7 @@ void Colour::setAlpha(float alpha)
 {
   __setAlpha(alpha);
 }
-void Colour::__setAlpha(yReal alpha)
+void Colour::__setAlpha(double alpha)
 {
   __check("alpha", alpha);
 #ifdef USE_THREAD_SAFE
@@ -151,13 +151,13 @@ void Colour::__setAlpha(yReal alpha)
 #endif // USE_THREAD_SAFE
 }
 
-yReal Colour::red()
+double Colour::red()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_colorMutex);
 #endif // USE_THREAD_SAFE
 
-  yReal r = _red;
+  double r = _red;
 
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_colorMutex);
@@ -166,13 +166,13 @@ yReal Colour::red()
   return r;
 }
 
-yReal Colour::green()
+double Colour::green()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_colorMutex);
 #endif // USE_THREAD_SAFE
 
-  yReal r = _green;
+  double r = _green;
 
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_colorMutex);
@@ -181,13 +181,13 @@ yReal Colour::green()
   return r;
 }
 
-yReal Colour::blue()
+double Colour::blue()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_colorMutex);
 #endif // USE_THREAD_SAFE
 
-  yReal r = _blue;
+  double r = _blue;
 
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_colorMutex);
@@ -196,13 +196,13 @@ yReal Colour::blue()
   return r;
 }
 
-yReal Colour::alpha()
+double Colour::alpha()
 {
 #ifdef USE_THREAD_SAFE
   pthread_mutex_lock(&_colorMutex);
 #endif // USE_THREAD_SAFE
 
-  yReal r = _alpha;
+  double r = _alpha;
 
 #ifdef USE_THREAD_SAFE
   pthread_mutex_unlock(&_colorMutex);
