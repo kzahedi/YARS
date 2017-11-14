@@ -10,8 +10,8 @@ using namespace std;
 
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
-    _data{data},
-    _vmax{-3.5}
+    _data(data),
+    _vmax(-3.5)
     //_lopt{0.9 * _l0}
 {
   _constraint = createConstraint();
@@ -136,7 +136,13 @@ void MuscleActuator::prePhysicsUpdate()
     //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
   }
 
-  if (Timer::getTime() - _startTime > 2000) {
+
+  // lifeTime variable: in evaluate.h in update controller function
+  // Hier eher: __YARS_GET_STEP
+  // in bulletphysics::reset (dort nur in bullet. Muss anpassen.
+  // Konsequent: in robot::controlerUpdate. __yarsstep < intial_convergenceit
+  //  In yars::configuration(abgefragt) wie in zeile 20  | in datasimulator
+  if (__YARS_GET_STEP > 10) {
     if (_L0 == 0)
     {
       _L0 = _constraint->getLinearPos();
@@ -174,7 +180,7 @@ void MuscleActuator::postPhysicsUpdate()
     btTransform  pose = _constraint->getCalculatedTransformA();
     btVector3    vec  = pose.getOrigin();
     btQuaternion q    = pose.getRotation();
-    _data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+    _data.setCurrentAxisPosition(P3D(vec.getX(), vec.getY(), vec.getZ()));
     _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(),
                                                  q.getZ()));
   }
