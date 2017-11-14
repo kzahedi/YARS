@@ -14,8 +14,8 @@
         <!-- <position x="-2.0" y="0" z="0.5"/> -->
         <!-- <lookAt x="0.0" y="0.00" z="0.5"/> -->
         <!-- Side View -->
-         <position x="0" y="-2.5" z="0.5"/>
-         <lookAt x="0.0" y="0.00" z="0.5"/>
+        <position x="0" y="-2.5" z="0.5"/>
+        <lookAt x="0.0" y="0.00" z="0.5"/>
       </camera>
       <osd>
         <time  font="Time"  size="25" colour="FFFF00"/>
@@ -98,9 +98,16 @@
         <!--</physics>-->
         <!--</box>-->
 
-        <sphere name="robot_rail_connection" visualise="true">
+        <sphere name="robot_rail_connection_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0" y="0" z="1.155"/>
+          <pose x="0" y="-0.197" z="1.155"/>
+          <physics>
+            <mass kg="5"/>
+          </physics>
+        </sphere>
+        <sphere name="robot_rail_connection_right" visualise="true">
+          <dimension radius="0.01"/>
+          <pose x="0" y="0.197" z="1.155"/>
           <physics>
             <mass kg="5"/>
           </physics>
@@ -216,18 +223,30 @@
       <pose z="0.015"/> <!-- Elevate robot so it's not inside the ground. -->
 
       <actuators>
-        <slider name="robot_rail" type="force" mode="passive">
-          <source      name="robot_rail_connection"/>
+
+        <slider name="robot_rail_left" type="force" mode="passive">
+          <source      name="robot_rail_connection_left"/>
           <force       max="1.0"/>
           <velocity    max="1.0"/>
           <pose        x="0" y="0" z="0" alpha="0" beta="0" gamma="180"/>
         </slider>
-        <pointConstraint name="anchor_robot_rail" mode="muscle">
+        <pointConstraint name="anchor_robot_rail_left" mode="muscle">
           <source name="hip"/>
-          <destination name="robot_rail_connection"/>
-          <pose x="0" y="0.1" z="0"/>
+          <destination name="robot_rail_connection_left"/>
+          <pose x="0" y="0.1" z="0.197"/>
         </pointConstraint>
 
+        <slider name="robot_rail_right" type="force" mode="passive">
+          <source      name="robot_rail_connection_right"/>
+          <force       max="1.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0" y="0" z="0" alpha="0" beta="0" gamma="180"/>
+        </slider>
+        <pointConstraint name="anchor_robot_rail_right" mode="muscle">
+          <source name="hip"/>
+          <destination name="robot_rail_connection_right"/>
+          <pose x="0" y="0.1" z="-0.197"/>
+        </pointConstraint>
 
         <!-- JOINTS -->
 
@@ -412,13 +431,13 @@
 
         <!-- Model for tibialis posterior -->
         <!--<muscle name="muscle_shank_back_left" type="hill">-->
-          <!--<source name="muscle_base_shank_back_left"/>-->
-          <!--<destination name="muscle_end_foot_back_left"/>-->
-          <!--<force max="10"/>-->
-          <!--<velocity max="10"/>-->
-          <!--<mapping min="-1.0" max="1.0"/>-->
-          <!--<force-length_model model="linear"/>-->
-          <!--<force-velocity_model model="linear"/>-->
+        <!--<source name="muscle_base_shank_back_left"/>-->
+        <!--<destination name="muscle_end_foot_back_left"/>-->
+        <!--<force max="10"/>-->
+        <!--<velocity max="10"/>-->
+        <!--<mapping min="-1.0" max="1.0"/>-->
+        <!--<force-length_model model="linear"/>-->
+        <!--<force-velocity_model model="linear"/>-->
         <!--</muscle> -->
 
       </actuators>
@@ -459,40 +478,40 @@
 
       </sensors>
 
-      <controller module="TCPIP" frequency="10"/>
-      <!--<controller module="Sine" frequency="10"/>-->
+      <!--<controller module="TCPIP" frequency="10"/>-->
+      <controller module="Sine" frequency="10"/>
 
     </robot>
   </robots>
 
   <!--<logging>-->
-    <!--<object target="anchor" precision="3"> <use value="x"/> <use value="y"/> </object>-->
-    <!--<object target="sphere" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+  <!--<object target="anchor" precision="3"> <use value="x"/> <use value="y"/> </object>-->
+  <!--<object target="sphere" precision="3"> <use value="x"/> <use value="y"/> </object>-->
 
-    <!--<actuator target="muscle" precision="3"> <internal/> <external/> <desired/> <appliedForce/> <appliedVelocity/> </actuator>-->
+  <!--<actuator target="muscle" precision="3"> <internal/> <external/> <desired/> <appliedForce/> <appliedVelocity/> </actuator>-->
 
-    <!--<console>-->
-      <!--<target name="sphere"/>-->
-      <!--<target name="muscle"/>-->
-    <!--</console>-->
+  <!--<console>-->
+  <!--<target name="sphere"/>-->
+  <!--<target name="muscle"/>-->
+  <!--</console>-->
 
-    <!--<gnuplot size="100000" delay="100" pairwise="true">-->
-      <!--<target name="sphere"/>-->
-      <!--<target name="muscle"/>-->
-    <!--</gnuplot><]-->
+  <!--<gnuplot size="100000" delay="100" pairwise="true">-->
+  <!--<target name="sphere"/>-->
+  <!--<target name="muscle"/>-->
+  <!--</gnuplot><]-->
 
-    <!--<file name="muscle_log">-->
-      <!--<target name="sphere"/>-->
-      <!--<target name="muscle"/>-->
-    <!--</file>-->
+  <!--<file name="muscle_log">-->
+  <!--<target name="sphere"/>-->
+  <!--<target name="muscle"/>-->
+  <!--</file>-->
 
-    <!--<csv name="muscle_log">-->
-      <!--<target name="sphere"/>-->
-      <!--<target name="muscle"/>-->
-    <!--</csv>-->
+  <!--<csv name="muscle_log">-->
+  <!--<target name="sphere"/>-->
+  <!--<target name="muscle"/>-->
+  <!--</csv>-->
 
-    <!--<blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>-->
-    <!--<blender name="muscle_log.txt"/>-->
+  <!--<blender name="muscle_log.csv" cfg="cibraitenberg_blender.cfg" framerate="10"/>-->
+  <!--<blender name="muscle_log.txt"/>-->
   <!--</logging>-->
 
 </rosiml>
