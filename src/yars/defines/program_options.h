@@ -133,6 +133,11 @@
 #define __PO_OPTION_GUI_DESCRIPTION \
      "Start YARS without graphical users interface."
 
+#define __PO_OPTION_CONTROLLER                      "noctrl"
+#define __PO_OPTION_CONTROLLER_DESCRIPTION \
+     "Start YARS without without controller."
+
+
 #define __PO_OPTION_TRACE                             "trace"
 #define __PO_OPTION_TRACE_DESCRIPTION \
   "Activate traces on start up (default is off)."

@@ -39,7 +39,7 @@ OPTION(YARS_BUILD_JAVA_CLIENT
 
 OPTION(YARS_BUILD_CPP_CLIENT
   "Building cpp client."
-  OFF)
+  ON)
 
 OPTION(YARS_USE_VISUALISATION
   "Use visualisation."

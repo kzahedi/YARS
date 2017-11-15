@@ -156,6 +156,10 @@ ProgramOptions::ProgramOptions(int argc, char **argv,
      // value<bool>(&(_configuration->useGui))->implicit_value(true),
      __PO_OPTION_GUI_DESCRIPTION)
 
+    (__PO_OPTION_CONTROLLER,
+     // value<bool>(&(_configuration->useGui))->implicit_value(true),
+     __PO_OPTION_CONTROLLER_DESCRIPTION)
+
     (__PO_OPTION_TRACE,
      // value<bool>(&(_configuration->useTraces))->implicit_value(true),
      __PO_OPTION_TRACE_DESCRIPTION)
@@ -379,6 +383,7 @@ void ProgramOptions::__parseProgramOptionsParameters()
   if(_vm.count(__PO_OPTION_REALTIME))                          __realTime();
   if(_vm.count(__PO_OPTION_TEXTURE))                           __texture();
   if(_vm.count(__PO_OPTION_GUI))                               __gui();
+  if(_vm.count(__PO_OPTION_CONTROLLER))                        __controller();
   if(_vm.count(__PO_OPTION_TRACE))                             __trace();
   if(_vm.count(__PO_OPTION_PRINT_TIME))                        __printTime();
   if(_vm.count(__PO_OPTION_ON_SCREEN_DISPLAY))                 __onScreenDisplay();
@@ -695,6 +700,11 @@ void ProgramOptions::__texture()
 void ProgramOptions::__gui()
 {
   _cc->setUseVisualisation(false);
+}
+
+void ProgramOptions::__controller()
+{
+  _cc->setUseController(true);
 }
 
 void ProgramOptions::__trace()

@@ -106,7 +106,8 @@ void TCPIP::update()
 
 }
 
-void TCPIP::init(){
+void TCPIP::init()
+{
   parameter.set("port",  port,  4500);
   parameter.set("debug", debug, false);
   parameter.set("log",   log,   false);
@@ -170,11 +171,11 @@ void TCPIP::__configuration()
   string s_integer = oss.str();
   oss.str("");
   oss << "DOUBLE " << sizeof(double) << " bytes, little endian";
-  string s_yReal = oss.str();
+  string s_double = oss.str();
   socket << "BEGIN CONFIGURATION";
   socket << "BEGIN DATA TYPES";
   socket << s_integer;
-  socket << s_yReal;
+  socket << s_double;
   socket << "END DATA TYPES";
   socket << "BEGIN ROBOT DATA";
   oss.str("");

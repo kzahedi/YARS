@@ -369,9 +369,9 @@ class Socket
      */
     const Socket& operator>>(std::vector<int>&) const;
 
-    /** \brief Send a vector of yReals.
+    /** \brief Send a vector of doubles.
      *
-     * This functions sends several yReals of the communication port, which
+     * This functions sends several doubles of the communication port, which
      * are given to the function in form of a std::vector<double>. Each double is
      * given by 8 bytes.
      *
@@ -400,15 +400,15 @@ class Socket
      <first double byte 5>
      <first double byte 6>
      <first double high byte = byte 7>
-     <second yReals bytes> ... \endverbatim
+     <second doubles bytes> ... \endverbatim
      *
-     * \param[in] std::vector<double> vd, the vector of yReals to be send
+     * \param[in] std::vector<double> vd, the vector of doubles to be send
      */
     const Socket& operator<<(const std::vector<double>&) const;
 
-    /** \brief Receives a vector of yReals.
+    /** \brief Receives a vector of doubles.
      *
-     * This functions receives several yReals of the communication port, which
+     * This functions receives several doubles of the communication port, which
      * are then stored by the function in form of a std::vector<double>. Each double is
      * given by 8 bytes.
      *
@@ -437,9 +437,9 @@ class Socket
      <first double byte 5>
      <first double byte 6>
      <first double high byte = byte 7>
-     <second yReals bytes> ... \endverbatim
+     <second doubles bytes> ... \endverbatim
      *
-     * \param[out] std::vector<yReals> vd, the vector of integers to be received
+     * \param[out] std::vector<doubles> vd, the vector of integers to be received
      */
     const Socket& operator>>(std::vector<double>&) const;
 

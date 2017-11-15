@@ -24,7 +24,7 @@ void Braitenberg3b::update()
       if(osd) oss << "^7Left LDR sensor: ^1"  << sensors[6] << "^0\n" << "Right LDR sensor: ^1" << sensors[7] << "^0\n"
         << "^7Left IR sensor: ^1"  << i1 << "^0\n" << "Right IR sensor: ^1" << i2 << "^0";
       break;
-    case 8: // without light source
+    default: // without light source
       motors[0] = tanh(-(sensors[3] + sensors[4] + sensors[5]) / 3.0);
       motors[1] = tanh(-(sensors[0] + sensors[1] + sensors[2]) / 3.0);
       if(osd) oss << "^7Left IR sensor: ^1"  << i1 << "^0\n" << "Right IR sensor: ^1" << i2 << "^0";

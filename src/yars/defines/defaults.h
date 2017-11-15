@@ -44,6 +44,7 @@
 #define DEFAULT_USE_AXES_VISUALISATION         false
 #define DEFAULT_USE_PRINT_FRAMES_PER_SECOND    false
 #define DEFAULT_USE_VISUALISATION              true
+#define DEFAULT_USE_CONTROLLER                 true
 #define DEFAULT_USE_RESET                      false
 #define DEFAULT_USE_PRINT_KEYBOARD_SHORTCUTS   false
 #define DEFAULT_USE_SINGLE_STEP                false

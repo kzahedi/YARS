@@ -86,7 +86,7 @@ class YarsXSDGenerator
      *
      * @return
      */
-    xercesc::DOMDocument* doc();
+    DOMDocument* doc();
 
     /**
      * @brief Returns the pointer to the DOMLSOutput of the XML Schema Grammar.
@@ -107,7 +107,7 @@ class YarsXSDGenerator
     void __addRoot(XsdSequence *s);
     void __createSequence(DOMElement *sequence, XsdSequence *s);
 
-    xercesc::DOMDocument *_doc;
+    DOMDocument *_doc;
     DOMElement  *_root;
 
     DOMImplementation *_impl;

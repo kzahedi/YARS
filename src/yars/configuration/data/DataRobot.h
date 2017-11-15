@@ -199,27 +199,27 @@ class DataRobot : public DataNode, public MacroUserInterface
     void                       __gatherGeoms();
 
   private:
-    void                       __applyPose();
-    void                       __applyMacros();
-    void                       __setMotorVector();
-    void                       __setSensorVector();
-    void                       __setActuatorsInController();
+    void                            __applyPose();
+    void                            __applyMacros();
+    void                            __setMotorVector();
+    void                            __setSensorVector();
+    void                            __setActuatorsInController();
 
-    Pose                       _pose;
-    string                     _name;
-    DataObjects                _objects;
-    DataObjects                _geoms;
+    Pose                            _pose;
+    string                          _name;
+    DataObjects                     _objects;
+    DataObjects                     _geoms;
     std::vector<DataSensor*>        _sensors;
     std::vector<DataActuator*>      _actuators;
     std::vector<DataMacroInstance*> _macros;
-    DataController*            _controller;
-    bool                       _selfCollide;
-    DataMacros                *_macrosDefinitions;
-    bool                       _processingSensors;
-    bool                       _processingActuators;
+    DataController*                 _controller;
+    bool                            _selfCollide;
+    DataMacros                      *_macrosDefinitions;
+    bool                            _processingSensors;
+    bool                            _processingActuators;
 
-    std::vector<double>         _actuatorValues;
-    std::vector<double>         _sensorValues;
+    std::vector<double>             _actuatorValues;
+    std::vector<double>             _sensorValues;
 };
 
 #endif // __DATA_ROBOT_H__

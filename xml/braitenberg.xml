@@ -1,11 +1,10 @@
-<rosiml version="0.8.40">
+<rosiml version="0.8.41">
 
   <simulator frequency="100">
     <solver  iterations="10"/>
   </simulator>
 
   <screens>
-
 
     <screen name="Braiternberg" show="true" follow="false">
       <size   width="800" height="800"/>
@@ -275,6 +274,7 @@
           <mapping min="-1" max="1"/>
         </velocity>
 
+
       </sensors>
 
       <controller  module="Braitenberg2b" frequency="10"/>
@@ -296,4 +296,5 @@
       <final colour="0000ff00"  size="0.00"/>
     </trace>
   </traces>
+
 </rosiml>

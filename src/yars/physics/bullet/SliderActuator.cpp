@@ -97,7 +97,6 @@ SliderActuator::SliderActuator(DataSliderActuator *data, Robot *robot)
     case DATA_ACTUATOR_CONTROL_VELOCITY:   _sliderType = VELOCITY;   break;
     case DATA_ACTUATOR_CONTROL_FORCE:      _sliderType = FORCE;      break;
   }
- 
 }
 
 SliderActuator::~SliderActuator()

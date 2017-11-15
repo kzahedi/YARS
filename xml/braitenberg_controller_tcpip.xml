@@ -1,4 +1,4 @@
-<rosiml version="0.8.40">
+<rosiml version="0.8.41">
 
   <simulator frequency="100">
     <solver  iterations="10"/>
@@ -275,6 +275,7 @@
 
       <controller  module="TCPIP" frequency="10">
         <parameter name="port" value="9500"/>
+        <parameter name="debug" value="true"/>
       </controller>
 
     </robot>
@@ -294,4 +295,5 @@
       <final colour="0000ff00"  size="0.00"/>
     </trace>
   </traces>
+
 </rosiml>

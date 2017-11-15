@@ -133,11 +133,11 @@ void NamedPipeController::__configuration()
   string s_integer = oss.str();
   oss.str("");
   oss << "DOUBLE " << sizeof(double) << " bytes, little endian";
-  string s_yReal = oss.str();
+  string s_double = oss.str();
   pipe << "BEGIN CONFIGURATION";
   pipe << "BEGIN DATA TYPES";
   pipe << s_integer;
-  pipe << s_yReal;
+  pipe << s_double;
   pipe << "END DATA TYPES";
   pipe << "BEGIN ROBOT DATA";
   oss.str("");
