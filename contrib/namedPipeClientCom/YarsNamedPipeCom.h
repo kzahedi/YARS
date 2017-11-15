@@ -64,22 +64,22 @@ class YarsNamedPipeCom
   public:
     YarsNamedPipeCom();
 
-    void init(const string name)  throw (YarsNamedPipeComException);
+    void init(const string name)  noexcept(false);
 
-    unsigned int getJointDimension(int index)   throw (YarsNamedPipeComException);
-    unsigned int getSensorDimension(int index)  throw (YarsNamedPipeComException);
+    unsigned int getJointDimension(int index)   noexcept(false);
+    unsigned int getSensorDimension(int index)  noexcept(false);
 
-    void getJointName(int index,  string *name) throw (YarsNamedPipeComException);
-    void getSensorName(int index, string *name) throw (YarsNamedPipeComException);
+    void getJointName(int index,  string *name) noexcept(false);
+    void getSensorName(int index, string *name) noexcept(false);
 
-    void setJointValue(double value,       int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorValue(double *value,     int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void setJointValue(double value,       int jointIndex,  int valueIndex = 0) noexcept(false);
+    void getSensorValue(double *value,     int sensorIndex, int valueIndex = 0) noexcept(false);
 
-    void getJointRobotDomain(Domain   *d, int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorRobotDomain(Domain  *d, int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void getJointRobotDomain(Domain   *d, int jointIndex,  int valueIndex = 0) noexcept(false);
+    void getSensorRobotDomain(Domain  *d, int sensorIndex, int valueIndex = 0) noexcept(false);
 
-    void getJointMappedDomain(Domain  *d, int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void getJointMappedDomain(Domain  *d, int jointIndex,  int valueIndex = 0) noexcept(false);
+    void getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex = 0) noexcept(false);
 
     void update(); // send & receive
 
@@ -103,7 +103,7 @@ class YarsNamedPipeCom
     void __sendMotorCommand();
     void __receiveSensorData();
     void __printData();
-    void __configuration() throw (YarsNamedPipeComException);
+    void __configuration() noexcept(false);
     void __readJointInformation();
     void __readSensorInformation();
     void __readRobotInformation();

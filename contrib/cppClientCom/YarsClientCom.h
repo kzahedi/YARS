@@ -47,22 +47,22 @@ class YarsClientCom
     void init(const string host="localhost", const int port=9500);
     void init(string workingDirectory, string xmlFile, string path="");
 
-    unsigned int getActuatorDimension(int)          throw (YarsClientComException);
-    void getActuatorName(int, string*)              throw (YarsClientComException);
-    void getActuatorRobotDomain(Domain*, int, int)  throw (YarsClientComException);
-    void getActuatorMappedDomain(Domain*, int, int) throw (YarsClientComException);
+    unsigned int getActuatorDimension(int)          noexcept(false);
+    void getActuatorName(int, string*)              noexcept(false);
+    void getActuatorRobotDomain(Domain*, int, int)  noexcept(false);
+    void getActuatorMappedDomain(Domain*, int, int) noexcept(false);
     void setActuatorValue(int, double);
     void setActuatorValue(int, float);
 
-    unsigned int getSensorDimension(int)            throw (YarsClientComException);
-    void getSensorName(int, string*)                throw (YarsClientComException);
-    void getSensorRobotDomain(Domain*, int, int)    throw (YarsClientComException);
-    void getSensorMappedDomain(Domain*, int, int)   throw (YarsClientComException);
+    unsigned int getSensorDimension(int)            noexcept(false);
+    void getSensorName(int, string*)                noexcept(false);
+    void getSensorRobotDomain(Domain*, int, int)    noexcept(false);
+    void getSensorMappedDomain(Domain*, int, int)   noexcept(false);
     double getSensorValue(int);
 
-    void sendMessage(string) throw (YarsClientComException);
+    void sendMessage(string) noexcept(false);
 
-    void update() throw (YarsClientComException); // send & receive
+    void update() noexcept(false); // send & receive
 
     int  sizeOfInt();
     int  sizeOfDouble();
@@ -70,8 +70,8 @@ class YarsClientCom
     bool end();
     bool reset();
 
-    void sendReset() throw (YarsClientComException);
-    void sendQuit() throw (YarsClientComException);
+    void sendReset() noexcept(false);
+    void sendQuit() noexcept(false);
 
     void name(string *name);
     void configuration(string *configurationString);
@@ -88,9 +88,9 @@ class YarsClientCom
     void throwException(bool);
 
   private:
-    void __sendMotorCommand()  throw (YarsClientComException);
-    void __receiveSensorData() throw (YarsClientComException);
-    void __configuration()     throw (YarsClientComException);
+    void __sendMotorCommand()  noexcept(false);
+    void __receiveSensorData() noexcept(false);
+    void __configuration()     noexcept(false);
     void __printData();
     void __readActuatorInformation();
     void __readSensorInformation();

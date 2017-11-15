@@ -35,7 +35,7 @@ void YarsNamedPipeCom::update()
 }
 
 
-void YarsNamedPipeCom::init(const string name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::init(const string name) noexcept(false)
 {
   _namedPipe.init(name.c_str(), false);
   __configuration();
@@ -74,7 +74,7 @@ int YarsNamedPipeCom::sizeOfDouble()
   return _sizeOfDouble;
 }
 
-void YarsNamedPipeCom::__configuration() throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::__configuration() noexcept(false)
 {
   _namedPipe << string("CONFIGURATION");
   string string;
@@ -222,7 +222,7 @@ void YarsNamedPipeCom::__setDimension(string s, Entity *e)
   // others will be pushed
 }
 
-unsigned int YarsNamedPipeCom::getJointDimension(int index) throw (YarsNamedPipeComException)
+unsigned int YarsNamedPipeCom::getJointDimension(int index) noexcept(false)
 {
   if(index < 0 || index >= (int)_joints.size())
   {
@@ -231,7 +231,7 @@ unsigned int YarsNamedPipeCom::getJointDimension(int index) throw (YarsNamedPipe
   return _joints[index].dimension;
 }
 
-unsigned int YarsNamedPipeCom::getSensorDimension(int index) throw (YarsNamedPipeComException)
+unsigned int YarsNamedPipeCom::getSensorDimension(int index) noexcept(false)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
@@ -241,7 +241,7 @@ unsigned int YarsNamedPipeCom::getSensorDimension(int index) throw (YarsNamedPip
   return _sensors[index].dimension;
 }
 
-void YarsNamedPipeCom::getJointName(int index, string *name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointName(int index, string *name) noexcept(false)
 {
   if(index < 0 || index >= (int)_joints.size())
   {
@@ -251,7 +251,7 @@ void YarsNamedPipeCom::getJointName(int index, string *name) throw (YarsNamedPip
   *name = _joints[index].name;
 }
 
-void YarsNamedPipeCom::getSensorName(int index, string *name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorName(int index, string *name) noexcept(false)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
@@ -261,7 +261,7 @@ void YarsNamedPipeCom::getSensorName(int index, string *name) throw (YarsNamedPi
   *name = _sensors[index].name;
 }
 
-void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueIndex) noexcept(false)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
@@ -283,7 +283,7 @@ void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueInde
   _joints[jointIndex].value[valueIndex] = value;
 }
 
-void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueIndex) noexcept(false)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
@@ -301,7 +301,7 @@ void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueI
   *value = _sensors[sensorIndex].value[valueIndex];
 }
 
-void YarsNamedPipeCom::getJointRobotDomain(Domain *d, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointRobotDomain(Domain *d, int jointIndex, int valueIndex) noexcept(false)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
@@ -314,7 +314,7 @@ void YarsNamedPipeCom::getJointRobotDomain(Domain *d, int jointIndex, int valueI
   *d = _joints[jointIndex].robotDomain[valueIndex];
 }
 
-void YarsNamedPipeCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) noexcept(false)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
@@ -328,7 +328,7 @@ void YarsNamedPipeCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valu
   *d = _sensors[sensorIndex].robotDomain[valueIndex];
 }
 
-void YarsNamedPipeCom::getJointMappedDomain(Domain *d, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointMappedDomain(Domain *d, int jointIndex, int valueIndex) noexcept(false)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
@@ -342,7 +342,7 @@ void YarsNamedPipeCom::getJointMappedDomain(Domain *d, int jointIndex, int value
   *d = _joints[jointIndex].domain[valueIndex];
 }
 
-void YarsNamedPipeCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) noexcept(false)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {

@@ -54,7 +54,7 @@ bool YarsClientCom::reset()
   return _reset;
 }
 
-void YarsClientCom::update() throw (YarsClientComException)
+void YarsClientCom::update() noexcept(false)
 {
   __sendMotorCommand();
   __receiveSensorData();
@@ -138,18 +138,18 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
   pthread_create(&_thread, NULL, read_stdout, (void*)_yarsFD);
 }
 
-void YarsClientCom::sendReset() throw (YarsClientComException)
+void YarsClientCom::sendReset() noexcept(false)
 {
   _socket << "RESET";
 }
 
-void YarsClientCom::sendMessage(string message) throw (YarsClientComException)
+void YarsClientCom::sendMessage(string message) noexcept(false)
 {
   _socket << "MESSAGE";
   _socket << message;
 }
 
-void YarsClientCom::sendQuit() throw (YarsClientComException)
+void YarsClientCom::sendQuit() noexcept(false)
 {
   _socket << "QUIT";
   pclose(_yarsFD);
@@ -177,7 +177,7 @@ int YarsClientCom::sizeOfDouble()
   return _sizeOfDouble;
 }
 
-void YarsClientCom::__configuration() throw (YarsClientComException)
+void YarsClientCom::__configuration() noexcept(false)
 {
   _socket << string("CONFIGURATION");
   string string;
@@ -342,7 +342,7 @@ void YarsClientCom::__setDimension(string s, Entity *e)
   // others will be pushed
 }
 
-unsigned int YarsClientCom::getActuatorDimension(int index) throw (YarsClientComException)
+unsigned int YarsClientCom::getActuatorDimension(int index) noexcept(false)
 {
   if(index < 0 || index >= (int)_actuators.size())
   {
@@ -351,7 +351,7 @@ unsigned int YarsClientCom::getActuatorDimension(int index) throw (YarsClientCom
   return _actuators[index].dimension;
 }
 
-unsigned int YarsClientCom::getSensorDimension(int index) throw (YarsClientComException)
+unsigned int YarsClientCom::getSensorDimension(int index) noexcept(false)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
@@ -361,7 +361,7 @@ unsigned int YarsClientCom::getSensorDimension(int index) throw (YarsClientComEx
   return _sensors[index].dimension;
 }
 
-void YarsClientCom::getActuatorName(int index, string *name) throw (YarsClientComException)
+void YarsClientCom::getActuatorName(int index, string *name) noexcept(false)
 {
   if(index < 0 || index >= (int)_actuators.size())
   {
@@ -371,7 +371,7 @@ void YarsClientCom::getActuatorName(int index, string *name) throw (YarsClientCo
   *name = _actuators[index].name;
 }
 
-void YarsClientCom::getSensorName(int index, string *name) throw (YarsClientComException)
+void YarsClientCom::getSensorName(int index, string *name) noexcept(false)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
@@ -429,7 +429,7 @@ double YarsClientCom::getSensorValue(int sensorIndex)
   // *value = _sensors[sensorIndex].value[valueIndex];
 }
 
-void YarsClientCom::getActuatorRobotDomain(Domain *d, int actuatorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getActuatorRobotDomain(Domain *d, int actuatorIndex, int valueIndex) noexcept(false)
 {
   if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   {
@@ -442,7 +442,7 @@ void YarsClientCom::getActuatorRobotDomain(Domain *d, int actuatorIndex, int val
   *d = _actuators[actuatorIndex].robotDomain[valueIndex];
 }
 
-void YarsClientCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) noexcept(false)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
@@ -456,7 +456,7 @@ void YarsClientCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIn
   *d = _sensors[sensorIndex].robotDomain[valueIndex];
 }
 
-void YarsClientCom::getActuatorMappedDomain(Domain *d, int actuatorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getActuatorMappedDomain(Domain *d, int actuatorIndex, int valueIndex) noexcept(false)
 {
   if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   {
@@ -470,7 +470,7 @@ void YarsClientCom::getActuatorMappedDomain(Domain *d, int actuatorIndex, int va
   *d = _actuators[actuatorIndex].domain[valueIndex];
 }
 
-void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) noexcept(false)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
@@ -485,7 +485,7 @@ void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueI
 }
 
 
-void YarsClientCom::__sendMotorCommand() throw (YarsClientComException)
+void YarsClientCom::__sendMotorCommand() noexcept(false)
 {
   // std::vector<double> values;
   // for(std::vector<Actuator>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
@@ -502,7 +502,7 @@ void YarsClientCom::__sendMotorCommand() throw (YarsClientComException)
   _socket << _actuatorValues;
 }
 
-void YarsClientCom::__receiveSensorData() throw (YarsClientComException)
+void YarsClientCom::__receiveSensorData() noexcept(false)
 {
   _socket << "SENSORS";
   _socket >> _sensorValues;
