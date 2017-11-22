@@ -14,6 +14,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
     _vmax(-3.5)
     //_lopt{0.9 * _l0}
 {
+  _yarsConfig = YarsConfiguration::instance();
   _constraint = createConstraint();
 
   // Disable rotation.
@@ -27,8 +28,9 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   // Enable/Disable active movement.
   _constraint->setPoweredLinMotor(false);
 
-  _lastTime = Timer::getTime();
+  _lastTime = _yarsConfig->getCurrentRealTime();
   _lastPos = _constraint->getLinearPos();
+  _lastVelocity = 0;
   _startTime = _lastTime;
 
   _L0 = 0;
@@ -150,8 +152,8 @@ void MuscleActuator::prePhysicsUpdate()
 
     double Fm = calcForce();
 
-    cout << "Force: " << Fm << endl;
-    cout << "--------------------------------------------------" << endl;
+//    cout << "Force: " << Fm << endl;
+//    cout << "--------------------------------------------------" << endl;
 
     // The velocity is the maximum speed of the contraction. It is slowed down if
     // there is not enough force generated to move the bodypart. The controller
@@ -196,11 +198,19 @@ btTypedConstraint* MuscleActuator::constraint()
 }
 
 double MuscleActuator::calcVelocity() {
-  unsigned long crntTime = Timer::getTime();
-  double crntPos = _constraint->getLinearPos();
-  double v = (_lastPos - crntPos) / (_lastTime - crntTime) / 1000.0;
+  if (_lastTime == 0) // Init with healthy values.
+  {
+    _lastTime = _yarsConfig->getCurrentRealTime();
+    _lastPos = _constraint->getLinearPos();
+    return 0;
+  }
+
+  auto crntTime = _yarsConfig->getCurrentRealTime();
+  auto crntPos = _constraint->getLinearPos();
+  double v = (crntPos - _lastPos) / (crntTime - _lastTime);
   _lastPos = crntPos;
   _lastTime = crntTime;
+  _lastVelocity = v;
   return v;
 }
 

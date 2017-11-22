@@ -33,14 +33,17 @@ class MuscleActuator : public Actuator
     RelationModel _forceVelocityModel;
     RelationModel _forceLengthModel;
 
+    YarsConfiguration *_yarsConfig;
+
     //double               _position;
     //double               _lastPosition;
     //double               _friction;
     /*bool                _isActive;*/
     bool                _isVisualised;
     //bool                _hasFriction;
-    unsigned long _lastTime;
+    double _lastTime;
     double _lastPos;
+    double _lastVelocity;
 
     // TODO: implement calculation
     double _L0; // Rest length of muscle.
