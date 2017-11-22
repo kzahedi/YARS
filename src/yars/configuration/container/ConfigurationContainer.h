@@ -107,7 +107,7 @@ class ConfigurationContainer
     void          setCurrentTimeStep(unsigned long currentTimeStep);
     unsigned long getContinousTimeStep();
     void          setContinousTimeStep(unsigned long currentTimeStep);
-    double         getCurrentRealTime();
+    double        getCurrentRealTime();
     void          setCurrentRealTime(double currentRealTime);
     bool          getUsePause();
     void          setUsePause(bool usePause);
@@ -259,7 +259,7 @@ class ConfigurationContainer
     bool                      _usePrintKeyboardShortcuts;
     bool                      _useCR;
     bool                      _silent;
-    double                     _currentRealTime;
+    double                    _currentRealTime;
     int                       _captureFrameRate;
     int                       _followMode;
     int                       _reset;
@@ -280,7 +280,7 @@ class ConfigurationContainer
     bool                      _paused;
     Colour                    _groundColour;
     Colour                    _skyColour;
-    double                     _realtimeFactor;
+    double                    _realtimeFactor;
     int                       _defaultSimulatorFrequency;
     int                       _defaultControllerFrequency;
     string                    _videoCodec;

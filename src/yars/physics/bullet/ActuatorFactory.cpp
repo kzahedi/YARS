@@ -10,24 +10,22 @@
 #include "yars/configuration/data/DataMuscleActuator.h"
 #include "yars/configuration/data/DataPointConstraint.h"
 
-#include <memory>
-
 Actuator* ActuatorFactory::create(DataActuator *actuator, Robot *robot)
 {
   switch(actuator->type())
   {
     case DATA_ACTUATOR_HINGE:
-      return __createHinge(actuator, robot); break;
+      return __createHinge(actuator, robot);
     case DATA_ACTUATOR_SLIDER:
-      return __createSlider(actuator, robot); break;
+      return __createSlider(actuator, robot);
     case DATA_ACTUATOR_FIXED: 
-      return __createFixed(actuator, robot); break;
+      return __createFixed(actuator, robot);
     case DATA_ACTUATOR_GENERIC:
-      return __createGeneric(actuator, robot); break;
+      return __createGeneric(actuator, robot);
     case DATA_ACTUATOR_MUSCLE:
-      return __createMuscle(actuator, robot); break;
+      return __createMuscle(actuator, robot);
     case DATA_CONSTRAINT_POINT:
-      return __createPointConstraint(actuator, robot); break;
+      return __createPointConstraint(actuator, robot);
   }
   YarsErrorHandler::push("Actuator error. Unknown type given.");
   return nullptr;
@@ -73,13 +71,13 @@ Actuator* ActuatorFactory::__createGeneric(DataActuator *actuator, Robot *robot)
 
 Actuator* ActuatorFactory::__createMuscle(DataActuator *actuator, Robot *robot)
 {
-  return new MuscleActuator(*static_cast<DataMuscleActuator*>(actuator),
+  return new MuscleActuator(*dynamic_cast<DataMuscleActuator*>(actuator),
       *robot);
 }
 
 Actuator* ActuatorFactory::__createPointConstraint(DataActuator *actuator,
     Robot *robot)
 {
-  return new PointConstraint(*static_cast<DataPointConstraint*>(actuator),
+  return new PointConstraint(*dynamic_cast<DataPointConstraint*>(actuator),
       *robot);
 }
