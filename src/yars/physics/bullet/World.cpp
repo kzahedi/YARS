@@ -22,6 +22,12 @@ World* World::instance()
   return _me;
 }
 
+void myTickCallback(btDynamicsWorld *world, btScalar timeStep)
+{
+  World *w = static_cast<World *>(world->getWorldUserInfo());
+  w->myProcessCallback(timeStep);
+}
+
 World::World()
 {
   _collisionShapesInitialised = false;
@@ -55,7 +61,8 @@ World::World()
   _world->getSolverInfo().m_numIterations = Data::instance()->current()->simulator()->getSolverIterations();
 #endif // USE_SOFT_BODIES
 
- 
+  _world->setInternalTickCallback(myTickCallback, static_cast<void *>(this));
+
   // btThreadSupportInterface* thread = __createSolverThreadSupport(4);
   // _solver                 = new btParallelConstraintSolver(thread);
   // _world          = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
@@ -67,6 +74,12 @@ World::~World()
 {
 }
 
+void World::myProcessCallback(btScalar timeStep)
+{
+  auto c = YarsConfiguration::instance();
+  c->setCurrentRealTime(c->getCurrentRealTime() + timeStep);
+}
+
 void World::reset()
 {
   _solver->reset();
@@ -76,7 +89,7 @@ void World::reset()
 
 void World::step(double stepSize)
 {
-  _world->stepSimulation(__YARS_GET_STEP_SIZE, 10, __YARS_GET_STEP_SIZE);
+  _world->stepSimulation(stepSize, 10, stepSize);
 }
 
 void World::addRigidBody(btRigidBody *rigidBody, unsigned int mask, unsigned int with)
@@ -137,7 +150,7 @@ P3D World::rayTest(P3D start, P3D end)
   _me->_world->rayTest(_start, _end, rayCallback);
   btVector3 hit = rayCallback.m_hitPointWorld;
   // cout << " hit: " << hit[0] << " " << hit[1] << " " << hit[2];
-  if(rayCallback.hasHit()) return P3D(hit[0], hit[1], hit[2]);
+  if(rayCallback.hasHit()) return P3D(hit.getX(), hit.getY(), hit.getZ());
   // cout << " end: " << end.x << " " << end.y << " " << end.z;
   return end;
 }

@@ -24,6 +24,8 @@ class World
     static World* instance();
     static P3D rayTest(P3D start, P3D end);
 
+    void myProcessCallback(btScalar timeStep);
+
     // proceeds one simulation step
     void step(double stepSize);
     void reset();
