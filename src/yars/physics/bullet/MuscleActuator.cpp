@@ -270,11 +270,11 @@ double MuscleActuator::calcForce() {
       //error
   }
 
-  cout << "Velocity: " << v << endl;
-  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
-  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
-  cout << "L:  " << _constraint->getLinearPos() << endl;
-  cout << "L0: " << _L0 << endl;
+//  cout << "Velocity: " << v << endl;
+//  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
+//  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
+//  cout << "L:  " << _constraint->getLinearPos() << endl;
+//  cout << "L0: " << _L0 << endl;
 
   return a_t * _Fl * _Fv * _Fmax; // Resulting muscle force.
 

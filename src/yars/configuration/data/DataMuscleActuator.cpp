@@ -25,11 +25,7 @@ using namespace std;
 #define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" \
   DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
 #define YARS_STRING_FORCE_LENGTH_MODEL (char*)"force-length" DIVIDER "model"
-#define YARS_STRING_FORCE_LENGTH_MODEL_DEFINITION (char*)"force-length" \
-  DIVIDER "model" DIVIDER DEFINITION
 #define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
-#define YARS_STRING_FORCE_VELOCITY_MODEL_DEFINITION (char*)"force-velocity" \
-  DIVIDER "model" DIVIDER DEFINITION
 #define YARS_STRING_MAPPING (char*)"mapping"
 #define YARS_STRING_MIN_MAX_DEFINITION (char*)"min" DIVIDER "max" DIVIDER \
   DEFINITION
@@ -308,16 +304,16 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleDef->add(NA(YARS_STRING_TYPE, "muscle_type_definition", false));
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
-        1));
+                    1));
   muscleDef->add(NE(YARS_STRING_FORCE, YARS_STRING_FORCE_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_VELOCITY, YARS_STRING_VELOCITY_DEFINITION, 1,
-        1));
+                    1));
   muscleDef->add(NE(YARS_STRING_POSE, YARS_STRING_POSEG_DEFINITION, 0, 1));
   muscleDef->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
   muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL, "muscle_model_definition",
-        1, 1));
+                    1, 1));
   muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL, "muscle_model_definition",
-        1, 1));
+                    1, 1));
   spec.add(muscleDef);
 
   auto muscleModelDef = new XsdSequence("muscle_model_definition");
@@ -325,7 +321,7 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   spec.add(muscleModelDef);
 
   auto muscleTypeDef = new XsdEnumeration("muscle_type_definition",
-    YARS_STRING_XSD_STRING);
+                                          YARS_STRING_XSD_STRING);
   muscleTypeDef->add("constant");
   muscleTypeDef->add("linear");
   muscleTypeDef->add("hill");
@@ -340,6 +336,6 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   poseDef->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL, false));
   poseDef->add(NA(YARS_STRING_TYPE,  YARS_STRING_RAD_DEG_DEFINITION, false));
   poseDef->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION,
-        false));
+                  false));
   spec.add(poseDef);
 }

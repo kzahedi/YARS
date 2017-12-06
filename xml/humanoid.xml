@@ -224,7 +224,7 @@
 
       <actuators>
 
-        <slider name="robot_rail_left" type="force" mode="passive">
+        <slider name="robot_rail_left" type="force" friction="100" mode="passive">
           <source      name="robot_rail_connection_left"/>
           <force       max="1.0"/>
           <velocity    max="1.0"/>
@@ -236,7 +236,7 @@
           <pose x="0" y="0.1" z="0.197"/>
         </pointConstraint>
 
-        <slider name="robot_rail_right" type="force" mode="passive">
+        <slider name="robot_rail_right" type="force" friction="100" mode="passive">
           <source      name="robot_rail_connection_right"/>
           <force       max="1.0"/>
           <velocity    max="1.0"/>
@@ -383,62 +383,62 @@
           <force-velocity_model model="linear"/>
         </muscle>
 
-        <!-- Model for quadricep -->
-        <!-- <muscle name="muscle_thigh_front_left" type="hill"> -->
-        <!--   <source name="muscle_base_thigh_front_left"/> -->
-        <!--   <destination name="muscle_end_shank_front_left"/> -->
-        <!--   <force max="10"/> -->
-        <!--   <velocity max="10"/> -->
-        <!--   <mapping min="-1.0" max="1.0"/> -->
-        <!--   <force-length_model model="linear"/> -->
-        <!--   <force-velocity_model model="linear"/> -->
-        <!-- </muscle> -->
+        <!--Model for quadricep-->
+        <muscle name="muscle_thigh_front_left" type="hill">
+          <source name="muscle_base_thigh_front_left"/>
+          <destination name="muscle_end_shank_front_left"/>
+          <force max="10"/>
+          <velocity max="10"/>
+          <mapping min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
 
-        <!-- Model for tibialis anterior -->
-        <!-- <muscle name="muscle_shank_front_left" type="hill"> -->
-        <!-- <source name="muscle_base_shank_front_left"/> -->
-        <!-- <destination name="muscle_end_foot_front_left"/> -->
-        <!-- <force max="10"/> -->
-        <!-- <velocity max="10"/> -->
-        <!-- <mapping min="-1.0" max="1.0"/> -->
-        <!-- <force-length_model model="linear"/> -->
-        <!-- <force-velocity_model model="linear"/> -->
-        <!-- </muscle> -->
+        <!--Model for tibialis anterior-->
+        <muscle name="muscle_shank_front_left" type="hill">
+          <source name="muscle_base_shank_front_left"/>
+          <destination name="muscle_end_foot_front_left"/>
+          <force max="10"/>
+          <velocity max="10"/>
+          <mapping min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
 
         <!-- MUSCLES: LEFT - BACK -->
 
-        <!-- Model for gluteus maximus -->
-        <!-- <muscle name="muscle_hip_back_left" type="hill"> -->
-        <!--   <source name="muscle_base_hip_back_left"/> -->
-        <!--   <destination name="muscle_end_thigh_back_left"/> -->
-        <!--   <force max="10"/> -->
-        <!--   <velocity max="10"/> -->
-        <!--   <mapping min="-1.0" max="1.0"/> -->
-        <!--   <force-length_model model="linear"/> -->
-        <!--   <force-velocity_model model="linear"/> -->
-        <!-- </muscle> -->
+        <!--Model for gluteus maximus -->
+        <muscle name="muscle_hip_back_left" type="hill">
+          <source name="muscle_base_hip_back_left"/>
+          <destination name="muscle_end_thigh_back_left"/>
+          <force max="10"/>
+          <velocity max="10"/>
+          <mapping min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
 
-        <!-- Model for biceps femoris -->
-        <!-- <muscle name="muscle_thigh_back_left" type="hill"> -->
-        <!--   <source name="muscle_base_thigh_back_left"/> -->
-        <!--   <destination name="muscle_end_shank_back_left"/> -->
-        <!--   <force max="10"/> -->
-        <!--   <velocity max="10"/> -->
-        <!--   <mapping min="-1.0" max="1.0"/> -->
-        <!--   <force-length_model model="linear"/> -->
-        <!--   <force-velocity_model model="linear"/> -->
-        <!-- </muscle> -->
+        <!--Model for biceps femoris -->
+        <muscle name="muscle_thigh_back_left" type="hill">
+          <source name="muscle_base_thigh_back_left"/>
+          <destination name="muscle_end_shank_back_left"/>
+          <force max="10"/>
+          <velocity max="10"/>
+          <mapping min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
 
-        <!-- Model for tibialis posterior -->
-        <!--<muscle name="muscle_shank_back_left" type="hill">-->
-        <!--<source name="muscle_base_shank_back_left"/>-->
-        <!--<destination name="muscle_end_foot_back_left"/>-->
-        <!--<force max="10"/>-->
-        <!--<velocity max="10"/>-->
-        <!--<mapping min="-1.0" max="1.0"/>-->
-        <!--<force-length_model model="linear"/>-->
-        <!--<force-velocity_model model="linear"/>-->
-        <!--</muscle> -->
+        <!--Model for tibialis posterior -->
+        <muscle name="muscle_shank_back_left" type="hill">
+          <source name="muscle_base_shank_back_left"/>
+          <destination name="muscle_end_foot_back_left"/>
+          <force max="10"/>
+          <velocity max="10"/>
+          <mapping min="-1.0" max="1.0"/>
+          <force-length_model model="linear"/>
+          <force-velocity_model model="linear"/>
+        </muscle>
 
       </actuators>
 
@@ -452,34 +452,39 @@
           <domain   min="-90" max="170"/>
           <mapping  min="-1"  max="1"/>
         </deflection>
+
         <deflection name="knee_left_sensor">
           <object   name="knee_left"/>
           <domain   min="-150" max="5"/>
           <mapping  min="-1"  max="1"/>
         </deflection>
+
         <deflection name="ankle_left_sensor">
           <object   name="ankle_left"/>
           <domain   min="-90" max="20"/>
           <mapping  min="-1"  max="1"/>
         </deflection>
+
         <binaryContact name="foot_left_sensor">
           <object name="foot_left"/>
           <domain min="-1" max="1"/>
         </binaryContact>
 
+
         <position name="xyz_position_main">
           <object name="hip"/>
-          <coordinates x="true" y="true" z="true"/>
+          <coordinates x="true" y="false" z="false"/>
         </position>
-        <orientation name="xyz_orientation_main">
-          <object name="hip"/>
-          <coordinates x="true" y="true" z="true"/>
-        </orientation>
+
+        <!--<orientation name="xyz_orientation_main">-->
+          <!--<object name="hip"/>-->
+          <!--<coordinates x="true" y="true" z="true"/>-->
+        <!--</orientation>-->
 
       </sensors>
 
-      <!--<controller module="TCPIP" frequency="10"/>-->
-      <controller module="Sine" frequency="10"/>
+      <controller module="TCPIP" frequency="10"/>
+      <!--<controller module="Sine" frequency="10"/>-->
 
     </robot>
   </robots>
