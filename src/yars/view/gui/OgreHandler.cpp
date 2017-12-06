@@ -38,7 +38,9 @@ OgreHandler::OgreHandler()
   _particlePlugin->install();
 #else // __APPLE__
   _root->loadPlugin("Plugin_ParticleFX");
-  _root->loadPlugin("RenderSystem_GL");
+  #ifdef linux
+    _root->loadPlugin("RenderSystem_GL");
+  #endif
 #endif // __APPLE__
 
   if ( _root->getAvailableRenderers().size() != 1 ) {
