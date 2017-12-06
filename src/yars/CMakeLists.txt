@@ -40,7 +40,6 @@ if(YARS_USE_VISUALISATION)
       ${OGRE_Overlay_LIBRARIES}
       ${OGRE_RenderSystem_GL_LIBRARIES}
       ${OGRE_Plugin_ParticleFX_LIBRARIES}
-      OgreMain
       )
   endif(UNIX AND NOT APPLE)
 
