@@ -217,7 +217,6 @@ double DataMuscleActuator::getInternalDesiredValue(int index)
   YM_LOCK;
   double r = _desiredValue[index];
   YM_UNLOCK;
-  cout << "internal: " << r << endl;
   return r;
 }
 
@@ -226,7 +225,6 @@ double DataMuscleActuator::getExternalDesiredValue(int index)
   YM_LOCK;
   double r = _desiredExValue[index];
   YM_UNLOCK;
-  cout << "external: " << r << endl;
   return r;
 }
 
