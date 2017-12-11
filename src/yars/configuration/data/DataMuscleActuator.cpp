@@ -90,7 +90,6 @@ void DataMuscleActuator::add(DataParseElement* element)
   else if (element->opening(YARS_STRING_MUSCLE))
   {
     element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_TYPE, _type);
   }
   else if (element->opening(YARS_STRING_SOURCE))
   {
@@ -218,6 +217,7 @@ double DataMuscleActuator::getInternalDesiredValue(int index)
   YM_LOCK;
   double r = _desiredValue[index];
   YM_UNLOCK;
+  cout << "internal: " << r << endl;
   return r;
 }
 
@@ -226,6 +226,7 @@ double DataMuscleActuator::getExternalDesiredValue(int index)
   YM_LOCK;
   double r = _desiredExValue[index];
   YM_UNLOCK;
+  cout << "external: " << r << endl;
   return r;
 }
 
@@ -282,7 +283,6 @@ DataActuator* DataMuscleActuator::_copy()
   copy->_mapping         = _mapping;
   copy->_pose            = _pose;
   copy->_destination     = _destination;
-  copy->_type            = _type;
   copy->_name            = _name;
   copy->_source          = _source;
   copy->_maxForce        = _maxForce;
@@ -298,10 +298,8 @@ DataActuator* DataMuscleActuator::_copy()
 
 void DataMuscleActuator::createXsd(XsdSpecification& spec)
 {
-  // TODO: smart pointer?
   auto muscleDef = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDef->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
-  muscleDef->add(NA(YARS_STRING_TYPE, "muscle_type_definition", false));
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
                     1));

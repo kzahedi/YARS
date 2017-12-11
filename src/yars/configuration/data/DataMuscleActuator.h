@@ -60,7 +60,6 @@ class DataMuscleActuator : public DataActuator
     Pose                 _pose;
     std::string          _source;
     std::string          _destination;
-    std::string          _type;
     std::string          _name;
 
     std::vector<double>   _internalValue;
