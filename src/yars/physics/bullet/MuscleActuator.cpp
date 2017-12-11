@@ -31,7 +31,6 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _lastTime = _yarsConfig->getCurrentRealTime();
   _lastPos = _constraint->getLinearPos();
   _lastVelocity = 0;
-  _startTime = _lastTime;
 
   _L0 = 0;
 
@@ -158,8 +157,8 @@ void MuscleActuator::prePhysicsUpdate()
     // The velocity is the maximum speed of the contraction. It is slowed down if
     // there is not enough force generated to move the bodypart. The controller
     // should only tell the desired velocity.
-    _constraint->setMaxLinMotorForce(Fm);
-    _constraint->setTargetLinMotorVelocity(_vmax);
+    _constraint->setMaxLinMotorForce(static_cast<btScalar>(Fm));
+    _constraint->setTargetLinMotorVelocity(static_cast<btScalar>(_vmax));
   }
 }
 
@@ -224,33 +223,29 @@ double MuscleActuator::calcForce() {
 
   double a_t = internalDesired;
 
-  // TODO:
-  // _data.force() returns Fmax and _data.velocity() _vmax. For now it's
-  // hardcoded in the class.
-
   _forceVelocityModel = linear;
   _forceLengthModel = linear;
 
-  // TODO: Refactor.
-  double _Fv, _Fl;
+  double Fv = 0.0;
+  double Fl = 0.0;
   double v = calcVelocity();
   double _mu = 0.25;
   double _k = 10;
   double L = _constraint->getLinearPos();
-  double _Fmax = 5000;
+  double _Fmax = 800;
 
   switch (_forceVelocityModel) {
     case constant:
-      _Fv = 1;
+      Fv = 1;
       break;
     case linear:
-      _Fv = 1 - _mu * v;
+      Fv = 1 - _mu * v;
       break;
     case hill:
       //if (v > 0) {
-      //_Fv = (_vmax + v) / (_vmax - K * v);
+      //Fv = (_vmax + v) / (_vmax - K * v);
       //} else {
-      //_Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
+      //Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
       //}
       break;
       //default:
@@ -258,13 +253,13 @@ double MuscleActuator::calcForce() {
   }
   switch (_forceLengthModel) {
     case constant:
-      _Fl = 1;
+      Fl = 1;
       break;
     case linear:
-      _Fl = _k * (_L0 - L);
+      Fl = _k * (_L0 - L);
       break;
     case hill:
-      //_Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
+      //Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
       break;
       //default:
       //error
@@ -276,10 +271,10 @@ double MuscleActuator::calcForce() {
 //  cout << "L:  " << _constraint->getLinearPos() << endl;
 //  cout << "L0: " << _L0 << endl;
 
-  return a_t * _Fl * _Fv * _Fmax; // Resulting muscle force.
+  return a_t * Fl * Fv * _Fmax; // Resulting muscle force.
 
-//  cout << "Fv: " << _Fv << endl;
-//  cout << "Fl: " << _Fl << endl;
+//  cout << "Fv: " << Fv << endl;
+//  cout << "Fl: " << Fl << endl;
 //  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
 //  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
 //  cout << "L: " << L << endl;

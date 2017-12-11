@@ -61,8 +61,6 @@ class MuscleActuator : public Actuator
     double calcVelocity();
 
     double calcForce();
-
-    unsigned long _startTime;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__
