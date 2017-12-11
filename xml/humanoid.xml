@@ -230,7 +230,7 @@
         <muscle name="muscle_hip_front_left">
           <source name="muscle_base_hip_front_left"/>
           <destination name="muscle_end_thigh_front_left"/>
-          <force max="10"/>
+          <force max="1500"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -241,7 +241,7 @@
         <muscle name="muscle_thigh_front_left">
           <source name="muscle_base_thigh_front_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <force max="10"/>
+          <force max="1000"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -252,7 +252,7 @@
         <muscle name="muscle_shank_front_left">
           <source name="muscle_base_shank_front_left"/>
           <destination name="muscle_end_foot_front_left"/>
-          <force max="10"/>
+          <force max="200"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -260,41 +260,39 @@
         </muscle>
 
         <!-- MUSCLES: LEFT - BACK -->
-<!--
 
-        &lt;!&ndash;Model for gluteus maximus &ndash;&gt;
+        <!--Model for gluteus maximus -->
         <muscle name="muscle_hip_back_left">
           <source name="muscle_base_hip_back_left"/>
           <destination name="muscle_end_thigh_back_left"/>
-          <force max="10"/>
+          <force max="1500"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
           <force-velocity_model model="linear"/>
         </muscle>
 
-        &lt;!&ndash;Model for biceps femoris &ndash;&gt;
+        <!--Model for biceps femoris -->
         <muscle name="muscle_thigh_back_left">
           <source name="muscle_base_thigh_back_left"/>
           <destination name="muscle_end_shank_back_left"/>
-          <force max="10"/>
+          <force max="1000"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
           <force-velocity_model model="linear"/>
         </muscle>
 
-        &lt;!&ndash;Model for tibialis posterior &ndash;&gt;
+        <!--Model for tibialis posterior -->
         <muscle name="muscle_shank_back_left">
           <source name="muscle_base_shank_back_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <force max="10"/>
+          <force max="200"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
           <force-velocity_model model="linear"/>
         </muscle>
--->
 
 
         <!--RAIL ACTUATORS-->
