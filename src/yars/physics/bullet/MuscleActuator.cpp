@@ -232,7 +232,7 @@ double MuscleActuator::calcForce() {
   double _mu = 0.25;
   double _k = 10;
   double L = _constraint->getLinearPos();
-  double _Fmax = 800;
+  double _Fmax = _data.getMaxForce();
 
   switch (_forceVelocityModel) {
     case constant:

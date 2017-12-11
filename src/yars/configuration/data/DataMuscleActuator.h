@@ -13,16 +13,14 @@ class Mapping;
 class DataMuscleActuator : public DataActuator
 {
   public:
-    // TODO: Try with reference
     DataMuscleActuator(DataNode* parent);
     ~DataMuscleActuator();
 
-    double velocity() const;
-    double force() const;
+    double getVelocity() const;
+    double getMaxForce() const;
 
     void add(DataParseElement* element) override;
 
-    // TODO: Most should be const. But we would have to change super classes.
     void applyOffset(Pose pose) override;
     std::string source() override;
     std::string destination() const;

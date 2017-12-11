@@ -69,12 +69,12 @@ DataMuscleActuator::~DataMuscleActuator()
   YM_CLOSE;
 }
 
-double DataMuscleActuator::velocity() const
+double DataMuscleActuator::getVelocity() const
 {
   return _maxVelocity;
 }
 
-double DataMuscleActuator::force() const
+double DataMuscleActuator::getMaxForce() const
 {
   return _maxForce;
 }
