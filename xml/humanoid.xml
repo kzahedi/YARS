@@ -8,14 +8,14 @@
       <resolution name="1080p"/>
       <camera>
         <!-- Presentation View -->
-        <!--<position x="-2.3" y="-1.9" z="1.0"/>-->
-        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
+        <position x="-2.3" y="-1.9" z="1.0"/>
+        <lookAt x="0.0" y="0.00" z="0.5"/>
         <!-- Front View -->
         <!-- <position x="-2.0" y="0" z="0.5"/> -->
         <!-- <lookAt x="0.0" y="0.00" z="0.5"/> -->
         <!-- Side View -->
-        <position x="0" y="-2.5" z="0.5"/>
-        <lookAt x="0.0" y="0.00" z="0.5"/>
+        <!--<position x="0" y="-2.5" z="0.5"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
       </camera>
       <osd>
         <time  font="Time"  size="25" colour="FFFF00"/>
@@ -49,11 +49,9 @@
           </physics>
         </cylinder>
 
-        <!-- TODO: Set correct mass. -->
-        <!-- TODO: Set centre of mass? -->
         <cylinder name="thigh_left" visualise="true">
           <dimension radius="0.02" height="0.422"/> <!-- -20mm for joint space. -->
-          <pose x="0" y="-0.172" z="0.734" alpha="0" gamma="0"/>
+          <pose x="0" y="0" z="0.734" alpha="0" gamma="0"/>
           <physics>
             <mass kg="10"/>
             <!--<centreOfMass x="0" y="0" z="0">-->
@@ -61,7 +59,7 @@
         </cylinder>
         <cylinder name="shank_left" visualise="true">
           <dimension radius="0.02" height="0.423"/> <!-- -20mm for joint space. -->
-          <pose x="0" y="-0.172" z="0.2915" alpha="0" gamma="0"/>
+          <pose x="0" y="0" z="0.2915" alpha="0" gamma="0"/>
           <physics>
             <mass kg="5"/>
             <!--<centreOfMass x="0" y="0" z="0">-->
@@ -69,7 +67,7 @@
         </cylinder>
         <box name="foot_left">
           <dimension height="0.03" width="0.0991" depth="0.2738"/>
-          <pose x="-0.1" y="-0.172" z="0" alpha="0" gamma="90"/>
+          <pose x="-0.1" y="0" z="0" alpha="0" gamma="90"/>
           <physics>
             <mass kg="2"/>
             <!--<centreOfMass x="0" y="0" z="0">-->
@@ -98,18 +96,11 @@
         <!--</physics>-->
         <!--</box>-->
 
-        <sphere name="robot_rail_connection_left" visualise="true">
+        <sphere name="rail_helper" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0" y="-0.197" z="1.155"/>
+          <pose x="0.0" y="0.0" z="1.2"/>
           <physics>
-            <mass kg="5"/>
-          </physics>
-        </sphere>
-        <sphere name="robot_rail_connection_right" visualise="true">
-          <dimension radius="0.01"/>
-          <pose x="0" y="0.197" z="1.155"/>
-          <physics>
-            <mass kg="5"/>
+            <mass kg="0"/>
           </physics>
         </sphere>
 
@@ -222,8 +213,7 @@
 
       <pose z="0.015"/> <!-- Elevate robot so it's not inside the ground. -->
 
-      <actuators>
-
+      <actuators> <!-- Muscles have to come first because of NMODE. -->
         <!-- MUSCLES: LEFT - FRONT -->
 
         <!-- Model for iliopsoas -->
@@ -295,78 +285,13 @@
         </muscle>
 
 
-        <!--RAIL ACTUATORS-->
-
-        <slider name="robot_rail_left" type="force" friction="800" mode="passive">
-          <source      name="robot_rail_connection_left"/>
-          <force       max="1.0"/>
-          <velocity    max="1.0"/>
-          <pose        x="0" y="0" z="0" alpha="0" beta="0" gamma="180"/>
-        </slider>
-
-        <slider name="robot_rail_right" type="force" friction="800" mode="passive">
-          <source      name="robot_rail_connection_right"/>
-          <force       max="1.0"/>
-          <velocity    max="1.0"/>
-          <pose        x="0" y="0" z="0" alpha="0" beta="0" gamma="180"/>
-        </slider>
-
-
-        <!-- JOINTS -->
-
-        <!-- TODO: Change to spherical joint later? It would be the -->
-        <!-- btPoint2PointConstraint. -->
-        <hinge name="hip_left" type="angular" mode="passive">
-          <source      name="hip"/>
-          <destination name="thigh_left"/>
-          <force       max="1.0"/>
-          <velocity    max="1.0"/>
-          <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for joints -->
-          <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
-          <deflection  min="-90" max="170"/>
-          <!-- <regular     softness="1.0" damping="1.0" restitution="0.7"/> -->
-          <!-- <limit       softness="1.0" damping="1.0" restitution="0.7"/> -->
-          <!-- <orthogonal  softness="1.0" damping="1.0" restitution="0.7"/> -->
-          <!-- <pid         p="0.9" i="0.0" d="0.0" size="1"/> -->
-        </hinge>
-        <hinge name="knee_left" type="angular" mode="passive">
-          <source      name="thigh_left"/>
-          <destination name="shank_left"/>
-          <force       max="1.0"/>
-          <velocity    max="1.0"/>
-          <pose        x="0" y="0" z="-0.226" alpha="0" beta="0" gamma="90"/>
-          <deflection  min="-150" max="5"/>
-        </hinge>
-        <hinge name="ankle_left" type="angular" mode="passive">
-          <source      name="shank_left"/>
-          <destination name="foot_left"/>
-          <force       max="1.0"/>
-          <velocity    max="1.0"/>
-          <pose        x="0" y="0" z="-0.2165" alpha="0" beta="0" gamma="90"/>
-          <deflection  min="-90" max="20"/>
-        </hinge>
-
-        <!--RAIL CONSTRAINTS-->
-
-        <pointConstraint name="anchor_robot_rail_left" mode="muscle">
-          <source name="hip"/>
-          <destination name="robot_rail_connection_left"/>
-          <pose x="0" y="0.1" z="0.197"/>
-        </pointConstraint>
-        <pointConstraint name="anchor_robot_rail_right" mode="muscle">
-          <source name="hip"/>
-          <destination name="robot_rail_connection_right"/>
-          <pose x="0" y="0.1" z="-0.197"/>
-        </pointConstraint>
-
         <!-- MUSCLE ENDINGS: LEFT SIDE - FRONT -->
-
 
         <!-- Model for iliopsoas -->
         <pointConstraint name="constraint_base_hip_front_left" mode="muscle">
           <source name="hip"/>
           <destination name="muscle_base_hip_front_left"/>
-          <pose x="-0.1" y="0" z="0.172"/>
+          <pose x="-0.1" y="0" z="0"/>
         </pointConstraint>
         <pointConstraint name="constraint_end_thigh_front_left" mode="muscle">
           <source name="thigh_left"/>
@@ -404,7 +329,7 @@
         <pointConstraint name="constraint_base_hip_back_left" mode="muscle">
           <source name="hip"/>
           <destination name="muscle_base_hip_back_left"/>
-          <pose x="0.1" y="0" z="0.172"/>
+          <pose x="0.1" y="0" z="0"/>
         </pointConstraint>
         <pointConstraint name="constraint_end_thigh_back_left" mode="muscle">
           <source name="thigh_left"/>
@@ -447,12 +372,69 @@
 
         <!-- MUSCLE ENDINGS: RIGHT SIDE - BACK -->
 
+
+        <!-- JOINTS -->
+
+        <hinge name="hip_left" type="angular" mode="passive">
+          <source      name="hip"/>
+          <destination name="thigh_left"/>
+          <force       max="1.0"/>
+          <velocity    max="1.0"/>
+          <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for joints -->
+          <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
+          <deflection  min="-90" max="170"/>
+        </hinge>
+        <hinge name="knee_left" type="angular" mode="passive">
+          <source      name="thigh_left"/>
+          <destination name="shank_left"/>
+          <force       max="1.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0" y="0" z="-0.226" alpha="0" beta="0" gamma="90"/>
+          <deflection  min="-150" max="5"/>
+        </hinge>
+        <hinge name="ankle_left" type="angular" mode="passive">
+          <source      name="shank_left"/>
+          <destination name="foot_left"/>
+          <force       max="1.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0" y="0" z="-0.2165" alpha="0" beta="0" gamma="90"/>
+          <deflection  min="-70" max="20"/>
+        </hinge>
+
+
+        <!--RAIL ACTUATORS-->
+
+        <generic name="rail" spring="false">
+          <source      name="rail_helper"/>
+          <destination name="hip"/>
+          <pose        x="0.0" y="0.0" z="0.0"/>
+          <translational>
+            <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+            <x type="velocity" mode="passive">
+              <force    max="0.001"/>
+              <velocity max="0.0"/>
+              <deflection  min="-999999999" max="999999999"/>
+            </x>
+            <z type="velocity" mode="passive">
+              <force    max="0.001"/>
+              <velocity max="0.0"/>
+              <deflection  min="-0.1" max="0.1"/>
+            </z>
+          </translational>
+        </generic>
+
+        <!--<slider name="rail" type="velocity" mode="passive">-->
+          <!--<source name="rail_helper"/>-->
+          <!--<destination name="hip"/>-->
+          <!--<force max="1.0"/>-->
+          <!--<velocity max="1.0"/>-->
+          <!--<pose x="0.0" y="0.0" z="0.0"/>-->
+        <!--</slider>-->
+
       </actuators>
 
 
       <sensors>
-
-        <!-- TODO: Sensoren für Muskeln? Spaeter evtl. -->
 
         <deflection name="hip_left_sensor">
           <object   name="hip_left"/>
@@ -483,15 +465,10 @@
           <coordinates x="true" y="false" z="false"/>
         </position>
 
-        <!--<orientation name="xyz_orientation_main">-->
-          <!--<object name="hip"/>-->
-          <!--<coordinates x="true" y="true" z="true"/>-->
-        <!--</orientation>-->
-
       </sensors>
 
-      <controller module="TCPIP" frequency="10"/>
-      <!--<controller module="Sine" frequency="10"/>-->
+      <!--<controller module="TCPIP" frequency="10"/>-->
+      <controller module="Sine" frequency="10"/>
 
     </robot>
   </robots>
