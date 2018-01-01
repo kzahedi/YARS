@@ -409,8 +409,8 @@
           <destination name="hip"/>
           <pose        x="0.0" y="0.0" z="0.0"/>
           <translational>
-            <limit       softness="1.0" damping="20.0" restitution="0.7"/>
-            <x type="velocity" mode="passive">
+            <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+            <x type="velocity" friction="1.0" mode="passive">
               <force    max="0.001"/>
               <velocity max="0.0"/>
               <deflection  min="-999999999" max="999999999"/>
