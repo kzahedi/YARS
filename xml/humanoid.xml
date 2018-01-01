@@ -1,6 +1,6 @@
 <rosiml version="0.8.41">
-  <simulator frequency="100">
-    <solver  iterations="10"/>
+  <simulator frequency="300">
+    <solver  iterations="30"/>
   </simulator>
 
   <screens>
