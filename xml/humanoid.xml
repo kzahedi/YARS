@@ -97,7 +97,7 @@
 
         <sphere name="rail_helper" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0.0" y="0.0" z="1.2"/>
+          <pose x="0.0" y="0.0" z="2"/>
           <physics>
             <mass kg="0"/>
           </physics>
@@ -105,8 +105,6 @@
 
         <!-- MUSCLE ENDINGS: LEFT SIDE - FRONT -->
 
-        <!-- TODO: Correct positions for "tendons". But it looks like it's not necessary.
-             The constraint puts them in place. -->
         <!-- Model for iliopsoas -->
         <sphere name="muscle_base_hip_front_left" visualise="true">
           <dimension radius="0.01"/>
@@ -467,8 +465,8 @@
 
       </sensors>
 
-      <!--<controller module="TCPIP" frequency="10"/>-->
-      <controller module="Sine" frequency="10"/>
+      <controller module="TCPIP" frequency="10"/>
+      <!--<controller module="Sine" frequency="10"/>-->
 
     </robot>
   </robots>
