@@ -66,11 +66,10 @@
           </physics>
         </cylinder>
         <box name="foot_left">
-          <dimension height="0.03" width="0.0991" depth="0.2738"/>
-          <pose x="-0.1" y="0" z="0" alpha="0" gamma="90"/>
+          <dimension height="0.03" width="0.2738" depth="0.0991"/>
+          <pose x="-0.1" y="0" z="0" alpha="0" gamma="0"/>
           <physics>
             <mass kg="2"/>
-            <!--<centreOfMass x="0" y="0" z="0">-->
           </physics>
         </box>
 
@@ -156,8 +155,8 @@
           </physics>
         </sphere>
 
-        <!-- MUSCLE ENDINGS: LEFT SIDE - BACK -->
 
+        <!-- MUSCLE ENDINGS: LEFT SIDE - BACK -->
 
         <!-- Model for gluteus maximus -->
         <sphere name="muscle_base_hip_back_left" visualise="true">
@@ -201,7 +200,8 @@
         </sphere>
         <sphere name="muscle_end_foot_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="0.015"/>
+          <!--<pose x="-0.1" y="-0.172" z="0.015"/>-->
+          <pose x="0" y="0" z="0"/>
           <physics>
             <mass kg="5"/>
           </physics>
@@ -211,7 +211,7 @@
 
       </body>
 
-      <pose z="0.015"/> <!-- Elevate robot so it's not inside the ground. -->
+      <pose z="0.03"/> <!-- Elevate robot so it's not inside the ground. -->
 
       <actuators> <!-- Muscles have to come first because of NMODE. -->
         <!-- MUSCLES: LEFT - FRONT -->
@@ -320,7 +320,7 @@
         <pointConstraint name="constraint_end_foot_front_left" mode="muscle">
           <source name="foot_left"/>
           <destination name="muscle_end_foot_front_left"/>
-          <pose x="0" y="-0.02" z="0.015"/>
+          <pose x="0" y="0.02" z="0.015"/>
         </pointConstraint>
 
         <!-- MUSCLE ENDINGS: LEFT SIDE - BACK -->
@@ -358,7 +358,7 @@
         <pointConstraint name="constraint_end_foot_back_left" mode="muscle">
           <source name="foot_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <pose x="0" y="-0.14575" z="0.015"/>
+          <pose x="0.14575" y="0" z="0.015"/>
         </pointConstraint>
 
 
@@ -409,7 +409,7 @@
           <destination name="hip"/>
           <pose        x="0.0" y="0.0" z="0.0"/>
           <translational>
-            <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+            <limit       softness="1.0" damping="20.0" restitution="0.7"/>
             <x type="velocity" mode="passive">
               <force    max="0.001"/>
               <velocity max="0.0"/>
