@@ -380,7 +380,7 @@
           <velocity    max="1.0"/>
           <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for joints -->
           <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
-          <deflection  min="-90" max="170"/>
+          <deflection  min="-80" max="100"/>
         </hinge>
         <hinge name="knee_left" type="angular" mode="passive">
           <source      name="thigh_left"/>
@@ -465,8 +465,8 @@
 
       </sensors>
 
-      <controller module="TCPIP" frequency="10"/>
-      <!--<controller module="Sine" frequency="10"/>-->
+      <!--<controller module="TCPIP" frequency="10"/>-->
+      <controller module="Sine" frequency="10"/>
 
     </robot>
   </robots>
