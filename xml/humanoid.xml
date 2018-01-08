@@ -1,6 +1,6 @@
 <rosiml version="0.8.41">
   <simulator frequency="300">
-    <solver  iterations="30"/>
+    <solver  iterations="2000"/>
   </simulator>
 
   <screens>
@@ -26,7 +26,7 @@
     <sky name="YARS/CloudySky"/>
 
     <visualise>
-      <joints />
+      <!--<joints />-->
     </visualise>
   </screens>
 
@@ -408,7 +408,7 @@
           <pose        x="0.0" y="0.0" z="0.0"/>
           <translational>
             <limit       softness="1.0" damping="1.0" restitution="0.7"/>
-            <x type="velocity" friction="1.0" mode="passive">
+            <x type="velocity" friction="3.5" mode="passive">
               <force    max="0.001"/>
               <velocity max="0.0"/>
               <deflection  min="-999999999" max="999999999"/>
@@ -420,14 +420,6 @@
             </z>
           </translational>
         </generic>
-
-        <!--<slider name="rail" type="velocity" mode="passive">-->
-          <!--<source name="rail_helper"/>-->
-          <!--<destination name="hip"/>-->
-          <!--<force max="1.0"/>-->
-          <!--<velocity max="1.0"/>-->
-          <!--<pose x="0.0" y="0.0" z="0.0"/>-->
-        <!--</slider>-->
 
       </actuators>
 
@@ -465,8 +457,8 @@
 
       </sensors>
 
-      <!--<controller module="TCPIP" frequency="10"/>-->
-      <controller module="Sine" frequency="10"/>
+      <!--<controller module="TCPIP" frequency="30"/>-->
+      <controller module="Sine" frequency="30"/>
 
     </robot>
   </robots>
