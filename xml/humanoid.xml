@@ -1,7 +1,7 @@
 <rosiml version="0.8.41">
   <!-- Higher frequency keeps the muscle endings in place and the simulation
   seems more realistic. -->
-  <simulator frequency="1900">
+  <simulator frequency="3500">
     <solver  iterations="20"/>
   </simulator>
 
@@ -220,7 +220,7 @@
         <muscle name="muscle_hip_front_left">
           <source name="muscle_base_hip_front_left"/>
           <destination name="muscle_end_thigh_front_left"/>
-          <force max="1300"/>
+          <force max="900"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -231,7 +231,7 @@
         <muscle name="muscle_thigh_front_left">
           <source name="muscle_base_thigh_front_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <force max="1500"/>
+          <force max="1700"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -242,7 +242,7 @@
         <muscle name="muscle_shank_front_left">
           <source name="muscle_base_shank_front_left"/>
           <destination name="muscle_end_foot_front_left"/>
-          <force max="200"/>
+          <force max="160"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -255,7 +255,7 @@
         <muscle name="muscle_hip_back_left">
           <source name="muscle_base_hip_back_left"/>
           <destination name="muscle_end_thigh_back_left"/>
-          <force max="1500"/>
+          <force max="1400"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -266,7 +266,7 @@
         <muscle name="muscle_thigh_back_left">
           <source name="muscle_base_thigh_back_left"/>
           <destination name="muscle_end_shank_back_left"/>
-          <force max="1000"/>
+          <force max="2200"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -277,7 +277,7 @@
         <muscle name="muscle_shank_back_left">
           <source name="muscle_base_shank_back_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <force max="200"/>
+          <force max="300"/>
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -308,7 +308,7 @@
         <pointConstraint name="constraint_end_shank_front_left" mode="muscle">
           <source name="shank_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <pose x="-0.02" y="0" z="0.25"/> <!-- Upper patella -->
+          <pose x="-0.02" y="0" z="0.225"/> <!-- Upper patella -->
         </pointConstraint>
 
         <!-- Model for tibialis anterior -->
@@ -346,7 +346,7 @@
         <pointConstraint name="constraint_end_shank_back_left" mode="muscle">
           <source name="shank_left"/>
           <destination name="muscle_end_shank_back_left"/>
-          <pose x="0.02" y="0" z="0.2"/> <!-- Upper patella -->
+          <pose x="0.02" y="0" z="0.18"/> <!-- Upper patella -->
         </pointConstraint>
 
         <!-- Model for tibialis posterior -->
@@ -382,7 +382,7 @@
           <velocity    max="1.0"/>
           <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for joints -->
           <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
-          <deflection  min="-80" max="100"/>
+          <deflection  min="-60" max="90"/>
         </hinge>
         <hinge name="knee_left" type="angular" mode="passive">
           <source      name="thigh_left"/>
@@ -390,7 +390,7 @@
           <force       max="1.0"/>
           <velocity    max="1.0"/>
           <pose        x="0" y="0" z="-0.226" alpha="0" beta="0" gamma="90"/>
-          <deflection  min="-120" max="5"/>
+          <deflection  min="-120" max="-3"/>
         </hinge>
         <hinge name="ankle_left" type="angular" mode="passive">
           <source      name="shank_left"/>
@@ -398,7 +398,7 @@
           <force       max="1.0"/>
           <velocity    max="1.0"/>
           <pose        x="0" y="0" z="-0.2165" alpha="0" beta="0" gamma="90"/>
-          <deflection  min="-70" max="20"/>
+          <deflection  min="-40" max="20"/>
         </hinge>
 
 
