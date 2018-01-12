@@ -1,6 +1,4 @@
 <rosiml version="0.8.41">
-  <!-- Higher frequency keeps the muscle endings in place and the simulation
-  seems more realistic. -->
   <simulator frequency="3500">
     <solver  iterations="20"/>
   </simulator>
@@ -56,15 +54,13 @@
           <pose x="0" y="0" z="0.734" alpha="0" gamma="0"/>
           <physics>
             <mass kg="8"/>
-            <!--<centreOfMass x="0" y="0" z="0">-->
           </physics>
         </cylinder>
         <cylinder name="shank_left" visualise="true">
           <dimension radius="0.02" height="0.423"/> <!-- -20mm for joint space. -->
-          <pose x="0" y="0" z="0.2915" alpha="0" gamma="0"/>
+          <pose x="0" y="0" z="0.292" alpha="0" gamma="0"/>
           <physics>
             <mass kg="5"/>
-            <!--<centreOfMass x="0" y="0" z="0">-->
           </physics>
         </cylinder>
         <box name="foot_left">
@@ -110,14 +106,14 @@
         <!-- Model for iliopsoas -->
         <sphere name="muscle_base_hip_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="1.055"/>
+          <pose x="-0.1" y="0" z="1.055"/>
           <physics>
             <mass kg="0.5"/> <!--Too little weight makes it too prone to perturbations.-->
           </physics>
         </sphere>
         <sphere name="muscle_end_thigh_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.02" y="-0.172" z="0.5"/>
+          <pose x="-0.02" y="0" z="0.5"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -126,14 +122,14 @@
         <!-- Model for quadriceps -->
         <sphere name="muscle_base_thigh_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="0"/>
+          <pose x="-0.1" y="0" z="0.784"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_shank_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="1.055"/>
+          <pose x="-0.1" y="0" z="0.517"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -142,14 +138,14 @@
         <!-- Model for tibialis anterior -->
         <sphere name="muscle_base_shank_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="1.055"/>
+          <pose x="-0.1" y="0" z="1.055"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_foot_front_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.1" y="-0.172" z="0.015"/>
+          <pose x="0" y="0.02" z="0.015"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -161,14 +157,14 @@
         <!-- Model for gluteus maximus -->
         <sphere name="muscle_base_hip_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0.1" y="-0.172" z="1.055"/>
+          <pose x="0.1" y="0" z="1.055"/>
           <physics>
             <mass kg="0.5"/> <!--Too little weight makes it too prone to perturbations.-->
           </physics>
         </sphere>
         <sphere name="muscle_end_thigh_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="-0.02" y="-0.172" z="0.5"/>
+          <pose x="0.02" y="0" z="0.834"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -177,14 +173,14 @@
         <!-- Model for biceps femoris -->
         <sphere name="muscle_base_thigh_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0.1" y="-0.172" z="0"/>
+          <pose x="0.02" y="0" z="0.784"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_shank_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0.1" y="-0.172" z="1.055"/>
+          <pose x="0.02" y="0" z="0.472"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -193,15 +189,14 @@
         <!-- Model for tibialis posterior -->
         <sphere name="muscle_base_shank_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <pose x="0.1" y="-0.172" z="0.5"/>
+          <pose x="0.02" y="0" z="0.593"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_foot_back_left" visualise="true">
           <dimension radius="0.01"/>
-          <!--<pose x="-0.1" y="-0.172" z="0.015"/>-->
-          <pose x="0" y="0" z="0"/>
+          <pose x="0.146" y="0" z="0.015"/>
           <physics>
             <mass kg="0.5"/>
           </physics>
@@ -358,7 +353,7 @@
         <pointConstraint name="constraint_end_foot_back_left" mode="muscle">
           <source name="foot_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <pose x="0.14575" y="0" z="0.015"/>
+          <pose x="0.146" y="0" z="0.015"/>
         </pointConstraint>
 
 
@@ -390,7 +385,7 @@
           <force       max="1.0"/>
           <velocity    max="1.0"/>
           <pose        x="0" y="0" z="-0.226" alpha="0" beta="0" gamma="90"/>
-          <deflection  min="-120" max="-3"/>
+          <deflection  min="-120" max="0"/>
         </hinge>
         <hinge name="ankle_left" type="angular" mode="passive">
           <source      name="shank_left"/>
@@ -410,9 +405,7 @@
           <pose        x="0.0" y="0.0" z="0.0"/>
           <translational>
             <limit       softness="1.0" damping="1.0" restitution="0.7"/>
-            <!-- Friction sets the max. motor force. Too get high friction
-            this value has to be small. -->
-            <x type="velocity" friction="0.1" mode="passive">
+            <x type="velocity" friction="0.04" mode="passive">
               <force    max="0.001"/>
               <velocity max="0.0"/>
               <deflection  min="-999999999" max="999999999"/>
