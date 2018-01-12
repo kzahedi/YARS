@@ -1,6 +1,6 @@
 <rosiml version="0.8.41">
   <simulator frequency="3500">
-    <solver  iterations="20"/>
+    <solver  iterations="50"/>
   </simulator>
 
   <screens>
@@ -41,35 +41,40 @@
   <robots>
     <robot name="Humanoid">
       <body>
+
         <cylinder name="hip" visualise="true">
           <dimension radius="0.1" height="0.394"/>
           <pose x="0" y="0" z="1.055" alpha="90" beta="0" gamma="0"/>
           <physics>
-            <mass kg="15"/>
-          </physics>
-        </cylinder>
-
-        <cylinder name="thigh_left" visualise="true">
-          <dimension radius="0.02" height="0.422"/> <!-- -20mm for joint space. -->
-          <pose x="0" y="0" z="0.734" alpha="0" gamma="0"/>
-          <physics>
-            <mass kg="8"/>
-          </physics>
-        </cylinder>
-        <cylinder name="shank_left" visualise="true">
-          <dimension radius="0.02" height="0.423"/> <!-- -20mm for joint space. -->
-          <pose x="0" y="0" z="0.292" alpha="0" gamma="0"/>
-          <physics>
             <mass kg="5"/>
           </physics>
         </cylinder>
-        <box name="foot_left">
-          <dimension height="0.03" width="0.2738" depth="0.0991"/>
-          <pose x="-0.1" y="0" z="0" alpha="0" gamma="0"/>
+
+        <!--LEG LEFT-->
+
+        <cylinder name="thigh_left" visualise="true">
+          <dimension radius="0.02" height="0.42"/>
+          <pose x="0" y="0" z="0.734" alpha="0" gamma="0"/>
+          <physics>
+            <mass kg="4"/>
+          </physics>
+        </cylinder>
+        <cylinder name="shank_left" visualise="true">
+          <dimension radius="0.02" height="0.42"/>
+          <pose x="0" y="0" z="0.292" alpha="0" gamma="0"/>
           <physics>
             <mass kg="2"/>
           </physics>
+        </cylinder>
+        <box name="foot_left">
+          <dimension height="0.03" width="0.274" depth="0.099"/>
+          <pose x="-0.1" y="0" z="0" alpha="0" gamma="0"/>
+          <physics>
+            <mass kg="1"/>
+          </physics>
         </box>
+
+        <!--LEG RIGHT-->
 
         <!--<cylinder name="thigh_right" visualise="true">-->
         <!--<dimension radius="0.02" height="0.42"/>-->
@@ -108,14 +113,14 @@
           <dimension radius="0.01"/>
           <pose x="-0.1" y="0" z="1.055"/>
           <physics>
-            <mass kg="0.5"/> <!--Too little weight makes it too prone to perturbations.-->
+            <mass kg="0.005"/> <!--Too little weight makes it too prone to perturbations.-->
           </physics>
         </sphere>
         <sphere name="muscle_end_thigh_front_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="-0.02" y="0" z="0.5"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -124,14 +129,14 @@
           <dimension radius="0.01"/>
           <pose x="-0.1" y="0" z="0.784"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_shank_front_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="-0.1" y="0" z="0.517"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -140,14 +145,14 @@
           <dimension radius="0.01"/>
           <pose x="-0.1" y="0" z="1.055"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_foot_front_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="0" y="0.02" z="0.015"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -159,14 +164,14 @@
           <dimension radius="0.01"/>
           <pose x="0.1" y="0" z="1.055"/>
           <physics>
-            <mass kg="0.5"/> <!--Too little weight makes it too prone to perturbations.-->
+            <mass kg="0.005"/> <!--Too little weight makes it too prone to perturbations.-->
           </physics>
         </sphere>
         <sphere name="muscle_end_thigh_back_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="0.02" y="0" z="0.834"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -175,14 +180,14 @@
           <dimension radius="0.01"/>
           <pose x="0.02" y="0" z="0.784"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_shank_back_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="0.02" y="0" z="0.472"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -191,14 +196,14 @@
           <dimension radius="0.01"/>
           <pose x="0.02" y="0" z="0.593"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
         <sphere name="muscle_end_foot_back_left" visualise="true">
           <dimension radius="0.01"/>
           <pose x="0.146" y="0" z="0.015"/>
           <physics>
-            <mass kg="0.5"/>
+            <mass kg="0.005"/>
           </physics>
         </sphere>
 
@@ -209,13 +214,14 @@
       <pose z="0.03"/> <!-- Elevate robot so it's not inside the ground. -->
 
       <actuators> <!-- Muscles have to come first because of NMODE. -->
+
         <!-- MUSCLES: LEFT - FRONT -->
 
         <!-- Model for iliopsoas -->
         <muscle name="muscle_hip_front_left">
           <source name="muscle_base_hip_front_left"/>
           <destination name="muscle_end_thigh_front_left"/>
-          <force max="900"/>
+          <!--<force max="900"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -226,7 +232,7 @@
         <muscle name="muscle_thigh_front_left">
           <source name="muscle_base_thigh_front_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <force max="1700"/>
+          <!--<force max="2700"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -237,7 +243,7 @@
         <muscle name="muscle_shank_front_left">
           <source name="muscle_base_shank_front_left"/>
           <destination name="muscle_end_foot_front_left"/>
-          <force max="160"/>
+          <!--<force max="160"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -250,7 +256,7 @@
         <muscle name="muscle_hip_back_left">
           <source name="muscle_base_hip_back_left"/>
           <destination name="muscle_end_thigh_back_left"/>
-          <force max="1400"/>
+          <!--<force max="3000"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -261,7 +267,7 @@
         <muscle name="muscle_thigh_back_left">
           <source name="muscle_base_thigh_back_left"/>
           <destination name="muscle_end_shank_back_left"/>
-          <force max="2200"/>
+          <!--<force max="2200"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -272,7 +278,7 @@
         <muscle name="muscle_shank_back_left">
           <source name="muscle_base_shank_back_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <force max="300"/>
+          <!--<force max="300"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
           <force-length_model model="linear"/>
@@ -303,7 +309,7 @@
         <pointConstraint name="constraint_end_shank_front_left" mode="muscle">
           <source name="shank_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <pose x="-0.02" y="0" z="0.225"/> <!-- Upper patella -->
+          <pose x="-0.04" y="0" z="0.28"/> <!-- Upper patella -->
         </pointConstraint>
 
         <!-- Model for tibialis anterior -->
@@ -329,7 +335,7 @@
         <pointConstraint name="constraint_end_thigh_back_left" mode="muscle">
           <source name="thigh_left"/>
           <destination name="muscle_end_thigh_back_left"/>
-          <pose x="0.02" y="0" z="0.1"/>
+          <pose x="0.02" y="0" z="0.11"/>
         </pointConstraint>
 
         <!-- Model for biceps femoris -->
@@ -377,7 +383,7 @@
           <velocity    max="1.0"/>
           <!-- y-position is hip-radius + 0.005m because there is 0.01m gap for joints -->
           <pose        x="0" y="-0.105" z="0.172" alpha="0" beta="90" gamma="90"/>
-          <deflection  min="-60" max="90"/>
+          <deflection  min="-50" max="50"/>
         </hinge>
         <hinge name="knee_left" type="angular" mode="passive">
           <source      name="thigh_left"/>
@@ -405,7 +411,7 @@
           <pose        x="0.0" y="0.0" z="0.0"/>
           <translational>
             <limit       softness="1.0" damping="1.0" restitution="0.7"/>
-            <x type="velocity" friction="0.04" mode="passive">
+            <x type="velocity" friction="0.01" mode="passive">
               <force    max="0.001"/>
               <velocity max="0.0"/>
               <deflection  min="-999999999" max="999999999"/>
