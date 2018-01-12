@@ -221,7 +221,7 @@ double MuscleActuator::calcForce() {
     _constraint->setPoweredLinMotor(true);
   }
 
-  double a_t = internalDesired;
+  double a_t = internalDesired > 0 ? internalDesired : 0;
 
   _forceVelocityModel = linear;
   _forceLengthModel = linear;
