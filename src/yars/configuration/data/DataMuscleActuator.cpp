@@ -301,7 +301,7 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
                     1));
-  muscleDef->add(NE(YARS_STRING_FORCE, YARS_STRING_FORCE_DEFINITION, 1, 1));
+  muscleDef->add(NE(YARS_STRING_FORCE, YARS_STRING_FORCE_DEFINITION, 0, 1));
   muscleDef->add(NE(YARS_STRING_VELOCITY, YARS_STRING_VELOCITY_DEFINITION, 1,
                     1));
   muscleDef->add(NE(YARS_STRING_POSE, YARS_STRING_POSEG_DEFINITION, 0, 1));
