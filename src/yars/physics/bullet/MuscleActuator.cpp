@@ -223,8 +223,8 @@ double MuscleActuator::calcForce() {
 
   double a_t = internalDesired > 0.0 ? internalDesired : 0;
 
-  _forceVelocityModel = constant;
-  _forceLengthModel = constant;
+  _forceVelocityModel = linear;
+  _forceLengthModel = linear;
 
   double Fv = 0.0;
   double Fl = 0.0;
@@ -232,7 +232,7 @@ double MuscleActuator::calcForce() {
   double _mu = 0.25;
   double _k = 10;
   double L = _constraint->getLinearPos();
-  double _Fmax = _data.getMaxForce() == 0 ? 5000.0 : _data.getMaxForce();
+  double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
   switch (_forceVelocityModel) {
     case constant:
