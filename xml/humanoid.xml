@@ -4,17 +4,17 @@
   </simulator>
 
   <screens>
-    <screen name="Muscle actuators - Humanoid" show="true" follow="false">
+    <screen name="Muscle actuators - Humanoid" show="true" follow="true">
       <resolution name="1080p"/>
       <camera>
         <!-- Presentation View -->
-        <!--<position x="-2.3" y="-1.9" z="1.0"/>-->
-        <!--<lookAt x="0.0" y="0.00" z="0.5"/>-->
+        <!--<position x="-2.3" y="-1.9" z="1.5"/>-->
+        <!--<lookAt x="0.0" y="0.00" z="0.0"/>-->
         <!-- Front View -->
         <!-- <position x="-2.0" y="0" z="0.5"/> -->
         <!-- <lookAt x="0.0" y="0.00" z="0.5"/> -->
         <!-- Side View -->
-        <position x="0" y="-2.5" z="0.5"/>
+        <position x="0" y="-2.5" z="1.5"/>
         <lookAt x="0.0" y="0.00" z="0.5"/>
       </camera>
       <osd>
@@ -25,9 +25,14 @@
 
     <sky name="YARS/CloudySky"/>
 
+    <followables>
+      <followable name="hip"/>
+    </followables>
+
     <visualise>
       <!--<joints />-->
     </visualise>
+
   </screens>
 
   <environment>
