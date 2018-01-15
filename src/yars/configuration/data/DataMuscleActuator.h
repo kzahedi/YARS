@@ -25,8 +25,8 @@ class DataMuscleActuator : public DataActuator
     std::string source() override;
     std::string destination() const;
     std::string name() override;
-    const string &getForceVelocityModel() const;
-    const string &getForceLengthModel() const;
+    const string getForceVelocityModel();
+    const string getForceLengthModel();
 
     void setInternalValue(int index, double value) override;
     void setExternalValue(int index, double value) override;

@@ -344,9 +344,17 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
                   false));
   spec.add(poseDef);
 }
-const string &DataMuscleActuator::getForceVelocityModel() const {
-  return _forceVelocityModel;
+
+const string DataMuscleActuator::getForceVelocityModel() {
+  YM_LOCK;
+  auto m = _forceVelocityModel;
+  YM_UNLOCK;
+  return m;
 }
-const string &DataMuscleActuator::getForceLengthModel() const {
-  return _forceLengthModel;
+
+const string DataMuscleActuator::getForceLengthModel() {
+  YM_LOCK;
+  auto m = _forceLengthModel;
+  YM_UNLOCK;
+  return m;
 }
