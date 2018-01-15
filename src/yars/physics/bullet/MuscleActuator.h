@@ -24,8 +24,6 @@ class MuscleActuator : public Actuator
     void processVelocitySlider();
     void processForceSlider();
 
-    btSliderConstraint* createConstraint();
-
     DataMuscleActuator& _data;
     btSliderConstraint* _constraint;
     Type _type;
@@ -61,6 +59,7 @@ class MuscleActuator : public Actuator
     double calcForce();
     void _disableRotation(btSliderConstraint *constraint) const;
     btSliderConstraint * _createTransformedSliderConstraint() const;
+    void _setupConstraint() const;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

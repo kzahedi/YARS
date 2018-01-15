@@ -17,7 +17,8 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
 {
   _yarsConfig = YarsConfiguration::instance();
 
-  createConstraint();
+  _constraint = _createTransformedSliderConstraint();
+  _setupConstraint();
 
   _lastTime = _yarsConfig->getCurrentRealTime();
   _lastPos = _constraint->getLinearPos();
@@ -45,19 +46,18 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _isVisualised = Data::instance()->current()->screens()->visualiseJoints();
 }
 
+void MuscleActuator::_setupConstraint() const {
+  _disableRotation(_constraint);
+  _constraint->setLowerLinLimit(0.0);
+  _constraint->setPoweredLinMotor(false);
+}
+
 void MuscleActuator::_disableRotation(btSliderConstraint *constraint) const {
   constraint->setLowerAngLimit(0.0);
   constraint->setUpperAngLimit(0.0);
   constraint->setPoweredAngMotor(false);
 }
 
-btSliderConstraint* MuscleActuator::createConstraint()
-{
-  _constraint = _createTransformedSliderConstraint();
-  _disableRotation(_constraint);
-  _constraint->setLowerLinLimit(0.0);
-  _constraint->setPoweredLinMotor(false);
-}
 btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const {
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
