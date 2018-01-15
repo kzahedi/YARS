@@ -19,7 +19,6 @@ class MuscleActuator : public Actuator
 
   private:
     enum Type { positional, velocity, force, force_velocity };
-    enum RelationModel { constant, linear, hill };
 
     void processPositional();
     void processVelocitySlider();
@@ -30,8 +29,8 @@ class MuscleActuator : public Actuator
     DataMuscleActuator& _data;
     btSliderConstraint* _constraint;
     Type _type;
-    RelationModel _forceVelocityModel;
-    RelationModel _forceLengthModel;
+    const string _forceVelocityModel;
+    const string _forceLengthModel;
 
     YarsConfiguration *_yarsConfig;
 
@@ -45,7 +44,6 @@ class MuscleActuator : public Actuator
     double _lastPos;
     double _lastVelocity;
 
-    // TODO: implement calculation
     double _L0; // Rest length of muscle.
     //const double _lopt;
     //const double _m;
@@ -61,6 +59,8 @@ class MuscleActuator : public Actuator
     double calcVelocity();
 
     double calcForce();
+    void _disableRotation(btSliderConstraint *constraint) const;
+    btSliderConstraint * _createTransformedSliderConstraint() const;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

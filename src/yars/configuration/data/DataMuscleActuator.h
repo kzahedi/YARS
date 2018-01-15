@@ -25,6 +25,8 @@ class DataMuscleActuator : public DataActuator
     std::string source() override;
     std::string destination() const;
     std::string name() override;
+    const string &getForceVelocityModel() const;
+    const string &getForceLengthModel() const;
 
     void setInternalValue(int index, double value) override;
     void setExternalValue(int index, double value) override;
@@ -59,6 +61,8 @@ class DataMuscleActuator : public DataActuator
     std::string          _source;
     std::string          _destination;
     std::string          _name;
+    std::string          _forceVelocityModel;
+    std::string          _forceLengthModel;
 
     std::vector<double>   _internalValue;
     std::vector<double>   _externalValue;
@@ -77,17 +81,6 @@ class DataMuscleActuator : public DataActuator
 
     double           _appliedForce;
     double           _appliedVelocity;
-
-    // TODO: Decide what's needed.
-    //DataFilter     *_filter;
-    //DataNoise      *_noise;
-    //Domain          _deflection;
-    //SliderParameter _parameter;
-    //bool            _deflectionSet;
-    //double           _currentTransitionalVelocity;
-    //Noise          *_n;
-    //double           _friction;
-    //string          _mode;
 };
 
 #endif // __DATA_MUSCLE_ACTUATOR__

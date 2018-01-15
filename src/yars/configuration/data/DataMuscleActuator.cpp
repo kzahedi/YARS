@@ -19,13 +19,17 @@ using namespace std;
   DEFINITION
 #define YARS_STRING_FORCE (char*)"force"
 #define YARS_STRING_FORCE_DEFINITION (char*)"actuator_force" DIVIDER DEFINITION
-#define YARS_STRING_FORCE_VELOCITY (char*)"force and velocity"
+#define YARS_STRING_FORCE_VELOCITY (char*)"force-velocity"
+#define YARS_STRING_FORCE_LENGTH (char*)"force-length"
+#define YARS_STRING_MODEL (char*)"model"
+#define YARS_STRING_MUSCLE_MODEL_DEFINITION (char*)"muscle_model" DIVIDER \
+DEFINITION
+#define YARS_STRING_MUSCLE_TYPE_DEFINITION (char*)"muscle_type" DIVIDER \
+DEFINITION
 #define YARS_STRING_SCALING (char*)"scaling"
 #define YARS_STRING_MAXIMUM (char*)"max"
 #define YARS_STRING_ACTUATOR_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" \
   DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
-#define YARS_STRING_FORCE_LENGTH_MODEL (char*)"force-length" DIVIDER "model"
-#define YARS_STRING_FORCE_VELOCITY_MODEL (char*)"force-velocity" DIVIDER "model"
 #define YARS_STRING_MAPPING (char*)"mapping"
 #define YARS_STRING_MIN_MAX_DEFINITION (char*)"min" DIVIDER "max" DIVIDER \
   DEFINITION
@@ -37,8 +41,6 @@ using namespace std;
 #define YARS_STRING_POSEG_DEFINITION (char*)"pose_with_global" DIVIDER \
   DEFINITION
 
-// Probably will need to be constexpr because of g. Think what to do with g
-// then.
 DataMuscleActuator::DataMuscleActuator(DataNode* parent)
   : DataActuator{parent, DATA_ACTUATOR_MUSCLE}
 {
@@ -98,6 +100,11 @@ void DataMuscleActuator::add(DataParseElement* element)
   else if (element->opening(YARS_STRING_DESTINATION))
   {
     element->set(YARS_STRING_NAME, _destination);
+  }
+  else if (element->opening(YARS_STRING_MODEL))
+  {
+    element->set(YARS_STRING_FORCE_VELOCITY, _forceVelocityModel);
+    element->set(YARS_STRING_FORCE_LENGTH, _forceLengthModel);
   }
   else if (element->opening(YARS_STRING_FORCE))
   {
@@ -281,6 +288,8 @@ DataActuator* DataMuscleActuator::_copy()
   copy->_mapping         = _mapping;
   copy->_pose            = _pose;
   copy->_destination     = _destination;
+  copy->_forceLengthModel = _forceLengthModel;
+  copy->_forceVelocityModel = _forceVelocityModel;
   copy->_name            = _name;
   copy->_source          = _source;
   copy->_maxForce        = _maxForce;
@@ -301,22 +310,22 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   muscleDef->add(NE(YARS_STRING_SOURCE, YARS_STRING_NAME_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 1,
                     1));
+  muscleDef->add(NE(YARS_STRING_MODEL, YARS_STRING_MUSCLE_MODEL_DEFINITION, 1, 1));
   muscleDef->add(NE(YARS_STRING_FORCE, YARS_STRING_FORCE_DEFINITION, 0, 1));
   muscleDef->add(NE(YARS_STRING_VELOCITY, YARS_STRING_VELOCITY_DEFINITION, 1,
                     1));
   muscleDef->add(NE(YARS_STRING_POSE, YARS_STRING_POSEG_DEFINITION, 0, 1));
   muscleDef->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
-  muscleDef->add(NE(YARS_STRING_FORCE_LENGTH_MODEL, "muscle_model_definition",
-                    1, 1));
-  muscleDef->add(NE(YARS_STRING_FORCE_VELOCITY_MODEL, "muscle_model_definition",
-                    1, 1));
   spec.add(muscleDef);
-
-  auto muscleModelDef = new XsdSequence("muscle_model_definition");
-  muscleModelDef->add(NA("model", "muscle_type_definition", true));
+  
+  auto muscleModelDef = new XsdSequence(YARS_STRING_MUSCLE_MODEL_DEFINITION);
+  muscleModelDef->add(NA(YARS_STRING_FORCE_VELOCITY,
+                         YARS_STRING_MUSCLE_TYPE_DEFINITION, true));
+  muscleModelDef->add(NA(YARS_STRING_FORCE_LENGTH,
+                         YARS_STRING_MUSCLE_TYPE_DEFINITION, true));
   spec.add(muscleModelDef);
 
-  auto muscleTypeDef = new XsdEnumeration("muscle_type_definition",
+  auto muscleTypeDef = new XsdEnumeration(YARS_STRING_MUSCLE_TYPE_DEFINITION,
                                           YARS_STRING_XSD_STRING);
   muscleTypeDef->add("constant");
   muscleTypeDef->add("linear");
@@ -334,4 +343,10 @@ void DataMuscleActuator::createXsd(XsdSpecification& spec)
   poseDef->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION,
                   false));
   spec.add(poseDef);
+}
+const string &DataMuscleActuator::getForceVelocityModel() const {
+  return _forceVelocityModel;
+}
+const string &DataMuscleActuator::getForceLengthModel() const {
+  return _forceLengthModel;
 }

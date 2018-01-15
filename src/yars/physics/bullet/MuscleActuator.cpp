@@ -11,38 +11,19 @@ using namespace std;
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
     _data(data),
-    _vmax(-3.5)
-    //_lopt{0.9 * _l0}
+    _vmax(-3.5),
+    _forceVelocityModel(data.getForceVelocityModel()),
+    _forceLengthModel(data.getForceLengthModel())
 {
   _yarsConfig = YarsConfiguration::instance();
-  _constraint = createConstraint();
 
-  // Disable rotation.
-  _constraint->setLowerAngLimit(0.0);
-  _constraint->setUpperAngLimit(0.0);
-  _constraint->setPoweredAngMotor(false);
-
-  _constraint->setLowerLinLimit(0.0);
-  _constraint->setUpperLinLimit(2.0);
-
-  // Enable/Disable active movement.
-  _constraint->setPoweredLinMotor(false);
+  createConstraint();
 
   _lastTime = _yarsConfig->getCurrentRealTime();
   _lastPos = _constraint->getLinearPos();
   _lastVelocity = 0;
 
   _L0 = 0;
-
-  //for(int i = 0; i < 6; i++) {
-    //_constraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
-    //_constraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
-  //}
-
-  //if (_data.isDeflectionSet()) {
-  //_constraint->setUpperLinLimit(_data.deflection().max); } else {
-  //_constraint->setLowerLinLimit(1); // unset limit solving
-  //_constraint->setUpperLinLimit(0); }
 
   switch(_data.controlType()) {
     case DATA_ACTUATOR_CONTROL_POSITIONAL:
@@ -64,8 +45,20 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   _isVisualised = Data::instance()->current()->screens()->visualiseJoints();
 }
 
+void MuscleActuator::_disableRotation(btSliderConstraint *constraint) const {
+  constraint->setLowerAngLimit(0.0);
+  constraint->setUpperAngLimit(0.0);
+  constraint->setPoweredAngMotor(false);
+}
+
 btSliderConstraint* MuscleActuator::createConstraint()
 {
+  _constraint = _createTransformedSliderConstraint();
+  _disableRotation(_constraint);
+  _constraint->setLowerLinLimit(0.0);
+  _constraint->setPoweredLinMotor(false);
+}
+btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const {
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
 
@@ -80,7 +73,7 @@ btSliderConstraint* MuscleActuator::createConstraint()
 
   // Formula: sqrt(|a|^2 * |b|^2 + dotproduct). In our case the magnitude is
   // 1 because of normalization.
-  btScalar rotation = std::sqrt(1 + dotProduct);
+  btScalar rotation = sqrt(1 + dotProduct);
 
   // In case vectors are perpendicular there is no unique solution. In that case
   // we choose an arbitrary rotation.
@@ -103,7 +96,7 @@ btSliderConstraint* MuscleActuator::createConstraint()
   frameInA.setRotation(q * frameInA.getRotation());
 
   return new btSliderConstraint(*source, *destination, frameInA, frameInB,
-      true);
+                                true);
 }
 
 MuscleActuator::~MuscleActuator()
@@ -223,9 +216,6 @@ double MuscleActuator::calcForce() {
 
   double a_t = internalDesired > 0.0 ? internalDesired : 0;
 
-  _forceVelocityModel = linear;
-  _forceLengthModel = linear;
-
   double Fv = 0.0;
   double Fl = 0.0;
   double v = calcVelocity();
@@ -234,35 +224,42 @@ double MuscleActuator::calcForce() {
   double L = _constraint->getLinearPos();
   double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
-  switch (_forceVelocityModel) {
-    case constant:
-      Fv = 1;
-      break;
-    case linear:
-      Fv = 1 - _mu * v;
-      break;
-    case hill:
-      //if (v > 0) {
-      //Fv = (_vmax + v) / (_vmax - K * v);
-      //} else {
-      //Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
-      //}
-      break;
-      //default:
-      //error
+  if (_forceVelocityModel == "constant")
+  {
+    Fv = 1;
   }
-  switch (_forceLengthModel) {
-    case constant:
-      Fl = 1;
-      break;
-    case linear:
-      Fl = _k * (_L0 - L);
-      break;
-    case hill:
-      //Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
-      break;
-      //default:
-      //error
+  else if (_forceVelocityModel == "linear")
+  {
+    Fv = 1 - _mu * v;
+  }
+  else if (_forceVelocityModel == "hill")
+  {
+    //if (v > 0) {
+    //Fv = (_vmax + v) / (_vmax - K * v);
+    //} else {
+    //Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
+    //}
+  }
+  else
+  {
+    //error
+  }
+
+  if (_forceLengthModel == "constant")
+  {
+    Fl = 1;
+  }
+  else if (_forceLengthModel == "linear")
+  {
+    Fl = _k * (_L0 - L);
+  }
+  else if (_forceLengthModel == "hill")
+  {
+    //Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
+  }
+  else
+  {
+    //error
   }
 
 //  cout << "Velocity: " << v << endl;
