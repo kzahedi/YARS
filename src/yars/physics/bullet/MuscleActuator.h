@@ -54,12 +54,15 @@ class MuscleActuator : public Actuator
     //const double _k;
     //const double _mu;
     //constexpr static double g = 9.81;
-    double calcVelocity();
+    double _calcVelocity();
 
-    double calcForce();
+    double _calcForce();
     void _disableRotation(btSliderConstraint *constraint) const;
     btSliderConstraint * _createTransformedSliderConstraint() const;
     void _setupConstraint() const;
+    bool _isMotorEnabled() const;
+    double _calcForceLength() const;
+    double _calcForceVelocity(double v) const;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

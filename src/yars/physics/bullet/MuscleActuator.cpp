@@ -142,7 +142,7 @@ void MuscleActuator::prePhysicsUpdate()
       _L0 = _constraint->getLinearPos();
     }
 
-    double Fm = calcForce();
+    double Fm = _calcForce();
 
 //    cout << "Force: " << Fm << endl;
 //    cout << "--------------------------------------------------" << endl;
@@ -189,7 +189,8 @@ btTypedConstraint* MuscleActuator::constraint()
   return _constraint;
 }
 
-double MuscleActuator::calcVelocity() {
+double MuscleActuator::_calcVelocity()
+{
   if (_lastTime == 0) // Init with healthy values.
   {
     _lastTime = _yarsConfig->getCurrentRealTime();
@@ -203,27 +204,57 @@ double MuscleActuator::calcVelocity() {
   _lastPos = crntPos;
   _lastTime = crntTime;
   _lastVelocity = v;
+
   return v;
 }
 
-double MuscleActuator::calcForce() {
+double MuscleActuator::_calcForce() {
   double internalDesired = _data.getInternalDesiredValue(0);
 
-  if (!_constraint->getPoweredLinMotor()) // If motor is disabled.
+  if (!_isMotorEnabled())
   {
     _constraint->setPoweredLinMotor(true);
   }
 
   double a_t = internalDesired > 0.0 ? internalDesired : 0;
+  double v = _calcVelocity();
 
-  double Fv = 0.0;
-  double Fl = 0.0;
-  double v = calcVelocity();
-  double _mu = 0.25;
-  double _k = 10;
-  double L = _constraint->getLinearPos();
+  double Fv;
+  double Fl;
+  Fv = _calcForceVelocity(v);
+  Fl = _calcForceLength();
+
   double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
+//  cout << "Velocity: " << v << endl;
+//  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
+//  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
+//  cout << "L:  " << _constraint->getLinearPos() << endl;
+//  cout << "L0: " << _L0 << endl;
+
+
+  return a_t * Fl * Fv * _Fmax; // Resulting muscle force.
+
+//  cout << "Fv: " << Fv << endl;
+//  cout << "Fl: " << Fl << endl;
+//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
+//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
+//  cout << "L: " << L << endl;
+//  cout << "_data->force(): " << _data.force() << endl;
+//  cout << "_data->velocity(): " << _data.velocity() << endl;
+//  cout << "a_t: " << a_t << endl;
+//  cout << "_Fm: " << _Fm << endl;
+//  cout << "F: " << force << " " << "v: " << velocity << endl;
+
+  // Logging.
+//  _data.setAppliedForceAndVelocity(0, Fm, v);
+}
+
+double MuscleActuator::_calcForceVelocity(double v) const
+{
+  double _mu = 0.25;
+
+  double Fv;
   if (_forceVelocityModel == "constant")
   {
     Fv = 1;
@@ -244,7 +275,15 @@ double MuscleActuator::calcForce() {
   {
     //error
   }
+  return Fv;
+}
 
+double MuscleActuator::_calcForceLength() const
+{
+  double _k = 10;
+  double L = _constraint->getLinearPos();
+
+  double Fl;
   if (_forceLengthModel == "constant")
   {
     Fl = 1;
@@ -261,26 +300,10 @@ double MuscleActuator::calcForce() {
   {
     //error
   }
+  return Fl;
+}
 
-//  cout << "Velocity: " << v << endl;
-//  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
-//  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
-//  cout << "L:  " << _constraint->getLinearPos() << endl;
-//  cout << "L0: " << _L0 << endl;
-
-  return a_t * Fl * Fv * _Fmax; // Resulting muscle force.
-
-//  cout << "Fv: " << Fv << endl;
-//  cout << "Fl: " << Fl << endl;
-//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
-//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
-//  cout << "L: " << L << endl;
-//  cout << "_data->force(): " << _data.force() << endl;
-//  cout << "_data->velocity(): " << _data.velocity() << endl;
-//  cout << "a_t: " << a_t << endl;
-//  cout << "_Fm: " << _Fm << endl;
-//  cout << "F: " << force << " " << "v: " << velocity << endl;
-
-  // Logging.
-//  _data.setAppliedForceAndVelocity(0, Fm, v);
+bool MuscleActuator::_isMotorEnabled() const
+{
+  return _constraint->getPoweredLinMotor();
 }
