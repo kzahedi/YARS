@@ -23,7 +23,7 @@ DataSimulator::DataSimulator(DataNode *parent)
   : DataNode(parent)
 {
   _simulatorFrequency  = -1;
-  _randomSeed          = -1; 
+  _randomSeed          = -1;
   _useRandomSeed       = false;
   _iterations          = -1;
   _autoReset           = -1;

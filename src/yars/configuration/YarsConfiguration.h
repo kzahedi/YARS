@@ -23,7 +23,7 @@
 #define __YARS_OPEN_FRAMES_DIRECTORY               YarsConfiguration::instance()->openFramesDirectory()
 
 #define __YARS_GET_CURRENT_ENVIRONMENT             Data::instance()->current()->environments()->environment(0)
-#define __YARS_GET_ROBOTS                        Data::instance()->current()->robots()
+#define __YARS_GET_ROBOTS                          Data::instance()->current()->robots()
 
 #define __YARS_GET_VIEW_POSITION(index)            Data::instance()->current()->screens()->screen(index)->camera()->position()
 #define __YARS_GET_VIEW_LOOK_AT(index)             Data::instance()->current()->screens()->screen(index)->camera()->lookAt()
