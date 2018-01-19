@@ -18,15 +18,12 @@ class MuscleActuator : public Actuator
     btTypedConstraint* constraint() override;
 
   private:
-    enum Type { positional, velocity, force, force_velocity };
-
     void processPositional();
     void processVelocitySlider();
     void processForceSlider();
 
     DataMuscleActuator& _data;
     btSliderConstraint* _constraint;
-    Type _type;
     const string _forceVelocityModel;
     const string _forceLengthModel;
 
@@ -61,8 +58,10 @@ class MuscleActuator : public Actuator
     btSliderConstraint * _createTransformedSliderConstraint() const;
     void _setupConstraint() const;
     bool _isMotorEnabled() const;
-    double _calcForceLength() const;
+    double _calcForceLength(double maxForce) const;
     double _calcForceVelocity(double v) const;
+    btVector3 _getDirectionFromSourceToDestination(btRigidBody *source,
+                                                   btRigidBody *destination) const;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

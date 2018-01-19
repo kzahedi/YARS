@@ -297,7 +297,6 @@ DataActuator* DataMuscleActuator::_copy()
   copy->_axisOrientation = _axisOrientation;
   copy->_axisPosition    = _axisPosition;
 
-  copy->_controlType = _controlType;
   copy->setMapping();
 
   return copy;

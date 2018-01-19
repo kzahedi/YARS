@@ -26,45 +26,31 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
 
   _L0 = 0;
 
-  switch(_data.controlType()) {
-    case DATA_ACTUATOR_CONTROL_POSITIONAL:
-      _type = positional;
-      break;
-    case DATA_ACTUATOR_CONTROL_VELOCITY:
-      _type = velocity;
-      break;
-    case DATA_ACTUATOR_CONTROL_FORCE:
-      _type = force;
-      break;
-    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
-      _type = force_velocity;
-      break;
-    default:
-      cout << "unkown type: " << _data.controlType() << endl;
-  }
-
   _isVisualised = Data::instance()->current()->screens()->visualiseJoints();
 }
 
-void MuscleActuator::_setupConstraint() const {
+void MuscleActuator::_setupConstraint() const
+{
   _disableRotation(_constraint);
   _constraint->setLowerLinLimit(0.0);
   _constraint->setPoweredLinMotor(false);
 }
 
-void MuscleActuator::_disableRotation(btSliderConstraint *constraint) const {
+void MuscleActuator::_disableRotation(btSliderConstraint *constraint) const
+{
   constraint->setLowerAngLimit(0.0);
   constraint->setUpperAngLimit(0.0);
   constraint->setPoweredAngMotor(false);
 }
 
-btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const {
+btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const
+{
   btRigidBody* source = _sourceObject->rigidBody();
   btRigidBody* destination = _destinationObject->rigidBody();
 
   // Get direction from source x-Axis to destination.
-  btVector3 direction = (destination->getWorldTransform().getOrigin() -
-      source->getWorldTransform().getOrigin()).normalize();
+  btVector3 direction =
+      _getDirectionFromSourceToDestination(source, destination);
 
   btVector3 sourceAxis = source->getOrientation().getAxis().normalize();
 
@@ -97,6 +83,13 @@ btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const {
 
   return new btSliderConstraint(*source, *destination, frameInA, frameInB,
                                 true);
+}
+
+btVector3 MuscleActuator::_getDirectionFromSourceToDestination(
+    btRigidBody *source, btRigidBody *destination) const
+{
+  return (destination->getWorldTransform().getOrigin() -
+      source->getWorldTransform().getOrigin()).normalize();
 }
 
 MuscleActuator::~MuscleActuator()
@@ -218,13 +211,13 @@ double MuscleActuator::_calcForce() {
 
   double a_t = internalDesired > 0.0 ? internalDesired : 0;
   double v = _calcVelocity();
+  double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
   double Fv;
   double Fl;
   Fv = _calcForceVelocity(v);
-  Fl = _calcForceLength();
+  Fl = _calcForceLength(_Fmax);
 
-  double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
 //  cout << "Velocity: " << v << endl;
 //  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
@@ -273,14 +266,16 @@ double MuscleActuator::_calcForceVelocity(double v) const
   }
   else
   {
-    //error
+    throw new YarsException("Force-Velocity model not recognized.");
   }
   return Fv;
 }
 
-double MuscleActuator::_calcForceLength() const
+double MuscleActuator::_calcForceLength(double maxForce) const
 {
-  double _k = 10;
+  auto flightLegLength = _constraint->getLinearPos() * 0.99;
+  auto approximatedMinLength = _constraint->getLinearPos() * 0.9;
+  double k = maxForce / (flightLegLength - approximatedMinLength);
   double L = _constraint->getLinearPos();
 
   double Fl;
@@ -290,7 +285,7 @@ double MuscleActuator::_calcForceLength() const
   }
   else if (_forceLengthModel == "linear")
   {
-    Fl = _k * (_L0 - L);
+    Fl = k * (_L0 - L);
   }
   else if (_forceLengthModel == "hill")
   {
@@ -298,7 +293,7 @@ double MuscleActuator::_calcForceLength() const
   }
   else
   {
-    //error
+    throw new YarsException("Force-Length model not recognized.");
   }
   return Fl;
 }
