@@ -42,13 +42,13 @@ class MuscleActuator : public Actuator
     double _L0; // Rest length of muscle.
     //const double _lopt;
     //const double _m;
-    //const double _fmax;
+    const double _fmax;
     //const double _w;
     //const double _c;
     const double _vmax;
     //const double _K;
     //const double _n;
-    //const double _k;
+    double _k;
     //const double _mu;
     //constexpr static double g = 9.81;
     double _calcVelocity();
@@ -58,10 +58,13 @@ class MuscleActuator : public Actuator
     btSliderConstraint * _createTransformedSliderConstraint() const;
     void _setupConstraint() const;
     bool _isMotorEnabled() const;
-    double _calcForceLength(double maxForce) const;
+    double _calcForceLength() const;
     double _calcForceVelocity(double v) const;
     btVector3 _getDirectionFromSourceToDestination(btRigidBody *source,
                                                    btRigidBody *destination) const;
+    double _calcSpringConstant(btSliderConstraint *constraint) const;
+    void _initialCalcs();
+    double _Lopt;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

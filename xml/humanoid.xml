@@ -226,7 +226,8 @@
         <muscle name="muscle_hip_front_left">
           <source name="muscle_base_hip_front_left"/>
           <destination name="muscle_end_thigh_front_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="900"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
@@ -236,7 +237,8 @@
         <muscle name="muscle_thigh_front_left">
           <source name="muscle_base_thigh_front_left"/>
           <destination name="muscle_end_shank_front_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="2700"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
@@ -246,7 +248,8 @@
         <muscle name="muscle_shank_front_left">
           <source name="muscle_base_shank_front_left"/>
           <destination name="muscle_end_foot_front_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="160"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
@@ -258,7 +261,8 @@
         <muscle name="muscle_hip_back_left">
           <source name="muscle_base_hip_back_left"/>
           <destination name="muscle_end_thigh_back_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="3000"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
@@ -268,7 +272,8 @@
         <muscle name="muscle_thigh_back_left">
           <source name="muscle_base_thigh_back_left"/>
           <destination name="muscle_end_shank_back_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="2200"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>
@@ -278,7 +283,8 @@
         <muscle name="muscle_shank_back_left">
           <source name="muscle_base_shank_back_left"/>
           <destination name="muscle_end_foot_back_left"/>
-          <model force-velocity="linear" force-length="linear"/>
+          <!--<model force-velocity="linear" force-length="linear"/>-->
+          <model force-velocity="hill" force-length="hill"/>
           <!--<force max="300"/>-->
           <velocity max="10"/>
           <mapping min="-1.0" max="1.0"/>

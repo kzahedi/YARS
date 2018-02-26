@@ -12,6 +12,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
     _data(data),
     _vmax(-3.5),
+    _fmax(data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce()),
     _forceVelocityModel(data.getForceVelocityModel()),
     _forceLengthModel(data.getForceLengthModel())
 {
@@ -103,36 +104,32 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  { // visualize contact points.
+//  { // visualize contact points.
+//    btTransform  pose = _constraint->getCalculatedTransformA(); // Same as for B.
+//
+//     That's how it's calculated. transA and transB seem to be the world
+//     transform. m_frameInA is transformA at passing to the constructor in our case.
+//      m_calculatedTransformA = transA * m_frameInA;
+//      m_calculatedTransformB = transB * m_frameInB;
+//
+//      m_frameInA = rbB.getCenterOfMassTransform() * m_frameInB;
+//      oder wird beim Initialisieren direkt mitgegenben.
+//
+//    btTransform  pose = _constraint->getFrameOffsetA(); // At point of origin.
+//    btVector3    vec  = pose.getOrigin();
+//    btQuaternion q    = pose.getRotation();
+//     Coordinates are relative to world.
+//    _data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+//    _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+//  }
 
-    //btTransform  pose = _constraint->getCalculatedTransformA(); // Same as for B.
-    //
-    // That's how it's calculated. transA and transB seem to be the world
-    // transform. m_frameInA is transformA at passing to the constructor in our case.
-      //m_calculatedTransformA = transA * m_frameInA;
-      //m_calculatedTransformB = transB * m_frameInB;
-      //
-      //m_frameInA = rbB.getCenterOfMassTransform() * m_frameInB;
-      //oder wird beim Initialisieren direkt mitgegenben.
 
-    //btTransform  pose = _constraint->getFrameOffsetA(); // At point of origin.
-    //btVector3    vec  = pose.getOrigin();
-    //btQuaternion q    = pose.getRotation();
-    // Coordinates are relative to world.
-    //_data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
-    //_data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-  }
-
-
-  // lifeTime variable: in evaluate.h in update controller function
-  // Hier eher: __YARS_GET_STEP
-  // in bulletphysics::reset (dort nur in bullet. Muss anpassen.
-  // Konsequent: in robot::controlerUpdate. __yarsstep < intial_convergenceit
-  //  In yars::configuration(abgefragt) wie in zeile 20  | in datasimulator
   if (__YARS_GET_STEP > 10) {
     if (_L0 == 0)
     {
+      _initialCalcs();
       _L0 = _constraint->getLinearPos();
+      _Lopt = 0.9 * _L0;
     }
 
     double Fm = _calcForce();
@@ -184,16 +181,11 @@ btTypedConstraint* MuscleActuator::constraint()
 
 double MuscleActuator::_calcVelocity()
 {
-  if (_lastTime == 0) // Init with healthy values.
-  {
-    _lastTime = _yarsConfig->getCurrentRealTime();
-    _lastPos = _constraint->getLinearPos();
-    return 0;
-  }
+  if (_lastTime == 0) { return 0.0; }
 
   auto crntTime = _yarsConfig->getCurrentRealTime();
   auto crntPos = _constraint->getLinearPos();
-  double v = (crntPos - _lastPos) / (crntTime - _lastTime);
+  auto v = (crntPos - _lastPos) / (crntTime - _lastTime);
   _lastPos = crntPos;
   _lastTime = crntTime;
   _lastVelocity = v;
@@ -202,6 +194,13 @@ double MuscleActuator::_calcVelocity()
 }
 
 double MuscleActuator::_calcForce() {
+  if (_lastTime == 0)
+  {
+    _lastTime = _yarsConfig->getCurrentRealTime();
+    _lastPos = _constraint->getLinearPos();
+    return 0.0;
+  }
+
   double internalDesired = _data.getInternalDesiredValue(0);
 
   if (!_isMotorEnabled())
@@ -211,12 +210,11 @@ double MuscleActuator::_calcForce() {
 
   double a_t = internalDesired > 0.0 ? internalDesired : 0;
   double v = _calcVelocity();
-  double _Fmax = _data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce();
 
   double Fv;
   double Fl;
   Fv = _calcForceVelocity(v);
-  Fl = _calcForceLength(_Fmax);
+  Fl = _calcForceLength();
 
 
 //  cout << "Velocity: " << v << endl;
@@ -226,7 +224,7 @@ double MuscleActuator::_calcForce() {
 //  cout << "L0: " << _L0 << endl;
 
 
-  return a_t * Fl * Fv * _Fmax; // Resulting muscle force.
+  return a_t * Fl * Fv * _fmax; // Resulting muscle force.
 
 //  cout << "Fv: " << Fv << endl;
 //  cout << "Fl: " << Fl << endl;
@@ -245,7 +243,7 @@ double MuscleActuator::_calcForce() {
 
 double MuscleActuator::_calcForceVelocity(double v) const
 {
-  double _mu = 0.25;
+  auto _mu = 0.25;
 
   double Fv;
   if (_forceVelocityModel == "constant")
@@ -258,11 +256,17 @@ double MuscleActuator::_calcForceVelocity(double v) const
   }
   else if (_forceVelocityModel == "hill")
   {
-    //if (v > 0) {
-    //Fv = (_vmax + v) / (_vmax - K * v);
-    //} else {
-    //Fv = N + (N - 1) * ((_vmax - v) / (-7.56 * K * v - _vmax));
-    //}
+    auto K = 1.5;
+    auto N = 1.5;
+
+    if (v < 0)
+    {
+      Fv = (_vmax - v) / (_vmax + K * v);
+    }
+    else
+    {
+      Fv = N + (N - 1) * ((_vmax + v) / (-7.56 * K * v - _vmax));
+    }
   }
   else
   {
@@ -271,11 +275,8 @@ double MuscleActuator::_calcForceVelocity(double v) const
   return Fv;
 }
 
-double MuscleActuator::_calcForceLength(double maxForce) const
+double MuscleActuator::_calcForceLength() const
 {
-  auto flightLegLength = _constraint->getLinearPos() * 0.99;
-  auto approximatedMinLength = _constraint->getLinearPos() * 0.9;
-  double k = maxForce / (flightLegLength - approximatedMinLength);
   double L = _constraint->getLinearPos();
 
   double Fl;
@@ -285,11 +286,13 @@ double MuscleActuator::_calcForceLength(double maxForce) const
   }
   else if (_forceLengthModel == "linear")
   {
-    Fl = k * (_L0 - L);
+    Fl = _k * (_L0 - L);
   }
   else if (_forceLengthModel == "hill")
   {
-    //Fl = exp(c * pow(abs((L - Lopt) / (Lopt * w)), 3));
+    auto w = 0.4 * _Lopt;
+    auto c = log(0.05);
+    Fl = exp(c * pow(fabs((L - _Lopt) / (_Lopt * w)), 3));
   }
   else
   {
@@ -301,4 +304,17 @@ double MuscleActuator::_calcForceLength(double maxForce) const
 bool MuscleActuator::_isMotorEnabled() const
 {
   return _constraint->getPoweredLinMotor();
+}
+
+double MuscleActuator::_calcSpringConstant(btSliderConstraint *constraint)
+const
+{
+  auto initialLength = constraint->getLinearPos();
+  auto maxLength = constraint->getLinearPos() * 1.1;
+//  return _fmax / fabs(maxLength - initialLength);
+  return 10;
+}
+
+void MuscleActuator::_initialCalcs() {
+  _k = _calcSpringConstant(_constraint);
 }
