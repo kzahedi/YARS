@@ -1,5 +1,6 @@
 #include "MuscleActuator.h"
 
+#include <algorithm>
 #include <cmath>
 #include "yars/configuration/data/DataMuscleActuator.h"
 #include "yars/physics/bullet/Actuator.h"
@@ -46,21 +47,20 @@ void MuscleActuator::_disableRotation(btSliderConstraint *constraint) const
 
 btSliderConstraint *MuscleActuator::_createTransformedSliderConstraint() const
 {
-  btRigidBody* source = _sourceObject->rigidBody();
-  btRigidBody* destination = _destinationObject->rigidBody();
+  auto source = _sourceObject->rigidBody();
+  auto destination = _destinationObject->rigidBody();
 
   // Get direction from source x-Axis to destination.
-  btVector3 direction =
-      _getDirectionFromSourceToDestination(source, destination);
+  auto direction = _getDirectionFromSourceToDestination(source, destination);
 
-  btVector3 sourceAxis = source->getOrientation().getAxis().normalize();
+  auto sourceAxis = source->getOrientation().getAxis().normalize();
 
-  btVector3 rotationAxis = sourceAxis.cross(direction);
-  btScalar dotProduct = sourceAxis.dot(direction);
+  auto rotationAxis = sourceAxis.cross(direction);
+  auto dotProduct = sourceAxis.dot(direction);
 
   // Formula: sqrt(|a|^2 * |b|^2 + dotproduct). In our case the magnitude is
   // 1 because of normalization.
-  btScalar rotation = sqrt(1 + dotProduct);
+  auto rotation = sqrt(1 + dotProduct);
 
   // In case vectors are perpendicular there is no unique solution. In that case
   // we choose an arbitrary rotation.
@@ -222,12 +222,12 @@ double MuscleActuator::_calcForce() {
 //  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
 //  cout << "L:  " << _constraint->getLinearPos() << endl;
 //  cout << "L0: " << _L0 << endl;
+//  cout << "Fv: " << Fv << endl;
+//  cout << "Fl: " << Fl << endl;
 
 
   return a_t * Fl * Fv * _fmax; // Resulting muscle force.
 
-//  cout << "Fv: " << Fv << endl;
-//  cout << "Fl: " << Fl << endl;
 //  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
 //  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
 //  cout << "L: " << L << endl;
@@ -243,7 +243,6 @@ double MuscleActuator::_calcForce() {
 
 double MuscleActuator::_calcForceVelocity(double v) const
 {
-  auto _mu = 0.25;
 
   double Fv;
   if (_forceVelocityModel == "constant")
@@ -252,6 +251,7 @@ double MuscleActuator::_calcForceVelocity(double v) const
   }
   else if (_forceVelocityModel == "linear")
   {
+    auto _mu = 0.25;
     Fv = 1 - _mu * v;
   }
   else if (_forceVelocityModel == "hill")
@@ -277,7 +277,7 @@ double MuscleActuator::_calcForceVelocity(double v) const
 
 double MuscleActuator::_calcForceLength() const
 {
-  double L = _constraint->getLinearPos();
+  auto L = std::min(static_cast<double>(_constraint->getLinearPos()), _L0);
 
   double Fl;
   if (_forceLengthModel == "constant")
@@ -287,6 +287,8 @@ double MuscleActuator::_calcForceLength() const
   else if (_forceLengthModel == "linear")
   {
     Fl = _k * (_L0 - L);
+//    cout << "L0: " << _L0 << endl;
+//    cout << "L: " << L << endl;
   }
   else if (_forceLengthModel == "hill")
   {
