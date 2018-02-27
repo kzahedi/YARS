@@ -277,8 +277,6 @@ double MuscleActuator::_calcForceVelocity(double v) const
 
 double MuscleActuator::_calcForceLength() const
 {
-  auto L = std::min(static_cast<double>(_constraint->getLinearPos()), _L0);
-
   double Fl;
   if (_forceLengthModel == "constant")
   {
@@ -286,12 +284,14 @@ double MuscleActuator::_calcForceLength() const
   }
   else if (_forceLengthModel == "linear")
   {
+    auto L = std::min(static_cast<double>(_constraint->getLinearPos()), _L0);
     Fl = _k * (_L0 - L);
 //    cout << "L0: " << _L0 << endl;
 //    cout << "L: " << L << endl;
   }
   else if (_forceLengthModel == "hill")
   {
+    auto L = _constraint->getLinearPos();
     auto w = 0.4 * _Lopt;
     auto c = log(0.05);
     Fl = exp(c * pow(fabs((L - _Lopt) / (_Lopt * w)), 3));
