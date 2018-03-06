@@ -24,7 +24,6 @@ MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
 
   _lastTime = _yarsConfig->getCurrentRealTime();
   _lastPos = _constraint->getLinearPos();
-  _lastVelocity = 0;
 
   _L0 = 0;
 
@@ -104,26 +103,6 @@ DataActuator* MuscleActuator::data()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-//  { // visualize contact points.
-//    btTransform  pose = _constraint->getCalculatedTransformA(); // Same as for B.
-//
-//     That's how it's calculated. transA and transB seem to be the world
-//     transform. m_frameInA is transformA at passing to the constructor in our case.
-//      m_calculatedTransformA = transA * m_frameInA;
-//      m_calculatedTransformB = transB * m_frameInB;
-//
-//      m_frameInA = rbB.getCenterOfMassTransform() * m_frameInB;
-//      oder wird beim Initialisieren direkt mitgegenben.
-//
-//    btTransform  pose = _constraint->getFrameOffsetA(); // At point of origin.
-//    btVector3    vec  = pose.getOrigin();
-//    btQuaternion q    = pose.getRotation();
-//     Coordinates are relative to world.
-//    _data.setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
-//    _data.setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-//  }
-
-
   if (__YARS_GET_STEP > 10) {
     if (_L0 == 0)
     {
@@ -132,30 +111,16 @@ void MuscleActuator::prePhysicsUpdate()
       _Lopt = 0.9 * _L0;
     }
 
-    double Fm = _calcForce();
-
-//    cout << "Force: " << Fm << endl;
-//    cout << "--------------------------------------------------" << endl;
+    auto Fm = _calcForce();
 
     // The velocity is the maximum speed of the contraction. It is slowed down if
-    // there is not enough force generated to move the bodypart. The controller
+    // there is not enough force generated to move the segment. The controller
     // should only tell the desired velocity.
     _constraint->setMaxLinMotorForce(static_cast<btScalar>(Fm));
     _constraint->setTargetLinMotorVelocity(static_cast<btScalar>(_vmax));
   }
 }
 
-void MuscleActuator::processPositional()
-{
-}
-
-void MuscleActuator::processVelocitySlider()
-{
-}
-
-void MuscleActuator::processForceSlider()
-{
-}
 
 void MuscleActuator::postPhysicsUpdate()
 {
@@ -188,7 +153,6 @@ double MuscleActuator::_calcVelocity()
   auto v = (crntPos - _lastPos) / (crntTime - _lastTime);
   _lastPos = crntPos;
   _lastTime = crntTime;
-  _lastVelocity = v;
 
   return v;
 }
@@ -201,7 +165,7 @@ double MuscleActuator::_calcForce() {
     return 0.0;
   }
 
-  double internalDesired = _data.getInternalDesiredValue(0);
+  auto internalDesired = _data.getInternalDesiredValue(0);
 
   if (!_isMotorEnabled())
   {
@@ -216,26 +180,7 @@ double MuscleActuator::_calcForce() {
   Fv = _calcForceVelocity(v);
   Fl = _calcForceLength();
 
-
-//  cout << "Velocity: " << v << endl;
-//  cout << "Max velocity: " << _vmax << "; A(t): " << a_t << endl;
-//  cout << "Applied impulse: " << _constraint->getAppliedImpulse() << endl;
-//  cout << "L:  " << _constraint->getLinearPos() << endl;
-//  cout << "L0: " << _L0 << endl;
-//  cout << "Fv: " << Fv << endl;
-//  cout << "Fl: " << Fl << endl;
-
-
-  return a_t * Fl * Fv * _fmax; // Resulting muscle force.
-
-//  cout << "LinearPos: " << _constraint->getLinearPos() << endl;
-//  cout << "Motor State: " << _constraint->getPoweredLinMotor() << endl;
-//  cout << "L: " << L << endl;
-//  cout << "_data->force(): " << _data.force() << endl;
-//  cout << "_data->velocity(): " << _data.velocity() << endl;
-//  cout << "a_t: " << a_t << endl;
-//  cout << "_Fm: " << _Fm << endl;
-//  cout << "F: " << force << " " << "v: " << velocity << endl;
+  return a_t * Fl * Fv * _fmax;
 
   // Logging.
 //  _data.setAppliedForceAndVelocity(0, Fm, v);
@@ -286,8 +231,6 @@ double MuscleActuator::_calcForceLength() const
   {
     auto L = std::min(static_cast<double>(_constraint->getLinearPos()), _L0);
     Fl = _k * (_L0 - L);
-//    cout << "L0: " << _L0 << endl;
-//    cout << "L: " << L << endl;
   }
   else if (_forceLengthModel == "hill")
   {
@@ -308,12 +251,10 @@ bool MuscleActuator::_isMotorEnabled() const
   return _constraint->getPoweredLinMotor();
 }
 
-double MuscleActuator::_calcSpringConstant(btSliderConstraint *constraint)
-const
+double MuscleActuator::_calcSpringConstant(btSliderConstraint *constraint) const
 {
   auto initialLength = constraint->getLinearPos();
   auto maxLength = constraint->getLinearPos() * 1.1;
-//  return _fmax / fabs(maxLength - initialLength);
   return 10;
 }
 

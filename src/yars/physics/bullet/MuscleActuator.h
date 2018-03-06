@@ -18,39 +18,22 @@ class MuscleActuator : public Actuator
     btTypedConstraint* constraint() override;
 
   private:
-    void processPositional();
-    void processVelocitySlider();
-    void processForceSlider();
-
     DataMuscleActuator& _data;
     btSliderConstraint* _constraint;
+    YarsConfiguration *_yarsConfig;
+
     const string _forceVelocityModel;
     const string _forceLengthModel;
 
-    YarsConfiguration *_yarsConfig;
-
-    //double               _position;
-    //double               _lastPosition;
-    //double               _friction;
-    /*bool                _isActive;*/
-    bool                _isVisualised;
-    //bool                _hasFriction;
+    bool _isVisualised;
     double _lastTime;
     double _lastPos;
-    double _lastVelocity;
 
-    double _L0; // Rest length of muscle.
-    //const double _lopt;
-    //const double _m;
+    double _L0;
+    double _Lopt;
     const double _fmax;
-    //const double _w;
-    //const double _c;
     const double _vmax;
-    //const double _K;
-    //const double _n;
     double _k;
-    //const double _mu;
-    //constexpr static double g = 9.81;
     double _calcVelocity();
 
     double _calcForce();
@@ -64,7 +47,6 @@ class MuscleActuator : public Actuator
                                                    btRigidBody *destination) const;
     double _calcSpringConstant(btSliderConstraint *constraint) const;
     void _initialCalcs();
-    double _Lopt;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

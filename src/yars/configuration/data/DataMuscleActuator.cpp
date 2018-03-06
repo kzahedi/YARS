@@ -9,11 +9,8 @@
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/defines/mutex.h>
 
-// TODO: Remove pose. Positions for this constraint are generated automatically.
-
 using namespace std;
 
-// TODO: check which definitions can be put to higher level in class hierarchy.
 #define YARS_STRING_VELOCITY (char*)"velocity"
 #define YARS_STRING_VELOCITY_DEFINITION (char*)"slider_velocity" DIVIDER \
   DEFINITION
