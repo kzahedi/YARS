@@ -12,8 +12,7 @@ using namespace std;
 MuscleActuator::MuscleActuator(DataMuscleActuator& data, Robot& robot)
   : Actuator{"MuscleActuator", data.source(), data.destination(), &robot},
     _data(data),
-    _vmax(-3.5),
-    _fmax(data.getMaxForce() == 0 ? 2000.0 : _data.getMaxForce()),
+    _fmax(data.getMaxForce() == 0 ? 1500.0 : _data.getMaxForce()),
     _forceVelocityModel(data.getForceVelocityModel()),
     _forceLengthModel(data.getForceLengthModel())
 {
@@ -106,18 +105,23 @@ void MuscleActuator::prePhysicsUpdate()
   if (__YARS_GET_STEP > 10) {
     if (_L0 == 0)
     {
-      _initialCalcs();
       _L0 = _constraint->getLinearPos();
-      _Lopt = 0.9 * _L0;
+      _Lopt = 0.86 * _L0;
+      _vmax = -3.5;
     }
 
     auto Fm = _calcForce();
 
-    // The velocity is the maximum speed of the contraction. It is slowed down if
-    // there is not enough force generated to move the segment. The controller
-    // should only tell the desired velocity.
-    _constraint->setMaxLinMotorForce(static_cast<btScalar>(Fm));
-    _constraint->setTargetLinMotorVelocity(static_cast<btScalar>(_vmax));
+    if (Fm > 0)
+    {
+      _constraint->setPoweredLinMotor(true);
+      _constraint->setMaxLinMotorForce(static_cast<btScalar>(Fm));
+      _constraint->setTargetLinMotorVelocity(static_cast<btScalar>(_vmax));
+    }
+    else
+    {
+      _constraint->setPoweredLinMotor(false);
+    }
   }
 }
 
@@ -157,7 +161,8 @@ double MuscleActuator::_calcVelocity()
   return v;
 }
 
-double MuscleActuator::_calcForce() {
+double MuscleActuator::_calcForce()
+{
   if (_lastTime == 0)
   {
     _lastTime = _yarsConfig->getCurrentRealTime();
@@ -167,37 +172,26 @@ double MuscleActuator::_calcForce() {
 
   auto internalDesired = _data.getInternalDesiredValue(0);
 
-  if (!_isMotorEnabled())
-  {
-    _constraint->setPoweredLinMotor(true);
-  }
-
-  double a_t = internalDesired > 0.0 ? internalDesired : 0;
-  double v = _calcVelocity();
-
-  double Fv;
-  double Fl;
-  Fv = _calcForceVelocity(v);
-  Fl = _calcForceLength();
+  auto a_t = max(internalDesired, 0.0);
+  auto v = _calcVelocity();
+  auto Fv = _calcForceVelocity(v);
+  auto Fl = _calcForceLength();
 
   return a_t * Fl * Fv * _fmax;
-
-  // Logging.
-//  _data.setAppliedForceAndVelocity(0, Fm, v);
 }
 
 double MuscleActuator::_calcForceVelocity(double v) const
 {
-
   double Fv;
+
   if (_forceVelocityModel == "constant")
   {
     Fv = 1;
   }
   else if (_forceVelocityModel == "linear")
   {
-    auto _mu = 0.25;
-    Fv = 1 - _mu * v;
+    auto _mu = 0.3;
+    Fv = 1 + _mu * v;
   }
   else if (_forceVelocityModel == "hill")
   {
@@ -210,19 +204,22 @@ double MuscleActuator::_calcForceVelocity(double v) const
     }
     else
     {
-      Fv = N + (N - 1) * ((_vmax + v) / (-7.56 * K * v - _vmax));
+      Fv = N + (N - 1) * ((_vmax + v) / (7.56 * K * v - _vmax));
     }
+
   }
   else
   {
-    throw new YarsException("Force-Velocity model not recognized.");
+    throw YarsException("Force-velocity model not recognized.");
   }
+
   return Fv;
 }
 
 double MuscleActuator::_calcForceLength() const
 {
   double Fl;
+
   if (_forceLengthModel == "constant")
   {
     Fl = 1;
@@ -230,34 +227,21 @@ double MuscleActuator::_calcForceLength() const
   else if (_forceLengthModel == "linear")
   {
     auto L = std::min(static_cast<double>(_constraint->getLinearPos()), _L0);
-    Fl = _k * (_L0 - L);
+    auto k = 10;
+    Fl = k * (_L0 - L);
   }
   else if (_forceLengthModel == "hill")
   {
     auto L = _constraint->getLinearPos();
-    auto w = 0.4 * _Lopt;
-    auto c = log(0.05);
+    auto w = 0.5 * _Lopt;
+    auto c = -29.96;
     Fl = exp(c * pow(fabs((L - _Lopt) / (_Lopt * w)), 3));
   }
   else
   {
-    throw new YarsException("Force-Length model not recognized.");
+    throw YarsException("Force-length model not recognized.");
   }
+
   return Fl;
 }
 
-bool MuscleActuator::_isMotorEnabled() const
-{
-  return _constraint->getPoweredLinMotor();
-}
-
-double MuscleActuator::_calcSpringConstant(btSliderConstraint *constraint) const
-{
-  auto initialLength = constraint->getLinearPos();
-  auto maxLength = constraint->getLinearPos() * 1.1;
-  return 10;
-}
-
-void MuscleActuator::_initialCalcs() {
-  _k = _calcSpringConstant(_constraint);
-}

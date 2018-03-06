@@ -3,7 +3,6 @@
 
 #include "yars/configuration/data/DataActuator.h"
 #include "yars/types/Domain.h"
-// TODO: documentation
 
 class Mapping;
 

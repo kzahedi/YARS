@@ -157,9 +157,7 @@ void OgreHandler::step()
   _sceneGraph->update();
   // cout << "OgreHandler 1" << endl;
   _root->renderOneFrame();
-  // TODO: Decide if this is the right place to call the function. It must be
-  // called after all models, actuators etc. are drawn.
-  World::instance()->world()->debugDrawWorld();
+//  World::instance()->world()->debugDrawWorld();
   // cout << "OgreHandler 2" << endl;
 }
 

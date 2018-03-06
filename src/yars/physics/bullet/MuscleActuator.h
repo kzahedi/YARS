@@ -32,21 +32,17 @@ class MuscleActuator : public Actuator
     double _L0;
     double _Lopt;
     const double _fmax;
-    const double _vmax;
-    double _k;
+    double _vmax;
     double _calcVelocity();
 
     double _calcForce();
     void _disableRotation(btSliderConstraint *constraint) const;
     btSliderConstraint * _createTransformedSliderConstraint() const;
     void _setupConstraint() const;
-    bool _isMotorEnabled() const;
     double _calcForceLength() const;
     double _calcForceVelocity(double v) const;
     btVector3 _getDirectionFromSourceToDestination(btRigidBody *source,
                                                    btRigidBody *destination) const;
-    double _calcSpringConstant(btSliderConstraint *constraint) const;
-    void _initialCalcs();
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

@@ -18,7 +18,6 @@ class PointConstraint : public Actuator
     btTypedConstraint* constraint() override;
 
   private:
-    //btPoint2PointConstraint* createConstraint();
     std::unique_ptr<btPoint2PointConstraint> createConstraint();
 
     DataPointConstraint &_data;

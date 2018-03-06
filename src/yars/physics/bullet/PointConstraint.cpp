@@ -27,8 +27,7 @@ std::unique_ptr<btPoint2PointConstraint> PointConstraint::createConstraint()
 
  if (_data.mode() == "muscle")
   {
-    // destination is the sphere that connects source to MuscleActuator.
-    // TODO: Verify that destination is the correct object?
+    // Destination is the sphere that connects source to MuscleActuator.
     return std::make_unique<btPoint2PointConstraint>(*source, *destination,
         position, btVector3(0,0,0));
   }
@@ -55,7 +54,6 @@ void PointConstraint::postPhysicsUpdate()
 {
 }
 
-/// TODO
 void PointConstraint::reset()
 {
 }
