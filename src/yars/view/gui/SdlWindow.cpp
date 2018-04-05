@@ -720,6 +720,8 @@ void SdlWindow::__initMovie()
   if (_avCodec->id == AV_CODEC_ID_H264)
     av_opt_set(_avContext->priv_data, "preset", "slow", 0);
 
+  av_opt_set(_avContext->priv_data, "crf", "0", 0);
+
   /* open it */
   int ret = avcodec_open2(_avContext, _avCodec, NULL);
   if (ret < 0) {
