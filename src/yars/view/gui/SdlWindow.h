@@ -15,9 +15,11 @@
 #include <SDL2/SDL.h>
 
 #ifdef USE_CAPTURE_VIDEO
-#  include <lqt/lqt.h>
-#  include <lqt/quicktime.h>
-#  include <lqt/colormodels.h>
+extern "C" {
+#  include "libavcodec/avcodec.h"
+#  include "libavutil/mathematics.h"
+#  include <libswscale/swscale.h>
+}
 #endif // USE_CAPTURE_VIDEO
 
 #include <pthread.h>
@@ -49,7 +51,7 @@ class SdlWindow : public Observable
     void setupOSD();
 
   private:
-    
+
     void __osd();
     void __setupSDL();
     void __processKeyEvent(char, int);
@@ -72,7 +74,15 @@ class SdlWindow : public Observable
     void __captureMovieFrame();
     void __initMovie();
 
-    quicktime_t           *_mov;
+    AVCodec        *_avCodec;
+    AVCodecContext *_avContext;
+    FILE           *_videoFileHandler;
+    AVFrame        *_avFrame;
+    AVPacket       *_avPkt;
+    uint8_t        *_ycbcr;
+
+
+    // int i, out_size, size, x, y, outbuf_size;
 
     bool                   _captureRunning;
     unsigned long          _captureStep;
@@ -81,6 +91,7 @@ class SdlWindow : public Observable
     unsigned long          _capturingOffset;
 
     char                  *_buffer;
+    SwsContext            *_swsContext;
 #endif
 
     Ogre::RenderTexture *_pRenderTex;

@@ -53,7 +53,7 @@ void YarsViewModel::visualiseScene()
   {
     FOREACH(SdlWindow*, i, _windowManager) if((*i) != NULL) (*i)->handleEvent(_event);
   }
-  
+
 }
 
 void YarsViewModel::reset()
@@ -135,7 +135,7 @@ void YarsViewModel::run()
   {
     if(_sync)
     {
-      if(_syncedStep) 
+      if(_syncedStep)
       {
         visualiseScene();
 #ifdef USE_CAPTURE_VIDEO
@@ -154,7 +154,7 @@ void YarsViewModel::run()
 
     for(std::vector<SdlWindow*>::iterator i = _newWindows.begin(); i != _newWindows.end(); i++)
     {
-      if((*i)->added() == false) 
+      if((*i)->added() == false)
       {
         _windowManager.push_back(*i);
         (*i)->setAdded();
@@ -180,6 +180,7 @@ void YarsViewModel::toggleCaptureVideo()
   _sync        = !_sync;
   _toggleVideo = !_toggleVideo;
 
+#if USE_CAPTURE_VIDEO
   if(_toggleVideo == true)
   {
     FOREACH(SdlWindow*, i, _windowManager) (*i)->startCaptureVideo();
@@ -189,4 +190,5 @@ void YarsViewModel::toggleCaptureVideo()
     cout << "stopped video recording" << endl;
     FOREACH(SdlWindow*, i, _windowManager) (*i)->stopCaptureVideo();
   }
+#endif // USE_CAPTURE_VIDEO
 }

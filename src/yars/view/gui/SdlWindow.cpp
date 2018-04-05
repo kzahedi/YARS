@@ -43,7 +43,7 @@ using namespace _SDL_;
 
 # define CHECK_IF_THERE_ARE_FOLLOWABLES \
   if(Data::instance()->current()->screens()->followables()           == NULL) return; \
-  if(Data::instance()->current()->screens()->followables()->o_size() == 0) return;
+if(Data::instance()->current()->screens()->followables()->o_size() == 0) return;
 
 # define GET_FOLLOWABLE(a) \
   Data::instance()->current()->screens()->followables()->followable(a)
@@ -61,12 +61,21 @@ using namespace _SDL_;
 #include "OSX_wrap.h"
 #endif
 
+#ifdef USE_CAPTURE_VIDEO
+extern "C"
+{
+#  include <libavutil/opt.h>
+#  include <libavutil/imgutils.h>
+#  include <libswscale/swscale.h>
+}
+#endif // USE_CAPTURE_VIDEO
+
 
 using namespace std;
 
 SdlWindow::SdlWindow(int index)
   : _visible(false),
-    _added(false)
+  _added(false)
 {
   _index                = index;
   _windowConfiguration  = new WindowConfiguration(index);
@@ -93,7 +102,6 @@ SdlWindow::SdlWindow(int index)
   _nextShadowMode       = __SHADOWTYPE_TEXTURE_ADDITIVE+1;
   _cameraVelocity       = Ogre::Vector3::ZERO;
   _camAngularVelocity   = 0.0;
-
   __setupSDL();
   // __setScene();
 
@@ -106,9 +114,18 @@ SdlWindow::SdlWindow(int index)
 #ifdef USE_CAPTURE_VIDEO
   // if(__YARS_GET_USE_CAPTURE(index))
   // {
-    // _captureRunning = true;
-    // __initMovie();
+  // _captureRunning = true;
+  // __initMovie();
   // }
+  _avContext            = NULL;
+  _avCodec              = NULL;
+  _avFrame              = NULL;
+  _avPkt                = NULL;
+  _swsContext           = NULL;
+  _ycbcr                = new uint8_t[3];
+
+  avcodec_register_all();
+
 #endif // USE_CAPTURE_VIDEO
 }
 
@@ -132,35 +149,35 @@ void SdlWindow::step()
 #ifdef USE_CAPTURE_VIDEO
   if(_captureRunning || _imgCaptureRunning)
 #else // USE_CAPTURE_VIDEO
-  if(_imgCaptureRunning)
+    if(_imgCaptureRunning)
 #endif // USE_CAPTURE_VIDEO
-  {
-    if(_index == 0) _textOverlay->setText(_statsString,"");
-  }
-  else
-  {
-    _fps++;
-    _currentTime = SDL_GetTicks();
-    if(_currentTime > _lastTime + 500)
     {
-      int step = __YARS_GET_CONTINOUS_STEP;
-
-      double rt   = (double)(step - _lastStep) / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
-      // double f    = (double)_fps;
-      double diff = 1000.0/((double)(_currentTime - _lastTime));
-
-      // f  =  f * diff;
-      rt = rt * diff;
-      _fpsString.str("");
-
-      _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
-      // _fpsString << std::fixed << std::setprecision(2) << f << " FPS";
-      if(_index == 0) _textOverlay->setText(_statsString, _fpsString.str());
-      _lastTime = _currentTime;
-      _lastStep = step;
-      _fps = 0;
+      if(_index == 0) _textOverlay->setText(_statsString,"");
     }
-  }
+    else
+    {
+      _fps++;
+      _currentTime = SDL_GetTicks();
+      if(_currentTime > _lastTime + 500)
+      {
+        int step = __YARS_GET_CONTINOUS_STEP;
+
+        double rt   = (double)(step - _lastStep) / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
+        // double f    = (double)_fps;
+        double diff = 1000.0/((double)(_currentTime - _lastTime));
+
+        // f  =  f * diff;
+        rt = rt * diff;
+        _fpsString.str("");
+
+        _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
+        // _fpsString << std::fixed << std::setprecision(2) << f << " FPS";
+        if(_index == 0) _textOverlay->setText(_statsString, _fpsString.str());
+        _lastTime = _currentTime;
+        _lastStep = step;
+        _fps = 0;
+      }
+    }
 
   if(_windowConfiguration->useFollow)
   {
@@ -184,9 +201,9 @@ void SdlWindow::step()
   else if(_cameraVelocity.length() > 0.01 ||
           _camAngularVelocity.length() > 0.0001)
   {
-    // cout << _cameraVelocity[0] << " " 
-      // << _cameraVelocity[1] << " " 
-      // << _cameraVelocity[2] << endl;
+    // cout << _cameraVelocity[0] << " "
+    // << _cameraVelocity[1] << " "
+    // << _cameraVelocity[2] << endl;
 
     _camera->yaw(Ogre::Radian(_camAngularVelocity.x   * FACTOR));
     _camera->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
@@ -327,11 +344,11 @@ void SdlWindow::__setupSDL()
   if(__YARS_GET_USE_WINDOW_GEOMETRY)
   {
     _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
-                              _windowConfiguration->geometry.x(),
-                              _windowConfiguration->geometry.y(),
-                              _windowConfiguration->geometry.width(),
-                              _windowConfiguration->geometry.height(),
-                              SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  _windowConfiguration->geometry.x(),
+                                  _windowConfiguration->geometry.y(),
+                                  _windowConfiguration->geometry.width(),
+                                  _windowConfiguration->geometry.height(),
+                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
   else
   {
@@ -404,10 +421,10 @@ void SdlWindow::__setupSDL()
   stringstream oss;
   oss << "YARS Render window " << _index;
   _window = _ogreHandler->root()->createRenderWindow(oss.str(),
-      _windowConfiguration->geometry.width(),
-      _windowConfiguration->geometry.height(),
-      false,
-      &params);
+                                                     _windowConfiguration->geometry.width(),
+                                                     _windowConfiguration->geometry.height(),
+                                                     false,
+                                                     &params);
 
   _window->setActive(true);
 
@@ -462,15 +479,15 @@ void SdlWindow::setupOSD()
   oss << "time " << _index;
   _timeString = oss.str();
   if(_index == 0) _textOverlay->addTextBox(_timeString, "00d:00h:00m:00s", 10, 10,  100, 20,
-      Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-      osdFont, fontsize);
+                                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                                           osdFont, fontsize);
 
   oss.str("");
   oss << "stats " << _index;
   _statsString = oss.str();
   if(_index == 0) _textOverlay->addTextBox(_statsString, "", 10, 40,  100, 20,
-      Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-      osdFont, "16");
+                                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                                           osdFont, "16");
 
   osdColour = _data->osdRobotFontColour();
   osdFont = _data->osdRobotFontName();
@@ -481,9 +498,9 @@ void SdlWindow::setupOSD()
   oss << "robot " << _index;
   _robotString = oss.str();
   if(_index == 0) _textOverlay->addTextBox(_robotString, "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
-      _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
-      Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
-      osdFont, fontsize);
+                                           _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
+                                           Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
+                                           osdFont, fontsize);
 
   Ogre::Real x = _viewport->getActualWidth() - 140;
   Ogre::Real y = 10;
@@ -491,9 +508,9 @@ void SdlWindow::setupOSD()
   oss << "legend " << _index;
   _legendString = oss.str();
   if(_index == 0) _textOverlay->addTextBox(_legendString,
-      "^0YARS, Zahedi", x, y, 15, 10,
-      Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
-      "Legend", "24");
+                                           "^0YARS, Zahedi", x, y, 15, 10,
+                                           Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
+                                           "Legend", "24");
 }
 
 void SdlWindow::reset()
@@ -637,7 +654,7 @@ void SdlWindow::__toggleFollowing()
 
 // void SdlWindow::__openNewWindow()
 // {
-  // notifyObservers(_m_newWindow);
+// notifyObservers(_m_newWindow);
 // }
 
 void SdlWindow::__toggleWriteFrames()
@@ -674,24 +691,87 @@ void SdlWindow::__initMovie()
   uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
   oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;
-  _mov = quicktime_open(oss.str().c_str(),0,1);
-  // cout << (char*)__YARS_GET_VIDEO_CODEC.c_str() << endl;
-  lqt_codec_info_t **codec = lqt_find_video_codec((char*)__YARS_GET_VIDEO_CODEC.c_str(),1);
-  if(codec == NULL)
-  {
+
+  // _avCodec = avcodec_find_encoder_by_name("avc1");
+  // _avCodec = avcodec_find_encoder_by_name(__YARS_GET_VIDEO_CODEC.c_str());
+  _avCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
+  if (!_avCodec) {
     YarsErrorHandler::push("Video codec %s not found.", __YARS_GET_VIDEO_CODEC.c_str());
     exit(0);
   }
+
+  _avContext = avcodec_alloc_context3(_avCodec);
+
   cout << "capturing video with width " << width
-       << " and height " << height << " and codec " << __YARS_GET_VIDEO_CODEC.c_str() << " \n";
+    << " and height " << height << " and codec " << __YARS_GET_VIDEO_CODEC.c_str() << " \n";
   cout << "Starting video capture of " << oss.str().c_str() << " with frame rate "
-       << __YARS_GET_CAPTURE_FRAME_RATE << " and " << codec[0] << " codec." <<endl;
-  lqt_add_video_track(_mov, width, height, 1, __YARS_GET_CAPTURE_FRAME_RATE, codec[0]);
-  // lqt_add_video_track(_mov, width, height, 1, 10, codec[0]);
-  quicktime_set_cmodel(_mov, BC_RGB888);
+    << __YARS_GET_CAPTURE_FRAME_RATE <<  "." << endl;
+
+  /* put sample parameters */
+  _avContext->bit_rate = 400000;
+  _avContext->width = width;
+  _avContext->height = height;
+  _avContext->time_base = (AVRational){1, __YARS_GET_CAPTURE_FRAME_RATE};
+  _avContext->framerate = (AVRational){__YARS_GET_CAPTURE_FRAME_RATE, 1};
+  _avContext->gop_size = 10;
+  _avContext->max_b_frames = 1;
+  _avContext->pix_fmt = AV_PIX_FMT_YUV420P;
+
+  if (_avCodec->id == AV_CODEC_ID_H264)
+    av_opt_set(_avContext->priv_data, "preset", "slow", 0);
+
+  /* open it */
+  int ret = avcodec_open2(_avContext, _avCodec, NULL);
+  if (ret < 0) {
+    fprintf(stderr, "Could not open codec: %s\n", av_err2str(ret));
+    exit(1);
+  }
+
+  _videoFileHandler = fopen(oss.str().c_str(), "wb");
+  if (!_videoFileHandler) {
+    fprintf(stderr, "could not open %s\n", oss.str().c_str());
+    exit(1);
+  }
+
+  _avFrame = av_frame_alloc();
+  if (!_avFrame)
+  {
+    fprintf(stderr, "Could not allocate video frame\n");
+    exit(1);
+  }
+
+  _avFrame->format = _avContext->pix_fmt;
+  _avFrame->width  = _avContext->width;
+  _avFrame->height = _avContext->height;
+  ret = av_frame_get_buffer(_avFrame, 32);
+  if (ret < 0) {
+    fprintf(stderr, "Could not allocate the video frame data\n");
+    exit(1);
+  }
+
+  _avPkt = av_packet_alloc();
+  if(!_avPkt)
+  {
+    fprintf(stderr, "Could not allocate video packet\n");
+    exit(1);
+  }
+
+
   _captureRunning = true;
   _capturingOffset = __YARS_GET_STEP;
   _frameIndex = 0;
+
+  if(_swsContext != NULL)
+  {
+    // delete _swsContext;
+  }
+
+  _swsContext = sws_getContext(width, height,
+                               AV_PIX_FMT_RGB32,
+                               _avContext->width,
+                               _avContext->height,
+                               AV_PIX_FMT_YUV420P,
+                               0, NULL, NULL, NULL);
 
   __initRenderFrame();
 }
@@ -699,8 +779,13 @@ void SdlWindow::__initMovie()
 void SdlWindow::__closeMovie()
 {
   Ogre::TextureManager::getSingleton().remove("StreamTex");
-  quicktime_close(_mov);
   _captureRunning = false;
+  uint8_t endcode[] = { 0, 0, 1, 0xb7 };
+  fwrite(endcode, 1, sizeof(endcode), _videoFileHandler);
+  fclose(_videoFileHandler);
+  avcodec_free_context(&_avContext);
+  av_frame_free(&_avFrame);
+  av_packet_free(&_avPkt);
 }
 
 void SdlWindow::__captureMovieFrame()
@@ -712,38 +797,41 @@ void SdlWindow::__captureMovieFrame()
     __closeMovie();
     __initMovie();
   }
+  int ret, got_output;
+  _frameIndex++;
   uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
 
   ConsoleView::printCapturingInformation(_frameIndex);
-
-  uint8_t **a;
-  int rowspan = 0;
-  int row_uv  = 0;
-
-  a = lqt_rows_alloc(width, height, BC_RGB888, &rowspan, &row_uv);
-  lqt_set_row_span(_mov, 0, rowspan);
-  lqt_set_row_span_uv(_mov, 0, row_uv);
 
   _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   _pRenderTex->update();
   Ogre::HardwarePixelBufferSharedPtr buffer = _renderTexture->getBuffer();
   uint8_t *pData = (uint8_t*)buffer->lock(0, width*height*4, Ogre::HardwareBuffer::HBL_READ_ONLY);
 
-  for(uint x = 0; x < width; x++)
-  {
-    for(uint y = 0; y < height; y++)
-    {
-      a[y][3 * x]     = pData[4 * (y * width + x) + 2];
-      a[y][3 * x + 1] = pData[4 * (y * width + x) + 1];
-      a[y][3 * x + 2] = pData[4 * (y * width + x) + 0];
-    }
-  }
-  buffer->unlock();
+  const int in_linesize[1] = { 4 * _avContext->width };
+  _swsContext = sws_getCachedContext(_swsContext,
+                                     width, height, AV_PIX_FMT_RGB32,
+                                     _avContext->width, _avContext->height, AV_PIX_FMT_YUV420P,
+                                     0, NULL, NULL, NULL);
+  sws_scale(_swsContext, (const uint8_t * const *)&pData, in_linesize, 0,
+            _avContext->height, _avFrame->data, _avFrame->linesize);
 
-  lqt_encode_video(_mov, a, 0, _frameIndex);
-  lqt_rows_free(a);
-  _frameIndex++;
+  av_init_packet(_avPkt);
+  _avPkt->data = NULL;
+  _avPkt->size = 0;
+  _avFrame->pts = (1.0 / 30.0) * 90.0 * _frameIndex;
+
+  ret = avcodec_encode_video2(_avContext, _avPkt, _avFrame, &got_output);
+  if (ret < 0) {
+    fprintf(stderr, "Error encoding _avFrame\n");
+    exit(1);
+  }
+  if (got_output) {
+    fwrite(_avPkt->data, 1, _avPkt->size, _videoFileHandler);
+    av_packet_unref(_avPkt);
+  }
+
 }
 
 #endif // USE_CAPTURE_VIDEO
@@ -755,13 +843,13 @@ void SdlWindow::__initRenderFrame()
   if(!Ogre::TextureManager::getSingleton().resourceExists(oss.str()))
   {
     _renderTexture = Ogre::TextureManager::getSingleton().createManual(oss.str(),
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        Ogre::TEX_TYPE_2D,
-        _viewport->getActualWidth(),
-        _viewport->getActualHeight(),
-        0,
-        Ogre::PF_B8G8R8A8,
-        Ogre::TU_RENDERTARGET);
+                                                                       Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                                                                       Ogre::TEX_TYPE_2D,
+                                                                       _viewport->getActualWidth(),
+                                                                       _viewport->getActualHeight(),
+                                                                       0,
+                                                                       Ogre::PF_B8G8R8A8,
+                                                                       Ogre::TU_RENDERTARGET);
 
     _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
     _pRenderTex->addViewport(_camera);
@@ -780,7 +868,7 @@ void SdlWindow::__captureImageFrame()
   _imgCaptureFrameIndex++;
   stringstream oss;
   oss << __YARS_GET_FRAMES_DIRECTORY << "/frame_" << setfill('0') << setw(8)
-      << _imgCaptureFrameIndex       << ".png";
+    << _imgCaptureFrameIndex       << ".png";
   _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   _pRenderTex->update();
   _pRenderTex->writeContentsToFile(oss.str());
@@ -898,11 +986,11 @@ void SdlWindow::__handleFingerUp(SDL_Event &event)
   //Rotation detected
   // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
   // {
-    // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
   // }
   // if( fabs( event.mgesture.dDist ) > 0.002 )
   // {
-    // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
   // }
 }
 
@@ -911,11 +999,11 @@ void SdlWindow::__handleFingerDown(SDL_Event &event)
   //Rotation detected
   // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
   // {
-    // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
   // }
   // if( fabs( event.mgesture.dDist ) > 0.002 )
   // {
-    // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
   // }
 }
 
@@ -947,3 +1035,5 @@ void SdlWindow::close()
 
   SDL_DestroyWindow(_sdlWindow);
 }
+
+

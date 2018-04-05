@@ -18,7 +18,7 @@ IF(XERCESC_FOUND)
   include_directories(${XERCESC_INCLUDE_DIR})
 ENDIF(XERCESC_FOUND)
 
-find_package(PythonLibs)
+find_package(PythonLibs 3 REQUIRED)
 IF(PYTHONLIBS_FOUND)
   include_directories(${PYTHON_INCLUDE_PATH})
 ENDIF(PYTHONLIBS_FOUND)

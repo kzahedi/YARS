@@ -21,7 +21,8 @@ target_link_libraries(${YARS_TARGET} YarsDataTypes)
 target_link_libraries(${YARS_TARGET} boost_program_options)
 
 if(YARS_USE_CAPTURE_VIDEO)
-  target_link_libraries(${YARS_TARGET} quicktime)
+  target_link_libraries(${YARS_TARGET} avutil avcodec avfilter avresample postproc
+    swscale avdevice avformat swresample)
 endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
@@ -34,12 +35,23 @@ if(YARS_USE_VISUALISATION)
       "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre -framework Cocoa")
   endif(APPLE)
   if(UNIX AND NOT APPLE)
+    # message("*************")
+    # message(${OGRE_LIBRARIES})
+    # message(${OGRE_Overlay_LIBRARIES})
+    # message(${OGRE_RenderSystem_GL_LIBRARIES})
+    # message(${OGRE_Plugin_ParticleFX_LIBRARIES})
+    # message("*************")
+    message("/usr/lib/x86_64-linux-gnu/libOgreMain.so /usr/lib/x86_64-linux-gnu/libOgreOverlay.so")
+
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt zzip freeimage freetype
-      ${OGRE_LIBRARIES}
-      ${OGRE_Overlay_LIBRARIES}
-      ${OGRE_RenderSystem_GL_LIBRARIES}
-      ${OGRE_Plugin_ParticleFX_LIBRARIES}
+      # ${OGRE_RenderSystem_GL_LIBRARIES}
+      # ${OGRE_Plugin_ParticleFX_LIBRARIES}
+      )
+
+    target_link_libraries(${YARS_TARGET}
+      /usr/lib/x86_64-linux-gnu/libOgreMain.so
+      /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
       )
   endif(UNIX AND NOT APPLE)
 
@@ -47,5 +59,14 @@ if(YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)
+
+if(NOT APPLE)
+  target_link_libraries(${YARS_TARGET}
+    /usr/lib/x86_64-linux-gnu/libOgreMain.so
+    /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+    ${OGRE_RenderSystem_GL_LIBRARIES}
+    ${OGRE_Plugin_ParticleFX_LIBRARIES}
+    )
+endif(NOT APPLE)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)

@@ -6,9 +6,11 @@
 #include <string>
 #include <iostream>
 
+#ifndef __APPLE__
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#include "numpy/arrayobject.h"
+#endif // __APPLE__
 #include <Python.h>
-
-using namespace std;
 
 class PythonController: public RobotController
 {

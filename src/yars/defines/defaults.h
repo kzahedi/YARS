@@ -4,7 +4,7 @@
 #define DEFAULT_CAPTURE_DIRECTORY               "video"
 #define DEFAULT_FRAMES_DIRECTORY                "frames"
 #define DEFAULT_LOG_DIRECTORY                   "log"
-#define DEFAULT_CAPTURE_NAME                    "yars.mov"
+#define DEFAULT_CAPTURE_NAME                    "yars.mp4"
 
 #define DEFAULT_SIMULATION_FREQUENCY            100        // in Hz
 #define DEFAULT_CAPTURE_FRAME_RATE              50         // in Hz
@@ -54,7 +54,7 @@
 #define DEFAULT_SYNC_GUI                       false
 #define DEFAULT_LIBRARIES                      ""
 #define DEFAULT_REALTIME_FACTOR                1.0
-#define DEFAULT_VIDEO_CODEC                    "avc1"
+#define DEFAULT_VIDEO_CODEC                    "x264"
 #define DEFAULT_BE_SILENT                      false
 #define DEFAULT_RANDOM_SEED                    0
 #define DEFAULT_USE_RANDOM_SEED                false

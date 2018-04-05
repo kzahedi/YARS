@@ -1,14 +1,15 @@
 project(yars)
 
 # check for cmake version first:
-cmake_minimum_required(VERSION 2.4.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0005 OLD)
+  cmake_policy(SET CMP0005 NEW)
   cmake_policy(SET CMP0003 NEW)
-  cmake_policy(SET CMP0006 OLD)
-  cmake_policy(SET CMP0007 OLD) # list does not count empty elements
-  cmake_policy(SET CMP0002 OLD)
-  cmake_policy(SET CMP0042 OLD)
+  cmake_policy(SET CMP0006 NEW)
+  cmake_policy(SET CMP0007 NEW) # list does not count empty elements
+  cmake_policy(SET CMP0002 NEW)
+  cmake_policy(SET CMP0042 NEW)
+  cmake_policy(SET CMP0054 NEW)
   cmake_policy(SET CMP0009 NEW) # don't follow symlink for file(GLOB_RECURSE
   cmake_policy(SET CMP0045 NEW) # don't follow symlink for file(GLOB_RECURSE
 endif(COMMAND cmake_policy)

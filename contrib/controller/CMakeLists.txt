@@ -52,7 +52,7 @@ target_link_libraries(YarsControllerNamedPipe
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
 if(YARS_USE_PYTHON)
-  add_library(YarsControllerPython SHARED Python.cpp)
+  add_library(YarsControllerPython SHARED PythonController.cpp)
   target_link_libraries(YarsControllerPython
     YarsRobotController
     ${PYTHON_LIBRARIES})

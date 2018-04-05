@@ -1,4 +1,6 @@
 import math
+import numpy
+import matplotlib.pyplot as plt
 
 t = 0;
 
@@ -10,6 +12,11 @@ def close():
 
 def update(sensors):
   global t
+
+  #  plt.clf()
+  #  plt.plot(sensors)
+  #  plt.ylabel('some numbers')
+  #  plt.show()
 
   t = t + 1
 
@@ -33,4 +40,8 @@ def update(sensors):
   a11 = s3
   a12 = s4
 
-  return [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12]
+  a = numpy.random.rand(1,12) * 2.0 - 1.0
+  a = a.tolist()[0]
+  print(a)
+
+  return a

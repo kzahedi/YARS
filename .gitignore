@@ -3,3 +3,4 @@ tags
 .vimprj/settings.vim
 .DS_Store
 build
+*.vim

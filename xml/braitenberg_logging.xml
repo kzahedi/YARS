@@ -343,14 +343,14 @@
       <!-- <target name="wheel right hinge"/> -->
     <!-- </file> -->
 
-    <!-- <csv name="braitenberg"> -->
-      <!-- <target name="main body"/> -->
-      <!-- <target name="wheel left"/> -->
-      <!-- <target name="wheel right"/> -->
-      <!-- <target name="right 1"/> -->
-      <!-- <target name="wheel left hinge"/> -->
-      <!-- <target name="wheel right hinge"/> -->
-    <!-- </csv> -->
+    <csv name="braitenberg">
+      <target name="main body"/>
+      <target name="wheel left"/>
+      <target name="wheel right"/>
+      <target name="right 1"/>
+      <target name="wheel left hinge"/>
+      <target name="wheel right hinge"/>
+    </csv>
 
     <!-- <blender name="braitenberg_blender.csv" cfg="braitenberg_blender.cfg" framerate="10"/> -->
     <!-- <blender name="braitenberg_blender.txt"/> -->

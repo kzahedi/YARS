@@ -2,6 +2,7 @@
 
   <simulator frequency="100">
     <solver  iterations="10"/>
+    <control reset="10000"/>
   </simulator>
 
   <screens>

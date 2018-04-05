@@ -1,4 +1,4 @@
-#include "Python.h"
+#include "PythonController.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -6,11 +6,9 @@
 #include <unistd.h>
 #include <sstream>
 
-using namespace std;
-
 void PythonController::update()
 {
-  _pSensors = PyList_New(10);
+  _pSensors = PyList_New(sensors.size());
   if(_pSensors == NULL) PyErr_Print();
 
   for(int i = 0; i < (int)sensors.size(); i++)
@@ -47,18 +45,25 @@ void PythonController::init()
   if(debug) cout << "Importing python module: " << _module << endl;
 
   Py_Initialize();
+#ifndef __APPLE__
+  // import_array()
+#endif
   PyObject *sys = PyImport_ImportModule("sys");
   if(sys == NULL) PyErr_Print();
   PyObject *path = PyObject_GetAttrString(sys, "path");
   if(path == NULL) PyErr_Print();
-  PyList_Append(path, PyString_FromString(_workingDir.c_str()));
+  // PyList_Append(path, PyString_FromString(_workingDir.c_str()));
+  PyList_Append(path, PyUnicode_FromString(_workingDir.c_str()));
 
   // Build the name object
-  _pName   = PyString_FromString(_module.c_str());
-  if(_pName == NULL) PyErr_Print();
-  _pModule = PyImport_Import(_pName);
+  // _pName   = PyString_FromString(_module.c_str());
+  // _pName   = PyBytes_FromString(_module.c_str());
+  // if(_pName == NULL) PyErr_Print();
+  if(_pModule == NULL) PyErr_Print();
+  _pModule = PyImport_ImportModule(_module.c_str());
   if(_pModule == NULL) PyErr_Print();
   _pDict   = PyModule_GetDict(_pModule);
+  if(_pModule == NULL) PyErr_Print();
 
   _pInit   = PyDict_GetItemString(_pDict, "init");
   // if (PyCallable_Check(_pInit)) {PyObject_CallObject(_pInit, NULL);}
