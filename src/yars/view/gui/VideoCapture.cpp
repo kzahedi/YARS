@@ -180,6 +180,11 @@ void VideoCapture::__free() {
   if (swsCtx) {
     sws_freeContext(swsCtx);
   }
+  videoFrame = NULL;
+  cctx       = NULL;
+  ofctx      = NULL;
+  swsCtx     = NULL;
+
 }
 
 void VideoCapture::__remux() {
