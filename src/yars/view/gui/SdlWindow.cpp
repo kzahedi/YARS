@@ -24,6 +24,7 @@ using namespace _SDL_;
 #endif // __APPLE__
 
 #include <math.h>
+#include <string>
 
 
 #define FACTOR 0.01
@@ -61,16 +62,6 @@ if(Data::instance()->current()->screens()->followables()->o_size() == 0) return;
 #include "OSX_wrap.h"
 #endif
 
-#ifdef USE_CAPTURE_VIDEO
-extern "C"
-{
-#  include <libavutil/opt.h>
-#  include <libavutil/imgutils.h>
-#  include <libswscale/swscale.h>
-}
-#endif // USE_CAPTURE_VIDEO
-
-
 using namespace std;
 
 SdlWindow::SdlWindow(int index)
@@ -87,9 +78,6 @@ SdlWindow::SdlWindow(int index)
   _ctrlPressed          = false;
   _altPressed           = false;
   _metaPressed          = false;
-#ifdef USE_CAPTURE_VIDEO
-  _captureRunning       = false;
-#endif // USE_CAPTURE_VIDEO
   _imgCaptureRunning    = false;
   _imgCaptureFrameIndex = 0;
   _followableIndex      = 0;
@@ -112,21 +100,10 @@ SdlWindow::SdlWindow(int index)
   }
 
 #ifdef USE_CAPTURE_VIDEO
-  // if(__YARS_GET_USE_CAPTURE(index))
-  // {
-  // _captureRunning = true;
-  // __initMovie();
-  // }
-  _avContext            = NULL;
-  _avCodec              = NULL;
-  _avFrame              = NULL;
-  _avPkt                = NULL;
-  _swsContext           = NULL;
-  _ycbcr                = new uint8_t[3];
-
-  avcodec_register_all();
-
+  _captureRunning       = false;
+  _videoCapture         = NULL;
 #endif // USE_CAPTURE_VIDEO
+
 }
 
 void SdlWindow::wait()
@@ -691,89 +668,18 @@ void SdlWindow::__initMovie()
   uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
   oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;
-
-  // _avCodec = avcodec_find_encoder_by_name("avc1");
-  // _avCodec = avcodec_find_encoder_by_name(__YARS_GET_VIDEO_CODEC.c_str());
-  _avCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
-  if (!_avCodec) {
-    YarsErrorHandler::push("Video codec %s not found.", __YARS_GET_VIDEO_CODEC.c_str());
-    exit(0);
-  }
-
-  _avContext = avcodec_alloc_context3(_avCodec);
-
-  cout << "capturing video with width " << width
-    << " and height " << height << " and codec " << __YARS_GET_VIDEO_CODEC.c_str() << " \n";
-  cout << "Starting video capture of " << oss.str().c_str() << " with frame rate "
-    << __YARS_GET_CAPTURE_FRAME_RATE <<  "." << endl;
-
-  /* put sample parameters */
-  _avContext->bit_rate = 400000;
-  _avContext->width = width;
-  _avContext->height = height;
-  _avContext->time_base = (AVRational){1, __YARS_GET_CAPTURE_FRAME_RATE};
-  _avContext->framerate = (AVRational){__YARS_GET_CAPTURE_FRAME_RATE, 1};
-  _avContext->gop_size = 10;
-  _avContext->max_b_frames = 1;
-  _avContext->pix_fmt = AV_PIX_FMT_YUV420P;
-
-  if (_avCodec->id == AV_CODEC_ID_H264)
-    av_opt_set(_avContext->priv_data, "preset", "slow", 0);
-
-  av_opt_set(_avContext->priv_data, "crf", "0", 0);
-
-  /* open it */
-  int ret = avcodec_open2(_avContext, _avCodec, NULL);
-  if (ret < 0) {
-    fprintf(stderr, "Could not open codec: %s\n", av_err2str(ret));
-    exit(1);
-  }
-
-  _videoFileHandler = fopen(oss.str().c_str(), "wb");
-  if (!_videoFileHandler) {
-    fprintf(stderr, "could not open %s\n", oss.str().c_str());
-    exit(1);
-  }
-
-  _avFrame = av_frame_alloc();
-  if (!_avFrame)
-  {
-    fprintf(stderr, "Could not allocate video frame\n");
-    exit(1);
-  }
-
-  _avFrame->format = _avContext->pix_fmt;
-  _avFrame->width  = _avContext->width;
-  _avFrame->height = _avContext->height;
-  ret = av_frame_get_buffer(_avFrame, 32);
-  if (ret < 0) {
-    fprintf(stderr, "Could not allocate the video frame data\n");
-    exit(1);
-  }
-
-  _avPkt = av_packet_alloc();
-  if(!_avPkt)
-  {
-    fprintf(stderr, "Could not allocate video packet\n");
-    exit(1);
-  }
-
+  string filename = oss.str();
 
   _captureRunning = true;
   _capturingOffset = __YARS_GET_STEP;
   _frameIndex = 0;
 
-  if(_swsContext != NULL)
+  if(_videoCapture != NULL)
   {
-    // delete _swsContext;
+    delete _videoCapture;
   }
-
-  _swsContext = sws_getContext(width, height,
-                               AV_PIX_FMT_RGB32,
-                               _avContext->width,
-                               _avContext->height,
-                               AV_PIX_FMT_YUV420P,
-                               0, NULL, NULL, NULL);
+  _videoCapture = new VideoCapture();
+  _videoCapture->init(width, height, __YARS_GET_CAPTURE_FRAME_RATE, 400, filename);
 
   __initRenderFrame();
 }
@@ -782,12 +688,7 @@ void SdlWindow::__closeMovie()
 {
   Ogre::TextureManager::getSingleton().remove("StreamTex");
   _captureRunning = false;
-  uint8_t endcode[] = { 0, 0, 1, 0xb7 };
-  fwrite(endcode, 1, sizeof(endcode), _videoFileHandler);
-  fclose(_videoFileHandler);
-  avcodec_free_context(&_avContext);
-  av_frame_free(&_avFrame);
-  av_packet_free(&_avPkt);
+  _videoCapture->finish();
 }
 
 void SdlWindow::__captureMovieFrame()
@@ -800,7 +701,6 @@ void SdlWindow::__captureMovieFrame()
     __initMovie();
   }
   int ret, got_output;
-  _frameIndex++;
   uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
 
@@ -811,29 +711,9 @@ void SdlWindow::__captureMovieFrame()
   Ogre::HardwarePixelBufferSharedPtr buffer = _renderTexture->getBuffer();
   uint8_t *pData = (uint8_t*)buffer->lock(0, width*height*4, Ogre::HardwareBuffer::HBL_READ_ONLY);
 
-  const int in_linesize[1] = { 4 * _avContext->width };
-  _swsContext = sws_getCachedContext(_swsContext,
-                                     width, height, AV_PIX_FMT_RGB32,
-                                     _avContext->width, _avContext->height, AV_PIX_FMT_YUV420P,
-                                     0, NULL, NULL, NULL);
-  sws_scale(_swsContext, (const uint8_t * const *)&pData, in_linesize, 0,
-            _avContext->height, _avFrame->data, _avFrame->linesize);
+  _videoCapture->addFrame(pData);
 
-  av_init_packet(_avPkt);
-  _avPkt->data = NULL;
-  _avPkt->size = 0;
-  _avFrame->pts = (1.0 / 30.0) * 90.0 * _frameIndex;
-
-  ret = avcodec_encode_video2(_avContext, _avPkt, _avFrame, &got_output);
-  if (ret < 0) {
-    fprintf(stderr, "Error encoding _avFrame\n");
-    exit(1);
-  }
-  if (got_output) {
-    fwrite(_avPkt->data, 1, _avPkt->size, _videoFileHandler);
-    av_packet_unref(_avPkt);
-  }
-
+  _frameIndex++;
 }
 
 #endif // USE_CAPTURE_VIDEO

@@ -4,3 +4,4 @@ tags
 .DS_Store
 build
 *.vim
+*.vim

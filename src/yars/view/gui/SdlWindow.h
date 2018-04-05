@@ -15,11 +15,7 @@
 #include <SDL2/SDL.h>
 
 #ifdef USE_CAPTURE_VIDEO
-extern "C" {
-#  include "libavcodec/avcodec.h"
-#  include "libavutil/mathematics.h"
-#  include <libswscale/swscale.h>
-}
+#  include <yars/view/gui/VideoCapture.h>
 #endif // USE_CAPTURE_VIDEO
 
 #include <pthread.h>
@@ -74,24 +70,13 @@ class SdlWindow : public Observable
     void __captureMovieFrame();
     void __initMovie();
 
-    AVCodec        *_avCodec;
-    AVCodecContext *_avContext;
-    FILE           *_videoFileHandler;
-    AVFrame        *_avFrame;
-    AVPacket       *_avPkt;
-    uint8_t        *_ycbcr;
+    VideoCapture        *_videoCapture;
 
-
-    // int i, out_size, size, x, y, outbuf_size;
-
-    bool                   _captureRunning;
-    unsigned long          _captureStep;
-    unsigned long          _capturedTenMinutes;
-    unsigned long          _frameIndex;
-    unsigned long          _capturingOffset;
-
-    char                  *_buffer;
-    SwsContext            *_swsContext;
+    bool                _captureRunning;
+    unsigned long       _captureStep;
+    unsigned long       _capturedTenMinutes;
+    unsigned long       _frameIndex;
+    unsigned long       _capturingOffset;
 #endif
 
     Ogre::RenderTexture *_pRenderTex;

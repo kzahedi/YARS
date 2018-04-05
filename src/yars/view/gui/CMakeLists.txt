@@ -26,7 +26,8 @@ set(GUI_SOURCES SdlWindow.cpp
                 OrbitCam.cpp
                 CenterOrbitCam.cpp
                 TripodCam.cpp
-                WindowConfiguration.cpp)
+                WindowConfiguration.cpp
+                VideoCapture.cpp)
 
 set(GUI_SOURCES ${GUI_SOURCES} SceneGraphMeshNode.cpp SceneGraphPlyNode.cpp)
 
