@@ -15,7 +15,7 @@ void LoggingModuleController::useVariable(string variable)
 {
   DataController *controller = _data->controller();
   double real;
-  int      integer;
+  int    integer;
   ::Matrix m;
   std::vector<double> v;
   if(controller->getLoggable(variable, real) || controller->getLoggable(variable, integer))

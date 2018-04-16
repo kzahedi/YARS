@@ -60,13 +60,13 @@ if(YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)
 
-if(NOT APPLE)
+if(NOT APPLE AND YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET}
     /usr/lib/x86_64-linux-gnu/libOgreMain.so
     /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
     ${OGRE_RenderSystem_GL_LIBRARIES}
     ${OGRE_Plugin_ParticleFX_LIBRARIES}
     )
-endif(NOT APPLE)
+endif(NOT APPLE AND YARS_USE_VISUALISATION)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)
