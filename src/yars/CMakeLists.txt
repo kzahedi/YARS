@@ -21,8 +21,8 @@ target_link_libraries(${YARS_TARGET} YarsDataTypes)
 target_link_libraries(${YARS_TARGET} boost_program_options)
 
 if(YARS_USE_CAPTURE_VIDEO)
-  target_link_libraries(${YARS_TARGET} avutil avcodec avfilter avresample postproc
-    swscale avdevice avformat swresample)
+  target_link_libraries(${YARS_TARGET} avformat avcodec avutil avfilter avresample postproc
+    swscale avdevice swresample)
 endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
