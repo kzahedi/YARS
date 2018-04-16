@@ -11,30 +11,6 @@
 
 using namespace std;
 
-class YarsNamedPipeComException : public exception
-{
-  public:
-    explicit YarsNamedPipeComException(const string& what)
-      :
-        m_what(what)
-  {}
-
-    virtual ~YarsNamedPipeComException() throw() {}
-
-    virtual const char * what() const throw()
-    {
-      return m_what.c_str();
-    }
-
-    virtual void message() const throw()
-    {
-      cerr << "YarsNamedPipeComException: " << m_what << endl;
-    }
-
-  private:
-    string m_what;
-};
-
 class Entity
 {
   public:
@@ -64,22 +40,22 @@ class YarsNamedPipeCom
   public:
     YarsNamedPipeCom();
 
-    void init(const string name)  throw (YarsNamedPipeComException);
+    void init(const string name);
 
-    unsigned int getJointDimension(int index)   throw (YarsNamedPipeComException);
-    unsigned int getSensorDimension(int index)  throw (YarsNamedPipeComException);
+    unsigned int getJointDimension(int index);
+    unsigned int getSensorDimension(int index);
 
-    void getJointName(int index,  string *name) throw (YarsNamedPipeComException);
-    void getSensorName(int index, string *name) throw (YarsNamedPipeComException);
+    void getJointName(int index,  string *name);
+    void getSensorName(int index, string *name);
 
-    void setJointValue(double value,       int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorValue(double *value,     int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void setJointValue(double value,       int jointIndex,  int valueIndex = 0);
+    void getSensorValue(double *value,     int sensorIndex, int valueIndex = 0);
 
-    void getJointRobotDomain(Domain   *d, int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorRobotDomain(Domain  *d, int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void getJointRobotDomain(Domain   *d, int jointIndex,  int valueIndex = 0);
+    void getSensorRobotDomain(Domain  *d, int sensorIndex, int valueIndex = 0);
 
-    void getJointMappedDomain(Domain  *d, int jointIndex,  int valueIndex = 0) throw (YarsNamedPipeComException);
-    void getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex = 0) throw (YarsNamedPipeComException);
+    void getJointMappedDomain(Domain  *d, int jointIndex,  int valueIndex = 0);
+    void getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex = 0);
 
     void update(); // send & receive
 
@@ -103,7 +79,7 @@ class YarsNamedPipeCom
     void __sendMotorCommand();
     void __receiveSensorData();
     void __printData();
-    void __configuration() throw (YarsNamedPipeComException);
+    void __configuration();
     void __readJointInformation();
     void __readSensorInformation();
     void __readRobotInformation();

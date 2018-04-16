@@ -13,8 +13,10 @@
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/thread.hpp>
 #include <boost/format.hpp>
+
+#include <thread>
+#include <chrono>
 
 using namespace boost::gregorian;
 using namespace std;
@@ -93,7 +95,7 @@ class Timer
 
     void sleep(long m)
     {
-      boost::this_thread::sleep(boost::posix_time::microsec(m));
+      std::this_thread::sleep_for(std::chrono::microseconds(m));
     };
 
   private:

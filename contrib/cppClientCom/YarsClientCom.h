@@ -47,22 +47,22 @@ class YarsClientCom
     void init(const string host="localhost", const int port=9500);
     void init(string workingDirectory, string xmlFile, string path="");
 
-    unsigned int getActuatorDimension(int)          throw (YarsClientComException);
-    void getActuatorName(int, string*)              throw (YarsClientComException);
-    void getActuatorRobotDomain(Domain*, int, int)  throw (YarsClientComException);
-    void getActuatorMappedDomain(Domain*, int, int) throw (YarsClientComException);
+    unsigned int getActuatorDimension(int);
+    void getActuatorName(int, string*);
+    void getActuatorRobotDomain(Domain*, int, int);
+    void getActuatorMappedDomain(Domain*, int, int);
     void setActuatorValue(int, double);
     void setActuatorValue(int, float);
 
-    unsigned int getSensorDimension(int)            throw (YarsClientComException);
-    void getSensorName(int, string*)                throw (YarsClientComException);
-    void getSensorRobotDomain(Domain*, int, int)    throw (YarsClientComException);
-    void getSensorMappedDomain(Domain*, int, int)   throw (YarsClientComException);
+    unsigned int getSensorDimension(int);
+    void getSensorName(int, string*);
+    void getSensorRobotDomain(Domain*, int, int);
+    void getSensorMappedDomain(Domain*, int, int);
     double getSensorValue(int);
 
-    void sendMessage(string) throw (YarsClientComException);
+    void sendMessage(string);
 
-    void update() throw (YarsClientComException); // send & receive
+    void update(); // send & receive
 
     int  sizeOfInt();
     int  sizeOfDouble();
@@ -70,8 +70,8 @@ class YarsClientCom
     bool end();
     bool reset();
 
-    void sendReset() throw (YarsClientComException);
-    void sendQuit() throw (YarsClientComException);
+    void sendReset();
+    void sendQuit();
 
     void name(string *name);
     void configuration(string *configurationString);
@@ -85,12 +85,10 @@ class YarsClientCom
 
     void printSensorMotorConfiguration();
 
-    void throwException(bool);
-
   private:
-    void __sendMotorCommand()  throw (YarsClientComException);
-    void __receiveSensorData() throw (YarsClientComException);
-    void __configuration()     throw (YarsClientComException);
+    void __sendMotorCommand();
+    void __receiveSensorData();
+    void __configuration();
     void __printData();
     void __readActuatorInformation();
     void __readSensorInformation();
@@ -120,7 +118,6 @@ class YarsClientCom
 
     int                   _nrOfActuatorValues;
     int                   _nrOfSensorValues;
-    bool                  _throwException;
 
     std::vector<double>    _actuatorValues;
     std::vector<double>    _sensorValues;

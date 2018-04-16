@@ -1,7 +1,5 @@
 #include "../cppClientCom/YarsClientCom.h"
 
-#include <yars/util/YarsException.h>
-
 #include <iostream>
 #include <string>
 
@@ -57,37 +55,28 @@ int main(int argc, char** argv)
   int keepOnRunning = true;
   while(keepOnRunning)
   {
-    try
+    for(int i = 0; i < 1000000; ++i)
     {
-      for(int i = 0; i < 1000000; ++i)
+      com->update();
+      l1 = com->getSensorValue(0);
+      l2 = com->getSensorValue(1);
+      l3 = com->getSensorValue(2);
+      r1 = com->getSensorValue(3);
+      r2 = com->getSensorValue(4);
+      r3 = com->getSensorValue(5);
+      leftInput   = (l1 + l2 + l3) / 3.0;
+      rightInput  = (r1 + r2 + r3) / 3.0;
+      leftOutput  = tanh(-2.0 * rightInput);
+      rightOutput = tanh(-2.0 * leftInput);
+      // cout << "input:  " << leftInput << " & " << rightInput << endl;
+      // cout << "output: " << leftOutput << " & " << rightOutput << endl;
+      com->setActuatorValue(0, leftOutput);
+      com->setActuatorValue(1, rightOutput);
+      if(i % 500 == 0)
       {
-        com->update();
-        l1 = com->getSensorValue(0);
-        l2 = com->getSensorValue(1);
-        l3 = com->getSensorValue(2);
-        r1 = com->getSensorValue(3);
-        r2 = com->getSensorValue(4);
-        r3 = com->getSensorValue(5);
-        leftInput   = (l1 + l2 + l3) / 3.0;
-        rightInput  = (r1 + r2 + r3) / 3.0;
-        leftOutput  = tanh(-2.0 * rightInput);
-        rightOutput = tanh(-2.0 * leftInput);
-        // cout << "input:  " << leftInput << " & " << rightInput << endl;
-        // cout << "output: " << leftOutput << " & " << rightOutput << endl;
-        com->setActuatorValue(0, leftOutput);
-        com->setActuatorValue(1, rightOutput);
-        if(i % 500 == 0)
-        {
-          cout << "sending reset" << endl;
-          com->sendReset();
-        }
+        cout << "sending reset" << endl;
+        com->sendReset();
       }
-    }
-    catch(YarsException &toCatch)
-    {
-      cout << "Caught exception: " << toCatch.what() << endl;
-      // com->reopen();
-      keepOnRunning = false;
     }
   }
 

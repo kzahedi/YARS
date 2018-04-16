@@ -30,10 +30,10 @@ string YarsErrorHandler::message()
   return str();
 }
 
-void YarsErrorHandler::push() throw (YarsException)
+void YarsErrorHandler::push()
 {
-  // cout << _me->str() << endl;
-  throw YarsException(_me->str().c_str());
+  cerr << _me->str().c_str() << endl;
+  exit(-1);
 }
 
 void YarsErrorHandler::push(string message)
@@ -46,7 +46,7 @@ void YarsErrorHandler::push(const char *message, ...)
 {
   va_list ap;
   va_start (ap, message);
-  int result = -1; 
+  int result = -1;
   int length = 256;
   char *buffer = 0;
   while (result == -1)

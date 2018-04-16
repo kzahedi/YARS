@@ -92,7 +92,7 @@ void Matrix::__init(const int rows, const int cols, double initialValue)
 }
 
 
-double Matrix::operator()(int row, int col) const throw(MatrixException)
+double Matrix::operator()(int row, int col) const
 {
   if(row >= _rows || col >= _cols || row < 0 || col < 0)
   {
@@ -114,12 +114,12 @@ double Matrix::operator()(int row, int col) const throw(MatrixException)
     {
       oss << "col is negative: " << col;
     }
-    throw MatrixException(oss.str());
+    YarsErrorHandler::push(oss.str());
   }
   return _cell[row][col];
 }
 
-double& Matrix::operator()(int row, int col) throw(MatrixException)
+double& Matrix::operator()(int row, int col)
 {
   __check(row,col);
   return _cell[row][col];
@@ -167,7 +167,7 @@ int Matrix::rows() const
   return _rows;
 }
 
-void Matrix::__check(int row, int col) throw(MatrixException)
+void Matrix::__check(int row, int col)
 {
   if(row >= _rows || col >= _cols || row < 0 || col < 0)
   {
@@ -189,11 +189,11 @@ void Matrix::__check(int row, int col) throw(MatrixException)
     {
       oss << "col is negative: " << col;
     }
-    throw MatrixException(oss.str());
+    YarsErrorHandler::push(oss.str());
   }
 }
 
-Matrix& Matrix::operator+=(const Matrix &m) throw(MatrixException)
+Matrix& Matrix::operator+=(const Matrix &m)
 {
   if(_rows != m.rows() || _cols != m.cols())
   {
@@ -207,7 +207,7 @@ Matrix& Matrix::operator+=(const Matrix &m) throw(MatrixException)
     {
       oss << "number of cols do not match: " << _cols << " != " << m.cols();
     }
-    throw MatrixException(oss.str());
+    YarsErrorHandler::push(oss.str());
   }
 
   for(int r = 0; r < _rows; r++)
@@ -220,7 +220,7 @@ Matrix& Matrix::operator+=(const Matrix &m) throw(MatrixException)
   return *this;
 }
 
-Matrix& Matrix::operator-=(const Matrix &m) throw(MatrixException)
+Matrix& Matrix::operator-=(const Matrix &m)
 {
   if(_rows != m.rows() || _cols != m.cols())
   {
@@ -234,7 +234,7 @@ Matrix& Matrix::operator-=(const Matrix &m) throw(MatrixException)
     {
       oss << "number of cols do not match: " << _cols << " != " << m.cols();
     }
-    throw MatrixException(oss.str());
+    YarsErrorHandler::push(oss.str());
   }
 
   for(int r = 0; r < _rows; r++)
@@ -302,7 +302,7 @@ void Matrix::__deleteCells()
 {
   if (_cell != NULL)
   {
-    for(register int i=_rows-1; i>=0; i--)
+    for(int i=_rows-1; i>=0; i--)
     {
       delete [] _cell[i];
     }
@@ -439,11 +439,11 @@ double Matrix::L2()
   return sqrt(d);
 }
 
-double Matrix::det() throw(MatrixException)
+double Matrix::det()
 {
   if(cols() != rows())
   {
-    throw MatrixException("Determinant is only implemented for quadratic matrices");
+    YarsErrorHandler::push("Determinant is only implemented for quadratic matrices");
   }
 
   double result = 0;

@@ -23,33 +23,7 @@
 #  include <unistd.h>
 #endif // _MSC_VER
 
-
 using namespace std;
-
-class YarsClientComException : public exception
-{
-  public:
-    explicit YarsClientComException(const string& what)
-      :
-        m_what(what)
-  {}
-
-    virtual ~YarsClientComException() throw() {}
-
-    virtual const char * what() const throw()
-    {
-      return m_what.c_str();
-    }
-
-    virtual void message() const throw()
-    {
-      cerr << "YarsClientComException: " << m_what << endl;
-    }
-
-  private:
-    string m_what;
-};
-
 
 class Buffer : public std::vector<char>
 {
@@ -451,7 +425,7 @@ class Socket
     const Socket& operator<<(const Buffer&) const;
     const Socket& operator>>(Buffer&) const;
 
-    void __check(const char a, const char b) throw (YarsClientComException);
+    void __check(const char a, const char b);
     void __readDouble(double *d, Buffer b, int startIndex);
     void __readInteger(int *i, Buffer b, int startIndex);
     void __writeDouble(Buffer *b, double d);

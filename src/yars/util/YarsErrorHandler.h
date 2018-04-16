@@ -6,18 +6,15 @@
 
 #include "Observable.h"
 #include "ObservableMessage.h"
-#include "YarsException.h"
-
 
 using namespace std;
-
 
 class YarsErrorHandler : public stringstream, public Observable
 {
   public:
     static YarsErrorHandler* instance();
 
-    static void push() throw (YarsException);
+    static void push();
     static void push(const char *string, ...);
     static void push(string message);
 

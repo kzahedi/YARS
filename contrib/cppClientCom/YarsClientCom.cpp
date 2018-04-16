@@ -40,7 +40,6 @@ YarsClientCom::YarsClientCom()
   _sizeOfInt      = -1;
   _end            = false;
   _reset          = false;
-  _throwException = false;
   YarsErrorHandler::instance();
 }
 
@@ -54,7 +53,7 @@ bool YarsClientCom::reset()
   return _reset;
 }
 
-void YarsClientCom::update() throw (YarsClientComException)
+void YarsClientCom::update()
 {
   __sendMotorCommand();
   __receiveSensorData();
@@ -77,13 +76,13 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
 #if __APPLE__
   if((_yarsFD = popen(sst.str().c_str(), "r+")) == NULL)
 #else // __APPLE__
-  if((_yarsFD = popen(sst.str().c_str(), "r")) == NULL)
+    if((_yarsFD = popen(sst.str().c_str(), "r")) == NULL)
 #endif // __APPLE__
-  {
-    cout << "Cannot open \"" << sst.str() << "\"" << endl;
-    cout << "Error Nr.: " << errno << endl;
-    exit(-1);
-  }
+    {
+      cout << "Cannot open \"" << sst.str() << "\"" << endl;
+      cout << "Error Nr.: " << errno << endl;
+      exit(-1);
+    }
   sst.str("");
 
   string token;
@@ -138,18 +137,18 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
   pthread_create(&_thread, NULL, read_stdout, (void*)_yarsFD);
 }
 
-void YarsClientCom::sendReset() throw (YarsClientComException)
+void YarsClientCom::sendReset()
 {
   _socket << "RESET";
 }
 
-void YarsClientCom::sendMessage(string message) throw (YarsClientComException)
+void YarsClientCom::sendMessage(string message)
 {
   _socket << "MESSAGE";
   _socket << message;
 }
 
-void YarsClientCom::sendQuit() throw (YarsClientComException)
+void YarsClientCom::sendQuit()
 {
   _socket << "QUIT";
   pclose(_yarsFD);
@@ -177,7 +176,7 @@ int YarsClientCom::sizeOfDouble()
   return _sizeOfDouble;
 }
 
-void YarsClientCom::__configuration() throw (YarsClientComException)
+void YarsClientCom::__configuration()
 {
   _socket << string("CONFIGURATION");
   string string;
@@ -185,7 +184,8 @@ void YarsClientCom::__configuration() throw (YarsClientComException)
   // cout << string << endl;
   if(string != "BEGIN CONFIGURATION")
   {
-    if(_throwException) throw YarsClientComException("No configuration!");
+    cerr << "No configuration!" << endl;
+    exit(-1);
   }
   while(string != "END CONFIGURATION")
   {
@@ -342,40 +342,44 @@ void YarsClientCom::__setDimension(string s, Entity *e)
   // others will be pushed
 }
 
-unsigned int YarsClientCom::getActuatorDimension(int index) throw (YarsClientComException)
+unsigned int YarsClientCom::getActuatorDimension(int index)
 {
   if(index < 0 || index >= (int)_actuators.size())
   {
-    if(_throwException) throw YarsClientComException("getActuatorDimension: Actuator index out of range.");
+    cerr << "getActuatorDimension: Actuator index out of range." << endl;
+    exit(-1);
   }
   return _actuators[index].dimension;
 }
 
-unsigned int YarsClientCom::getSensorDimension(int index) throw (YarsClientComException)
+unsigned int YarsClientCom::getSensorDimension(int index)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
-    if(_throwException) throw YarsClientComException("getSensorDimension: Sensor index out of range.");
+    cerr << "getSensorDimension: Sensor index out of range." << endl;
+    exit(-1);
   }
 
   return _sensors[index].dimension;
 }
 
-void YarsClientCom::getActuatorName(int index, string *name) throw (YarsClientComException)
+void YarsClientCom::getActuatorName(int index, string *name)
 {
   if(index < 0 || index >= (int)_actuators.size())
   {
-    if(_throwException) throw YarsClientComException("getActuatorName: Actuator index out of range.");
+    cerr << "getActuatorName: Actuator index out of range." << endl;
+    exit(-1);
   }
 
   *name = _actuators[index].name;
 }
 
-void YarsClientCom::getSensorName(int index, string *name) throw (YarsClientComException)
+void YarsClientCom::getSensorName(int index, string *name)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
-    if(_throwException) throw YarsClientComException("getSensorName: Sensor index out of range.");
+    cerr << "getSensorName: Sensor index out of range." << endl;
+    exit(-1);
   }
 
   *name = _sensors[index].name;
@@ -390,15 +394,15 @@ void YarsClientCom::setActuatorValue(int actuatorIndex, double value)
 {
   // if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   // {
-    // throw YarsClientComException("setActuatorValue: Actuator index out of range.");
+  // throw YarsClientComException("setActuatorValue: Actuator index out of range.");
   // }
   // if(valueIndex >= (int)_actuators[actuatorIndex].dimension)
   // {
-    // throw YarsClientComException("setActuatorValue: Value index out of range.");
+  // throw YarsClientComException("setActuatorValue: Value index out of range.");
   // }
   // if(valueIndex >= (int)_actuators[actuatorIndex].value.size() )
   // {
-    // _actuators[actuatorIndex].value.resize(_actuators[actuatorIndex].dimension);
+  // _actuators[actuatorIndex].value.resize(_actuators[actuatorIndex].dimension);
   // }
 
   // Domain d = _actuators[actuatorIndex].robotDomain[valueIndex];
@@ -413,15 +417,15 @@ double YarsClientCom::getSensorValue(int sensorIndex)
 {
   // if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   // {
-    // throw YarsClientComException("getSensorValue: Sensor index out of range.");
+  // throw YarsClientComException("getSensorValue: Sensor index out of range.");
   // }
   // if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   // {
-    // throw YarsClientComException("getSensorValue: Value index out of range.");
+  // throw YarsClientComException("getSensorValue: Value index out of range.");
   // }
   // if(valueIndex >= (int)_sensors[sensorIndex].value.size() )
   // {
-    // _sensors[sensorIndex].value.resize(_sensors[sensorIndex].dimension);
+  // _sensors[sensorIndex].value.resize(_sensors[sensorIndex].dimension);
   // }
 
   return _sensorValues[sensorIndex];
@@ -429,71 +433,79 @@ double YarsClientCom::getSensorValue(int sensorIndex)
   // *value = _sensors[sensorIndex].value[valueIndex];
 }
 
-void YarsClientCom::getActuatorRobotDomain(Domain *d, int actuatorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getActuatorRobotDomain(Domain *d, int actuatorIndex, int valueIndex)
 {
   if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   {
-    if(_throwException) throw YarsClientComException("getActuatorRobotDomain: Actuator index out of range.");
+    cerr << "getActuatorRobotDomain: Actuator index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex < 0 || valueIndex >= (int)_actuators[actuatorIndex].dimension)
   {
-    if(_throwException) throw YarsClientComException("getActuatorRobotDomain: Value index out of range.");
+    cerr << "getActuatorRobotDomain: Value index out of range." << endl;
+    exit(-1);
   }
   *d = _actuators[actuatorIndex].robotDomain[valueIndex];
 }
 
-void YarsClientCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
-    if(_throwException) throw YarsClientComException("getSensorRobotDomain: Sensor index out of range.");
+    cerr << "getSensorRobotDomain: Sensor index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   {
-    if(_throwException) throw YarsClientComException("getSensorRobotDomain: Value index out of range.");
+    cerr << "getSensorRobotDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _sensors[sensorIndex].robotDomain[valueIndex];
 }
 
-void YarsClientCom::getActuatorMappedDomain(Domain *d, int actuatorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getActuatorMappedDomain(Domain *d, int actuatorIndex, int valueIndex)
 {
   if(actuatorIndex < 0 || actuatorIndex >= (int)_actuators.size())
   {
-    if(_throwException) throw YarsClientComException("getActuatorMappedDomain: Actuator index out of range.");
+    cerr << "getActuatorMappedDomain: Actuator index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex < 0 || valueIndex >= (int)_actuators[actuatorIndex].dimension)
   {
-    if(_throwException) throw YarsClientComException("getActuatorMappedDomain: Value index out of range.");
+    cerr << "getActuatorMappedDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _actuators[actuatorIndex].domain[valueIndex];
 }
 
-void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsClientComException)
+void YarsClientCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
-    if(_throwException) throw YarsClientComException("getSensorMappedDomain: Sensor index out of range.");
+    cerr << "getSensorMappedDomain: Sensor index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   {
-    if(_throwException) throw YarsClientComException("getSensorMappedDomain: Value index out of range.");
+    cerr << "getSensorMappedDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _sensors[sensorIndex].domain[valueIndex];
 }
 
 
-void YarsClientCom::__sendMotorCommand() throw (YarsClientComException)
+void YarsClientCom::__sendMotorCommand()
 {
   // std::vector<double> values;
   // for(std::vector<Actuator>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   // {
-    // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
-    // {
-      // values.push_back(*d);
-    // }
+  // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
+  // {
+  // values.push_back(*d);
+  // }
   // }
   // cout << "Sending actuator values:";
   // for(int i = 0; i < (int)_actuatorValues.size(); i++) cout << " " << _actuatorValues[i];
@@ -502,18 +514,18 @@ void YarsClientCom::__sendMotorCommand() throw (YarsClientComException)
   _socket << _actuatorValues;
 }
 
-void YarsClientCom::__receiveSensorData() throw (YarsClientComException)
+void YarsClientCom::__receiveSensorData()
 {
   _socket << "SENSORS";
   _socket >> _sensorValues;
   // int index = 0;
   // for(std::vector<Sensor>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   // {
-    // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
-    // {
-      // *d = values[index];
-      // index++;
-    // }
+  // for(std::vector<double>::iterator d = i->value.begin(); d != i->value.end(); d++)
+  // {
+  // *d = values[index];
+  // index++;
+  // }
   // }
 }
 
@@ -605,13 +617,6 @@ int YarsClientCom::numberOfSensorsValues()
 {
   return _nrOfSensorValues;
 }
-
-void YarsClientCom::throwException(bool throwException)
-{
-  _throwException = throwException;
-  _socket.throwException(_throwException);
-}
-
 
 void YarsClientCom::printSensorMotorConfiguration()
 {

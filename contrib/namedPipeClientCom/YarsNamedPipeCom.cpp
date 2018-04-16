@@ -35,7 +35,7 @@ void YarsNamedPipeCom::update()
 }
 
 
-void YarsNamedPipeCom::init(const string name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::init(const string name)
 {
   _namedPipe.init(name.c_str(), false);
   __configuration();
@@ -74,14 +74,15 @@ int YarsNamedPipeCom::sizeOfDouble()
   return _sizeOfDouble;
 }
 
-void YarsNamedPipeCom::__configuration() throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::__configuration()
 {
   _namedPipe << string("CONFIGURATION");
   string string;
   _namedPipe >> string;
   if(string != "BEGIN CONFIGURATION")
   {
-    throw YarsNamedPipeComException("No configuration!");
+    cerr << "No configuration!" << endl;
+    exit(-1);
   }
   while(string != "END CONFIGURATION")
   {
@@ -222,54 +223,60 @@ void YarsNamedPipeCom::__setDimension(string s, Entity *e)
   // others will be pushed
 }
 
-unsigned int YarsNamedPipeCom::getJointDimension(int index) throw (YarsNamedPipeComException)
+unsigned int YarsNamedPipeCom::getJointDimension(int index)
 {
   if(index < 0 || index >= (int)_joints.size())
   {
-    throw YarsNamedPipeComException("getJointDimension: Joint index out of range.");
+    cerr << "getJointDimension: Joint index out of range." << endl;
+    exit(-1);
   }
   return _joints[index].dimension;
 }
 
-unsigned int YarsNamedPipeCom::getSensorDimension(int index) throw (YarsNamedPipeComException)
+unsigned int YarsNamedPipeCom::getSensorDimension(int index)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
-    throw YarsNamedPipeComException("getSensorDimension: Sensor index out of range.");
+    cerr << "getSensorDimension: Sensor index out of range." << endl;
+    exit(-1);
   }
 
   return _sensors[index].dimension;
 }
 
-void YarsNamedPipeCom::getJointName(int index, string *name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointName(int index, string *name)
 {
   if(index < 0 || index >= (int)_joints.size())
   {
-    throw YarsNamedPipeComException("getJointName: Joint index out of range.");
+    cerr << "getJointName: Joint index out of range." << endl;
+    exit(-1);
   }
 
   *name = _joints[index].name;
 }
 
-void YarsNamedPipeCom::getSensorName(int index, string *name) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorName(int index, string *name)
 {
   if(index < 0 || index >= (int)_sensors.size())
   {
-    throw YarsNamedPipeComException("getSensorName: Sensor index out of range.");
+    cerr << "getSensorName: Sensor index out of range." << endl;
+    exit(-1);
   }
 
   *name = _sensors[index].name;
 }
 
-void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueIndex)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
-    throw YarsNamedPipeComException("setJointValue: Joint index out of range.");
+    cerr << "setJointValue: Joint index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_joints[jointIndex].dimension)
   {
-    throw YarsNamedPipeComException("setJointValue: Value index out of range.");
+    cerr << "setJointValue: Value index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_joints[jointIndex].value.size() )
   {
@@ -283,15 +290,17 @@ void YarsNamedPipeCom::setJointValue(double value, int jointIndex, int valueInde
   _joints[jointIndex].value[valueIndex] = value;
 }
 
-void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueIndex)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
-    throw YarsNamedPipeComException("getSensorValue: Sensor index out of range.");
+    cerr << "getSensorValue: Sensor index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   {
-    throw YarsNamedPipeComException("getSensorValue: Value index out of range.");
+    cerr << "getSensorValue: Value index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].value.size() )
   {
@@ -301,56 +310,64 @@ void YarsNamedPipeCom::getSensorValue(double *value, int sensorIndex, int valueI
   *value = _sensors[sensorIndex].value[valueIndex];
 }
 
-void YarsNamedPipeCom::getJointRobotDomain(Domain *d, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointRobotDomain(Domain *d, int jointIndex, int valueIndex)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
-    throw YarsNamedPipeComException("getJointRobotDomain: Joint index out of range.");
+    cerr << "getJointRobotDomain: Joint index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex < 0 || valueIndex >= (int)_joints[jointIndex].dimension)
   {
-    throw YarsNamedPipeComException("getJointRobotDomain: Value index out of range.");
+    cerr << "getJointRobotDomain: Value index out of range." << endl;
+    exit(-1);
   }
   *d = _joints[jointIndex].robotDomain[valueIndex];
 }
 
-void YarsNamedPipeCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorRobotDomain(Domain *d, int sensorIndex, int valueIndex)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
-    throw YarsNamedPipeComException("getSensorRobotDomain: Sensor index out of range.");
+    cerr << "getSensorRobotDomain: Sensor index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   {
-    throw YarsNamedPipeComException("getSensorRobotDomain: Value index out of range.");
+    cerr << "getSensorRobotDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _sensors[sensorIndex].robotDomain[valueIndex];
 }
 
-void YarsNamedPipeCom::getJointMappedDomain(Domain *d, int jointIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getJointMappedDomain(Domain *d, int jointIndex, int valueIndex)
 {
   if(jointIndex < 0 || jointIndex >= (int)_joints.size())
   {
-    throw YarsNamedPipeComException("getJointMappedDomain: Joint index out of range.");
+    cerr << "getJointMappedDomain: Joint index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex < 0 || valueIndex >= (int)_joints[jointIndex].dimension)
   {
-    throw YarsNamedPipeComException("getJointMappedDomain: Value index out of range.");
+    cerr << "getJointMappedDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _joints[jointIndex].domain[valueIndex];
 }
 
-void YarsNamedPipeCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex) throw (YarsNamedPipeComException)
+void YarsNamedPipeCom::getSensorMappedDomain(Domain *d, int sensorIndex, int valueIndex)
 {
   if(sensorIndex < 0 || sensorIndex >= (int)_sensors.size())
   {
-    throw YarsNamedPipeComException("getSensorMappedDomain: Sensor index out of range.");
+    cerr << "getSensorMappedDomain: Sensor index out of range." << endl;
+    exit(-1);
   }
   if(valueIndex >= (int)_sensors[sensorIndex].dimension)
   {
-    throw YarsNamedPipeComException("getSensorMappedDomain: Value index out of range.");
+    cerr << "getSensorMappedDomain: Value index out of range." << endl;
+    exit(-1);
   }
 
   *d = _sensors[sensorIndex].domain[valueIndex];

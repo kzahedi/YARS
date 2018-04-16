@@ -6,37 +6,13 @@
 #endif
 
 #include <yars/defines/types.h>
+#include <yars/util/YarsErrorHandler.h>
 
 #include <vector>
 #include <string>
 #include <iostream>
 
 using namespace std;
-
-class MatrixException : public exception
-{
-  public:
-    explicit MatrixException(const string& what)
-      :
-        m_what(what)
-  {}
-
-    virtual ~MatrixException() throw() {}
-
-    virtual const char * what() const throw()
-    {
-      return m_what.c_str();
-    }
-
-    virtual void message() const throw()
-    {
-      cout << "MatrixException: " << m_what << endl;
-    }
-
-
-  private:
-    string m_what;
-};
 
 class Matrix
 {
@@ -60,10 +36,10 @@ class Matrix
     ~Matrix();
 
     /** Allows to access and modify the values by indexing */
-    double& operator()(int row, int col) throw(MatrixException);
-    double  operator()(int row, int col) const throw(MatrixException);
-    Matrix& operator+=(const Matrix &m)  throw(MatrixException);
-    Matrix& operator-=(const Matrix &m)  throw(MatrixException);
+    double& operator()(int row, int col);
+    double  operator()(int row, int col) const;
+    Matrix& operator+=(const Matrix &m);
+    Matrix& operator-=(const Matrix &m);
 
     // TODO: Matrix A(10,10); Matrix A = B; does not work
     const Matrix operator* (const double factor);
@@ -94,7 +70,7 @@ class Matrix
     void   reset(int rows, int cols, double value = 0.0);
     void   rescaleRows(double value, bool verbose);
 
-    double det() throw(MatrixException);
+    double det();
     void   inverse();
     void   transpose();
     void   adjunct();
@@ -122,7 +98,7 @@ class Matrix
   private:
     void __setDiagonalMatrix(double value);
     void __copy(const Matrix &m);
-    void __check(int row, int col) throw(MatrixException);
+    void __check(int row, int col);
     int _rows;
     int _cols;
     double **_cell;

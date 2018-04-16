@@ -53,7 +53,6 @@ Socket::Socket()
 {
   _sock           = -1;
   _mysock         = -1;
-  _throwException = false;
   YarsErrorHandler::instance();
 }
 
@@ -131,7 +130,7 @@ int Socket::accept(const int port)
   exit(-1);
 #else
   do { _peer.sin_port = htons(++p); }
-  while(bind(_mysock, (struct sockaddr *) &_peer, sizeof(_peer)) < 0 );
+  while(::bind(_mysock, (struct sockaddr *) &_peer, sizeof(_peer)) < 0 );
 #endif
 
   cout << "  --> port " << p << " opened" << endl;
@@ -531,7 +530,7 @@ void Socket::__coneverToInt(char *c, int *i)
   }
 }
 
-void Socket::__check(const char a, const char b) throw (YarsClientComException)
+void Socket::__check(const char a, const char b)
 {
   if(a == b) return; // everything ok
   stringstream oss;
@@ -579,7 +578,7 @@ void Socket::__check(const char a, const char b) throw (YarsClientComException)
       oss << "<unknown \"" << b << "\">";
       break;
   }
-  if(_throwException) throw YarsClientComException(oss.str());
+  cerr << oss.str() << endl;
   close();
 }
 
@@ -592,7 +591,7 @@ void Socket::close()
 #else
 #if defined(_MSC_VER) || defined(_WIN32)
      closesocket(_sock);
-#  else 
+#  else
      ::close(_sock);
 #  endif
 #endif // __APPLE__
@@ -605,7 +604,7 @@ void Socket::close()
 #else
 #if defined(_MSC_VER) || defined(_WIN32)
      closesocket(_sock);
-#  else 
+#  else
      ::close(_sock);
 #  endif
 #endif // __APPLE__
