@@ -15,6 +15,31 @@
 
 using namespace std;
 
+class YarsClientComException : public exception
+{
+  public:
+    explicit YarsClientComException(const string& what)
+      :
+        m_what(what)
+  {}
+
+    virtual ~YarsClientComException() throw() {}
+
+    virtual const char * what() const throw()
+    {
+      return m_what.c_str();
+    }
+
+    virtual void message() const throw()
+    {
+      cerr << "YarsClientComException: " << m_what << endl;
+    }
+
+  private:
+    string m_what;
+};
+
+
 class Entity
 {
   public:
@@ -47,22 +72,22 @@ class YarsClientCom
     void init(const string host="localhost", const int port=9500);
     void init(string workingDirectory, string xmlFile, string path="");
 
-    unsigned int getActuatorDimension(int);
-    void getActuatorName(int, string*);
-    void getActuatorRobotDomain(Domain*, int, int);
-    void getActuatorMappedDomain(Domain*, int, int);
+    unsigned int getActuatorDimension(int)          noexcept(false);
+    void getActuatorName(int, string*)              noexcept(false);
+    void getActuatorRobotDomain(Domain*, int, int)  noexcept(false);
+    void getActuatorMappedDomain(Domain*, int, int) noexcept(false);
     void setActuatorValue(int, double);
     void setActuatorValue(int, float);
 
-    unsigned int getSensorDimension(int);
-    void getSensorName(int, string*);
-    void getSensorRobotDomain(Domain*, int, int);
-    void getSensorMappedDomain(Domain*, int, int);
+    unsigned int getSensorDimension(int)            noexcept(false);
+    void getSensorName(int, string*)                noexcept(false);
+    void getSensorRobotDomain(Domain*, int, int)    noexcept(false);
+    void getSensorMappedDomain(Domain*, int, int)   noexcept(false);
     double getSensorValue(int);
 
-    void sendMessage(string);
+    void sendMessage(string) noexcept(false);
 
-    void update(); // send & receive
+    void update() noexcept(false); // send & receive
 
     int  sizeOfInt();
     int  sizeOfDouble();
@@ -70,8 +95,8 @@ class YarsClientCom
     bool end();
     bool reset();
 
-    void sendReset();
-    void sendQuit();
+    void sendReset() noexcept(false);
+    void sendQuit() noexcept(false);
 
     void name(string *name);
     void configuration(string *configurationString);
@@ -85,10 +110,12 @@ class YarsClientCom
 
     void printSensorMotorConfiguration();
 
+    void throwException(bool);
+
   private:
-    void __sendMotorCommand();
-    void __receiveSensorData();
-    void __configuration();
+    void __sendMotorCommand()  noexcept(false);
+    void __receiveSensorData() noexcept(false);
+    void __configuration()     noexcept(false);
     void __printData();
     void __readActuatorInformation();
     void __readSensorInformation();
@@ -118,6 +145,7 @@ class YarsClientCom
 
     int                   _nrOfActuatorValues;
     int                   _nrOfSensorValues;
+    bool                  _throwException;
 
     std::vector<double>    _actuatorValues;
     std::vector<double>    _sensorValues;

@@ -613,8 +613,3 @@ void Socket::close()
   _sock   = -1;
   _mysock = -1;
 }
-
-void Socket::throwException(bool te)
-{
-  _throwException = te;
-}

@@ -23,7 +23,9 @@
 #  include <unistd.h>
 #endif // _MSC_VER
 
+
 using namespace std;
+
 
 class Buffer : public std::vector<char>
 {
@@ -419,8 +421,6 @@ class Socket
 
     void close();
 
-    void throwException(bool);
-
   private:
     const Socket& operator<<(const Buffer&) const;
     const Socket& operator>>(Buffer&) const;
@@ -442,7 +442,6 @@ class Socket
 #endif
 
     struct sockaddr_in _peer;
-    bool _throwException;
 };
 
 #endif // __SOCKET_COMMUNICATION_H__
