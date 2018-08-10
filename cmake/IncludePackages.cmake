@@ -20,9 +20,9 @@ ENDIF(XERCESC_FOUND)
 
 if(YARS_USE_PYTHON)
 find_package(PythonLibs 3 REQUIRED)
-IF(PYTHONLIBS_FOUND)
-  include_directories(${PYTHON_INCLUDE_PATH})
-ENDIF(PYTHONLIBS_FOUND)
+  IF(PYTHONLIBS_FOUND)
+    include_directories(${PYTHON_INCLUDE_PATH})
+  ENDIF(PYTHONLIBS_FOUND)
 endif(YARS_USE_PYTHON)
 
 find_package(Bullet)

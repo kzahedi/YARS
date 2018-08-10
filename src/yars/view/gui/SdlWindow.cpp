@@ -664,8 +664,8 @@ void SdlWindow::__initMovie()
   std::stringstream oss;
   __YARS_OPEN_CAPTURE_DIRECTORY;
   _captureStep = __YARS_GET_SIMULATOR_FREQUENCY / __YARS_GET_CAPTURE_FRAME_RATE;
-  // _capturedTenMinutes = 600 * __YARS_GET_CAPTURE_FRAME_RATE;
-  _capturedTenMinutes = 20 * __YARS_GET_CAPTURE_FRAME_RATE;
+  _capturedTenMinutes = 6000 * __YARS_GET_CAPTURE_FRAME_RATE;
+  // _capturedTenMinutes = 20 * __YARS_GET_CAPTURE_FRAME_RATE;
   uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
   oss << __YARS_GET_CAPTURE_DIRECTORY << "/" << _windowConfiguration->captureName;

@@ -15,7 +15,6 @@ extern "C" {
 #include <libavcodec/avfft.h>
 #include <libavdevice/avdevice.h>
 #include <libavfilter/avfilter.h>
-#include <libavfilter/avfiltergraph.h>
 #include <libavfilter/buffersink.h>
 #include <libavfilter/buffersrc.h>
 #include <libavformat/avformat.h>
