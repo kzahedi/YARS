@@ -109,3 +109,20 @@ if(YARS_USE_CRBM_CONTROLLER)
     Entropy++
     ${Boost_LIBRARIES})
 endif(YARS_USE_CRBM_CONTROLLER)
+
+OPTION(YARS_USE_GO "Compile GO Controller" OFF)
+if(YARS_USE_GO)
+  add_library(YarsControllerGo SHARED GoController.cpp)
+  target_link_libraries(YarsControllerGo YarsRobotController dl)
+
+  set(CMAKE_Go_COMPILER "/usr/local/bin/go")
+  set(CMAKE_Go_BUILD_MODE "-buildmode=c-shared")
+
+  add_custom_command(OUTPUT ${OUTPUT_DIR}/.timestamp
+    COMMAND env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} build ${CMAKE_Go_BUILD_MODE}
+    -o ${LIBRARY_OUTPUT_PATH}/braitenberg_go.dylib braitenberg.go
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+
+  add_custom_target(braitenberg_go.dylib ALL DEPENDS ${OUTPUT_DIR}/.timestamp ${ARGN})
+endif(YARS_USE_GO)
+
