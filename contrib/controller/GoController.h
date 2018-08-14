@@ -15,6 +15,7 @@ typedef struct{void *arr; go_int len; go_int cap;} go_slice;
 typedef struct{const char *p; go_int len;} go_str;
 
 typedef void (*UpdatePtr)(go_slice, go_slice);
+typedef void (*SimplePtr)();
 
 class Go: public RobotController
 {
@@ -29,6 +30,8 @@ class Go: public RobotController
   bool         _debug;
   stringstream _oss;
   UpdatePtr    _update;
+  SimplePtr    _reset;
+  SimplePtr    _close;
   go_slice     _motorSlice;
   go_float64*  _motorData;
   go_slice     _sensorSlice;

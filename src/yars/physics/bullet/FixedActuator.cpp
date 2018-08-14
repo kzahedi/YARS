@@ -29,7 +29,7 @@ FixedActuator::FixedActuator(DataFixedActuator *data, Robot *robot)
     btRigidBody *source = _sourceObject->rigidBody();
     _fixedConstraint    = new btSliderConstraint(*source, sTransform, true);
   }
-  else 
+  else
   {
     btRigidBody *destination = _destinationObject->rigidBody();
     _fixedConstraint         = new btSliderConstraint(*destination, dTransform, true);
@@ -44,7 +44,6 @@ FixedActuator::FixedActuator(DataFixedActuator *data, Robot *robot)
     _fixedConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
     _fixedConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
   }
-
 }
 
 DataFixedActuator* FixedActuator::data()

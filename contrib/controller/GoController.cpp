@@ -46,7 +46,9 @@ void Go::update()
 }
 
 void Go::reset()
-{ }
+{
+  _reset();
+}
 
 void Go::init()
 {
@@ -66,6 +68,11 @@ void Go::init()
   }
 
   _update = (UpdatePtr)dlsym(handle, "Update");
+  SimplePtr init = (SimplePtr)dlsym(handle, "Init");
+  _reset = (SimplePtr)dlsym(handle, "Reset");
+  _close = (SimplePtr)dlsym(handle, "Close");
+
+  init();
 
   int n = (int)sensors.size();
   _sensorData = new go_float64[sensors.size()];
@@ -83,7 +90,9 @@ void Go::init()
 }
 
 void Go::close()
-{ }
+{
+  _close();
+}
 
 // the class factories
 

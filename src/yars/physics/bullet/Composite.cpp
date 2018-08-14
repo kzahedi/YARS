@@ -11,7 +11,7 @@
 
 Composite::Composite(DataComposite *data) : Object(data, true)
 {
-  btCompoundShape *cShape              = new btCompoundShape(data->g_size());
+  btCompoundShape *cShape               = new btCompoundShape(data->g_size());
   MyCompositeMotionState *myMotionState = new MyCompositeMotionState(data, btTransform::getIdentity());
   setMotionState(myMotionState);
 
