@@ -20,23 +20,42 @@ class MuscleParameter
   public:
     MuscleParameter()
     {
-      maxVelocity      =  0.0;
-      maxForce         =  0.0;
-      forceScaling     = -1.0;
+      optimalLength        = 0.0;
+      maxVelocity          = 0.0;
+      N                    = -1.0;
+      K                    = -1.0;
+      w                    = -1.0;
+      c                    = -1.0;
+      maxForce             = -1.0;
+      useLengthComponent   = false;
+      useVelocityComponent = false;
     }
 
     MuscleParameter& operator=(const MuscleParameter &p)
     {
-      maxVelocity      = p.maxVelocity;
-      maxForce         = p.maxForce;
-      forceScaling     = p.forceScaling;
+      optimalLength        = p.optimalLength;
+      maxVelocity          = p.maxVelocity;
+      N                    = p.N;
+      K                    = p.K;
+      w                    = p.w;
+      c                    = p.c;
+      maxForce             = p.maxForce;
+      useLengthComponent   = p.useLengthComponent;
+      useVelocityComponent = p.useVelocityComponent;
 
       return *this;
     };
 
+    double optimalLength;
     double maxVelocity;
+    double N;
+    double K;
+    double w;
+    double c;
     double maxForce;
-    double forceScaling;
+    bool useLengthComponent;
+    bool useVelocityComponent;
+
 };
 
 
@@ -52,7 +71,6 @@ class DataMuscleActuator : public DataActuator
     string name();
     string source();
     string destination();
-    string jointType();
     Domain deflection();
     Pose   pose();
     Domain mapping();
@@ -80,7 +98,6 @@ class DataMuscleActuator : public DataActuator
     double getAppliedVelocity(int index);
     void setAppliedForceAndVelocity(int index, double force, double velocity);
 
-    double friction();
 
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
@@ -104,10 +121,8 @@ class DataMuscleActuator : public DataActuator
     Domain          _deflection;
     Domain          _mapping;
     MuscleParameter _parameter;
-    Pose            _pose;
     bool            _deflectionSet;
     string          _destination;
-    string          _jointType;
     string          _mode;
     string          _name;
     string          _source;
@@ -117,15 +132,18 @@ class DataMuscleActuator : public DataActuator
     vector<double>  _desiredValue;
     vector<double>  _desiredExValue;
     vector<Mapping> _internalExternalMapping;
-    vector<Domain>  _internalDomain;
-    vector<Domain>  _externalDomain;
-    Noise*          _n;
-    bool            _isActive;
-    double          _currentTransitionalVelocity;
-    bool            _poseInWorldCoordinates;
-    double          _appliedForce;
-    double          _appliedVelocity;
-    double          _friction;
+    vector<Domain> _internalDomain;
+    vector<Domain> _externalDomain;
+    Noise*         _n;
+    bool           _isActive;
+    double         _currentTransitionalVelocity;
+    double         _appliedForce;
+    double         _appliedVelocity;
+    Pose           _srcOffset;
+    bool           _srcOffsetInWorldCoordinates;
+    Pose           _dstOffset;
+    bool           _dstOffsetInWorldCoordinates;
+    bool           _visualise;
     pthread_mutex_t _mutex;
 
 };

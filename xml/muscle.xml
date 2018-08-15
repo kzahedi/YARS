@@ -74,10 +74,8 @@
         <muscle name="muscle" mode="active" visualise="true">
           <source name="base"/>
           <destination name="swinging body"/>
-          <offset>
-            <source x="0.0" y="0.0" z="0.0" gamma="90.0"/>
-            <desitnation x="0.0" y="0.0" z="0.0" gamma="90.0"/>
-          </offset>
+          <srcOffset x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+          <dstOffset x="0.0" y="0.0" z="0.0" gamma="90.0"/>
           <force       max="10.0"/>
           <velocity    max="10.0"/>
           <mapping     min="-1" max="+1"/>

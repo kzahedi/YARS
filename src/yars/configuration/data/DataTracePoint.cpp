@@ -17,8 +17,8 @@
 # define YARS_STRING_LOCAL                        (char*)"local"
 # define YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION (char*)"colour_hex_rgba_definition"
 # define YARS_STRING_XSD_HEX_COLOR                (char*)"[A-Fa-f0-9]{6}([A-Fa-f0-9]{2}){0,1}"
-# define YARS_STRING_TRUE_FALSE_DEFINITION        (char*)"true_false_divider_definition"
-# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER    (char*)"positive_non_zero_integer_divider_definition"
+// # define YARS_STRING_TRUE_FALSE_DEFINITION        (char*)"true_false_divider_definition"
+// # define YARS_STRING_POSITIVE_NON_ZERO_INTEGER    (char*)"positive_non_zero_integer_divider_definition"
 
 DataTracePoint::DataTracePoint(DataNode *parent)
   : DataNode(parent)

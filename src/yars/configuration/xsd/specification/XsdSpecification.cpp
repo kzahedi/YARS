@@ -4,9 +4,7 @@
 
 #include <sstream>
 
-# define DIVIDER "_"
-
-# define YARS_STRING_POSE_DEFINITION               (char*)"pose"            DIVIDER DEFINITION
+# define YARS_STRING_POSE_DEFINITION               (char*)"pose_definition"
 # define YARS_STRING_P                             (char*)"p"
 # define YARS_STRING_I                             (char*)"i"
 # define YARS_STRING_D                             (char*)"d"
@@ -19,33 +17,26 @@
 # define YARS_STRING_BETA                          (char*)"beta"
 # define YARS_STRING_GAMMA                         (char*)"gamma"
 # define YARS_STRING_TYPE                          (char*)"type"
-# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
+# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg_definition"
 # define YARS_STRING_RAD                           (char*)"rad"
 # define YARS_STRING_DEG                           (char*)"deg"
-# define YARS_STRING_XYZ_DEFINITION                (char*)"xyz"              DIVIDER DEFINITION
-# define YARS_STRING_XYZG_DEFINITION               (char*)"xyzg"             DIVIDER DEFINITION
-# define YARS_STRING_XY_DEFINITION                 (char*)"xy"               DIVIDER DEFINITION
+# define YARS_STRING_XYZ_DEFINITION                (char*)"xyz_definition"
+# define YARS_STRING_XYZG_DEFINITION               (char*)"xyzg_definition"
+# define YARS_STRING_XY_DEFINITION                 (char*)"xy_definition"
 # define YARS_STRING_FALSE                         (char*)"false"
 # define YARS_STRING_TRUE                          (char*)"true"
 # define YARS_STRING_NAME                          (char*)"name"
 # define YARS_STRING_MIN                           (char*)"min"
 # define YARS_STRING_MAX                           (char*)"max"
-# define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min"              DIVIDER "max"       DIVIDER DEFINITION
-# define YARS_STRING_POSITIVE_MIN_MAX_DEFINITION   (char*)"positive" DIVIDER "min"              DIVIDER "max"       DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION               (char*)"name"             DIVIDER DEFINITION
-# define WIDTH                                     "width"
-# define RADIUS                                    "radius"
-# define HEIGHT                                    "height"
-# define DEPTH                                     "depth"
-# define WIDTH_HEIGHT                              WIDTH                     DIVIDER HEIGHT
-# define WIDTH_HEIGHT_DEPTH                        WIDTH                     DIVIDER HEIGHT      DIVIDER DEPTH
-# define YARS_STRING_DEPTH                         (char*)DEPTH
-# define YARS_STRING_HEIGHT                        (char*)HEIGHT
-# define YARS_STRING_RADIUS                        (char*)RADIUS
-# define YARS_STRING_RADIUS_HEIGHT_DEFINITION      (char*)RADIUS             DIVIDER HEIGHT      DIVIDER DEFINITION
-# define YARS_STRING_WIDTH                         (char*)WIDTH
-# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)WIDTH_HEIGHT       DIVIDER DEFINITION
-# define YARS_STRING_WIDTH_HEIGHT_DEPTH_DEFINITION (char*)WIDTH_HEIGHT_DEPTH DIVIDER DEFINITION
+# define YARS_STRING_DEPTH                         (char*)"depth"
+# define YARS_STRING_WIDTH                         (char*)"width"
+# define YARS_STRING_HEIGHT                        (char*)"height"
+# define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min_max_definition"
+# define YARS_STRING_POSITIVE_MIN_MAX_DEFINITION   (char*)"positive_min_max_definition"
+# define YARS_STRING_NAME_DEFINITION               (char*)"name_definition"
+# define YARS_STRING_RADIUS_HEIGHT_DEFINITION      (char*)"radius_height_definition"
+# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)"width_height_definition"
+# define YARS_STRING_WIDTH_HEIGHT_DEPTH_DEFINITION (char*)"width_height_depth_definition"
 # define YARS_STRING_XSD_POSITIVE_NON_ZERO_INTEGER (char*)"[1-9][0-9]*"
 # define YARS_STRING_XSD_POSITIVE_INTEGER          (char*)"[0-9]*"
 # define YARS_STRING_XSD_POSITIVE_NON_ZERO_DECIMAL (char*)"([0-9]*.?[0-9]*[1-9]+[0-9]*|[1-9][0-9]*.?[0-9]*)"

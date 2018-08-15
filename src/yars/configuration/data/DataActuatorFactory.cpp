@@ -58,6 +58,7 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   actuatorListDefinition->add(NE(YARS_STRING_SLIDER,  YARS_STRING_SLIDER_DEFINITION,  0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_FIXED,   YARS_STRING_FIXED_DEFINITION,   0 ,1));
   actuatorListDefinition->add(NE(YARS_STRING_GENERIC, YARS_STRING_GENERIC_DEFINITION, 0 ,1));
+  actuatorListDefinition->add(NE(YARS_STRING_MUSCLE,  YARS_STRING_MUSCLE_DEFINITION,  0 ,1));
   spec->add(actuatorListDefinition);
   stringstream comment;
   comment << "The list of actuators (joints, motors, ...)." << endl;

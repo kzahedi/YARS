@@ -46,6 +46,7 @@ class VideoCapture {
 
       // Initialize libavcodec
       av_register_all();
+      // av_register_output_format();
       // av_log_set_callback(avlog_cb);
     }
 

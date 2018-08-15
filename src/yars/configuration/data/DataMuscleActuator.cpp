@@ -8,13 +8,16 @@
 #include <yars/util/noise/NoiseFactory.h>
 #include <yars/defines/mutex.h>
 
+# define YARS_STRING_VISUALISE                     (char*)"visualise"
 # define YARS_STRING_FRICTION                      (char*)"friction"
 # define YARS_STRING_TYPE                          (char*)"type"
+# define YARS_STRING_USE                           (char*)"use"
 # define YARS_STRING_MODE                          (char*)"mode"
-# define YARS_STRING_ACTUATOR_TYPE_DEFINITION      (char*)"actuator_type_positional_velocity_force_definition"
 # define YARS_STRING_ACTUATOR_MODE_DEFINITION      (char*)"actuator_mode_active_passive_definition"
 # define YARS_STRING_SOURCE                        (char*)"source"
 # define YARS_STRING_DESTINATION                   (char*)"destination"
+# define YARS_STRING_SOURCE_OFFSET                 (char*)"srcOffset"
+# define YARS_STRING_DESTINATION_OFFSET            (char*)"dstOffset"
 # define YARS_STRING_MAPPING                       (char*)"mapping"
 # define YARS_STRING_POSE                          (char*)"pose"
 # define YARS_STRING_POSEG_DEFINITION              (char*)"pose_with_global_definition"
@@ -51,6 +54,16 @@
 # define YARS_STRING_PID                           (char*)"pid"
 # define YARS_STRING_GLOBAL                        (char*)"global"
 
+# define YARS_STRING_C                             (char*)"c"
+# define YARS_STRING_W                             (char*)"w"
+# define YARS_STRING_LENGTH_COMPONENT_DEFINITION   (char*)"length_component_definition"
+# define YARS_STRING_LENGTH_COMPONENT              (char*)"lengthComponent"
+# define YARS_STRING_VELOCITY_COMPONENT_DEFINITION (char*)"velocity_component_definition"
+# define YARS_STRING_VELOCITY_COMPONENT            (char*)"velocityComponent"
+# define YARS_STRING_OPTIMAL_LENGTH                (char*)"optimalLength"
+# define YARS_STRING_MAX_VELOCITY                  (char*)"maxVelocity"
+# define YARS_STRING_N                             (char*)"N"
+# define YARS_STRING_K                             (char*)"K"
 
 DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_MUSCLE)
@@ -60,10 +73,8 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _deflectionSet               = false;
   _isActive                    = true;
   _currentTransitionalVelocity = 0.0;
-  _poseInWorldCoordinates      = false;
   _appliedForce                = 0.0;
   _appliedVelocity             = 0.0;
-  _friction                    = 0.0;
   _n                           = NULL;
 
   _internalValue.resize(1);
@@ -97,10 +108,9 @@ void DataMuscleActuator::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_MUSCLE))
   {
-    element->set(YARS_STRING_NAME,     _name);
-    element->set(YARS_STRING_TYPE,     _jointType);
-    element->set(YARS_STRING_MODE,     _mode);
-    element->set(YARS_STRING_FRICTION, _friction);
+    element->set(YARS_STRING_NAME,      _name);
+    element->set(YARS_STRING_MODE,      _mode);
+    element->set(YARS_STRING_VISUALISE, _visualise);
     if(_mode == YARS_STRING_ACTIVE)    _isActive = true;
     if(_mode == YARS_STRING_PASSIVE)   _isActive = false;
   }
@@ -108,7 +118,6 @@ void DataMuscleActuator::add(DataParseElement *element)
   if(element->opening(YARS_STRING_FORCE))
   {
     element->set(YARS_STRING_MAXIMUM, _parameter.maxForce);
-    element->set(YARS_STRING_SCALING, _parameter.forceScaling);
   }
 
   if(element->opening(YARS_STRING_VELOCITY))
@@ -124,12 +133,15 @@ void DataMuscleActuator::add(DataParseElement *element)
   {
     element->set(YARS_STRING_NAME, _destination);
   }
-  if(element->opening(YARS_STRING_POSE))
+  if(element->opening(YARS_STRING_SOURCE_OFFSET))
   {
-    DataPoseFactory::set(_pose, element);
-    element->set(YARS_STRING_GLOBAL, _poseInWorldCoordinates);
-    _axisPosition    = _pose.position;
-    _axisOrientation = _pose.orientation;
+    DataPoseFactory::set(_srcOffset, element);
+    element->set(YARS_STRING_GLOBAL, _srcOffsetInWorldCoordinates);
+  }
+  if(element->opening(YARS_STRING_DESTINATION_OFFSET))
+  {
+    DataPoseFactory::set(_dstOffset, element);
+    element->set(YARS_STRING_GLOBAL, _dstOffsetInWorldCoordinates);
   }
   if(element->opening(YARS_STRING_DEFLECTION))
   {
@@ -160,11 +172,6 @@ string DataMuscleActuator::name()
   return _name;
 }
 
-double DataMuscleActuator::friction()
-{
-  return _friction;
-}
-
 string DataMuscleActuator::source()
 {
   return _source;
@@ -178,14 +185,6 @@ string DataMuscleActuator::destination()
 Domain DataMuscleActuator::deflection()
 {
   return _deflection;
-}
-
-Pose DataMuscleActuator::pose()
-{
-  YM_LOCK;
-  Pose r = _pose;
-  YM_UNLOCK;
-  return r;
 }
 
 Domain DataMuscleActuator::mapping()
@@ -206,34 +205,32 @@ DataFilter* DataMuscleActuator::filter()
   return _filter;
 }
 
-string DataMuscleActuator::jointType()
-{
-  return _jointType;
-}
-
 void DataMuscleActuator::applyOffset(Pose offset)
 {
-  if(_poseInWorldCoordinates) return;
-  _pose << offset;
-  _axisPosition      = _pose.position;
-  _axisOrientation   = _pose.orientation;
+  if(_srcOffsetInWorldCoordinates == false) _srcOffset << offset;
+  if(_dstOffsetInWorldCoordinates == false) _dstOffset << offset;
 }
 
 
 void DataMuscleActuator::createXsd(XsdSpecification *spec)
 {
   XsdSequence *muscleDefinition = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
-  muscleDefinition->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,               false));
-  muscleDefinition->add(NA(YARS_STRING_TYPE,        YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
-  muscleDefinition->add(NA(YARS_STRING_FRICTION,    YARS_STRING_POSITIVE_DECIMAL,         false));
-  muscleDefinition->add(NA(YARS_STRING_MODE,        YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
-  muscleDefinition->add(NE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
-  muscleDefinition->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
-  muscleDefinition->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
-  muscleDefinition->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
-  muscleDefinition->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
-  muscleDefinition->add(NE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-  muscleDefinition->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  muscleDefinition->add(NA(YARS_STRING_NAME,               YARS_STRING_XSD_STRING,                    false));
+  muscleDefinition->add(NA(YARS_STRING_MODE,               YARS_STRING_ACTUATOR_MODE_DEFINITION,      true));
+  muscleDefinition->add(NA(YARS_STRING_VISUALISE,          YARS_STRING_TRUE_FALSE_DEFINITION,         false));
+  muscleDefinition->add(NE(YARS_STRING_SOURCE,             YARS_STRING_NAME_DEFINITION,               1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DESTINATION,        YARS_STRING_NAME_DEFINITION,               0, 1));
+  muscleDefinition->add(NE(YARS_STRING_SOURCE_OFFSET,      YARS_STRING_POSEG_DEFINITION,              1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DESTINATION_OFFSET, YARS_STRING_POSEG_DEFINITION,              1, 1));
+  muscleDefinition->add(NE(YARS_STRING_FORCE,              YARS_STRING_FORCE_DEFINITION,              1, 1));
+  muscleDefinition->add(NE(YARS_STRING_VELOCITY,           YARS_STRING_VELOCITY_DEFINITION,           1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DEFLECTION,         YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
+  muscleDefinition->add(NE(YARS_STRING_MAPPING,            YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
+  muscleDefinition->add(NE(YARS_STRING_NOISE,              YARS_STRING_NOISE_DEFINITION,              0, 1));
+  muscleDefinition->add(NE(YARS_STRING_FILTER,             YARS_STRING_FILTER_DEFINITION,             0, 1));
+  muscleDefinition->add(NE(YARS_STRING_LENGTH_COMPONENT,   YARS_STRING_LENGTH_COMPONENT_DEFINITION,   0, 1));
+  muscleDefinition->add(NE(YARS_STRING_VELOCITY_COMPONENT, YARS_STRING_VELOCITY_COMPONENT_DEFINITION, 0, 1));
+  spec->add(muscleDefinition);
 
   XsdElement *forceParameter = NE(YARS_STRING_FORCE_DEFINITION, "", 0, 1);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
@@ -244,27 +241,6 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   muscleDefinition->add(velocityParameter);
 
-
-  XsdElement *regularParameters = NE(YARS_STRING_REGULAR, "", 0, 1);
-  regularParameters->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
-  muscleDefinition->add(regularParameters);
-
-  muscleDefinition->add(NE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  muscleDefinition->add(NE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  muscleDefinition->add(NE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
-  muscleDefinition->add(NE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
-  muscleDefinition->add(NE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
-  spec->add(muscleDefinition);
-
-  XsdEnumeration *actuatorTypeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_TYPE_DEFINITION,
-      YARS_STRING_XSD_STRING);
-  actuatorTypeDefinition->add(YARS_STRING_VELOCITY);
-  actuatorTypeDefinition->add(YARS_STRING_POSITIONAL);
-  actuatorTypeDefinition->add(YARS_STRING_FORCE);
-  actuatorTypeDefinition->add(YARS_STRING_FORCE_VELOCITY);
-  spec->add(actuatorTypeDefinition);
 
   XsdEnumeration *actuatorModeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_MODE_DEFINITION,
       YARS_STRING_XSD_STRING);
@@ -288,15 +264,25 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   actuatorParameter->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
   actuatorParameter->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
   spec->add(actuatorParameter);
+
+  XsdSequence *lengthComponent = new XsdSequence(YARS_STRING_LENGTH_COMPONENT_DEFINITION);
+  lengthComponent->add(NA(YARS_STRING_OPTIMAL_LENGTH, YARS_STRING_XSD_DECIMAL, true));
+  lengthComponent->add(NA(YARS_STRING_W,              YARS_STRING_XSD_DECIMAL, true));
+  lengthComponent->add(NA(YARS_STRING_C,              YARS_STRING_XSD_DECIMAL, true));
+  lengthComponent->add(NA(YARS_STRING_USE,          YARS_STRING_TRUE_FALSE_DEFINITION, true));
+  spec->add(lengthComponent);
+
+  XsdSequence *velocityComponent = new XsdSequence(YARS_STRING_VELOCITY_COMPONENT_DEFINITION);
+  velocityComponent->add(NA(YARS_STRING_MAX_VELOCITY, YARS_STRING_XSD_DECIMAL,           true));
+  velocityComponent->add(NA(YARS_STRING_N,            YARS_STRING_XSD_DECIMAL,           true));
+  velocityComponent->add(NA(YARS_STRING_K,            YARS_STRING_XSD_DECIMAL,           true));
+  velocityComponent->add(NA(YARS_STRING_USE,          YARS_STRING_TRUE_FALSE_DEFINITION, true));
+  spec->add(velocityComponent);
+
 }
 
 void DataMuscleActuator::__close()
 {
-  if(_jointType == YARS_STRING_POSITIONAL)     _controlType = DATA_ACTUATOR_CONTROL_POSITIONAL;
-  if(_jointType == YARS_STRING_VELOCITY)       _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
-  if(_jointType == YARS_STRING_FORCE)          _controlType = DATA_ACTUATOR_CONTROL_FORCE;
-  if(_jointType == YARS_STRING_FORCE_VELOCITY) _controlType = DATA_ACTUATOR_CONTROL_FORCE_VELOCITY;
-
   __setMapping();
 }
 
@@ -326,15 +312,12 @@ DataMuscleActuator* DataMuscleActuator::_copy()
   if (_noise  != NULL) copy->_noise  = _noise->copy();
   copy->_mapping            = _mapping;
   copy->_parameter          = _parameter;
-  copy->_pose               = _pose;
   copy->_deflection         = _deflection;
   copy->_deflectionSet      = _deflectionSet;
   copy->_destination        = _destination;
-  copy->_jointType          = _jointType;
   copy->_mode               = _mode;
   copy->_name               = _name;
   copy->_source             = _source;
-  copy->_friction           = _friction;
   copy->_isActive           = _isActive;
   copy->_controlType        = _controlType;
   copy->_axisOrientation    = _axisOrientation;
@@ -529,9 +512,6 @@ void DataMuscleActuator::setCurrentTransitionalVelocity(double v)
 
 void DataMuscleActuator::setPosition(P3D position)
 {
-  YM_LOCK;
-  _pose.position = position;
-  YM_UNLOCK;
 }
 
 double DataMuscleActuator::getAppliedForce(int index)
@@ -548,5 +528,11 @@ void DataMuscleActuator::setAppliedForceAndVelocity(int index, double force, dou
 {
   _appliedForce    = force;
   _appliedVelocity = velocity;
+}
+
+Pose DataMuscleActuator::pose()
+{
+  Pose r;
+  return r;
 }
 
