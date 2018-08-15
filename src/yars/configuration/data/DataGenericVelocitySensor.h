@@ -10,9 +10,8 @@
 #include <yars/util/Mapping.h>
 #include <yars/util/noise/Noise.h>
 
-# define GENERIC_VELOCITY_SENSOR "velocity"
-# define YARS_STRING_GENERIC_VELOCITY_SENSOR  (char*)GENERIC_VELOCITY_SENSOR
-# define YARS_STRING_GENERIC_VELOCITY_SENSOR_DEFINITION  (char*)GENERIC_VELOCITY_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_VELOCITY_SENSOR            (char*)"velocity"
+# define YARS_STRING_GENERIC_VELOCITY_SENSOR_DEFINITION (char*)"velocity_definition"
 
 #include <string>
 #include <pthread.h>

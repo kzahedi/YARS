@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 # define YARS_STRING_VERSION_REGULAR_EXPRESSION (char*)"[0-9]+.[0-9]+.[0-9]+"
-# define YARS_STRING_VERSION_DEFINITION         (char*)"version" DIVIDER DEFINITION
+# define YARS_STRING_VERSION_DEFINITION         (char*)"version_definition"
 
 
 DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)

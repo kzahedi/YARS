@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 DataParseAttribute::DataParseAttribute()
 {
   _name  = "";

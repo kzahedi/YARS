@@ -9,10 +9,8 @@
 #include <yars/types/Pose.h>
 #include <yars/types/P2D.h>
 
-# define GENERIC_CAMERA_SENSOR                        "camera"
-# define YARS_STRING_GENERIC_CAMERA_SENSOR  (char*)GENERIC_CAMERA_SENSOR
-# define YARS_STRING_GENERIC_CAMERA_SENSOR_DEFINITION  (char*)GENERIC_CAMERA_SENSOR DIVIDER DEFINITION
-
+# define YARS_STRING_GENERIC_CAMERA_SENSOR            (char*)"camera"
+# define YARS_STRING_GENERIC_CAMERA_SENSOR_DEFINITION (char*)"camera_definition"
 
 class DataGenericCameraSensor : public DataSensor
 {

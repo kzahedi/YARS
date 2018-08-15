@@ -11,7 +11,7 @@
 #include <string>
 
 #define YARS_STRING_LOGGING_ACTUATOR            (char*)"actuator"
-#define YARS_STRING_LOGGING_ACTUATOR_DEFINITION (char*)"actuator" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_LOGGING_ACTUATOR_DEFINITION (char*)"actuator_logging_definition"
 
 #define INTERNAL         6602
 #define EXTERNAL         6603

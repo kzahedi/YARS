@@ -4,9 +4,8 @@
 #include "DataNode.h"
 #include "DataMacro.h"
 
-# define MACROS                        "macros"
-# define YARS_STRING_MACROS            (char*)MACROS
-# define YARS_STRING_MACROS_DEFINITION (char*)MACROS DIVIDER DEFINITION
+# define YARS_STRING_MACROS            (char*)"macros"
+# define YARS_STRING_MACROS_DEFINITION (char*)"macros_definition"
 
 #include <vector>
 #include <string>

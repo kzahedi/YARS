@@ -4,12 +4,12 @@
 
 # define YARS_STRING_DEFAULT                (char*)"default"
 # define YARS_STRING_FOLLOWABLES            (char*)"followables"
-# define YARS_STRING_FOLLOWABLES_DEFINITION (char*)"followables" DIVIDER DEFINITION
+# define YARS_STRING_FOLLOWABLES_DEFINITION (char*)"followables_definition"
 # define YARS_STRING_SKY                    (char*)"sky"
 # define YARS_STRING_VISUALISE              (char*)"visualise"
-# define YARS_STRING_VISUALISE_DEFINITION   (char*)"visualise"   DIVIDER DEFINITION
+# define YARS_STRING_VISUALISE_DEFINITION   (char*)"visualise_definition"
 # define YARS_STRING_JOINTS                 (char*)"joints"
-# define YARS_STRING_JOINTS_AXIS_DEFINITION (char*)"joints_visualisation" DIVIDER DEFINITION
+# define YARS_STRING_JOINTS_AXIS_DEFINITION (char*)"joints_visualisation_definition"
 # define YARS_STRING_HEIGHT                 (char*)"height"
 # define YARS_STRING_RADIUS                 (char*)"radius"
 # define YARS_STRING_NAME                   (char*)"name"

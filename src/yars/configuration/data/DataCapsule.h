@@ -3,12 +3,10 @@
 
 #include "DataCylinder.h"
 
-# define CAPPED_CYLINDER                              "capsule"
-# define YARS_STRING_OBJECT_CAPPED_CYLINDER           (char*)CAPPED_CYLINDER
-# define YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION \
-  (char*)"object" DIVIDER CAPPED_CYLINDER DIVIDER DEFINITION
-# define YARS_STRING_CC_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_CC_VISUALISATION_DEFINITION (char*)"capsule" DIVIDER "visualisation" DIVIDER DEFINITION 
+# define YARS_STRING_OBJECT_CAPPED_CYLINDER           (char*)"capsule"
+# define YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION (char*)"object_capsule_definition"
+# define YARS_STRING_CC_VISUALISATION                 (char*)"visualisation"
+# define YARS_STRING_CC_VISUALISATION_DEFINITION      (char*)"capsule_visualisation_definition"
 
 /**
  * @brief Contains the data for a capped cylinder. As the parameters are

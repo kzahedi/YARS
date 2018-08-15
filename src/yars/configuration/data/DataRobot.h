@@ -22,10 +22,9 @@
 #include <vector>
 #include <string>
 
-# define ROBOT                              "robot"
 # define YARS_STRING_BODY             (char*)"body"
-# define YARS_STRING_ROBOT            (char*)ROBOT
-# define YARS_STRING_ROBOT_DEFINITION (char*)ROBOT DIVIDER DEFINITION
+# define YARS_STRING_ROBOT            (char*)"robot"
+# define YARS_STRING_ROBOT_DEFINITION (char*)"robot_definition"
 
 using namespace std;
 

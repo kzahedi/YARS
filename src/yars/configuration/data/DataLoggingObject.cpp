@@ -8,19 +8,19 @@
 
 using namespace std;
 
-#define YARS_STRING_TARGET                     (char*)"target"
-#define YARS_STRING_USE                        (char*)"use"
-#define YARS_STRING_OBJECT_VALUE_DEFINITION    (char*)"value"     DIVIDER DEFINITION
-#define YARS_STRING_OBJECT_USE_DEFINITION      (char*)"object"    DIVIDER "use"      DIVIDER DEFINITION
-#define YARS_STRING_PRECISION                  (char*)"precision"
-# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+# define YARS_STRING_TARGET                    (char*)"target"
+# define YARS_STRING_USE                       (char*)"use"
+# define YARS_STRING_OBJECT_VALUE_DEFINITION   (char*)"value_definition"
+# define YARS_STRING_OBJECT_USE_DEFINITION     (char*)"object_use_definition"
+# define YARS_STRING_PRECISION                 (char*)"precision"
+# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 
-#define YARS_STRING_X     "x"
-#define YARS_STRING_Y     "y"
-#define YARS_STRING_Z     "z"
-#define YARS_STRING_ALPHA "alpha"
-#define YARS_STRING_BETA  "beta"
-#define YARS_STRING_GAMMA "gamma"
+# define YARS_STRING_X                         "x"
+# define YARS_STRING_Y                         "y"
+# define YARS_STRING_Z                         "z"
+# define YARS_STRING_ALPHA                     "alpha"
+# define YARS_STRING_BETA                      "beta"
+# define YARS_STRING_GAMMA                     "gamma"
 
 DataLoggingObject::DataLoggingObject(DataNode *parent)
   : DataNode(parent)

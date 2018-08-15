@@ -9,9 +9,8 @@
 
 #include <vector>
 
-# define AMBIENT_LIGHT                        "ambientLight"
-# define YARS_STRING_AMBIENT_LIGHT            (char*)AMBIENT_LIGHT
-# define YARS_STRING_AMBIENT_LIGHT_DEFINITION (char*)AMBIENT_LIGHT DIVIDER DEFINITION
+# define YARS_STRING_AMBIENT_LIGHT            (char*)"ambientLight"
+# define YARS_STRING_AMBIENT_LIGHT_DEFINITION (char*)"ambientLight_definition"
 
 using namespace std;
 

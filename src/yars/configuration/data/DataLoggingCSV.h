@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_CSV_LOGGER            (char*)"csv"
-#define YARS_STRING_CSV_LOGGER_DEFINITION (char*)"csv" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_CSV_LOGGER_DEFINITION (char*)"csv_logging_definition"
 
 class DataLoggingCSV : public DataLoggingModule, public DataNode
 {

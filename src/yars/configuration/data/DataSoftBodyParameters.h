@@ -4,7 +4,7 @@
 #include "DataNode.h"
 
 # define YARS_STRING_SOFT_BODY_PARAMETER            (char*)"parameter"
-# define YARS_STRING_SOFT_BODY_PARAMETER_DEFINITION (char*)"soft_body_parameter" DIVIDER DEFINITION
+# define YARS_STRING_SOFT_BODY_PARAMETER_DEFINITION (char*)"soft_body_parameter_definition"
 
 
 class DataSoftBodyParameters : public DataNode

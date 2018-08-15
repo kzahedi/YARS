@@ -6,9 +6,8 @@
 #include <yars/configuration/data/DataFilter.h>
 #include <yars/types/Domain.h>
 
-# define GENERIC_POSITION_SENSOR "position"
-# define YARS_STRING_GENERIC_POSITION_SENSOR  (char*)GENERIC_POSITION_SENSOR
-# define YARS_STRING_GENERIC_POSITION_SENSOR_DEFINITION  (char*)GENERIC_POSITION_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_POSITION_SENSOR            (char*)"position"
+# define YARS_STRING_GENERIC_POSITION_SENSOR_DEFINITION (char*)"position_definition"
 
 #include <string>
 #include <pthread.h>

@@ -2,11 +2,11 @@
 #include "DataColourFactory.h"
 #include "DataPositionFactory.h"
 
-# define YARS_STRING_BRIGHTNESS  (char*)"brightness"
+# define YARS_STRING_BRIGHTNESS                   (char*)"brightness"
 
-# define YARS_STRING_COLOR (char*)"colour"
-# define YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION  (char*)"colour_hex_rgb_definition"
-# define YARS_STRING_XSD_HEX_COLOR                 (char*)"[A-Fa-f0-9]{6}"
+# define YARS_STRING_COLOR                        (char*)"colour"
+# define YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION (char*)"colour_hex_rgb_definition"
+# define YARS_STRING_XSD_HEX_COLOR                (char*)"[A-Fa-f0-9]{6}"
 
 DataAmbientLight::DataAmbientLight(DataNode *parent)
   : DataNode(parent)

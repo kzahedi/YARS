@@ -5,11 +5,10 @@
 #include <yars/types/Pose.h>
 #include <yars/types/RHDimension.h>
 
-# define CYLINDER                              "cylinder"
-# define YARS_STRING_OBJECT_CYLINDER           (char*)CYLINDER
-# define YARS_STRING_OBJECT_CYLINDER_DEFINTION (char*)"object"   DIVIDER CYLINDER DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_CYLINDER            (char*)"cylinder"
+# define YARS_STRING_OBJECT_CYLINDER_DEFINTION  (char*)"object_cylinder_definition"
 # define YARS_STRING_C_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_C_VISUALISATION_DEFINITION (char*)"capsule" DIVIDER "visualisation" DIVIDER DEFINITION 
+# define YARS_STRING_C_VISUALISATION_DEFINITION (char*)"capsule_visualisation_definition"
 
 #include <string>
 

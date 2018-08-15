@@ -11,11 +11,11 @@
 # define YARS_STRING_MODULE              (char*)"module"
 # define YARS_STRING_NAME                (char*)"name"
 # define YARS_STRING_FREQUENCY           (char*)"frequency"
-# define YARS_STRING_POSITIVE_INTEGER    (char*)"positive_integer" DIVIDER DEFINITION
+# define YARS_STRING_POSITIVE_INTEGER    (char*)"positive_integer_definition"
 # define YARS_STRING_START               (char*)"start"
 # define YARS_STRING_END                 (char*)"end"
 # define YARS_STRING_INTERVAL            (char*)"interval"
-# define YARS_STRING_INTERVAL_DEFINITION (char*)"interval"         DIVIDER DEFINITION
+# define YARS_STRING_INTERVAL_DEFINITION (char*)"interval_definition"
 
 DataRecording::DataRecording(DataNode *parent)
   : DataNode(parent)

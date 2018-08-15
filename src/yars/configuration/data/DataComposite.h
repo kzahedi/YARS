@@ -8,9 +8,8 @@
 
 using namespace std;
 
-# define COMPOSITE                               "composite"
-# define YARS_STRING_OBJECT_COMPOSITE            (char*)COMPOSITE
-# define YARS_STRING_OBJECT_COMPOSITE_DEFINITION (char*)"object"  DIVIDER COMPOSITE DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_COMPOSITE            (char*)"composite"
+# define YARS_STRING_OBJECT_COMPOSITE_DEFINITION (char*)"object_composite_definition"
 
 /**
  * @brief Contains all information about a composite object

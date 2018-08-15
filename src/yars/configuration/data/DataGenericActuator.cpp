@@ -8,14 +8,14 @@
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/noise/NoiseFactory.h>
 
-# define YARS_STRING_ACTUATOR_AV_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" DIVIDER "angular" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
-# define YARS_STRING_ACTUATOR_PV_TYPE_DEFINITION (char*)"actuator" DIVIDER "type" DIVIDER "positional" DIVIDER "velocity" DIVIDER "force" DIVIDER DEFINITION
-# define YARS_STRING_ACTUATOR_MODE_DEFINITION (char*)"actuator" DIVIDER "mode" DIVIDER "active" DIVIDER "passive" DIVIDER DEFINITION
+# define YARS_STRING_ACTUATOR_AV_TYPE_DEFINITION (char*)"actuator_type_angular_velocity_force_definition"
+# define YARS_STRING_ACTUATOR_PV_TYPE_DEFINITION (char*)"actuator_type_positional_velocity_force_definition"
+# define YARS_STRING_ACTUATOR_MODE_DEFINITION (char*)"actuator_mode_active_passive_definition"
 
 # define YARS_STRING_FRICTION                      (char*)"friction"
 # define YARS_STRING_PRECISION                     (char*)"precision"
 # define YARS_STRING_FORCE                         (char*)"force"
-# define YARS_STRING_FORCE_DEFINITION              (char*)"actuator_force"          DIVIDER DEFINITION
+# define YARS_STRING_FORCE_DEFINITION              (char*)"actuator_force_definition"
 # define YARS_STRING_FORCE_SCALING                 (char*)"scaling"
 # define YARS_STRING_BIAS                          (char*)"bias"
 # define YARS_STRING_TYPE                          (char*)"type"
@@ -24,32 +24,32 @@
 # define YARS_STRING_DESTINATION                   (char*)"destination"
 # define YARS_STRING_MAPPING                       (char*)"mapping"
 # define YARS_STRING_POSE                          (char*)"pose"
-# define YARS_STRING_POSEG_DEFINITION              (char*)"pose_with_global" DIVIDER DEFINITION
-# define YARS_STRING_ROTATIONAL_AXIS_DEFINITION    (char*)"axis" DIVIDER "rotational"    DIVIDER DEFINITION
-# define YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION (char*)"axis" DIVIDER "translational" DIVIDER DEFINITION
+# define YARS_STRING_POSEG_DEFINITION              (char*)"pose_with_global_definition"
+# define YARS_STRING_ROTATIONAL_AXIS_DEFINITION    (char*)"axis_rotational_definition"
+# define YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION (char*)"axis_translational_definition"
 # define YARS_STRING_DEFLECTION                    (char*)"deflection"
 # define YARS_STRING_ANGULAR                       (char*)"angular"
 # define YARS_STRING_POSITIONAL                    (char*)"positional"
 # define YARS_STRING_VELOCITY                      (char*)"velocity"
-# define YARS_STRING_VELOCITY_DEFINITION           (char*)"actuator_velocity" DIVIDER DEFINITION
+# define YARS_STRING_VELOCITY_DEFINITION           (char*)"actuator_velocity_definition"
 # define YARS_STRING_ACTIVE                        (char*)"active"
 # define YARS_STRING_MAXIMUM                       (char*)"max"
 # define YARS_STRING_SCALING                       (char*)"scaling"
 # define YARS_STRING_PASSIVE                       (char*)"passive"
 # define YARS_STRING_NAME                          (char*)"name"
-# define YARS_STRING_JOINT_AXIS_DEFINITION         (char*)"joint"    DIVIDER "axis"      DIVIDER DEFINITION
-# define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min"      DIVIDER "max"       DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION               (char*)"name"     DIVIDER DEFINITION
-# define YARS_STRING_ACTUATOR_PARAMETER_DEFINITION (char*)"actuator" DIVIDER "parameter" DIVIDER DEFINITION
+# define YARS_STRING_JOINT_AXIS_DEFINITION         (char*)"joint_axis_definition"
+# define YARS_STRING_MIN_MAX_DEFINITION            (char*)"min_max_definition"
+# define YARS_STRING_NAME_DEFINITION               (char*)"name_definition"
+# define YARS_STRING_ACTUATOR_PARAMETER_DEFINITION (char*)"actuator_parameter_definition"
 # define YARS_STRING_GLOBAL                        (char*)"global"
-# define YARS_STRING_XYZG_DEFINITION          (char*)"xyzg"             DIVIDER DEFINITION
-# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg"         DIVIDER DEFINITION
+# define YARS_STRING_XYZG_DEFINITION               (char*)"xyzg_definition"
+# define YARS_STRING_RAD_DEG_DEFINITION            (char*)"radOrDeg_definition"
 
 # define YARS_STRING_ROTATIONAL                    (char*)"rotational"
 # define YARS_STRING_TRANSLATIONAL                 (char*)"translational"
 
-# define YARS_STRING_ROTATIONAL_DEFINITION         (char*)"rotational"    DIVIDER DEFINITION
-# define YARS_STRING_TRANSLATIONAL_DEFINITION      (char*)"translational" DIVIDER DEFINITION
+# define YARS_STRING_ROTATIONAL_DEFINITION         (char*)"rotational_definition"
+# define YARS_STRING_TRANSLATIONAL_DEFINITION      (char*)"translational_definition"
 
 # define YARS_STRING_X_AXIS                        (char*)"x"
 # define YARS_STRING_Y_AXIS                        (char*)"y"
@@ -64,7 +64,7 @@
 # define YARS_STRING_DAMPING                       (char*)"damping"
 # define YARS_STRING_STIFFNESS                     (char*)"stiffness"
 # define YARS_STRING_SPRING                        (char*)"spring"
-# define YARS_STRING_SPRING_DEFINITION             (char*)"spring" DIVIDER DEFINITION
+# define YARS_STRING_SPRING_DEFINITION             (char*)"spring_definition"
 
 # define YARS_STRING_PID                           (char*)"pid"
 

@@ -5,9 +5,8 @@
 #include "DataRobot.h"
 #include "DataMacros.h"
 
-# define ROBOTS                               "robots"
-# define YARS_STRING_ROBOTS            (char*)ROBOTS
-# define YARS_STRING_ROBOTS_DEFINITION (char*)ROBOTS DIVIDER DEFINITION
+# define YARS_STRING_ROBOTS            (char*)"robots"
+# define YARS_STRING_ROBOTS_DEFINITION (char*)"robots_definition"
 
 #include <vector>
 

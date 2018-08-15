@@ -15,9 +15,8 @@
 
 #include <pthread.h>
 
-# define GENERIC_LDR_SENSOR "ldr"
-# define YARS_STRING_GENERIC_LDR_SENSOR  (char*)GENERIC_LDR_SENSOR
-# define YARS_STRING_GENERIC_LDR_SENSOR_DEFINITION  (char*)GENERIC_LDR_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_LDR_SENSOR            (char*)"ldr"
+# define YARS_STRING_GENERIC_LDR_SENSOR_DEFINITION (char*)"ldr_definition"
 
 #include <string>
 

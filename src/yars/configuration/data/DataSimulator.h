@@ -3,11 +3,9 @@
 
 #include "DataNode.h"
 
-# define ITERATIONS                       "iterations"
-# define SIMULATOR                        "simulator"
-# define YARS_STRING_ITERATIONS           (char*)ITERATIONS
-# define YARS_STRING_SIMULATOR            (char*)SIMULATOR
-# define YARS_STRING_SIMULATOR_DEFINITION (char*)SIMULATOR DIVIDER DEFINITION
+# define YARS_STRING_ITERATIONS           (char*)"iterations"
+# define YARS_STRING_SIMULATOR            (char*)"simulator"
+# define YARS_STRING_SIMULATOR_DEFINITION (char*)"simulator_definition"
 
 # define CONTROL_TYPE_SIMULATOR 110001
 # define CONTROL_TYPE_BEHAVIOUR 110002

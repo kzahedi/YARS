@@ -8,22 +8,22 @@
 #include <float.h>
 
 # define YARS_STRING_PHYSICS                     (char*)"physics"
-# define YARS_STRING_PHYSICS_DEFINITION          (char*)"physics"         DIVIDER DEFINITION
+# define YARS_STRING_PHYSICS_DEFINITION          (char*)"physics_definition"
 
 # define YARS_STRING_MASS                        (char*)"mass"
-# define YARS_STRING_MASS_DEFINITION             (char*)"mass"            DIVIDER DEFINITION
+# define YARS_STRING_MASS_DEFINITION             (char*)"mass_definition"
 # define YARS_STRING_KG                          (char*)"kg"
 
 # define YARS_STRING_FRICTION                    (char*)"friction"
-# define YARS_STRING_FRICTION_DEFINITION         (char*)"friction"        DIVIDER DEFINITION
+# define YARS_STRING_FRICTION_DEFINITION         (char*)"friction_definition"
 # define YARS_STRING_LINEAR_DAMPING              (char*)"linearDamping"
-# define YARS_STRING_LINEAR_DAMPING_DEFINITION   (char*)"linearDamping"   DIVIDER DEFINITION
+# define YARS_STRING_LINEAR_DAMPING_DEFINITION   (char*)"linearDamping_definition"
 # define YARS_STRING_ANGULAR_DAMPING             (char*)"angularDamping"
-# define YARS_STRING_ANGULAR_DAMPING_DEFINITION  (char*)"angularDamping"  DIVIDER DEFINITION
+# define YARS_STRING_ANGULAR_DAMPING_DEFINITION  (char*)"angularDamping_definition"
 # define YARS_STRING_ROLLING_FRICTION            (char*)"rollingFriction"
-# define YARS_STRING_ROLLING_FRICTION_DEFINITION (char*)"rollingFriction" DIVIDER DEFINITION
+# define YARS_STRING_ROLLING_FRICTION_DEFINITION (char*)"rollingFriction_definition"
 # define YARS_STRING_RESTITUTION                 (char*)"restitution"
-# define YARS_STRING_RESTITUTION_DEFINITION      (char*)"restitution"     DIVIDER DEFINITION
+# define YARS_STRING_RESTITUTION_DEFINITION      (char*)"restitution_definition"
 
 
 

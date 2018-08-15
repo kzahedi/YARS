@@ -7,9 +7,8 @@
 
 #include <yars/types/Domain.h>
 
-# define GENERIC_SIGNAL_SENSOR "signal"
-# define YARS_STRING_GENERIC_SIGNAL_SENSOR  (char*)GENERIC_SIGNAL_SENSOR
-# define YARS_STRING_GENERIC_SIGNAL_SENSOR_DEFINITION  (char*)GENERIC_SIGNAL_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_SIGNAL_SENSOR            (char*)"signal"
+# define YARS_STRING_GENERIC_SIGNAL_SENSOR_DEFINITION (char*)"signal_definition"
 
 #include <string>
 

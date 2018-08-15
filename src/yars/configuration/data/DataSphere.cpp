@@ -1,14 +1,14 @@
 #include "DataSphere.h"
 #include "DataPoseFactory.h"
 
-# define YARS_STRING_RADIUS           (char*)"radius"
-# define YARS_STRING_DIMENSION        (char*)"dimension"
-# define YARS_STRING_POSE             (char*)"pose"
-# define YARS_STRING_NAME             (char*)"name"
-# define YARS_STRING_TEXTURE          (char*)"texture"
-# define YARS_STRING_VISUALISE        (char*)"visualise" // for composite objects
-# define YARS_STRING_POSE_DEFINITION  (char*)"pose"   DIVIDER DEFINITION
-# define YARS_STRING_RADIUS_DIMENSION_DEFINITION (char*)"radius" DIVIDER "dimension" DIVIDER DEFINITION
+# define YARS_STRING_RADIUS                      (char*)"radius"
+# define YARS_STRING_DIMENSION                   (char*)"dimension"
+# define YARS_STRING_POSE                        (char*)"pose"
+# define YARS_STRING_NAME                        (char*)"name"
+# define YARS_STRING_TEXTURE                     (char*)"texture"
+# define YARS_STRING_VISUALISE                   (char*)"visualise"
+# define YARS_STRING_POSE_DEFINITION             (char*)"poser_definition"
+# define YARS_STRING_RADIUS_DIMENSION_DEFINITION (char*)"radius_dimension_definition"
 
 # define OPTION_1 "option1"
 # define OPTION_2 "option2"

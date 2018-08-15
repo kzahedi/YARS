@@ -10,9 +10,8 @@
 #include "util/PID.h"
 #include "util/noise/Noise.h"
 
-# define ANGULAR_MOTOR                        "hinge"
-# define YARS_STRING_ANGULAR_MOTOR            (char*)ANGULAR_MOTOR
-# define YARS_STRING_ANGULAR_MOTOR_DEFINITION (char*)ANGULAR_MOTOR DIVIDER DEFINITION
+# define YARS_STRING_ANGULAR_MOTOR            (char*)"hinge"
+# define YARS_STRING_ANGULAR_MOTOR_DEFINITION (char*)"hinge_definition"
 
 class DataAngularMotor : public DataActuator
 {

@@ -6,9 +6,8 @@
 #include <vector>
 #include <string>
 
-# define TRIGGERED                                       "triggered"
-# define YARS_STRING_TRIGGERED_SIGNAL             (char*)TRIGGERED
-# define YARS_STRING_TRIGGERED_SIGNAL_DEFINITION  (char*)TRIGGERED DIVIDER DEFINITION
+# define YARS_STRING_TRIGGERED_SIGNAL            (char*)"triggered"
+# define YARS_STRING_TRIGGERED_SIGNAL_DEFINITION (char*)"triggered_definition"
 
 using namespace std;
 

@@ -1,0 +1,111 @@
+<rosiml version="0.8.41">
+
+  <simulator frequency="100">
+    <solver  iterations="10"/>
+  </simulator>
+
+  <screens>
+
+    <screen name="Braiternberg" show="true" follow="false">
+      <size   width="800" height="800"/>
+      <camera>
+        <position x="2.00" y="2.00" z="3.0"/>
+        <lookAt x="0.0" y="0.00" z="1.0"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+
+    <sky name="YARS/CloudySky"/>
+
+    <cameras>
+      <orbit speed="0.5">
+        <lookAtX p="0.05" i="0.001"  d="0.002"/>
+        <lookAtY p="0.05" i="0.001"  d="0.002"/>
+        <lookAtZ p="1.0"  i="0.0"    d="0.0"/>
+        <fromX   p="0.01" i="0.0001" d="0.0002"/>
+        <fromY   p="0.01" i="0.0001" d="0.0002"/>
+        <fromZ   p="0.0"  i="0.0"    d="0.0"/>
+      </orbit>
+      <centre speed="1.5"/>
+    </cameras>
+
+    <followables>
+      <followable name="swinging body"/>
+    </followables>
+  </screens>
+
+  <environment>
+    <!-- <gravitation x="0.0" y="0.0" z="-9.81"/> -->
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="Muscle">
+      <body>
+        <sphere name="base" visualise="true">
+          <dimension radius="0.10"/>
+          <pose z="2.00"/>
+          <visualisation>
+            <texture name="Chain/Circuit/Top/Green"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.0"/>
+          </physics>
+        </sphere>
+        <sphere name="swinging body" visualise="true">
+          <dimension radius="0.10"/>
+          <pose x="-.5" y="+0.5" z="1.5"/>
+          <visualisation>
+            <texture name="Chain/Circuit/Top/Green"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.0"/>
+          </physics>
+        </sphere>
+      </body>
+      <actuators>
+        <muscle name="muscle" mode="active" visualise="true">
+          <source name="base"/>
+          <destination name="swinging body"/>
+          <offset>
+            <source x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+            <desitnation x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+          </offset>
+          <force       max="10.0"/>
+          <velocity    max="10.0"/>
+          <mapping     min="-1" max="+1"/>
+          <lengthComponent   optimalLength="4.0" w="1.5" c="1.5" use="true"/>
+          <velocityComponent maxVelocity="4.0" N="1.5" K="1.5" use="false"/>
+        </muscle>
+      </actuators>
+      <sensors>
+      </sensors>
+
+      <!-- <controller  module="Braitenberg2b" frequency="10"/> -->
+
+    </robot>
+  </robots>
+
+  <!-- <traces> -->
+    <!-- <trace  target="main body" length="5" max="300" time="5" particles="false"> -->
+      <!-- <init  colour="ff0000"    size="0.01"/> -->
+      <!-- <final colour="ff000000"  size="0.00"/> -->
+    <!-- </trace> -->
+    <!-- <trace  target="wheel right" length="5" max="200" time="5" particles="false"> -->
+      <!-- <init  colour="00ff00"    size="0.01"/> -->
+      <!-- <final colour="00ff0000"  size="0.00"/> -->
+    <!-- </trace> -->
+    <!-- <trace  target="wheel left" length="5" max="100" time="5" particles="false"> -->
+      <!-- <init  colour="0000ff"    size="0.01"/> -->
+      <!-- <final colour="0000ff00"  size="0.00"/> -->
+    <!-- </trace> -->
+  <!-- </traces> -->
+
+</rosiml>

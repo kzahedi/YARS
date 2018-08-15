@@ -13,7 +13,7 @@
 using namespace std;
 
 #define YARS_STRING_POINT                  (char*)"point"
-#define YARS_STRING_TRACE_POINT_DEFINITION (char*)"trace" DIVIDER "point" DIVIDER DEFINITION
+#define YARS_STRING_TRACE_POINT_DEFINITION (char*)"trace_point_definition"
 
 class DataTracePoint : public DataTrace, public DataNode
 {

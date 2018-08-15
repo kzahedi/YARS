@@ -2,7 +2,7 @@
 #define __DATA_RECORDING_H__
 
 # define YARS_STRING_RECORDING            (char*)"recording"
-# define YARS_STRING_RECORDING_DEFINITION (char*)"recording" DIVIDER DEFINITION
+# define YARS_STRING_RECORDING_DEFINITION (char*)"recording_definition"
 
 #include <yars/configuration/data/DataNode.h>
 #include <yars/configuration/data/DataParameter.h>

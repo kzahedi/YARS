@@ -3,16 +3,16 @@
 #include "DataMeshVisualisation.h"
 
 
-# define YARS_STRING_POSE                     (char*)"pose"
-# define YARS_STRING_NAME                     (char*)"name"
-# define YARS_STRING_POSE_DEFINITION          (char*)"pose"          DIVIDER DEFINITION
-# define YARS_STRING_VISUALISE                (char*)"visualise"
-# define YARS_STRING_CONVEX                   (char*)"convex"
-# define YARS_STRING_SOFT                     (char*)"soft"
-# define YARS_STRING_TEXTURE                  (char*)"texture"
-# define YARS_STRING_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_VISUALISATION_OPTION_1   (char*)"moption1"
-# define YARS_STRING_VISUALISATION_OPTION_2   (char*)"moption2"
+# define YARS_STRING_POSE                   (char*)"pose"
+# define YARS_STRING_NAME                   (char*)"name"
+# define YARS_STRING_POSE_DEFINITION        (char*)"pose_definition"
+# define YARS_STRING_VISUALISE              (char*)"visualise"
+# define YARS_STRING_CONVEX                 (char*)"convex"
+# define YARS_STRING_SOFT                   (char*)"soft"
+# define YARS_STRING_TEXTURE                (char*)"texture"
+# define YARS_STRING_VISUALISATION          (char*)"visualisation"
+# define YARS_STRING_VISUALISATION_OPTION_1 (char*)"moption1"
+# define YARS_STRING_VISUALISATION_OPTION_2 (char*)"moption2"
 
 DataPly::DataPly(DataNode *parent)
   : DataObject(parent, DATA_OBJECT_PLY)

@@ -13,9 +13,8 @@
 #include "DataMacroInstance.h"
 #include "MacroUserInterface.h"
 
-# define ENVIRONMENT                        "environment"
-# define YARS_STRING_ENVIRONMENT            (char*)ENVIRONMENT
-# define YARS_STRING_ENVIRONMENT_DEFINITION (char*)ENVIRONMENT DIVIDER DEFINITION
+# define YARS_STRING_ENVIRONMENT            (char*)"environment"
+# define YARS_STRING_ENVIRONMENT_DEFINITION (char*)"environment_definition"
 
 #include <string>
 #include <vector>

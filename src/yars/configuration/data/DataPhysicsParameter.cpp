@@ -3,12 +3,12 @@
 
 #include <float.h>
 
-# define YARS_STRING_VALUE                       (char*)"value"
-# define YARS_STRING_X                           (char*)"x"
-# define YARS_STRING_Y                           (char*)"y"
-# define YARS_STRING_Z                           (char*)"z"
-# define YARS_STRING_COM                         (char*)"centreOfMass"
-# define YARS_STRING_COM_DEFINITION              (char*)"centreOfMass"    DIVIDER DEFINITION
+# define YARS_STRING_VALUE          (char*)"value"
+# define YARS_STRING_X              (char*)"x"
+# define YARS_STRING_Y              (char*)"y"
+# define YARS_STRING_Z              (char*)"z"
+# define YARS_STRING_COM            (char*)"centreOfMass"
+# define YARS_STRING_COM_DEFINITION (char*)"centreOfMass_definition"
 
 
 DataPhysicsParameter::DataPhysicsParameter(DataNode *parent)

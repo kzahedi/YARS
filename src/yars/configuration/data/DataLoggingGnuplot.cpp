@@ -13,9 +13,9 @@
 #define YARS_STRING_TERM                      (char*)"term"
 
 #define YARS_STRING_TARGET                    (char*)"target"
-#define YARS_STRING_TARGET_DEFINITION         (char*)"target"                    DIVIDER "definition"
-#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
-#define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true"                      DIVIDER "false"      DIVIDER DEFINITION
+#define YARS_STRING_TARGET_DEFINITION         (char*)"target_definition"
+#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
+#define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true_false_definition"
 
 #define YARS_STRING_GNUPLOT_TERM_DEFINITION   (char*)"gnuplot_term_definition"
 #define YARS_STRING_X11                       (char*)"x11"

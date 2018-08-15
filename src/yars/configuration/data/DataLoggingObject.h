@@ -10,7 +10,7 @@
 #include <string>
 
 #define YARS_STRING_LOGGING_OBJECT            (char*)"object"
-#define YARS_STRING_LOGGING_OBJECT_DEFINITION (char*)"object" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_LOGGING_OBJECT_DEFINITION (char*)"object_logging_definition"
 
 class DataLoggingObject : public DataNode, public std::vector<string>
 {

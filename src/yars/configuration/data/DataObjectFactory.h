@@ -11,7 +11,7 @@
 
 #include "DataPly.h"
 
-# define YARS_STRING_OBJECT_DEFINITION (char*)"object" DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_DEFINITION (char*)"object_definition"
 
 /**
  * @brief Factory for all used basic objects in YARS.

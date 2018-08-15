@@ -10,9 +10,8 @@
 #include <yars/util/Mapping.h>
 #include <yars/util/noise/Noise.h>
 
-# define GENERIC_DEFLECTION_SENSOR "deflection"
-# define YARS_STRING_GENERIC_DEFLECTION_SENSOR  (char*)GENERIC_DEFLECTION_SENSOR
-# define YARS_STRING_GENERIC_DEFLECTION_SENSOR_DEFINITION  (char*)GENERIC_DEFLECTION_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_DEFLECTION_SENSOR            (char*)"deflection"
+# define YARS_STRING_GENERIC_DEFLECTION_SENSOR_DEFINITION (char*)"deflection_definition"
 
 #include <string>
 #include <pthread.h>

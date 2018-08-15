@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-# define YARS_STRING_NAME   (char*)"name"
+# define YARS_STRING_NAME (char*)"name"
 
 DataParameter::DataParameter(DataNode *parent)
   : DataNode(parent)

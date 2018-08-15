@@ -12,9 +12,8 @@
 
 #include <pthread.h>
 
-# define HINGE                        "hinge"
-# define YARS_STRING_HINGE            (char*)HINGE
-# define YARS_STRING_HINGE_DEFINITION (char*)HINGE DIVIDER DEFINITION
+# define YARS_STRING_HINGE            (char*)"hinge"
+# define YARS_STRING_HINGE_DEFINITION (char*)"hinge_definition"
 
 class HingeParameter
 {

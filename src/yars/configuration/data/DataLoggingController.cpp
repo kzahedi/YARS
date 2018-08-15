@@ -8,12 +8,12 @@
 using namespace std;
 
 #define YARS_STRING_TARGET                    (char*)"target"
-#define YARS_STRING_CONTROLLER_USE_DEFINITION (char*)"controller" DIVIDER "use" DIVIDER DEFINITION
+#define YARS_STRING_CONTROLLER_USE_DEFINITION (char*)"controller_use_definition"
 #define YARS_STRING_PRECISION                 (char*)"precision"
-#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 #define YARS_STRING_USE                       (char*)"use"
 #define YARS_NO_NAME                          (char*)""
-#define YARS_STRING_CONTROLLER_USE_DEFINITION (char*)"controller" DIVIDER "use" DIVIDER DEFINITION
+#define YARS_STRING_CONTROLLER_USE_DEFINITION (char*)"controller_use_definition"
 
 #define YARS_INTERNAL_EXTERNAL_OPTION         (char*)"internal_external_option"
 #define YARS_EXTERNAL_INTERNAL_OPTION         (char*)"external_internal_option"

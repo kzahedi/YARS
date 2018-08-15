@@ -5,7 +5,7 @@
 #include <yars/util/PID.h>
 
 # define YARS_STRING_OFFSET_CAM            (char*)"offset"
-# define YARS_STRING_OFFSET_CAM_DEFINITION (char*)"offset" DIVIDER "cam" DIVIDER "config" DIVIDER DEFINITION
+# define YARS_STRING_OFFSET_CAM_DEFINITION (char*)"offset_cam_config_definition"
 
 class DataOffsetCam : public DataNode
 {

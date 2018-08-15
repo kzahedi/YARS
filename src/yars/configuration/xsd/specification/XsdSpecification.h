@@ -20,16 +20,16 @@ using namespace std;
 # define YARS_STRING_XSD_INTEGER               (char*)"xs:integer"
 # define YARS_STRING_XSD_STRING                (char*)"xs:string"
 
-# define YARS_STRING_PID_DEFINITION            (char*)"pid"             DIVIDER DEFINITION
+# define YARS_STRING_PID_DEFINITION            (char*)"pid_definition"
 
-# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
-# define YARS_STRING_POSITIVE_INTEGER          (char*)"positive_integer"          DIVIDER DEFINITION
-# define YARS_STRING_UNIT_INTERVAL             (char*)"unit_interval"             DIVIDER DEFINITION
-# define YARS_STRING_POSITIVE_NON_ZERO_DECIMAL (char*)"positive_non_zero_decimal" DIVIDER DEFINITION
-# define YARS_STRING_POSITIVE_DECIMAL          (char*)"positive_decimal"          DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION           (char*)"name"                      DIVIDER DEFINITION
+# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
+# define YARS_STRING_POSITIVE_INTEGER          (char*)"positive_integer_definition"
+# define YARS_STRING_UNIT_INTERVAL             (char*)"unit_interval_definition"
+# define YARS_STRING_POSITIVE_NON_ZERO_DECIMAL (char*)"positive_non_zero_decimal_definition"
+# define YARS_STRING_POSITIVE_DECIMAL          (char*)"positive_decimal_definition"
+# define YARS_STRING_NAME_DEFINITION           (char*)"name_definition"
 
-# define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true"   DIVIDER "false" DIVIDER DEFINITION
+# define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true_false_definition"
 
 /** \brief Singleton.
  *

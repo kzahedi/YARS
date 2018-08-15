@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_GNUPLOT_LOGGER            (char*)"gnuplot"
-#define YARS_STRING_GNUPLOT_LOGGER_DEFINITION (char*)"gnuplot" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_GNUPLOT_LOGGER_DEFINITION (char*)"gnuplot_logging_definition"
 
 class DataLoggingGnuplot : public DataLoggingModule, public DataNode
 {

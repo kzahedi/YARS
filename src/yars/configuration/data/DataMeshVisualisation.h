@@ -5,9 +5,8 @@
 #include <yars/types/Pose.h>
 #include <yars/types/P3D.h>
 
-# define MESH_VISUALISATION                              (char*)"mesh"
-# define YARS_STRING_OBJECT_MESH_VISUALISATION           MESH_VISUALISATION
-# define YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION MESH_VISUALISATION DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_MESH_VISUALISATION           (char*)"mesh"
+# define YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION (char*)"mesh_definition"
 
 class DataMeshVisualisation : public DataNode
 {

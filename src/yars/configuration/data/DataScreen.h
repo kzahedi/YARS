@@ -10,9 +10,8 @@
 #include <yars/types/Colour.h>
 #include <yars/types/TextureDefinition.h>
 
-# define SCREEN                                       "screen"
-# define YARS_STRING_SCREEN                            (char*)SCREEN
-# define YARS_STRING_SCREEN_DEFINITION                 (char*)SCREEN               DIVIDER         DEFINITION
+# define YARS_STRING_SCREEN            (char*)"screen"
+# define YARS_STRING_SCREEN_DEFINITION (char*)"screen_definition"
 
 
 #include <string>

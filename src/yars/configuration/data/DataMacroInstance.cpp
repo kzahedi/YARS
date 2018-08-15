@@ -8,24 +8,24 @@
 # define YARS_STRING_NAME              (char*)"name"
 # define YARS_STRING_OBJECT            (char*)"object"
 # define YARS_STRING_REF               (char*)"ref"
-# define YARS_STRING_POSE_DEFINITION   (char*)"pose"                  DIVIDER DEFINITION
-# define YARS_STRING_TARGET_DEFINITION (char*)"macro_instance_target" DIVIDER DEFINITION
+# define YARS_STRING_POSE_DEFINITION   (char*)"pose_definition"
+# define YARS_STRING_TARGET_DEFINITION (char*)"macro_instance_target_definition"
 
-# define YARS_STRING_FIRST_TEXTURE   (char*)"first"
-# define YARS_STRING_SECOND_TEXTURE  (char*)"second"
-# define YARS_STRING_THIRD_TEXTURE   (char*)"third"
-# define YARS_STRING_FOURTH_TEXTURE  (char*)"fourth"
-# define YARS_STRING_FIFTH_TEXTURE   (char*)"fifth"
-# define YARS_STRING_SIXTH_TEXTURE   (char*)"sixth"
-# define YARS_STRING_TOP_TEXTURE     (char*)"top"
-# define YARS_STRING_BOTTOM_TEXTURE  (char*)"bottom"
-# define YARS_STRING_BODY_TEXTURE    (char*)"body"
-# define YARS_STRING_TEXTURE         (char*)"texture"
-# define YARS_STRING_NAME_DEFINITION (char*)"name" DIVIDER DEFINITION
+# define YARS_STRING_FIRST_TEXTURE     (char*)"first"
+# define YARS_STRING_SECOND_TEXTURE    (char*)"second"
+# define YARS_STRING_THIRD_TEXTURE     (char*)"third"
+# define YARS_STRING_FOURTH_TEXTURE    (char*)"fourth"
+# define YARS_STRING_FIFTH_TEXTURE     (char*)"fifth"
+# define YARS_STRING_SIXTH_TEXTURE     (char*)"sixth"
+# define YARS_STRING_TOP_TEXTURE       (char*)"top"
+# define YARS_STRING_BOTTOM_TEXTURE    (char*)"bottom"
+# define YARS_STRING_BODY_TEXTURE      (char*)"body"
+# define YARS_STRING_TEXTURE           (char*)"texture"
+# define YARS_STRING_NAME_DEFINITION   (char*)"name_definition"
 
-# define OPTION_1 (char*)"option1"
-# define OPTION_2 (char*)"option2"
-# define OPTION_3 (char*)"option3"
+# define OPTION_1                      (char*)"option1"
+# define OPTION_2                      (char*)"option2"
+# define OPTION_3                      (char*)"option3"
 
 
 DataMacroInstance::DataMacroInstance(DataNode *parent, DataMacros *macros)

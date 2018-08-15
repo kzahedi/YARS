@@ -6,9 +6,8 @@
 #include <vector>
 #include <string>
 
-# define PERIODIC                                       "periodic"
-# define YARS_STRING_PERIODIC_SIGNAL             (char*)PERIODIC
-# define YARS_STRING_PERIODIC_SIGNAL_DEFINITION  (char*)PERIODIC DIVIDER DEFINITION
+# define YARS_STRING_PERIODIC_SIGNAL            (char*)"periodic"
+# define YARS_STRING_PERIODIC_SIGNAL_DEFINITION (char*)"periodic_definition"
 
 using namespace std;
 

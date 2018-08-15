@@ -8,11 +8,9 @@
 
 using namespace std;
 
-# define PARAMETER                        "parameter"
-# define YARS_STRING_PARAMETER            (char*)PARAMETER
-# define YARS_STRING_PARAMETER_DEFINITION (char*)PARAMETER DIVIDER DEFINITION
-# define VALUE             "value"
-# define YARS_STRING_VALUE (char*)VALUE
+# define YARS_STRING_PARAMETER            (char*)"parameter"
+# define YARS_STRING_PARAMETER_DEFINITION (char*)"parameter_definition"
+# define YARS_STRING_VALUE                (char*)"value"
 
 class DataParameter : public DataNode
 {

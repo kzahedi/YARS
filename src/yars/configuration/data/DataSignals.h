@@ -7,9 +7,8 @@
 #include <vector>
 using namespace std;
 
-# define SIGNALS_LIST                                 "signals"
-# define YARS_STRING_SIGNALS_LIST                      (char*)SIGNALS_LIST
-# define YARS_STRING_SIGNALS_LIST_DEFINITION           (char*)SIGNALS_LIST         DIVIDER         DEFINITION
+# define YARS_STRING_SIGNALS_LIST            (char*)"signals"
+# define YARS_STRING_SIGNALS_LIST_DEFINITION (char*)"signals_definition"
 
 class DataSignals : public DataNode, public std::vector<DataSignal*>
 {

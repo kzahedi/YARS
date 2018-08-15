@@ -8,7 +8,7 @@
 using namespace std;
 
 #define YARS_STRING_TARGET                    (char*)"target"
-#define YARS_STRING_ACTUATOR_VALUE_DEFINITION (char*)"value"  DIVIDER DEFINITION
+#define YARS_STRING_ACTUATOR_VALUE_DEFINITION (char*)"value_definition"
 #define YARS_STRING_PRECISION                 (char*)"precision"
 #define YARS_STRING_INTERNAL                  (char*)"internal"
 #define YARS_STRING_EXTERNAL                  (char*)"external"
@@ -20,8 +20,8 @@ using namespace std;
 #define YARS_INTERNAL_EXTERNAL_OPTION         (char*)"internal_external_option"
 #define YARS_EXTERNAL_INTERNAL_OPTION         (char*)"external_internal_option"
 
-#define YARS_STRING_ACTUATOR_USE_DEFINITION   (char*)"actuator" DIVIDER "use" DIVIDER DEFINITION
-#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+#define YARS_STRING_ACTUATOR_USE_DEFINITION   (char*)"actuator_use_definition"
+#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 
 
 DataLoggingActuator::DataLoggingActuator(DataNode *parent)

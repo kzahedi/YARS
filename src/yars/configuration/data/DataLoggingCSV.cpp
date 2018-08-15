@@ -14,9 +14,9 @@
 #define YARS_STRING_FALSE                 (char*)"false"
 
 #define YARS_STRING_TARGET                (char*)"target"
-#define YARS_STRING_TARGET_DEFINITION     (char*)"target" DIVIDER "definition"
+#define YARS_STRING_TARGET_DEFINITION     (char*)"target_definition"
 
-#define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true"   DIVIDER "false"      DIVIDER DEFINITION
+#define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
 
 
 DataLoggingCSV::DataLoggingCSV(DataNode *parent)
@@ -79,7 +79,7 @@ void DataLoggingCSV::createXsd(XsdSpecification *spec)
   trueFalseDefinition->add(YARS_STRING_TRUE);
   trueFalseDefinition->add(YARS_STRING_FALSE);
   spec->add(trueFalseDefinition);
-  
+
 }
 
 

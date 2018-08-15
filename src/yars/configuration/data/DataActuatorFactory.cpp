@@ -4,8 +4,7 @@
 
 using namespace std;
 
-# define GENERIC             "generic"
-# define YARS_STRING_GENERIC (char*)GENERIC
+# define YARS_STRING_GENERIC (char*)"generic"
 
 DataActuator* DataActuatorFactory::actuator(DataParseElement *element, DataNode *parent)
 {
@@ -13,6 +12,7 @@ DataActuator* DataActuatorFactory::actuator(DataParseElement *element, DataNode 
   if(element->opening(YARS_STRING_SLIDER))  return __generateSliderActuator(element,  parent);
   if(element->opening(YARS_STRING_FIXED))   return __generateFixedActuator(element,   parent);
   if(element->opening(YARS_STRING_GENERIC)) return __generateGenericActuator(element, parent);
+  if(element->opening(YARS_STRING_MUSCLE))  return __generateMuscleActuator(element, parent);
   return NULL;
 }
 
@@ -26,6 +26,13 @@ DataHingeActuator* DataActuatorFactory::__generateHingeActuator(DataParseElement
 DataSliderActuator* DataActuatorFactory::__generateSliderActuator(DataParseElement *element, DataNode *parent)
 {
   DataSliderActuator *actuator = new DataSliderActuator(parent);
+  actuator->add(element);
+  return actuator;
+}
+
+DataMuscleActuator* DataActuatorFactory::__generateMuscleActuator(DataParseElement *element, DataNode *parent)
+{
+  DataMuscleActuator *actuator = new DataMuscleActuator(parent);
   actuator->add(element);
   return actuator;
 }
@@ -64,4 +71,5 @@ void DataActuatorFactory::createXsd(XsdSpecification *spec)
   DataSliderActuator::createXsd(spec);
   DataFixedActuator::createXsd(spec);
   DataGenericActuator::createXsd(spec);
+  DataMuscleActuator::createXsd(spec);
 }

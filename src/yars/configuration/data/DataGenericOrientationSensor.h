@@ -8,9 +8,8 @@
 #include <yars/types/Domain.h>
 #include <yars/defines/mutex.h>
 
-# define GENERIC_ORIENTATION_SENSOR "orientation"
-# define YARS_STRING_GENERIC_ORIENTATION_SENSOR  (char*)GENERIC_ORIENTATION_SENSOR
-# define YARS_STRING_GENERIC_ORIENTATION_SENSOR_DEFINITION  (char*)GENERIC_ORIENTATION_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_ORIENTATION_SENSOR            (char*)"orientation"
+# define YARS_STRING_GENERIC_ORIENTATION_SENSOR_DEFINITION (char*)"orientation_definition"
 
 #include <string>
 

@@ -1,12 +1,12 @@
 #include "DataMacro.h"
 #include "DataObjectFactory.h"
 
-# define YARS_STRING_POSE            (char*)"pose"
-# define YARS_STRING_NAME            (char*)"name"
-# define YARS_STRING_BODY            (char*)"body"
-# define YARS_STRING_BODY_DEFINITION (char*)"macro_body" DIVIDER DEFINITION
-# define YARS_STRING_SELF_COLLIDE    (char*)"selfCollide"
-# define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true" DIVIDER "false" DIVIDER DEFINITION
+# define YARS_STRING_POSE                  (char*)"pose"
+# define YARS_STRING_NAME                  (char*)"name"
+# define YARS_STRING_BODY                  (char*)"body"
+# define YARS_STRING_BODY_DEFINITION       (char*)"macro_body_definition"
+# define YARS_STRING_SELF_COLLIDE          (char*)"selfCollide"
+# define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
 
 DataMacro::DataMacro(DataNode *parent)
   : DataNode(parent)

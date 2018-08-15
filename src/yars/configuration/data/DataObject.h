@@ -5,7 +5,7 @@
 # define DATA_OBJECT_SPHERE          1002
 # define DATA_OBJECT_CYLINDER        1003
 # define DATA_OBJECT_CAPPED_CYLINDER 1004
-# define DATA_OBJECT_PLY            1005
+# define DATA_OBJECT_PLY             1005
 # define DATA_OBJECT_COMPOSITE       1006
 # define DATA_OBJECT_MACRO           1007
 

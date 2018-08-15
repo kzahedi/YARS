@@ -1,5 +1,5 @@
-#ifndef __DATA_SLIDER_H__
-#define __DATA_SLIDER_H__
+#ifndef __DATA_MUSCLE_H__
+#define __DATA_MUSCLE_H__
 
 #include <yars/configuration/data/DataActuator.h>
 #include <yars/configuration/data/DataNoise.h>
@@ -12,80 +12,40 @@
 
 #include <pthread.h>
 
-# define YARS_STRING_SLIDER            (char*)"slider"
-# define YARS_STRING_SLIDER_DEFINITION (char*)"slider_definition"
+# define YARS_STRING_MUSCLE            (char*)"muscle"
+# define YARS_STRING_MUSCLE_DEFINITION (char*)"muscle_definition"
 
-class SliderParameter
+class MuscleParameter
 {
   public:
-    SliderParameter()
+    MuscleParameter()
     {
-      softnessDir      = -1.0;
-      restitutionDir   = -1.0;
-      dampingDir       = -1.0;
-
-      softnessLim      = -1.0;
-      restitutionLim   = -1.0;
-      dampingLim       = -1.0;
-
-      softnessOrtho    = -1.0;
-      restitutionOrtho = -1.0;
-      dampingOrtho     = -1.0;
-
       maxVelocity      =  0.0;
       maxForce         =  0.0;
       forceScaling     = -1.0;
     }
 
-    SliderParameter& operator=(const SliderParameter &p)
+    MuscleParameter& operator=(const MuscleParameter &p)
     {
-      softnessDir      = p.softnessDir;
-      restitutionDir   = p.restitutionDir;
-      dampingDir       = p.dampingDir;
-
-      softnessLim      = p.softnessLim;
-      restitutionLim   = p.restitutionLim;
-      dampingLim       = p.dampingLim;
-
-      softnessOrtho    = p.softnessOrtho;
-      restitutionOrtho = p.restitutionOrtho;
-      dampingOrtho     = p.dampingOrtho;
-
       maxVelocity      = p.maxVelocity;
       maxForce         = p.maxForce;
       forceScaling     = p.forceScaling;
 
-      pid              = p.pid;
-
       return *this;
     };
-
-    double softnessDir;
-    double restitutionDir;
-    double dampingDir;
-
-    double softnessLim;
-    double restitutionLim;
-    double dampingLim;
-
-    double softnessOrtho;
-    double restitutionOrtho;
-    double dampingOrtho;
 
     double maxVelocity;
     double maxForce;
     double forceScaling;
-
-    PID pid;
 };
 
 
 
-class DataSliderActuator : public DataActuator
+class DataMuscleActuator : public DataActuator
 {
   public:
-    DataSliderActuator(DataNode *parent);
-    ~DataSliderActuator();
+    DataMuscleActuator(DataNode *parent);
+    ~DataMuscleActuator();
 
     void add(DataParseElement *element);
 
@@ -98,7 +58,7 @@ class DataSliderActuator : public DataActuator
     Domain mapping();
     DataNoise* noise();
     DataFilter* filter();
-    SliderParameter parameter();
+    MuscleParameter parameter();
     string mode();
     void setPosition(P3D position);
 
@@ -133,17 +93,17 @@ class DataSliderActuator : public DataActuator
 
     static void createXsd(XsdSpecification *spec);
 
-    DataSliderActuator* _copy();
+    DataMuscleActuator* _copy();
 
   private:
     void __close();
     void __setMapping();
 
-    DataFilter     *_filter;
-    DataNoise      *_noise;
+    DataFilter*     _filter;
+    DataNoise*      _noise;
     Domain          _deflection;
     Domain          _mapping;
-    SliderParameter _parameter;
+    MuscleParameter _parameter;
     Pose            _pose;
     bool            _deflectionSet;
     string          _destination;
@@ -152,22 +112,22 @@ class DataSliderActuator : public DataActuator
     string          _name;
     string          _source;
 
-    vector<double>   _internalValue;
-    vector<double>   _externalValue;
-    vector<double>   _desiredValue;
-    vector<double>   _desiredExValue;
+    vector<double>  _internalValue;
+    vector<double>  _externalValue;
+    vector<double>  _desiredValue;
+    vector<double>  _desiredExValue;
     vector<Mapping> _internalExternalMapping;
     vector<Domain>  _internalDomain;
     vector<Domain>  _externalDomain;
-    Noise          *_n;
+    Noise*          _n;
     bool            _isActive;
-    double           _currentTransitionalVelocity;
+    double          _currentTransitionalVelocity;
     bool            _poseInWorldCoordinates;
-    double           _appliedForce;
-    double           _appliedVelocity;
-    double           _friction;
+    double          _appliedForce;
+    double          _appliedVelocity;
+    double          _friction;
     pthread_mutex_t _mutex;
 
 };
 
-#endif // __DATA_SLIDER_H__
+#endif // __DATA_MUSCLE_H__

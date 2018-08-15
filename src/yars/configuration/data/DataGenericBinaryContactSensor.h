@@ -9,9 +9,8 @@
 
 #include <pthread.h>
 
-# define GENERIC_BINARY_CONTACT_SENSOR                        "binaryContact"
-# define YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR            (char*)GENERIC_BINARY_CONTACT_SENSOR
-# define YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR_DEFINITION (char*)GENERIC_BINARY_CONTACT_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR            (char*)"binaryContact"
+# define YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR_DEFINITION (char*)"binaryContact_definition"
 
 #include <string>
 

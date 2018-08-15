@@ -12,9 +12,8 @@
 #include <vector>
 #include <string>
 
-# define SCREEN_CONFIG                        "screens"
-# define YARS_STRING_SCREEN_CONFIG            (char*)SCREEN_CONFIG
-# define YARS_STRING_SCREEN_CONFIG_DEFINITION (char*)SCREEN_CONFIG DIVIDER DEFINITION
+# define YARS_STRING_SCREEN_CONFIG            (char*)"screens"
+# define YARS_STRING_SCREEN_CONFIG_DEFINITION (char*)"screens_definition"
 
 using namespace std;
 

@@ -10,9 +10,8 @@
 #include <vector>
 #include <string>
 
-# define TRACES                        "traces"
-# define YARS_STRING_TRACES            (char*)TRACES
-# define YARS_STRING_TRACES_DEFINITION (char*)TRACES DIVIDER DEFINITION
+# define YARS_STRING_TRACES            (char*)"traces"
+# define YARS_STRING_TRACES_DEFINITION (char*)"traces_definition"
 
 using namespace std;
 

@@ -13,9 +13,8 @@
 
 #include <pthread.h>
 
-# define GENERIC                        "generic"
-# define YARS_STRING_GENERIC            (char*)GENERIC
-# define YARS_STRING_GENERIC_DEFINITION (char*)GENERIC DIVIDER "actuator" DIVIDER DEFINITION
+# define YARS_STRING_GENERIC            (char*)"generic"
+# define YARS_STRING_GENERIC_DEFINITION (char*)"generic__definition"
 
 class TypeParameter
 {

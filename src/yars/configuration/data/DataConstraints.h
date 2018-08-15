@@ -8,7 +8,7 @@
 using namespace std;
 
 # define YARS_STRING_CONSTRAINTS            (char*)"constraints"
-# define YARS_STRING_CONSTRAINTS_DEFINITION (char*)"constraints" DIVIDER DEFINITION
+# define YARS_STRING_CONSTRAINTS_DEFINITION (char*)"constraints_definition"
 
 class DataConstraints : public DataNode
 {

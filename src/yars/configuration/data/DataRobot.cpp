@@ -3,10 +3,10 @@
 
 # define YARS_STRING_POSE                  (char*)"pose"
 # define YARS_STRING_NAME                  (char*)"name"
-# define YARS_STRING_POSE_DEFINITION       (char*)"pose" DIVIDER DEFINITION
-# define YARS_STRING_BODY_DEFINITION       (char*)"body" DIVIDER DEFINITION
+# define YARS_STRING_POSE_DEFINITION       (char*)"pose_definition"
+# define YARS_STRING_BODY_DEFINITION       (char*)"body_definition"
 # define YARS_STRING_SELF_COLLIDE          (char*)"selfCollide"
-# define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true" DIVIDER "false" DIVIDER DEFINITION
+# define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
 
 DataRobot::DataRobot(DataNode *parent)
   : DataNode(parent)

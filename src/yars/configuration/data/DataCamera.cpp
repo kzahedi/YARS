@@ -4,13 +4,13 @@
 
 #include <yars/defines/ymath.h>
 
-# define YARS_STRING_POSITION                   (char*)"position"
-# define YARS_STRING_LOOK_AT                    (char*)"lookAt"
-# define YARS_STRING_UP                         (char*)"up"
-# define YARS_STRING_ANGLES                     (char*)"angles"
-# define YARS_STRING_XYZ_DEFINITION             (char*)"xyz"            DIVIDER DEFINITION
-# define YARS_CAMERA_OPTION_A                   (char*)"data_camera_option_a"
-# define YARS_CAMERA_OPTION_B                   (char*)"data_camera_option_b"
+# define YARS_STRING_POSITION       (char*)"position"
+# define YARS_STRING_LOOK_AT        (char*)"lookAt"
+# define YARS_STRING_UP             (char*)"up"
+# define YARS_STRING_ANGLES         (char*)"angles"
+# define YARS_STRING_XYZ_DEFINITION (char*)"xyz_definition"
+# define YARS_CAMERA_OPTION_A       (char*)"data_camera_option_a"
+# define YARS_CAMERA_OPTION_B       (char*)"data_camera_option_b"
 
 DataCamera::DataCamera(DataNode *parent)
   : DataNode(parent)

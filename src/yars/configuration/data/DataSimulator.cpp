@@ -7,16 +7,16 @@
 
 using namespace std;
 
-# define YARS_STRING_CONTROL                       (char*)"control"
-# define YARS_STRING_BEHAVIOUR                     (char*)"behaviour"
-# define YARS_STRING_FREQUENCY                     (char*)"frequency"
-# define YARS_STRING_AUTO_RESET                    (char*)"reset"
-# define YARS_STRING_SEED                          (char*)"seed"
-# define YARS_STRING_SOLVER                        (char*)"solver"
-# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER     (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+# define YARS_STRING_CONTROL                   (char*)"control"
+# define YARS_STRING_BEHAVIOUR                 (char*)"behaviour"
+# define YARS_STRING_FREQUENCY                 (char*)"frequency"
+# define YARS_STRING_AUTO_RESET                (char*)"reset"
+# define YARS_STRING_SEED                      (char*)"seed"
+# define YARS_STRING_SOLVER                    (char*)"solver"
+# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_divider_definition"
 
-# define YARS_STRING_COUNT                         (char*)"count"
-# define YARS_STRING_COUNT_DEFINITION              (char*)"count" DIVIDER DEFINITION
+# define YARS_STRING_COUNT                     (char*)"count"
+# define YARS_STRING_COUNT_DEFINITION          (char*)"count_divider_definition"
 
 
 DataSimulator::DataSimulator(DataNode *parent)

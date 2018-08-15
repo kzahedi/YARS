@@ -8,11 +8,10 @@
 
 
 
-# define PLY                                      "ply"
-# define YARS_STRING_OBJECT_PLY                   (char*)PLY
-# define YARS_STRING_OBJECT_PLY_DEFINTION         (char*)"object" DIVIDER PLY             DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_PLY                   (char*)"ply"
+# define YARS_STRING_OBJECT_PLY_DEFINTION         (char*)"object_ply_definition"
 # define YARS_STRING_FILE_NAME                    (char*)"filename"
-# define YARS_STRING_PLY_VISUALISATION_DEFINITION (char*)"ply"    DIVIDER "visualisation" DIVIDER DEFINITION
+# define YARS_STRING_PLY_VISUALISATION_DEFINITION (char*)"ply_visualisation_definition"
 
 /**
  * @brief Implements a ply object.

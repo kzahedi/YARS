@@ -8,12 +8,6 @@
 #include <ostream>
 #include <iostream>
 
-# define DIVIDER                        "_"
-# define DEFINITION                     "definition"
-
-
-
-
 using namespace std;
 
 /**

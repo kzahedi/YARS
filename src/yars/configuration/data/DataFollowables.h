@@ -10,7 +10,7 @@
 using namespace std;
 
 # define YARS_STRING_FOLLOWABLES            (char*)"followables"
-# define YARS_STRING_FOLLOWABLES_DEFINITION (char*)"followables" DIVIDER DEFINITION
+# define YARS_STRING_FOLLOWABLES_DEFINITION (char*)"followables_definition"
 
 class DataFollowables : public DataNode, public std::vector<string>
 {

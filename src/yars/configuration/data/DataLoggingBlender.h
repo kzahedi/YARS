@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_BLENDER_LOGGER            (char*)"blender"
-#define YARS_STRING_BLENDER_LOGGER_DEFINITION (char*)"blender" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_BLENDER_LOGGER_DEFINITION (char*)"blender_logging_definition"
 
 class DataLoggingBlender : public DataLoggingModule, public DataNode
 {

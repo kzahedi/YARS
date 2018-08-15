@@ -3,8 +3,7 @@
 
 #include "DataNode.h"
 
-# define COMMENT                                      "comment"
-# define YARS_STRING_COMMENT                           (char*)COMMENT
+# define YARS_STRING_COMMENT (char*)"comment"
 
 /**
  * @brief

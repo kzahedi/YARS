@@ -7,23 +7,23 @@
 
 #include <yars/configuration/xsd/specification/XsdSpecification.h>
 
-# define YARS_STRING_DISTANCE                 (char*)"distance"
-# define YARS_STRING_OPENING_ANGLES           (char*)"openingAngles"
-# define YARS_STRING_MAPPING                  (char*)"mapping"
-# define YARS_STRING_POSE                     (char*)"pose"
-# define YARS_STRING_NAME                     (char*)"name"
-# define YARS_STRING_OBJECT                   (char*)"object"
-# define YARS_STRING_POSE_DEFINITION          (char*)"pose"          DIVIDER DEFINITION
-# define YARS_STRING_MIN_MAX_DEFINITION       (char*)"min_max"       DIVIDER DEFINITION
-# define YARS_STRING_XY_DEFINITION            (char*)"xy"            DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION          (char*)"name"          DIVIDER DEFINITION
-# define YARS_STRING_RAD_DEG_DEFINITION       (char*)"radOrDeg"      DIVIDER DEFINITION
-# define YARS_STRING_RAD                      (char*)"rad"
-# define YARS_STRING_DEG                      (char*)"deg"
-# define YARS_STRING_METER                    (char*)"meter"
-# define YARS_STRING_METER_DEFINITION         (char*)"meter"         DIVIDER DEFINITION
-# define YARS_STRING_OPENING_ANGLES_DEFINTION (char*)"openingAngles" DIVIDER DEFINITION
-# define YARS_STRING_POSITIVE_NON_ZERO_DECIMAL     (char*)"positive_non_zero_decimal" DIVIDER DEFINITION
+# define YARS_STRING_DISTANCE                  (char*)"distance"
+# define YARS_STRING_OPENING_ANGLES            (char*)"openingAngles"
+# define YARS_STRING_MAPPING                   (char*)"mapping"
+# define YARS_STRING_POSE                      (char*)"pose"
+# define YARS_STRING_NAME                      (char*)"name"
+# define YARS_STRING_OBJECT                    (char*)"object"
+# define YARS_STRING_POSE_DEFINITION           (char*)"pose_definition"
+# define YARS_STRING_MIN_MAX_DEFINITION        (char*)"min_max_definition"
+# define YARS_STRING_XY_DEFINITION             (char*)"xy_definition"
+# define YARS_STRING_NAME_DEFINITION           (char*)"name_definition"
+# define YARS_STRING_RAD_DEG_DEFINITION        (char*)"radOrDeg_definition"
+# define YARS_STRING_RAD                       (char*)"rad"
+# define YARS_STRING_DEG                       (char*)"deg"
+# define YARS_STRING_METER                     (char*)"meter"
+# define YARS_STRING_METER_DEFINITION          (char*)"meter_definition"
+# define YARS_STRING_OPENING_ANGLES_DEFINTION  (char*)"openingAngles_definition"
+# define YARS_STRING_POSITIVE_NON_ZERO_DECIMAL (char*)"positive_non_zero_decimal_definition"
 
 
 # define CONVERT_TO_RAD(x) x = x / 180.0 * M_PI

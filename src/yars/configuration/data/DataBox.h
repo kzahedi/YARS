@@ -8,11 +8,10 @@
 #include <yars/types/WHDDimension.h>
 #include <yars/types/Pose.h>
 
-# define BOX                              "box"
-# define YARS_STRING_OBJECT_BOX           (char*)BOX
-# define YARS_STRING_OBJECT_BOX_DEFINTION (char*)"object" DIVIDER BOX DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_BOX                   (char*)"box"
+# define YARS_STRING_OBJECT_BOX_DEFINTION         (char*)"object_box_definition"
 # define YARS_STRING_BOX_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_BOX_VISUALISATION_DEFINITION (char*)"box" DIVIDER "visualisation" DIVIDER DEFINITION 
+# define YARS_STRING_BOX_VISUALISATION_DEFINITION (char*)"box_visualisation_definition"
 
 /**
  * @brief Contains all information about a box.

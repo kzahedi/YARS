@@ -9,39 +9,36 @@
 
 # define YARS_STRING_TEXTURES                      (char*)"textures"
 # define YARS_STRING_WINDOW_SIZE                   (char*)"size"
-# define WIDTH                                     "width"
-# define HEIGHT                                    "height"
-# define WIDTH_HEIGHT                              WIDTH                   DIVIDER HEIGHT
-# define YARS_STRING_WIDTH                         (char*)WIDTH
-# define YARS_STRING_HEIGHT                        (char*)HEIGHT
-# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)WIDTH_HEIGHT     DIVIDER DEFINITION
+# define YARS_STRING_WIDTH                         (char*)"width"
+# define YARS_STRING_HEIGHT                        (char*)"height"
+# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)"width_height_divider_definition"
 # define YARS_STRING_AUTO_SHOW                     (char*)"show"
 # define YARS_STRING_AUTO_CAPTURE                  (char*)"capture"
 # define YARS_STRING_AUTO_FOLLOW                   (char*)"follow"
 # define YARS_STRING_POSITION                      (char*)"position"
-# define YARS_STRING_POSITION_DEFINITION           (char*)"position"       DIVIDER DEFINITION
+# define YARS_STRING_POSITION_DEFINITION           (char*)"position_definition"
 # define YARS_STRING_POSITION                      (char*)"position"
 # define YARS_STRING_LOOK_AT                       (char*)"lookAt"
 # define YARS_STRING_SCALE                         (char*)"scale"
-# define YARS_STRING_TRUE_FALSE_DEFINITION         (char*)"true"           DIVIDER "false"    DIVIDER DEFINITION
-# define YARS_STRING_SCREEN_TEXTURES_DEFINITION    (char*)"screenTextures" DIVIDER DEFINITION
-# define YARS_STRING_XYZ_DEFINITION                (char*)"xyz"            DIVIDER DEFINITION
+# define YARS_STRING_TRUE_FALSE_DEFINITION         (char*)"true_false_definition"
+# define YARS_STRING_SCREEN_TEXTURES_DEFINITION    (char*)"screenTextures_definition"
+# define YARS_STRING_XYZ_DEFINITION                (char*)"xyz_definition"
 # define YARS_STRING_NAME                          (char*)"name"
 # define YARS_STRING_POSE                          (char*)"pose"
-# define YARS_STRING_POSE_DEFINITION               (char*)"pose"   DIVIDER DEFINITION
-# define YARS_STRING_XY_DEFINITION                 (char*)"xy"     DIVIDER DEFINITION
+# define YARS_STRING_POSE_DEFINITION               (char*)"pose_definition"
+# define YARS_STRING_XY_DEFINITION                 (char*)"xy_definition"
 # define YARS_STRING_OSD                           (char*)"osd"
-# define YARS_STRING_OSD_DEFINITION                (char*)"osd"    DIVIDER DEFINITION
+# define YARS_STRING_OSD_DEFINITION                (char*)"osd_definition"
 # define YARS_STRING_OSD_ROBOT                     (char*)"robot"
 # define YARS_STRING_OSD_TIME                      (char*)"time"
-# define YARS_STRING_OSD_FONT_DEFINITION           (char*)"osd_font" DIVIDER DEFINITION
+# define YARS_STRING_OSD_FONT_DEFINITION           (char*)"osd_font_definition"
 # define YARS_STRING_OSD_FONT_SIZE                 (char*)"size"
 # define YARS_STRING_OSD_FONT_WIDTH                (char*)"width"
 # define YARS_STRING_OSD_FONT_HEIGHT               (char*)"height"
 # define YARS_STRING_OSD_FONT_TYPE                 (char*)"font"
 # define YARS_STRING_OSD_FONT_COLOR                (char*)"colour"
 # define YARS_STRING_XSD_POSITIVE_NON_ZERO_INTEGER (char*)"[1-9][0-9]*"
-# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER     (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+# define YARS_STRING_POSITIVE_NON_ZERO_INTEGER     (char*)"positive_non_zero_integer_definition"
 # define YARS_STRING_COLOR                         (char*)"colour"
 # define YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION  (char*)"colour_hex_rgba_definition"
 # define YARS_STRING_XSD_HEX_COLOR                 (char*)"[A-Fa-f0-9]{6}([A-Fa-f0-9]{2}){0,1}"

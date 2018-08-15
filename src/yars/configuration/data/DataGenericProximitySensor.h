@@ -14,9 +14,8 @@
 
 #include <pthread.h>
 
-# define GENERIC_PROXIMITY                            "proximity"
-# define YARS_STRING_GENERIC_PROXIMITY                 (char*)GENERIC_PROXIMITY
-# define YARS_STRING_GENERIC_PROXIMITY_DEFINITION      (char*)GENERIC_PROXIMITY DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_PROXIMITY            (char*)"proximity"
+# define YARS_STRING_GENERIC_PROXIMITY_DEFINITION (char*)"proximity_definition"
 
 class DataGenericProximitySensor : public DataSensor
 {

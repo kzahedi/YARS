@@ -8,12 +8,12 @@
 # define YARS_STRING_POSE                   (char*)"pose"
 # define YARS_STRING_NAME                   (char*)"name"
 # define YARS_STRING_OBJECT                 (char*)"object"
-# define YARS_STRING_MIN_MAX_DEFINITION     (char*)"min"         DIVIDER "max" DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION        (char*)"name"        DIVIDER DEFINITION
+# define YARS_STRING_MIN_MAX_DEFINITION     (char*)"min_max_definition"
+# define YARS_STRING_NAME_DEFINITION        (char*)"name_definition"
 
 # define YARS_STRING_COORDINATES            (char*)"coordinates"
-# define YARS_STRING_COORDINATES_DEFINITION (char*)"coordinates" DIVIDER DEFINITION
-# define YARS_STRING_TRUE_FALSE_DEFINITION  (char*)"true"        DIVIDER "false" DIVIDER DEFINITION
+# define YARS_STRING_COORDINATES_DEFINITION (char*)"coordinates_definition"
+# define YARS_STRING_TRUE_FALSE_DEFINITION  (char*)"true_false_definition"
 
 # define YARS_STRING_X                      (char*)"x"
 # define YARS_STRING_Y                      (char*)"y"

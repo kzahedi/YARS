@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_FILE_LOGGER            (char*)"file"
-#define YARS_STRING_FILE_LOGGER_DEFINITION (char*)"file" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_FILE_LOGGER_DEFINITION (char*)"file_logging_definition"
 
 class DataLoggingFile : public DataLoggingModule, public DataNode
 {

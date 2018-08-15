@@ -5,8 +5,8 @@
 
 #include <yars/configuration/data/DataParseElement.h>
 
-# define YARS_STRING_MIN                (char*)"min"
-# define YARS_STRING_MAX                (char*)"max"
+# define YARS_STRING_MIN (char*)"min"
+# define YARS_STRING_MAX (char*)"max"
 
 class DataDomainFactory
 {

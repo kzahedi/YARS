@@ -3,7 +3,7 @@
 #include <yars/util/YarsErrorHandler.h>
 
 # define YARS_STRING_FOLLOWABLE            (char*)"followable"
-# define YARS_STRING_FOLLOWABLE_DEFINITION (char*)"followable" DIVIDER DEFINITION
+# define YARS_STRING_FOLLOWABLE_DEFINITION (char*)"followable_definition"
 # define YARS_STRING_NAME                  (char*)"name"
 
 DataFollowables::DataFollowables(DataNode *parent)

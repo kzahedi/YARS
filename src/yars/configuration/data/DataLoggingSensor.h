@@ -11,7 +11,7 @@
 #include <string>
 
 #define YARS_STRING_LOGGING_SENSOR            (char*)"sensor"
-#define YARS_STRING_LOGGING_SENSOR_DEFINITION (char*)"sensor" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_LOGGING_SENSOR_DEFINITION (char*)"sensor_logging_definition"
 
 #define INTERNAL 6602
 #define EXTERNAL 6603

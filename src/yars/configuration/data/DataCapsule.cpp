@@ -5,18 +5,18 @@
 # define YARS_STRING_DIMENSION       (char*)"dimension"
 # define YARS_STRING_POSE            (char*)"pose"
 # define YARS_STRING_NAME            (char*)"name"
-# define YARS_STRING_NAME_DEFINITION (char*)"name" DIVIDER DEFINITION
+# define YARS_STRING_NAME_DEFINITION (char*)"name_definition"
 # define YARS_STRING_VISUALISE       (char*)"visualise" // for composite objects
-# define YARS_STRING_POSE_DEFINITION (char*)"pose"      DIVIDER DEFINITION
+# define YARS_STRING_POSE_DEFINITION (char*)"pose_definition"
 
 # define YARS_STRING_TEXTURE         (char*)"texture"
 # define YARS_STRING_TOP_TEXTURE     (char*)"top"
 # define YARS_STRING_BOTTOM_TEXTURE  (char*)"bottom"
 # define YARS_STRING_BODY_TEXTURE    (char*)"body"
 
-# define OPTION_1 "option1"
-# define OPTION_2 "option2"
-# define OPTION_3 "option3"
+# define OPTION_1                    "option1"
+# define OPTION_2                    "option2"
+# define OPTION_3                    "option3"
 
 DataCapsule::DataCapsule(DataNode *parent)
   : DataCylinder(parent, DATA_OBJECT_CAPPED_CYLINDER)

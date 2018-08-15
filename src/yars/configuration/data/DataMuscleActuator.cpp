@@ -1,4 +1,4 @@
-#include <yars/configuration/data/DataSliderActuator.h>
+#include <yars/configuration/data/DataMuscleActuator.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataPIDFactory.h>
@@ -23,7 +23,9 @@
 # define YARS_STRING_DEFLECTION                    (char*)"deflection"
 # define YARS_STRING_POSITIONAL                    (char*)"positional"
 # define YARS_STRING_VELOCITY                      (char*)"velocity"
-# define YARS_STRING_VELOCITY_DEFINITION           (char*)"slider_velocity_definition"
+# define YARS_STRING_VELOCITY_DEFINITION           (char*)"muscle_velocity_definition"
+# define YARS_STRING_MUSFIB                        (char*)"musfib"
+# define YARS_STRING_MUSFIB_DEFINITION             (char*)"muscle_musfib_definition"
 # define YARS_STRING_FORCE                         (char*)"force"
 # define YARS_STRING_FORCE_DEFINITION              (char*)"force_definition"
 # define YARS_STRING_FORCE_VELOCITY                (char*)"force and velocity"
@@ -50,8 +52,8 @@
 # define YARS_STRING_GLOBAL                        (char*)"global"
 
 
-DataSliderActuator::DataSliderActuator(DataNode *parent)
-  : DataActuator(parent, DATA_ACTUATOR_SLIDER)
+DataMuscleActuator::DataMuscleActuator(DataNode *parent)
+  : DataActuator(parent, DATA_ACTUATOR_MUSCLE)
 {
   _noise                       = new DataNoise(this);
   _filter                      = NULL;
@@ -80,20 +82,20 @@ DataSliderActuator::DataSliderActuator(DataNode *parent)
   YM_INIT;
 }
 
-DataSliderActuator::~DataSliderActuator()
+DataMuscleActuator::~DataMuscleActuator()
 {
   YM_CLOSE;
   delete _n;
 }
 
-void DataSliderActuator::add(DataParseElement *element)
+void DataMuscleActuator::add(DataParseElement *element)
 {
-  if(element->closing(YARS_STRING_SLIDER))
+  if(element->closing(YARS_STRING_MUSCLE))
   {
     __close();
     current = parent;
   }
-  if(element->opening(YARS_STRING_SLIDER))
+  if(element->opening(YARS_STRING_MUSCLE))
   {
     element->set(YARS_STRING_NAME,     _name);
     element->set(YARS_STRING_TYPE,     _jointType);
@@ -139,29 +141,6 @@ void DataSliderActuator::add(DataParseElement *element)
     DataDomainFactory::set(_mapping, element);
   }
 
-  if(element->opening(YARS_STRING_REGULAR))
-  {
-    element->set(YARS_STRING_DAMPING,     _parameter.dampingDir);
-    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionDir);
-    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessDir);
-  }
-  if(element->opening(YARS_STRING_LIMIT))
-  {
-    element->set(YARS_STRING_DAMPING,     _parameter.dampingLim);
-    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionLim);
-    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessLim);
-  }
-  if(element->opening(YARS_STRING_ORTHOGONAL))
-  {
-    element->set(YARS_STRING_DAMPING,     _parameter.dampingOrtho);
-    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionOrtho);
-    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessOrtho);
-  }
-  if(element->opening(YARS_STRING_PID))
-  {
-    DataPIDFactory::set(_parameter.pid, element);
-  }
-
   if(element->opening(YARS_STRING_NOISE))
   {
     _noise  = new DataNoise(this);
@@ -176,32 +155,32 @@ void DataSliderActuator::add(DataParseElement *element)
   }
 }
 
-string DataSliderActuator::name()
+string DataMuscleActuator::name()
 {
   return _name;
 }
 
-double DataSliderActuator::friction()
+double DataMuscleActuator::friction()
 {
   return _friction;
 }
 
-string DataSliderActuator::source()
+string DataMuscleActuator::source()
 {
   return _source;
 }
 
-string DataSliderActuator::destination()
+string DataMuscleActuator::destination()
 {
   return _destination;
 }
 
-Domain DataSliderActuator::deflection()
+Domain DataMuscleActuator::deflection()
 {
   return _deflection;
 }
 
-Pose DataSliderActuator::pose()
+Pose DataMuscleActuator::pose()
 {
   YM_LOCK;
   Pose r = _pose;
@@ -209,7 +188,7 @@ Pose DataSliderActuator::pose()
   return r;
 }
 
-Domain DataSliderActuator::mapping()
+Domain DataMuscleActuator::mapping()
 {
   YM_LOCK;
   Domain r = _mapping;
@@ -217,22 +196,22 @@ Domain DataSliderActuator::mapping()
   return r;
 }
 
-DataNoise* DataSliderActuator::noise()
+DataNoise* DataMuscleActuator::noise()
 {
   return _noise;
 }
 
-DataFilter* DataSliderActuator::filter()
+DataFilter* DataMuscleActuator::filter()
 {
   return _filter;
 }
 
-string DataSliderActuator::jointType()
+string DataMuscleActuator::jointType()
 {
   return _jointType;
 }
 
-void DataSliderActuator::applyOffset(Pose offset)
+void DataMuscleActuator::applyOffset(Pose offset)
 {
   if(_poseInWorldCoordinates) return;
   _pose << offset;
@@ -241,43 +220,43 @@ void DataSliderActuator::applyOffset(Pose offset)
 }
 
 
-void DataSliderActuator::createXsd(XsdSpecification *spec)
+void DataMuscleActuator::createXsd(XsdSpecification *spec)
 {
-  XsdSequence *sliderDefinition = new XsdSequence(YARS_STRING_SLIDER_DEFINITION);
-  sliderDefinition->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,               false));
-  sliderDefinition->add(NA(YARS_STRING_TYPE,        YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
-  sliderDefinition->add(NA(YARS_STRING_FRICTION,    YARS_STRING_POSITIVE_DECIMAL,         false));
-  sliderDefinition->add(NA(YARS_STRING_MODE,        YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
-  sliderDefinition->add(NE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
-  sliderDefinition->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
-  sliderDefinition->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
-  sliderDefinition->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
-  sliderDefinition->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
-  sliderDefinition->add(NE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-  sliderDefinition->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  XsdSequence *muscleDefinition = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
+  muscleDefinition->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,               false));
+  muscleDefinition->add(NA(YARS_STRING_TYPE,        YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
+  muscleDefinition->add(NA(YARS_STRING_FRICTION,    YARS_STRING_POSITIVE_DECIMAL,         false));
+  muscleDefinition->add(NA(YARS_STRING_MODE,        YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
+  muscleDefinition->add(NE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
+  muscleDefinition->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
+  muscleDefinition->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
+  muscleDefinition->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  muscleDefinition->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
 
   XsdElement *forceParameter = NE(YARS_STRING_FORCE_DEFINITION, "", 0, 1);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   forceParameter->add(NA(YARS_STRING_SCALING, YARS_STRING_UNIT_INTERVAL,    false));
-  sliderDefinition->add(forceParameter);
+  muscleDefinition->add(forceParameter);
 
   XsdElement *velocityParameter = NE(YARS_STRING_VELOCITY_DEFINITION, "", 0, 1);
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
-  sliderDefinition->add(velocityParameter);
+  muscleDefinition->add(velocityParameter);
 
 
   XsdElement *regularParameters = NE(YARS_STRING_REGULAR, "", 0, 1);
   regularParameters->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
   regularParameters->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
   regularParameters->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
-  sliderDefinition->add(regularParameters);
+  muscleDefinition->add(regularParameters);
 
-  sliderDefinition->add(NE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  sliderDefinition->add(NE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  sliderDefinition->add(NE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
-  sliderDefinition->add(NE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
-  sliderDefinition->add(NE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
-  spec->add(sliderDefinition);
+  muscleDefinition->add(NE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  muscleDefinition->add(NE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  muscleDefinition->add(NE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
+  muscleDefinition->add(NE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
+  muscleDefinition->add(NE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
+  spec->add(muscleDefinition);
 
   XsdEnumeration *actuatorTypeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_TYPE_DEFINITION,
       YARS_STRING_XSD_STRING);
@@ -311,7 +290,7 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
   spec->add(actuatorParameter);
 }
 
-void DataSliderActuator::__close()
+void DataMuscleActuator::__close()
 {
   if(_jointType == YARS_STRING_POSITIONAL)     _controlType = DATA_ACTUATOR_CONTROL_POSITIONAL;
   if(_jointType == YARS_STRING_VELOCITY)       _controlType = DATA_ACTUATOR_CONTROL_VELOCITY;
@@ -321,27 +300,27 @@ void DataSliderActuator::__close()
   __setMapping();
 }
 
-bool DataSliderActuator::isDeflectionSet()
+bool DataMuscleActuator::isDeflectionSet()
 {
   return _deflectionSet;
 }
 
-SliderParameter DataSliderActuator::parameter()
+MuscleParameter DataMuscleActuator::parameter()
 {
   YM_LOCK;
-  SliderParameter r = _parameter;
+  MuscleParameter r = _parameter;
   YM_UNLOCK;
   return r;
 }
 
-string DataSliderActuator::mode()
+string DataMuscleActuator::mode()
 {
   return _mode;
 }
 
-DataSliderActuator* DataSliderActuator::_copy()
+DataMuscleActuator* DataMuscleActuator::_copy()
 {
-  DataSliderActuator *copy = new DataSliderActuator(NULL);
+  DataMuscleActuator *copy = new DataMuscleActuator(NULL);
 
   if (_filter != NULL) copy->_filter = _filter->copy();
   if (_noise  != NULL) copy->_noise  = _noise->copy();
@@ -364,7 +343,7 @@ DataSliderActuator* DataSliderActuator::_copy()
   return copy;
 }
 
-double DataSliderActuator::velocity()
+double DataMuscleActuator::velocity()
 {
   YM_LOCK;
   double r = _parameter.maxVelocity;
@@ -372,7 +351,7 @@ double DataSliderActuator::velocity()
   return r;
 }
 
-double DataSliderActuator::force()
+double DataMuscleActuator::force()
 {
   YM_LOCK;
   double r = _parameter.maxForce;
@@ -380,7 +359,7 @@ double DataSliderActuator::force()
   return r;
 }
 
-double DataSliderActuator::internalValue(int index)
+double DataMuscleActuator::internalValue(int index)
 {
   YM_LOCK;
   double r = _internalValue[index];
@@ -388,7 +367,7 @@ double DataSliderActuator::internalValue(int index)
   return r;
 }
 
-double DataSliderActuator::externalValue(int index)
+double DataMuscleActuator::externalValue(int index)
 {
   YM_LOCK;
   double r = _externalValue[index];
@@ -396,7 +375,7 @@ double DataSliderActuator::externalValue(int index)
   return r;
 }
 
-void DataSliderActuator::setInternalValue(int index, double v)
+void DataMuscleActuator::setInternalValue(int index, double v)
 {
   YM_LOCK;
   _internalValue[index] = _internalDomain[index].cut(v);
@@ -404,7 +383,7 @@ void DataSliderActuator::setInternalValue(int index, double v)
   YM_UNLOCK;
 }
 
-void DataSliderActuator::setExternalValue(int index, double v)
+void DataMuscleActuator::setExternalValue(int index, double v)
 {
   YM_LOCK;
   _externalValue[index] = _externalDomain[index].cut(_n->calculate(v));
@@ -412,7 +391,7 @@ void DataSliderActuator::setExternalValue(int index, double v)
   YM_UNLOCK;
 }
 
-void DataSliderActuator::__setMapping()
+void DataMuscleActuator::__setMapping()
 {
   if(_controlType == DATA_ACTUATOR_CONTROL_FORCE_VELOCITY)
   {
@@ -474,7 +453,7 @@ void DataSliderActuator::__setMapping()
   }
   _n = NoiseFactory::create(_noise);
 }
-Domain DataSliderActuator::getInternalDomain(int index)
+Domain DataMuscleActuator::getInternalDomain(int index)
 {
   YM_LOCK;
   Domain r = _internalDomain[index];
@@ -482,7 +461,7 @@ Domain DataSliderActuator::getInternalDomain(int index)
   return r;
 }
 
-Domain DataSliderActuator::getExternalDomain(int index)
+Domain DataMuscleActuator::getExternalDomain(int index)
 {
   YM_LOCK;
   Domain r = _externalDomain[index];
@@ -490,7 +469,7 @@ Domain DataSliderActuator::getExternalDomain(int index)
   return r;
 }
 
-void DataSliderActuator::setDesiredValue(int index, double value)
+void DataMuscleActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
   _desiredExValue[index] = _externalDomain[index].cut(value);
@@ -498,7 +477,7 @@ void DataSliderActuator::setDesiredValue(int index, double value)
   YM_UNLOCK;
 }
 
-double DataSliderActuator::getInternalDesiredValue(int index)
+double DataMuscleActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
   double r = _desiredValue[index];
@@ -506,21 +485,21 @@ double DataSliderActuator::getInternalDesiredValue(int index)
   return r;
 }
 
-void DataSliderActuator::setVelocity(double v)
+void DataMuscleActuator::setVelocity(double v)
 {
   YM_LOCK;
   _parameter.maxVelocity = v;
   YM_UNLOCK;
 }
 
-void DataSliderActuator::setForce(double f)
+void DataMuscleActuator::setForce(double f)
 {
   YM_LOCK;
   _parameter.maxForce = f;
   YM_UNLOCK;
 }
 
-double DataSliderActuator::getExternalDesiredValue(int index)
+double DataMuscleActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
   double r = _desiredExValue[index];
@@ -528,12 +507,12 @@ double DataSliderActuator::getExternalDesiredValue(int index)
   return r;
 }
 
-bool DataSliderActuator::isActive(int index)
+bool DataMuscleActuator::isActive(int index)
 {
   return _isActive;
 }
 
-double DataSliderActuator::getCurrentTransitionalVelocity()
+double DataMuscleActuator::getCurrentTransitionalVelocity()
 {
   YM_LOCK;
   double r = _currentTransitionalVelocity;
@@ -541,31 +520,31 @@ double DataSliderActuator::getCurrentTransitionalVelocity()
   return r;
 }
 
-void DataSliderActuator::setCurrentTransitionalVelocity(double v)
+void DataMuscleActuator::setCurrentTransitionalVelocity(double v)
 {
   YM_LOCK;
   _currentTransitionalVelocity = v;
   YM_UNLOCK;
 }
 
-void DataSliderActuator::setPosition(P3D position)
+void DataMuscleActuator::setPosition(P3D position)
 {
   YM_LOCK;
   _pose.position = position;
   YM_UNLOCK;
 }
 
-double DataSliderActuator::getAppliedForce(int index)
+double DataMuscleActuator::getAppliedForce(int index)
 {
   return _appliedForce;
 }
 
-double DataSliderActuator::getAppliedVelocity(int index)
+double DataMuscleActuator::getAppliedVelocity(int index)
 {
   return _appliedVelocity;
 }
 
-void DataSliderActuator::setAppliedForceAndVelocity(int index, double force, double velocity)
+void DataMuscleActuator::setAppliedForceAndVelocity(int index, double force, double velocity)
 {
   _appliedForce    = force;
   _appliedVelocity = velocity;

@@ -3,9 +3,8 @@
 
 #include "DataSensor.h"
 
-# define SENSORS                                      "sensors"
-# define YARS_STRING_SENSOR_LIST                       (char*)SENSORS
-# define YARS_STRING_SENSOR_LIST_DEFINITION            (char*)SENSORS DIVIDER DEFINITION
+# define YARS_STRING_SENSOR_LIST            (char*)"sensors"
+# define YARS_STRING_SENSOR_LIST_DEFINITION (char*)"sensors_definition"
 
 class DataSensorFactory
 {

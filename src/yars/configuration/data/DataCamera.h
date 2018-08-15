@@ -4,10 +4,8 @@
 #include <yars/configuration/data/DataNode.h>
 #include <yars/types/P3D.h>
 
-# define CAMERA                                       "camera"
-# define YARS_STRING_CAMERA                           (char*)CAMERA
-# define YARS_STRING_SCREEN_CAMERA_DEFINITION         (char*)CAMERA  DIVIDER "screen" DIVIDER DEFINITION
-
+# define YARS_STRING_CAMERA                   (char*)"camera"
+# define YARS_STRING_SCREEN_CAMERA_DEFINITION (char*)"camera_screen_definition"
 
 #include <string>
 

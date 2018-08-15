@@ -82,6 +82,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataSignals.cpp
             data/DataSimulator.cpp
             data/DataSliderActuator.cpp
+            data/DataMuscleActuator.cpp
             data/DataSphere.cpp
             data/DataTrace.cpp
             data/DataTraceLine.cpp

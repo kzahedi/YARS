@@ -2,32 +2,32 @@
 
 #include <yars/util/macros.h>
 
-# define YARS_STRING_NAME                          (char*)"name"
-# define YARS_STRING_NAME_DEFINITION               (char*)"name" DIVIDER DEFINITION
-# define YARS_STRING_X                             (char*)"x"
-# define YARS_STRING_Y                             (char*)"y"
-# define YARS_STRING_Z                             (char*)"z"
-# define YARS_STRING_GRAVITATION                   (char*)"gravitation"
-# define YARS_STRING_ORIENTATION                   (char*)"orientation"
-# define YARS_STRING_NORMAL                        (char*)"normal"
-# define YARS_STRING_XYZ_DEFINITION                (char*)"xyz"     DIVIDER DEFINITION
-# define YARS_STRING_XY_DEFINITION                 (char*)"xy"      DIVIDER DEFINITION
-# define YARS_STRING_X                             (char*)"x"
-# define YARS_STRING_Y                             (char*)"y"
-# define YARS_STRING_FIXED                         (char*)"fixed"
-# define YARS_STRING_OBJECT_GROUND                 (char*)"ground"
-# define YARS_STRING_OBJECT_GROUND_DEFINTION       (char*)"ground"  DIVIDER DEFINITION
-# define YARS_STRING_TRUE_FALSE_DEFINITION         (char*)"true"    DIVIDER "false"    DIVIDER DEFINITION
-# define YARS_STRING_TEXTURE_GROUND_DEFINITION     (char*)"texture" DIVIDER "ground"   DIVIDER DEFINITION
-# define YARS_STRING_USE_FOG                       (char*)"fog"
-# define YARS_STRING_FOG_INTENSITY                 (char*)"fogIntensity"
+# define YARS_STRING_NAME                            (char*)"name"
+# define YARS_STRING_NAME_DEFINITION                 (char*)"name_definition"
+# define YARS_STRING_X                               (char*)"x"
+# define YARS_STRING_Y                               (char*)"y"
+# define YARS_STRING_Z                               (char*)"z"
+# define YARS_STRING_GRAVITATION                     (char*)"gravitation"
+# define YARS_STRING_ORIENTATION                     (char*)"orientation"
+# define YARS_STRING_NORMAL                          (char*)"normal"
+# define YARS_STRING_XYZ_DEFINITION                  (char*)"xyz_definition"
+# define YARS_STRING_XY_DEFINITION                   (char*)"xy_definition"
+# define YARS_STRING_X                               (char*)"x"
+# define YARS_STRING_Y                               (char*)"y"
+# define YARS_STRING_FIXED                           (char*)"fixed"
+# define YARS_STRING_OBJECT_GROUND                   (char*)"ground"
+# define YARS_STRING_OBJECT_GROUND_DEFINTION         (char*)"ground_definition"
+# define YARS_STRING_TRUE_FALSE_DEFINITION           (char*)"true_false_definition"
+# define YARS_STRING_TEXTURE_GROUND_DEFINITION       (char*)"texture_ground_definition"
+# define YARS_STRING_USE_FOG                         (char*)"fog"
+# define YARS_STRING_FOG_INTENSITY                   (char*)"fogIntensity"
 
 # define YARS_STRING_GROUND_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_GROUND_VISUALISATION_DEFINITION (char*)"visualisation" DIVIDER DEFINITION
+# define YARS_STRING_GROUND_VISUALISATION_DEFINITION (char*)"visualisation_definition"
 # define YARS_STRING_TEXTURE                         (char*)"texture"
 
-# define OPTION_1 (char*)"option1"
-# define OPTION_2 (char*)"option2"
+# define OPTION_1                                    (char*)"option1"
+# define OPTION_2                                    (char*)"option2"
 
 DataEnvironment::DataEnvironment(DataNode *parent)
   : DataNode(parent)

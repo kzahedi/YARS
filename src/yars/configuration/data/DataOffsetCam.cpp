@@ -2,10 +2,10 @@
 
 #include "DataPIDFactory.h"
 
-# define YARS_STRING_PID_DEFINITION (char*)"pid" DIVIDER DEFINITION
-# define YARS_STRING_P (char*)"p"
-# define YARS_STRING_I (char*)"i"
-# define YARS_STRING_D (char*)"d"
+# define YARS_STRING_PID_DEFINITION       (char*)"pid_definition"
+# define YARS_STRING_P                    (char*)"p"
+# define YARS_STRING_I                    (char*)"i"
+# define YARS_STRING_D                    (char*)"d"
 
 # define YARS_STRING_OFFSET_CAM_LOOK_AT_X (char*)"lookAtX"
 # define YARS_STRING_OFFSET_CAM_LOOK_AT_Y (char*)"lookAtY"

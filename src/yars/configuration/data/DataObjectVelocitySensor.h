@@ -7,9 +7,8 @@
 
 #include <yars/types/Domain.h>
 
-# define GENERIC_OBJECT_VELOCITY_SENSOR                        "ov"
-# define YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR            (char*)GENERIC_OBJECT_VELOCITY_SENSOR
-# define YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR_DEFINITION (char*)GENERIC_OBJECT_VELOCITY_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR            (char*)"ov"
+# define YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR_DEFINITION (char*)"ov_definition"
 
 #include <string>
 #include <pthread.h>

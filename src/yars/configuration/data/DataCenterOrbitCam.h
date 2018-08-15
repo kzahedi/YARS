@@ -4,7 +4,7 @@
 #include "DataNode.h"
 
 # define YARS_STRING_CENTER_ORBIT_CAM            (char*)"centre"
-# define YARS_STRING_CENTER_ORBIT_CAM_DEFINITION (char*)"centre" DIVIDER "cam" DIVIDER "config" DIVIDER DEFINITION
+# define YARS_STRING_CENTER_ORBIT_CAM_DEFINITION (char*)"centre_cam_config_definition"
 
 class DataCenterOrbitCam : public DataNode
 {

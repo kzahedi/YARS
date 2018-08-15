@@ -6,11 +6,10 @@
 #include "DataNode.h"
 #include "DataObjects.h"
 
-# define MACRO                              "macro"
-# define YARS_STRING_OBJECT_MACRO           (char*)MACRO
-# define YARS_STRING_OBJECT_MACRO_DEFINTION (char*)"object" DIVIDER MACRO      DIVIDER DEFINITION
-# define YARS_STRING_MACRO                  (char*)MACRO
-# define YARS_STRING_MACRO_DEFINITION       (char*)MACRO DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_MACRO           (char*)"macro"
+# define YARS_STRING_OBJECT_MACRO_DEFINTION (char*)"object_macro_definition"
+# define YARS_STRING_MACRO                  (char*)"macro"
+# define YARS_STRING_MACRO_DEFINITION       (char*)"macro_definition"
 
 class DataMacro : public DataObjects, public DataNode
 {

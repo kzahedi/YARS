@@ -9,9 +9,8 @@
 
 #include <vector>
 
-# define LIGHT_SOURCE                        "pointLightSource"
-# define YARS_STRING_LIGHT_SOURCE            (char*)LIGHT_SOURCE
-# define YARS_STRING_LIGHT_SOURCE_DEFINITION (char*)LIGHT_SOURCE DIVIDER DEFINITION
+# define YARS_STRING_LIGHT_SOURCE            (char*)"pointLightSource"
+# define YARS_STRING_LIGHT_SOURCE_DEFINITION (char*)"pointLightSource_definition"
 
 using namespace std;
 

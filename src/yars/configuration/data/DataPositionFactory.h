@@ -4,9 +4,9 @@
 #include <yars/types/P3D.h>
 #include <yars/configuration/data/DataParseElement.h>
 
-# define YARS_STRING_X     (char*)"x"
-# define YARS_STRING_Y     (char*)"y"
-# define YARS_STRING_Z     (char*)"z"
+# define YARS_STRING_X (char*)"x"
+# define YARS_STRING_Y (char*)"y"
+# define YARS_STRING_Z (char*)"z"
 
 class DataPositionFactory
 {

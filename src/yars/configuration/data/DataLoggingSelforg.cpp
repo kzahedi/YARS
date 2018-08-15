@@ -14,12 +14,12 @@
 #define YARS_STRING_STEP_SIZE                 (char*)"stepsize"
 
 #define YARS_STRING_TARGET                    (char*)"target"
-#define YARS_STRING_TARGET_DEFINITION         (char*)"target"                    DIVIDER "definition"
-#define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true"                      DIVIDER "false"      DIVIDER DEFINITION
-#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+#define YARS_STRING_TARGET_DEFINITION         (char*)"target_definition"
+#define YARS_STRING_TRUE_FALSE_DEFINITION     (char*)"true_false_definition"
+#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 
-#define YARS_STRING_MATRIXVIZ_DEFINITION      (char*)"matrixviz" DIVIDER DEFINITION
-#define YARS_STRING_GUILOGGER_DEFINITION      (char*)"guilogger" DIVIDER DEFINITION
+#define YARS_STRING_MATRIXVIZ_DEFINITION      (char*)"matrixviz_definition"
+#define YARS_STRING_GUILOGGER_DEFINITION      (char*)"guilogger_definition"
 
 DataLoggingSelforg::DataLoggingSelforg(DataNode *parent)
   : DataNode(parent)

@@ -24,11 +24,8 @@
 
 #include <string>
 
-# define ROSIML              "rosiml"
-# define YARS_STRING_ROOT    (char*)ROSIML
-# define YARS_STRING_ROSIML  (char*)ROSIML
-# define ROSIML_VERSION      "version"
-# define YARS_STRING_VERSION (char*)ROSIML_VERSION
+# define YARS_STRING_ROSIML  (char*)"rosiml"
+# define YARS_STRING_VERSION (char*)"version"
 
 using namespace std;
 

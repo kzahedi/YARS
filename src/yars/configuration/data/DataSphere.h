@@ -9,12 +9,11 @@
 
 // #include "DataVisualisation.h"
 
-# define SPHERE                              "sphere"
-# define YARS_STRING_OBJECT_SPHERE           (char*)SPHERE
-# define YARS_STRING_OBJECT_SPHERE_DEFINTION (char*)"object" DIVIDER SPHERE DIVIDER DEFINITION
+# define YARS_STRING_OBJECT_SPHERE                   (char*)"sphere"
+# define YARS_STRING_OBJECT_SPHERE_DEFINTION         (char*)"object_sphere_definition"
 
 # define YARS_STRING_SPHERE_VISUALISATION            (char*)"visualisation"
-# define YARS_STRING_SPHERE_VISUALISATION_DEFINITION (char*)"sphere" DIVIDER "visualisation" DIVIDER DEFINITION
+# define YARS_STRING_SPHERE_VISUALISATION_DEFINITION (char*)"sphere_visualisation_definition"
 
 #include <string>
 

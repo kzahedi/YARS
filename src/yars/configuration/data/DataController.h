@@ -2,7 +2,7 @@
 #define __DATA_CONTROLLER_H__
 
 # define YARS_STRING_CONTROLLER            (char*)"controller"
-# define YARS_STRING_CONTROLLER_DEFINITION (char*)"controller" DIVIDER DEFINITION
+# define YARS_STRING_CONTROLLER_DEFINITION (char*)"controller_definition"
 
 #include <yars/configuration/data/DataNode.h>
 #include <yars/configuration/data/DataParameter.h>

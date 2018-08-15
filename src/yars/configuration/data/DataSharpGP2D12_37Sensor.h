@@ -8,9 +8,8 @@
 
 #include <yars/util/Mapping.h>
 
-# define SHARP_IR_GP2D12_37 "sharpGP2D12_37"
-# define YARS_STRING_SHARP_IR_GP2D12_37  (char*)SHARP_IR_GP2D12_37
-# define YARS_STRING_SHARP_IR_GP2D12_37_DEFINITION  (char*)SHARP_IR_GP2D12_37 DIVIDER DEFINITION
+# define YARS_STRING_SHARP_IR_GP2D12_37            (char*)"sharpGP2D12_37"
+# define YARS_STRING_SHARP_IR_GP2D12_37_DEFINITION (char*)"sharpGP2D12_37_definition"
 
 #include <string>
 

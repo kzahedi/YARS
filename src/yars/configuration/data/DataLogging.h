@@ -25,7 +25,7 @@
 #include <vector>
 
 #define YARS_STRING_LOGGING            (char*)"logging"
-#define YARS_STRING_LOGGING_DEFINITION (char*)"logging" DIVIDER DEFINITION
+#define YARS_STRING_LOGGING_DEFINITION (char*)"logging_definition"
 
 
 class DataLogging : public DataNode

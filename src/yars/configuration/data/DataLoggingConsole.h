@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_CONSOLE            (char*)"console"
-#define YARS_STRING_CONSOLE_DEFINITION (char*)"console" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_CONSOLE_DEFINITION (char*)"console_logging_definition"
 
 class DataLoggingConsole : public DataLoggingModule, public DataNode
 {

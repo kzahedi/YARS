@@ -4,20 +4,13 @@
 #include <yars/types/WHDDimension.h>
 #include <yars/types/RHDimension.h>
 
-# define WIDTH                                        "width"
-# define RADIUS                                       "radius"
-# define HEIGHT                                       "height"
-# define DEPTH                                        "depth"
-# define WIDTH_HEIGHT                                 WIDTH DIVIDER HEIGHT
-# define WIDTH_HEIGHT_DEPTH                           WIDTH DIVIDER HEIGHT DIVIDER DEPTH
-
-# define YARS_STRING_DEPTH                         (char*)DEPTH
-# define YARS_STRING_HEIGHT                        (char*)HEIGHT
-# define YARS_STRING_RADIUS                        (char*)RADIUS
-# define YARS_STRING_RADIUS_HEIGHT_DEFINITION      (char*)RADIUS             DIVIDER HEIGHT     DIVIDER DEFINITION
-# define YARS_STRING_WIDTH                         (char*)WIDTH
-# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)WIDTH_HEIGHT       DIVIDER DEFINITION
-# define YARS_STRING_WIDTH_HEIGHT_DEPTH_DEFINITION (char*)WIDTH_HEIGHT_DEPTH DIVIDER DEFINITION
+# define YARS_STRING_DEPTH                         (char*)"depth"
+# define YARS_STRING_HEIGHT                        (char*)"height"
+# define YARS_STRING_RADIUS                        (char*)"radius"
+# define YARS_STRING_RADIUS_HEIGHT_DEFINITION      (char*)"radius_height_definition"
+# define YARS_STRING_WIDTH                         (char*)"width"
+# define YARS_STRING_WIDTH_HEIGHT_DEFINITION       (char*)"width_height_definition"
+# define YARS_STRING_WIDTH_HEIGHT_DEPTH_DEFINITION (char*)"width_height_depth_definition"
 
 class DataDimensionFactory
 {

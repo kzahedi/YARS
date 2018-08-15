@@ -5,7 +5,7 @@
 #include <yars/util/PID.h>
 
 # define YARS_STRING_ORBIT_CAM            (char*)"orbit"
-# define YARS_STRING_ORBIT_CAM_DEFINITION (char*)"orbit" DIVIDER "cam" DIVIDER "config" DIVIDER DEFINITION
+# define YARS_STRING_ORBIT_CAM_DEFINITION (char*)"orbit_cam_config_definition"
 
 class DataOrbitCam : public DataNode
 {

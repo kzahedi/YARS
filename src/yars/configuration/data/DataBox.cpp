@@ -2,25 +2,25 @@
 #include "DataPoseFactory.h"
 #include "DataDimensionFactory.h"
 
-#define YARS_STRING_DIMENSION       (char*)"dimension"
-#define YARS_STRING_POSE            (char*)"pose"
-#define YARS_STRING_POSE_DEFINITION (char*)"pose"      DIVIDER DEFINITION
-#define YARS_STRING_VISUALISE       (char*)"visualise" //      for        composite objects
-#define YARS_STRING_SCALE           (char*)"scale"
-#define YARS_STRING_NAME            (char*)"name"
+#define YARS_STRING_DIMENSION              (char*)"dimension"
+#define YARS_STRING_POSE                   (char*)"pose"
+#define YARS_STRING_POSE_DEFINITION        (char*)"pose_definition"
+#define YARS_STRING_VISUALISE              (char*)"visualise"
+#define YARS_STRING_SCALE                  (char*)"scale"
+#define YARS_STRING_NAME                   (char*)"name"
 
-#define YARS_STRING_USE             (char*)"use"
-#define YARS_STRING_TEXTURE         (char*)"texture"
-#define YARS_STRING_FIRST_TEXTURE   (char*)"first"
-#define YARS_STRING_SECOND_TEXTURE  (char*)"second"
-#define YARS_STRING_THIRD_TEXTURE   (char*)"third"
-#define YARS_STRING_FOURTH_TEXTURE  (char*)"fourth"
-#define YARS_STRING_FIFTH_TEXTURE   (char*)"fifth"
-#define YARS_STRING_SIXTH_TEXTURE   (char*)"sixth"
+#define YARS_STRING_USE                    (char*)"use"
+#define YARS_STRING_TEXTURE                (char*)"texture"
+#define YARS_STRING_FIRST_TEXTURE          (char*)"first"
+#define YARS_STRING_SECOND_TEXTURE         (char*)"second"
+#define YARS_STRING_THIRD_TEXTURE          (char*)"third"
+#define YARS_STRING_FOURTH_TEXTURE         (char*)"fourth"
+#define YARS_STRING_FIFTH_TEXTURE          (char*)"fifth"
+#define YARS_STRING_SIXTH_TEXTURE          (char*)"sixth"
 
-# define YARS_STRING_VISUALISATION_OPTION_1 (char*)"option1"
-# define YARS_STRING_VISUALISATION_OPTION_2 (char*)"option2"
-# define YARS_STRING_VISUALISATION_OPTION_3 (char*)"option3"
+#define YARS_STRING_VISUALISATION_OPTION_1 (char*)"option1"
+#define YARS_STRING_VISUALISATION_OPTION_2 (char*)"option2"
+#define YARS_STRING_VISUALISATION_OPTION_3 (char*)"option3"
 
 DataBox::DataBox(DataNode *parent)
   : DataObject(parent, DATA_OBJECT_BOX)

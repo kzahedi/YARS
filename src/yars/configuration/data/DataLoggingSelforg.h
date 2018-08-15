@@ -10,7 +10,7 @@
 using namespace std;
 
 #define YARS_STRING_SELFORG_LOGGER            (char*)"selforg"
-#define YARS_STRING_SELFORG_LOGGER_DEFINITION (char*)"selforg" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_SELFORG_LOGGER_DEFINITION (char*)"selforg_logging_definition"
 
 class DataLoggingSelforg : public DataLoggingModule, public DataNode
 {

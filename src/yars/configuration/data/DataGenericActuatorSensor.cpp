@@ -10,19 +10,19 @@
 # define YARS_STRING_NAME               (char*)"name"
 # define YARS_STRING_OBJECT             (char*)"object"
 # define YARS_STRING_TYPE               (char*)"type"
-# define YARS_STRING_TYPE_DEFINITION    (char*)"type"                         DIVIDER DEFINITION
+# define YARS_STRING_TYPE_DEFINITION    (char*)"type_definition"
 # define YARS_STRING_DOMAIN             (char*)"domain"
-# define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max"                      DIVIDER DEFINITION
-# define YARS_STRING_NAME_DEFINITION    (char*)"name"                         DIVIDER DEFINITION
+# define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
+# define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
 # define YARS_STRING_X                  (char*)"x"
 # define YARS_STRING_Y                  (char*)"y"
 # define YARS_STRING_Z                  (char*)"z"
 
-# define YARS_STRING_AXIS_DEFINITION    (char*)"generic_actuator_sensor_axis" DIVIDER DEFINITION
+# define YARS_STRING_AXIS_DEFINITION    (char*)"generic_actuator_sensor_axis_definition"
 # define YARS_STRING_DEFLECTION         (char*)"deflection"
 # define YARS_STRING_VELOCITY           (char*)"velocity"
-# define YARS_STRING_DOMAIN_DEFINITION  (char*)"generic_actuator_domain"      DIVIDER DEFINITION
+# define YARS_STRING_DOMAIN_DEFINITION  (char*)"generic_actuator_domain_definition"
 # define YARS_STRING_ANGULAR            (char*)"angular"
 # define YARS_STRING_LINEAR             (char*)"linear"
 

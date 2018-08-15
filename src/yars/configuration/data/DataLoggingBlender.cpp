@@ -3,7 +3,7 @@
 #define YARS_STRING_NAME                      (char*)"name"
 #define YARS_STRING_CFG                       (char*)"cfg"
 #define YARS_STRING_FRAME_RATE                (char*)"framerate"
-#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer" DIVIDER DEFINITION
+#define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 
 DataLoggingBlender::DataLoggingBlender(DataNode *parent)
   : DataNode(parent)

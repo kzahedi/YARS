@@ -11,7 +11,7 @@
 
 
 # define YARS_STRING_MODULE                (char*)"module"
-# define YARS_STRING_NOISE_TYPE_DEFINITION (char*)("noise_type" DIVIDER DEFINITION)
+# define YARS_STRING_NOISE_TYPE_DEFINITION (char*)"noise_type_definition"
 # define YARS_STRING_GAUSS                 (char*)"gauss"
 # define YARS_STRING_WHITE                 (char*)"white"
 # define YARS_STRING_NAME                  (char*)"name"

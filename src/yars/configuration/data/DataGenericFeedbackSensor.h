@@ -9,9 +9,8 @@
 
 #include <yars/util/Mapping.h>
 
-# define GENERIC_FEEDBACK_SENSOR                "feedback"
-# define YARS_STRING_GENERIC_FEEDBACK_SENSOR     (char*)GENERIC_FEEDBACK_SENSOR
-# define YARS_STRING_GENERIC_FEEDBACK_SENSOR_DEFINITION  (char*)GENERIC_FEEDBACK_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_FEEDBACK_SENSOR            (char*)"feedback"
+# define YARS_STRING_GENERIC_FEEDBACK_SENSOR_DEFINITION (char*)"feedback_definition"
 
 
 #include <string>

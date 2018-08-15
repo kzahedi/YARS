@@ -4,9 +4,8 @@
 #include "DataNode.h"
 #include "DataParameter.h"
 
-# define NOISE                             "noise"
-# define YARS_STRING_NOISE                 (char*)NOISE
-# define YARS_STRING_NOISE_DEFINITION      (char*)(NOISE DIVIDER DEFINITION)
+# define YARS_STRING_NOISE            (char*)"noise"
+# define YARS_STRING_NOISE_DEFINITION (char*)"noise_definition"
 
 #include <string>
 #include <vector>

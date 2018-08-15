@@ -4,9 +4,8 @@
 #include "DataNode.h"
 #include "DataParameter.h"
 
-# define FILTER                        "filter"
-# define YARS_STRING_FILTER            (char*)FILTER
-# define YARS_STRING_FILTER_DEFINITION (char*)FILTER DIVIDER DEFINITION
+# define YARS_STRING_FILTER            (char*)"filter"
+# define YARS_STRING_FILTER_DEFINITION (char*)"filter_definition"
 
 #include <vector>
 

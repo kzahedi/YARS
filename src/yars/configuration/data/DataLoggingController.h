@@ -11,7 +11,7 @@
 #include <string>
 
 #define YARS_STRING_LOGGING_CONTROLLER            (char*)"controller"
-#define YARS_STRING_LOGGING_CONTROLLER_DEFINITION (char*)"controller" DIVIDER "logging" DIVIDER DEFINITION
+#define YARS_STRING_LOGGING_CONTROLLER_DEFINITION (char*)"controller_logging_definition"
 
 #define INTERNAL 6602
 #define EXTERNAL 6603

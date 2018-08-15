@@ -6,9 +6,8 @@
 #include <vector>
 #include <string>
 
-# define KEYBOARD                                       "keyboard"
-# define YARS_STRING_KEYBOARD_SIGNAL             (char*)KEYBOARD
-# define YARS_STRING_KEYBOARD_SIGNAL_DEFINITION  (char*)KEYBOARD DIVIDER DEFINITION
+# define YARS_STRING_KEYBOARD_SIGNAL            (char*)"keyboard"
+# define YARS_STRING_KEYBOARD_SIGNAL_DEFINITION (char*)"keyboard_definition"
 
 using namespace std;
 

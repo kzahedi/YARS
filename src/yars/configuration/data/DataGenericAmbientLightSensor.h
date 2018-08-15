@@ -12,9 +12,8 @@
 #include <pthread.h>
 
 
-# define GENERIC_AMBIENT_LIGHT_SENSOR                 "ambientLight"
-# define YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR  (char*)GENERIC_AMBIENT_LIGHT_SENSOR
-# define YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR_DEFINITION  (char*)GENERIC_AMBIENT_LIGHT_SENSOR DIVIDER DEFINITION
+# define YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR            (char*)"ambientLight"
+# define YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR_DEFINITION (char*)"ambientLight_definition"
 
 class DataGenericAmbientLightSensor : public DataSensor
 {

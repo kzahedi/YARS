@@ -3,9 +3,8 @@
 
 #include "DataActuator.h"
 
-# define FIXED                        "fixed"
-# define YARS_STRING_FIXED            (char*)FIXED
-# define YARS_STRING_FIXED_DEFINITION (char*)FIXED DIVIDER DEFINITION
+# define YARS_STRING_FIXED            (char*)"fixed"
+# define YARS_STRING_FIXED_DEFINITION (char*)"fixed_definition"
 
 #include <string>
 
