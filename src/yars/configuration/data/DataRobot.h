@@ -203,6 +203,8 @@ class DataRobot : public DataNode, public MacroUserInterface
     void                            __setMotorVector();
     void                            __setSensorVector();
     void                            __setActuatorsInController();
+    void                            __getActuatorObjects();
+    DataObject*                     __findObject(string name);
 
     Pose                            _pose;
     string                          _name;

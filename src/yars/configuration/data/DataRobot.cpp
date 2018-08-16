@@ -264,6 +264,28 @@ void DataRobot::__applyPose()
       }
     }
   }
+
+  // muscle
+  for (std::vector<DataActuator *>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  { 
+    if ((*a)->type() == DATA_ACTUATOR_MUSCLE)
+    {
+      DataMuscleActuator *m = (DataMuscleActuator *)(*a);
+      string source = m->source();
+      string srcName = m->sourceObject()->name();
+
+      string dstName = m->destinationObject()->name();
+      string destination = m->destination();
+
+      DataObject *srcObject = __findObject(source);
+      DataObject *dstObject = __findObject(destination);
+      DataObject *srcConnector = __findObject(srcName);
+      DataObject *dstConnector = __findObject(dstName);
+
+      srcConnector->applyOffset(srcObject->pose());
+      dstConnector->applyOffset(dstObject->pose());
+    }
+  }
 }
 
 void DataRobot::createXsd(XsdSpecification *spec)
@@ -382,6 +404,18 @@ void DataRobot::__gatherGeoms()
       _geoms.push_back(*o);
     }
   }
+
+  for(vector<DataActuator*>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  {
+    if((*a)->type() == DATA_ACTUATOR_MUSCLE)
+    {
+      DataMuscleActuator *m = (DataMuscleActuator*)(*a);
+      DataObject* src = m->sourceObject();
+      DataObject* dst = m->destinationObject();
+      _geoms.push_back(src);
+      _geoms.push_back(dst);
+    }
+  }
 }
 
 void DataRobot::__assignSensorsToObjects()
@@ -464,4 +498,16 @@ void DataRobot::resetTo(const DataRobot *robot)
   if(_controller != NULL)                       _controller->resetTo(robot->_controller);
   for(int i = 0; i < (int)_objects.size(); i++) _objects[i]->resetTo(robot->_objects[i]);
   for(int i = 0; i < (int)_sensors.size(); i++) _sensors[i]->resetTo(robot->_sensors[i]);
+}
+
+DataObject* DataRobot::__findObject(string name)
+{
+  for(vector<DataObject*>::iterator o = _geoms.begin(); o != _geoms.end(); o++)
+  {
+    if((*o)->name() == name)
+    {
+      return *o;
+    }
+  }
+  return NULL;
 }

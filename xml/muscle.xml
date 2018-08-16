@@ -71,11 +71,33 @@
         </sphere>
       </body>
       <actuators>
-        <muscle name="muscle" mode="active" visualise="true">
+        <muscle name="muscle" visualise="true">
           <source name="base"/>
           <destination name="swinging body"/>
-          <srcOffset x="0.0" y="0.0" z="0.0" gamma="90.0"/>
-          <dstOffset x="0.0" y="0.0" z="0.0" gamma="90.0"/>
+          <srcAnchor>
+            <sphere name="source anchor" visualise="true">
+              <dimension radius="0.05"/>
+              <pose x="0.0" y="0.0" z="-0.1"/>
+              <visualisation>
+                <texture name="Chain/Circuit/Top/Yellow"/>
+              </visualisation>
+              <physics>
+                <mass kg="0.01"/>
+              </physics>
+            </sphere>
+          </srcAnchor>
+          <dstAnchor>
+            <sphere name="destination anchor" visualise="true">
+              <dimension radius="0.05"/>
+              <pose x="0.0" y="0.0" z="0.1"/>
+              <visualisation>
+                <texture name="Chain/Circuit/Top/Blue"/>
+              </visualisation>
+              <physics>
+                <mass kg="0.01"/>
+              </physics>
+            </sphere>
+          </dstAnchor>
           <force       max="10.0"/>
           <velocity    max="10.0"/>
           <mapping     min="-1" max="+1"/>

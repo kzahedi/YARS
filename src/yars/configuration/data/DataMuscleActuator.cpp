@@ -2,6 +2,7 @@
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataPIDFactory.h>
+#include <yars/configuration/data/DataObjectFactory.h>
 #include <yars/util/macros.h>
 #include <yars/types/TransformationMatrix.h>
 #include <yars/types/Quaternion.h>
@@ -12,15 +13,14 @@
 # define YARS_STRING_FRICTION                      (char*)"friction"
 # define YARS_STRING_TYPE                          (char*)"type"
 # define YARS_STRING_USE                           (char*)"use"
-# define YARS_STRING_MODE                          (char*)"mode"
 # define YARS_STRING_ACTUATOR_MODE_DEFINITION      (char*)"actuator_mode_active_passive_definition"
 # define YARS_STRING_SOURCE                        (char*)"source"
 # define YARS_STRING_DESTINATION                   (char*)"destination"
-# define YARS_STRING_SOURCE_OFFSET                 (char*)"srcOffset"
-# define YARS_STRING_DESTINATION_OFFSET            (char*)"dstOffset"
+# define YARS_STRING_SOURCE_ANCHOR                 (char*)"srcAnchor"
+# define YARS_STRING_DESTINATION_ANCHOR            (char*)"dstAnchor"
+# define YARS_STRING_ANCHOR_DEFINITION             (char*)"anchor_definition"
 # define YARS_STRING_MAPPING                       (char*)"mapping"
 # define YARS_STRING_POSE                          (char*)"pose"
-# define YARS_STRING_POSEG_DEFINITION              (char*)"pose_with_global_definition"
 # define YARS_STRING_ANCHOR                        (char*)"anchor"
 # define YARS_STRING_PRECISION                     (char*)"precision"
 # define YARS_STRING_DEFLECTION                    (char*)"deflection"
@@ -71,11 +71,12 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _noise                       = new DataNoise(this);
   _filter                      = NULL;
   _deflectionSet               = false;
-  _isActive                    = true;
   _currentTransitionalVelocity = 0.0;
   _appliedForce                = 0.0;
   _appliedVelocity             = 0.0;
   _n                           = NULL;
+  _parsingSourceAnchor         = false;
+  _parsingDestinationAnchor    = false;
 
   _internalValue.resize(1);
   _externalValue.resize(1);
@@ -109,10 +110,7 @@ void DataMuscleActuator::add(DataParseElement *element)
   if(element->opening(YARS_STRING_MUSCLE))
   {
     element->set(YARS_STRING_NAME,      _name);
-    element->set(YARS_STRING_MODE,      _mode);
     element->set(YARS_STRING_VISUALISE, _visualise);
-    if(_mode == YARS_STRING_ACTIVE)    _isActive = true;
-    if(_mode == YARS_STRING_PASSIVE)   _isActive = false;
   }
 
   if(element->opening(YARS_STRING_FORCE))
@@ -133,16 +131,31 @@ void DataMuscleActuator::add(DataParseElement *element)
   {
     element->set(YARS_STRING_NAME, _destination);
   }
-  if(element->opening(YARS_STRING_SOURCE_OFFSET))
+
+
+  if(_parsingSourceAnchor)
   {
-    DataPoseFactory::set(_srcOffset, element);
-    element->set(YARS_STRING_GLOBAL, _srcOffsetInWorldCoordinates);
+    _srcObject = DataObjectFactory::object(element, this);
+    current = _srcObject;
+    _parsingSourceAnchor = false;
   }
-  if(element->opening(YARS_STRING_DESTINATION_OFFSET))
+  if(element->opening(YARS_STRING_SOURCE_ANCHOR))
   {
-    DataPoseFactory::set(_dstOffset, element);
-    element->set(YARS_STRING_GLOBAL, _dstOffsetInWorldCoordinates);
+    _parsingSourceAnchor = true;
   }
+
+  if(_parsingDestinationAnchor == true)
+  {
+    _dstObject = DataObjectFactory::object(element, this);
+    current = _dstObject;
+    _parsingDestinationAnchor = false;
+  }
+
+  if(element->opening(YARS_STRING_DESTINATION_ANCHOR))
+  {
+    _parsingDestinationAnchor = true;
+  }
+
   if(element->opening(YARS_STRING_DEFLECTION))
   {
     _deflectionSet = true;
@@ -215,13 +228,12 @@ void DataMuscleActuator::applyOffset(Pose offset)
 void DataMuscleActuator::createXsd(XsdSpecification *spec)
 {
   XsdSequence *muscleDefinition = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
-  muscleDefinition->add(NA(YARS_STRING_NAME,               YARS_STRING_XSD_STRING,                    false));
-  muscleDefinition->add(NA(YARS_STRING_MODE,               YARS_STRING_ACTUATOR_MODE_DEFINITION,      true));
+  muscleDefinition->add(NA(YARS_STRING_NAME,               YARS_STRING_XSD_STRING,                    true));
   muscleDefinition->add(NA(YARS_STRING_VISUALISE,          YARS_STRING_TRUE_FALSE_DEFINITION,         false));
   muscleDefinition->add(NE(YARS_STRING_SOURCE,             YARS_STRING_NAME_DEFINITION,               1, 1));
   muscleDefinition->add(NE(YARS_STRING_DESTINATION,        YARS_STRING_NAME_DEFINITION,               0, 1));
-  muscleDefinition->add(NE(YARS_STRING_SOURCE_OFFSET,      YARS_STRING_POSEG_DEFINITION,              1, 1));
-  muscleDefinition->add(NE(YARS_STRING_DESTINATION_OFFSET, YARS_STRING_POSEG_DEFINITION,              1, 1));
+  muscleDefinition->add(NE(YARS_STRING_SOURCE_ANCHOR,      YARS_STRING_ANCHOR_DEFINITION,             1, 1));
+  muscleDefinition->add(NE(YARS_STRING_DESTINATION_ANCHOR, YARS_STRING_ANCHOR_DEFINITION,             1, 1));
   muscleDefinition->add(NE(YARS_STRING_FORCE,              YARS_STRING_FORCE_DEFINITION,              1, 1));
   muscleDefinition->add(NE(YARS_STRING_VELOCITY,           YARS_STRING_VELOCITY_DEFINITION,           1, 1));
   muscleDefinition->add(NE(YARS_STRING_DEFLECTION,         YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
@@ -231,6 +243,15 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   muscleDefinition->add(NE(YARS_STRING_LENGTH_COMPONENT,   YARS_STRING_LENGTH_COMPONENT_DEFINITION,   0, 1));
   muscleDefinition->add(NE(YARS_STRING_VELOCITY_COMPONENT, YARS_STRING_VELOCITY_COMPONENT_DEFINITION, 0, 1));
   spec->add(muscleDefinition);
+
+  XsdSequence *anchorDefinition = new XsdSequence(YARS_STRING_ANCHOR_DEFINITION);
+  XsdChoice *objectChoice = new XsdChoice("",              "1", YARS_STRING_XSD_UNBOUNDED);
+  objectChoice->add(NE(YARS_STRING_OBJECT_BOX,             YARS_STRING_OBJECT_BOX_DEFINTION,             0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_SPHERE,          YARS_STRING_OBJECT_SPHERE_DEFINTION,          0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_PLY,             YARS_STRING_OBJECT_PLY_DEFINTION,             0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
+  anchorDefinition->add(objectChoice);
 
   XsdElement *forceParameter = NE(YARS_STRING_FORCE_DEFINITION, "", 0, 1);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
@@ -247,17 +268,6 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   actuatorModeDefinition->add(YARS_STRING_ACTIVE);
   actuatorModeDefinition->add(YARS_STRING_PASSIVE);
   spec->add(actuatorModeDefinition);
-
-  XsdSequence *poseDefinition = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
-  poseDefinition->add(NA(YARS_STRING_X,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_Y,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_Z,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_ALPHA, YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_BETA,  YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_TYPE,  YARS_STRING_RAD_DEG_DEFINITION, false));
-  poseDefinition->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-  spec->add(poseDefinition);
 
   XsdSequence *actuatorParameter = new XsdSequence(YARS_STRING_ACTUATOR_PARAMETER_DEFINITION);
   actuatorParameter->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
@@ -284,6 +294,11 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
 void DataMuscleActuator::__close()
 {
   __setMapping();
+
+  // 2. create ball joints
+  // 3. create cylinders
+  // create slider joint is done in MuscleActuator
+
 }
 
 bool DataMuscleActuator::isDeflectionSet()
@@ -301,7 +316,7 @@ MuscleParameter DataMuscleActuator::parameter()
 
 string DataMuscleActuator::mode()
 {
-  return _mode;
+  return string("active");
 }
 
 DataMuscleActuator* DataMuscleActuator::_copy()
@@ -310,18 +325,17 @@ DataMuscleActuator* DataMuscleActuator::_copy()
 
   if (_filter != NULL) copy->_filter = _filter->copy();
   if (_noise  != NULL) copy->_noise  = _noise->copy();
-  copy->_mapping            = _mapping;
-  copy->_parameter          = _parameter;
-  copy->_deflection         = _deflection;
-  copy->_deflectionSet      = _deflectionSet;
-  copy->_destination        = _destination;
-  copy->_mode               = _mode;
-  copy->_name               = _name;
-  copy->_source             = _source;
-  copy->_isActive           = _isActive;
-  copy->_controlType        = _controlType;
-  copy->_axisOrientation    = _axisOrientation;
-  copy->_axisPosition       = _axisPosition;
+  copy->_mapping         = _mapping;
+  copy->_parameter       = _parameter;
+  copy->_deflection      = _deflection;
+  copy->_deflectionSet   = _deflectionSet;
+  copy->_destination     = _destination;
+  copy->_name            = _name;
+  copy->_source          = _source;
+  copy->_axisOrientation = _axisOrientation;
+  copy->_axisPosition    = _axisPosition;
+  copy->_srcObject       = _srcObject->copy();
+  copy->_dstObject       = _dstObject->copy();
   copy->__setMapping();
   return copy;
 }
@@ -376,66 +390,14 @@ void DataMuscleActuator::setExternalValue(int index, double v)
 
 void DataMuscleActuator::__setMapping()
 {
-  if(_controlType == DATA_ACTUATOR_CONTROL_FORCE_VELOCITY)
-  {
-    _internalValue.resize(2);
-    _externalValue.resize(2);
-    _desiredValue.resize(2);
-    _desiredExValue.resize(2);
-    _internalExternalMapping.resize(2);
-    _internalDomain.resize(2);
-    _externalDomain.resize(2);
-  }
-  else
-  {
-    _internalValue.resize(1);
-    _externalValue.resize(1);
-    _desiredValue.resize(1);
-    _desiredExValue.resize(1);
-    _internalExternalMapping.resize(1);
-    _internalDomain.resize(1);
-    _externalDomain.resize(1);
-  }
-
-  switch(_controlType)
-  {
-    case DATA_ACTUATOR_CONTROL_POSITIONAL:
-      _externalDomain[0] = _mapping;
-      _internalDomain[0] = _deflection;
-      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
-      break;
-    case DATA_ACTUATOR_CONTROL_VELOCITY:
-      _externalDomain[0]     =  _mapping;
-      _internalDomain[0].min = -_parameter.maxVelocity;
-      _internalDomain[0].max =  _parameter.maxVelocity;
-      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
-      break;
-    case DATA_ACTUATOR_CONTROL_FORCE:
-      _externalDomain[0]     =  _mapping;
-      _internalDomain[0].min = -_parameter.maxForce;
-      _internalDomain[0].max =  _parameter.maxForce;
-      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
-      break;
-    case DATA_ACTUATOR_CONTROL_FORCE_VELOCITY:
-      _internalDomain[0].min =   0.0;
-      _internalDomain[0].max =  _parameter.maxForce;
-      _externalDomain[0]     =  _mapping;
-      _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-      _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
-
-      _internalDomain[1].min = -_parameter.maxVelocity;
-      _internalDomain[1].max =  _parameter.maxVelocity;
-      _externalDomain[1]     =  _mapping;
-      // cout << "setting velocity to " << _internalDomain[1] << " " << _externalDomain[1] << endl;
-      _internalExternalMapping[1].setInputDomain(_internalDomain[1]);
-      _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
-      break;
-  }
+  _externalDomain[0]     =  _mapping;
+  _internalDomain[0].min = -_parameter.maxForce;
+  _internalDomain[0].max =  _parameter.maxForce;
+  _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
+  _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
   _n = NoiseFactory::create(_noise);
 }
+
 Domain DataMuscleActuator::getInternalDomain(int index)
 {
   YM_LOCK;
@@ -492,7 +454,7 @@ double DataMuscleActuator::getExternalDesiredValue(int index)
 
 bool DataMuscleActuator::isActive(int index)
 {
-  return _isActive;
+  return true;
 }
 
 double DataMuscleActuator::getCurrentTransitionalVelocity()
@@ -536,3 +498,12 @@ Pose DataMuscleActuator::pose()
   return r;
 }
 
+DataObject* DataMuscleActuator::sourceObject()
+{
+  return _srcObject;
+}
+
+DataObject* DataMuscleActuator::destinationObject()
+{
+  return _dstObject;
+}

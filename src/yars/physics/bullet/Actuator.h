@@ -16,11 +16,11 @@ class Actuator
     Actuator(string name, string source, string destination, Robot *robot);
     virtual ~Actuator() { };
 
-    virtual DataActuator*       data()              = 0;
-    virtual void                prePhysicsUpdate()  = 0;
-    virtual void                postPhysicsUpdate() = 0;
-    virtual void                reset()             = 0;
-    virtual btTypedConstraint*  constraint()        = 0;
+    virtual DataActuator*      data()              = 0;
+    virtual void               prePhysicsUpdate()  = 0;
+    virtual void               postPhysicsUpdate() = 0;
+    virtual void               reset()             = 0;
+    virtual btTypedConstraint* constraint()        = 0;
 
   protected:
     Object *__find(string name);

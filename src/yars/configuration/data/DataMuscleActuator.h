@@ -1,9 +1,11 @@
 #ifndef __DATA_MUSCLE_H__
+
 #define __DATA_MUSCLE_H__
 
 #include <yars/configuration/data/DataActuator.h>
 #include <yars/configuration/data/DataNoise.h>
 #include <yars/configuration/data/DataFilter.h>
+#include <yars/configuration/data/DataObjects.h>
 #include <yars/types/Domain.h>
 #include <yars/types/Pose.h>
 #include <yars/util/Mapping.h>
@@ -78,6 +80,7 @@ class DataMuscleActuator : public DataActuator
     DataFilter* filter();
     MuscleParameter parameter();
     string mode();
+    string type();
     void setPosition(P3D position);
 
     double velocity();
@@ -110,6 +113,9 @@ class DataMuscleActuator : public DataActuator
 
     static void createXsd(XsdSpecification *spec);
 
+    DataObject* sourceObject();
+    DataObject* destinationObject();
+
     DataMuscleActuator* _copy();
 
   private:
@@ -123,7 +129,6 @@ class DataMuscleActuator : public DataActuator
     MuscleParameter _parameter;
     bool            _deflectionSet;
     string          _destination;
-    string          _mode;
     string          _name;
     string          _source;
 
@@ -135,7 +140,6 @@ class DataMuscleActuator : public DataActuator
     vector<Domain> _internalDomain;
     vector<Domain> _externalDomain;
     Noise*         _n;
-    bool           _isActive;
     double         _currentTransitionalVelocity;
     double         _appliedForce;
     double         _appliedVelocity;
@@ -143,8 +147,12 @@ class DataMuscleActuator : public DataActuator
     bool           _srcOffsetInWorldCoordinates;
     Pose           _dstOffset;
     bool           _dstOffsetInWorldCoordinates;
-    bool           _visualise;
+    bool            _visualise;
     pthread_mutex_t _mutex;
+    DataObject*     _srcObject;
+    DataObject*     _dstObject;
+    bool            _parsingSourceAnchor;
+    bool            _parsingDestinationAnchor;
 
 };
 

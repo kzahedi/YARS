@@ -2,6 +2,7 @@
 #include "HingeActuator.h"
 #include "SliderActuator.h"
 #include "FixedActuator.h"
+#include "MuscleActuator.h"
 #include "GenericActuator.h"
 #include "GenericSpringActuator.h"
 
@@ -13,9 +14,17 @@ Actuator* ActuatorFactory::create(DataActuator *actuator, Robot *robot)
     case DATA_ACTUATOR_SLIDER:  return __createSlider(actuator,  robot); break;
     case DATA_ACTUATOR_FIXED:   return __createFixed(actuator,   robot); break;
     case DATA_ACTUATOR_GENERIC: return __createGeneric(actuator, robot); break;
+    case DATA_ACTUATOR_MUSCLE:  return __createMuscle(actuator, robot); break;
   }
   YarsErrorHandler::push("Actuator error. Unknown type given.");
   return NULL;
+}
+
+Actuator* ActuatorFactory::__createMuscle(DataActuator *actuator, Robot *robot)
+{
+  DataMuscleActuator *data = (DataMuscleActuator*)actuator;
+  MuscleActuator *a        = new MuscleActuator(data, robot);
+  return a;
 }
 
 Actuator* ActuatorFactory::__createHinge(DataActuator *actuator, Robot *robot)

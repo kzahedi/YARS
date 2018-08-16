@@ -89,7 +89,6 @@ class DataObject : public DataNode
     void setCurrentAngularVelocity(double x, double y, double z);
     P3D  getCurrentAngularVelocity();
 
-
     void setPose(::Quaternion q, P3D p);
     void setPhysics(DataPhysicsParameter *physics);
     void setVisualise(bool visualise);

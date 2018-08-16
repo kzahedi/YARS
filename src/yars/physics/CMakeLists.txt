@@ -23,6 +23,7 @@ set(PHYSICS_SRC YarsPhysicsModel.cpp
                 bullet/ActuatorFactory.cpp
                 bullet/HingeActuator.cpp
                 bullet/SliderActuator.cpp
+                bullet/MuscleActuator.cpp
                 bullet/FixedActuator.cpp
                 bullet/GenericActuator.cpp
                 bullet/GenericSpringActuator.cpp
