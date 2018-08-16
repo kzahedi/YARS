@@ -55,6 +55,14 @@ void BulletPhysics::reset()
     FOREACHF(Actuator*, a, (*m), ->a_begin(), ->a_end())
     {
       if((*a)->constraint() != NULL) _world->removeConstraint((*a)->constraint());
+      if((*a)->c_size() > 0)
+      {
+        for(vector<btTypedConstraint*>::iterator i = (*a)->c_begin();
+            i != (*a)->c_end(); i++)
+        {
+          _world->removeConstraint(*i);
+        }
+      }
     }
   }
 
@@ -138,6 +146,14 @@ void BulletPhysics::__initWorld()
       {
         // false -> connected things don't collide
         _world->addConstraint((*a)->constraint(), false);
+      }
+      if((*a)->c_size() > 0)
+      {
+        for(vector<btTypedConstraint*>::iterator i = (*a)->c_begin();
+            i != (*a)->c_end(); i++)
+        {
+          _world->addConstraint(*i, false);
+        }
       }
     }
   }

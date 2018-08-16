@@ -27,14 +27,14 @@ class HingeActuator : public Actuator
     void __processForceAngularHinge();
     void __initHinge();
 
-    DataHingeActuator  *_data;
-    btSliderConstraint *_hingeConstraint;
+    DataHingeActuator*  _data;
+    btSliderConstraint* _hingeConstraint;
     HingeParameter      _parameter;
     int                 _hingeType;
-    double               _angle;
-    double               _lastAngle;
-    double               _angleDiff;
-    double               _friction;
+    double              _angle;
+    double              _lastAngle;
+    double              _angleDiff;
+    double              _friction;
     bool                _isActive;
     bool                _isVisualised;
     bool                _hasFriction;

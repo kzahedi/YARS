@@ -62,4 +62,3 @@ P3D DataActuator::getCurrentAxisPosition()
   return r;
 }
 
-

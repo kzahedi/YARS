@@ -22,10 +22,16 @@ class Actuator
     virtual void               reset()             = 0;
     virtual btTypedConstraint* constraint()        = 0;
 
+    vector<btTypedConstraint*>::iterator c_begin();
+    vector<btTypedConstraint*>::iterator c_end();
+    int                                  c_size();
+
   protected:
     Object *__find(string name);
     Object *_sourceObject;
     Object *_destinationObject;
+
+    vector<btTypedConstraint*> _constraints;
 
   private:
     Robot *_robot;

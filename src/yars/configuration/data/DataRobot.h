@@ -193,18 +193,19 @@ class DataRobot : public DataNode, public MacroUserInterface
 
     void resetTo(const DataRobot *robot);
 
-  protected:
-    void                       __assignSensorsToObjects();
-    void                       __gatherGeoms();
+    DataObject* findObject(string name);
 
+  protected:
+    void __assignSensorsToObjects();
+    void __gatherGeoms();
+    void __collectActuatorObjects();
   private:
-    void                            __applyPose();
-    void                            __applyMacros();
-    void                            __setMotorVector();
-    void                            __setSensorVector();
-    void                            __setActuatorsInController();
-    void                            __getActuatorObjects();
-    DataObject*                     __findObject(string name);
+    void __applyPose();
+    void __applyMacros();
+    void __setMotorVector();
+    void __setSensorVector();
+    void __setActuatorsInController();
+    void __getActuatorObjects();
 
     Pose                            _pose;
     string                          _name;

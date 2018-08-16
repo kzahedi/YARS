@@ -119,6 +119,7 @@ void DataRobot::add(DataParseElement *element)
     current = parent;
     // __assignSensorsToObjects(); // only needs to be called after copying
     __applyMacros();
+    __collectActuatorObjects();
     __gatherGeoms();
     __applyPose();
     __setActuatorsInController();
@@ -267,23 +268,26 @@ void DataRobot::__applyPose()
 
   // muscle
   for (std::vector<DataActuator *>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
-  { 
+  {
     if ((*a)->type() == DATA_ACTUATOR_MUSCLE)
     {
       DataMuscleActuator *m = (DataMuscleActuator *)(*a);
-      string source = m->source();
-      string srcName = m->sourceObject()->name();
 
-      string dstName = m->destinationObject()->name();
+      string source      = m->source() ;
+      string srcName     = m->sourceObject()->name();
+
+      string dstName     = m->destinationObject()->name();
       string destination = m->destination();
 
-      DataObject *srcObject = __findObject(source);
-      DataObject *dstObject = __findObject(destination);
-      DataObject *srcConnector = __findObject(srcName);
-      DataObject *dstConnector = __findObject(dstName);
+      DataObject *srcObject    = findObject(source);
+      DataObject *dstObject    = findObject(destination);
+      DataObject *srcConnector = findObject(srcName);
+      DataObject *dstConnector = findObject(dstName);
 
       srcConnector->applyOffset(srcObject->pose());
       dstConnector->applyOffset(dstObject->pose());
+
+      // adding ball constraints
     }
   }
 }
@@ -405,17 +409,7 @@ void DataRobot::__gatherGeoms()
     }
   }
 
-  for(vector<DataActuator*>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
-  {
-    if((*a)->type() == DATA_ACTUATOR_MUSCLE)
-    {
-      DataMuscleActuator *m = (DataMuscleActuator*)(*a);
-      DataObject* src = m->sourceObject();
-      DataObject* dst = m->destinationObject();
-      _geoms.push_back(src);
-      _geoms.push_back(dst);
-    }
-  }
+
 }
 
 void DataRobot::__assignSensorsToObjects()
@@ -500,7 +494,7 @@ void DataRobot::resetTo(const DataRobot *robot)
   for(int i = 0; i < (int)_sensors.size(); i++) _sensors[i]->resetTo(robot->_sensors[i]);
 }
 
-DataObject* DataRobot::__findObject(string name)
+DataObject* DataRobot::findObject(string name)
 {
   for(vector<DataObject*>::iterator o = _geoms.begin(); o != _geoms.end(); o++)
   {
@@ -510,4 +504,20 @@ DataObject* DataRobot::__findObject(string name)
     }
   }
   return NULL;
+}
+
+
+void DataRobot::__collectActuatorObjects()
+{
+  for(vector<DataActuator*>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  {
+    if((*a)->type() == DATA_ACTUATOR_MUSCLE)
+    {
+      DataMuscleActuator *m = (DataMuscleActuator*)(*a);
+      DataObject* src = m->sourceObject();
+      DataObject* dst = m->destinationObject();
+      _objects.push_back(src);
+      _objects.push_back(dst);
+    }
+  }
 }

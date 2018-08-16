@@ -23,18 +23,22 @@ class MuscleActuator : public Actuator
     void __processPositional();
     void __processVelocityMuscle();
     void __processForceMuscle();
+    void __initSource();
 
-    DataMuscleActuator* _data;
-    btSliderConstraint* _muscleConstraint;
-    MuscleParameter     _parameter;
-    double              _position;
-    double              _lastPosition;
-    bool                _isActive;
-    bool                _isVisualised;
-    double              _velocity;
-    double              _maxForce;
-    double              _length;
-    double              _lastLength;
+    DataMuscleActuator*      _data;
+    MuscleParameter          _parameter;
+    double                   _position;
+    double                   _lastPosition;
+    bool                     _isActive;
+    bool                     _isVisualised;
+    double                   _velocity;
+    double                   _maxForce;
+    double                   _length;
+    double                   _lastLength;
+
+    btSliderConstraint*      _muscleConstraint;
+    btPoint2PointConstraint* _sourceBall;
+    btPoint2PointConstraint* _dstBall;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

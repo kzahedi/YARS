@@ -116,6 +116,9 @@ class DataMuscleActuator : public DataActuator
     DataObject* sourceObject();
     DataObject* destinationObject();
 
+    DataActuator* sourceConnector();
+    DataActuator* destinationConnector();
+
     DataMuscleActuator* _copy();
 
   private:
@@ -151,6 +154,8 @@ class DataMuscleActuator : public DataActuator
     pthread_mutex_t _mutex;
     DataObject*     _srcObject;
     DataObject*     _dstObject;
+    DataActuator*   _srcConnector;
+    DataActuator*   _dstConnector;
     bool            _parsingSourceAnchor;
     bool            _parsingDestinationAnchor;
 

@@ -279,7 +279,7 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   lengthComponent->add(NA(YARS_STRING_OPTIMAL_LENGTH, YARS_STRING_XSD_DECIMAL, true));
   lengthComponent->add(NA(YARS_STRING_W,              YARS_STRING_XSD_DECIMAL, true));
   lengthComponent->add(NA(YARS_STRING_C,              YARS_STRING_XSD_DECIMAL, true));
-  lengthComponent->add(NA(YARS_STRING_USE,          YARS_STRING_TRUE_FALSE_DEFINITION, true));
+  lengthComponent->add(NA(YARS_STRING_USE,            YARS_STRING_TRUE_FALSE_DEFINITION, true));
   spec->add(lengthComponent);
 
   XsdSequence *velocityComponent = new XsdSequence(YARS_STRING_VELOCITY_COMPONENT_DEFINITION);
@@ -506,4 +506,14 @@ DataObject* DataMuscleActuator::sourceObject()
 DataObject* DataMuscleActuator::destinationObject()
 {
   return _dstObject;
+}
+
+DataActuator* DataMuscleActuator::sourceConnector()
+{
+  return _srcConnector;
+}
+
+DataActuator* DataMuscleActuator::destinationConnector()
+{
+  return _dstConnector;
 }

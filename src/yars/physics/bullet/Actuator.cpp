@@ -48,7 +48,22 @@ Object* Actuator::__find(string name)
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "Actuators: Cannot find object \"" << name << "\"" << endl;
     YarsErrorHandler::push();
-
   }
   return NULL;
 }
+
+vector<btTypedConstraint*>::iterator Actuator::c_begin()
+{
+  return _constraints.begin();
+}
+
+vector<btTypedConstraint*>::iterator Actuator::c_end()
+{
+  return _constraints.end();
+}
+
+int Actuator::c_size()
+{
+  return (int)_constraints.size();
+}
+

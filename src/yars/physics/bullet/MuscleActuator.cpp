@@ -23,6 +23,11 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   _parameter        = _data->parameter();
   _velocity         = _data->velocity();
   _maxForce         = _data->force();
+
+  // 1. connect passive ball joints
+  __initSource();
+
+  // 2. connect slider joint
 }
 
 MuscleActuator::~MuscleActuator()
@@ -69,3 +74,21 @@ btTypedConstraint* MuscleActuator::constraint()
 {
   return _muscleConstraint;
 }
+
+void MuscleActuator::__initSource()
+{
+  string sourceAnchorName  = _data->sourceObject()->name();
+  btRigidBody *source      = __find(sourceAnchorName)->rigidBody();
+  btRigidBody *destination = _sourceObject->rigidBody();
+
+  P3D p = _data->sourceObject()->pose().position;
+
+  btVector3 a(p.x, p.y, p.z);
+  btVector3 b = destination->getWorldTransform().inverse() * a;
+
+  _sourceBall = new btPoint2PointConstraint(*source, *destination,
+                                            btVector3(0,0,0), b);
+
+  _constraints.push_back(_sourceBall);
+}
+
