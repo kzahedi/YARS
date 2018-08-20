@@ -24,6 +24,9 @@ class MuscleActuator : public Actuator
     void __processVelocityMuscle();
     void __processForceMuscle();
     void __initSource();
+    void __initDestination();
+    void __initSlider();
+    void __setPoint2Point(btGeneric6DofConstraint *_genericConstraint);
 
     DataMuscleActuator*      _data;
     MuscleParameter          _parameter;
@@ -37,8 +40,10 @@ class MuscleActuator : public Actuator
     double                   _lastLength;
 
     btSliderConstraint*      _muscleConstraint;
-    btPoint2PointConstraint* _sourceBall;
-    btPoint2PointConstraint* _dstBall;
+    btGeneric6DofConstraint* _sourceBall;
+    btGeneric6DofConstraint* _destinationBall;
+    btRigidBody*             _srcAnchor;
+    btRigidBody*             _dstAnchor;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

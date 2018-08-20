@@ -66,7 +66,7 @@
             <texture name="Chain/Circuit/Top/Green"/>
           </visualisation>
           <physics>
-            <mass kg="0.0"/>
+            <mass kg="1.0"/>
           </physics>
         </sphere>
       </body>
@@ -82,7 +82,7 @@
                 <texture name="Chain/Circuit/Top/Yellow"/>
               </visualisation>
               <physics>
-                <mass kg="0.01"/>
+                <mass kg="0.10"/>
               </physics>
             </sphere>
           </srcAnchor>
@@ -94,7 +94,7 @@
                 <texture name="Chain/Circuit/Top/Blue"/>
               </visualisation>
               <physics>
-                <mass kg="0.01"/>
+                <mass kg="0.10"/>
               </physics>
             </sphere>
           </dstAnchor>

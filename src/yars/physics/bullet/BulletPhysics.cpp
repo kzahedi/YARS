@@ -37,9 +37,13 @@ void BulletPhysics::reset()
 {
   Y_DEBUG("BulletPhysics reset called.");
 
+  btVector3 zeroVector(0, 0, 0);
   FOREACH(Object*,  o, (*_environment))
   {
     if((*o)->rigidBody() != NULL) _world->removeRigidBody((*o)->rigidBody());
+    if((*o)->rigidBody() != NULL) (*o)->rigidBody()->clearForces();
+    if((*o)->rigidBody() != NULL) (*o)->rigidBody()->setLinearVelocity(zeroVector);
+    if((*o)->rigidBody() != NULL) (*o)->rigidBody()->setAngularVelocity(zeroVector);
   }
 
   FOREACH(Robot*, m, (*_robots))
@@ -66,13 +70,15 @@ void BulletPhysics::reset()
     }
   }
 
+  for(int i = 0; i < 100; i++) _world->step(__YARS_GET_STEP_SIZE);
+
   _world->reset();
   _environment->reset();
   _robots->reset();
 
   __initWorld();
 
-  for(int i = 0; i < 10; i++) _world->step(__YARS_GET_STEP_SIZE);
+  for(int i = 0; i < 100; i++) _world->step(__YARS_GET_STEP_SIZE);
 }
 
 

@@ -44,7 +44,7 @@ material YARS/Gray
       ambient 0.5 0.5 0.5
       specular 0.8 0.8 0.8 25.0
       emissive 0.0 0.0 0.0
-     } 
+     }
   }
 }
 
@@ -58,7 +58,7 @@ material YARS/Black
       {
         colour_op_ex source1 src_manual src_current 0 0 0
       }
-    } 
+    }
   }
 }
 
@@ -72,7 +72,7 @@ material YARS/Red
       ambient 0.5 0.5 0.5
       specular 0.8 0.8 0.8 25.0
       emissive 0.1 0.0 0.0
-     } 
+     }
   }
 }
 
@@ -86,7 +86,7 @@ material YARS/Green
       ambient 0.5 0.5 0.5
       specular 0.8 0.8 0.8 25.0
       emissive 0.0 0.1 0.0
-     } 
+     }
   }
 }
 
@@ -100,7 +100,7 @@ material YARS/Blue
       ambient 0.5 0.5 0.5
       specular 0.8 0.8 0.8 25.0
       emissive 0.0 0.0 0.1
-     } 
+     }
   }
 }
 
@@ -116,7 +116,7 @@ material YARS/RedActuatorAxis
       specular 0.0 0.0 0.0 0.0
       emissive 0.0 0.0 0.0
       scene_blend alpha_blend
-     } 
+     }
   }
 }
 
@@ -150,7 +150,7 @@ material YARS/GreenSkin
         scale 0.5 1
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -168,7 +168,7 @@ material YARS/Wall1
         filtering trilinear
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -185,7 +185,7 @@ material YARS/Wall2
         filtering trilinear
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -203,7 +203,7 @@ material YARS/Wall3
         filtering trilinear
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -222,7 +222,7 @@ material YARS/HumanSkin1
         filtering trilinear
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -237,7 +237,7 @@ material YARS/Snake1
         texture snake1.jpg
         scale 2 1
       }
-    }   
+    }
   }
 }
 
@@ -252,7 +252,7 @@ material YARS/Snake1Top
         texture snake1.jpg
         scale 5 4
       }
-    }   
+    }
   }
 }
 
@@ -267,7 +267,7 @@ material YARS/Snake2
         texture snake2.jpg
         scale 2 1
       }
-    }   
+    }
   }
 }
 
@@ -282,7 +282,7 @@ material YARS/Snake2Top
         texture snake2.jpg
         scale 5 4
       }
-    }   
+    }
   }
 }
 
@@ -297,7 +297,7 @@ material YARS/Snake3
         texture snake3.jpg
         scale 2 1
       }
-    }   
+    }
   }
 }
 
@@ -312,7 +312,7 @@ material YARS/Snake3Top
         texture snake3.jpg
         scale 5 4
       }
-    }   
+    }
   }
 }
 
@@ -328,7 +328,7 @@ material YARS/GreenSkinMain
         scale 0.5 0.5
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -347,7 +347,7 @@ material YARS/SkinPattern2
         rotate 90
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -366,7 +366,7 @@ material YARS/DryGround
         scroll 0.0 0.0
         scroll_anim 0.0 0.0
       }
-    }   
+    }
   }
 }
 
@@ -382,7 +382,7 @@ material YARS/DryGroundSmall
         scale 0.1 0.1
         filtering trilinear
       }
-    }   
+    }
   }
 }
 
@@ -437,8 +437,8 @@ material YARS/GroundGrassDirt
       }
       texture_unit
       {
-        // texture Material_alpha_blend.png             
-        texture DirtGround.png             
+        // texture Material_alpha_blend.png
+        texture DirtGround.png
         //texture alpha2.png
         colour_op alpha_blend
         scale 10.0 10.0
@@ -487,7 +487,7 @@ material YARS/SkinPatternTop
         scale 1.0 1.0
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -503,7 +503,7 @@ material YARS/SkinPatternBottom
         scale 1.0 1.0
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -517,11 +517,11 @@ material YARS/SkinPatternBody
       {
         texture skin.jpg
         scale 1.0 1.0
-        rotate 90 
+        rotate 90
         scroll 1.0 0.0
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -538,7 +538,7 @@ material YARS/SkinPattern
         rotate 90
         // this means that the texture will be tiled 10 times (1/10 = 0.1)
       }
-    }   
+    }
   }
 }
 
@@ -552,10 +552,10 @@ material YARS/SkinPatternMain
       {
         texture skin.jpg
         scale 0.5 0.5
-        rotate 90 
+        rotate 90
         scroll -0.5 0.0
       }
-    }   
+    }
   }
 }
 

@@ -183,17 +183,17 @@ void Robot::reset()
   FOREACH(Sensor*,   s, _sensors)   (*s)->reset();
   _seed = -1;
 
-  // FOREACH(Object*,   o, _objects)   delete *o;
-  // FOREACH(Actuator*, a, _actuators) delete *a;
-  // FOREACH(Sensor*,   s, _sensors)   delete *s;
+  FOREACH(Object*,   o, _objects)   delete *o;
+  FOREACH(Actuator*, a, _actuators) delete *a;
+  FOREACH(Sensor*,   s, _sensors)   delete *s;
 
-  // _objects.clear();
-  // _actuators.clear();
-  // _sensors.clear();
+  _objects.clear();
+  _actuators.clear();
+  _sensors.clear();
 
-  // __createBody();
-  // __createActuators();
-  // __createSensors();
+  __createBody();
+  __createActuators();
+  __createSensors();
 
   if(_controller != NULL)
   {

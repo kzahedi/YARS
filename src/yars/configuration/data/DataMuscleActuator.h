@@ -113,8 +113,8 @@ class DataMuscleActuator : public DataActuator
 
     static void createXsd(XsdSpecification *spec);
 
-    DataObject* sourceObject();
-    DataObject* destinationObject();
+    DataObject* sourceAnchor();
+    DataObject* destinationAnchor();
 
     DataActuator* sourceConnector();
     DataActuator* destinationConnector();

@@ -24,8 +24,9 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   _velocity         = _data->velocity();
   _maxForce         = _data->force();
 
-  // 1. connect passive ball joints
   __initSource();
+  __initDestination();
+  __initSlider();
 
   // 2. connect slider joint
 }
@@ -37,10 +38,12 @@ MuscleActuator::~MuscleActuator()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  // double v        = _data->getInternalDesiredValue(0);
-  // double force    = fabs(v) * _data->force();
-  // _muscleConstraint->setMaxLinMotorForce(force);
-  // _muscleConstraint->setTargetLinMotorVelocity(_velocity);
+  _muscleConstraint->setMaxLinMotorForce(1.0);
+  _muscleConstraint->setTargetLinMotorVelocity(0.0);
+  // _sourceBall->setMaxLinMotorForce(10.0);
+  // _sourceBall->setTargetLinMotorVelocity(0.0);
+  // _destinationBall->setMaxLinMotorForce(10.0);
+  // _destinationBall->setTargetLinMotorVelocity(0.0);
 }
 
 void MuscleActuator::postPhysicsUpdate()
@@ -77,18 +80,155 @@ btTypedConstraint* MuscleActuator::constraint()
 
 void MuscleActuator::__initSource()
 {
-  string sourceAnchorName  = _data->sourceObject()->name();
-  btRigidBody *source      = __find(sourceAnchorName)->rigidBody();
+  string sourceAnchorName  = _data->sourceAnchor()->name();
+  _srcAnchor               = __find(sourceAnchorName)->rigidBody();
   btRigidBody *destination = _sourceObject->rigidBody();
 
-  P3D p = _data->sourceObject()->pose().position;
+  P3D p = _data->sourceAnchor()->pose().position;
 
   btVector3 a(p.x, p.y, p.z);
-  btVector3 b = destination->getWorldTransform().inverse() * a;
 
-  _sourceBall = new btPoint2PointConstraint(*source, *destination,
-                                            btVector3(0,0,0), b);
+  P3D v(0.0, 0.0, 1.0);
+
+  ::Quaternion qq(v);
+
+  btQuaternion q(qq.x, qq.y, qq.z, qq.w);
+
+  btTransform global(q, a);
+
+  btTransform localInSrc = _srcAnchor->getWorldTransform().inverse() * global;
+  btTransform localInDst = destination->getWorldTransform().inverse() * global;
+
+  _sourceBall = new btGeneric6DofConstraint(*_srcAnchor, *destination, localInSrc, localInDst, true);
+
+  __setPoint2Point(_sourceBall);
 
   _constraints.push_back(_sourceBall);
+}
+
+void MuscleActuator::__initDestination()
+{
+  string destinationAnchorName = _data->destinationAnchor()->name();
+  _dstAnchor                   = __find(destinationAnchorName)->rigidBody();
+  btRigidBody *destination     = _destinationObject->rigidBody();
+
+  P3D p = _data->destinationAnchor()->pose().position;
+
+  btVector3 a(p.x, p.y, p.z);
+
+  P3D v(0.0, 0.0, 1.0);
+
+  ::Quaternion qq(v);
+
+  btQuaternion q(qq.x, qq.y, qq.z, qq.w);
+
+  btTransform global(q, a);
+
+  btTransform localInSrc = _dstAnchor->getWorldTransform().inverse() * global;
+  btTransform localInDst = destination->getWorldTransform().inverse() * global;
+
+
+  _destinationBall = new btGeneric6DofConstraint(*_dstAnchor, *destination, localInSrc, localInDst, true);
+
+  __setPoint2Point(_destinationBall);
+
+  _constraints.push_back(_destinationBall);
+}
+
+void MuscleActuator::__initSlider()
+{
+  Object* _base           = __find("base");
+  Object* _swinging       = __find("swinging body");
+  btRigidBody* src = _base->rigidBody();
+  btRigidBody* dst = _swinging->rigidBody();
+
+  // Object* _baseAnchor     = __find("source anchor");
+  // Object* _swingingAnchor = __find("destination anchor");
+  // btRigidBody* src = _baseAnchor->rigidBody();
+  // btRigidBody* dst = _swingingAnchor->rigidBody();
+
+
+  btVector3 srcPos = src->getCenterOfMassPosition();
+  btVector3 dstPos = dst->getCenterOfMassPosition();
+  btVector3 dir(dstPos[0], dstPos[1], dstPos[2]);
+  dir -= srcPos;
+
+  double xRot = atan2(dstPos[1], dstPos[2]);
+  double yRot = atan2(dstPos[0], dstPos[2]);
+  double zRot = atan2(dstPos[0], dstPos[1]);
+
+
+  P3D u(xRot, yRot, zRot);
+
+  ::Quaternion qq(u);
+
+  btQuaternion q(qq.x, qq.y, qq.z, qq.w);
+
+  btTransform global(q, srcPos);
+
+  btTransform localInSrc = src->getWorldTransform().inverse() * global;
+  btTransform localInDst = dst->getWorldTransform().inverse() * global;
+
+  _muscleConstraint  = new btSliderConstraint(*src, *dst, localInSrc, localInDst, true);
+  _constraints.push_back(_muscleConstraint);
+  _muscleConstraint->setLowerLinLimit(-0.5);
+  _muscleConstraint->setUpperLinLimit(0.5);
+  _muscleConstraint->setPoweredLinMotor(true);
+
+  _muscleConstraint->setSoftnessDirLin(0.0);
+  _muscleConstraint->setRestitutionDirLin(0.0);
+  _muscleConstraint->setDampingDirLin(0.0);
+
+  _muscleConstraint->setSoftnessLimLin(0.0);
+  _muscleConstraint->setRestitutionLimLin(0.0);
+  _muscleConstraint->setDampingLimLin(0.0);
+
+  _muscleConstraint->setSoftnessOrthoLin(0.0);
+  _muscleConstraint->setRestitutionOrthoLin(0.0);
+  _muscleConstraint->setDampingOrthoLin(0.0);
+
+  for(int i = 0; i < 6; i++)
+  {
+    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
+    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
+  }
+}
+
+void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
+{
+
+  btVector3 linLowerLimit(0.0, 0.0, 0.0);
+  btVector3 linUpperLimit(0.0, 0.0, 0.0);
+
+  for(int i = 0; i < 3; i++)
+  {
+    // c->getRotationalLimitMotor(i)->m_restitution = 0.0;
+    c->getRotationalLimitMotor(i)->m_limitSoftness = 0.0;
+    c->getRotationalLimitMotor(i)->m_bounce = 0.0;
+    c->getRotationalLimitMotor(i)->m_enableMotor = true;
+    c->getRotationalLimitMotor(i)->m_targetVelocity = 0.0;
+    c->getRotationalLimitMotor(i)->m_maxMotorForce = 0.2;
+  }
+
+  c->getTranslationalLimitMotor()->m_enableMotor[0] = false;
+  c->getTranslationalLimitMotor()->m_enableMotor[1] = false;
+  c->getTranslationalLimitMotor()->m_enableMotor[2] = false;
+
+  c->setLinearLowerLimit(linLowerLimit);
+  c->setLinearUpperLimit(linUpperLimit);
+
+  for(int i = 0; i < 3; i++)
+  {
+    c->getTranslationalLimitMotor()->m_stopERP[i] = 1.0;
+    c->getTranslationalLimitMotor()->m_stopCFM[i] = 0.0;
+    c->getRotationalLimitMotor(i)->m_stopERP      = 1.0;
+    c->getRotationalLimitMotor(i)->m_stopCFM      = 0.0;
+  }
+
+  for(int i = 0; i < 6; i++)
+  {
+    c->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
+    c->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
+  }
 }
 

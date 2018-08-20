@@ -28,8 +28,8 @@
 
 # define SET_ROT_DAMPING(i,p)\
     if(p.parameter.useResitution) _genericConstraint->getRotationalLimitMotor(i)->m_bounce = p.parameter.restitution;\
-    if(p.parameter.useSoftness)   _genericConstraint->getRotationalLimitMotor(i)->m_limitSoftness = p.parameter.softness;\
-    if(p.parameter.useDamping)    _genericConstraint->getRotationalLimitMotor(i)->m_bounce = p.parameter.damping;
+    if(p.parameter.useSoftness)   _genericConstraint->getRotationalLimitMotor(i)->m_limitSoftness = p.parameter.softness;
+    // if(p.parameter.useDamping)    _genericConstraint->getRotationalLimitMotor(i)->m_bounce = p.parameter.damping;
 
 # define ENABLE_MOTOR(i,p)\
   _genericConstraint->getRotationalLimitMotor(i)->m_enableMotor = p.isActive;

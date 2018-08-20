@@ -498,12 +498,12 @@ Pose DataMuscleActuator::pose()
   return r;
 }
 
-DataObject* DataMuscleActuator::sourceObject()
+DataObject* DataMuscleActuator::sourceAnchor()
 {
   return _srcObject;
 }
 
-DataObject* DataMuscleActuator::destinationObject()
+DataObject* DataMuscleActuator::destinationAnchor()
 {
   return _dstObject;
 }

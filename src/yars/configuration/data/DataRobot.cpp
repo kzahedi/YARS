@@ -274,9 +274,9 @@ void DataRobot::__applyPose()
       DataMuscleActuator *m = (DataMuscleActuator *)(*a);
 
       string source      = m->source() ;
-      string srcName     = m->sourceObject()->name();
+      string srcName     = m->sourceAnchor()->name();
 
-      string dstName     = m->destinationObject()->name();
+      string dstName     = m->destinationAnchor()->name();
       string destination = m->destination();
 
       DataObject *srcObject    = findObject(source);
@@ -514,8 +514,8 @@ void DataRobot::__collectActuatorObjects()
     if((*a)->type() == DATA_ACTUATOR_MUSCLE)
     {
       DataMuscleActuator *m = (DataMuscleActuator*)(*a);
-      DataObject* src = m->sourceObject();
-      DataObject* dst = m->destinationObject();
+      DataObject* src = m->sourceAnchor();
+      DataObject* dst = m->destinationAnchor();
       _objects.push_back(src);
       _objects.push_back(dst);
     }
