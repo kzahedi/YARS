@@ -73,9 +73,11 @@ void Robot::prePhysicsUpdate()
 void Robot::postPhysicsUpdate()
 {
   FOREACH(Object*,   o, _objects)   (*o)->postPhysicsUpdate();
+
   FOREACH(Object*,   o, _objects)
     FOREACHP(Object*, oo, (*o))
     (*oo)->postPhysicsUpdate();
+
   FOREACH(Actuator*, a, _actuators) (*a)->postPhysicsUpdate();
   FOREACH(Sensor*,   s, _sensors)   (*s)->postPhysicsUpdate();
   _data->updateSensorValues();

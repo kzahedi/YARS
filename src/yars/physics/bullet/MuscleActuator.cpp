@@ -83,26 +83,21 @@ void MuscleActuator::__initSource()
   string sourceAnchorName  = _data->sourceAnchor()->name();
   _srcAnchor               = __find(sourceAnchorName)->rigidBody();
   btRigidBody *destination = _sourceObject->rigidBody();
-
-  P3D p = _data->sourceAnchor()->pose().position;
-
-  btVector3 a(p.x, p.y, p.z);
+  cout << "source anchor name: " << sourceAnchorName << endl;
 
   P3D v(0.0, 0.0, 1.0);
-
   ::Quaternion qq(v);
-
   btQuaternion q(qq.x, qq.y, qq.z, qq.w);
 
+  P3D p = _data->sourceAnchor()->pose().position;
+  btVector3 a(p.x, p.y, p.z);
   btTransform global(q, a);
 
   btTransform localInSrc = _srcAnchor->getWorldTransform().inverse() * global;
   btTransform localInDst = destination->getWorldTransform().inverse() * global;
 
   _sourceBall = new btGeneric6DofConstraint(*_srcAnchor, *destination, localInSrc, localInDst, true);
-
   __setPoint2Point(_sourceBall);
-
   _constraints.push_back(_sourceBall);
 }
 
@@ -111,52 +106,40 @@ void MuscleActuator::__initDestination()
   string destinationAnchorName = _data->destinationAnchor()->name();
   _dstAnchor                   = __find(destinationAnchorName)->rigidBody();
   btRigidBody *destination     = _destinationObject->rigidBody();
-
-  P3D p = _data->destinationAnchor()->pose().position;
-
-  btVector3 a(p.x, p.y, p.z);
+  cout << "destination anchor name: " << destinationAnchorName << endl;
 
   P3D v(0.0, 0.0, 1.0);
-
   ::Quaternion qq(v);
-
   btQuaternion q(qq.x, qq.y, qq.z, qq.w);
 
+  P3D p = _data->destinationAnchor()->pose().position;
+  btVector3 a(p.x, p.y, p.z);
   btTransform global(q, a);
 
   btTransform localInSrc = _dstAnchor->getWorldTransform().inverse() * global;
   btTransform localInDst = destination->getWorldTransform().inverse() * global;
 
-
   _destinationBall = new btGeneric6DofConstraint(*_dstAnchor, *destination, localInSrc, localInDst, true);
-
   __setPoint2Point(_destinationBall);
-
   _constraints.push_back(_destinationBall);
 }
 
 void MuscleActuator::__initSlider()
 {
-  Object* _base           = __find("base");
-  Object* _swinging       = __find("swinging body");
-  btRigidBody* src = _base->rigidBody();
-  btRigidBody* dst = _swinging->rigidBody();
+  Object* srcObject = __find("source anchor");
+  Object* dstObject = __find("destination anchor");
+  btRigidBody* src  = srcObject->rigidBody();
+  btRigidBody* dst  = dstObject->rigidBody();
 
-  // Object* _baseAnchor     = __find("source anchor");
-  // Object* _swingingAnchor = __find("destination anchor");
-  // btRigidBody* src = _baseAnchor->rigidBody();
-  // btRigidBody* dst = _swingingAnchor->rigidBody();
-
-
-  btVector3 srcPos = src->getCenterOfMassPosition();
-  btVector3 dstPos = dst->getCenterOfMassPosition();
+  btVector3 srcPos  = src->getCenterOfMassPosition();
+  btVector3 dstPos  = dst->getCenterOfMassPosition();
   btVector3 dir(dstPos[0], dstPos[1], dstPos[2]);
   dir -= srcPos;
+  btVector3 center = (srcPos + dstPos) * btScalar(0.5);
 
   double xRot = atan2(dstPos[1], dstPos[2]);
   double yRot = atan2(dstPos[0], dstPos[2]);
   double zRot = atan2(dstPos[0], dstPos[1]);
-
 
   P3D u(xRot, yRot, zRot);
 
@@ -164,34 +147,35 @@ void MuscleActuator::__initSlider()
 
   btQuaternion q(qq.x, qq.y, qq.z, qq.w);
 
-  btTransform global(q, srcPos);
+  btTransform global(q, center);
 
   btTransform localInSrc = src->getWorldTransform().inverse() * global;
   btTransform localInDst = dst->getWorldTransform().inverse() * global;
 
   _muscleConstraint  = new btSliderConstraint(*src, *dst, localInSrc, localInDst, true);
-  _constraints.push_back(_muscleConstraint);
-  _muscleConstraint->setLowerLinLimit(-0.5);
   _muscleConstraint->setUpperLinLimit(0.5);
+  _muscleConstraint->setLowerLinLimit(-0.5);
   _muscleConstraint->setPoweredLinMotor(true);
 
-  _muscleConstraint->setSoftnessDirLin(0.0);
-  _muscleConstraint->setRestitutionDirLin(0.0);
-  _muscleConstraint->setDampingDirLin(0.0);
+  // _muscleConstraint->setSoftnessDirLin(0.0);
+  // _muscleConstraint->setRestitutionDirLin(0.0);
+  // _muscleConstraint->setDampingDirLin(0.0);
 
-  _muscleConstraint->setSoftnessLimLin(0.0);
-  _muscleConstraint->setRestitutionLimLin(0.0);
-  _muscleConstraint->setDampingLimLin(0.0);
+  // _muscleConstraint->setSoftnessLimLin(0.0);
+  // _muscleConstraint->setRestitutionLimLin(0.0);
+  // _muscleConstraint->setDampingLimLin(0.0);
 
-  _muscleConstraint->setSoftnessOrthoLin(0.0);
-  _muscleConstraint->setRestitutionOrthoLin(0.0);
-  _muscleConstraint->setDampingOrthoLin(0.0);
+  // _muscleConstraint->setSoftnessOrthoLin(0.0);
+  // _muscleConstraint->setRestitutionOrthoLin(0.0);
+  // _muscleConstraint->setDampingOrthoLin(0.0);
 
   for(int i = 0; i < 6; i++)
   {
     _muscleConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
     _muscleConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
   }
+
+  _constraints.push_back(_muscleConstraint);
 }
 
 void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
@@ -207,7 +191,7 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
     c->getRotationalLimitMotor(i)->m_bounce = 0.0;
     c->getRotationalLimitMotor(i)->m_enableMotor = true;
     c->getRotationalLimitMotor(i)->m_targetVelocity = 0.0;
-    c->getRotationalLimitMotor(i)->m_maxMotorForce = 0.2;
+    c->getRotationalLimitMotor(i)->m_maxMotorForce = 0.01;
   }
 
   c->getTranslationalLimitMotor()->m_enableMotor[0] = false;
@@ -230,5 +214,6 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
     c->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
     c->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
   }
+
 }
 

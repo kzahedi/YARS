@@ -49,7 +49,7 @@
   <robots>
     <robot name="Muscle">
       <body>
-        <sphere name="base" visualise="true">
+        <sphere name="source body" visualise="true">
           <dimension radius="0.10"/>
           <pose z="2.00"/>
           <visualisation>
@@ -59,7 +59,7 @@
             <mass kg="0.0"/>
           </physics>
         </sphere>
-        <sphere name="swinging body" visualise="true">
+        <sphere name="destination body" visualise="true">
           <dimension radius="0.10"/>
           <pose x="-.5" y="+0.5" z="1.5"/>
           <visualisation>
@@ -72,8 +72,8 @@
       </body>
       <actuators>
         <muscle name="muscle" visualise="true">
-          <source name="base"/>
-          <destination name="swinging body"/>
+          <source name="source body"/>
+          <destination name="destination body"/>
           <srcAnchor>
             <sphere name="source anchor" visualise="true">
               <dimension radius="0.05"/>
@@ -82,7 +82,7 @@
                 <texture name="Chain/Circuit/Top/Yellow"/>
               </visualisation>
               <physics>
-                <mass kg="0.10"/>
+                <mass kg="1.00"/>
               </physics>
             </sphere>
           </srcAnchor>
@@ -94,7 +94,7 @@
                 <texture name="Chain/Circuit/Top/Blue"/>
               </visualisation>
               <physics>
-                <mass kg="0.10"/>
+                <mass kg="1.00"/>
               </physics>
             </sphere>
           </dstAnchor>
@@ -102,7 +102,7 @@
           <velocity    max="10.0"/>
           <mapping     min="-1" max="+1"/>
           <lengthComponent   optimalLength="4.0" w="1.5" c="1.5" use="true"/>
-          <velocityComponent maxVelocity="4.0" N="1.5" K="1.5" use="false"/>
+          <velocityComponent maxVelocity="4.0"   N="1.5" K="1.5" use="false"/>
         </muscle>
       </actuators>
       <sensors>
