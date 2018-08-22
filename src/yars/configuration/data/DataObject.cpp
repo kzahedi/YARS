@@ -5,10 +5,11 @@
 DataObject::DataObject(DataNode *parent, int type)
 : DataNode(parent)
 {
-  _type      = type;
-  _physics   = new DataPhysicsParameter(this);
-  _visualise = true;
-  _isSoft    = false;
+  _type        = type;
+  _physics     = new DataPhysicsParameter(this);
+  _visualise   = true;
+  _isSoft      = false;
+  _applyOffset = true;
   YM_INIT;
 }
 
@@ -220,3 +221,13 @@ P3D DataObject::getCurrentTorque()
   return r;
 }
 
+bool DataObject::useApplyOffset()
+{
+  return _applyOffset;
+}
+
+void DataObject::setUseApplyOffset(bool b)
+{
+  _applyOffset = b;
+
+}

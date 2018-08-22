@@ -251,7 +251,10 @@ void DataRobot::__applyPose()
     }
     else
     {
-      (*object_ptr)->applyOffset(_pose);
+      if((*object_ptr)->useApplyOffset())
+      {
+        (*object_ptr)->applyOffset(_pose);
+      }
     }
   }
 
@@ -516,6 +519,8 @@ void DataRobot::__collectActuatorObjects()
       DataMuscleActuator *m = (DataMuscleActuator*)(*a);
       DataObject* src = m->sourceAnchor();
       DataObject* dst = m->destinationAnchor();
+      src->setUseApplyOffset(false);
+      dst->setUseApplyOffset(false);
       _objects.push_back(src);
       _objects.push_back(dst);
     }

@@ -175,7 +175,7 @@
           </physics>
         </sphere>
       </body>
-      <pose x="2.25" z="0.05" gamma="15"/>
+      <pose x="2.25" z="0.05" gamma="35"/>
       <actuators>
         <hinge name="wheel left hinge" type="velocity" mode="active">
           <source      name="wheel left"/>
@@ -262,11 +262,11 @@
           <coordinates x="true" y="true" z="true"/>
         </ov>
 
-        <oav name="main body angular velocity">
+<!--         <oav name="main body angular velocity">
           <object name="main body"/>
           <coordinates x="true" y="true" z="true"/>
         </oav>
-
+ -->
         <position name="main body position">
           <object name="main body"/>
           <coordinates x="true" y="true" z="true"/>

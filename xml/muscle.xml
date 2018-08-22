@@ -96,7 +96,7 @@
           <dstAnchor>
             <sphere name="destination anchor 1" visualise="true">
               <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.1"/>
+              <pose x="0.0" y="0.0" z="0.0"/>
               <visualisation>
                 <texture name="Chain/Circuit/Top/Blue"/>
               </visualisation>

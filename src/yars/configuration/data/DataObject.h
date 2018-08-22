@@ -56,6 +56,8 @@ class DataObject : public DataNode
     void setPosition(P3D p);
 
     void applyOffset(Pose p);
+    bool useApplyOffset();
+    void setUseApplyOffset(bool b); 
 
     bool visualise();
 
@@ -122,6 +124,7 @@ class DataObject : public DataNode
     P3D                      _torque;
     P3D                      _velocity;
     P3D                      _angularVelocity;
+    bool                     _applyOffset; 
 };
 
 #endif // __DATA_OBJECT_H__
