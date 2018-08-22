@@ -72,13 +72,6 @@ void MuscleActuator::prePhysicsUpdate()
   double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
   double velocity = _data->velocity();
 
-  // cout << "Input: " << _data->getInternalDesiredValue(0);
-  // cout << " Fl: " << fl;
-  // cout << " Fv: " << fv;
-  // cout << " Velocity: " << _velocity;
-  // cout << " Length: " << _length;
-  // cout << " Force: " << force << endl;
-
   if(force < 0) force = 0.0;
   _muscleConstraint->setMaxLinMotorForce(force);
   _muscleConstraint->setTargetLinMotorVelocity(velocity);
@@ -183,11 +176,7 @@ void MuscleActuator::__initSlider()
   axis = -axis;
   if(axis[0] > 0.0) angle = -angle;
   
-  // cout << "name:  " << _data->name() << endl;
-  // cout << "angle: " << angle << endl;
-  // cout << "axis:  " << axis[0] << " " << axis[1] << " " << axis[2] << endl;
   btQuaternion q(axis, angle);
-
   btTransform global(q, centre);
 
   btTransform localInSrc = src->getWorldTransform().inverse() * global;
