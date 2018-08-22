@@ -7,9 +7,9 @@
   <screens>
 
     <screen name="Braiternberg" show="true" follow="false">
-      <size   width="1200" height="600"/>
+      <size   width="600" height="600"/>
       <camera>
-        <position x="4.00" y="0.00" z="3.0"/>
+        <position x="3.00" y="0.00" z="2.0"/>
         <lookAt x="0.0" y="0.00" z="1.0"/>
       </camera>
       <osd>
@@ -55,7 +55,7 @@
       <body>
         <sphere name="source body 1" visualise="true">
           <dimension radius="0.10"/>
-          <pose z="2.00" y="2.0"/>
+          <pose z="2.00" y="0.0"/>
           <visualisation>
             <texture name="Chain/Circuit/Top/Green"/>
           </visualisation>
@@ -65,7 +65,7 @@
         </sphere>
         <sphere name="destination body 1" visualise="true">
           <dimension radius="0.10"/>
-          <pose x="0.5" y="+2.5" z="1.5"/>
+          <pose x="0.5" y="0.5" z="1.5"/>
           <visualisation>
             <texture name="Chain/Circuit/Top/Green"/>
           </visualisation>
@@ -75,6 +75,9 @@
         </sphere>
       </body>
       <actuators>
+      <!--
+      standard values from the 2015 paper
+      -->
         <muscle name="muscle 1" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
           <source name="source body 1"/>
           <destination name="destination body 1"/>
@@ -102,302 +105,23 @@
               </physics>
             </sphere>
           </dstAnchor>
-          <force       max="1.0"/>
-          <velocity    max="1.5"/>
+          <force       max="20.0"/>
+          <velocity    max="10.5"/>
           <deflection  min="-0.5" max="0.5"/>
           <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="2.0" w="0.45" c="30.0" use="true"/>
+          <lengthComponent   optimalLength="1.0" w="0.9" c="5.0" use="true"/>
           <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
         </muscle>
       </actuators>
       <sensors>
       </sensors>
 
-      <controller  module="Sine" frequency="25">
+      <controller  module="Sine" frequency="10">
         <parameter name="base line" value="0.5"/>
         <parameter name="amplitude" value="0.5"/>
         <!-- <parameter name="debug" value="true"/> -->
       </controller>
     </robot>
-
-    <robot name="Muscle 2">
-      <body>
-        <sphere name="source body 2" visualise="true">
-          <dimension radius="0.10"/>
-          <pose z="2.00" y="1.0"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.0"/>
-          </physics>
-        </sphere>
-        <sphere name="destination body 2" visualise="true">
-          <dimension radius="0.10"/>
-          <pose x="-.5" y="+0.5" z="1.5"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.1"/>
-          </physics>
-        </sphere>
-      </body>
-      <actuators>
-        <muscle name="muscle 2" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
-          <source name="source body 2"/>
-          <destination name="destination body 2"/>
-          <srcAnchor>
-            <sphere name="source anchor 2" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="-0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Yellow"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </srcAnchor>
-          <dstAnchor>
-            <sphere name="destination anchor 2" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Blue"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </dstAnchor>
-          <force       max="1.0"/>
-          <velocity    max="1.5"/>
-          <deflection  min="-0.5" max="0.5"/>
-          <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="2.0" w="0.45" c="30.0" use="true"/>
-          <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
-        </muscle>
-      </actuators>
-      <sensors>
-      </sensors>
-
-      <controller  module="Sine" frequency="25">
-        <parameter name="base line" value="0.5"/>
-        <parameter name="amplitude" value="0.5"/>
-        <!-- <parameter name="debug" value="true"/> -->
-      </controller>
-    </robot>
-
-    <robot name="Muscle 3">
-      <body>
-        <sphere name="source body 3" visualise="true">
-          <dimension radius="0.10"/>
-          <pose z="2.00" y="0.0"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.0"/>
-          </physics>
-        </sphere>
-        <sphere name="destination body 3" visualise="true">
-          <dimension radius="0.10"/>
-          <pose x="0.0" y="0.0" z="1.5"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.1"/>
-          </physics>
-        </sphere>
-      </body>
-      <actuators>
-        <muscle name="muscle 3" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
-          <source name="source body 3"/>
-          <destination name="destination body 3"/>
-          <srcAnchor>
-            <sphere name="source anchor 3" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="-0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Yellow"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </srcAnchor>
-          <dstAnchor>
-            <sphere name="destination anchor 3" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Blue"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </dstAnchor>
-          <force       max="1.0"/>
-          <velocity    max="1.5"/>
-          <deflection  min="-0.5" max="0.2"/>
-          <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="2.0" w="0.45" c="30.0" use="true"/>
-          <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
-        </muscle>
-      </actuators>
-      <sensors>
-      </sensors>
-
-      <controller  module="Sine" frequency="25">
-        <parameter name="base line" value="0.5"/>
-        <parameter name="amplitude" value="0.5"/>
-        <!-- <parameter name="debug" value="true"/> -->
-      </controller>
-    </robot>
-
-
-    <robot name="Muscle 4">
-      <body>
-        <sphere name="source body 4" visualise="true">
-          <dimension radius="0.10"/>
-          <pose z="2.00" y="-1.0"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.0"/>
-          </physics>
-        </sphere>
-        <sphere name="destination body 4" visualise="true">
-          <dimension radius="0.10"/>
-          <pose x="-0.5" y="-1.5" z="1.5"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.1"/>
-          </physics>
-        </sphere>
-      </body>
-      <actuators>
-        <muscle name="muscle 4" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
-          <source name="source body 4"/>
-          <destination name="destination body 4"/>
-          <srcAnchor>
-            <sphere name="source anchor 4" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="-0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Yellow"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </srcAnchor>
-          <dstAnchor>
-            <sphere name="destination anchor 4" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Blue"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </dstAnchor>
-          <force       max="1.0"/>
-          <velocity    max="1.5"/>
-          <deflection  min="-0.5" max="0.5"/>
-          <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="2.0" w="0.45" c="30.0" use="true"/>
-          <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
-        </muscle>
-      </actuators>
-      <sensors>
-      </sensors>
-
-      <controller  module="Sine" frequency="25">
-        <parameter name="base line" value="0.5"/>
-        <parameter name="amplitude" value="0.5"/>
-        <!-- <parameter name="debug" value="true"/> -->
-      </controller>
-    </robot>
-
-    <robot name="Muscle 5">
-      <body>
-        <sphere name="source body 5" visualise="true">
-          <dimension radius="0.10"/>
-          <pose z="2.00" y="-2.0"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.0"/>
-          </physics>
-        </sphere>
-        <sphere name="destination body 5" visualise="true">
-          <dimension radius="0.10"/>
-          <pose x="0.5" y="-2.5" z="1.5"/>
-          <visualisation>
-            <texture name="Chain/Circuit/Top/Green"/>
-          </visualisation>
-          <physics>
-            <mass kg="0.1"/>
-          </physics>
-        </sphere>
-      </body>
-      <actuators>
-        <muscle name="muscle 5" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
-          <source name="source body 5"/>
-          <destination name="destination body 5"/>
-          <srcAnchor>
-            <sphere name="source anchor 5" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="-0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Yellow"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </srcAnchor>
-          <dstAnchor>
-            <sphere name="destination anchor 5" visualise="true">
-              <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.1"/>
-              <visualisation>
-                <texture name="Chain/Circuit/Top/Blue"/>
-              </visualisation>
-              <physics>
-                <mass kg="0.01"/>
-              </physics>
-            </sphere>
-          </dstAnchor>
-          <force       max="1.0"/>
-          <velocity    max="1.5"/>
-          <deflection  min="-0.5" max="0.5"/>
-          <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="2.0" w="0.45" c="30.0" use="true"/>
-          <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
-        </muscle>
-      </actuators>
-      <sensors>
-      </sensors>
-
-      <controller  module="Sine" frequency="25">
-        <parameter name="base line" value="0.5"/>
-        <parameter name="amplitude" value="0.5"/>
-        <!-- <parameter name="debug" value="true"/> -->
-      </controller>
-    </robot>
-
-
 
   </robots>
 

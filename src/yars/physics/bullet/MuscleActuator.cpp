@@ -14,16 +14,18 @@
 MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   : Actuator("MuscleActuator", data->source(), data->destination(), robot)
 {
-  _data             = data;
-  _muscleConstraint = NULL;
-  _lastLength       = 0.0;
-  _length           = 0.0;
-  _isVisualised     = Data::instance()->current()->screens()->visualiseJoints();
-  _parameter        = _data->parameter();
-  _velocity         = _data->velocity();
-  _maxForce         = _data->force();
-  _erp              = _data->erp();
-  _cfm              = _data->cfm();
+  _data                 = data;
+  _muscleConstraint     = NULL;
+  _lastLength           = 0.0;
+  _length               = 0.0;
+  _isVisualised         = Data::instance()->current()->screens()->visualiseJoints();
+  _parameter            = _data->parameter();
+  _velocity             = _data->velocity();
+  _maxForce             = _data->force();
+  _erp                  = _data->erp();
+  _cfm                  = _data->cfm();
+  _useLengthComponent   = _data->lengthComponentUse();
+  _useVelocityComponent = _data->velocityComponentUse();
 
   __initSource();
   __initDestination();
@@ -49,13 +51,13 @@ void MuscleActuator::prePhysicsUpdate()
   double N      = _data->velocityComponentN();
   double K      = _data->velocityComponentK();
 
-  if(_data->lengthComponentUse())
+  if (_useLengthComponent)
   {
     double a = fabs((_length - lOpt) / (w * lOpt));
     fl = exp(-c * a * a * a);
   }
 
-  if(_data->velocityComponentUse())
+  if(_useVelocityComponent)
   {
     if(_velocity > 0.0)
     {
@@ -70,7 +72,12 @@ void MuscleActuator::prePhysicsUpdate()
   double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
   double velocity = _data->velocity();
 
-  // cout << "Force: " << force << " Velocity: " << velocity << endl;
+  // cout << "Input: " << _data->getInternalDesiredValue(0);
+  // cout << " Fl: " << fl;
+  // cout << " Fv: " << fv;
+  // cout << " Velocity: " << _velocity;
+  // cout << " Length: " << _length;
+  // cout << " Force: " << force << endl;
 
   if(force < 0) force = 0.0;
   _muscleConstraint->setMaxLinMotorForce(force);
@@ -79,10 +86,11 @@ void MuscleActuator::prePhysicsUpdate()
 
 void MuscleActuator::postPhysicsUpdate()
 {
-  _position     = _muscleConstraint->getLinearPos();
-  _velocity     = _position - _lastPosition;
-  _lastPosition = _position;
-  _data->setCurrentTransitionalVelocity(_velocity * (double)__YARS_GET_SIMULATOR_FREQUENCY);
+  _lastLength  = _length;
+  _length      = __calculateLength();
+  _velocity    = _length - _lastLength;
+  _velocity   *= (double)__YARS_GET_SIMULATOR_FREQUENCY;
+  _data->setCurrentTransitionalVelocity(_velocity);
 
   if(_isVisualised)
   {
@@ -175,9 +183,9 @@ void MuscleActuator::__initSlider()
   axis = -axis;
   if(axis[0] > 0.0) angle = -angle;
   
-  cout << "name:  " << _data->name() << endl;
-  cout << "angle: " << angle << endl;
-  cout << "axis:  " << axis[0] << " " << axis[1] << " " << axis[2] << endl;
+  // cout << "name:  " << _data->name() << endl;
+  // cout << "angle: " << angle << endl;
+  // cout << "axis:  " << axis[0] << " " << axis[1] << " " << axis[2] << endl;
   btQuaternion q(axis, angle);
 
   btTransform global(q, centre);
@@ -276,12 +284,10 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
   }
 }
 
-double DataMuscleActuator::cfm()
+double MuscleActuator::__calculateLength()
 {
-  return _cfm;
-}
-
-double DataMuscleActuator::erp()
-{
-  return _erp;
+  btVector3 s = _srcAnchor->getCenterOfMassPosition();
+  btVector3 d = _dstAnchor->getCenterOfMassPosition(); 
+  btVector3 l   = s - d;
+  return l.length();
 }

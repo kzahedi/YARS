@@ -351,21 +351,29 @@ DataMuscleActuator* DataMuscleActuator::_copy()
   DataMuscleActuator *copy = new DataMuscleActuator(NULL);
 
   if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
-  copy->_mapping         = _mapping;
-  copy->_parameter       = _parameter;
-  copy->_deflection      = _deflection;
-  copy->_deflectionSet   = _deflectionSet;
-  copy->_destination     = _destination;
-  copy->_name            = _name;
-  copy->_erp             = _erp;
-  copy->_cfm             = _cfm;
-  copy->_source          = _source;
-  copy->_friction        = _friction;
-  copy->_axisOrientation = _axisOrientation;
-  copy->_axisPosition    = _axisPosition;
-  copy->_srcObject       = _srcObject->copy();
-  copy->_dstObject       = _dstObject->copy();
+  if (_noise  != NULL) copy->_noise = _noise->copy();
+  copy->_mapping                      = _mapping;
+  copy->_parameter                    = _parameter;
+  copy->_deflection                   = _deflection;
+  copy->_deflectionSet                = _deflectionSet;
+  copy->_destination                  = _destination;
+  copy->_name                         = _name;
+  copy->_erp                          = _erp;
+  copy->_cfm                          = _cfm;
+  copy->_source                       = _source;
+  copy->_friction                     = _friction;
+  copy->_axisOrientation              = _axisOrientation;
+  copy->_axisPosition                 = _axisPosition;
+  copy->_lengthComponentUse           = _lengthComponentUse;
+  copy->_velocityComponentUse         = _velocityComponentUse;
+  copy->_lengthComponentW             = _lengthComponentW;
+  copy->_lengthComponentC             = _lengthComponentC;
+  copy->_lengthComponentOptimalLength = _lengthComponentOptimalLength;
+  copy->_velocityComponentN           = _velocityComponentN;
+  copy->_velocityComponentK           = _velocityComponentK;
+  copy->_velocityComponentMaxVelocity = _velocityComponentMaxVelocity;
+  copy->_srcObject = _srcObject->copy();
+  copy->_dstObject = _dstObject->copy();
   copy->__setMapping();
   return copy;
 }
@@ -594,3 +602,12 @@ bool DataMuscleActuator::velocityComponentUse()
   return _velocityComponentUse;
 }
 
+double DataMuscleActuator::cfm()
+{
+  return _cfm;
+}
+
+double DataMuscleActuator::erp()
+{
+  return _erp;
+}
