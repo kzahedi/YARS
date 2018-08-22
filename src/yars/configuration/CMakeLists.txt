@@ -29,6 +29,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataGenericCameraSensor.cpp
             data/DataGenericDeflectionSensor.cpp
             data/DataGenericFeedbackSensor.cpp
+            data/DataMuscleSensor.cpp
             data/DataGenericInternalEnergySensor.cpp
             data/DataGenericLightDependentResistorSensor.cpp
             data/DataGenericOrientationSensor.cpp
@@ -36,6 +37,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataGenericProximitySensor.cpp
             data/DataGenericSignalSensor.cpp
             data/DataGenericVelocitySensor.cpp
+            data/DataMuscleSensor.cpp
             data/DataHingeActuator.cpp
             data/DataPointLightSource.cpp
             data/DataAmbientLight.cpp

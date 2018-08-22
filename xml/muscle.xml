@@ -51,9 +51,9 @@
 
   <robots>
 
-    <robot name="Muscle 1">
+    <robot name="Muscle">
       <body>
-        <sphere name="source body 1" visualise="true">
+        <sphere name="source body" visualise="true">
           <dimension radius="0.10"/>
           <pose z="2.00" y="0.0"/>
           <visualisation>
@@ -63,7 +63,7 @@
             <mass kg="0.0"/>
           </physics>
         </sphere>
-        <sphere name="destination body 1" visualise="true">
+        <sphere name="destination body" visualise="true">
           <dimension radius="0.10"/>
           <pose x="0.5" y="0.5" z="1.5"/>
           <visualisation>
@@ -78,11 +78,11 @@
       <!--
       standard values from the 2015 paper
       -->
-        <muscle name="muscle 1" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
-          <source name="source body 1"/>
-          <destination name="destination body 1"/>
+        <muscle name="muscle" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
+          <source name="source body"/>
+          <destination name="destination body"/>
           <srcAnchor>
-            <sphere name="source anchor 1" visualise="true">
+            <sphere name="source anchor" visualise="true">
               <dimension radius="0.05"/>
               <pose x="0.0" y="0.0" z="-0.1"/>
               <visualisation>
@@ -94,7 +94,7 @@
             </sphere>
           </srcAnchor>
           <dstAnchor>
-            <sphere name="destination anchor 1" visualise="true">
+            <sphere name="destination anchor" visualise="true">
               <dimension radius="0.05"/>
               <pose x="0.0" y="0.0" z="0.0"/>
               <visualisation>
@@ -105,12 +105,12 @@
               </physics>
             </sphere>
           </dstAnchor>
-          <force       max="20.0"/>
-          <velocity    max="10.5"/>
+          <force       max="2.0"/>
+          <velocity    max="3.5"/>
           <deflection  min="-0.5" max="0.5"/>
           <mapping     min="-1" max="+1"/>
-          <lengthComponent   optimalLength="1.0" w="0.9" c="5.0" use="true"/>
-          <velocityComponent maxVelocity="3.0"   N="1.5"  K="1.5"  use="true"/>
+          <lengthComponent   optimalLength="1.0" w="0.5" c="5.0" use="true"/>
+          <velocityComponent maxVelocity="-3.5"   N="1.5"  K="1.5"  use="true"/>
         </muscle>
       </actuators>
       <sensors>
@@ -139,5 +139,13 @@
       <!-- <final colour="0000ff00"  size="0.00"/> -->
     <!-- </trace> -->
   <!-- </traces> -->
+
+   <logging>
+    <actuator target="muscle" precision="3"> <internal/> <external/> <appliedForce/> <appliedVelocity/> </actuator>
+
+    <console>
+      <target name="muscle"/>
+    </console>
+  </logging>
 
 </rosiml>

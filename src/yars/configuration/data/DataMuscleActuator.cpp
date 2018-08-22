@@ -96,6 +96,10 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _desiredValue[0]   = 0.0;
   _desiredExValue[0] = 0.0;
 
+  _fl           = 0.0;
+  _fv           = 0.0;
+  _appliedForce = 0.0;
+
   YM_INIT;
 }
 
@@ -610,4 +614,44 @@ double DataMuscleActuator::cfm()
 double DataMuscleActuator::erp()
 {
   return _erp;
+}
+
+double DataMuscleActuator::getLengthComponent()
+{
+  return _fl;
+}
+
+double DataMuscleActuator::getVelocityComponent()
+{
+  return _fv;
+}
+
+void DataMuscleActuator::setLengthComponent(double fl)
+{
+  _fl = fl;
+}
+
+void DataMuscleActuator::setVelocityComponent(double fv)
+{
+  _fv = fv;
+}
+
+void DataMuscleActuator::setMuscleLength(double l)
+{
+  _muscleLength = l;
+}
+
+void DataMuscleActuator::setMuscleVelocity(double v)
+{
+  _muscleVelocity = v;
+}
+
+double DataMuscleActuator::getMuscleLength()
+{
+  return _muscleLength;
+}
+
+double DataMuscleActuator::getMuscleVelocity()
+{
+  return _muscleVelocity;
 }

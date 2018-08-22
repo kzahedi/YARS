@@ -32,8 +32,8 @@
 # define YARS_STRING_POSE_DEFINITION                          (char*)"pose_divider_definition"
 # define YARS_STRING_DIMENSION                                (char*)"dimension"
 
-# define YARS_STRING_MASS                                     (char*)"mass"
-# define YARS_STRING_MASS_DEFINITION                          (char*)"mass_divider_definition"
+// # define YARS_STRING_MASS                                     (char*)"mass"
+// # define YARS_STRING_MASS_DEFINITION                          (char*)"mass_definition"
 
 # define YARS_STRING_COMPOSITE_BODY_PHYSICS                   (char*)"composite_body_physics"
 

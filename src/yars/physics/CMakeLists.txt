@@ -39,6 +39,7 @@ set(PHYSICS_SRC YarsPhysicsModel.cpp
                 bullet/GenericProximitySensor.cpp
                 bullet/GenericActuatorSensor.cpp
                 bullet/GenericLDRSensor.cpp
+                bullet/MuscleSensor.cpp
                 bullet/BinaryContactSensor.cpp
 )
 

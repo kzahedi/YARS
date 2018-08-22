@@ -24,13 +24,13 @@ class Sensor
     Actuator* __findAcutaor(string name);
     void      __findTarget();
 
-    Object                    *_targetObject;
-    Actuator                  *_targetActuator;
+    Object   *_targetObject;
+    Actuator *_targetActuator;
 
   private:
-    Robot                   *_robot;
-    string                     _name;
-    string                     _object;
+    Robot *_robot;
+    string _name;
+    string _object;
 };
 
 #endif // __SENSOR_H__

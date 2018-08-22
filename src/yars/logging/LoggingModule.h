@@ -78,13 +78,13 @@ class LoggingModule : public std::vector<string>
     std::vector<LoggingModuleFunctionPtr> _methods;
     std::vector<string>                   _arguments;
 
-    stringstream       _oss;
-    stringstream       _out;
-    string             _delimiter;
-    int                _precision;
+    stringstream        _oss;
+    stringstream        _out;
+    string              _delimiter;
+    int                 _precision;
     double              _real;
-    int                _integer;
-    ::Matrix           _matrix;
+    int                 _integer;
+    ::Matrix            _matrix;
     std::vector<double> _vector;
 };
 

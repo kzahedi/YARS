@@ -1,6 +1,7 @@
 #include <yars/logging/LoggingModule.h>
 
 #include <yars/util/YarsErrorHandler.h>
+#include <yars/configuration/data/DataMuscleActuator.h>
 
 LoggingModule::LoggingModule()
 {
@@ -138,6 +139,14 @@ string LoggingModule::getActuatorInternalValues(string)
   for(int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->internalValue(i);
+    if(_actuator->type() == DATA_ACTUATOR_MUSCLE)
+    {
+      DataMuscleActuator *ma = (DataMuscleActuator*)(_actuator);
+      _oss << " " << ma->getVelocityComponent();
+      _oss << " " << ma->getLengthComponent();
+      _oss << " " << ma->getMuscleLength();
+      _oss << " " << ma->getMuscleVelocity();
+    }
   }
   return _oss.str();
 }

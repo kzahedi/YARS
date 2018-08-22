@@ -72,6 +72,14 @@ void MuscleActuator::prePhysicsUpdate()
   double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
   double velocity = _data->velocity();
 
+  _data->setInternalValue(0, force);
+
+  _data->setAppliedForceAndVelocity(0, force, velocity);
+  _data->setLengthComponent(fl);
+  _data->setVelocityComponent(fv);
+  _data->setMuscleLength(_length);
+  _data->setMuscleVelocity(_velocity);
+
   if(force < 0) force = 0.0;
   _muscleConstraint->setMaxLinMotorForce(force);
   _muscleConstraint->setTargetLinMotorVelocity(velocity);
@@ -81,7 +89,7 @@ void MuscleActuator::postPhysicsUpdate()
 {
   _lastLength  = _length;
   _length      = __calculateLength();
-  _velocity    = _length - _lastLength;
+  _velocity    = _lastLength - _length ;
   _velocity   *= (double)__YARS_GET_SIMULATOR_FREQUENCY;
   _data->setCurrentTransitionalVelocity(_velocity);
 

@@ -125,8 +125,26 @@ void LoggingModuleActuator::__useInternal()
     for(int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
-      oss << _actuator->name() << " " << (i+1) << " internal";
+      oss << _actuator->name() << " " << (i + 1) << " internal";
       _variables.push_back(oss.str());
+      cout << _actuator->type() << " == " << DATA_ACTUATOR_MUSCLE << endl;
+      if (_actuator->type() == DATA_ACTUATOR_MUSCLE)
+      {
+        oss.str("");
+        oss << _actuator->name() << " " << (i + 1) << " Fv";
+        _variables.push_back(oss.str());
+
+        oss.str("");
+        oss << _actuator->name() << " " << (i + 1) << " Fl";
+        _variables.push_back(oss.str());
+        oss.str("");
+        oss << _actuator->name() << " " << (i + 1) << " Muscle Length";
+        _variables.push_back(oss.str());
+
+        oss.str("");
+        oss << _actuator->name() << " " << (i + 1) << " Muscle Velocity";
+        _variables.push_back(oss.str());
+      }
     }
     stringstream oss;
     oss << _actuator->name() << " " << _actuator->dimension() << " internal";
@@ -137,6 +155,24 @@ void LoggingModuleActuator::__useInternal()
     stringstream oss;
     oss << _actuator->name() << " internal";
     _variables.push_back(oss.str());
+    cout << _actuator->type() << " == " << DATA_ACTUATOR_MUSCLE << endl;
+    if (_actuator->type() == DATA_ACTUATOR_MUSCLE)
+    {
+      oss.str("");
+      oss << _actuator->name() << " Fv";
+      _variables.push_back(oss.str());
+
+      oss.str("");
+      oss << _actuator->name() << " Fl";
+      _variables.push_back(oss.str());
+      oss.str("");
+      oss << _actuator->name() << " Muscle Length";
+      _variables.push_back(oss.str());
+
+      oss.str("");
+      oss << _actuator->name() << " Muscle Velocity";
+      _variables.push_back(oss.str());
+    }
   }
 
   addMethod(&LoggingModule::getActuatorInternalValues);

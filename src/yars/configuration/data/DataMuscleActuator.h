@@ -119,6 +119,16 @@ class DataMuscleActuator : public DataActuator
     double cfm();
     bool   velocityComponentUse();
 
+    void setLengthComponent(double fl);
+    void setVelocityComponent(double fv);
+    void setMuscleLength(double l);
+    void setMuscleVelocity(double  v);
+
+    double getVelocityComponent();
+    double getLengthComponent();
+    double getMuscleLength();
+    double getMuscleVelocity();
+
     int dimension() { return 1; }
 
     bool isDeflectionSet();
@@ -185,6 +195,11 @@ class DataMuscleActuator : public DataActuator
 
     double          _erp;
     double          _cfm;
+
+    double          _fl;
+    double          _fv;
+    double          _muscleLength;
+    double          _muscleVelocity;
 };
 
 #endif // __DATA_MUSCLE_H__
