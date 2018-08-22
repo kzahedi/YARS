@@ -69,9 +69,8 @@ void MuscleActuator::prePhysicsUpdate()
 
   double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
   double velocity = _data->velocity();
-  force           = _data->getInternalDesiredValue(0);
 
-  cout << "Force: " << force << " Velocity: " << velocity << endl;
+  // cout << "Force: " << force << " Velocity: " << velocity << endl;
 
   if(force < 0) force = 0.0;
   _muscleConstraint->setMaxLinMotorForce(force);
