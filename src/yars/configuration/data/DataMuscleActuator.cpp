@@ -64,6 +64,8 @@
 # define YARS_STRING_MAX_VELOCITY                  (char*)"maxVelocity"
 # define YARS_STRING_N                             (char*)"N"
 # define YARS_STRING_K                             (char*)"K"
+# define YARS_STRING_ERP                           (char*)"erp"
+# define YARS_STRING_CFM                           (char*)"cfm"
 
 DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_MUSCLE)
@@ -74,7 +76,10 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _currentTransitionalVelocity = 0.0;
   _appliedForce                = 0.0;
   _appliedVelocity             = 0.0;
+  _friction                    = 0.0;
   _n                           = NULL;
+  _erp                         = 0.5;
+  _cfm                         = 0.0;
   _parsingSourceAnchor         = false;
   _parsingDestinationAnchor    = false;
 
@@ -111,6 +116,9 @@ void DataMuscleActuator::add(DataParseElement *element)
   {
     element->set(YARS_STRING_NAME,      _name);
     element->set(YARS_STRING_VISUALISE, _visualise);
+    element->set(YARS_STRING_FRICTION,  _friction);
+    element->set(YARS_STRING_ERP,       _erp);
+    element->set(YARS_STRING_CFM,       _cfm);
   }
 
   if(element->opening(YARS_STRING_FORCE))
@@ -178,6 +186,22 @@ void DataMuscleActuator::add(DataParseElement *element)
     current = _filter;
     _filter->add(element);
   }
+
+  if(element->opening(YARS_STRING_LENGTH_COMPONENT))
+  {
+    element->set(YARS_STRING_W,              _lengthComponentW);
+    element->set(YARS_STRING_C,              _lengthComponentC);
+    element->set(YARS_STRING_OPTIMAL_LENGTH, _lengthComponentOptimalLength);
+    element->set(YARS_STRING_USE,            _lengthComponentUse);
+  }
+
+  if(element->opening(YARS_STRING_VELOCITY_COMPONENT))
+  {
+    element->set(YARS_STRING_N,            _velocityComponentN);
+    element->set(YARS_STRING_K,            _velocityComponentK);
+    element->set(YARS_STRING_MAX_VELOCITY, _velocityComponentMaxVelocity);
+    element->set(YARS_STRING_USE,          _velocityComponentUse);
+  }
 }
 
 string DataMuscleActuator::name()
@@ -229,7 +253,10 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
 {
   XsdSequence *muscleDefinition = new XsdSequence(YARS_STRING_MUSCLE_DEFINITION);
   muscleDefinition->add(NA(YARS_STRING_NAME,               YARS_STRING_XSD_STRING,                    true));
+  muscleDefinition->add(NA(YARS_STRING_FRICTION,           YARS_STRING_POSITIVE_DECIMAL,              false));
   muscleDefinition->add(NA(YARS_STRING_VISUALISE,          YARS_STRING_TRUE_FALSE_DEFINITION,         false));
+  muscleDefinition->add(NA(YARS_STRING_ERP,                YARS_STRING_POSITIVE_DECIMAL,              false));
+  muscleDefinition->add(NA(YARS_STRING_CFM,                YARS_STRING_POSITIVE_DECIMAL,              false));
   muscleDefinition->add(NE(YARS_STRING_SOURCE,             YARS_STRING_NAME_DEFINITION,               1, 1));
   muscleDefinition->add(NE(YARS_STRING_DESTINATION,        YARS_STRING_NAME_DEFINITION,               0, 1));
   muscleDefinition->add(NE(YARS_STRING_SOURCE_ANCHOR,      YARS_STRING_ANCHOR_DEFINITION,             1, 1));
@@ -276,9 +303,9 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   spec->add(actuatorParameter);
 
   XsdSequence *lengthComponent = new XsdSequence(YARS_STRING_LENGTH_COMPONENT_DEFINITION);
-  lengthComponent->add(NA(YARS_STRING_OPTIMAL_LENGTH, YARS_STRING_XSD_DECIMAL, true));
-  lengthComponent->add(NA(YARS_STRING_W,              YARS_STRING_XSD_DECIMAL, true));
-  lengthComponent->add(NA(YARS_STRING_C,              YARS_STRING_XSD_DECIMAL, true));
+  lengthComponent->add(NA(YARS_STRING_OPTIMAL_LENGTH, YARS_STRING_XSD_DECIMAL,           true));
+  lengthComponent->add(NA(YARS_STRING_W,              YARS_STRING_XSD_DECIMAL,           true));
+  lengthComponent->add(NA(YARS_STRING_C,              YARS_STRING_XSD_DECIMAL,           true));
   lengthComponent->add(NA(YARS_STRING_USE,            YARS_STRING_TRUE_FALSE_DEFINITION, true));
   spec->add(lengthComponent);
 
@@ -331,7 +358,10 @@ DataMuscleActuator* DataMuscleActuator::_copy()
   copy->_deflectionSet   = _deflectionSet;
   copy->_destination     = _destination;
   copy->_name            = _name;
+  copy->_erp             = _erp;
+  copy->_cfm             = _cfm;
   copy->_source          = _source;
+  copy->_friction        = _friction;
   copy->_axisOrientation = _axisOrientation;
   copy->_axisPosition    = _axisPosition;
   copy->_srcObject       = _srcObject->copy();
@@ -517,3 +547,50 @@ DataActuator* DataMuscleActuator::destinationConnector()
 {
   return _dstConnector;
 }
+
+double DataMuscleActuator::friction()
+{
+  return _friction;
+}
+
+double DataMuscleActuator::lengthComponentW()
+{
+  return _lengthComponentW;
+}
+
+double DataMuscleActuator::lengthComponentC()
+{
+  return _lengthComponentC;
+}
+
+double DataMuscleActuator::lengthComponentOptimalLength()
+{
+  return _lengthComponentOptimalLength;
+}
+
+bool DataMuscleActuator::lengthComponentUse()
+{
+  return _lengthComponentUse;
+}
+
+
+double DataMuscleActuator::velocityComponentN()
+{
+  return _velocityComponentN;
+}
+
+double DataMuscleActuator::velocityComponentK()
+{
+  return _velocityComponentK;
+}
+
+double DataMuscleActuator::velocitComponentMaxVelocity()
+{
+  return _velocityComponentMaxVelocity;
+}
+
+bool DataMuscleActuator::velocityComponentUse()
+{
+  return _velocityComponentUse;
+}
+

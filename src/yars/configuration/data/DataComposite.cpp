@@ -11,7 +11,7 @@
 # define YARS_STRING_BODY                                     (char*)"body"
 # define YARS_STRING_VISUALISE                                (char*)"visualise"
 # define YARS_STRING_COMPOSITE_BODY_DEFINTION                 (char*)"composite_body_divider_definition"
-# define YARS_STRING_TRUE_FALSE_DEFINITION                    (char*)"true_false_divider_definition"
+// # define YARS_STRING_TRUE_FALSE_DEFINITION                    (char*)"true_false_divider_definition"
 # define YARS_STRING_RADIUS_DIMENSION_DEFINITION              (char*)"radius_dimension_divider_definition"
 # define YARS_STRING_COMPOSITE_GEOM_DEFINITION                (char*)"composite_geom_geom_divider_definition"
 # define YARS_STRING_BOX                                      (char*)"box"

@@ -19,6 +19,7 @@ using namespace std;
 #endif // _MSC_VER
     Quaternion(const Quaternion &q);
     Quaternion(P3D orientation);
+    Quaternion(P3D vec1, P3D vec2); // quanterion between two vectors
 
     Quaternion& operator=(const Quaternion &q);
     Quaternion  operator*(const Quaternion &q);

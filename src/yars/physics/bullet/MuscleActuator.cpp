@@ -11,7 +11,6 @@
 #define SET(a, b)            if(b >= 0.0) a(b)
 #define SCALE(a)             (MIN(0.5, fabs(diff)) / 0.5)
 
-
 MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   : Actuator("MuscleActuator", data->source(), data->destination(), robot)
 {
@@ -23,12 +22,12 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   _parameter        = _data->parameter();
   _velocity         = _data->velocity();
   _maxForce         = _data->force();
+  _erp              = _data->erp();
+  _cfm              = _data->cfm();
 
   __initSource();
   __initDestination();
   __initSlider();
-
-  // 2. connect slider joint
 }
 
 MuscleActuator::~MuscleActuator()
@@ -38,30 +37,63 @@ MuscleActuator::~MuscleActuator()
 
 void MuscleActuator::prePhysicsUpdate()
 {
-  _muscleConstraint->setMaxLinMotorForce(1.0);
-  _muscleConstraint->setTargetLinMotorVelocity(0.0);
-  // _sourceBall->setMaxLinMotorForce(10.0);
-  // _sourceBall->setTargetLinMotorVelocity(0.0);
-  // _destinationBall->setMaxLinMotorForce(10.0);
-  // _destinationBall->setTargetLinMotorVelocity(0.0);
+
+  double fl     = 1.0;
+  double fv     = 1.0;
+
+  double lOpt   = _data->lengthComponentOptimalLength();
+  double w      = _data->lengthComponentW();
+  double c      = _data->lengthComponentC();
+
+  double velMax = _data->velocitComponentMaxVelocity();
+  double N      = _data->velocityComponentN();
+  double K      = _data->velocityComponentK();
+
+  if(_data->lengthComponentUse())
+  {
+    double a = fabs((_length - lOpt) / (w * lOpt));
+    fl = exp(-c * a * a * a);
+  }
+
+  if(_data->velocityComponentUse())
+  {
+    if(_velocity > 0.0)
+    {
+      fv = (velMax - _velocity) / (velMax - K * _velocity);
+    }
+    else
+    {
+      fv = N + (N-1.0) * (velMax - _velocity) / (-7.56 * K * _velocity - velMax);
+    }
+  }
+
+  double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
+  double velocity = _data->velocity();
+  force           = _data->getInternalDesiredValue(0);
+
+  cout << "Force: " << force << " Velocity: " << velocity << endl;
+
+  if(force < 0) force = 0.0;
+  _muscleConstraint->setMaxLinMotorForce(force);
+  _muscleConstraint->setTargetLinMotorVelocity(velocity);
 }
 
 void MuscleActuator::postPhysicsUpdate()
 {
-  // _position = _muscleConstraint->getLinearPos();
+  _position     = _muscleConstraint->getLinearPos();
+  _velocity     = _position - _lastPosition;
+  _lastPosition = _position;
+  _data->setCurrentTransitionalVelocity(_velocity * (double)__YARS_GET_SIMULATOR_FREQUENCY);
 
-  // _data->setCurrentTransitionalVelocity((_position - _lastPosition)
-      // * (double)__YARS_GET_SIMULATOR_FREQUENCY);
-  // _lastPosition = _position;
+  if(_isVisualised)
+  {
+    btTransform  pose = _muscleConstraint->getCalculatedTransformA();
+    btVector3    vec  = pose.getOrigin();
+    btQuaternion q    = pose.getRotation();
+    _data->setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+    _data->setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+  }
 
-  // if(_isVisualised)
-  // {
-    // btTransform  pose = _muscleConstraint->getCalculatedTransformA();
-    // btVector3    vec  = pose.getOrigin();
-    // btQuaternion q    = pose.getRotation();
-    // _data->setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
-    // _data->setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
-  // }
 }
 
 DataMuscleActuator* MuscleActuator::data()
@@ -83,7 +115,6 @@ void MuscleActuator::__initSource()
   string sourceAnchorName  = _data->sourceAnchor()->name();
   _srcAnchor               = __find(sourceAnchorName)->rigidBody();
   btRigidBody *destination = _sourceObject->rigidBody();
-  cout << "source anchor name: " << sourceAnchorName << endl;
 
   P3D v(0.0, 0.0, 1.0);
   ::Quaternion qq(v);
@@ -106,7 +137,6 @@ void MuscleActuator::__initDestination()
   string destinationAnchorName = _data->destinationAnchor()->name();
   _dstAnchor                   = __find(destinationAnchorName)->rigidBody();
   btRigidBody *destination     = _destinationObject->rigidBody();
-  cout << "destination anchor name: " << destinationAnchorName << endl;
 
   P3D v(0.0, 0.0, 1.0);
   ::Quaternion qq(v);
@@ -126,56 +156,78 @@ void MuscleActuator::__initDestination()
 
 void MuscleActuator::__initSlider()
 {
-  Object* srcObject = __find("source anchor");
-  Object* dstObject = __find("destination anchor");
-  btRigidBody* src  = srcObject->rigidBody();
-  btRigidBody* dst  = dstObject->rigidBody();
+  string sourceAnchorName      = _data->sourceAnchor()->name();
+  string destinationAnchorName = _data->destinationAnchor()->name();
+  Object* srcObject   = __find(sourceAnchorName);
+  Object* dstObject   = __find(destinationAnchorName);
+  btRigidBody* src    = srcObject->rigidBody();
+  btRigidBody* dst    = dstObject->rigidBody();
 
-  btVector3 srcPos  = src->getCenterOfMassPosition();
-  btVector3 dstPos  = dst->getCenterOfMassPosition();
-  btVector3 dir(dstPos[0], dstPos[1], dstPos[2]);
-  dir -= srcPos;
-  btVector3 center = (srcPos + dstPos) * btScalar(0.5);
+  btVector3 srcPos    = src->getCenterOfMassPosition();
+  btVector3 dstPos    = dst->getCenterOfMassPosition();
+  btVector3 centre    = (srcPos + dstPos) * btScalar(0.5);
+  btVector3 direction = srcPos - dstPos;
+  direction.normalize();
 
-  double xRot = atan2(dstPos[1], dstPos[2]);
-  double yRot = atan2(dstPos[0], dstPos[2]);
-  double zRot = atan2(dstPos[0], dstPos[1]);
+  btVector3 rotationAxis(1.0, 0.0, 0.0);
 
-  P3D u(xRot, yRot, zRot);
+  btScalar angle = direction.angle(rotationAxis);
+  btVector3 axis = direction.cross(rotationAxis);
+  axis = -axis;
+  if(axis[0] > 0.0) angle = -angle;
+  
+  cout << "name:  " << _data->name() << endl;
+  cout << "angle: " << angle << endl;
+  cout << "axis:  " << axis[0] << " " << axis[1] << " " << axis[2] << endl;
+  btQuaternion q(axis, angle);
 
-  ::Quaternion qq(u);
-
-  btQuaternion q(qq.x, qq.y, qq.z, qq.w);
-
-  btTransform global(q, center);
+  btTransform global(q, centre);
 
   btTransform localInSrc = src->getWorldTransform().inverse() * global;
   btTransform localInDst = dst->getWorldTransform().inverse() * global;
 
   _muscleConstraint  = new btSliderConstraint(*src, *dst, localInSrc, localInDst, true);
-  _muscleConstraint->setUpperLinLimit(0.5);
-  _muscleConstraint->setLowerLinLimit(-0.5);
+  if(_data->isDeflectionSet())
+  {
+    _muscleConstraint->setLowerLinLimit(_data->deflection().min);
+    _muscleConstraint->setUpperLinLimit(_data->deflection().max);
+  }
+  else
+  {
+    _muscleConstraint->setLowerLinLimit(1); // unset limit solving
+    _muscleConstraint->setUpperLinLimit(0);
+  }
+
   _muscleConstraint->setPoweredLinMotor(true);
 
-  // _muscleConstraint->setSoftnessDirLin(0.0);
-  // _muscleConstraint->setRestitutionDirLin(0.0);
-  // _muscleConstraint->setDampingDirLin(0.0);
+  _muscleConstraint->setSoftnessDirLin(0.0);
+  _muscleConstraint->setRestitutionDirLin(0.0);
+  _muscleConstraint->setDampingDirLin(0.0);
 
-  // _muscleConstraint->setSoftnessLimLin(0.0);
-  // _muscleConstraint->setRestitutionLimLin(0.0);
-  // _muscleConstraint->setDampingLimLin(0.0);
+  _muscleConstraint->setSoftnessLimLin(0.0);
+  _muscleConstraint->setRestitutionLimLin(0.0);
+  _muscleConstraint->setDampingLimLin(0.0);
 
-  // _muscleConstraint->setSoftnessOrthoLin(0.0);
-  // _muscleConstraint->setRestitutionOrthoLin(0.0);
-  // _muscleConstraint->setDampingOrthoLin(0.0);
+  _muscleConstraint->setSoftnessOrthoLin(0.0);
+  _muscleConstraint->setRestitutionOrthoLin(0.0);
+  _muscleConstraint->setDampingOrthoLin(0.0);
 
   for(int i = 0; i < 6; i++)
   {
-    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
-    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
+    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_ERP, _erp, i);
+    _muscleConstraint->setParam(BT_CONSTRAINT_STOP_CFM, _cfm, i);
   }
 
   _constraints.push_back(_muscleConstraint);
+
+  {
+    btTransform  pose = _muscleConstraint->getCalculatedTransformA();
+    btVector3    vec  = pose.getOrigin();
+    btQuaternion q    = pose.getRotation();
+    _data->setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
+    _data->setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
+  }
+
 }
 
 void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
@@ -187,11 +239,20 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
   for(int i = 0; i < 3; i++)
   {
     // c->getRotationalLimitMotor(i)->m_restitution = 0.0;
-    c->getRotationalLimitMotor(i)->m_limitSoftness = 0.0;
-    c->getRotationalLimitMotor(i)->m_bounce = 0.0;
-    c->getRotationalLimitMotor(i)->m_enableMotor = true;
-    c->getRotationalLimitMotor(i)->m_targetVelocity = 0.0;
-    c->getRotationalLimitMotor(i)->m_maxMotorForce = 0.01;
+    c->getRotationalLimitMotor(i)->m_limitSoftness  = 0.0;
+    c->getRotationalLimitMotor(i)->m_bounce         = 0.0;
+    if(_data->friction() > 0.0)
+    {
+      c->getRotationalLimitMotor(i)->m_enableMotor    = true;
+      c->getRotationalLimitMotor(i)->m_targetVelocity = 0.0;
+      c->getRotationalLimitMotor(i)->m_maxMotorForce  = _data->friction();
+    }
+    else
+    {
+      c->getRotationalLimitMotor(i)->m_enableMotor    = false;
+      c->getRotationalLimitMotor(i)->m_targetVelocity = 0.0;
+      c->getRotationalLimitMotor(i)->m_maxMotorForce  = 0.0;
+    }
   }
 
   c->getTranslationalLimitMotor()->m_enableMotor[0] = false;
@@ -203,17 +264,25 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
 
   for(int i = 0; i < 3; i++)
   {
-    c->getTranslationalLimitMotor()->m_stopERP[i] = 1.0;
-    c->getTranslationalLimitMotor()->m_stopCFM[i] = 0.0;
-    c->getRotationalLimitMotor(i)->m_stopERP      = 1.0;
-    c->getRotationalLimitMotor(i)->m_stopCFM      = 0.0;
+    c->getTranslationalLimitMotor()->m_stopERP[i] = _erp;
+    c->getTranslationalLimitMotor()->m_stopCFM[i] = _cfm;
+    c->getRotationalLimitMotor(i)->m_stopERP      = _erp;
+    c->getRotationalLimitMotor(i)->m_stopCFM      = _cfm;
   }
 
   for(int i = 0; i < 6; i++)
   {
-    c->setParam(BT_CONSTRAINT_STOP_ERP, 1.0, i);
-    c->setParam(BT_CONSTRAINT_STOP_CFM, 0.0, i);
+    c->setParam(BT_CONSTRAINT_STOP_ERP, _erp, i);
+    c->setParam(BT_CONSTRAINT_STOP_CFM, _cfm, i);
   }
-
 }
 
+double DataMuscleActuator::cfm()
+{
+  return _cfm;
+}
+
+double DataMuscleActuator::erp()
+{
+  return _erp;
+}

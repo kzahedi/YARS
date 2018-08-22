@@ -124,10 +124,17 @@ void Object::__resetPose()
   ::Quaternion q = _data->quaternion();
 
   if(_rigidBody != NULL)
+  {
+    btVector3 zero(0.0, 0.0, 0.0);
     _rigidBody->setWorldTransform(btTransform(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z)));
+    _rigidBody->setLinearVelocity(zero);
+    _rigidBody->setAngularVelocity(zero);
+  }
 
   if(_softBody != NULL)
+  {
     _softBody->setWorldTransform(btTransform(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z)));
+  }
 
   _motionState->setWorldTransform(btTransform(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z)));
 }

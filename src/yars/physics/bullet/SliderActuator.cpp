@@ -172,12 +172,10 @@ void SliderActuator::__processPositional()
     _position  = _data->deflection().cut(_position);
   }
 
-  double diff       = _position - robotValue;
-  double velocity   = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
+  double diff     = _position - robotValue;
+  double velocity = _parameter.pid.update(SCALE(diff) * SIGN(diff) * _data->velocity());
+  double force    = _data->force();
 
-
-  double force = _data->force();
- 
   if(_parameter.forceScaling > 0.0)
   {
     force = force * MAX(0.01, fabs(tanh(_parameter.forceScaling * diff/M_PI)));

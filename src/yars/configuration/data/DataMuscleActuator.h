@@ -99,12 +99,25 @@ class DataMuscleActuator : public DataActuator
 
     double getAppliedForce(int index);
     double getAppliedVelocity(int index);
-    void setAppliedForceAndVelocity(int index, double force, double velocity);
+    void   setAppliedForceAndVelocity(int index, double force, double velocity);
 
+    double friction();
 
     Domain getInternalDomain(int index);
     Domain getExternalDomain(int index);
     bool isActive(int index);
+
+    double lengthComponentW();
+    double lengthComponentC();
+    double lengthComponentOptimalLength();
+    bool   lengthComponentUse();
+
+    double velocityComponentN();
+    double velocityComponentK();
+    double velocitComponentMaxVelocity();
+    double erp();
+    double cfm();
+    bool   velocityComponentUse();
 
     int dimension() { return 1; }
 
@@ -140,16 +153,16 @@ class DataMuscleActuator : public DataActuator
     vector<double>  _desiredValue;
     vector<double>  _desiredExValue;
     vector<Mapping> _internalExternalMapping;
-    vector<Domain> _internalDomain;
-    vector<Domain> _externalDomain;
-    Noise*         _n;
-    double         _currentTransitionalVelocity;
-    double         _appliedForce;
-    double         _appliedVelocity;
-    Pose           _srcOffset;
-    bool           _srcOffsetInWorldCoordinates;
-    Pose           _dstOffset;
-    bool           _dstOffsetInWorldCoordinates;
+    vector<Domain>  _internalDomain;
+    vector<Domain>  _externalDomain;
+    Noise*          _n;
+    double          _currentTransitionalVelocity;
+    double          _appliedForce;
+    double          _appliedVelocity;
+    Pose            _srcOffset;
+    bool            _srcOffsetInWorldCoordinates;
+    Pose            _dstOffset;
+    bool            _dstOffsetInWorldCoordinates;
     bool            _visualise;
     pthread_mutex_t _mutex;
     DataObject*     _srcObject;
@@ -158,7 +171,20 @@ class DataMuscleActuator : public DataActuator
     DataActuator*   _dstConnector;
     bool            _parsingSourceAnchor;
     bool            _parsingDestinationAnchor;
+    double          _friction;
 
+    double          _lengthComponentW;
+    double          _lengthComponentC;
+    double          _lengthComponentOptimalLength;
+    bool            _lengthComponentUse;
+
+    double          _velocityComponentN;
+    double          _velocityComponentK;
+    double          _velocityComponentMaxVelocity;
+    bool            _velocityComponentUse;
+
+    double          _erp;
+    double          _cfm;
 };
 
 #endif // __DATA_MUSCLE_H__

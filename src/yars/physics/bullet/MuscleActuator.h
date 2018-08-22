@@ -44,6 +44,10 @@ class MuscleActuator : public Actuator
     btGeneric6DofConstraint* _destinationBall;
     btRigidBody*             _srcAnchor;
     btRigidBody*             _dstAnchor;
+    btRigidBody*             _src;
+    btRigidBody*             _dst;
+    double                   _cfm;
+    double                   _erp;
 };
 
 #endif // __MUSCLE_ACTUATOR_H__

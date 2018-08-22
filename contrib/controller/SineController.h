@@ -22,6 +22,7 @@ class SineController: public RobotController
     vector<double> _period;
     vector<double> _amplitude;
     vector<double> _phaseShift;
+    vector<double> _baseline;
     double _count;
     bool   _debug;
     int    _nr_of_outputs;

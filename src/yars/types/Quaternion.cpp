@@ -25,6 +25,25 @@ Quaternion::Quaternion(P3D p)
   *this << p;
 }
 
+Quaternion::Quaternion(P3D vec1, P3D vec2)
+{
+  vec1.normalise();
+  vec2.normalise();
+
+  float cos_theta = vec1.dot(vec2);
+  float angle = acos(cos_theta);
+  P3D w = vec1 * vec2;
+  w.normalise();
+
+  float half_sin = sin(0.5f * angle);
+  float half_cos = cos(0.5f * angle);
+
+  this->w = angle;
+  this->x = half_sin * w.x;
+  this->y = half_sin * w.y;
+  this->z = half_sin * w.z;
+}
+
 Quaternion& Quaternion::operator=(const Quaternion &q)
 {
   w = q.w;
@@ -74,7 +93,7 @@ Quaternion& Quaternion::operator<<(const P3D &p)
   // y = s1*c2*c3 + c1*s2*s3;
   // z = c1*s2*c3 - s1*c2*s3;
 
-  double sx = sin(p.x/2); 
+  double sx = sin(p.x/2);
   double sy = sin(p.y/2);
   double sz = sin(p.z/2);
   double cx = cos(p.x/2);

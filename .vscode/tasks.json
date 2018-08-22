@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile",
+            "command": "ninja",
+            "options": {
+                "cwd": "/Users/zahedi/projects/builds/yars"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Install",
+            "command": "ninja",
+            "args": [
+                "install"
+            ],
+            "options": {
+                "cwd": "/Users/zahedi/projects/builds/yars"
+            }
+        },
+        {
+            "label": "Test",
+            "command": "./bin/yars",
+            "args": [
+                "xml/muscle.xml",
+                "--realtime",
+                "--pause"
+            ],
+            "options": {
+                "cwd": "/Users/zahedi/projects/builds/yars"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
