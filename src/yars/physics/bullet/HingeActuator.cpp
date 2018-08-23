@@ -71,9 +71,10 @@ void HingeActuator::prePhysicsUpdate()
     if(_hasFriction)
     {
       // _hingeConstraint->enableAngularMotor(true, 0.0, _friction);
-      _hingeConstraint->setPoweredLinMotor(true);
-      _hingeConstraint->setTargetLinMotorVelocity(0.0);
-      _hingeConstraint->setMaxLinMotorForce(_friction);
+      _hingeConstraint->setPoweredAngMotor(true);
+      _hingeConstraint->setTargetAngMotorVelocity(0.0);
+      _hingeConstraint->setMaxAngMotorForce(_friction);
+      // cout << "setting friction: " << _friction << endl;
     }
   }
 }
