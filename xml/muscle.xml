@@ -116,9 +116,10 @@
       <sensors>
       </sensors>
 
-      <controller  module="Sine" frequency="10">
-        <parameter name="base line" value="0.5"/>
-        <parameter name="amplitude" value="0.5"/>
+      <controller  module="SquareWave" frequency="500">
+        <parameter name="min" value="0.0"/>
+        <parameter name="max" value="1.0"/>
+        <parameter name="period" value="1000"/>
         <!-- <parameter name="debug" value="true"/> -->
       </controller>
     </robot>

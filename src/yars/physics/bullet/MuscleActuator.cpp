@@ -101,7 +101,6 @@ void MuscleActuator::postPhysicsUpdate()
     _data->setCurrentAxisPosition(P3D(vec[0], vec[1], vec[2]));
     _data->setCurrentAxisOrientation(::Quaternion(q.getW(), q.getX(), q.getY(), q.getZ()));
   }
-
 }
 
 DataMuscleActuator* MuscleActuator::data()

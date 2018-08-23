@@ -6,6 +6,8 @@ include(${CMAKE_SOURCE_DIR}/cmake/SetCompilerSettings.cmake)
 add_library(YarsControllerNIL SHARED NIL.cpp)
 add_library(YarsControllerSine SHARED SineController.cpp)
 
+add_library(YarsControllerSquareWave SHARED SquareWave.cpp)
+
 add_library(YarsControllerBraitenberg2b SHARED Braitenberg2b.cpp)
 target_link_libraries(YarsControllerBraitenberg2b
   YarsRobotController
