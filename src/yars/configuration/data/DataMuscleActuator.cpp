@@ -433,7 +433,7 @@ void DataMuscleActuator::setExternalValue(int index, double v)
 void DataMuscleActuator::__setMapping()
 {
   _externalDomain[0]     =  _mapping;
-  _internalDomain[0].min = -_parameter.maxForce;
+  _internalDomain[0].min =  0.0;
   _internalDomain[0].max =  _parameter.maxForce;
   _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
   _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
