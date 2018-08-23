@@ -31,6 +31,15 @@ class MuscleParameter
       maxForce             = -1.0;
       useLengthComponent   = false;
       useVelocityComponent = false;
+      softnessDir          = -1.0;
+      restitutionDir       = -1.0;
+      dampingDir           = -1.0;
+      softnessLim          = -1.0;
+      restitutionLim       = -1.0;
+      dampingLim           = -1.0;
+      softnessOrtho        = -1.0;
+      restitutionOrtho     = -1.0;
+      dampingOrtho         = -1.0;
     }
 
     MuscleParameter& operator=(const MuscleParameter &p)
@@ -44,6 +53,15 @@ class MuscleParameter
       maxForce             = p.maxForce;
       useLengthComponent   = p.useLengthComponent;
       useVelocityComponent = p.useVelocityComponent;
+      softnessDir          = p.softnessDir;
+      restitutionDir       = p.restitutionDir;
+      dampingDir           = p.dampingDir;
+      softnessLim          = p.softnessLim;
+      restitutionLim       = p.restitutionLim;
+      dampingLim           = p.dampingLim;
+      softnessOrtho        = p.softnessOrtho;
+      restitutionOrtho     = p.restitutionOrtho;
+      dampingOrtho         = p.dampingOrtho;
 
       return *this;
     };
@@ -57,7 +75,15 @@ class MuscleParameter
     double maxForce;
     bool useLengthComponent;
     bool useVelocityComponent;
-
+    double softnessDir;
+    double restitutionDir;
+    double dampingDir;
+    double softnessLim;
+    double restitutionLim;
+    double dampingLim;
+    double softnessOrtho;
+    double restitutionOrtho;
+    double dampingOrtho;
 };
 
 

@@ -206,6 +206,25 @@ void DataMuscleActuator::add(DataParseElement *element)
     element->set(YARS_STRING_MAX_VELOCITY, _velocityComponentMaxVelocity);
     element->set(YARS_STRING_USE,          _velocityComponentUse);
   }
+
+    if(element->opening(YARS_STRING_REGULAR))
+  {
+    element->set(YARS_STRING_DAMPING,     _parameter.dampingDir);
+    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionDir);
+    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessDir);
+  }
+  if(element->opening(YARS_STRING_LIMIT))
+  {
+    element->set(YARS_STRING_DAMPING,     _parameter.dampingLim);
+    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionLim);
+    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessLim);
+  }
+  if(element->opening(YARS_STRING_ORTHOGONAL))
+  {
+    element->set(YARS_STRING_DAMPING,     _parameter.dampingOrtho);
+    element->set(YARS_STRING_RESTITUTION, _parameter.restitutionOrtho);
+    element->set(YARS_STRING_SOFTNESS,    _parameter.softnessOrtho);
+  }
 }
 
 string DataMuscleActuator::name()
@@ -273,6 +292,9 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   muscleDefinition->add(NE(YARS_STRING_FILTER,             YARS_STRING_FILTER_DEFINITION,             0, 1));
   muscleDefinition->add(NE(YARS_STRING_LENGTH_COMPONENT,   YARS_STRING_LENGTH_COMPONENT_DEFINITION,   0, 1));
   muscleDefinition->add(NE(YARS_STRING_VELOCITY_COMPONENT, YARS_STRING_VELOCITY_COMPONENT_DEFINITION, 0, 1));
+  muscleDefinition->add(NE(YARS_STRING_REGULAR,            YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  muscleDefinition->add(NE(YARS_STRING_LIMIT,              YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  muscleDefinition->add(NE(YARS_STRING_ORTHOGONAL,         YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
   spec->add(muscleDefinition);
 
   XsdSequence *anchorDefinition = new XsdSequence(YARS_STRING_ANCHOR_DEFINITION);

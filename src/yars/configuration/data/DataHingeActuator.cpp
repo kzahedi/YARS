@@ -254,13 +254,7 @@ void DataHingeActuator::createXsd(XsdSpecification *spec)
   hingeDefinition->add(NE(YARS_STRING_POSE,          YARS_STRING_POSEG_DEFINITION,         1, 1));
   hingeDefinition->add(NE(YARS_STRING_DEFLECTION,    YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
   hingeDefinition->add(NE(YARS_STRING_MAPPING,       YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-
-  XsdElement *regularParameters = NE(YARS_STRING_REGULAR, "", 0, 1);
-  regularParameters->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
-  hingeDefinition->add(regularParameters);
-
+  hingeDefinition->add(NE(YARS_STRING_REGULAR,     YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
   hingeDefinition->add(NE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
   hingeDefinition->add(NE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
   hingeDefinition->add(NE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));

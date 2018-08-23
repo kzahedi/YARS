@@ -127,7 +127,6 @@ void LoggingModuleActuator::__useInternal()
       stringstream oss;
       oss << _actuator->name() << " " << (i + 1) << " internal";
       _variables.push_back(oss.str());
-      cout << _actuator->type() << " == " << DATA_ACTUATOR_MUSCLE << endl;
       if (_actuator->type() == DATA_ACTUATOR_MUSCLE)
       {
         oss.str("");
@@ -155,7 +154,6 @@ void LoggingModuleActuator::__useInternal()
     stringstream oss;
     oss << _actuator->name() << " internal";
     _variables.push_back(oss.str());
-    cout << _actuator->type() << " == " << DATA_ACTUATOR_MUSCLE << endl;
     if (_actuator->type() == DATA_ACTUATOR_MUSCLE)
     {
       oss.str("");

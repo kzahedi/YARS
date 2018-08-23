@@ -203,17 +203,17 @@ void MuscleActuator::__initSlider()
 
   _muscleConstraint->setPoweredLinMotor(true);
 
-  _muscleConstraint->setSoftnessDirLin(0.0);
-  _muscleConstraint->setRestitutionDirLin(0.0);
-  _muscleConstraint->setDampingDirLin(0.0);
+  _muscleConstraint->setSoftnessDirLin(_parameter.softnessDir);
+  _muscleConstraint->setRestitutionDirLin(_parameter.restitutionDir);
+  _muscleConstraint->setDampingDirLin(_parameter.dampingDir);
 
-  _muscleConstraint->setSoftnessLimLin(0.0);
-  _muscleConstraint->setRestitutionLimLin(0.0);
-  _muscleConstraint->setDampingLimLin(0.0);
+  _muscleConstraint->setSoftnessLimLin(_parameter.softnessLim);
+  _muscleConstraint->setRestitutionLimLin(_parameter.restitutionLim);
+  _muscleConstraint->setDampingLimLin(_parameter.dampingLim);
 
-  _muscleConstraint->setSoftnessOrthoLin(0.0);
-  _muscleConstraint->setRestitutionOrthoLin(0.0);
-  _muscleConstraint->setDampingOrthoLin(0.0);
+  _muscleConstraint->setSoftnessOrthoLin(_parameter.softnessOrtho);
+  _muscleConstraint->setRestitutionOrthoLin(_parameter.restitutionOrtho);
+  _muscleConstraint->setDampingOrthoLin(_parameter.dampingOrtho);
 
   for(int i = 0; i < 6; i++)
   {
@@ -242,7 +242,7 @@ void MuscleActuator::__setPoint2Point(btGeneric6DofConstraint *c)
   for(int i = 0; i < 3; i++)
   {
     // c->getRotationalLimitMotor(i)->m_restitution = 0.0;
-    c->getRotationalLimitMotor(i)->m_limitSoftness  = 0.0;
+    c->getRotationalLimitMotor(i)->m_limitSoftness  = 1.0;
     c->getRotationalLimitMotor(i)->m_bounce         = 0.0;
     if(_data->friction() > 0.0)
     {

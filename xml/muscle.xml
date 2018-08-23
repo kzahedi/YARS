@@ -1,19 +1,19 @@
 <rosiml version="0.8.41">
 
   <simulator frequency="1000">
-    <solver  iterations="100"/>
+    <solver iterations="100"/>
   </simulator>
 
   <screens>
 
     <screen name="Braiternberg" show="true" follow="false">
-      <size   width="600" height="600"/>
+      <size width="600" height="600"/>
       <camera>
         <position x="3.00" y="0.00" z="2.0"/>
         <lookAt x="0.0" y="0.00" z="1.0"/>
       </camera>
       <osd>
-        <time  font="Time"  size="25" colour="FFFF00"/>
+        <time font="Time" size="25" colour="FFFF00"/>
         <robot font="Robot" size="25" colour="FFFFFF"/>
       </osd>
     </screen>
@@ -22,12 +22,12 @@
 
     <cameras>
       <orbit speed="0.5">
-        <lookAtX p="0.05" i="0.001"  d="0.002"/>
-        <lookAtY p="0.05" i="0.001"  d="0.002"/>
-        <lookAtZ p="1.0"  i="0.0"    d="0.0"/>
-        <fromX   p="0.01" i="0.0001" d="0.0002"/>
-        <fromY   p="0.01" i="0.0001" d="0.0002"/>
-        <fromZ   p="0.0"  i="0.0"    d="0.0"/>
+        <lookAtX p="0.05" i="0.001" d="0.002"/>
+        <lookAtY p="0.05" i="0.001" d="0.002"/>
+        <lookAtZ p="1.0" i="0.0" d="0.0"/>
+        <fromX p="0.01" i="0.0001" d="0.0002"/>
+        <fromY p="0.01" i="0.0001" d="0.0002"/>
+        <fromZ p="0.0" i="0.0" d="0.0"/>
       </orbit>
       <centre speed="1.5"/>
     </cameras>
@@ -75,10 +75,10 @@
         </sphere>
       </body>
       <actuators>
-      <!--
+        <!--
       standard values from the 2015 paper
       -->
-        <muscle name="muscle" visualise="true" friction="0.0001" cfm="0.1" erp="1.0">
+        <muscle name="muscle" visualise="true" friction="0.00001" cfm="0.1" erp="1.0">
           <source name="source body"/>
           <destination name="destination body"/>
           <srcAnchor>
@@ -96,7 +96,7 @@
           <dstAnchor>
             <sphere name="destination anchor" visualise="true">
               <dimension radius="0.05"/>
-              <pose x="0.0" y="0.0" z="0.0"/>
+              <pose x="0.0" y="0.0" z="0.1"/>
               <visualisation>
                 <texture name="Chain/Circuit/Top/Blue"/>
               </visualisation>
@@ -105,21 +105,24 @@
               </physics>
             </sphere>
           </dstAnchor>
-          <force       max="2.0"/>
-          <velocity    max="3.5"/>
-          <deflection  min="-0.5" max="0.5"/>
-          <mapping     min="-1" max="+1"/>
+          <force max="2.0"/>
+          <velocity max="0.5"/>
+          <deflection min="-0.5" max="0.5"/>
+          <mapping    min="0"   max="+1"/>
           <lengthComponent   optimalLength="1.0" w="0.5" c="5.0" use="true"/>
-          <velocityComponent maxVelocity="-3.5"   N="1.5"  K="1.5"  use="true"/>
-        </muscle>
+          <velocityComponent maxVelocity="-3.5"  N="1.5" K="1.5" use="true"/>
+          <regular           softness="1.0"      damping="1.0" restitution="0.7"/>
+          <limit             softness="1.0"      damping="1.0" restitution="0.7"/>
+          <orthogonal        softness="1.0"      damping="1.0" restitution="0.7"/>
+          </muscle>
       </actuators>
       <sensors>
       </sensors>
 
-      <controller  module="SquareWave" frequency="500">
+      <controller module="SquareWave" frequency="500">
         <parameter name="min" value="0.0"/>
         <parameter name="max" value="1.0"/>
-        <parameter name="period" value="1000"/>
+        <parameter name="period" value="2500"/>
         <!-- <parameter name="debug" value="true"/> -->
       </controller>
     </robot>
@@ -127,22 +130,27 @@
   </robots>
 
   <!-- <traces> -->
-    <!-- <trace  target="main body" length="5" max="300" time="5" particles="false"> -->
-      <!-- <init  colour="ff0000"    size="0.01"/> -->
-      <!-- <final colour="ff000000"  size="0.00"/> -->
-    <!-- </trace> -->
-    <!-- <trace  target="wheel right" length="5" max="200" time="5" particles="false"> -->
-      <!-- <init  colour="00ff00"    size="0.01"/> -->
-      <!-- <final colour="00ff0000"  size="0.00"/> -->
-    <!-- </trace> -->
-    <!-- <trace  target="wheel left" length="5" max="100" time="5" particles="false"> -->
-      <!-- <init  colour="0000ff"    size="0.01"/> -->
-      <!-- <final colour="0000ff00"  size="0.00"/> -->
-    <!-- </trace> -->
+  <!-- <trace target="main body" length="5" max="300" time="5" particles="false"> -->
+  <!-- <init colour="ff0000" size="0.01"/> -->
+  <!-- <final colour="ff000000" size="0.00"/> -->
+  <!-- </trace> -->
+  <!-- <trace target="wheel right" length="5" max="200" time="5" particles="false"> -->
+  <!-- <init colour="00ff00" size="0.01"/> -->
+  <!-- <final colour="00ff0000" size="0.00"/> -->
+  <!-- </trace> -->
+  <!-- <trace target="wheel left" length="5" max="100" time="5" particles="false"> -->
+  <!-- <init colour="0000ff" size="0.01"/> -->
+  <!-- <final colour="0000ff00" size="0.00"/> -->
+  <!-- </trace> -->
   <!-- </traces> -->
 
-   <logging>
-    <actuator target="muscle" precision="3"> <internal/> <external/> <appliedForce/> <appliedVelocity/> </actuator>
+  <logging>
+    <actuator target="muscle" precision="3">
+      <external/>
+      <internal/>
+      <appliedForce/>
+      <appliedVelocity/>
+    </actuator>
 
     <console>
       <target name="muscle"/>
