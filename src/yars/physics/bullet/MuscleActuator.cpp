@@ -18,6 +18,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   _muscleConstraint     = NULL;
   _lastLength           = 0.0;
   _length               = 0.0;
+  _muscleVelocity       = 0.0;
   _isVisualised         = Data::instance()->current()->screens()->visualiseJoints();
   _parameter            = _data->parameter();
   _velocity             = _data->velocity();
@@ -26,10 +27,17 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
   _cfm                  = _data->cfm();
   _useLengthComponent   = _data->lengthComponentUse();
   _useVelocityComponent = _data->velocityComponentUse();
+  _lOpt                 = _data->lengthComponentOptimalLength();
+  _w                    = _data->lengthComponentW();
+  _c                    = _data->lengthComponentC();
+  _velMax               = _data->velocitComponentMaxVelocity();
+  _N                    = _data->velocityComponentN();
+  _K                    = _data->velocityComponentK();
 
   __initSource();
   __initDestination();
   __initSlider();
+  postPhysicsUpdate();
 }
 
 MuscleActuator::~MuscleActuator()
@@ -43,55 +51,51 @@ void MuscleActuator::prePhysicsUpdate()
   double fl     = 1.0;
   double fv     = 1.0;
 
-  double lOpt   = _data->lengthComponentOptimalLength();
-  double w      = _data->lengthComponentW();
-  double c      = _data->lengthComponentC();
-
-  double velMax = _data->velocitComponentMaxVelocity();
-  double N      = _data->velocityComponentN();
-  double K      = _data->velocityComponentK();
-
   if (_useLengthComponent)
   {
-    double a = fabs((_length - lOpt) / (w * lOpt));
-    fl = exp(-c * a * a * a);
+    double a = fabs((_length - _lOpt) / (_w * _lOpt));
+    // cout << a << " " << (_length - _lOpt) << " / " << (_w * _lOpt) << endl;
+    fl = exp(-_c * a * a * a);
   }
 
   if(_useVelocityComponent)
   {
-    if(_velocity > 0.0)
+    if(_muscleVelocity > 0.0)
     {
-      fv = (velMax - _velocity) / (velMax - K * _velocity);
+      fv = (_velMax - _muscleVelocity) / (_velMax - _K * _muscleVelocity);
     }
     else
     {
-      fv = N + (N-1.0) * (velMax - _velocity) / (-7.56 * K * _velocity - velMax);
+      fv = _N + (_N-1.0) * (_velMax - _muscleVelocity) / (-7.56 * _K * _muscleVelocity - _velMax);
     }
   }
+  // cout << "use velocity: " << _useVelocityComponent << " " << fv << endl;
+  // cout << "length: " << _length << endl;
 
-  double force    = _data->force() * fv * fl * _data->getInternalDesiredValue(0);
-  double velocity = _data->velocity();
+  double force = _data->getInternalDesiredValue(0);
+  // cout << force << endl;
+  if(force < 0.0) force = 0.0;
+  force = _data->force() * fv * fl * force;
 
   _data->setInternalValue(0, force);
 
-  _data->setAppliedForceAndVelocity(0, force, velocity);
+  _data->setAppliedForceAndVelocity(0, force, _velocity);
   _data->setLengthComponent(fl);
   _data->setVelocityComponent(fv);
   _data->setMuscleLength(_length);
-  _data->setMuscleVelocity(_velocity);
+  _data->setMuscleVelocity(_muscleVelocity);
 
-  if(force < 0) force = 0.0;
   _muscleConstraint->setMaxLinMotorForce(force);
-  _muscleConstraint->setTargetLinMotorVelocity(velocity);
+  _muscleConstraint->setTargetLinMotorVelocity(_velocity);
 }
 
 void MuscleActuator::postPhysicsUpdate()
 {
-  _lastLength  = _length;
-  _length      = __calculateLength();
-  _velocity    = _lastLength - _length ;
-  _velocity   *= (double)__YARS_GET_SIMULATOR_FREQUENCY;
-  _data->setCurrentTransitionalVelocity(_velocity);
+  _lastLength      = _length;
+  _length          = __calculateLength();
+  _muscleVelocity  = _lastLength - _length ;
+  _muscleVelocity *= (double)__YARS_GET_SIMULATOR_FREQUENCY;
+  _data->setCurrentTransitionalVelocity(_muscleVelocity);
 
   if(_isVisualised)
   {

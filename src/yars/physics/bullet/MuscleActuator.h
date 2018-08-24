@@ -36,10 +36,16 @@ class MuscleActuator : public Actuator
     bool                     _isActive;
     bool                     _isVisualised;
     double                   _velocity;
+    double                   _muscleVelocity;
     double                   _maxForce;
     double                   _length;
     double                   _lastLength;
-
+    double                   _lOpt;
+    double                   _w;
+    double                   _c;
+    double                   _velMax;
+    double                   _N;
+    double                   _K;
     btSliderConstraint*      _muscleConstraint;
     btGeneric6DofConstraint* _sourceBall;
     btGeneric6DofConstraint* _destinationBall;

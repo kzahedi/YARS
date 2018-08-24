@@ -109,8 +109,8 @@
           <velocity max="0.5"/>
           <deflection min="-0.5" max="0.5"/>
           <mapping    min="0"   max="+1"/>
-          <lengthComponent   optimalLength="1.0" w="0.5" c="5.0" use="true"/>
-          <velocityComponent maxVelocity="-3.5"  N="1.5" K="1.5" use="true"/>
+          <lengthComponent   optimalLength="1.0" w="1.5" c="5.0" use="true"/>
+          <velocityComponent maxVelocity="-3.5"  N="1.5" K="1.5" use="false"/>
           <regular           softness="1.0"      damping="1.0" restitution="0.7"/>
           <limit             softness="1.0"      damping="1.0" restitution="0.7"/>
           <orthogonal        softness="1.0"      damping="1.0" restitution="0.7"/>
@@ -146,15 +146,19 @@
 
   <logging>
     <actuator target="muscle" precision="3">
-      <external/>
+      <desired/>
       <internal/>
       <appliedForce/>
       <appliedVelocity/>
+      <external/>
     </actuator>
 
     <console>
       <target name="muscle"/>
     </console>
+    <csv name="muscle" date="false">
+      <target name="muscle"/>
+    </csv>
   </logging>
 
 </rosiml>
