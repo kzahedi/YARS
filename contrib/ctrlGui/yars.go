@@ -2,8 +2,10 @@ package main
 
 import (
 	"bufio"
+	"encoding/binary"
 	"fmt"
 	"log"
+	"math"
 	"net"
 	"os"
 	"os/exec"
@@ -15,8 +17,8 @@ import (
 
 // YarsDomain has a min and max value
 type YarsDomain struct {
-	Min float64
-	Max float64
+	Min float32
+	Max float32
 }
 
 // String to string
@@ -30,7 +32,7 @@ type YarsEntityConfiguration struct {
 	Dimension int
 	Domain    []YarsDomain
 	Mapping   []YarsDomain
-	Value     []float64
+	Value     []float32
 }
 
 func (yec YarsEntityConfiguration) String() string {
@@ -127,9 +129,19 @@ func YarsGetConfiguration() {
 
 	yarsCfg.Sensors = sensors
 	yarsCfg.Actuators = actuators
-	fmt.Println(yarsCfg)
-	yarsSendString("QUIT")
-	fmt.Println("Done")
+}
+
+// YarsUpdate send motor commands and reads sensor values
+func YarsUpdate() {
+	var actuators []float32
+
+	yarsSendString("ACTUATORS")
+	for _, a := range yarsCfg.Actuators {
+		for _, v := range a.Value {
+			actuators = append(actuators, float32(v))
+		}
+	}
+	yarsSendFloatArray(actuators)
 }
 
 func yarsReadEntity() YarsEntityConfiguration {
@@ -146,6 +158,7 @@ func yarsReadEntity() YarsEntityConfiguration {
 
 	e.Domain = make([]YarsDomain, n, n)
 	e.Mapping = make([]YarsDomain, n, n)
+	e.Value = make([]float32, n, n)
 
 	for i := 0; i < e.Dimension; i++ {
 		min, max := yarsReadDomain()
@@ -153,17 +166,80 @@ func yarsReadEntity() YarsEntityConfiguration {
 		e.Domain[i].Max = max
 
 		min, max = yarsReadDomain()
-		e.Domain[i].Min = min
-		e.Domain[i].Max = max
+		e.Mapping[i].Min = min
+		e.Mapping[i].Max = max
+
+		e.Value[i] = (max + min) / 2.0
+
 	}
 
 	return e
 }
 
-func yarsReadDomain() (float64, float64) {
+func yarsReadDomain() (float32, float32) {
 	str := yarsReadString() // INTERNAL DOMAIN
 	s := strings.Split(str, " ")
 	min, _ := strconv.ParseFloat(s[2], 64)
 	max, _ := strconv.ParseFloat(s[3], 64)
-	return min, max
+	return float32(min), float32(max)
+}
+
+func yarsSendString(message string) {
+	n := len(message)
+	msg := make([]byte, n+5, n+5)
+	msg[0] = byte('s')
+	binary.LittleEndian.PutUint32(msg[1:5], uint32(n))
+	for i := 0; i < n; i++ {
+		msg[i+5] = byte(message[i])
+	}
+	_, err := yarsIO.Writer.Write(msg)
+	if err != nil {
+		panic(err)
+	}
+	yarsIO.Flush()
+}
+
+func yarsReadString() string {
+	id, _ := yarsIO.Reader.ReadByte()
+	fmt.Println("received ", string(id))
+	if string(id) != "s" {
+		fmt.Println("We have a problem: ", string(id))
+		os.Exit(-1)
+	}
+	l := yarsReadBytes(4)
+	n := int(binary.LittleEndian.Uint32(l))
+	s := yarsReadBytes(n)
+	r := string(s)
+	return r
+}
+
+func yarsSendFloatArray(values []float32) {
+	n := len(values)
+	var msg []byte
+	msg = append(msg, byte('D'))
+	l := make([]byte, 4, 4)
+	binary.LittleEndian.PutUint32(l, uint32(n))
+	for _, v := range l {
+		msg = append(msg, v)
+	}
+	for _, v := range values {
+		buf := make([]byte, 8, 8)
+		binary.LittleEndian.PutUint64(buf, math.Float64bits(float64(v)))
+		for _, w := range buf {
+			msg = append(msg, w)
+		}
+	}
+	_, err := yarsIO.Writer.Write(msg)
+	if err != nil {
+		panic(err)
+	}
+	yarsIO.Flush()
+}
+
+func yarsReadBytes(n int) []byte {
+	bytes := make([]byte, n, n)
+	for i := 0; i < n; i++ {
+		bytes[i], _ = yarsIO.Reader.ReadByte()
+	}
+	return bytes
 }

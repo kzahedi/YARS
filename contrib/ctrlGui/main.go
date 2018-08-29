@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"runtime"
 	"time"
@@ -21,12 +22,14 @@ const (
 
 var filename []byte
 var port []byte
+var isInitialised bool
 
 func init() {
 	runtime.LockOSThread()
 }
 
 func main() {
+	isInitialised = false
 	filename = make([]byte, 1024, 1024)
 	port = make([]byte, 6, 6)
 
@@ -115,6 +118,7 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				if err != nil {
 					panic(err)
 				}
+				isInitialised = true
 			}
 			if nk.NkButtonLabel(ctx, "stop") > 0 {
 				log.Println("stop pressed")
@@ -127,58 +131,39 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	nk.NkEnd(ctx)
 }
 
-func gfxMain(win *glfw.Window, ctx *nk.Context, state *State) {
-	nk.NkPlatformNewFrame()
-
-	yarsPanel(win, ctx, state)
-
+func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(50, 50, 230, 250)
-	update := nk.NkBegin(ctx, "Demo", bounds,
+	bounds := nk.NkRect(350, 10, 300, 150)
+	update := nk.NkBegin(ctx, "Actuator Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 
 	if update > 0 {
-		nk.NkLayoutRowStatic(ctx, 30, 80, 1)
-		{
-			if nk.NkButtonLabel(ctx, "button") > 0 {
-				log.Println("[INFO] button pressed!")
-			}
-		}
-		nk.NkLayoutRowDynamic(ctx, 30, 2)
-		{
-			if nk.NkOptionLabel(ctx, "easy", flag(state.opt == Easy)) > 0 {
-				state.opt = Easy
-			}
-			if nk.NkOptionLabel(ctx, "hard", flag(state.opt == Hard)) > 0 {
-				state.opt = Hard
-			}
-		}
-		nk.NkLayoutRowDynamic(ctx, 25, 1)
-		{
-			nk.NkPropertyInt(ctx, "Compression:", 0, &state.prop, 100, 10, 1)
-		}
-		nk.NkLayoutRowDynamic(ctx, 20, 1)
-		{
-			nk.NkLabel(ctx, "background:", nk.TextLeft)
-		}
-		nk.NkLayoutRowDynamic(ctx, 25, 1)
-		{
-			size := nk.NkVec2(nk.NkWidgetWidth(ctx), 400)
-			if nk.NkComboBeginColor(ctx, state.bgColor, size) > 0 {
-				nk.NkLayoutRowDynamic(ctx, 120, 1)
-				state.bgColor = nk.NkColorPicker(ctx, state.bgColor, nk.ColorFormatRGBA)
-				nk.NkLayoutRowDynamic(ctx, 25, 1)
-				r, g, b, a := state.bgColor.RGBAi()
-				r = nk.NkPropertyi(ctx, "#R:", 0, r, 255, 1, 1)
-				g = nk.NkPropertyi(ctx, "#G:", 0, g, 255, 1, 1)
-				b = nk.NkPropertyi(ctx, "#B:", 0, b, 255, 1, 1)
-				a = nk.NkPropertyi(ctx, "#A:", 0, a, 255, 1, 1)
-				state.bgColor.SetRGBAi(r, g, b, a)
-				nk.NkComboEnd(ctx)
+		for _, a := range yarsCfg.Actuators {
+			for i := 0; i < a.Dimension; i++ {
+				nk.NkLayoutRowDynamic(ctx, 30, 4)
+				{
+					min := a.Mapping[i].Min
+					max := a.Mapping[i].Max
+					step := (max - min) / 1000.0
+					nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
+					a.Value[i] = nk.NkSlideFloat(ctx, min, a.Value[i], max, step)
+					nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Left)
+					nk.NkLabel(ctx, fmt.Sprintf("%.3f", a.Value[i]), nk.Left)
+				}
 			}
 		}
 	}
 	nk.NkEnd(ctx)
+}
+
+func gfxMain(win *glfw.Window, ctx *nk.Context, state *State) {
+	nk.NkPlatformNewFrame()
+
+	yarsPanel(win, ctx, state)
+	if isInitialised == true {
+		actuatorPanel(win, ctx, state)
+		YarsUpdate()
+	}
 
 	// Render
 	bg := make([]float32, 4)
@@ -207,3 +192,50 @@ type State struct {
 func onError(code int32, msg string) {
 	log.Printf("[glfw ERR]: error %d: %s", code, msg)
 }
+
+// bounds := nk.NkRect(50, 50, 230, 250)
+// update := nk.NkBegin(ctx, "Demo", bounds,
+// 	nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+
+// if update > 0 {
+// 	nk.NkLayoutRowStatic(ctx, 30, 80, 1)
+// 	{
+// 		if nk.NkButtonLabel(ctx, "button") > 0 {
+// 			log.Println("[INFO] button pressed!")
+// 		}
+// 	}
+// 	nk.NkLayoutRowDynamic(ctx, 30, 2)
+// 	{
+// 		if nk.NkOptionLabel(ctx, "easy", flag(state.opt == Easy)) > 0 {
+// 			state.opt = Easy
+// 		}
+// 		if nk.NkOptionLabel(ctx, "hard", flag(state.opt == Hard)) > 0 {
+// 			state.opt = Hard
+// 		}
+// 	}
+// 	nk.NkLayoutRowDynamic(ctx, 25, 1)
+// 	{
+// 		nk.NkPropertyInt(ctx, "Compression:", 0, &state.prop, 100, 10, 1)
+// 	}
+// 	nk.NkLayoutRowDynamic(ctx, 20, 1)
+// 	{
+// 		nk.NkLabel(ctx, "background:", nk.TextLeft)
+// 	}
+// 	nk.NkLayoutRowDynamic(ctx, 25, 1)
+// 	{
+// 		size := nk.NkVec2(nk.NkWidgetWidth(ctx), 400)
+// 		if nk.NkComboBeginColor(ctx, state.bgColor, size) > 0 {
+// 			nk.NkLayoutRowDynamic(ctx, 120, 1)
+// 			state.bgColor = nk.NkColorPicker(ctx, state.bgColor, nk.ColorFormatRGBA)
+// 			nk.NkLayoutRowDynamic(ctx, 25, 1)
+// 			r, g, b, a := state.bgColor.RGBAi()
+// 			r = nk.NkPropertyi(ctx, "#R:", 0, r, 255, 1, 1)
+// 			g = nk.NkPropertyi(ctx, "#G:", 0, g, 255, 1, 1)
+// 			b = nk.NkPropertyi(ctx, "#B:", 0, b, 255, 1, 1)
+// 			a = nk.NkPropertyi(ctx, "#A:", 0, a, 255, 1, 1)
+// 			state.bgColor.SetRGBAi(r, g, b, a)
+// 			nk.NkComboEnd(ctx)
+// 		}
+// 	}
+// }
+// nk.NkEnd(ctx)
