@@ -142,6 +142,17 @@ func YarsUpdate() {
 		}
 	}
 	yarsSendFloatArray(actuators)
+
+	yarsSendString("SENSORS")
+	sensorValues := yarsReadFloatArray()
+
+	index := 0
+	for _, s := range yarsCfg.Sensors {
+		for i := range s.Value {
+			s.Value[i] = sensorValues[index]
+			index++
+		}
+	}
 }
 
 func yarsReadEntity() YarsEntityConfiguration {
@@ -201,7 +212,6 @@ func yarsSendString(message string) {
 
 func yarsReadString() string {
 	id, _ := yarsIO.Reader.ReadByte()
-	fmt.Println("received ", string(id))
 	if string(id) != "s" {
 		fmt.Println("We have a problem: ", string(id))
 		os.Exit(-1)
@@ -234,6 +244,24 @@ func yarsSendFloatArray(values []float32) {
 		panic(err)
 	}
 	yarsIO.Flush()
+}
+
+func yarsReadFloatArray() []float32 {
+	var r []float32
+	id, _ := yarsIO.Reader.ReadByte()
+	if string(id) != "D" {
+		fmt.Println("We have a problem: ", string(id))
+		os.Exit(-1)
+	}
+	l := yarsReadBytes(4)
+	n := int(binary.LittleEndian.Uint32(l))
+	for i := 0; i < n; i++ {
+		s := yarsReadBytes(8)
+		bits := binary.LittleEndian.Uint64(s)
+		f := math.Float64frombits(bits)
+		r = append(r, float32(f))
+	}
+	return r
 }
 
 func yarsReadBytes(n int) []byte {

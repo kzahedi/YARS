@@ -161,12 +161,43 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	nk.NkEnd(ctx)
 }
 
+func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
+	// YARS Panel
+	bounds := nk.NkRect(350, 400, 400, float32(100*len(yarsCfg.Actuators)))
+	update := nk.NkBegin(ctx, "Sensor Panel", bounds,
+		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+
+	if update > 0 {
+		for _, s := range yarsCfg.Sensors {
+			for i := 0; i < s.Dimension; i++ {
+				min := s.Mapping[i].Min
+				max := s.Mapping[i].Max
+				step := (max - min) / 1000.0
+				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
+				nk.NkLayoutRowPush(ctx, 100)
+				nk.NkLabel(ctx, s.Name, nk.Left)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
+				nk.NkLayoutRowPush(ctx, 150)
+				nk.NkSlideFloat(ctx, min, s.Value[i], max, step)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Right)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", s.Value[i]), nk.Left)
+				nk.NkLayoutRowEnd(ctx)
+			}
+		}
+	}
+	nk.NkEnd(ctx)
+}
+
 func gfxMain(win *glfw.Window, ctx *nk.Context, state *State) {
 	nk.NkPlatformNewFrame()
 
 	yarsPanel(win, ctx, state)
 	if isInitialised == true {
 		actuatorPanel(win, ctx, state)
+		sensorPanel(win, ctx, state)
 		YarsUpdate()
 	}
 
