@@ -97,9 +97,9 @@ func main() {
 
 func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(10, 10, 300, 150)
-	update := nk.NkBegin(ctx, "YARS Control Panel", bounds,
-		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+	bounds := nk.NkRect(10, 10, 300, 130)
+	update := nk.NkBegin(ctx, "YARS Control 3anel", bounds,
+		nk.WindowBorder|nk.WindowMovable|nk.WindowMinimizable|nk.WindowTitle)
 
 	if update > 0 {
 		nk.NkLayoutRowDynamic(ctx, 30, 1)
@@ -133,23 +133,28 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 
 func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(350, 10, 300, 150)
+	bounds := nk.NkRect(350, 10, 400, float32(100*len(yarsCfg.Actuators)))
 	update := nk.NkBegin(ctx, "Actuator Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 
 	if update > 0 {
 		for _, a := range yarsCfg.Actuators {
 			for i := 0; i < a.Dimension; i++ {
-				nk.NkLayoutRowDynamic(ctx, 30, 4)
-				{
-					min := a.Mapping[i].Min
-					max := a.Mapping[i].Max
-					step := (max - min) / 1000.0
-					nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
-					a.Value[i] = nk.NkSlideFloat(ctx, min, a.Value[i], max, step)
-					nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Left)
-					nk.NkLabel(ctx, fmt.Sprintf("%.3f", a.Value[i]), nk.Left)
-				}
+				min := a.Mapping[i].Min
+				max := a.Mapping[i].Max
+				step := (max - min) / 1000.0
+				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
+				nk.NkLayoutRowPush(ctx, 100)
+				nk.NkLabel(ctx, a.Name, nk.Left)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
+				nk.NkLayoutRowPush(ctx, 150)
+				a.Value[i] = nk.NkSlideFloat(ctx, min, a.Value[i], max, step)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Right)
+				nk.NkLayoutRowPush(ctx, 50)
+				nk.NkLabel(ctx, fmt.Sprintf("%.3f", a.Value[i]), nk.Left)
+				nk.NkLayoutRowEnd(ctx)
 			}
 		}
 	}
