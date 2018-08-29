@@ -296,12 +296,13 @@ void DataHingeActuator::createXsd(XsdSpecification *spec)
 
   XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
-  // forceParameter->add(NA(YARS_STRING_MINIMUM, YARS_STRING_POSITIVE_DECIMAL, false));
+  forceParameter->add(NA(YARS_STRING_SCALING, YARS_STRING_UNIT_INTERVAL,    false));
   spec->add(forceParameter);
 
   XsdSequence *velocityParameter = new XsdSequence(YARS_STRING_VELOCITY_DEFINITION);
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   spec->add(velocityParameter);
+
 }
 
 void DataHingeActuator::__close()

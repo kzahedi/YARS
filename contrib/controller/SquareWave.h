@@ -27,7 +27,9 @@ class SquareWave: public RobotController
     vector<int> _phaseShift;
     vector<double> _min;
     vector<double> _max;
+    vector<string> _label;
     bool           _debug;
+    bool           _osd;
 };
 
 #endif // __SQUARE_WAVE_H__

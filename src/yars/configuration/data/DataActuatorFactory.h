@@ -11,7 +11,7 @@
 #include "DataGenericActuator.h"
 
 # define YARS_STRING_ACTUATOR_LIST            (char*)"actuators"
-# define YARS_STRING_ACTUATOR_LIST_DEFINITION (char*)"actuators_divider_definition"
+# define YARS_STRING_ACTUATOR_LIST_DEFINITION (char*)"actuators_definition"
 
 class DataActuatorFactory
 {

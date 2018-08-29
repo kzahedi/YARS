@@ -305,16 +305,16 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
   objectChoice->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
   anchorDefinition->add(objectChoice);
+  spec->add(anchorDefinition);
 
-  XsdElement *forceParameter = NE(YARS_STRING_FORCE_DEFINITION, "", 0, 1);
+  XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   forceParameter->add(NA(YARS_STRING_SCALING, YARS_STRING_UNIT_INTERVAL,    false));
-  muscleDefinition->add(forceParameter);
+  spec->add(forceParameter);
 
-  XsdElement *velocityParameter = NE(YARS_STRING_VELOCITY_DEFINITION, "", 0, 1);
+  XsdSequence *velocityParameter = new XsdSequence(YARS_STRING_VELOCITY_DEFINITION);
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
-  muscleDefinition->add(velocityParameter);
-
+  spec->add(velocityParameter);
 
   XsdEnumeration *actuatorModeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_MODE_DEFINITION,
       YARS_STRING_XSD_STRING);

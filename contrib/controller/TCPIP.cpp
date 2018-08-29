@@ -40,6 +40,7 @@ void TCPIP::update()
   while(!motorCommandsGiven && !isQuit())
   {
     socket >> s;
+    // if(debug) cout << "received \"" << s << "\"" << endl;
     switch(commands[s])
     {
       cout << "Command " << s << endl;

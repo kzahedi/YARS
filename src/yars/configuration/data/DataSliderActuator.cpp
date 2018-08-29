@@ -255,15 +255,16 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
   sliderDefinition->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
   sliderDefinition->add(NE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
   sliderDefinition->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  spec->add(sliderDefinition);
 
-  XsdElement *forceParameter = NE(YARS_STRING_FORCE_DEFINITION, "", 0, 1);
+  XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   forceParameter->add(NA(YARS_STRING_SCALING, YARS_STRING_UNIT_INTERVAL,    false));
-  sliderDefinition->add(forceParameter);
+  spec->add(forceParameter);
 
-  XsdElement *velocityParameter = NE(YARS_STRING_VELOCITY_DEFINITION, "", 0, 1);
+  XsdSequence *velocityParameter = new XsdSequence(YARS_STRING_VELOCITY_DEFINITION);
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
-  sliderDefinition->add(velocityParameter);
+  spec->add(velocityParameter);
 
 
   XsdElement *regularParameters = NE(YARS_STRING_REGULAR, "", 0, 1);

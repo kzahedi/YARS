@@ -7,8 +7,8 @@
 
 #include <yars/types/Domain.h>
 
-# define YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR            (char*)"oay"
-# define YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR_DEFINITION (char*)"oay_definition"
+# define YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR            (char*)"oav"
+# define YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR_DEFINITION (char*)"oav_definition"
 
 #include <string>
 #include <pthread.h>

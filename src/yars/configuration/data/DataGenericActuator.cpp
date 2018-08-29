@@ -484,6 +484,7 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   XsdSequence *velocityParameter = new XsdSequence(YARS_STRING_VELOCITY_DEFINITION);
   velocityParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
   spec->add(velocityParameter);
+  
 }
 
 double DataGenericActuator::velocity(int index)

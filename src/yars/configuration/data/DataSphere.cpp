@@ -7,7 +7,7 @@
 # define YARS_STRING_NAME                        (char*)"name"
 # define YARS_STRING_TEXTURE                     (char*)"texture"
 # define YARS_STRING_VISUALISE                   (char*)"visualise"
-# define YARS_STRING_POSE_DEFINITION             (char*)"poser_definition"
+# define YARS_STRING_POSE_DEFINITION             (char*)"pose_definition"
 # define YARS_STRING_RADIUS_DIMENSION_DEFINITION (char*)"radius_dimension_definition"
 
 # define OPTION_1 "option1"

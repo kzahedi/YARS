@@ -2,7 +2,7 @@
 #define __DATA_CAMERA_CONFIG_H__
 
 # define YARS_STRING_CAMERA_CONFIG            (char*)"cameras"
-# define YARS_STRING_CAMERA_CONFIG_DEFINITION (char*)"camera_config_divider_definition"
+# define YARS_STRING_CAMERA_CONFIG_DEFINITION (char*)"camera_config_definition"
 
 #include "DataNode.h"
 #include "DataCameraConfig.h"

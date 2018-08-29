@@ -15,3 +15,4 @@ endif(YARS_BUILD_JAVA_CLIENT)
 
 
 add_subdirectory(controller)
+add_subdirectory(ctrlGui)

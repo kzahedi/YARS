@@ -3,6 +3,7 @@
 #include <math.h>
 #include <iostream>
 #include <stdio.h>
+#include <sstream>
 
 using namespace std;
 
@@ -31,6 +32,16 @@ void SquareWave::update()
       cout << " " << motors[i];
     cout << endl;
   }
+ 
+  if(_osd)
+  {
+    stringstream oss;
+    for(int i = 0; i < motors.size(); i++) oss << _label[i] << motors[i] << endl;
+    clearOsd();
+    oss.setf(ios_base::fixed, ios_base::floatfield);
+    oss.precision(2);
+    addLine(oss.str());
+  }  
 }
 
 void SquareWave::init()
@@ -39,6 +50,7 @@ void SquareWave::init()
   double globalPhaseShift = 0.0;
   double globalMin        = 0.0;
   double globalMax        = 0.0;
+  string osd;
   _count = 0;
 
   parameter.set("period",        globalPeriod,     100.0);
@@ -46,14 +58,23 @@ void SquareWave::init()
   parameter.set("min",           globalMin,        -1);
   parameter.set("max",           globalMax,        1);
   parameter.set("nr of outputs", _nr_of_outputs,   (int)motors.size());
+  parameter.set("osd",           osd,              "false");
+
+  if(osd == "true")
+  {
+    _osd = true;
+  }
+  else
+  {
+    _osd = false;
+  }
 
   _period.resize(motors.size());
   _phaseShift.resize(motors.size());
   _min.resize(motors.size());
   _max.resize(motors.size());
   _values.resize(motors.size());
-
-
+  _label.resize(motors.size());
 
   for(int i = 0; i < motors.size(); i++)
   {
@@ -104,6 +125,17 @@ void SquareWave::init()
     oss.str("");
     oss << "max " << (index + 1);
   }
+
+  oss.str("");
+  oss << "label 1";
+  index = 0;
+  while(parameter.exists(oss.str()))
+  {
+    _label[index++] = parameter.stringValue(oss.str());
+    oss.str("");
+    oss << "label " << (index + 1);
+  }
+
 
   if(_debug)
   {
