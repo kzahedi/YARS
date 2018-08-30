@@ -13,8 +13,10 @@ import (
 )
 
 const (
-	winWidth  = 800
-	winHeight = 600
+	winWidth  = 1000
+	winHeight = 400
+
+	panelWidth = 450
 
 	maxVertexBuffer  = 512 * 1024
 	maxElementBuffer = 128 * 1024
@@ -97,34 +99,35 @@ func main() {
 
 func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(10, 10, 300, 130)
-	update := nk.NkBegin(ctx, "YARS Control 3anel", bounds,
+	bounds := nk.NkRect(winWidth-255, winHeight-140, 255, 130)
+	update := nk.NkBegin(ctx, "YARS Control Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowMinimizable|nk.WindowTitle)
 
 	if update > 0 {
 		nk.NkLayoutRowDynamic(ctx, 30, 1)
 		{
-			//  nk_edit_string_zero_terminated (ctx, NK_EDIT_FIELD, buf, sizeof(buf) - 1, nk_filter_default);
 			nk.NkEditStringZeroTerminated(ctx, nk.EditField, filename, 1024, nk.NkFilterDefault)
 
 		}
 		nk.NkLayoutRowDynamic(ctx, 30, 3)
 		{
 			if nk.NkButtonLabel(ctx, "start") > 0 {
-				log.Println("start pressed: ", string(filename))
-				YarsStart(string(filename))
-				time.Sleep(5 * time.Second)
-				err := YarsConnect(9500)
-				if err != nil {
-					panic(err)
+				port := YarsStart(string(filename))
+				if port > 0 {
+					err := YarsConnect(port)
+					if err != nil {
+						panic(err)
+					}
+					isInitialised = true
 				}
-				isInitialised = true
-			}
-			if nk.NkButtonLabel(ctx, "stop") > 0 {
-				log.Println("stop pressed")
 			}
 			if nk.NkButtonLabel(ctx, "reset") > 0 {
 				log.Println("reset pressed")
+				YarsReset()
+			}
+			if nk.NkButtonLabel(ctx, "quit") > 0 {
+				log.Println("reset pressed")
+				YarsQuit()
 			}
 		}
 	}
@@ -133,7 +136,7 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 
 func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(350, 10, 400, float32(100*len(yarsCfg.Actuators)))
+	bounds := nk.NkRect(10, 10, panelWidth, float32(100*len(yarsCfg.Actuators)))
 	update := nk.NkBegin(ctx, "Actuator Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 
@@ -144,16 +147,16 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				max := a.Mapping[i].Max
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
-				nk.NkLayoutRowPush(ctx, 100)
+				nk.NkLayoutRowPush(ctx, 150)
 				nk.NkLabel(ctx, a.Name, nk.Left)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", min), nk.Right)
 				nk.NkLayoutRowPush(ctx, 150)
 				a.Value[i] = nk.NkSlideFloat(ctx, min, a.Value[i], max, step)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Right)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", max), nk.Right)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", a.Value[i]), nk.Left)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", a.Value[i]), nk.Left)
 				nk.NkLayoutRowEnd(ctx)
 			}
 		}
@@ -163,7 +166,7 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 
 func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(350, 400, 400, float32(100*len(yarsCfg.Actuators)))
+	bounds := nk.NkRect(420, 10, panelWidth+10, float32(100*len(yarsCfg.Actuators)))
 	update := nk.NkBegin(ctx, "Sensor Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 
@@ -174,16 +177,16 @@ func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				max := s.Mapping[i].Max
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
-				nk.NkLayoutRowPush(ctx, 100)
+				nk.NkLayoutRowPush(ctx, 150)
 				nk.NkLabel(ctx, s.Name, nk.Left)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", min), nk.Right)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", min), nk.Right)
 				nk.NkLayoutRowPush(ctx, 150)
 				nk.NkSlideFloat(ctx, min, s.Value[i], max, step)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", max), nk.Right)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", max), nk.Right)
 				nk.NkLayoutRowPush(ctx, 50)
-				nk.NkLabel(ctx, fmt.Sprintf("%.3f", s.Value[i]), nk.Left)
+				nk.NkLabel(ctx, fmt.Sprintf("%.2f", s.Value[i]), nk.Left)
 				nk.NkLayoutRowEnd(ctx)
 			}
 		}

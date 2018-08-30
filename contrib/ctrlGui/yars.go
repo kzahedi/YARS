@@ -9,6 +9,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -74,20 +75,42 @@ var yarsIO *bufio.ReadWriter
 var yarsCfg YarsConfiguration
 
 // YarsStart runs the yars executable (background)
-func YarsStart(filename string) {
-	fmt.Println(filename)
-	cmd := exec.Command("yars", "--printTime", "xml/braitenberg_controller_tcpip.xml")
-	cmd.Stdout = os.Stdout
+func YarsStart(filename string) int {
+	if len(filename) == 0 {
+		return -1
+	}
+	port := 0
+	cmd := exec.Command("yars", filename)
+
+	stdout, _ := cmd.StdoutPipe()
 	err := cmd.Start()
+
+	scanner := bufio.NewScanner(stdout)
+	foundPort := false
+	for foundPort == false && scanner.Scan() {
+		m := scanner.Text()
+		fmt.Println(m)
+		if strings.Contains(m, "port") {
+			re := regexp.MustCompile("[0-9]+")
+			s := re.FindString(m)
+			p, _ := strconv.ParseInt(s, 10, 64)
+			port = int(p)
+			foundPort = true
+		}
+	}
+
+	cmd.Stdout = os.Stdout
 	if err != nil {
 		log.Fatal(err)
 	}
+	return port
 }
 
 // YarsConnect opens the TCP/IP connection to YARS
 func YarsConnect(port int) error {
+	fmt.Println("hier 0: YC")
 	addr := fmt.Sprintf("localhost:%d", port)
-	log.Println("Dial " + addr)
+	fmt.Println("Dial " + addr)
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
 		return errors.Wrap(err, "Dialing "+addr+" failed")
@@ -95,6 +118,16 @@ func YarsConnect(port int) error {
 	yarsIO = bufio.NewReadWriter(bufio.NewReader(conn), bufio.NewWriter(conn))
 	YarsGetConfiguration()
 	return nil
+}
+
+// YarsQuit sends quit signal
+func YarsQuit() {
+	yarsSendString("QUIT")
+}
+
+// YarsReset sends the reset signal
+func YarsReset() {
+	yarsSendString("Rest")
 }
 
 // YarsGetConfiguration fills yarsCfg

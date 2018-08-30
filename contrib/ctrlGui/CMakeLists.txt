@@ -7,7 +7,7 @@ if(YARS_USE_GO_GUI)
   set(CMAKE_Go_BUILD_MODE "-buildmode=c-shared")
 
   GO_GET(go_redis github.com/hoisie/redis)
-  ADD_GO_INSTALLABLE_PROGRAM(guiclient # executable name
+  ADD_GO_INSTALLABLE_PROGRAM(yars-gui-client # executable name
                            *.go # `package main` source file
                            ) # everything else is a dependency
 
