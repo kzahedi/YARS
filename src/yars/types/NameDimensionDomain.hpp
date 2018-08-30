@@ -18,6 +18,7 @@ class NameDimensionDomain
     int    dimension;
     std::vector<Domain> internal;
     std::vector<Domain> external;
+    std::vector<string> names;
 };
 
 #endif // __NAME_DIMENSION_DOMAIN_H__

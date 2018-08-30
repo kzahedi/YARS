@@ -5,13 +5,24 @@
 # define YARS_STRING_POSE               (char*)"pose"
 # define YARS_STRING_NAME               (char*)"name"
 # define YARS_STRING_OBJECT             (char*)"object"
+# define YARS_STRING_DOMAIN             (char*)"domain"
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
 
 DataMuscleSensor::DataMuscleSensor(DataNode* parent)
   : DataSensor(parent, DATA_MUSCLE_SENSOR)
-{ }
+{
+  _dimension = 6;
+  _internalValue.resize(_dimension);
+  _externalValue.resize(_dimension);
+  _internalDomain.resize(_dimension);
+  _externalDomain.resize(_dimension);
+  _mapping.resize(_dimension);
+  _domain.resize(_dimension);
+  _internalExternalMapping.resize(_dimension);
+  _dmIndex = 0;
+ }
 
 DataMuscleSensor::~DataMuscleSensor()
 {
@@ -32,10 +43,16 @@ void DataMuscleSensor::add(DataParseElement *element)
   {
     element->set(YARS_STRING_NAME, _object);
   }
+
   if(element->opening(YARS_STRING_MAPPING))
   {
-    DataDomainFactory::set(_mapping, element);
+    DataDomainFactory::set(_mapping[_dmIndex], element);
+    _dmIndex++; // mapping follows domain
   }
+   if(element->opening(YARS_STRING_DOMAIN))
+  {
+    DataDomainFactory::set(_domain[_dmIndex], element);
+  } 
   if(element->opening(YARS_STRING_NOISE))
   {
     _noise  = new DataNoise(this);
@@ -55,8 +72,12 @@ void DataMuscleSensor::createXsd(XsdSpecification *spec)
   XsdSequence *sensor = new XsdSequence(YARS_STRING_MUSCLE_SENSOR_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,         false));
   sensor->add(NE(YARS_STRING_OBJECT,  YARS_STRING_NAME_DEFINITION,    1, 1));
-  sensor->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
-  sensor->add(NE(YARS_STRING_NOISE,   YARS_STRING_NOISE_DEFINITION,   0, 1));
+  for (int i = 0; i < 6; i++)
+  {
+    sensor->add(NE(YARS_STRING_DOMAIN, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
+    sensor->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
+  }
+  sensor->add(NE(YARS_STRING_NOISE, YARS_STRING_NOISE_DEFINITION, 0, 1));
   sensor->add(NE(YARS_STRING_FILTER,  YARS_STRING_FILTER_DEFINITION,  0, 1));
   spec->add(sensor);
   DataNoise::createXsd(spec);
@@ -68,7 +89,11 @@ DataMuscleSensor*  DataMuscleSensor::_copy()
   DataMuscleSensor *copy = new DataMuscleSensor(NULL);
   copy->_name = _name;
   copy->_object = _object;
-  copy->_mapping = _mapping;
+  for(int i = 0; i < _dimension; i++)
+  {
+    copy->_mapping[i] = _mapping[i];
+    copy->_domain[i] = _domain[i];
+  }
   if (_filter != NULL) copy->_filter = _filter->copy();
   if (_noise != NULL) copy->_noise = _noise->copy();
   copy->__setMapping();
@@ -87,48 +112,35 @@ double DataMuscleSensor::externalValue(int index)
 
 void DataMuscleSensor::setInternalValue(int index, double v)
 {
-  if(index == 0)
-  {
-    _internalValue[index] = _internalDomain.cut(v);
-    _externalValue[index] = _internalExternalMapping.map(_internalValue[index]);
-  }
-  else
-  {
-    _internalValue[index] = v;
-    _internalValue[index] = v;
-  }
+  _internalValue[index] = _internalDomain[index].cut(v);
+  _externalValue[index] = _internalExternalMapping[index].map(_internalValue[index]);
 }
 
 void DataMuscleSensor::setExternalValue(int index, double v)
 {
-  if(index == 0)
-  {
-  _externalValue[index] = _externalDomain.cut(v);
-  _internalValue[index] = _internalExternalMapping.invMap(_externalValue[index]);
-  }
-  else
-  {
-    _externalValue[index] = v;
-    _internalValue[index] = v;
-  }
+  _externalValue[index] = v;
+  _internalValue[index] = v;
 }
 
 void DataMuscleSensor::__setMapping()
 {
-  _externalDomain = _mapping;
-  _internalDomain = _domain;
-  _internalExternalMapping.setInputDomain(_internalDomain);
-  _internalExternalMapping.setOutputDomain(_externalDomain);
+ for(int i = 0; i < _dimension; i++)
+  {
+    _externalDomain[i] = _mapping[i];
+    _internalDomain[i] = _domain[i];
+    _internalExternalMapping[i].setInputDomain(_internalDomain[i]);
+    _internalExternalMapping[i].setOutputDomain(_externalDomain[i]);
+  }
 }
 
 Domain DataMuscleSensor::getInternalDomain(int index)
 {
-  return _internalDomain;
+  return _internalDomain[index];
 }
 
 Domain DataMuscleSensor::getExternalDomain(int index)
 {
-  return _externalDomain;
+  return _externalDomain[index];
 }
 
 void DataMuscleSensor::_resetTo(const DataSensor *sensor)
@@ -136,8 +148,22 @@ void DataMuscleSensor::_resetTo(const DataSensor *sensor)
   DataMuscleSensor *other = (DataMuscleSensor*)sensor;
   _name    = other->name();
   _object  = other->object();
-  _mapping = other->mapping();
+  for(int i = 0; i < _dimension; i++)
+  {
+    _mapping[i] = other->mapping(i);
+    _domain[i] = other->domain(i);
+  }
   _filter  = other->filter();
   _noise   = other->noise();
   __setMapping();
 }
+
+  Domain DataMuscleSensor::mapping(int i)
+  {
+    return _mapping[i];
+  }
+
+ Domain DataMuscleSensor::domain(int i)
+ {
+   return _domain[i];
+ }

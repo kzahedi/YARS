@@ -44,7 +44,7 @@ class DataMuscleSensor : public DataSensor
 
     DataMuscleSensor *_copy();
 
-    int dimension() { return 6; }
+    int dimension() { return _dimension; }
 
     double internalValue(int index);
     double externalValue(int index);
@@ -64,16 +64,21 @@ class DataMuscleSensor : public DataSensor
     double velocityComponent();
     double muscleLength();
     double muscleVelocity();
+    Domain mapping(int i);
+    Domain domain(int i);
     
 
   private:
     void __setMapping();
-    Domain _domain;
+    vector<Domain> _domain;
+    vector<Domain> _mapping;
     vector<double> _internalValue;
     vector<double> _externalValue;
-    Mapping _internalExternalMapping; // only for force
-    Domain _internalDomain;
-    Domain _externalDomain;
+    vector<Mapping> _internalExternalMapping;
+    vector<Domain> _internalDomain;
+    vector<Domain> _externalDomain;
+    int _dimension;
+    int _dmIndex;
 
     // double _f;              - 0
     // double _fv;             - 1

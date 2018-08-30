@@ -223,6 +223,7 @@ void Robot::__setupController()
   {
     int n = 0; for(uint j = 0; j < (*a)->dimension(); j++) if((*a)->isActive(j)) n++;
     NameDimensionDomain nd = NameDimensionDomain((*a)->name(), n);
+    nd.names.resize((*a)->dimension());
     for(uint j = 0; j < (*a)->dimension(); j++)
     {
       if((*a)->isActive(j))
@@ -231,16 +232,27 @@ void Robot::__setupController()
         nd.external.push_back((*a)->getExternalDomain(j));
       }
     }
+
     if(nd.internal.size() > 0) motors.push_back(nd);
   }
 
   for(DataSensors::iterator s = _data->s_begin(); s != _data->s_end(); s++)
   {
     NameDimensionDomain nd = NameDimensionDomain((*s)->name(), (*s)->dimension());
+    nd.names.resize((*s)->dimension());
     for(uint j = 0; j < (*s)->dimension(); j++)
     {
       nd.internal.push_back((*s)->getInternalDomain(j));
       nd.external.push_back((*s)->getExternalDomain(j));
+    }
+    if((*s)->type() == DATA_MUSCLE_SENSOR)
+    {
+      nd.names[0] = "Force";
+      nd.names[1] = "Fv";
+      nd.names[2] = "Fl";
+      nd.names[3] = "Velocity";
+      nd.names[4] = "Length";
+      nd.names[5] = "Applied vel";
     }
     sensors.push_back(nd);
   }

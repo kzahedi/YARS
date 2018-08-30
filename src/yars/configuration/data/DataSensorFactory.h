@@ -56,6 +56,7 @@ class DataSensorFactory
     static DataSensor* __generateGenericActuatorSensor       (DataParseElement *element, DataNode *parent);
     static DataSensor* __generateObjectVelocitySensor        (DataParseElement *element, DataNode *parent);
     static DataSensor* __generateObjectAngularVelocitySensor (DataParseElement *element, DataNode *parent);
+    static DataSensor* __generateMuscleSensor (DataParseElement *element, DataNode *parent);
 };
 
 #endif // __DATA_SENSOR_FACTORY_H__

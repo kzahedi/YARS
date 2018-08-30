@@ -17,6 +17,7 @@
 #include "DataGenericActuatorSensor.h"
 #include "DataObjectVelocitySensor.h"
 #include "DataObjectAngularVelocitySensor.h"
+#include "DataMuscleSensor.h"
 
 
 DataSensor* DataSensorFactory::sensor(DataParseElement *element, DataNode *parent)
@@ -38,7 +39,15 @@ DataSensor* DataSensorFactory::sensor(DataParseElement *element, DataNode *paren
   if(element->opening(YARS_STRING_GENERIC_ACTUATOR_SENSOR))                return __generateGenericActuatorSensor       (element, parent);
   if(element->opening(YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR))         return __generateObjectVelocitySensor        (element, parent);
   if(element->opening(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR)) return __generateObjectAngularVelocitySensor (element, parent);
+  if(element->opening(YARS_STRING_MUSCLE_SENSOR))                          return __generateMuscleSensor(element, parent);
   return NULL;
+}
+
+DataSensor* DataSensorFactory::__generateMuscleSensor(DataParseElement *element, DataNode *parent)
+{
+  DataMuscleSensor *sensor = new DataMuscleSensor(parent);
+  sensor->add(element);
+  return (DataSensor*)sensor;
 }
 
 DataSensor* DataSensorFactory::__generateGenericProximitySensor(DataParseElement *element, DataNode *parent)
@@ -198,7 +207,8 @@ void DataSensorFactory::createXsd(XsdSpecification *spec)
                                YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR_DEFINITION,         "0", YARS_STRING_XSD_UNBOUNDED));
   sensorListDefinition->add(NE(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR,
                                YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
-
+  sensorListDefinition->add(NE(YARS_STRING_MUSCLE_SENSOR,
+                               YARS_STRING_MUSCLE_SENSOR_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
   spec->add(sensorListDefinition);
 
   DataGenericProximitySensor::createXsd(spec);
@@ -218,4 +228,5 @@ void DataSensorFactory::createXsd(XsdSpecification *spec)
   DataGenericActuatorSensor::createXsd(spec);
   DataObjectVelocitySensor::createXsd(spec);
   DataObjectAngularVelocitySensor::createXsd(spec);
+  DataMuscleSensor::createXsd(spec);
 }

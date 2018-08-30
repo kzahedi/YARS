@@ -23,6 +23,7 @@ class SensorFactory
     static Sensor* __createObjectVelocitySensor        (DataSensor *sensor, Robot *robot);
     static Sensor* __createObjectAngularVelocitySensor (DataSensor *sensor, Robot *robot);
     static Sensor* __createLDRSensor                   (DataSensor *sensor, Robot *robot);
+    static Sensor* __createMuscleSensor(DataSensor *sensor, Robot *robot);
 
 };
 

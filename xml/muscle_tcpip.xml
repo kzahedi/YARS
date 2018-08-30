@@ -129,8 +129,8 @@
         <domain min="0" max="2.0"/>
         <mapping min="0" max="2.0"/>
         
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
+        <domain min="-2.0" max="2.0"/>
+        <mapping min="-2.0" max="2"/>
         
         <domain min="0" max="2.0"/>
         <mapping min="0" max="2"/>
@@ -140,11 +140,9 @@
       </muscle>
       </sensors>
 
-      <controller module="SquareWave" frequency="500">
-        <parameter name="min" value="0.0"/>
-        <parameter name="max" value="1.0"/>
-        <parameter name="period" value="2500"/>
-        <!-- <parameter name="debug" value="true"/> -->
+      <controller module="TCPIP" frequency="500">
+        <parameter name="port" value="9500"/>
+        <parameter name="debug" value="True"/>
       </controller>
     </robot>
 

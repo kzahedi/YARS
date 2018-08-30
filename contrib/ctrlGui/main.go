@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"runtime"
 	"time"
 
@@ -31,8 +32,13 @@ func init() {
 }
 
 func main() {
-	isInitialised = false
 	filename = make([]byte, 1024, 1024)
+	if len(os.Args) > 1 {
+		for i, v := range os.Args[1] {
+			filename[i] = byte(v)
+		}
+	}
+	isInitialised = false
 	port = make([]byte, 6, 6)
 
 	if err := glfw.Init(); err != nil {
@@ -148,7 +154,11 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
 				nk.NkLayoutRowPush(ctx, 150)
-				nk.NkLabel(ctx, a.Name, nk.Left)
+				if a.Dimension == 1 {
+					nk.NkLabel(ctx, a.Name, nk.Left)
+				} else {
+					nk.NkLabel(ctx, a.Names[i], nk.Left)
+				}
 				nk.NkLayoutRowPush(ctx, 50)
 				nk.NkLabel(ctx, fmt.Sprintf("%.2f", min), nk.Right)
 				nk.NkLayoutRowPush(ctx, 150)
@@ -166,19 +176,19 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 
 func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(420, 10, panelWidth+10, float32(100*len(yarsCfg.Actuators)))
-	update := nk.NkBegin(ctx, "Sensor Panel", bounds,
-		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+	for i, s := range yarsCfg.Sensors {
+		bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*s.Dimension))
+		update := nk.NkBegin(ctx, s.Name, bounds,
+			nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 
-	if update > 0 {
-		for _, s := range yarsCfg.Sensors {
+		if update > 0 {
 			for i := 0; i < s.Dimension; i++ {
 				min := s.Mapping[i].Min
 				max := s.Mapping[i].Max
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
 				nk.NkLayoutRowPush(ctx, 150)
-				nk.NkLabel(ctx, s.Name, nk.Left)
+				nk.NkLabel(ctx, s.Names[i], nk.Left)
 				nk.NkLayoutRowPush(ctx, 50)
 				nk.NkLabel(ctx, fmt.Sprintf("%.2f", min), nk.Right)
 				nk.NkLayoutRowPush(ctx, 150)
@@ -190,8 +200,8 @@ func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				nk.NkLayoutRowEnd(ctx)
 			}
 		}
+		nk.NkEnd(ctx)
 	}
-	nk.NkEnd(ctx)
 }
 
 func gfxMain(win *glfw.Window, ctx *nk.Context, state *State) {

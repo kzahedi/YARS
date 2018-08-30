@@ -9,6 +9,7 @@
 #include "GenericLDRSensor.h"
 #include "ObjectVelocitySensor.h"
 #include "ObjectAngularVelocitySensor.h"
+#include "MuscleSensor.h"
 
 Sensor* SensorFactory::create(DataSensor *sensor, Robot *robot)
 {
@@ -44,9 +45,18 @@ Sensor* SensorFactory::create(DataSensor *sensor, Robot *robot)
     case DATA_GENERIC_LIGHT_DEPENDENT_RESISTOR_SENSOR:
       return __createLDRSensor(sensor, robot);
       break;
-  }
+    case DATA_MUSCLE_SENSOR:
+      return __createMuscleSensor(sensor, robot);
+      break;  }
   YarsErrorHandler::push("SensorFactory::create unknown sensor type given %d", sensor->type());
   return NULL;
+}
+
+Sensor* SensorFactory::__createMuscleSensor(DataSensor *sensor, Robot *robot)
+{
+  DataMuscleSensor *data = (DataMuscleSensor*)sensor;
+  MuscleSensor *s = new MuscleSensor(data, robot);
+  return s;
 }
 
 Sensor* SensorFactory::__createLDRSensor(DataSensor *sensor, Robot *robot)

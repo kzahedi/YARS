@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -34,11 +35,13 @@ type YarsEntityConfiguration struct {
 	Domain    []YarsDomain
 	Mapping   []YarsDomain
 	Value     []float32
+	Names     []string
 }
 
 func (yec YarsEntityConfiguration) String() string {
 	s := fmt.Sprintf("Name: %s\nDimension %d\n", yec.Name, yec.Dimension)
 	for i := 0; i < yec.Dimension; i++ {
+		s = fmt.Sprintf("%sName %s\n", s, yec.Names[i])
 		s = fmt.Sprintf("%sDomain %s\n", s, yec.Domain[i].String())
 		s = fmt.Sprintf("%sMapping %s\n", s, yec.Domain[i].String())
 	}
@@ -76,30 +79,38 @@ var yarsCfg YarsConfiguration
 
 // YarsStart runs the yars executable (background)
 func YarsStart(filename string) int {
+	filename = strings.Trim(filename, " ")
+	filename = strings.Trim(filename, string(byte(0)))
 	if len(filename) == 0 {
 		return -1
 	}
+	fmt.Println("Starting: ", filename)
 	port := 0
 	cmd := exec.Command("yars", filename)
 
 	stdout, _ := cmd.StdoutPipe()
-	err := cmd.Start()
-
 	scanner := bufio.NewScanner(stdout)
 	foundPort := false
-	for foundPort == false && scanner.Scan() {
-		m := scanner.Text()
-		fmt.Println(m)
-		if strings.Contains(m, "port") {
-			re := regexp.MustCompile("[0-9]+")
-			s := re.FindString(m)
-			p, _ := strconv.ParseInt(s, 10, 64)
-			port = int(p)
-			foundPort = true
+	go func() {
+		for scanner.Scan() {
+			m := scanner.Text()
+			fmt.Printf("%s\n", m)
+			if strings.Contains(m, "port") {
+				re := regexp.MustCompile("[0-9]+")
+				s := re.FindString(m)
+				p, _ := strconv.ParseInt(s, 10, 64)
+				port = int(p)
+				foundPort = true
+			}
 		}
+	}()
+
+	err := cmd.Start()
+
+	for foundPort == false {
+		time.Sleep(100 * time.Millisecond)
 	}
 
-	cmd.Stdout = os.Stdout
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -108,7 +119,6 @@ func YarsStart(filename string) int {
 
 // YarsConnect opens the TCP/IP connection to YARS
 func YarsConnect(port int) error {
-	fmt.Println("hier 0: YC")
 	addr := fmt.Sprintf("localhost:%d", port)
 	fmt.Println("Dial " + addr)
 	conn, err := net.Dial("tcp", addr)
@@ -202,14 +212,17 @@ func yarsReadEntity() YarsEntityConfiguration {
 
 	e.Domain = make([]YarsDomain, n, n)
 	e.Mapping = make([]YarsDomain, n, n)
+	e.Names = make([]string, n, n)
 	e.Value = make([]float32, n, n)
 
 	for i := 0; i < e.Dimension; i++ {
-		min, max := yarsReadDomain()
+
+		min, max, name := yarsReadDomain()
 		e.Domain[i].Min = min
 		e.Domain[i].Max = max
+		e.Names[i] = name
 
-		min, max = yarsReadDomain()
+		min, max, _ = yarsReadDomain()
 		e.Mapping[i].Min = min
 		e.Mapping[i].Max = max
 
@@ -220,12 +233,17 @@ func yarsReadEntity() YarsEntityConfiguration {
 	return e
 }
 
-func yarsReadDomain() (float32, float32) {
-	str := yarsReadString() // INTERNAL DOMAIN
+func yarsReadDomain() (float32, float32, string) {
+	name := ""
+	str := yarsReadString()
+	if strings.Contains(str, "NAME") == true {
+		name = str[5:]
+		str = yarsReadString()
+	}
 	s := strings.Split(str, " ")
 	min, _ := strconv.ParseFloat(s[2], 64)
 	max, _ := strconv.ParseFloat(s[3], 64)
-	return float32(min), float32(max)
+	return float32(min), float32(max), name
 }
 
 func yarsSendString(message string) {

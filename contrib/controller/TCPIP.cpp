@@ -196,7 +196,13 @@ void TCPIP::__configuration()
     for(uint j = 0; j < dimension; j++)
     {
       Domain d = sensorConfiguration[i].internal[j];
-      oss.str("");
+      string name = sensorConfiguration[i].names[j];
+      if (name.size() > 0) 
+      {
+        oss.str("");
+        oss << "NAME " << name;
+        socket << oss.str();
+      }
       oss << "INTERNAL DOMAIN " << d.min << " " << d.max;
       socket << oss.str();
       oss.str("");
