@@ -26,6 +26,7 @@ const (
 var filename []byte
 var port []byte
 var isInitialised bool
+var cfg XMLCfg
 
 func init() {
 	runtime.LockOSThread()
@@ -38,6 +39,13 @@ func main() {
 			filename[i] = byte(v)
 		}
 	}
+
+	xml, err := ReadCfg("cfg.xml")
+	if err != nil {
+		panic(err)
+	}
+	cfg = xml
+
 	isInitialised = false
 	port = make([]byte, 6, 6)
 
@@ -48,7 +56,7 @@ func main() {
 	glfw.WindowHint(glfw.ContextVersionMinor, 2)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
-	win, err := glfw.CreateWindow(winWidth, winHeight, "YARS GUI Client", nil, nil)
+	win, err := glfw.CreateWindow(cfg.Window.Width, cfg.Window.Height, cfg.Window.Name, nil, nil)
 	if err != nil {
 		closer.Fatalln(err)
 	}
@@ -105,7 +113,7 @@ func main() {
 
 func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(winWidth-255, winHeight-140, 255, 130)
+	bounds := nk.NkRect(float32(cfg.Window.Width-255), float32(cfg.Window.Height-140), 255, 130)
 	update := nk.NkBegin(ctx, "YARS Control Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowMinimizable|nk.WindowTitle)
 
@@ -142,18 +150,25 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 
 func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(10, 10, panelWidth, float32(100*len(yarsCfg.Actuators)))
-	update := nk.NkBegin(ctx, "Actuator Panel", bounds,
-		nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
-
-	if update > 0 {
-		for _, a := range yarsCfg.Actuators {
+	for i, a := range yarsCfg.Actuators {
+		var update int32
+		x, y, w, h, found := getActuator(cfg, a.Name)
+		if found {
+			bounds := nk.NkRect(float32(x), float32(y), float32(w), float32(h))
+			update = nk.NkBegin(ctx, a.Name, bounds,
+				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+		} else {
+			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*a.Dimension))
+			update = nk.NkBegin(ctx, a.Name, bounds,
+				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+		}
+		if update > 0 {
 			for i := 0; i < a.Dimension; i++ {
 				min := a.Mapping[i].Min
 				max := a.Mapping[i].Max
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
-				nk.NkLayoutRowPush(ctx, 150)
+				nk.NkLayoutRowPush(ctx, 75)
 				if a.Dimension == 1 {
 					nk.NkLabel(ctx, a.Name, nk.Left)
 				} else {
@@ -177,9 +192,17 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
 	for i, s := range yarsCfg.Sensors {
-		bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*s.Dimension))
-		update := nk.NkBegin(ctx, s.Name, bounds,
-			nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+		x, y, w, h, found := getSensor(cfg, s.Name)
+		var update int32
+		if found {
+			bounds := nk.NkRect(float32(x), float32(y), float32(w), float32(h))
+			update = nk.NkBegin(ctx, s.Name, bounds,
+				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+		} else {
+			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*s.Dimension))
+			update = nk.NkBegin(ctx, s.Name, bounds,
+				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
+		}
 
 		if update > 0 {
 			for i := 0; i < s.Dimension; i++ {
@@ -187,7 +210,7 @@ func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				max := s.Mapping[i].Max
 				step := (max - min) / 1000.0
 				nk.NkLayoutRowBegin(ctx, nk.Static, 30, 6)
-				nk.NkLayoutRowPush(ctx, 150)
+				nk.NkLayoutRowPush(ctx, 75)
 				nk.NkLabel(ctx, s.Names[i], nk.Left)
 				nk.NkLayoutRowPush(ctx, 50)
 				nk.NkLabel(ctx, fmt.Sprintf("%.2f", min), nk.Right)

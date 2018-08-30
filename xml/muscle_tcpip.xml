@@ -120,10 +120,10 @@
        <muscle name="muscle sensor">
         <object name="muscle"/>
 
-        <domain min="0" max="2.0"/> 
-        <mapping min="0" max="2.0"/> 
-        
-        <domain min="0" max="2.0"/> 
+        <domain min="0" max="2.0"/>
+        <mapping min="0" max="2.0"/>
+
+        <domain min="0" max="2.0"/>
         <mapping min="0" max="2.0"/>
 
         <domain min="0" max="2.0"/>
@@ -140,7 +140,7 @@
       </muscle>
       </sensors>
 
-      <controller module="TCPIP" frequency="500">
+      <controller module="TCPIP" frequency="100">
         <parameter name="port" value="9500"/>
         <parameter name="debug" value="True"/>
       </controller>
@@ -163,7 +163,7 @@
   <!-- </trace> -->
   <!-- </traces> -->
 
-  <logging>
+  <!-- <logging>
     <actuator target="muscle" precision="3">
       <desired/>
       <internal/>
@@ -178,6 +178,6 @@
     <csv name="muscle" date="false">
       <target name="muscle"/>
     </csv>
-  </logging>
+  </logging> -->
 
 </rosiml>
