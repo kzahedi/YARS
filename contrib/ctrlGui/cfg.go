@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// XML Window info
 type XMLWindow struct {
 	XMLName xml.Name `xml:"window"`
 	Name    string   `xml:"name,attr"`
@@ -15,6 +16,7 @@ type XMLWindow struct {
 	Height  int      `xml:"height,attr"`
 }
 
+// XML Sensor info
 type XMLSensor struct {
 	XMLName xml.Name `xml:"sensor"`
 	Name    string   `xml:"name,attr"`
@@ -24,6 +26,7 @@ type XMLSensor struct {
 	Height  int      `xml:"height,attr"`
 }
 
+// XMLActuator info
 type XMLActuator struct {
 	XMLName xml.Name `xml:"actuator"`
 	Name    string   `xml:"name,attr"`
@@ -33,6 +36,7 @@ type XMLActuator struct {
 	Height  int      `xml:"height,attr"`
 }
 
+// XMLCfg xml config
 type XMLCfg struct {
 	XMLName  xml.Name      `xml:"cfg"`
 	Name     string        `xml:"key,attr"`
@@ -43,7 +47,7 @@ type XMLCfg struct {
 
 // ReadCfg read config
 func ReadCfg(filename string) (XMLCfg, error) {
-	var xmlCfg XMLCfg
+	xmlCfg := XMLCfg{Name: "", Window: XMLWindow{Name: "", X: 0, Y: 0, Width: 0, Height: 0}}
 
 	file, err := os.Open(filename)
 	defer file.Close()
@@ -62,6 +66,9 @@ func ReadCfg(filename string) (XMLCfg, error) {
 }
 
 func getSensor(cfg XMLCfg, name string) (int, int, int, int, bool) {
+	if len(cfg.Sensor) == 0 {
+		return 0, 0, 0, 0, false
+	}
 	for _, s := range cfg.Sensor {
 		if s.Name == name {
 			return s.X, s.Y, s.Width, s.Height, true
@@ -71,6 +78,9 @@ func getSensor(cfg XMLCfg, name string) (int, int, int, int, bool) {
 }
 
 func getActuator(cfg XMLCfg, name string) (int, int, int, int, bool) {
+	if len(cfg.Actuator) == 0 {
+		return 0, 0, 0, 0, false
+	}
 	for _, a := range cfg.Actuator {
 		if a.Name == name {
 			return a.X, a.Y, a.Width, a.Height, true

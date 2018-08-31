@@ -166,10 +166,6 @@ void LoggingModuleActuator::__useInternal()
       oss.str("");
       oss << _actuator->name() << " Muscle Length";
       _variables.push_back(oss.str());
-
-      oss.str("");
-      oss << _actuator->name() << " Muscle Velocity";
-      _variables.push_back(oss.str());
     }
   }
 

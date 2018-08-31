@@ -197,7 +197,7 @@ void TCPIP::__configuration()
     {
       Domain d = sensorConfiguration[i].internal[j];
       string name = sensorConfiguration[i].names[j];
-      if (name.size() > 0) 
+      if (name.size() > 0)
       {
         oss.str("");
         oss << "NAME " << name;

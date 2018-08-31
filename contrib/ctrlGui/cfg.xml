@@ -1,0 +1,5 @@
+<cfg>
+  <window name="Muscle"        x="10" y="20"  width="600" height="400"/>
+  <actuator name="muscle"      x="10" y="10"  width="500" height="80"/>
+  <sensor name="muscle sensor" x="10" y="100" width="500" height="250"/>
+</cfg>

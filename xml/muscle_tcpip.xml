@@ -108,36 +108,33 @@
           <force max="2.0"/>
           <velocity max="0.5"/>
           <deflection min="-0.5" max="0.5"/>
-          <mapping    min="0"   max="+1"/>
-          <lengthComponent   optimalLength="1.0" w="1.5" c="5.0" use="true"/>
-          <velocityComponent maxVelocity="-3.5"  N="1.5" K="1.5" use="false"/>
-          <regular           softness="1.0"      damping="1.0" restitution="0.7"/>
-          <limit             softness="1.0"      damping="1.0" restitution="0.7"/>
-          <orthogonal        softness="1.0"      damping="1.0" restitution="0.7"/>
-          </muscle>
+          <mapping min="0" max="+1"/>
+          <lengthComponent optimalLength="1.0" w="1.5" c="5.0" use="true"/>
+          <velocityComponent maxVelocity="-3.5" N="1.5" K="1.5" use="true"/>
+          <regular softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal softness="1.0" damping="1.0" restitution="0.7"/>
+        </muscle>
       </actuators>
       <sensors>
-       <muscle name="muscle sensor">
-        <object name="muscle"/>
+        <muscle name="muscle sensor">
+          <object name="muscle"/>
 
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2.0"/>
+          <domain min="0" max="5.0"/>
+          <mapping min="0" max="5.0"/>
 
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2.0"/>
+          <domain min="0" max="2.0"/>
+          <mapping min="0" max="2.0"/>
 
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2.0"/>
-        
-        <domain min="-2.0" max="2.0"/>
-        <mapping min="-2.0" max="2"/>
-        
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
+          <domain min="0" max="2.0"/>
+          <mapping min="0" max="2.0"/>
 
-      </muscle>
+          <domain min="-2.0" max="2.0"/>
+          <mapping min="-2.0" max="2"/>
+
+          <domain min="0" max="2.0"/>
+          <mapping min="0" max="2"/>
+        </muscle>
       </sensors>
 
       <controller module="TCPIP" frequency="100">

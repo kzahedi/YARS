@@ -25,5 +25,4 @@ void MuscleSensor::postPhysicsUpdate()
   _data->setInternalValue(2, _actuatorData->getLengthComponent());
   _data->setInternalValue(3, _actuatorData->getMuscleVelocity());
   _data->setInternalValue(4, _actuatorData->getMuscleLength());
-  _data->setInternalValue(5, _actuatorData->getAppliedVelocity(0));
 }

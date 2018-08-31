@@ -185,8 +185,8 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 				nk.NkLayoutRowEnd(ctx)
 			}
 		}
+		nk.NkEnd(ctx)
 	}
-	nk.NkEnd(ctx)
 }
 
 func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
@@ -199,7 +199,7 @@ func sensorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 			update = nk.NkBegin(ctx, s.Name, bounds,
 				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 		} else {
-			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*s.Dimension))
+			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25+30*s.Dimension))
 			update = nk.NkBegin(ctx, s.Name, bounds,
 				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 		}

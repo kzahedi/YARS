@@ -120,22 +120,20 @@
        <muscle name="muscle sensor">
         <object name="muscle"/>
 
-        <domain min="0" max="2.0"/> 
-        <mapping min="0" max="2.0"/> 
-        
-        <domain min="0" max="2.0"/> 
+        <domain min="0" max="5.0"/>
+        <mapping min="0" max="5.0"/>
+
+        <domain min="0" max="2.0"/>
         <mapping min="0" max="2.0"/>
 
         <domain min="0" max="2.0"/>
         <mapping min="0" max="2.0"/>
-        
+
         <domain min="0" max="2.0"/>
         <mapping min="0" max="2"/>
-        
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
+
+        <domain min="-2.0" max="2.0"/>
+        <mapping min="-2.0" max="2"/>
 
       </muscle>
       </sensors>

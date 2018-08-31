@@ -13,7 +13,7 @@
 DataMuscleSensor::DataMuscleSensor(DataNode* parent)
   : DataSensor(parent, DATA_MUSCLE_SENSOR)
 {
-  _dimension = 6;
+  _dimension = 5;
   _internalValue.resize(_dimension);
   _externalValue.resize(_dimension);
   _internalDomain.resize(_dimension);
@@ -72,7 +72,7 @@ void DataMuscleSensor::createXsd(XsdSpecification *spec)
   XsdSequence *sensor = new XsdSequence(YARS_STRING_MUSCLE_SENSOR_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,         false));
   sensor->add(NE(YARS_STRING_OBJECT,  YARS_STRING_NAME_DEFINITION,    1, 1));
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < 5; i++)
   {
     sensor->add(NE(YARS_STRING_DOMAIN, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
     sensor->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));

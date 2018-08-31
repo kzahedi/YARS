@@ -35,14 +35,8 @@ void PythonController::update()
 void PythonController::init()
 {
   stringstream sst;
-  bool debug = false;
-  parameter.set("debug",             debug,       false);
   parameter.set("module",            _module,     "");
   parameter.set("working directory", _workingDir, ".");
-
-  if(debug) printSensorMotorConfiguration();
-
-  if(debug) cout << "Importing python module: " << _module << endl;
 
   Py_Initialize();
 #ifndef __APPLE__

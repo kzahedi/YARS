@@ -252,7 +252,6 @@ void Robot::__setupController()
       nd.names[2] = "Fl";
       nd.names[3] = "Velocity";
       nd.names[4] = "Length";
-      nd.names[5] = "Applied vel";
     }
     sensors.push_back(nd);
   }
