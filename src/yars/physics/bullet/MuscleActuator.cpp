@@ -75,7 +75,7 @@ void MuscleActuator::prePhysicsUpdate()
   double force = _data->getInternalDesiredValue(0);
   // cout << force << endl;
   if(force < 0.0) force = 0.0;
-  force = _data->force() * fv * fl * force;
+  force *= fv * fl;
 
   _data->setInternalValue(0, force);
 

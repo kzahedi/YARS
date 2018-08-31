@@ -49,7 +49,7 @@ void TCPIP::update()
         socket >> motors;
         if(debug)
         {
-          cout << "values: ";
+          cout << "motors: ";
           for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
           {
             cout << *i << " ";

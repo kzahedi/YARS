@@ -184,13 +184,13 @@ class DataMuscleActuator : public DataActuator
     string          _name;
     string          _source;
 
-    vector<double>  _internalValue;
-    vector<double>  _externalValue;
-    vector<double>  _desiredValue;
-    vector<double>  _desiredExValue;
-    vector<Mapping> _internalExternalMapping;
-    vector<Domain>  _internalDomain;
-    vector<Domain>  _externalDomain;
+    double  _internalValue;
+    double  _externalValue;
+    double  _desiredValue;
+    double  _desiredExValue;
+    Mapping _internalExternalMapping;
+    Domain  _internalDomain;
+    Domain  _externalDomain;
     Noise*          _n;
     double          _currentTransitionalVelocity;
     double          _appliedForce;

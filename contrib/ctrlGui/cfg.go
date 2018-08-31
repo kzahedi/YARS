@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"os"
 )
 
@@ -58,8 +57,6 @@ func ReadCfg(filename string) (XMLCfg, error) {
 	if err = xml.NewDecoder(file).Decode(&xmlCfg); err != nil {
 		return xmlCfg, err
 	}
-
-	fmt.Printf("--- t:\n%v\n\n", xmlCfg)
 
 	return xmlCfg, nil
 }

@@ -83,18 +83,10 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _parsingSourceAnchor         = false;
   _parsingDestinationAnchor    = false;
 
-  _internalValue.resize(1);
-  _externalValue.resize(1);
-  _desiredValue.resize(1);
-  _desiredExValue.resize(1);
-  _internalExternalMapping.resize(1);
-  _internalDomain.resize(1);
-  _externalDomain.resize(1);
-
-  _internalValue[0]  = 0.0;
-  _externalValue[0]  = 0.0;
-  _desiredValue[0]   = 0.0;
-  _desiredExValue[0] = 0.0;
+  _internalValue  = 0.0;
+  _externalValue  = 0.0;
+  _desiredValue   = 0.0;
+  _desiredExValue = 0.0;
 
   _fl           = 0.0;
   _fv           = 0.0;
@@ -423,7 +415,7 @@ double DataMuscleActuator::force()
 double DataMuscleActuator::internalValue(int index)
 {
   YM_LOCK;
-  double r = _internalValue[index];
+  double r = _internalValue;
   YM_UNLOCK;
   return r;
 }
@@ -431,7 +423,7 @@ double DataMuscleActuator::internalValue(int index)
 double DataMuscleActuator::externalValue(int index)
 {
   YM_LOCK;
-  double r = _externalValue[index];
+  double r = _externalValue;
   YM_UNLOCK;
   return r;
 }
@@ -439,33 +431,34 @@ double DataMuscleActuator::externalValue(int index)
 void DataMuscleActuator::setInternalValue(int index, double v)
 {
   YM_LOCK;
-  _internalValue[index] = _internalDomain[index].cut(v);
-  _externalValue[index] = _internalExternalMapping[index].map(_internalValue[index]);
+  _internalValue = _internalDomain.cut(v);
+  _externalValue = _internalExternalMapping.map(_internalValue);
   YM_UNLOCK;
 }
 
 void DataMuscleActuator::setExternalValue(int index, double v)
 {
   YM_LOCK;
-  _externalValue[index] = _externalDomain[index].cut(_n->calculate(v));
-  _internalValue[index] = _internalExternalMapping[index].invMap(_externalValue[index]);
+  _externalValue = _externalDomain.cut(_n->calculate(v));
+  _internalValue = _internalExternalMapping.invMap(_externalValue);
   YM_UNLOCK;
 }
 
 void DataMuscleActuator::__setMapping()
 {
-  _externalDomain[0]     =  _mapping;
-  _internalDomain[0].min =  0.0;
-  _internalDomain[0].max =  _parameter.maxForce;
-  _internalExternalMapping[0].setInputDomain(_internalDomain[0]);
-  _internalExternalMapping[0].setOutputDomain(_externalDomain[0]);
+  _externalDomain     =  _mapping;
+  _internalDomain.min =  0.0;
+  _internalDomain.max =  _parameter.maxForce;
+  _internalExternalMapping.setInputDomain(_internalDomain);
+  _internalExternalMapping.setOutputDomain(_externalDomain);
+
   _n = NoiseFactory::create(_noise);
 }
 
 Domain DataMuscleActuator::getInternalDomain(int index)
 {
   YM_LOCK;
-  Domain r = _internalDomain[index];
+  Domain r = _internalDomain;
   YM_UNLOCK;
   return r;
 }
@@ -473,7 +466,7 @@ Domain DataMuscleActuator::getInternalDomain(int index)
 Domain DataMuscleActuator::getExternalDomain(int index)
 {
   YM_LOCK;
-  Domain r = _externalDomain[index];
+  Domain r = _externalDomain;
   YM_UNLOCK;
   return r;
 }
@@ -481,15 +474,15 @@ Domain DataMuscleActuator::getExternalDomain(int index)
 void DataMuscleActuator::setDesiredValue(int index, double value)
 {
   YM_LOCK;
-  _desiredExValue[index] = _externalDomain[index].cut(value);
-  _desiredValue[index] = _internalExternalMapping[index].invMap(_desiredExValue[index]);
+  _desiredExValue = _externalDomain.cut(value);
+  _desiredValue = _internalExternalMapping.invMap(_desiredExValue);
   YM_UNLOCK;
 }
 
 double DataMuscleActuator::getInternalDesiredValue(int index)
 {
   YM_LOCK;
-  double r = _desiredValue[index];
+  double r = _desiredValue;
   YM_UNLOCK;
   return r;
 }
@@ -511,7 +504,7 @@ void DataMuscleActuator::setForce(double f)
 double DataMuscleActuator::getExternalDesiredValue(int index)
 {
   YM_LOCK;
-  double r = _desiredExValue[index];
+  double r = _desiredExValue;
   YM_UNLOCK;
   return r;
 }
