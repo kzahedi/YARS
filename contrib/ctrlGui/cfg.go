@@ -47,13 +47,12 @@ type XMLCfg struct {
 
 // ReadCfg read config
 func ReadCfg(filename string) (XMLCfg, error) {
-	xmlCfg := XMLCfg{Name: "", Window: XMLWindow{Name: "", X: 0, Y: 0, Width: 0, Height: 0}}
+	xmlCfg := XMLCfg{Name: "", Window: XMLWindow{Name: "", X: 0, Y: 0, Width: 800, Height: 600}}
 
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return xmlCfg, err
 	}
 
 	if err = xml.NewDecoder(file).Decode(&xmlCfg); err != nil {

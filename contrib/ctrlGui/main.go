@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
-	"os"
 	"runtime"
 	"time"
 
@@ -27,24 +27,25 @@ var filename []byte
 var port []byte
 var isInitialised bool
 var cfg XMLCfg
+var err error
 
 func init() {
 	runtime.LockOSThread()
 }
 
 func main() {
+	xmlFile := flag.String("xml", "", "xml file")
+	cfgFile := flag.String("cfg", "", "cfg file")
+	flag.Parse()
+
 	filename = make([]byte, 1024, 1024)
-	if len(os.Args) > 1 {
-		for i, v := range os.Args[1] {
+	if len(*xmlFile) > 0 {
+		for i, v := range *xmlFile {
 			filename[i] = byte(v)
 		}
 	}
 
-	xml, err := ReadCfg("cfg.xml")
-	if err != nil {
-		panic(err)
-	}
-	cfg = xml
+	cfg, err = ReadCfg(*cfgFile)
 
 	isInitialised = false
 	port = make([]byte, 6, 6)
@@ -158,7 +159,7 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 			update = nk.NkBegin(ctx, a.Name, bounds,
 				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 		} else {
-			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25*a.Dimension))
+			bounds := nk.NkRect(float32(420+i*10), float32(10+i*10), float32(panelWidth+10), float32(25+50*a.Dimension))
 			update = nk.NkBegin(ctx, a.Name, bounds,
 				nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
 		}
@@ -248,6 +249,7 @@ func gfxMain(win *glfw.Window, ctx *nk.Context, state *State) {
 	win.SwapBuffers()
 }
 
+// Option something
 type Option uint8
 
 const (
@@ -255,6 +257,7 @@ const (
 	Hard Option = 1
 )
 
+// State something
 type State struct {
 	bgColor nk.Color
 	prop    int32
@@ -264,50 +267,3 @@ type State struct {
 func onError(code int32, msg string) {
 	log.Printf("[glfw ERR]: error %d: %s", code, msg)
 }
-
-// bounds := nk.NkRect(50, 50, 230, 250)
-// update := nk.NkBegin(ctx, "Demo", bounds,
-// 	nk.WindowBorder|nk.WindowMovable|nk.WindowScalable|nk.WindowMinimizable|nk.WindowTitle)
-
-// if update > 0 {
-// 	nk.NkLayoutRowStatic(ctx, 30, 80, 1)
-// 	{
-// 		if nk.NkButtonLabel(ctx, "button") > 0 {
-// 			log.Println("[INFO] button pressed!")
-// 		}
-// 	}
-// 	nk.NkLayoutRowDynamic(ctx, 30, 2)
-// 	{
-// 		if nk.NkOptionLabel(ctx, "easy", flag(state.opt == Easy)) > 0 {
-// 			state.opt = Easy
-// 		}
-// 		if nk.NkOptionLabel(ctx, "hard", flag(state.opt == Hard)) > 0 {
-// 			state.opt = Hard
-// 		}
-// 	}
-// 	nk.NkLayoutRowDynamic(ctx, 25, 1)
-// 	{
-// 		nk.NkPropertyInt(ctx, "Compression:", 0, &state.prop, 100, 10, 1)
-// 	}
-// 	nk.NkLayoutRowDynamic(ctx, 20, 1)
-// 	{
-// 		nk.NkLabel(ctx, "background:", nk.TextLeft)
-// 	}
-// 	nk.NkLayoutRowDynamic(ctx, 25, 1)
-// 	{
-// 		size := nk.NkVec2(nk.NkWidgetWidth(ctx), 400)
-// 		if nk.NkComboBeginColor(ctx, state.bgColor, size) > 0 {
-// 			nk.NkLayoutRowDynamic(ctx, 120, 1)
-// 			state.bgColor = nk.NkColorPicker(ctx, state.bgColor, nk.ColorFormatRGBA)
-// 			nk.NkLayoutRowDynamic(ctx, 25, 1)
-// 			r, g, b, a := state.bgColor.RGBAi()
-// 			r = nk.NkPropertyi(ctx, "#R:", 0, r, 255, 1, 1)
-// 			g = nk.NkPropertyi(ctx, "#G:", 0, g, 255, 1, 1)
-// 			b = nk.NkPropertyi(ctx, "#B:", 0, b, 255, 1, 1)
-// 			a = nk.NkPropertyi(ctx, "#A:", 0, a, 255, 1, 1)
-// 			state.bgColor.SetRGBAi(r, g, b, a)
-// 			nk.NkComboEnd(ctx)
-// 		}
-// 	}
-// }
-// nk.NkEnd(ctx)
