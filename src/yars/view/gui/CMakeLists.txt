@@ -26,8 +26,11 @@ set(GUI_SOURCES SdlWindow.cpp
                 OrbitCam.cpp
                 CenterOrbitCam.cpp
                 TripodCam.cpp
-                WindowConfiguration.cpp
-                VideoCapture.cpp)
+                WindowConfiguration.cpp)
+
+if(YARS_USE_CAPTURE_VIDEO)
+  set(GUI_SOURCES ${GUI_SOURCES} VideoCapture.cpp)
+endif(YARS_USE_CAPTURE_VIDEO)
 
 set(GUI_SOURCES ${GUI_SOURCES} SceneGraphMeshNode.cpp SceneGraphPlyNode.cpp)
 

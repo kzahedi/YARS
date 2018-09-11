@@ -43,7 +43,6 @@ void TCPIP::update()
     // if(debug) cout << "received \"" << s << "\"" << endl;
     switch(commands[s])
     {
-      cout << "Command " << s << endl;
       case __ACTUATORS:
         if(debug) cout << "receiving motors" << endl;
         socket >> motors;

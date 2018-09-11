@@ -125,3 +125,7 @@ set(CFG_SRC YarsConfiguration.cpp
 
 add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})
 target_link_libraries(YarsConfiguration ${XERCESC_LIBRARY_FILE} ${Boost_LIBRARIES} YarsUtil)
+
+if(UNIX AND NOT APPLE)
+  target_link_libraries(YarsConfiguration boost_program_options)
+endif(UNIX AND NOT APPLE)

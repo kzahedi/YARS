@@ -47,7 +47,7 @@ OPTION(YARS_USE_VISUALISATION
 
 OPTION(YARS_USE_CAPTURE_VIDEO
   "Use capture video option."
-  ON)
+  OFF)
 
 OPTION(YARS_DOXYGEN_DOCUMENTATION
   "Build Doxygen documentation."

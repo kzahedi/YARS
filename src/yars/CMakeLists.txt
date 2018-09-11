@@ -41,7 +41,6 @@ if(YARS_USE_VISUALISATION)
     # message(${OGRE_RenderSystem_GL_LIBRARIES})
     # message(${OGRE_Plugin_ParticleFX_LIBRARIES})
     # message("*************")
-    message("/usr/lib/x86_64-linux-gnu/libOgreMain.so /usr/lib/x86_64-linux-gnu/libOgreOverlay.so")
 
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt zzip freeimage freetype
