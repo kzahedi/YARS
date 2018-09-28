@@ -29,9 +29,9 @@ void YarsPhysicsModel::performOneSimulationStep()
   _physics->step();
   if (_physics->isReset())
   {
-    __YARS_GET_USE_PAUSE(true);
+    __YARS_SET_USE_PAUSE(true);
     notifyObservers(_m_reset);
-    __YARS_GET_USE_PAUSE(false);
+    __YARS_SET_USE_PAUSE(false);
   }
   if (_physics->isQuit())
     notifyObservers(_m_quit_called);
