@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //#include <OGRE/OgreRoot.h>
 //#include <OGRE/OgrePlatform.h>
 
-#include <Ogre/OgreRoot.h>
-#include <Ogre/OgrePlatform.h>
+#include <OgreRoot.h>
+#include <OgrePlatform.h>
 
 //#include <OGRE/OgreOSXCocoaWindow.h>
 

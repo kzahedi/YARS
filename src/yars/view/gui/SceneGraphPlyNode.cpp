@@ -2,6 +2,9 @@
 
 #include <yars/util/PlyLoader.h>
 
+#include <Ogre.h>
+#include <OgreEdgeListBuilder.h>
+
 SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::SceneManager* sm)
   : SceneGraphObjectNode(r, sm)
 {

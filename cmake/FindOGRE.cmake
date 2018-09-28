@@ -18,7 +18,7 @@
 # Once done, this will define
 #
 #  OGRE_FOUND - system has OGRE
-#  OGRE_INCLUDE_DIRS - the OGRE include directories
+#  OGRE_INCLUDE_DIRS - the OGRE include directories 
 #  OGRE_LIBRARIES - link these to use the OGRE core
 #  OGRE_BINARY_REL - location of the main Ogre binary (win32 non-static only, release)
 #  OGRE_BINARY_DBG - location of the main Ogre binaries (win32 non-static only, debug)
@@ -37,7 +37,7 @@
 #
 #  OGRE_${COMPONENT}_FOUND - ${COMPONENT} is available
 #  OGRE_${COMPONENT}_INCLUDE_DIRS - additional include directories for ${COMPONENT}
-#  OGRE_${COMPONENT}_LIBRARIES - link these to use ${COMPONENT}
+#  OGRE_${COMPONENT}_LIBRARIES - link these to use ${COMPONENT} 
 #  OGRE_${COMPONENT}_BINARY_REL - location of the component binary (win32 non-static only, release)
 #  OGRE_${COMPONENT}_BINARY_DBG - location of the component binary (win32 non-static only, debug)
 #
@@ -70,13 +70,13 @@ else ()
   set(OGRE_LIB_SUFFIX "")
 endif ()
 
-if(APPLE AND NOT OGRE_STATIC)
-  set(OGRE_LIBRARY_NAMES "Ogre${OGRE_LIB_SUFFIX}")
-else()
+#if(APPLE AND NOT OGRE_STATIC)
+#	set(OGRE_LIBRARY_NAMES "Ogre${OGRE_LIB_SUFFIX}")
+#else()
     set(OGRE_LIBRARY_NAMES "OgreMain${OGRE_LIB_SUFFIX}")
-endif()
+#endif()
 get_debug_names(OGRE_LIBRARY_NAMES)
-
+          
 # construct search paths from environmental hints and
 # OS specific guesses
 if (WIN32)
@@ -96,7 +96,7 @@ elseif (UNIX)
     $ENV{HOME}/OGRE
   )
   if (APPLE)
-    set(OGRE_PREFIX_GUESSES
+    set(OGRE_PREFIX_GUESSES 
       ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx
       ${OGRE_PREFIX_GUESSES}
     )
@@ -119,7 +119,11 @@ if (OGRE_PREFIX_SOURCE AND OGRE_PREFIX_BUILD)
   endforeach(dir)
   foreach(dir ${OGRE_PREFIX_BUILD})
     set(OGRE_INC_SEARCH_PATH ${dir}/include ${OGRE_INC_SEARCH_PATH})
-    set(OGRE_LIB_SEARCH_PATH ${dir}/lib ${OGRE_LIB_SEARCH_PATH})
+    if(APPLE AND NOT OGRE_BUILD_PLATFORM_APPLE_IOS)
+        set(OGRE_LIB_SEARCH_PATH ${dir}/lib/macosx ${OGRE_LIB_SEARCH_PATH})
+    else()
+        set(OGRE_LIB_SEARCH_PATH ${dir}/lib ${OGRE_LIB_SEARCH_PATH})
+    endif()
 
     if (OGRE_BUILD_PLATFORM_APPLE_IOS)
         set(OGRE_LIB_SEARCH_PATH ${dir}/lib/iphoneos ${dir}/lib/iphonesimulator ${OGRE_LIB_SEARCH_PATH})
@@ -132,7 +136,7 @@ if (OGRE_PREFIX_SOURCE AND OGRE_PREFIX_BUILD)
       set(OGRE_BIN_SEARCH_PATH ${dir}/bin/macosx ${OGRE_BIN_SEARCH_PATH})
     endif()
   endforeach(dir)
-
+  
   if (OGRE_PREFIX_DEPENDENCIES_DIR)
     set(OGRE_INC_SEARCH_PATH ${OGRE_PREFIX_DEPENDENCIES_DIR}/include ${OGRE_INC_SEARCH_PATH})
     set(OGRE_LIB_SEARCH_PATH ${OGRE_PREFIX_DEPENDENCIES_DIR}/lib ${OGRE_LIB_SEARCH_PATH})
@@ -144,13 +148,13 @@ else()
 endif ()
 
 # redo search if any of the environmental hints changed
-set(OGRE_COMPONENTS Paging Terrain Volume Overlay
+set(OGRE_COMPONENTS Paging Terrain Volume Overlay 
   Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
   Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
   RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2)
-set(OGRE_RESET_VARS
-  OGRE_CONFIG_INCLUDE_DIR OGRE_INCLUDE_DIR
-  OGRE_LIBRARY_FWK OGRE_LIBRARY_REL OGRE_LIBRARY_DBG
+set(OGRE_RESET_VARS 
+  OGRE_CONFIG_INCLUDE_DIR OGRE_INCLUDE_DIR 
+  OGRE_FRAMEWORK_INCLUDES OGRE_FRAMEWORK_PATH OGRE_LIBRARY_FWK OGRE_LIBRARY_REL OGRE_LIBRARY_DBG
   OGRE_PLUGIN_DIR_DBG OGRE_PLUGIN_DIR_REL OGRE_MEDIA_DIR)
 foreach (comp ${OGRE_COMPONENTS})
   set(OGRE_RESET_VARS ${OGRE_RESET_VARS}
@@ -162,13 +166,21 @@ set(OGRE_PREFIX_WATCH ${OGRE_PREFIX_PATH} ${OGRE_PREFIX_SOURCE} ${OGRE_PREFIX_BU
 clear_if_changed(OGRE_PREFIX_WATCH ${OGRE_RESET_VARS})
 
 if(NOT OGRE_STATIC)
-  # try to locate Ogre via pkg-config
-  use_pkgconfig(OGRE_PKGC "OGRE${OGRE_LIB_SUFFIX}")
+	# try to locate Ogre via pkg-config
+	use_pkgconfig(OGRE_PKGC "OGRE${OGRE_LIB_SUFFIX}")
 
-  # try to find framework on OSX
-  findpkg_framework(Ogre)
+	# Set the framework search path for OS X
+    set(OGRE_FRAMEWORK_SEARCH_PATH
+      ${CMAKE_FRAMEWORK_PATH}
+      ~/Library/Frameworks
+      /Library/Frameworks
+      /System/Library/Frameworks
+      /Network/Library/Frameworks
+      ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx/Release
+      ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx/Debug
+    )
 else()
-  set(OGRE_LIBRARY_FWK "")
+	set(OGRE_LIBRARY_FWK "")
 endif()
 
 # locate Ogre include files
@@ -219,33 +231,25 @@ else ()
   set(OGRE_INCOMPATIBLE FALSE)
 endif ()
 
-if (NOT OGRE_SOURCE) # If using ogre sources, use the target names instead of library files to link.
-  find_library(OGRE_LIBRARY_REL NAMES ${OGRE_LIBRARY_NAMES} HINTS ${OGRE_LIB_SEARCH_PATH} ${OGRE_PKGC_LIBRARY_DIRS} ${OGRE_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
-  find_library(OGRE_LIBRARY_DBG NAMES ${OGRE_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIB_SEARCH_PATH} ${OGRE_PKGC_LIBRARY_DIRS} ${OGRE_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "Debug")
-else()
-  if( NOT OGRE_LIBRARIES OR OGRE_LIBRARIES STREQUAL "" )
-    message( FATAL_ERROR "When using Ogre from sources, please specify target names in OGRE_LIBRARIES!" )
-  else()
-    message( "Using Ogre source instead of binary libraries - skipping library files search." )
-  endif()
-endif()
+find_library(OGRE_LIBRARY_REL NAMES ${OGRE_LIBRARY_NAMES} HINTS ${OGRE_LIB_SEARCH_PATH} ${OGRE_PKGC_LIBRARY_DIRS} ${OGRE_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
+find_library(OGRE_LIBRARY_DBG NAMES ${OGRE_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIB_SEARCH_PATH} ${OGRE_PKGC_LIBRARY_DIRS} ${OGRE_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "Debug")
 
 make_library_set(OGRE_LIBRARY)
 
-if(APPLE)
-  set(OGRE_LIBRARY_DBG ${OGRE_LIB_SEARCH_PATH})
-endif()
 if (OGRE_INCOMPATIBLE)
   set(OGRE_LIBRARY "NOTFOUND")
 endif ()
 
-set(OGRE_INCLUDE_DIR ${OGRE_CONFIG_INCLUDE_DIR} ${OGRE_INCLUDE_DIR})
+if("${OGRE_FRAMEWORK_INCLUDES}" STREQUAL NOTFOUND)
+  unset(OGRE_FRAMEWORK_INCLUDES CACHE)
+endif()
+set(OGRE_INCLUDE_DIR ${OGRE_CONFIG_INCLUDE_DIR} ${OGRE_INCLUDE_DIR} ${OGRE_FRAMEWORK_INCLUDES})
 list(REMOVE_DUPLICATES OGRE_INCLUDE_DIR)
 findpkg_finish(OGRE)
 add_parent_dir(OGRE_INCLUDE_DIRS OGRE_INCLUDE_DIR)
 if (OGRE_SOURCE)
-  # If working from source rather than SDK, add samples include
-  set(OGRE_INCLUDE_DIRS ${OGRE_INCLUDE_DIRS} "${OGRE_SOURCE}/Samples/Common/include")
+	# If working from source rather than SDK, add samples include
+	set(OGRE_INCLUDE_DIRS ${OGRE_INCLUDE_DIRS} "${OGRE_SOURCE}/Samples/Common/include")
 endif()
 
 mark_as_advanced(OGRE_CONFIG_INCLUDE_DIR OGRE_MEDIA_DIR OGRE_PLUGIN_DIR_REL OGRE_PLUGIN_DIR_DBG)
@@ -280,7 +284,7 @@ if (OGRE_STATIC)
   if (APPLE AND NOT OGRE_BUILD_PLATFORM_APPLE_IOS AND NOT ANDROID)
     set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${X11_LIBRARIES} ${X11_Xt_LIBRARIES} ${XAW_LIBRARY} ${X11_Xrandr_LIB} ${Carbon_LIBRARIES} ${Cocoa_LIBRARIES})
   endif()
-
+  
   if (NOT ZLIB_FOUND OR NOT ZZip_FOUND)
     set(OGRE_DEPS_FOUND FALSE)
   endif ()
@@ -291,20 +295,20 @@ if (OGRE_STATIC)
     set(OGRE_DEPS_FOUND FALSE)
   endif ()
   if (UNIX AND NOT APPLE AND NOT ANDROID)
-  if (NOT X11_FOUND)
+	if (NOT X11_FOUND)
       set(OGRE_DEPS_FOUND FALSE)
-  endif ()
+	endif ()
   endif ()
 endif()
   if (OGRE_CONFIG_THREADS)
     if (OGRE_CONFIG_THREAD_PROVIDER EQUAL 1)
       if (OGRE_STATIC)
-      set(Boost_USE_STATIC_LIBS TRUE)
-      if(OGRE_BUILD_PLATFORM_APPLE_IOS)
+    	set(Boost_USE_STATIC_LIBS TRUE)
+    	if(OGRE_BUILD_PLATFORM_APPLE_IOS)
           set(Boost_USE_MULTITHREADED OFF)
         endif()
       endif()
-
+      
       set(OGRE_BOOST_COMPONENTS thread date_time)
       find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
       if(Boost_FOUND AND Boost_VERSION GREATER 104900)
@@ -358,13 +362,13 @@ set(OGRE_LIBRARY_DIRS ${OGRE_LIBRARY_DIR_REL} ${OGRE_LIBRARY_DIR_DBG})
 
 # find binaries
 if (NOT OGRE_STATIC)
-  if (WIN32)
-    find_file(OGRE_BINARY_REL NAMES "OgreMain.dll" HINTS ${OGRE_BIN_SEARCH_PATH}
+	if (WIN32)
+		find_file(OGRE_BINARY_REL NAMES "OgreMain.dll" HINTS ${OGRE_BIN_SEARCH_PATH}
           PATH_SUFFIXES "" Release RelWithDebInfo MinSizeRel)
-    find_file(OGRE_BINARY_DBG NAMES "OgreMain_d.dll" HINTS ${OGRE_BIN_SEARCH_PATH}
+		find_file(OGRE_BINARY_DBG NAMES "OgreMain_d.dll" HINTS ${OGRE_BIN_SEARCH_PATH}
           PATH_SUFFIXES "" Debug )
-  endif()
-  mark_as_advanced(OGRE_BINARY_REL OGRE_BINARY_DBG)
+	endif()
+	mark_as_advanced(OGRE_BINARY_REL OGRE_BINARY_DBG)
 endif()
 
 
@@ -372,7 +376,7 @@ endif()
 # Find Ogre components
 #########################################################
 
-set(OGRE_COMPONENT_SEARCH_PATH_REL
+set(OGRE_COMPONENT_SEARCH_PATH_REL 
   ${OGRE_LIBRARY_DIR_REL}/..
   ${OGRE_LIBRARY_DIR_REL}/../..
   ${OGRE_BIN_SEARCH_PATH}
@@ -388,18 +392,18 @@ macro(ogre_find_component COMPONENT HEADER)
   find_path(OGRE_${COMPONENT}_INCLUDE_DIR NAMES ${HEADER} HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE} PATH_SUFFIXES ${COMPONENT} OGRE/${COMPONENT} Components/${COMPONENT}/include)
   set(OGRE_${COMPONENT}_LIBRARY_NAMES "Ogre${COMPONENT}${OGRE_LIB_SUFFIX}")
   get_debug_names(OGRE_${COMPONENT}_LIBRARY_NAMES)
-  find_library(OGRE_${COMPONENT}_LIBRARY_REL NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES} HINTS ${OGRE_LIBRARY_DIR_REL} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
-  find_library(OGRE_${COMPONENT}_LIBRARY_DBG NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIBRARY_DIR_DBG} PATH_SUFFIXES "" "Debug")
+  find_library(OGRE_${COMPONENT}_LIBRARY_REL NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES} HINTS ${OGRE_LIBRARY_DIR_REL} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
+  find_library(OGRE_${COMPONENT}_LIBRARY_DBG NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIBRARY_DIR_DBG} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" "Debug")
   make_library_set(OGRE_${COMPONENT}_LIBRARY)
   findpkg_finish(OGRE_${COMPONENT})
   if (OGRE_${COMPONENT}_FOUND)
     # find binaries
     if (NOT OGRE_STATIC)
-    if (WIN32)
-      find_file(OGRE_${COMPONENT}_BINARY_REL NAMES "Ogre${COMPONENT}.dll" HINTS ${OGRE_COMPONENT_SEARCH_PATH_REL} PATH_SUFFIXES "" bin bin/Release bin/RelWithDebInfo bin/MinSizeRel Release)
-      find_file(OGRE_${COMPONENT}_BINARY_DBG NAMES "Ogre${COMPONENT}_d.dll" HINTS ${OGRE_COMPONENT_SEARCH_PATH_DBG} PATH_SUFFIXES "" bin bin/Debug Debug)
-    endif()
-    mark_as_advanced(OGRE_${COMPONENT}_BINARY_REL OGRE_${COMPONENT}_BINARY_DBG)
+	  if (WIN32)
+	    find_file(OGRE_${COMPONENT}_BINARY_REL NAMES "Ogre${COMPONENT}.dll" HINTS ${OGRE_COMPONENT_SEARCH_PATH_REL} PATH_SUFFIXES "" bin bin/Release bin/RelWithDebInfo bin/MinSizeRel Release)
+	    find_file(OGRE_${COMPONENT}_BINARY_DBG NAMES "Ogre${COMPONENT}_d.dll" HINTS ${OGRE_COMPONENT_SEARCH_PATH_DBG} PATH_SUFFIXES "" bin bin/Debug Debug)
+	  endif()
+	  mark_as_advanced(OGRE_${COMPONENT}_BINARY_REL OGRE_${COMPONENT}_BINARY_DBG)
     endif()
   endif()
 endmacro()
@@ -419,33 +423,33 @@ ogre_find_component(Overlay OgreOverlaySystem.h)
 
 #########################################################
 # Find Ogre plugins
-#########################################################
+#########################################################        
 macro(ogre_find_plugin PLUGIN HEADER)
   # On Unix, the plugins might have no prefix
   if (CMAKE_FIND_LIBRARY_PREFIXES)
     set(TMP_CMAKE_LIB_PREFIX ${CMAKE_FIND_LIBRARY_PREFIXES})
     set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
   endif()
-
+  
   # strip RenderSystem_ or Plugin_ prefix from plugin name
   string(REPLACE "RenderSystem_" "" PLUGIN_TEMP ${PLUGIN})
   string(REPLACE "Plugin_" "" PLUGIN_NAME ${PLUGIN_TEMP})
-
+  
   # header files for plugins are not usually needed, but find them anyway if they are present
   set(OGRE_PLUGIN_PATH_SUFFIXES
-    PlugIns PlugIns/${PLUGIN_NAME} Plugins Plugins/${PLUGIN_NAME} ${PLUGIN}
+    PlugIns PlugIns/${PLUGIN_NAME} Plugins Plugins/${PLUGIN_NAME} ${PLUGIN} 
     RenderSystems RenderSystems/${PLUGIN_NAME} ${ARGN})
-  find_path(OGRE_${PLUGIN}_INCLUDE_DIR NAMES ${HEADER}
-    HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE}
+  find_path(OGRE_${PLUGIN}_INCLUDE_DIR NAMES ${HEADER} 
+    HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE}  
     PATH_SUFFIXES ${OGRE_PLUGIN_PATH_SUFFIXES})
   # find link libraries for plugins
   set(OGRE_${PLUGIN}_LIBRARY_NAMES "${PLUGIN}${OGRE_LIB_SUFFIX}")
   get_debug_names(OGRE_${PLUGIN}_LIBRARY_NAMES)
   set(OGRE_${PLUGIN}_LIBRARY_FWK ${OGRE_LIBRARY_FWK})
   find_library(OGRE_${PLUGIN}_LIBRARY_REL NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES}
-    HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} PATH_SUFFIXES "" OGRE opt Release Release/opt RelWithDebInfo RelWithDebInfo/opt MinSizeRel MinSizeRel/opt)
+    HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" OGRE opt Release Release/opt RelWithDebInfo RelWithDebInfo/opt MinSizeRel MinSizeRel/opt)
   find_library(OGRE_${PLUGIN}_LIBRARY_DBG NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES_DBG}
-    HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} PATH_SUFFIXES "" OGRE opt Debug Debug/opt)
+    HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} ${OGRE_FRAMEWORK_PATH} PATH_SUFFIXES "" OGRE opt Debug Debug/opt)
   make_library_set(OGRE_${PLUGIN}_LIBRARY)
 
   if (OGRE_${PLUGIN}_LIBRARY OR OGRE_${PLUGIN}_INCLUDE_DIR)
@@ -462,15 +466,15 @@ macro(ogre_find_plugin PLUGIN HEADER)
   if (OGRE_${PLUGIN}_FOUND)
     if (NOT OGRE_PLUGIN_DIR_REL OR NOT OGRE_PLUGIN_DIR_DBG)
       if (WIN32)
-        set(OGRE_PLUGIN_SEARCH_PATH_REL
+        set(OGRE_PLUGIN_SEARCH_PATH_REL 
           ${OGRE_LIBRARY_DIR_REL}/..
           ${OGRE_LIBRARY_DIR_REL}/../..
-      ${OGRE_BIN_SEARCH_PATH}
+		  ${OGRE_BIN_SEARCH_PATH}
         )
         set(OGRE_PLUGIN_SEARCH_PATH_DBG
           ${OGRE_LIBRARY_DIR_DBG}/..
           ${OGRE_LIBRARY_DIR_DBG}/../..
-      ${OGRE_BIN_SEARCH_PATH}
+		  ${OGRE_BIN_SEARCH_PATH}
         )
         find_path(OGRE_PLUGIN_DIR_REL NAMES "${PLUGIN}.dll" HINTS ${OGRE_PLUGIN_SEARCH_PATH_REL}
           PATH_SUFFIXES "" bin bin/Release bin/RelWithDebInfo bin/MinSizeRel Release)
@@ -479,20 +483,20 @@ macro(ogre_find_plugin PLUGIN HEADER)
       elseif (UNIX)
         get_filename_component(OGRE_PLUGIN_DIR_TMP ${OGRE_${PLUGIN}_LIBRARY_REL} PATH)
         set(OGRE_PLUGIN_DIR_REL ${OGRE_PLUGIN_DIR_TMP} CACHE STRING "Ogre plugin dir (release)" FORCE)
-      get_filename_component(OGRE_PLUGIN_DIR_TMP ${OGRE_${PLUGIN}_LIBRARY_DBG} PATH)
-        set(OGRE_PLUGIN_DIR_DBG ${OGRE_PLUGIN_DIR_TMP} CACHE STRING "Ogre plugin dir (debug)" FORCE)
+	    get_filename_component(OGRE_PLUGIN_DIR_TMP ${OGRE_${PLUGIN}_LIBRARY_DBG} PATH)
+        set(OGRE_PLUGIN_DIR_DBG ${OGRE_PLUGIN_DIR_TMP} CACHE STRING "Ogre plugin dir (debug)" FORCE)  
       endif ()
     endif ()
-
-  # find binaries
-  if (NOT OGRE_STATIC)
-    if (WIN32)
-      find_file(OGRE_${PLUGIN}_REL NAMES "${PLUGIN}.dll" HINTS ${OGRE_PLUGIN_DIR_REL})
-      find_file(OGRE_${PLUGIN}_DBG NAMES "${PLUGIN}_d.dll" HINTS ${OGRE_PLUGIN_DIR_DBG})
-    endif()
-    mark_as_advanced(OGRE_${PLUGIN}_REL OGRE_${PLUGIN}_DBG)
-  endif()
-
+	
+	# find binaries
+	if (NOT OGRE_STATIC)
+		if (WIN32)
+			find_file(OGRE_${PLUGIN}_REL NAMES "${PLUGIN}.dll" HINTS ${OGRE_PLUGIN_DIR_REL})
+			find_file(OGRE_${PLUGIN}_DBG NAMES "${PLUGIN}_d.dll" HINTS ${OGRE_PLUGIN_DIR_DBG})
+		endif()
+		mark_as_advanced(OGRE_${PLUGIN}_REL OGRE_${PLUGIN}_DBG)
+	endif()
+	
   endif ()
 
   if (TMP_CMAKE_LIB_PREFIX)
@@ -512,7 +516,7 @@ ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/inc
 ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
 ogre_find_plugin(RenderSystem_Direct3D9 OgreD3D9RenderSystem.h RenderSystems/Direct3D9/include)
 ogre_find_plugin(RenderSystem_Direct3D11 OgreD3D11RenderSystem.h RenderSystems/Direct3D11/include)
-
+        
 if (OGRE_STATIC)
   # check if dependencies for plugins are met
   if (NOT DirectX_FOUND)
@@ -536,7 +540,7 @@ if (OGRE_STATIC)
   if (NOT Cg_FOUND)
     set(OGRE_Plugin_CgProgramManager_FOUND FALSE)
   endif ()
-
+  
   set(OGRE_RenderSystem_Direct3D9_LIBRARIES ${OGRE_RenderSystem_Direct3D9_LIBRARIES}
     ${DirectX_LIBRARIES}
   )

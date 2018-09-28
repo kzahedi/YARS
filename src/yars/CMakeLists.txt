@@ -10,7 +10,7 @@ add_subdirectory(logging)
 add_subdirectory(rc)
 
 target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE}) # ${Boost_LIBRARIES}) # ${BULLET_LIBRARIES})
-target_link_libraries(${YARS_TARGET} boost_program_options boost_filesystem boost_system)
+target_link_libraries(${YARS_TARGET} boost_program_options boost_filesystem boost_system boost_thread-mt)
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)
 target_link_libraries(${YARS_TARGET} YarsConfiguration)
@@ -19,6 +19,10 @@ target_link_libraries(${YARS_TARGET} YarsUtil)
 target_link_libraries(${YARS_TARGET} YarsLogging)
 target_link_libraries(${YARS_TARGET} YarsViewConsole)
 target_link_libraries(${YARS_TARGET} YarsDataTypes)
+
+if(APPLE)
+  target_link_libraries(${YARS_TARGET} objc)
+endif(APPLE)
 
 if(YARS_USE_CAPTURE_VIDEO)
   target_link_libraries(${YARS_TARGET} avformat avcodec avutil avfilter avresample postproc
@@ -31,17 +35,14 @@ if(YARS_USE_VISUALISATION)
   add_subdirectory(view/gui)
 
   if(APPLE)
-    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS
-      "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework Ogre -framework Cocoa")
-  endif(APPLE)
-  if(UNIX AND NOT APPLE)
-    # message("*************")
-    # message(${OGRE_LIBRARIES})
-    # message(${OGRE_Overlay_LIBRARIES})
-    # message(${OGRE_RenderSystem_GL_LIBRARIES})
-    # message(${OGRE_Plugin_ParticleFX_LIBRARIES})
-    # message("*************")
+    target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} OgreOverlay
+      ${OGRE_RenderSystem_GL_LIBRARIES}
+      ${OGRE_Plugin_ParticleFX_LIBRARIES})
 
+    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
+  endif(APPLE)
+
+  if(UNIX AND NOT APPLE)
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt zzip freeimage freetype
       # ${OGRE_RenderSystem_GL_LIBRARIES}

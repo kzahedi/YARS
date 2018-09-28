@@ -5,27 +5,26 @@
 #include <yars/configuration/data/DataObject.h>
 #include <yars/defines/types.h>
 
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 
 class SceneGraphObjectNode
 {
-  public:
-    SceneGraphObjectNode(Ogre::SceneNode* root, Ogre::SceneManager* sceneManager);
-    virtual ~SceneGraphObjectNode();
+public:
+  SceneGraphObjectNode(Ogre::SceneNode *root, Ogre::SceneManager *sceneManager);
+  virtual ~SceneGraphObjectNode();
 
-    virtual void update() = 0;
-    virtual void reset()  = 0;
+  virtual void update() = 0;
+  virtual void reset() = 0;
 
-    Ogre::SceneNode* node();
+  Ogre::SceneNode *node();
 
-  protected:
-    void setPose(DataObject *data);
+protected:
+  void setPose(DataObject *data);
 
-    Ogre::SceneNode    *_root;
-    Ogre::SceneNode    *_node;
-    Ogre::SceneManager *_sceneManager;
-    Ogre::Entity       *_entity;
-
+  Ogre::SceneNode *_root;
+  Ogre::SceneNode *_node;
+  Ogre::SceneManager *_sceneManager;
+  Ogre::Entity *_entity;
 };
 
 #endif // __SCENE_GRAPH_OBJECT_NODE_H__

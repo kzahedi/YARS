@@ -11,11 +11,11 @@
 
 using namespace std;
 
-World* World::_me = NULL;
+World *World::_me = NULL;
 
-World* World::instance()
+World *World::instance()
 {
-  if(_me == NULL)
+  if (_me == NULL)
   {
     _me = new World();
   }
@@ -28,16 +28,16 @@ World::World()
 
 #ifdef USE_SOFT_BODIES
   _collisionConfiguration = new btSoftBodyRigidBodyCollisionConfiguration();
-#else // USE_SOFT_BODIES
+#else  // USE_SOFT_BODIES
   _collisionConfiguration = new btDefaultCollisionConfiguration();
 #endif // USE_SOFT_BODIES
-  _dispatcher             = new btCollisionDispatcher(_collisionConfiguration);
-  _broadphase             = new btDbvtBroadphase();
-  _solver                 = new btSequentialImpulseConstraintSolver();
+  _dispatcher = new btCollisionDispatcher(_collisionConfiguration);
+  _broadphase = new btDbvtBroadphase();
+  _solver = new btSequentialImpulseConstraintSolver();
 
 #ifdef USE_SOFT_BODIES
-  _softBodySolver         = new btDefaultSoftBodySolver();
-  _world                  = new btSoftRigidDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration, _softBodySolver);
+  _softBodySolver = new btDefaultSoftBodySolver();
+  _world = new btSoftRigidDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration, _softBodySolver);
   double x = Data::instance()->current()->environment()->gravitation(0);
   double y = Data::instance()->current()->environment()->gravitation(1);
   double z = Data::instance()->current()->environment()->gravitation(2);
@@ -45,8 +45,8 @@ World::World()
   _world->getWorldInfo().m_gravity.setValue(x, y, z);
 
   _world->getSolverInfo().m_numIterations = Data::instance()->current()->simulator()->getSolverIterations();
-#else // USE_SOFT_BODIES
-  _world                  = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
+#else  // USE_SOFT_BODIES
+  _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
   double x = Data::instance()->current()->environment()->gravitation(0);
   double y = Data::instance()->current()->environment()->gravitation(1);
   double z = Data::instance()->current()->environment()->gravitation(2);
@@ -55,12 +55,10 @@ World::World()
   _world->getSolverInfo().m_numIterations = Data::instance()->current()->simulator()->getSolverIterations();
 #endif // USE_SOFT_BODIES
 
- 
   // btThreadSupportInterface* thread = __createSolverThreadSupport(4);
   // _solver                 = new btParallelConstraintSolver(thread);
   // _world          = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
   // _world->setNumTasks(2);
-
 }
 
 World::~World()
@@ -101,15 +99,14 @@ void World::addRigidBody(btRigidBody *rigidBody)
   _world->addRigidBody(rigidBody);
 }
 
-
 void World::addCollistionObject(btCollisionObject *collisionObject)
 {
   _world->addCollisionObject(collisionObject,
-      btBroadphaseProxy::SensorTrigger, btBroadphaseProxy::AllFilter & ~btBroadphaseProxy::SensorTrigger);
-  
-  if(!_collisionShapesInitialised)
+                             btBroadphaseProxy::SensorTrigger, btBroadphaseProxy::AllFilter & ~btBroadphaseProxy::SensorTrigger);
+
+  if (!_collisionShapesInitialised)
   {
-    _world->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());   
+    _world->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
     _collisionShapesInitialised = true;
   }
 }
@@ -137,18 +134,17 @@ P3D World::rayTest(P3D start, P3D end)
   _me->_world->rayTest(_start, _end, rayCallback);
   btVector3 hit = rayCallback.m_hitPointWorld;
   // cout << " hit: " << hit[0] << " " << hit[1] << " " << hit[2];
-  if(rayCallback.hasHit()) return P3D(hit[0], hit[1], hit[2]);
+  if (rayCallback.hasHit())
+    return P3D(hit[0], hit[1], hit[2]);
   // cout << " end: " << end.x << " " << end.y << " " << end.z;
   return end;
 }
 
 #ifdef USE_SOFT_BODIES
-    btSoftRigidDynamicsWorld* World::world()
-#else // USE_SOFT_BODIES
-    btDiscreteDynamicsWorld* World::world()
+btSoftRigidDynamicsWorld *World::world()
+#else  // USE_SOFT_BODIES
+btDiscreteDynamicsWorld *World::world()
 #endif // USE_SOFT_BODIES
 {
   return _world;
 }
-
-

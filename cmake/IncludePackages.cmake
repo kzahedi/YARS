@@ -36,6 +36,8 @@ endif(YARS_DOCS)
 
 IF(YARS_USE_VISUALISATION)
 
+  set(OGRE_INCLUDE_DIR /usr/local/include/OGRE)
+
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 

@@ -1,7 +1,14 @@
 set(CMAKE_VERBOSE_MAKEFILE       OFF)
+
 set(CMAKE_BASE_NAME              "g++")
 set(CMAKE_CXX_COMPILER           "g++")
 set(CMAKE_CXX_COMPILER_FULLPATH  "g++")
+
+# set(CMAKE_BASE_NAME              "/usr/local/opt/llvm/bin/clang")
+# set(CMAKE_CXX_COMPILER           "/usr/local/opt/llvm/bin/clang")
+# set(CMAKE_CXX_COMPILER_FULLPATH  "/usr/local/opt/llvm/bin/clang")
+
+
 set(EXECUTABLE_OUTPUT_PATH       ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH          ${PROJECT_BINARY_DIR}/lib)
 

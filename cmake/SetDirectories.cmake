@@ -10,4 +10,9 @@ IF(UNIX AND NOT APPLE)
   include_directories(/usr/include/OGRE)
 ENDIF(UNIX AND NOT APPLE)
 
+include_directories(/Library/Frameworks/Ogre.framework/Versions/1.11.3/Headers)
+include_directories(/Library/Frameworks/OgreOverlay.framework/Versions/1.11.3/Headers)
+include_directories(/Library/Frameworks/RenderSystem_GL.framework/Versions/1.11.3/Headers/)
+include_directories(/Library/Frameworks/Plugin_ParticleFX.framework/Versions/1.11.3/Headers/)
+
 

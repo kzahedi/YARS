@@ -11,11 +11,11 @@
 #include <yars/view/gui/OgreHandler.h>
 #include <yars/view/gui/GuiMutex.h>
 
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 #include <SDL2/SDL.h>
 
 #ifdef USE_CAPTURE_VIDEO
-#  include <yars/view/gui/VideoCapture.h>
+#include <yars/view/gui/VideoCapture.h>
 #endif // USE_CAPTURE_VIDEO
 
 #include <pthread.h>
@@ -47,7 +47,6 @@ class SdlWindow : public Observable
     void setupOSD();
 
   private:
-
     void __osd();
     void __setupSDL();
     void __processKeyEvent(char, int);
@@ -66,70 +65,70 @@ class SdlWindow : public Observable
 #ifdef USE_CAPTURE_VIDEO
     void __toggleCaptureMovie();
     void __closeMovie();
-    int  __milliSeconds();
+    int __milliSeconds();
     void __captureMovieFrame();
     void __initMovie();
 
-    VideoCapture        *_videoCapture;
+    VideoCapture *_videoCapture;
 
-    bool                _captureRunning;
-    unsigned long       _captureStep;
-    unsigned long       _capturedTenMinutes;
-    unsigned long       _frameIndex;
-    unsigned long       _capturingOffset;
+    bool _captureRunning;
+    unsigned long _captureStep;
+    unsigned long _capturedTenMinutes;
+    unsigned long _frameIndex;
+    unsigned long _capturingOffset;
 #endif
 
     Ogre::RenderTexture *_pRenderTex;
-    Ogre::TexturePtr     _renderTexture;
+    Ogre::TexturePtr _renderTexture;
 
-    Ogre::RenderWindow  *_window;
-    Ogre::Camera        *_camera;
-    Ogre::Viewport      *_viewport;
-    Ogre::SceneManager  *_sceneManager;
+    Ogre::RenderWindow *_window;
+    Ogre::Camera *_camera;
+    Ogre::Viewport *_viewport;
+    Ogre::SceneManager *_sceneManager;
 
-    DataObject          *_followableObject;
-    DataScreen          *_data;
-    DataCamera          *_camData;
-    int                  _followableIndex;
+    DataObject *_followableObject;
+    DataScreen *_data;
+    DataCamera *_camData;
+    int _followableIndex;
     WindowConfiguration *_windowConfiguration;
-    CameraMan           *_cameraMan;
-    bool                 _mousePressed;
-    bool                 _shiftPressed;
-    bool                 _ctrlPressed;
-    bool                 _altPressed;
-    bool                 _metaPressed;
-    bool                 _imgCaptureRunning;
-    int                  _imgCaptureFrameIndex;
-    int                  _fps;
-    unsigned int         _lastTime;
-    unsigned int         _currentTime;
-    unsigned int         _lastStep;
-    TextOverlay         *_textOverlay;
-    stringstream         _fpsString;
-    stringstream         _sst;
-    int                  _index;
-    int                  _shadowMode;
-    int                  _nextShadowMode;
-    string               _statsString;
-    string               _timeString;
-    string               _robotString;
-    string               _legendString;
+    CameraMan *_cameraMan;
+    bool _mousePressed;
+    bool _shiftPressed;
+    bool _ctrlPressed;
+    bool _altPressed;
+    bool _metaPressed;
+    bool _imgCaptureRunning;
+    int _imgCaptureFrameIndex;
+    int _fps;
+    unsigned int _lastTime;
+    unsigned int _currentTime;
+    unsigned int _lastStep;
+    TextOverlay *_textOverlay;
+    stringstream _fpsString;
+    stringstream _sst;
+    int _index;
+    int _shadowMode;
+    int _nextShadowMode;
+    string _statsString;
+    string _timeString;
+    string _robotString;
+    string _legendString;
 
-    OgreHandler         *_ogreHandler;
+    OgreHandler *_ogreHandler;
 
-    Ogre::Vector3        _cpos;
-    Ogre::Vector3        _cdir;
-    Ogre::Vector3        _clookAt;
-    Ogre::Vector3        _cameraVelocity;
-    P3D                  _ypos;
-    P3D                  _ylookAt;
-    P3D                  _camVelocity;
-    P3D                  _camAngularVelocity;
-    Uint32               _windowID;
-    SDL_Window*          _sdlWindow;
-    bool                 _visible;
-    bool                 _added;
-    bool                 _closed;
+    Ogre::Vector3 _cpos;
+    Ogre::Vector3 _cdir;
+    Ogre::Vector3 _clookAt;
+    Ogre::Vector3 _cameraVelocity;
+    P3D _ypos;
+    P3D _ylookAt;
+    P3D _camVelocity;
+    P3D _camAngularVelocity;
+    Uint32 _windowID;
+    SDL_Window *_sdlWindow;
+    bool _visible;
+    bool _added;
+    bool _closed;
 };
 
 #endif // __SDL_WINDOW_H__

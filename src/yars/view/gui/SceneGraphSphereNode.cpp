@@ -4,6 +4,9 @@
 
 #include <sstream>
 
+#include <Ogre.h>
+#include <OgreEdgeListBuilder.h>
+
 #define SET_INDICES\
   for(unsigned int i = 0; i < indices.size()-2; i++)\
   {\

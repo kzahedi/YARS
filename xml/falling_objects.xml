@@ -1,0 +1,96 @@
+<rosiml version="0.8.41">
+
+  <simulator frequency="1000">
+    <solver iterations="100"/>
+  </simulator>
+
+  <screens>
+
+    <screen name="Braiternberg" show="true" follow="false">
+      <size width="600" height="600"/>
+      <camera>
+        <position x="3.00" y="0.00" z="2.0"/>
+        <lookAt x="0.0" y="0.00" z="1.0"/>
+      </camera>
+      <osd>
+        <time font="Time" size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+
+    <sky name="YARS/CloudySky"/>
+
+    <cameras>
+      <orbit speed="0.5">
+        <lookAtX p="0.05" i="0.001" d="0.002"/>
+        <lookAtY p="0.05" i="0.001" d="0.002"/>
+        <lookAtZ p="1.0" i="0.0" d="0.0"/>
+        <fromX p="0.01" i="0.0001" d="0.0002"/>
+        <fromY p="0.01" i="0.0001" d="0.0002"/>
+        <fromZ p="0.0" i="0.0" d="0.0"/>
+      </orbit>
+      <centre speed="1.5"/>
+    </cameras>
+
+    <followables>
+      <followable name="swinging body"/>
+    </followables>
+    <visualise>
+      <joints height="0.5" radius="0.01"/>
+    </visualise>
+  </screens>
+
+  <environment>
+    <!-- <gravitation x="0.0" y="0.0" z="-9.81"/> -->
+    <ground fixed="true" fog="false">
+      <visualisation>
+        <texture name="YARS/DryGroundSmall"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+
+    <robot name="Muscle">
+      <body>
+        <sphere name="source body" visualise="true">
+          <dimension radius="0.10"/>
+          <pose z="2.00" y="0.0"/>
+          <visualisation>
+            <texture name="Chain/Circuit/Top/Green"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.0"/>
+          </physics>
+        </sphere>
+        <sphere name="destination body" visualise="true">
+          <dimension radius="0.10"/>
+          <pose x="0.5" y="0.5" z="1.5"/>
+          <visualisation>
+            <texture name="Chain/Circuit/Top/Green"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+          </physics>
+        </sphere>
+      </body>
+      <actuators>
+        <slider name="slider" type="positional" mode="passive">
+          <source name="source body"/>
+          <destination name="destination body"/>
+          <force max="2.0"/>
+          <velocity max="0.5"/>
+          <pose x="0.0" y="0.0" z="-0.1" beta="90"/>
+          <deflection min="-0.5" max="0.5"/>
+          <mapping min="0" max="+1"/>
+          <regular softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal softness="1.0" damping="1.0" restitution="0.7"/>
+        </slider>
+      </actuators>
+      <sensors>
+      </sensors>
+    </robot>
+  </robots>
+
+</rosiml>

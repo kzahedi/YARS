@@ -2,17 +2,15 @@
 #define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
 
 #include "ColoredTextAreaOverlayElement.h"
-#include <OGRE/OgreRoot.h>
+#include <OgreRoot.h>
 #define POS_TEX_BINDING 0
 #define COLOUR_BINDING 1
 
 using namespace Ogre;
 using namespace std;
 
-  ColoredTextAreaOverlayElement::ColoredTextAreaOverlayElement(const String& name)
-  : TextAreaOverlayElement(name)
-  , m_ValueTop(1.0f)
-    , m_ValueBottom(0.8f)
+ColoredTextAreaOverlayElement::ColoredTextAreaOverlayElement(const String &name)
+    : TextAreaOverlayElement(name), m_ValueTop(1.0f), m_ValueBottom(0.8f)
 {
 }
 
@@ -36,41 +34,41 @@ ColourValue ColoredTextAreaOverlayElement::GetColor(unsigned char ID, float Valu
 {
   switch (ID)
   {
-    case 0:
-      return def;
-    case 1:
-      return ColourValue(Value, 0, 0);        // Red
-    case 2:
-      return ColourValue(0, Value, 0);        // Green
-    case 3:
-      return ColourValue(Value, Value, 0);    // Yellow
-    case 4:
-      return ColourValue(0, 0, Value);        // Blue
-    case 5:
-      return ColourValue(0, Value, Value);    // Cyan
-    case 6:
-      return ColourValue(Value, 0, Value);    // Magenta
-    case 7:
-      return ColourValue(Value, Value, Value);        // White
-    case 8:
-      return ColourValue(Value*0.9, Value*0.9, Value*0.9);    // Gray
-    case 9:
-      return ColourValue(0.5, 0.5, Value*0.9);        // dark blue
+  case 0:
+    return def;
+  case 1:
+    return ColourValue(Value, 0, 0); // Red
+  case 2:
+    return ColourValue(0, Value, 0); // Green
+  case 3:
+    return ColourValue(Value, Value, 0); // Yellow
+  case 4:
+    return ColourValue(0, 0, Value); // Blue
+  case 5:
+    return ColourValue(0, Value, Value); // Cyan
+  case 6:
+    return ColourValue(Value, 0, Value); // Magenta
+  case 7:
+    return ColourValue(Value, Value, Value); // White
+  case 8:
+    return ColourValue(Value * 0.9, Value * 0.9, Value * 0.9); // Gray
+  case 9:
+    return ColourValue(0.5, 0.5, Value * 0.9); // dark blue
   }
   return def;
 }
 
-DisplayString ColoredTextAreaOverlayElement::StripColors(const Ogre::String& otext)
+DisplayString ColoredTextAreaOverlayElement::StripColors(const Ogre::String &otext)
 {
   try
   {
     DisplayString text = DisplayString(otext.c_str());
     DisplayString StrippedText;
     int i;
-    for (i = 0; i < (int)text.size()-1; ++i)
+    for (i = 0; i < (int)text.size() - 1; ++i)
     {
       if (text[i] == '^' &&
-          text[i+1] >= '0' && text[i+1] <= '9')   // This is a color code, ignore it
+          text[i + 1] >= '0' && text[i + 1] <= '9') // This is a color code, ignore it
       {
         ++i;
       }
@@ -83,19 +81,20 @@ DisplayString ColoredTextAreaOverlayElement::StripColors(const Ogre::String& ote
     if (i < (int)text.size())
       StrippedText.append(1, text[i]);
     return StrippedText;
-  } catch(...)
+  }
+  catch (...)
   {
   }
   return String("UTF8 error (String cannot be disaplayed with current font set)");
 }
 
-void ColoredTextAreaOverlayElement::setCaption(const DisplayString& text)
+void ColoredTextAreaOverlayElement::setCaption(const DisplayString &text)
 {
   m_Colors.clear();
   m_Colors.resize(text.size(), 9);
   bool noColor = true;
   int i, iNumColorCodes = 0, iNumSpaces = 0;
-  for (i = 0; i < (int)text.size()-1; ++i)
+  for (i = 0; i < (int)text.size() - 1; ++i)
   {
     if (text[i] == ' ' || text[i] == '\n')
     {
@@ -103,11 +102,11 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString& text)
       ++iNumSpaces;
     }
     else if (text[i] == '^' &&
-        text[i+1] >= '0' && text[i+1] <= '9')   // This is a color code
+             text[i + 1] >= '0' && text[i + 1] <= '9') // This is a color code
     {
       // Fill the color array starting from this point to the end with the new color code
       // adjustments need to made because color codes will be removed and spaces are not counted
-      fill(m_Colors.begin()+i-(2*iNumColorCodes)-iNumSpaces, m_Colors.end(), text[i+1]-'0');
+      fill(m_Colors.begin() + i - (2 * iNumColorCodes) - iNumSpaces, m_Colors.end(), text[i + 1] - '0');
       ++i;
       ++iNumColorCodes;
       mColoursChanged = true;
@@ -122,26 +121,27 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString& text)
 
 void ColoredTextAreaOverlayElement::updateColours(void)
 {
-  if(!mRenderOp.vertexData) return;
+  if (!mRenderOp.vertexData)
+    return;
   // Convert to system-specific
   RGBA topColour, bottomColour;
   // Set default to white
   Root::getSingleton().convertColourValue(ColourValue::White, &topColour);
   Root::getSingleton().convertColourValue(ColourValue::White, &bottomColour);
 
-  HardwareVertexBufferSharedPtr vbuf = 
-    mRenderOp.vertexData->vertexBufferBinding->getBuffer(COLOUR_BINDING);
+  HardwareVertexBufferSharedPtr vbuf =
+      mRenderOp.vertexData->vertexBufferBinding->getBuffer(COLOUR_BINDING);
 
   //RGBA* pDest = static_cast<RGBA*>(
   //      vbuf->lock(HardwareBuffer::HBL_NORMAL) );
-  RGBA* pDest=(RGBA*)malloc(vbuf->getSizeInBytes());
-  RGBA* oDest=pDest;
+  RGBA *pDest = (RGBA *)malloc(vbuf->getSizeInBytes());
+  RGBA *oDest = pDest;
 
   for (size_t i = 0; i < mAllocSize; ++i)
   {
     if (i < m_Colors.size())
     {
-      Root::getSingleton().convertColourValue(GetColor(m_Colors[i], m_ValueTop,    _color), &topColour);
+      Root::getSingleton().convertColourValue(GetColor(m_Colors[i], m_ValueTop, _color), &topColour);
       Root::getSingleton().convertColourValue(GetColor(m_Colors[i], m_ValueBottom, _color), &bottomColour);
     }
 

@@ -4,11 +4,10 @@
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/TextOverlay.h>
 
-
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 #if __APPLE__
-#include <RenderSystem_GL/OgreGLPlugin.h>
-#include <Plugin_ParticleFX/OgreParticleFXPlugin.h>
+#include <RenderSystems/GL/OgreGLPlugin.h>
+#include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #else
 #include <OGRE/RenderSystems/GL/OgreGLPlugin.h>
 #include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
@@ -17,32 +16,30 @@
 
 class OgreHandler
 {
-  public:
-    static OgreHandler* instance();
+public:
+  static OgreHandler *instance();
 
-    Ogre::SceneManager* getSceneManager();
-    Ogre::Root*         root();
+  Ogre::SceneManager *getSceneManager();
+  Ogre::Root *root();
 
-    void setupSceneManager();
-    void setupResources();
+  void setupSceneManager();
+  void setupResources();
 
-    void step();
-    void reset();
+  void step();
+  void reset();
 
-  private:
-    OgreHandler();
+private:
+  OgreHandler();
 
-    static OgreHandler *_me;
+  static OgreHandler *_me;
 
-    Ogre::Root             *_root;
-    Ogre::SceneManager     *_sceneManager;
-    Ogre::SceneNode        *_rootNode;
-    SceneGraph             *_sceneGraph;
-    Ogre::GLPlugin         *_GLPlugin;
-    Ogre::ParticleFXPlugin *_particlePlugin;
-    // TextOverlay        *_textOverlay;
-
+  Ogre::Root *_root;
+  Ogre::SceneManager *_sceneManager;
+  Ogre::SceneNode *_rootNode;
+  SceneGraph *_sceneGraph;
+  Ogre::GLPlugin *_GLPlugin;
+  Ogre::ParticleFXPlugin *_particlePlugin;
+  // TextOverlay        *_textOverlay;
 };
-
 
 #endif // __OGRE_HANDLER_H__

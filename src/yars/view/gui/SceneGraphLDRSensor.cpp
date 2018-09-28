@@ -2,22 +2,22 @@
 
 #include <yars/types/Colour.h>
 
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 
-# define RESOLUTION 16
-# define LENGTH     0.025
+#define RESOLUTION 16
+#define LENGTH 0.025
 
 SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor *data,
-    Ogre::SceneNode* r, Ogre::SceneManager* sm)
-: SceneGraphObjectNode(r,sm)
+                                         Ogre::SceneNode *r, Ogre::SceneManager *sm)
+    : SceneGraphObjectNode(r, sm)
 {
   // 5 Rays
-  _data    = data;
+  _data = data;
   P3D position = _data->pose().position;
   _points.clear();
 
-  _node    = _root->createChildSceneNode();
-  _manual  = _sceneManager->createManualObject(_data->name());
+  _node = _root->createChildSceneNode();
+  _manual = _sceneManager->createManualObject(_data->name());
   _node->setPosition(Ogre::Vector3(position.x, position.y, position.z));
 
   ::Quaternion q(_data->pose().orientation);
@@ -28,10 +28,10 @@ SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor
   _points.push_back(P3D(0.0, 0.0, 0.0));
   double radius = tan(oa) * LENGTH;
   // for(int i = RESOLUTION+2; i >= 0; i--)
-  for(int i = 0; i < RESOLUTION+2; i++)
+  for (int i = 0; i < RESOLUTION + 2; i++)
   {
-    double x = sin((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
-    double y = cos((float)i*2.0*M_PI/(float)RESOLUTION) * radius;
+    double x = sin((float)i * 2.0 * M_PI / (float)RESOLUTION) * radius;
+    double y = cos((float)i * 2.0 * M_PI / (float)RESOLUTION) * radius;
     // _quaternions.push_back(::Quaternion(P3D(-oa,   oa, 0.0)));
     // _quaternions.push_back(::Quaternion(P3D( oa,   oa, 0.0)));
     // _quaternions.push_back(::Quaternion(P3D( oa,  -oa, 0.0)));
@@ -59,7 +59,7 @@ void SceneGraphLDRSensor::__cap()
 {
   _manual->begin("cap", Ogre::RenderOperation::OT_TRIANGLE_FAN);
 
-  for(int i = (int)_points.size()-1; i > 1; i--)
+  for (int i = (int)_points.size() - 1; i > 1; i--)
   // for(int i = 1; i < (int)_points.size(); i++)
   {
     _manual->position(_points[i].x, _points[i].y, _points[i].z);
@@ -72,7 +72,7 @@ void SceneGraphLDRSensor::__cap()
 void SceneGraphLDRSensor::__body()
 {
   _manual->begin("body", Ogre::RenderOperation::OT_TRIANGLE_FAN);
-  for(std::vector< ::P3D>::iterator i = _points.begin(); i != _points.end(); i++)
+  for (std::vector<::P3D>::iterator i = _points.begin(); i != _points.end(); i++)
   {
     _manual->position((*i).x, (*i).y, (*i).z);
   }
@@ -80,5 +80,3 @@ void SceneGraphLDRSensor::__body()
   _manual->setCastShadows(false);
   _manual->end();
 }
-
-

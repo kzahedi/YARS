@@ -2,32 +2,33 @@
 
 #include <yars/types/Colour.h>
 
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 
 SceneGraphProximitySensor::SceneGraphProximitySensor(DataGenericProximitySensor *data,
-    Ogre::SceneNode* r, Ogre::SceneManager* sm)
-: SceneGraphObjectNode(r,sm)
+                                                     Ogre::SceneNode *r, Ogre::SceneManager *sm)
+    : SceneGraphObjectNode(r, sm)
 {
   // 5 Rays
-  _data    = data;
+  _data = data;
   P3D position = _data->pose().position;
   _points.resize(5);
 
-  _node    = _root->createChildSceneNode();
-  _manual  = _sceneManager->createManualObject(_data->name());
+  _node = _root->createChildSceneNode();
+  _manual = _sceneManager->createManualObject(_data->name());
   _node->setPosition(Ogre::Vector3(position.x, position.y, position.z));
 
   ::Quaternion q(_data->pose().orientation);
   _node->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
 
   P2D oa = _data->openingAngles();
-  _quaternions.push_back(::Quaternion(P3D(  0.0,   0.0, 0.0)));
-  _quaternions.push_back(::Quaternion(P3D(-oa.x,   0.0, 0.0)));
-  _quaternions.push_back(::Quaternion(P3D(  0.0,  oa.y, 0.0)));
-  _quaternions.push_back(::Quaternion(P3D( oa.x,   0.0, 0.0)));
-  _quaternions.push_back(::Quaternion(P3D(  0.0, -oa.y, 0.0)));
+  _quaternions.push_back(::Quaternion(P3D(0.0, 0.0, 0.0)));
+  _quaternions.push_back(::Quaternion(P3D(-oa.x, 0.0, 0.0)));
+  _quaternions.push_back(::Quaternion(P3D(0.0, oa.y, 0.0)));
+  _quaternions.push_back(::Quaternion(P3D(oa.x, 0.0, 0.0)));
+  _quaternions.push_back(::Quaternion(P3D(0.0, -oa.y, 0.0)));
 
-  for(int i = 0; i < 5; i++) __setRay(i, _data->distance());
+  for (int i = 0; i < 5; i++)
+    __setRay(i, _data->distance());
 
   __rays();
   __cap();
@@ -47,7 +48,8 @@ SceneGraphProximitySensor::~SceneGraphProximitySensor()
 void SceneGraphProximitySensor::update()
 {
   double min = MIN(_data->distance(), _data->getMeasuredDistance());
-  for(int i = 0; i < 5; i++) __setRay(i, min);
+  for (int i = 0; i < 5; i++)
+    __setRay(i, min);
   __updateContainers();
 }
 
@@ -55,13 +57,13 @@ void SceneGraphProximitySensor::__updateRayColour(int index, bool collided)
 {
   // if(collided)
   // {
-    // _rayColours[2 * index].setValuesRGBA(1.0f, 0.0f, 0.0f, 0.9);
-    // _rayColours[2 * index + 1].setValuesRGBA(1.0f, 0.0f, 0.0f, 0.9);
+  // _rayColours[2 * index].setValuesRGBA(1.0f, 0.0f, 0.0f, 0.9);
+  // _rayColours[2 * index + 1].setValuesRGBA(1.0f, 0.0f, 0.0f, 0.9);
   // }
   // else
   // {
-    // _rayColours[2 * index].setValuesRGBA(1.0f, 1.0f, 1.0f, 0.75f);
-    // _rayColours[2 * index + 1].setValuesRGBA(1.0f, 1.0f, 1.0f, 0.75f);
+  // _rayColours[2 * index].setValuesRGBA(1.0f, 1.0f, 1.0f, 0.75f);
+  // _rayColours[2 * index + 1].setValuesRGBA(1.0f, 1.0f, 1.0f, 0.75f);
   // }
 }
 
@@ -75,9 +77,9 @@ void SceneGraphProximitySensor::__setRay(int index, double length)
 void SceneGraphProximitySensor::__updateContainers()
 {
   _manual->beginUpdate(0);
-  for(int i = 0; i < 5; i++)
+  for (int i = 0; i < 5; i++)
   {
-    _manual->position(0.0,          0.0,          0.0);
+    _manual->position(0.0, 0.0, 0.0);
     _manual->position(_points[i].x, _points[i].y, _points[i].z);
   }
   _manual->end();
@@ -130,9 +132,9 @@ void SceneGraphProximitySensor::__body()
 void SceneGraphProximitySensor::__rays()
 {
   _manual->begin("rays", Ogre::RenderOperation::OT_LINE_LIST);
-  for(int i = 0; i < 5; i++)
+  for (int i = 0; i < 5; i++)
   {
-    _manual->position(0.0,          0.0,          0.0);
+    _manual->position(0.0, 0.0, 0.0);
     _manual->position(_points[i].x, _points[i].y, _points[i].z);
   }
   _manual->setVisible(true);

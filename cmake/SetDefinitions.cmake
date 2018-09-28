@@ -3,7 +3,7 @@ add_definitions(-D${YARS_LOCALE})
 
 add_definitions(-DYARS_VERSION='"${YARS_MAJOR}.${YARS_MINOR}.${YARS_PATCH}"')
 
-add_definitions(-DYARS_COMPILED_OS='"${CMAKE_SYSTEM}"')
+add_definitions(-DYARS_COMPILED_OS="${CMAKE_SYSTEM}")
 
 add_definitions(-DYARS_COMPILER_VERSION='"${CMAKE_CXX_COMPILER}"')
 
