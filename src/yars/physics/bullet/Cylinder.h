@@ -6,13 +6,13 @@
 
 class Cylinder : public Object
 {
-  public:
-    Cylinder(DataCylinder *cylinder, bool isComposite = false);
+public:
+  Cylinder(DataCylinder *cylinder, bool isComposite = false);
+  void init();
 
+private:
+
+  DataCylinder* _data;
 };
 
 #endif // __CYLINDER_H__
-
-
-
-

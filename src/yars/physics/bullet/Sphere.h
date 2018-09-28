@@ -10,6 +10,12 @@ class Sphere : public Object
   public:
     Sphere(DataSphere *sphere, bool isComposite = false);
 
+    void init();
+
+private:
+
+  DataSphere* _data;
+
 };
 
 #endif // __SPHERE_H__

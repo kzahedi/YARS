@@ -104,6 +104,11 @@ SdlWindow::SdlWindow(int index)
   _captureRunning = false;
   _videoCapture = NULL;
 #endif // USE_CAPTURE_VIDEO
+
+  _window->resize(_windowConfiguration->geometry.width(),
+                  _windowConfiguration->geometry.height());
+
+  _window->windowMovedOrResized();
 }
 
 void SdlWindow::wait()

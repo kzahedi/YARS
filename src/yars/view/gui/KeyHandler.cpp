@@ -4,15 +4,16 @@
 
 #include <boost/function.hpp>
 
-KeyHandler*        KeyHandler::_me                = NULL;
-KeyboardShortcuts* KeyHandler::_keyboardShortcuts = NULL;
-Observable*        KeyHandler::_o                 = new Observable();
+KeyHandler *KeyHandler::_me = NULL;
+KeyboardShortcuts *KeyHandler::_keyboardShortcuts = NULL;
+Observable *KeyHandler::_o = new Observable();
 
 std::vector<int> KeyHandler::_registeredKeyEventCodes;
 
-KeyHandler* KeyHandler::instance()
+KeyHandler *KeyHandler::instance()
 {
-  if(_me == NULL) _me = new KeyHandler();
+  if (_me == NULL)
+    _me = new KeyHandler();
   return _me;
 }
 
@@ -37,25 +38,23 @@ void KeyHandler::registerKeyboardShortcuts()
 
   _keyboardShortcuts = configuration->getKeyboardShortcuts();
 
-  _keyboardShortcuts->pause.function               = &togglePause;
-  _keyboardShortcuts->quit.function                = &exitSimulation;
-  _keyboardShortcuts->reset.function               = &reinitAndResetSimulation;
+  _keyboardShortcuts->pause.function = &togglePause;
+  _keyboardShortcuts->quit.function = &exitSimulation;
+  _keyboardShortcuts->reset.function = &reinitAndResetSimulation;
   //_keyboardShortcuts->printKeyCommands.function      = &printKeyCommands;
   _keyboardShortcuts->toggleReloadOnReset.function = &toggleReloadOnReset;
-  _keyboardShortcuts->realtime.function            = &toggleRealtimeMode;
-  _keyboardShortcuts->singleStep.function          = &activateSingleStep;
-  _keyboardShortcuts->decreaseSimSpeed.function    = &decreaseSimSpeed;
-  _keyboardShortcuts->increaseSimSpeed.function    = &increaseSimSpeed;
-  _keyboardShortcuts->resetSimSpeed.function       = &resetSimSpeed;
-  _keyboardShortcuts->restoreViewpoint.function    = &restoreInitialViewpoint;
-  _keyboardShortcuts->openNewWindow.function       = &openNewWindow;
-  _keyboardShortcuts->printTime.function           = &togglePrintTime;
-  _keyboardShortcuts->captureVideo.function        = &toggleCaptureVideo;
-  _keyboardShortcuts->writeFrames.function         = &toggleCaptureFrames;
+  _keyboardShortcuts->realtime.function = &toggleRealtimeMode;
+  _keyboardShortcuts->singleStep.function = &activateSingleStep;
+  _keyboardShortcuts->decreaseSimSpeed.function = &decreaseSimSpeed;
+  _keyboardShortcuts->increaseSimSpeed.function = &increaseSimSpeed;
+  _keyboardShortcuts->resetSimSpeed.function = &resetSimSpeed;
+  _keyboardShortcuts->restoreViewpoint.function = &restoreInitialViewpoint;
+  _keyboardShortcuts->openNewWindow.function = &openNewWindow;
+  _keyboardShortcuts->printTime.function = &togglePrintTime;
+  _keyboardShortcuts->captureVideo.function = &toggleCaptureVideo;
+  _keyboardShortcuts->writeFrames.function = &toggleCaptureFrames;
   // _keyboardShortcuts->closeWindow.function         = &closeWindow;
-
 }
-
 
 void KeyHandler::addObserver(Observer *o)
 {
@@ -75,8 +74,9 @@ void KeyHandler::notifyObservers(ObservableMessage *m)
 int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
 {
   KeyboardShortcut *key = _keyboardShortcuts->get(alt, ctrl, shift, c);
-  if(key == NULL) return -1;
-  if(key->function != NULL)
+  if (key == NULL)
+    return -1;
+  if (key->function != NULL)
   {
     // cout << "Key " << *key << endl;
     key->function();
@@ -92,12 +92,14 @@ int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
 
 void KeyHandler::reinitAndResetSimulation()
 {
+  __YARS_SET_USE_PAUSE(true);
   _o->notifyObservers(_m_reset);
+  __YARS_SET_USE_PAUSE(false);
 }
 
 // void KeyHandler::closeWindow()
 // {
-  // _o->notifyObservers(_m_closeWindow);
+// _o->notifyObservers(_m_closeWindow);
 // }
 
 void KeyHandler::toggleRealtimeMode()
@@ -116,7 +118,7 @@ void KeyHandler::activateSingleStep()
 void KeyHandler::exitSimulation()
 {
   // TODO: hack, quitting should also work without syncing
-  if(!__YARS_GET_SYNC_GUI)
+  if (!__YARS_GET_SYNC_GUI)
   {
     toggleSyncedGui(); // so that we can quit nicely
   }
@@ -125,19 +127,22 @@ void KeyHandler::exitSimulation()
 
 void KeyHandler::decreaseSimSpeed()
 {
-  if(!__YARS_GET_USE_REAL_TIME) return;
+  if (!__YARS_GET_USE_REAL_TIME)
+    return;
   __YARS_SET_REAL_TIME_FACTOR(__YARS_GET_REAL_TIME_FACTOR * 2.0);
 }
 
 void KeyHandler::resetSimSpeed()
 {
-  if(!__YARS_GET_USE_REAL_TIME) return;
+  if (!__YARS_GET_USE_REAL_TIME)
+    return;
   __YARS_SET_REAL_TIME_FACTOR(1.0);
 }
 
 void KeyHandler::increaseSimSpeed()
 {
-  if(!__YARS_GET_USE_REAL_TIME) return;
+  if (!__YARS_GET_USE_REAL_TIME)
+    return;
   __YARS_SET_REAL_TIME_FACTOR(__YARS_GET_REAL_TIME_FACTOR * 0.5);
 }
 
@@ -199,5 +204,3 @@ void KeyHandler::__toggle(bool *a)
 {
   *a = !*a;
 }
-
-

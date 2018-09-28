@@ -63,13 +63,28 @@ World::World()
 
 World::~World()
 {
+  // if (_broadphase != NULL)
+  //   delete _broadphase;
+  // if (_dispatcher != NULL)
+  //   delete _dispatcher;
+  // if (_solver != NULL)
+  //   delete _solver;
+  // if (_collisionConfiguration != NULL)
+  //   delete _collisionConfiguration;
+  // if (_world != NULL)
+
+  delete _world;
+  delete _solver;
+  delete _broadphase;
+  delete _dispatcher;
+  delete _collisionConfiguration;
 }
 
-void World::reset()
+World *World::reset()
 {
-  _solver->reset();
-  _world->clearForces();
-  _broadphase->resetPool(_dispatcher);
+  delete _me;
+  _me = new World();
+  return _me;
 }
 
 void World::step(double stepSize)
@@ -133,10 +148,8 @@ P3D World::rayTest(P3D start, P3D end)
   btCollisionWorld::ClosestRayResultCallback rayCallback(_start, _end);
   _me->_world->rayTest(_start, _end, rayCallback);
   btVector3 hit = rayCallback.m_hitPointWorld;
-  // cout << " hit: " << hit[0] << " " << hit[1] << " " << hit[2];
   if (rayCallback.hasHit())
     return P3D(hit[0], hit[1], hit[2]);
-  // cout << " end: " << end.x << " " << end.y << " " << end.z;
   return end;
 }
 

@@ -8,39 +8,39 @@
 
 #include <btBulletDynamicsCommon.h>
 #ifdef USE_SOFT_BODIES
-#  include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
-#  include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
-#  include <BulletSoftBody/btSoftBodyHelpers.h>
+#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
+#include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
+#include <BulletSoftBody/btSoftBodyHelpers.h>
 #endif // USE_SOFT_BODIES
 
 #define btSoftRigidDynamicsWorld btSoftRigidDynamicsWorld
-// #define btSoftRigidDynamicsWorld btDiscreteDynamicsWorld             
+// #define btSoftRigidDynamicsWorld btDiscreteDynamicsWorld
 class World
 {
 
   public:
     ~World();
 
-    static World* instance();
+    static World *instance();
+    static World *reset();
     static P3D rayTest(P3D start, P3D end);
 
     // proceeds one simulation step
     void step(double stepSize);
-    void reset();
     void addRigidBody(btRigidBody *rigidBody, unsigned int mask, unsigned int with);
     void addRigidBody(btRigidBody *rigidBody);
 #ifdef USE_SOFT_BODIES
-    void addSoftBody(btSoftBody   *softBody,  unsigned int mask, unsigned int with);
-    void addSoftBody(btSoftBody   *softBody);
+    void addSoftBody(btSoftBody *softBody, unsigned int mask, unsigned int with);
+    void addSoftBody(btSoftBody *softBody);
 #endif // USE_SOFT_BODIES
     void addCollistionObject(btCollisionObject *collisionObject);
     void removeRigidBody(btRigidBody *rigidBody);
     void addConstraint(btTypedConstraint *constraint, bool selfCollide = false);
     void removeConstraint(btTypedConstraint *constraint);
 #ifdef USE_SOFT_BODIES
-    btSoftRigidDynamicsWorld* world();
-#else // USE_SOFT_BODIES
-    btDiscreteDynamicsWorld* world();
+    btSoftRigidDynamicsWorld *world();
+#else  // USE_SOFT_BODIES
+    btDiscreteDynamicsWorld *world();
 #endif // USE_SOFT_BODIES
 
   private:
@@ -49,17 +49,17 @@ class World
 
     static World *_me;
 
-    btBroadphaseInterface                     *_broadphase;
-    btCollisionDispatcher                     *_dispatcher;
-    btSequentialImpulseConstraintSolver       *_solver;
-    bool                                      _collisionShapesInitialised;
+    btBroadphaseInterface *_broadphase;
+    btCollisionDispatcher *_dispatcher;
+    btSequentialImpulseConstraintSolver *_solver;
+    bool _collisionShapesInitialised;
 #ifdef USE_SOFT_BODIES
-    btSoftBodySolver                          *_softBodySolver;
+    btSoftBodySolver *_softBodySolver;
     btSoftBodyRigidBodyCollisionConfiguration *_collisionConfiguration;
-    btSoftRigidDynamicsWorld                  *_world;
-#else // USE_SOFT_BODIES
-    btDefaultCollisionConfiguration          *_collisionConfiguration;
-    btDiscreteDynamicsWorld                  *_world;
+    btSoftRigidDynamicsWorld *_world;
+#else  // USE_SOFT_BODIES
+    btDefaultCollisionConfiguration *_collisionConfiguration;
+    btDiscreteDynamicsWorld *_world;
 #endif // USE_SOFT_BODIES
     // btContinuousDynamicsWorld           *_world;
 };

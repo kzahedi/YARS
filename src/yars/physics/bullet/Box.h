@@ -9,7 +9,10 @@ class Box : public Object
 {
   public:
     Box(DataBox *box, bool isComposite = false);
+    void init();
 
+  private:
+    DataBox* _data;
 };
 
 #endif // __BOX_H__

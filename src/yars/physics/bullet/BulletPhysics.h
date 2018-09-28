@@ -10,31 +10,27 @@
 
 class BulletPhysics : public PhysicsInterface
 {
-  public:
-    BulletPhysics();
-    ~BulletPhysics();
+public:
+  BulletPhysics();
+  ~BulletPhysics();
 
-    void init();
-    void close();
-    void reset();
-    void step();
-    bool isQuit();
-    bool isReset();
+  void init();
+  void close();
+  void reset();
+  void step();
+  bool isQuit();
+  bool isReset();
 
-  private:
-    void        __deinit();
-    void        __initWorld();
+private:
+  void __deinit();
+  void __initWorld();
 
-    bool         _quit;
-    bool         _reset;
+  bool _quit;
+  bool _reset;
+  bool _resetCalled;
 
-    World       *_world;
-    Environment *_environment;
-    Robots    *_robots;
+  World *_world;
+  Environment *_environment;
+  Robots *_robots;
 };
 #endif // __PHYSICS_INTERFACE_H__
-
-
-
-
-

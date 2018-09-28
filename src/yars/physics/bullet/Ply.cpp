@@ -15,6 +15,25 @@ Ply::Ply(DataPly *data, bool isComposite) : Object(data, isComposite)
 {
   _data = data;
 
+  if(_vertices != NULL){
+    delete _vertices;
+  }
+  if(_indices != NULL){
+    delete _indices;
+  }
+  if(_indexVertexArrays != NULL)
+  {
+    delete _indexVertexArrays;
+  }
+  if(_trimesh != NULL)
+  {
+    delete _trimesh;
+  }
+  init();
+}
+
+void Ply::init()
+ {
   _pd = PlyLoader::instance()->get(_data->filename().c_str());
   _pd.removeDoubles();
 
@@ -89,7 +108,7 @@ void Ply::__soft()
   _softBody->rotate(btQuaternion(q.x, q.y, q.z, q.w));
   _softBody->translate(btVector3(p.x, p.y, p.z));
   _softBody->setTotalMass(mass,true);
-  _softBody->generateClusters(64);      
+  _softBody->generateClusters(64);
   _softBody->getCollisionShape()->setMargin(0.01);
   _softBody->setPose(true, false);
 

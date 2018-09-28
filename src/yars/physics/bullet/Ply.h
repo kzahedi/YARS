@@ -16,6 +16,8 @@ class Ply : public Object
 
     void postPhysicsUpdate();
 
+    void init();
+
   private:
     void __rigid();
 #ifdef USE_SOFT_BODIES

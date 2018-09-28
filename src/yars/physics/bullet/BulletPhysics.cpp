@@ -1,12 +1,14 @@
 #include <yars/physics/bullet/BulletPhysics.h>
 #include <yars/view/console/ConsoleView.h>
 #include <yars/configuration/YarsConfiguration.h>
+#include <yars/configuration/data/Data.h>
 #include <yars/physics/bullet/CollisionCallback.h>
 
 BulletPhysics::BulletPhysics()
 {
   Y_DEBUG("BulletPhysics constructor called.");
   CollisionCallback::instance();
+  _resetCalled = false;
 }
 
 BulletPhysics::~BulletPhysics()
@@ -34,59 +36,21 @@ void BulletPhysics::__deinit()
 
 void BulletPhysics::reset()
 {
+  _resetCalled = true;
   Y_DEBUG("BulletPhysics reset called.");
 
-  btVector3 zeroVector(0, 0, 0);
-  FOREACH(Object *, o, (*_environment))
-  {
-    if ((*o)->rigidBody() != NULL)
-      _world->removeRigidBody((*o)->rigidBody());
-    if ((*o)->rigidBody() != NULL)
-      (*o)->rigidBody()->clearForces();
-    if ((*o)->rigidBody() != NULL)
-      (*o)->rigidBody()->setLinearVelocity(zeroVector);
-    if ((*o)->rigidBody() != NULL)
-      (*o)->rigidBody()->setAngularVelocity(zeroVector);
-  }
+  if (_environment != NULL)
+    delete _environment;
+  if (_robots != NULL)
+    delete _robots;
 
-  FOREACH(Robot *, m, (*_robots))
-  {
-    FOREACHF(Object *, o, (*m), ->o_begin(), ->o_end())
-    {
-      if ((*o) != NULL)
-      {
-        if ((*o)->rigidBody() != NULL)
-          _world->removeRigidBody((*o)->rigidBody());
-        cout << "removing object" << endl;
-      }
-    }
-
-    FOREACHF(Actuator *, a, (*m), ->a_begin(), ->a_end())
-    {
-      if ((*a)->constraint() != NULL)
-        _world->removeConstraint((*a)->constraint());
-      if ((*a)->c_size() > 0)
-      {
-        for (vector<btTypedConstraint *>::iterator i = (*a)->c_begin();
-             i != (*a)->c_end(); i++)
-        {
-          _world->removeConstraint(*i);
-        }
-      }
-    }
-  }
-
-  for (int i = 0; i < 100; i++)
-    _world->step(__YARS_GET_STEP_SIZE);
-
-  _world->reset();
-  _environment->reset();
-  _robots->reset();
+  _world = World::reset();
+  Data::instance()->initialise(0);
+  _environment = new Environment();
+  _robots = new Robots();
 
   __initWorld();
-
-  for (int i = 0; i < 100; i++)
-    _world->step(__YARS_GET_STEP_SIZE);
+  _resetCalled = false;
 }
 
 void BulletPhysics::close()
@@ -95,7 +59,10 @@ void BulletPhysics::close()
 
 void BulletPhysics::step()
 {
+  if (_resetCalled == true)
+    return;
   Y_DEBUG("BulletPhysics step called.");
+  // cout << "BulletPhysics step called." << endl;
   _environment->prePhysicsUpdate();
   _robots->prePhysicsUpdate();
   _world->step(__YARS_GET_STEP_SIZE);

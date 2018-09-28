@@ -7,9 +7,13 @@
 
 class Capsule : public Object
 {
-  public:
-    Capsule(DataCapsule *capsule, bool isComposite = false);
+public:
+  Capsule(DataCapsule *capsule, bool isComposite = false);
 
+  void init();
+
+private:
+  DataCapsule *_data;
 };
 
 #endif // __CAPSULE_H__
