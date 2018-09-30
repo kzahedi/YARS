@@ -1,7 +1,7 @@
 #include "SceneGraphCylinderNode.h"
 
 #include <yars/defines/defaults.h>
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <OgreEdgeListBuilder.h>
 
 #define SET_INDICES                                     \

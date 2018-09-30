@@ -96,7 +96,7 @@ void YarsMainControl::run()
     if(!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
     {
       __YARS_SET_STEP(__YARS_GET_STEP + 1);
-      __YARS_SET_CONTINOUS_STEP(__YARS_GET_CONTINOUS_STEP + 1);
+      __YARS_SET_CONTINUOUS_STEP(__YARS_GET_CONTINUOUS_STEP + 1);
     }
     else
     {

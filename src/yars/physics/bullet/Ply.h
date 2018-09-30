@@ -11,7 +11,7 @@
 class Ply : public Object
 {
   public:
-    Ply(DataPly*, bool isComposite);
+    Ply(DataPly*);
     ~Ply();
 
     void postPhysicsUpdate();

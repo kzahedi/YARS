@@ -7,12 +7,11 @@
 class Cylinder : public Object
 {
 public:
-  Cylinder(DataCylinder *cylinder, bool isComposite = false);
+  Cylinder(DataCylinder *cylinder);
   void init();
 
 private:
-
-  DataCylinder* _data;
+  DataCylinder *_data;
 };
 
 #endif // __CYLINDER_H__

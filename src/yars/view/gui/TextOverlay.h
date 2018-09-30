@@ -3,7 +3,7 @@
 
 #include <yars/view/gui/ColoredTextAreaOverlayElementFactory.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #if __APPLE__
 #include <Overlay/OgreOverlay.h>
 #include <Overlay/OgreOverlayManager.h>

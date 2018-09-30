@@ -6,7 +6,7 @@
 
   <screens>
 
-    <screen name="Braiternberg" show="true" follow="false">
+    <screen name="Falling Object" show="true" follow="false">
       <size width="600" height="600"/>
       <camera>
         <position x="3.00" y="0.00" z="2.0"/>

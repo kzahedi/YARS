@@ -9,17 +9,15 @@
 // just required to delete btCompoundShape
 class Composite : public Object
 {
-  public:
-    Composite(DataComposite *data);
+public:
+  Composite(DataComposite *data);
 
-    void reset();
-    void setInitialTransform(btTransform transform);
+  void setInitialTransform(btTransform transform);
+  void init();
 
-  private:
-    btTransform _initialTransform;
-
+private:
+  DataComposite *_data;
+  btTransform _initialTransform;
 };
 
 #endif // __COMPOUND_H__
-
-

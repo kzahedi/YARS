@@ -118,14 +118,14 @@ void ConsoleView::printTime()
   unsigned long t = Timer::getTime();
   if( (Timer::getTime() - _printTimeLastMeasurement) > 500)
   {
-    double diff               = ((double)(__YARS_GET_CONTINOUS_STEP - _printTimeLastStep));
+    double diff               = ((double)(__YARS_GET_CONTINUOUS_STEP - _printTimeLastStep));
     double time               = ((double)(t - _printTimeLastMeasurement))/1000.0;
     _printTimeUPS             = diff / time;
-    _printTimeLastStep        = __YARS_GET_CONTINOUS_STEP;
+    _printTimeLastStep        = __YARS_GET_CONTINUOUS_STEP;
     _printTimeLastMeasurement = Timer::getTime();
     _printRealTimeFactor      = _printTimeUPS / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
     printf("\rrunning %012d iterations: %s | %.2f x RT%s",
-        (int)__YARS_GET_CONTINOUS_STEP,
+        (int)__YARS_GET_CONTINUOUS_STEP,
          OSD::getElapsedTimeString().c_str(),
         _printRealTimeFactor,
       (__YARS_GET_USE_CR)?"\n":"");
@@ -139,14 +139,14 @@ void ConsoleView::printCapturingInformation(int frameIndex)
   unsigned long t = Timer::getTime();
   if( (Timer::getTime() - _captureTimeLastMeasurement) > 1000)
   {
-    double diff               = ((double)(__YARS_GET_CONTINOUS_STEP - _captureTimeLastStep));
+    double diff               = ((double)(__YARS_GET_CONTINUOUS_STEP - _captureTimeLastStep));
     double time               = ((double)(t - _captureTimeLastMeasurement))/1000.0;
     double captureTimeUPS     = diff / time;
-    _captureTimeLastStep        = __YARS_GET_CONTINOUS_STEP;
+    _captureTimeLastStep        = __YARS_GET_CONTINUOUS_STEP;
     _captureTimeLastMeasurement = Timer::getTime();
     double captureRealTimeFactor = captureTimeUPS / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
     printf("\rcaptured %012d frames: %s | %.2f x RT%s",
-        (int)__YARS_GET_CONTINOUS_STEP,
+        (int)__YARS_GET_CONTINUOUS_STEP,
          OSD::getElapsedTimeString().c_str(),
          captureRealTimeFactor,
       (__YARS_GET_USE_CR)?"\n":"");

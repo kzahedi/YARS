@@ -5,7 +5,7 @@
 #include <yars/configuration/data/DataObject.h>
 #include <yars/defines/types.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 class SceneGraphObjectNode
 {

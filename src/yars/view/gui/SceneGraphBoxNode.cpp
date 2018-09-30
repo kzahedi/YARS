@@ -1,6 +1,6 @@
 #include "SceneGraphBoxNode.h"
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <OgreEdgeListBuilder.h>
 
 SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::SceneManager *sm)

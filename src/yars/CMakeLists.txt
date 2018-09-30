@@ -10,7 +10,7 @@ add_subdirectory(logging)
 add_subdirectory(rc)
 
 target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE}) # ${Boost_LIBRARIES}) # ${BULLET_LIBRARIES})
-target_link_libraries(${YARS_TARGET} boost_program_options boost_filesystem boost_system boost_thread-mt)
+target_link_libraries(${YARS_TARGET} ${Boost_LIBRARIES})
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)
 target_link_libraries(${YARS_TARGET} YarsConfiguration)
@@ -36,8 +36,10 @@ if(YARS_USE_VISUALISATION)
 
   if(APPLE)
     target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} OgreOverlay
-      ${OGRE_RenderSystem_GL_LIBRARIES}
-      ${OGRE_Plugin_ParticleFX_LIBRARIES})
+    /usr/local/lib/OGRE/Plugin_ParticleFX.dylib
+    /usr/local/lib/OGRE/RenderSystem_GL.dylib
+    freeimage
+    )
 
     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
   endif(APPLE)

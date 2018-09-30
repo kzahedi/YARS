@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <OgreEdgeListBuilder.h>
 
 #define SET_INDICES\

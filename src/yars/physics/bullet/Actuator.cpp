@@ -9,17 +9,17 @@ Actuator::Actuator(string name, string source, string destination, Robot *robot)
 {
   _robot = robot;
 
-  if(source == "")
+  if (source == "")
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "In " << name << ": You need to define a source" << endl;
     YarsErrorHandler::push();
   }
 
-  _sourceObject      = __find(source);
+  _sourceObject = __find(source);
   _destinationObject = __find(destination);
 
-  if(_sourceObject == NULL)
+  if (_sourceObject == NULL)
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "In " << name << ": Source " << source << " was not found.";
@@ -27,23 +27,25 @@ Actuator::Actuator(string name, string source, string destination, Robot *robot)
   }
 }
 
-Object* Actuator::__find(string name)
+Object *Actuator::__find(string name)
 {
-  for(std::vector<Object*>::iterator o = _robot->o_begin(); o != _robot->o_end(); o++)
+  for (std::vector<Object *>::iterator o = _robot->o_begin(); o != _robot->o_end(); o++)
   {
-    if((*o)->type() == DATA_OBJECT_COMPOSITE)
+    if ((*o)->type() == DATA_OBJECT_COMPOSITE)
     {
-      for(std::vector<Object*>::iterator co = (*o)->begin(); co != (*o)->end(); co++)
+      for (std::vector<Object *>::iterator co = (*o)->begin(); co != (*o)->end(); co++)
       {
-        if((*co)->data()->name() == name) return (*co);
+        if ((*co)->data()->name() == name)
+          return (*co);
       }
     }
     else
     {
-      if((*o)->data()->name() == name) return (*o);
+      if ((*o)->data()->name() == name)
+        return (*o);
     }
   }
-  if(name != "")
+  if (name != "")
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "Actuators: Cannot find object \"" << name << "\"" << endl;
@@ -52,12 +54,12 @@ Object* Actuator::__find(string name)
   return NULL;
 }
 
-vector<btTypedConstraint*>::iterator Actuator::c_begin()
+vector<btTypedConstraint *>::iterator Actuator::c_begin()
 {
   return _constraints.begin();
 }
 
-vector<btTypedConstraint*>::iterator Actuator::c_end()
+vector<btTypedConstraint *>::iterator Actuator::c_end()
 {
   return _constraints.end();
 }
@@ -66,4 +68,3 @@ int Actuator::c_size()
 {
   return (int)_constraints.size();
 }
-

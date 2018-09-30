@@ -5,7 +5,7 @@
 #include <yars/view/gui/GuiMutex.h>
 #include <yars/util/Timer.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 YarsViewModel::YarsViewModel()
 {
@@ -25,7 +25,8 @@ YarsViewModel::YarsViewModel()
     initialiseView();
     _ogreHandler->setupSceneManager();
     FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)(*i)->setupOSD();
+    if ((*i) != NULL)
+      (*i)->setupOSD();
     if (__YARS_GET_USE_CAPTURE_CL)
       toggleCaptureVideo();
   }
@@ -44,7 +45,8 @@ void YarsViewModel::initialiseView()
   if (data->screens() == NULL)
     return;
   FOREACHP(DataScreen *, i, data->screens())
-  if ((*i)->autoShow()) __createWindow();
+  if ((*i)->autoShow())
+    __createWindow();
 }
 
 void YarsViewModel::visualiseScene()
@@ -56,11 +58,13 @@ void YarsViewModel::visualiseScene()
   _ogreHandler->step();
 
   FOREACH(SdlWindow *, i, _windowManager)
-  if ((*i) != NULL)(*i)->step();
+  if ((*i) != NULL)
+    (*i)->step();
   while (SDL_PollEvent(&_event))
   {
     FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)(*i)->handleEvent(_event);
+    if ((*i) != NULL)
+      (*i)->handleEvent(_event);
   }
 }
 

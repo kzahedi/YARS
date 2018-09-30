@@ -2,7 +2,7 @@
 
 #include <yars/types/Colour.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 SceneGraphProximitySensor::SceneGraphProximitySensor(DataGenericProximitySensor *data,
                                                      Ogre::SceneNode *r, Ogre::SceneManager *sm)

@@ -21,50 +21,59 @@
 
 using namespace std;
 
-Object* ObjectFactory::create(DataObject *object)
+Object *ObjectFactory::create(DataObject *object)
 {
-  switch(object->type())
+  switch (object->type())
   {
-    case DATA_OBJECT_SPHERE:          return __sphere(object);   break;
-    case DATA_OBJECT_BOX:             return __box(object);      break;
-    case DATA_OBJECT_CYLINDER:        return __cylinder(object); break;
-    case DATA_OBJECT_CAPPED_CYLINDER: return __capsule(object);  break;
-    case DATA_OBJECT_COMPOSITE:       return __compound(object); break;
-    case DATA_OBJECT_PLY:             return __ply(object);      break;
+  case DATA_OBJECT_SPHERE:
+    return __sphere(object);
+    break;
+  case DATA_OBJECT_BOX:
+    return __box(object);
+    break;
+  case DATA_OBJECT_CYLINDER:
+    return __cylinder(object);
+    break;
+  case DATA_OBJECT_CAPPED_CYLINDER:
+    return __capsule(object);
+    break;
+  case DATA_OBJECT_COMPOSITE:
+    return __compound(object);
+    break;
+  case DATA_OBJECT_PLY:
+    return __ply(object);
+    break;
   }
   YarsErrorHandler::push("ObjectFactory::create error. Unknown type given %d.", object->type());
   return NULL;
 }
 
-
-Object* ObjectFactory::__sphere(DataObject *object)
+Object *ObjectFactory::__sphere(DataObject *object)
 {
-  return new Sphere((DataSphere*)object);
+  return new Sphere((DataSphere *)object);
 }
 
-
-Object* ObjectFactory::__box(DataObject *object)
+Object *ObjectFactory::__box(DataObject *object)
 {
-  return new Box((DataBox*)object);
+  return new Box((DataBox *)object);
 }
 
-Object* ObjectFactory::__ply(DataObject *object)
+Object *ObjectFactory::__ply(DataObject *object)
 {
-  return new Ply((DataPly*)object, false);
+  return new Ply((DataPly *)object);
 }
 
-Object* ObjectFactory::__capsule(DataObject *object)
+Object *ObjectFactory::__capsule(DataObject *object)
 {
-  return new Capsule((DataCapsule*)object);
+  return new Capsule((DataCapsule *)object);
 }
 
-Object* ObjectFactory::__cylinder(DataObject *object)
+Object *ObjectFactory::__cylinder(DataObject *object)
 {
-  return new Cylinder((DataCylinder*)object);
+  return new Cylinder((DataCylinder *)object);
 }
 
-
-Object* ObjectFactory::__compound(DataObject *object)
+Object *ObjectFactory::__compound(DataObject *object)
 {
-  return new Composite((DataComposite*)object);
+  return new Composite((DataComposite *)object);
 }

@@ -7,7 +7,7 @@
 #include <yars/util/macros.h>
 #include <yars/util/OSD.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 #ifndef __APPLE__
 namespace _SDL_
@@ -104,11 +104,6 @@ SdlWindow::SdlWindow(int index)
   _captureRunning = false;
   _videoCapture = NULL;
 #endif // USE_CAPTURE_VIDEO
-
-  _window->resize(_windowConfiguration->geometry.width(),
-                  _windowConfiguration->geometry.height());
-
-  _window->windowMovedOrResized();
 }
 
 void SdlWindow::wait()
@@ -144,7 +139,7 @@ void SdlWindow::step()
     _currentTime = SDL_GetTicks();
     if (_currentTime > _lastTime + 500)
     {
-      int step = __YARS_GET_CONTINOUS_STEP;
+      int step = __YARS_GET_CONTINUOUS_STEP;
 
       double rt = (double)(step - _lastStep) / ((double)__YARS_GET_SIMULATOR_FREQUENCY);
       // double f    = (double)_fps;
@@ -312,7 +307,6 @@ void SdlWindow::handleEvent(SDL_Event &event)
     __handleFingerDown(event);
     break;
   }
-
   step();
 }
 
@@ -325,8 +319,8 @@ SdlWindow::~SdlWindow()
 
 void SdlWindow::__setupSDL()
 {
-  // SDL_Init(SDL_INIT_EVERYTHING);
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_EVERYTHING);
+  // SDL_Init(SDL_INIT_VIDEO);
 
   if (__YARS_GET_USE_WINDOW_GEOMETRY)
   {
@@ -446,6 +440,11 @@ void SdlWindow::__setupSDL()
   _windowID = SDL_GetWindowID(_sdlWindow);
 
   SDL_RecordGesture(-1);
+  _window->setActive(true);
+  _viewport->update();
+  _window->setActive(true);
+  _window->setVisible(true);
+  // glutSwapBuffers();
 }
 
 void SdlWindow::setupOSD()

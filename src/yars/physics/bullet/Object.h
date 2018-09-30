@@ -9,7 +9,7 @@
 class Object : public std::vector<Object *>
 {
 public:
-  Object(DataObject *data, bool isComposite);
+  Object(DataObject *data);
   ~Object();
 
   void reset();
@@ -33,7 +33,7 @@ public:
   bool isVisible();
   void setIsVisible(bool visible);
   int type();
-  virtual void init() {};
+  virtual void init(){};
 
   void setMotionState(btMotionState *);
 
@@ -51,7 +51,6 @@ private:
   int _type;
   bool _collided;
   bool _isVisible;
-  bool _isComposite;
 };
 
 #endif // __OBJECT_H__

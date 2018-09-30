@@ -2,14 +2,13 @@
 #include <yars/types/Quaternion.h>
 #include <yars/types/P3D.h>
 
-Object::Object(DataObject *data, bool isComposite)
+Object::Object(DataObject *data)
 {
   _data = data;
   _isVisible = true;
   _collisionShape = NULL;
   _rigidBody = NULL;
   _softBody = NULL;
-  _isComposite = isComposite;
   if (_data != NULL)
     _type = _data->type();
   __setInitialValues();

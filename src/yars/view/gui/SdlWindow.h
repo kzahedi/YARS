@@ -11,7 +11,7 @@
 #include <yars/view/gui/OgreHandler.h>
 #include <yars/view/gui/GuiMutex.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <SDL2/SDL.h>
 
 #ifdef USE_CAPTURE_VIDEO

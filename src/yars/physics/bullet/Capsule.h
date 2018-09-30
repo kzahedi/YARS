@@ -8,7 +8,7 @@
 class Capsule : public Object
 {
 public:
-  Capsule(DataCapsule *capsule, bool isComposite = false);
+  Capsule(DataCapsule *capsule);
 
   void init();
 

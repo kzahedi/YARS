@@ -5,7 +5,7 @@
 #include <yars/configuration/data/DataTraceLine.h>
 #include <yars/types/Colour.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 class SceneGraphTraceLineObject : public SceneGraphObjectNode
 {

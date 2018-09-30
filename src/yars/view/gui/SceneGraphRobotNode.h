@@ -6,7 +6,7 @@
 #include <yars/view/gui/SceneGraphLDRSensor.h>
 #include <yars/view/gui/SceneGraphObjectNode.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <vector>
 
 using namespace std;

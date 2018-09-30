@@ -5,7 +5,7 @@
 #include <yars/configuration/data/DataGenericProximitySensor.h>
 #include <yars/types/P3D.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 #include <vector>
 

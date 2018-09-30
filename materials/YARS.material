@@ -572,7 +572,7 @@ material YARS/Flare
 
       texture_unit
       {
-        texture flare.png
+        texture flare.jpg
       }
     }
   }
@@ -591,7 +591,7 @@ material YARS/Flare2
 
       texture_unit
       {
-        texture flaretrail.png
+        texture flaretrail.jpg
       }
     }
   }
@@ -627,7 +627,7 @@ material YARS/FlyingLightMaterial
       depth_write off
       texture_unit
       {
-        texture flare.png
+        texture flare.jpg
       }
     }
   }

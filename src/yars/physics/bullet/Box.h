@@ -7,12 +7,12 @@
 
 class Box : public Object
 {
-  public:
-    Box(DataBox *box, bool isComposite = false);
-    void init();
+public:
+  Box(DataBox *box);
+  void init();
 
-  private:
-    DataBox* _data;
+private:
+  DataBox *_data;
 };
 
 #endif // __BOX_H__

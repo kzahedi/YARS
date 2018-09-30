@@ -1,7 +1,7 @@
 #include "Capsule.h"
 #include "MyMotionState.h"
 
-Capsule::Capsule(DataCapsule *data, bool isComposite) : Object(data, isComposite)
+Capsule::Capsule(DataCapsule *data) : Object(data)
 {
   _data = data;
   init();

@@ -2,7 +2,7 @@
 
 #include <yars/types/Colour.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 #define RESOLUTION 16
 #define LENGTH 0.025

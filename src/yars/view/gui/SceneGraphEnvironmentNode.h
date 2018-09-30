@@ -4,7 +4,7 @@
 #include <yars/configuration/data/DataEnvironment.h>
 #include <yars/view/gui/SceneGraphObjectNode.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 #include <vector>
 

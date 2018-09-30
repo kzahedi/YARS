@@ -9,8 +9,6 @@ add_definitions(-DYARS_COMPILER_VERSION='"${CMAKE_CXX_COMPILER}"')
 
 add_definitions(-DYARS_INSTALL_PATH='"${CMAKE_INSTALL_PREFIX}"')
 
-add_definitions(-DBOOST_VERSION='${Boost_VERSION}')
-
 if(YARS_EXAMPLES)
   add_definitions(-DWITH_EXAMPLES)
 endif(YARS_EXAMPLES)

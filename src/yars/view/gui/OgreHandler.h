@@ -4,7 +4,7 @@
 #include <yars/view/gui/SceneGraph.h>
 #include <yars/view/gui/TextOverlay.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #if __APPLE__
 #include <RenderSystems/GL/OgreGLPlugin.h>
 #include <Plugins/ParticleFX/OgreParticleFXPlugin.h>

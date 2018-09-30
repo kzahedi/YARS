@@ -30,16 +30,18 @@ OgreHandler::OgreHandler()
 #endif                                // __APPLE__
 
 #ifdef __APPLE__
-  _GLPlugin = new Ogre::GLPlugin();
-  _GLPlugin->install();
+  // _GLPlugin = new Ogre::GLPlugin();
+  // _GLPlugin->install();
 
-  _particlePlugin = new Ogre::ParticleFXPlugin();
-  _particlePlugin->install();
-
-  // _root->loadPlugin("Plugin_ParticleFX");
-  // _root->loadPlugin("Plugin_ParticleFX");
+  // _particlePlugin = new Ogre::ParticleFXPlugin();
+  // _particlePlugin->install();
+  _root->loadPlugin("Plugin_ParticleFX");
+  _root->loadPlugin("RenderSystem_GL");
+  _root->loadPlugin("Codec_FreeImage");
 #else  // __APPLE__
   _root->loadPlugin("Plugin_ParticleFX");
+  _root->loadPlugin("RenderSystem_GL");
+  // _root->loadPlugin("Codec_FreeImage");
 #endif // __APPLE__
 
   if (_root->getAvailableRenderers().size() != 1)

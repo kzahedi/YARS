@@ -5,7 +5,7 @@
 #include <yars/view/gui/SceneGraphEnvironmentNode.h>
 #include <yars/view/gui/SceneGraphTraceLineObject.h>
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 
 #include <vector>
 

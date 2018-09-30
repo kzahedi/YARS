@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
-find_package(Boost REQUIRED program_options filesystem date_time system)
+find_package(Boost REQUIRED program_options filesystem date_time system thread)
 IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 ENDIF(Boost_FOUND)
@@ -36,7 +36,12 @@ endif(YARS_DOCS)
 
 IF(YARS_USE_VISUALISATION)
 
+set(OGRE_INCLUDE_DIR /usr/include/OGRE)
+IF(APPLE)
   set(OGRE_INCLUDE_DIR /usr/local/include/OGRE)
+ENDIF(APPLE)
+  set(OGRE_STATIC false)
+  # set(OGRE_INCLUDE_DIR /Library/Frameworks/Ogre.framework/Versions/1.11.3/Headers
 
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})

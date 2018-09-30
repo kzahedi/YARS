@@ -1,7 +1,7 @@
 #include "Cylinder.h"
 #include "MyMotionState.h"
 
-Cylinder::Cylinder(DataCylinder *data, bool isComposite) : Object(_data, isComposite)
+Cylinder::Cylinder(DataCylinder *data) : Object(data)
 {
   _data = data;
   init();

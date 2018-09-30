@@ -76,7 +76,7 @@ endif ()
     set(OGRE_LIBRARY_NAMES "OgreMain${OGRE_LIB_SUFFIX}")
 #endif()
 get_debug_names(OGRE_LIBRARY_NAMES)
-          
+
 # construct search paths from environmental hints and
 # OS specific guesses
 if (WIN32)
@@ -224,6 +224,7 @@ if (OGRE_INCLUDE_DIR)
       set(OGRE_INCOMPATIBLE TRUE)
     endif ()
   else ()
+    message(OGRE_CONFIG_HEADER)
     pkg_message(OGRE "Could not determine Ogre build configuration.")
     set(OGRE_INCOMPATIBLE TRUE)
   endif ()

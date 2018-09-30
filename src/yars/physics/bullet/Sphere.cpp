@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include "MyMotionState.h"
 
-Sphere::Sphere(DataSphere *data, bool isComposite) : Object(data, isComposite)
+Sphere::Sphere(DataSphere *data) : Object(data)
 {
   _data = data;
   init();

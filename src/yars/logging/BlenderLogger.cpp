@@ -8,9 +8,9 @@
 BlenderLogger::BlenderLogger(DataLoggingBlender *data)
 {
   _data = data;
-  if(_data->framerate() > 0)
+  if (_data->framerate() > 0)
   {
-    if(__YARS_GET_SIMULATOR_FREQUENCY % _data->framerate() != 0)
+    if (__YARS_GET_SIMULATOR_FREQUENCY % _data->framerate() != 0)
     {
       YarsErrorHandler::push("Simulator frequency must be a multiple of the blender frame rate.");
     }
@@ -22,27 +22,26 @@ BlenderLogger::BlenderLogger(DataLoggingBlender *data)
   }
 }
 
-
 void BlenderLogger::update()
 {
-  if(__YARS_GET_STEP % _step == 0 || __YARS_GET_STEP == 1)
+  if (__YARS_GET_STEP % _step == 0 || __YARS_GET_STEP == 1)
   {
     _oss.str("");
     _oss << "Frame," << __YARS_GET_STEP << ",";
     DataRobots *robots = Data::instance()->current()->robots();
-    for(DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
+    for (DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
     {
       string name = (*r)->name();
-      for(DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
+      for (DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
       {
         Pose p = (*o)->pose();
         _oss << name << " " << (*o)->name() << ","
-          << p.position.x << "," << p.position.y << "," << p.position.z << ","
-          << p.orientation.x << "," << p.orientation.y << "," << p.orientation.z << ",";
+             << p.position.x << "," << p.position.y << "," << p.position.z << ","
+             << p.orientation.x << "," << p.orientation.y << "," << p.orientation.z << ",";
       }
     }
     string s = _oss.str();
-    _output << s.substr(0, s.size()-1) << endl;
+    _output << s.substr(0, s.size() - 1) << endl;
   }
 }
 
@@ -53,7 +52,7 @@ void BlenderLogger::init()
   Y_INFO(_oss.str());
 
   _output.open(_data->filename().c_str());
-  if(_data->cfg() != "")
+  if (_data->cfg() != "")
   {
     _oss.str("");
     _oss << "writing cfg file " << _data->cfg();
@@ -62,10 +61,10 @@ void BlenderLogger::init()
     names.open(_data->cfg().c_str());
     names << "Frame Index" << endl;
     DataRobots *robots = Data::instance()->current()->robots();
-    for(DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
+    for (DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
     {
       string name = (*r)->name();
-      for(DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
+      for (DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
       {
         _oss.str("");
         _oss << name << " " << (*o)->name() << endl;

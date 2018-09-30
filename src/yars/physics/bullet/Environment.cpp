@@ -63,7 +63,7 @@ void Environment::__init()
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
     groundRigidBody->setCollisionFlags(groundRigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-    Object *ground = new Object(NULL, false);
+    Object *ground = new Object(NULL);
     ground->setRigidBody(groundRigidBody);
     push_back(ground);
   }

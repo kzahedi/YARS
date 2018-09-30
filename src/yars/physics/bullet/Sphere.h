@@ -7,19 +7,13 @@
 
 class Sphere : public Object
 {
-  public:
-    Sphere(DataSphere *sphere, bool isComposite = false);
+public:
+  Sphere(DataSphere *sphere);
 
-    void init();
+  void init();
 
 private:
-
-  DataSphere* _data;
-
+  DataSphere *_data;
 };
 
 #endif // __SPHERE_H__
-
-
-
-
