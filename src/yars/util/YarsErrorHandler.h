@@ -4,26 +4,25 @@
 #include <string>
 #include <sstream>
 
-#include "Observable.h"
-#include "ObservableMessage.h"
+// #include "Observable.h"
+// #include "ObservableMessage.h"
 
 using namespace std;
 
-class YarsErrorHandler : public stringstream, public Observable
+class YarsErrorHandler : public stringstream
 {
-  public:
-    static YarsErrorHandler* instance();
+public:
+  static YarsErrorHandler *instance();
 
-    static void push();
-    static void push(const char *string, ...);
-    static void push(string message);
+  static void push();
+  static void push(const char *string, ...);
+  static void push(string message);
 
-    string message();
+  string message();
 
-  private:
-    YarsErrorHandler();
+private:
+  YarsErrorHandler();
 
-    static YarsErrorHandler *_me;
-
+  static YarsErrorHandler *_me;
 };
 #endif // __YARS_ERROR_HANDLER_H__

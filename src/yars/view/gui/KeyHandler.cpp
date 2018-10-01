@@ -92,9 +92,7 @@ int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
 
 void KeyHandler::reinitAndResetSimulation()
 {
-  __YARS_SET_USE_PAUSE(true);
-  _o->notifyObservers(_m_reset);
-  __YARS_SET_USE_PAUSE(false);
+  __YARS_SET_RESET_SIMULATION;
 }
 
 // void KeyHandler::closeWindow()

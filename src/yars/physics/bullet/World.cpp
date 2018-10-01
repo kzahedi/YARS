@@ -63,16 +63,6 @@ World::World()
 
 World::~World()
 {
-  // if (_broadphase != NULL)
-  //   delete _broadphase;
-  // if (_dispatcher != NULL)
-  //   delete _dispatcher;
-  // if (_solver != NULL)
-  //   delete _solver;
-  // if (_collisionConfiguration != NULL)
-  //   delete _collisionConfiguration;
-  // if (_world != NULL)
-
   delete _world;
   delete _solver;
   delete _broadphase;

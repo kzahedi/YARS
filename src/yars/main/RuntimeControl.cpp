@@ -1,4 +1,5 @@
 #include <yars/main/RuntimeControl.h>
+#include <yars/configuration/YarsConfiguration.h>
 #include <yars/view/console/ConsoleView.h>
 #include <yars/configuration/YarsConfiguration.h>
 #include <yars/util/Random.h>
@@ -61,9 +62,7 @@ void RuntimeControl::notify(ObservableMessage *m)
     {
       if (__YARS_GET_STEP > 0 && __YARS_GET_STEP % __YARS_GET_RESET == 0)
       {
-        __YARS_SET_USE_PAUSE(true);
-        notifyObservers(_m_reset);
-        __YARS_SET_USE_PAUSE(false);
+        __YARS_SET_RESET_SIMULATION;
       }
     }
 
