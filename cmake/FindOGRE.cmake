@@ -18,7 +18,7 @@
 # Once done, this will define
 #
 #  OGRE_FOUND - system has OGRE
-#  OGRE_INCLUDE_DIRS - the OGRE include directories 
+#  OGRE_INCLUDE_DIRS - the OGRE include directories
 #  OGRE_LIBRARIES - link these to use the OGRE core
 #  OGRE_BINARY_REL - location of the main Ogre binary (win32 non-static only, release)
 #  OGRE_BINARY_DBG - location of the main Ogre binaries (win32 non-static only, debug)

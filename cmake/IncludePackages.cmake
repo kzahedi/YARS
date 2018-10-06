@@ -36,18 +36,12 @@ endif(YARS_DOCS)
 
 IF(YARS_USE_VISUALISATION)
 
-set(OGRE_INCLUDE_DIR /usr/include/OGRE)
-IF(APPLE)
-  set(OGRE_INCLUDE_DIR /usr/local/include/OGRE)
-ENDIF(APPLE)
-  set(OGRE_STATIC false)
-  # set(OGRE_INCLUDE_DIR /Library/Frameworks/Ogre.framework/Versions/1.11.3/Headers
-
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX RenderSystem_GL)
-  include_directories(${OGRE_INCLUDE_DIR})
+  set(OGRE_STATIC false)
+  find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX)
+  include_directories(${OGRE_INCLUDE_DIRS})
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)

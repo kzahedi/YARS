@@ -8,7 +8,7 @@ add_library(YarsControllerNIL SHARED NIL.cpp)
 add_library(YarsControllerSine SHARED SineController.cpp)
 
 add_library(YarsControllerSquareWave SHARED SquareWave.cpp)
-target_link_libraries(YarsControllerSquareWave YarsRobotController)
+target_link_libraries(YarsControllerSquareWave YarsRobotController boost_system boost_date_time)
 
 add_library(YarsControllerBraitenberg2b SHARED Braitenberg2b.cpp)
 target_link_libraries(YarsControllerBraitenberg2b

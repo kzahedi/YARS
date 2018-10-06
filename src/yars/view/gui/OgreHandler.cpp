@@ -24,10 +24,10 @@ OgreHandler::OgreHandler()
   lm->createLog("ogre.log", true, false, false); // create silent logging
 
 #ifdef __APPLE__
-  _root = new Ogre::Root("", "", ""); // no log file created here (see 1 line above)
-#else                                 // __APPLE__
+  _root = new Ogre::Root("plugins.cfg", "", ""); // no log file created here (see 1 line above)
+#else                                            // __APPLE__
   _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
-#endif                                // __APPLE__
+#endif                                           // __APPLE__
 
 #ifdef __APPLE__
   // _GLPlugin = new Ogre::GLPlugin();
@@ -35,9 +35,9 @@ OgreHandler::OgreHandler()
 
   // _particlePlugin = new Ogre::ParticleFXPlugin();
   // _particlePlugin->install();
-  _root->loadPlugin("Plugin_ParticleFX");
-  _root->loadPlugin("RenderSystem_GL");
-  _root->loadPlugin("Codec_FreeImage");
+  // _root->loadPlugin("Plugin_ParticleFX");
+  // _root->loadPlugin("RenderSystem_GL");
+  // _root->loadPlugin("Codec_FreeImage");
 #else  // __APPLE__
   _root->loadPlugin("Plugin_ParticleFX");
   _root->loadPlugin("RenderSystem_GL");

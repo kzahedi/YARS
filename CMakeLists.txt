@@ -22,8 +22,8 @@ set(YARS_MAJOR 0)
 set(YARS_MINOR 7)
 set(YARS_PATCH 28)
 
-INCLUDE(cmake/IncludePackages.cmake) # must be called first
 INCLUDE(cmake/SetOptions.cmake)
+INCLUDE(cmake/IncludePackages.cmake) # must be called first
 INCLUDE(cmake/SetDirectories.cmake)
 INCLUDE(cmake/SetCompilerSettings.cmake)
 INCLUDE(cmake/SetDefinitions.cmake)

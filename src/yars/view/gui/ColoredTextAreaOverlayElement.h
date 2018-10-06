@@ -1,6 +1,6 @@
 #include <vector>
 #if __APPLE__
-#include <Overlay/OgreTextAreaOverlayElement.h>
+#include <OGRE/Overlay/OgreTextAreaOverlayElement.h>
 #else
 #include <OGRE/Overlay/OgreTextAreaOverlayElement.h>
 #endif

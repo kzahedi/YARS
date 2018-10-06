@@ -11,6 +11,8 @@ add_subdirectory(rc)
 
 target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE}) # ${Boost_LIBRARIES}) # ${BULLET_LIBRARIES})
 target_link_libraries(${YARS_TARGET} ${Boost_LIBRARIES})
+target_link_libraries(${YARS_TARGET} boost_program_options)
+
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)
 target_link_libraries(${YARS_TARGET} YarsConfiguration)
@@ -35,27 +37,18 @@ if(YARS_USE_VISUALISATION)
   add_subdirectory(view/gui)
 
   if(APPLE)
-    target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES} OgreOverlay
-    /usr/local/lib/OGRE/Plugin_ParticleFX.dylib
-    /usr/local/lib/OGRE/RenderSystem_GL.dylib
-    freeimage
-    )
+    target_link_libraries(${YARS_TARGET} freeimage freetype zzip z ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
 
-    SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
+     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
+      # "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreMain -framework Cocoa")
   endif(APPLE)
 
   if(UNIX AND NOT APPLE)
     target_link_libraries(${YARS_TARGET}
       X11 GL z Xt zzip freeimage freetype
-      # ${OGRE_RenderSystem_GL_LIBRARIES}
-      # ${OGRE_Plugin_ParticleFX_LIBRARIES}
-      )
+  ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
 
-    target_link_libraries(${YARS_TARGET}
-      /usr/lib/x86_64-linux-gnu/libOgreMain.so
-      /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
-      )
-  endif(UNIX AND NOT APPLE)
+    endif(UNIX AND NOT APPLE)
 
   target_link_libraries(${YARS_TARGET} SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)

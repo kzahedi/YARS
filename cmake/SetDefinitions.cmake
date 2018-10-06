@@ -1,12 +1,4 @@
 ## TODO make optional
-add_definitions(-D${YARS_LOCALE})
-
-add_definitions(-DYARS_VERSION='"${YARS_MAJOR}.${YARS_MINOR}.${YARS_PATCH}"')
-
-add_definitions(-DYARS_COMPILED_OS="${CMAKE_SYSTEM}")
-
-add_definitions(-DYARS_COMPILER_VERSION='"${CMAKE_CXX_COMPILER}"')
-
 add_definitions(-DYARS_INSTALL_PATH='"${CMAKE_INSTALL_PREFIX}"')
 
 if(YARS_EXAMPLES)
@@ -24,16 +16,6 @@ ENDif(YARS_USE_CAPTURE_VIDEO)
 if(YARS_USE_GL_CALL_LIST_WORKAROUND)
   add_definitions(-DUSE_glCallList_WORKAROUND)
 endif(YARS_USE_GL_CALL_LIST_WORKAROUND)
-
-add_definitions(-DYARS_NAME="${YARS_TARTGET}")
-
-if(YARS_USE_OPEN_SG)
-  add_definitions(-DUSE_OPEN_SG)
-endif(YARS_USE_OPEN_SG)
-
-IF(YARS_SUPPRESS_OUTPUT)
-  add_definitions(-DSUPPRESS_ALL_OUTPUT)
-endif(YARS_SUPPRESS_OUTPUT)
 
 IF(YARS_USE_SOFT_BODIES)
   add_definitions(-DUSE_SOFT_BODIES)

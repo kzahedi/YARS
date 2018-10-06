@@ -6,6 +6,8 @@
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
 
+#include <yars/configuration/data/XmlChangeLog.h>
+
 #include <boost/program_options/parsers.hpp>
 #include <fstream>
 
@@ -425,13 +427,11 @@ void ProgramOptions::__help()
   __exit(0);
 }
 
+
 void ProgramOptions::__version()
 {
 #ifndef _MSC_VER
-  cout << "yars version "     << YARS_VERSION << endl;
-  cout << "  compiled date: " << __DATE__ << endl;
-  cout << "  compiled with: " << YARS_COMPILER_VERSION << endl;
-  cout << "  compiled for:  " << YARS_COMPILED_OS << endl;
+  cout << "yars version "     << XmlChangeLog::version() << endl;
 #else
   cout << "--version currently not supported on windows" << endl;
 #endif

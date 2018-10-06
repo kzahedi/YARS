@@ -15,22 +15,11 @@ Ply::Ply(DataPly *data) : Object(data)
 {
   _data = data;
 
-  if (_vertices != NULL)
-  {
-    delete _vertices;
-  }
-  if (_indices != NULL)
-  {
-    delete _indices;
-  }
-  if (_indexVertexArrays != NULL)
-  {
-    delete _indexVertexArrays;
-  }
-  if (_trimesh != NULL)
-  {
-    delete _trimesh;
-  }
+  _vertices = NULL;
+  _indices = NULL;
+  _indexVertexArrays = NULL;
+  _trimesh = NULL;
+
   init();
 }
 
@@ -170,9 +159,9 @@ void Ply::__rigid()
       _trimesh->addTriangle(_vertices[3 * i], _vertices[3 * i + 1], _vertices[3 * i + 2]);
     }
 
-    cout << "using convex approximation" << endl;
-    cout << "number of _vertices: " << _nVertices << endl;
-    cout << "number of triangles: " << _nTriangles << endl;
+    // cout << "using convex approximation" << endl;
+    // cout << "number of _vertices: " << _nVertices << endl;
+    // cout << "number of triangles: " << _nTriangles << endl;
 
     // btConvexShape* tmpConvexShape = new btConvexTriangleMeshShape(_trimesh);
     btConvexTriangleMeshShape *tmpConvexShape = new btConvexTriangleMeshShape(_trimesh);
