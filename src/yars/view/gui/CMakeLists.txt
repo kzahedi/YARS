@@ -3,6 +3,7 @@ include_directories(/Library/Frameworks/OgreOverlay.framework/Headers)
 set(GUI_SOURCES SdlWindow.cpp
                 SceneGraph.cpp
                 SceneGraphRobotNode.cpp
+                SceneGraphMuscleNode.cpp
                 SceneGraphObjectFactory.cpp
                 SceneGraphCapsuleNode.cpp
                 SceneGraphCylinderNode.cpp

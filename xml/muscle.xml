@@ -35,13 +35,12 @@
     <followables>
       <followable name="swinging body"/>
     </followables>
-    <visualise>
+    <!-- <visualise>
       <joints height="0.5" radius="0.01"/>
-    </visualise>
+    </visualise> -->
   </screens>
 
   <environment>
-    <!-- <gravitation x="0.0" y="0.0" z="-9.81"/> -->
     <ground fixed="true" fog="false">
       <visualisation>
         <texture name="YARS/DryGroundSmall"/>
@@ -51,7 +50,7 @@
 
   <robots>
 
-    <robot name="Muscle">
+    <robot name="Muscle 3">
       <body>
         <sphere name="source body" visualise="true">
           <dimension radius="0.10"/>
@@ -75,9 +74,6 @@
         </sphere>
       </body>
       <actuators>
-        <!--
-      standard values from the 2015 paper
-      -->
         <muscle name="muscle" visualise="true" friction="0.00001" cfm="0.1" erp="1.0">
           <source name="source body"/>
           <destination name="destination body"/>
@@ -95,7 +91,7 @@
           </srcAnchor>
           <dstAnchor>
             <sphere name="destination anchor" visualise="true">
-              <dimension radius="0.05"/>
+              <dimension radius="0.025"/>
               <pose x="0.0" y="0.0" z="0.1"/>
               <visualisation>
                 <texture name="Chain/Circuit/Top/Blue"/>
@@ -108,76 +104,26 @@
           <force max="2.0"/>
           <velocity max="0.5"/>
           <deflection min="-0.5" max="0.5"/>
-          <mapping    min="0"   max="+1"/>
-          <lengthComponent   optimalLength="1.0" w="1.5" c="5.0" use="true"/>
-          <velocityComponent maxVelocity="-3.5"  N="1.5" K="1.5" use="false"/>
-          <regular           softness="1.0"      damping="1.0" restitution="0.7"/>
-          <limit             softness="1.0"      damping="1.0" restitution="0.7"/>
-          <orthogonal        softness="1.0"      damping="1.0" restitution="0.7"/>
-          </muscle>
+          <mapping min="0" max="+1"/>
+          <lengthComponent optimalLength="1.0" w="1.5" c="5.0" use="true"/>
+          <velocityComponent maxVelocity="-3.5" N="1.5" K="1.5" use="false"/>
+          <regular softness="1.0" damping="1.0" restitution="0.7"/>
+          <limit softness="1.0" damping="1.0" restitution="0.7"/>
+          <orthogonal softness="1.0" damping="1.0" restitution="0.7"/>
+          <visualisation>
+            <top name="YARS/Blue"/>
+            <bottom name="YARS/Blue"/>
+            <body name="YARS/Blue"/>
+          </visualisation>
+        </muscle>
       </actuators>
-      <sensors>
-       <muscle name="muscle sensor">
-        <object name="muscle"/>
-
-        <domain min="0" max="5.0"/>
-        <mapping min="0" max="5.0"/>
-
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2.0"/>
-
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2.0"/>
-
-        <domain min="0" max="2.0"/>
-        <mapping min="0" max="2"/>
-
-        <domain min="-2.0" max="2.0"/>
-        <mapping min="-2.0" max="2"/>
-
-      </muscle>
-      </sensors>
-
       <controller module="SquareWave" frequency="500">
         <parameter name="min" value="0.0"/>
         <parameter name="max" value="1.0"/>
         <parameter name="period" value="2500"/>
-        <!-- <parameter name="debug" value="true"/> -->
       </controller>
     </robot>
 
   </robots>
-
-  <!-- <traces> -->
-  <!-- <trace target="main body" length="5" max="300" time="5" particles="false"> -->
-  <!-- <init colour="ff0000" size="0.01"/> -->
-  <!-- <final colour="ff000000" size="0.00"/> -->
-  <!-- </trace> -->
-  <!-- <trace target="wheel right" length="5" max="200" time="5" particles="false"> -->
-  <!-- <init colour="00ff00" size="0.01"/> -->
-  <!-- <final colour="00ff0000" size="0.00"/> -->
-  <!-- </trace> -->
-  <!-- <trace target="wheel left" length="5" max="100" time="5" particles="false"> -->
-  <!-- <init colour="0000ff" size="0.01"/> -->
-  <!-- <final colour="0000ff00" size="0.00"/> -->
-  <!-- </trace> -->
-  <!-- </traces> -->
-
-  <logging>
-    <actuator target="muscle" precision="3">
-      <desired/>
-      <internal/>
-      <appliedForce/>
-      <appliedVelocity/>
-      <external/>
-    </actuator>
-
-    <console>
-      <target name="muscle"/>
-    </console>
-    <csv name="muscle" date="false">
-      <target name="muscle"/>
-    </csv>
-  </logging>
 
 </rosiml>

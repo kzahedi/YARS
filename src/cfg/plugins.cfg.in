@@ -1,4 +1,4 @@
-#PluginFolder=@OGRE_PLUGINS_DIR@
+PluginFolder=@OGRE_PLUGINS_DIR@
 
 Plugin=RenderSystem_GL
 Plugin=Plugin_ParticleFX

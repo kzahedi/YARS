@@ -64,8 +64,8 @@ func (yc YarsConfiguration) String() string {
 	for _, sensor := range yc.Sensors {
 		s = fmt.Sprintf("%sSensor %s", s, sensor.String())
 	}
-	for _, actautor := range yc.Sensors {
-		s = fmt.Sprintf("%sActuator %s", s, actautor.String())
+	for _, actuator := range yc.Sensors {
+		s = fmt.Sprintf("%sActuator %s", s, actuator.String())
 	}
 	return s
 }
@@ -264,7 +264,7 @@ func yarsSendString(message string) {
 func yarsReadString() string {
 	id, _ := yarsIO.Reader.ReadByte()
 	if string(id) != "s" {
-		fmt.Println("We have a problem: ", string(id))
+		fmt.Printf("We have a problem: Id '%s' is not 's'\n", string(id))
 		os.Exit(-1)
 	}
 	l := yarsReadBytes(4)
@@ -301,7 +301,7 @@ func yarsReadFloatArray() []float32 {
 	var r []float32
 	id, _ := yarsIO.Reader.ReadByte()
 	if string(id) != "D" {
-		fmt.Println("We have a problem: ", string(id))
+		fmt.Printf("We have a problem: Id '%s' is not 'D'\n", string(id))
 		os.Exit(-1)
 	}
 	l := yarsReadBytes(4)

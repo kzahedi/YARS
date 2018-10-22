@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/go-gl/gl/v3.2-core/gl"
@@ -34,21 +35,27 @@ func init() {
 }
 
 func main() {
-	xmlFile := flag.String("xml", "", "xml file")
-	cfgFile := flag.String("cfg", "", "cfg file")
+	xmlFilePtr := flag.String("xml", "", "xml file")
+	portPtr := flag.Int("port", 0, "port")
+	cfgFilePtr := flag.String("cfg", "", "cfg file")
 	flag.Parse()
 
+	if *portPtr > 0 {
+		port = []byte(fmt.Sprintf("%d", *portPtr))
+	} else {
+		port = make([]byte, 6, 6)
+	}
+
 	filename = make([]byte, 1024, 1024)
-	if len(*xmlFile) > 0 {
-		for i, v := range *xmlFile {
+	if len(*xmlFilePtr) > 0 {
+		for i, v := range *xmlFilePtr {
 			filename[i] = byte(v)
 		}
 	}
 
-	cfg, err = ReadCfg(*cfgFile)
+	cfg, err = ReadCfg(*cfgFilePtr)
 
 	isInitialised = false
-	port = make([]byte, 6, 6)
 
 	if err := glfw.Init(); err != nil {
 		closer.Fatalln(err)
@@ -67,7 +74,7 @@ func main() {
 	log.Printf("glfw: created window %dx%d", width, height)
 
 	if err := gl.Init(); err != nil {
-		closer.Fatalln("opengl: init failed:", err)
+		closer.Fatalln("OpenGL: init failed:", err)
 	}
 	gl.Viewport(0, 0, int32(width), int32(height))
 
@@ -114,7 +121,7 @@ func main() {
 
 func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
-	bounds := nk.NkRect(float32(cfg.Window.Width-255), float32(cfg.Window.Height-140), 255, 130)
+	bounds := nk.NkRect(float32(cfg.Window.Width-255), float32(cfg.Window.Height-170), 255, 160)
 	update := nk.NkBegin(ctx, "YARS Control Panel", bounds,
 		nk.WindowBorder|nk.WindowMovable|nk.WindowMinimizable|nk.WindowTitle)
 
@@ -124,16 +131,27 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 			nk.NkEditStringZeroTerminated(ctx, nk.EditField, filename, 1024, nk.NkFilterDefault)
 
 		}
+		nk.NkLayoutRowDynamic(ctx, 30, 1)
+		{
+			nk.NkEditStringZeroTerminated(ctx, nk.EditField, port, 1024, nk.NkFilterDefault)
+		}
 		nk.NkLayoutRowDynamic(ctx, 30, 3)
 		{
 			if nk.NkButtonLabel(ctx, "start") > 0 {
-				port := YarsStart(string(filename))
-				if port > 0 {
-					err := YarsConnect(port)
-					if err != nil {
-						panic(err)
-					}
+				pStr := string(port)
+				p, _ := strconv.ParseInt(pStr, 10, 64)
+				if p > 0 {
+					YarsConnect(int(p))
 					isInitialised = true
+				} else {
+					port := YarsStart(string(filename))
+					if port > 0 {
+						err := YarsConnect(port)
+						if err != nil {
+							panic(err)
+						}
+						isInitialised = true
+					}
 				}
 			}
 			if nk.NkButtonLabel(ctx, "reset") > 0 {

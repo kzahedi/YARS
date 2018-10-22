@@ -4,27 +4,28 @@
 
 #include <stdio.h>
 
-#define __ACTUATORS_STRING     "ACTUATORS"
-#define __SENSORS_STRING       "SENSORS"
-#define __QUIT_STRING          "QUIT"
+#define __ACTUATORS_STRING "ACTUATORS"
+#define __SENSORS_STRING "SENSORS"
+#define __QUIT_STRING "QUIT"
 #define __CONFIGURATION_STRING "CONFIGURATION"
-#define __RESET_STRING         "RESET"
-#define __MESSAGE_STRING       "MESSAGE"
-#define __SEED_STRING          "RANDOM SEED"
+#define __RESET_STRING "RESET"
+#define __MESSAGE_STRING "MESSAGE"
+#define __SEED_STRING "RANDOM SEED"
 
-#define __ACTUATORS            1000
-#define __SENSORS              1001
-#define __QUIT                 1002
-#define __CONFIGURATION        1003
-#define __RESET                1004
-#define __MESSAGE              1005
-#define __RANDOM_SEED          1006
+#define __ACTUATORS 1000
+#define __SENSORS 1001
+#define __QUIT 1002
+#define __CONFIGURATION 1003
+#define __RESET 1004
+#define __MESSAGE 1005
+#define __RANDOM_SEED 1006
 
 using namespace std;
 
 void TCPIP::update()
 {
-  if(isQuit()) return;
+  if (isQuit())
+    return;
   bool motorCommandsGiven = false;
   stringstream oss;
   string s;
@@ -32,95 +33,108 @@ void TCPIP::update()
 
   unsetStatus();
 
-  if(log)
+  if (log)
   {
     logFile << sensors[0];
-    for(size_t i = 0; i < sensors.size(); i++) logFile << " " << sensors[i];
-  }
-  while(!motorCommandsGiven && !isQuit())
-  {
-    socket >> s;
-    // if(debug) cout << "received \"" << s << "\"" << endl;
-    switch(commands[s])
-    {
-      case __ACTUATORS:
-        if(debug) cout << "receiving motors" << endl;
-        socket >> motors;
-        if(debug)
-        {
-          cout << "motors: ";
-          for(vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
-          {
-            cout << *i << " ";
-          }
-          cout << endl;
-        }
-        motorCommandsGiven = true;
-        break;
-      case __SENSORS:
-        if(debug)
-        {
-          cout << "sending sensors: ";
-          for(vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
-          {
-            cout << *i << " ";
-          }
-          cout << endl;
-        }
-        socket << sensors;
-        break;
-      case __RESET:
-        if(debug) cout << "received reset" << endl;
-        setReset();
-        break;
-      case __RANDOM_SEED:
-        if(debug) cout << "random seed set" << endl;
-        socket >> seed;
-        break;
-      case __MESSAGE:
-        if(debug) cout << "received message" << endl;
-        socket >> message;
-        if(debug) cout << "with content: \"" << message << "\"" << endl;
-        clearOsd();
-        addLine(message);
-        break;
-      case __QUIT:
-        if(debug) cout << "received quit" << endl;
-        setQuit();
-        break;
-      case __CONFIGURATION:
-        if(debug) cout << "sending configuration" << endl;
-        __configuration();
-        break;
-      default:
-        YarsErrorHandler::push("TCPIP controller::update: unknown command \"%s\"", s.c_str());
-    }
-  }
-
-  if(log)
-  {
-    for(size_t i = 0; i < motors.size(); i++) logFile << " " << motors[i];
+    for (size_t i = 0; i < sensors.size(); i++)
+      logFile << " " << sensors[i];
     logFile << endl;
     logFile.flush();
   }
 
+  while (!motorCommandsGiven && !isQuit())
+  {
+    socket >> s;
+    if (debug)
+      cout << "received \"" << s << "\"" << endl;
+    switch (commands[s])
+    {
+    case __ACTUATORS:
+      if (debug)
+        cout << "receiving motors" << endl;
+      socket >> motors;
+      if (debug)
+      {
+        cout << "motors: ";
+        for (vector<double>::iterator i = motors.begin(); i != motors.end(); i++)
+        {
+          cout << *i << " ";
+        }
+        cout << endl;
+      }
+      motorCommandsGiven = true;
+      break;
+    case __SENSORS:
+      if (debug)
+      {
+        cout << "sending sensors: ";
+        for (vector<double>::iterator i = sensors.begin(); i != sensors.end(); i++)
+        {
+          cout << *i << " ";
+        }
+        cout << endl;
+      }
+      socket << sensors;
+      break;
+    case __RESET:
+      if (debug)
+        cout << "received reset" << endl;
+      setReset();
+      break;
+    case __RANDOM_SEED:
+      if (debug)
+        cout << "random seed set" << endl;
+      socket >> seed;
+      break;
+    case __MESSAGE:
+      if (debug)
+        cout << "received message" << endl;
+      socket >> message;
+      if (debug)
+        cout << "with content: \"" << message << "\"" << endl;
+      clearOsd();
+      addLine(message);
+      break;
+    case __QUIT:
+      if (debug)
+        cout << "received quit" << endl;
+      setQuit();
+      break;
+    case __CONFIGURATION:
+      if (debug)
+        cout << "sending configuration" << endl;
+      __configuration();
+      break;
+    default:
+      YarsErrorHandler::push("TCPIP controller::update: unknown command \"%s\"", s.c_str());
+    }
+  }
+
+  if (log)
+  {
+    for (size_t i = 0; i < motors.size(); i++)
+      logFile << " " << motors[i];
+    logFile << endl;
+    logFile.flush();
+  }
 }
 
 void TCPIP::init()
 {
-  parameter.set("port",  port,  4500);
+  parameter.set("port", port, 4500);
   parameter.set("debug", debug, false);
-  parameter.set("log",   log,   false);
-  parameter.set("name",  name,  "TCP/IP communication");
+  parameter.set("log", log, false);
+  parameter.set("name", name, "TCP/IP communication");
 
   seed = -1; // not set
 
-  if(log) logFile.open("tcpip_sensor_actuator.log");
+  if (log)
+    logFile.open("tcpip_sensor_actuator.log");
 
   port = socket.accept(port);
   cout << "opened port " << port << endl;
 
-  if(debug)
+  if (debug)
   {
     cout << "------------------------------------------------------------" << endl;
     cout << "                  Communication Structure                   " << endl;
@@ -128,40 +142,41 @@ void TCPIP::init()
     cout << endl;
     cout << "  Communicating on port: " << port << endl;
 
-    if(sensorConfiguration.size() > 0)
+    if (sensorConfiguration.size() > 0)
     {
-      cout   << "  sensors: " << endl;
-      for(unsigned int i = 0; i < sensorConfiguration.size(); i++)
+      cout << "  sensors: " << endl;
+      for (unsigned int i = 0; i < sensorConfiguration.size(); i++)
       {
-        cout << "    sensor name:      " << sensorConfiguration[i].name      << endl;
+        cout << "    sensor name:      " << sensorConfiguration[i].name << endl;
         cout << "                      dimension: " << sensorConfiguration[i].dimension << endl;
       }
     }
-    if(motorConfiguration.size() > 0)
+    if (motorConfiguration.size() > 0)
     {
-      cout   << "  motors: " << endl;
-      for(unsigned int i = 0; i < motorConfiguration.size(); i++)
+      cout << "  motors: " << endl;
+      for (unsigned int i = 0; i < motorConfiguration.size(); i++)
       {
-        cout << "    motor name:      " << motorConfiguration[i].name      << endl;
+        cout << "    motor name:      " << motorConfiguration[i].name << endl;
         cout << "                     dimension: " << motorConfiguration[i].dimension << endl;
       }
     }
-    cout << "------------------------------------------------------------" << endl << endl;
+    cout << "------------------------------------------------------------" << endl
+         << endl;
   }
-  if(debug)
+  if (debug)
   {
     cout << "communication started" << endl;
   }
 
-  commands[__ACTUATORS_STRING]     = __ACTUATORS;
-  commands[__SENSORS_STRING]       = __SENSORS;
-  commands[__QUIT_STRING]          = __QUIT;
+  commands[__ACTUATORS_STRING] = __ACTUATORS;
+  commands[__SENSORS_STRING] = __SENSORS;
+  commands[__QUIT_STRING] = __QUIT;
   commands[__CONFIGURATION_STRING] = __CONFIGURATION;
-  commands[__RESET_STRING]         = __RESET;
-  commands[__MESSAGE_STRING]       = __MESSAGE;
+  commands[__RESET_STRING] = __RESET;
+  commands[__MESSAGE_STRING] = __MESSAGE;
 
-  if(debug) printSensorMotorConfiguration();
-
+  if (debug)
+    printSensorMotorConfiguration();
 }
 
 void TCPIP::__configuration()
@@ -182,7 +197,7 @@ void TCPIP::__configuration()
   oss << "NAME " << name;
   string robotName = oss.str();
   socket << robotName;
-  for(unsigned int i = 0; i < sensorConfiguration.size(); i++)
+  for (unsigned int i = 0; i < sensorConfiguration.size(); i++)
   {
     uint dimension = sensorConfiguration[i].dimension;
     socket << "BEGIN SENSOR";
@@ -192,7 +207,7 @@ void TCPIP::__configuration()
     oss.str("");
     oss << "DIMENSION " << (int)dimension;
     socket << oss.str();
-    for(uint j = 0; j < dimension; j++)
+    for (uint j = 0; j < dimension; j++)
     {
       Domain d = sensorConfiguration[i].internal[j];
       string name = sensorConfiguration[i].names[j];
@@ -211,7 +226,7 @@ void TCPIP::__configuration()
     }
     socket << "END SENSOR";
   }
-  for(unsigned int i = 0; i < motorConfiguration.size(); i++)
+  for (unsigned int i = 0; i < motorConfiguration.size(); i++)
   {
     stringstream oss;
     uint dimension = motorConfiguration[i].dimension;
@@ -223,7 +238,7 @@ void TCPIP::__configuration()
     oss << "DIMENSION " << dimension;
     socket << oss.str();
     oss.str("");
-    for(uint j = 0; j < dimension; j++)
+    for (uint j = 0; j < dimension; j++)
     {
       Domain d = motorConfiguration[i].internal[j];
       oss.str("");
@@ -240,13 +255,12 @@ void TCPIP::__configuration()
   socket << "END CONFIGURATION";
 }
 
-
-
 void TCPIP::close()
 {
   printf("***** TCPIP::close called\n");
   socket.close();
-  if(log) logFile.close();
+  if (log)
+    logFile.close();
 }
 
 void TCPIP::reset()
@@ -255,14 +269,15 @@ void TCPIP::reset()
 }
 
 // the class factories
-extern "C" RobotController* create() {
+extern "C" RobotController *create()
+{
   printf("***** TCPIP::create called\n");
   TCPIP *b = new TCPIP();
-  return (RobotController*)b;
+  return (RobotController *)b;
 }
 
-extern "C" void destroy(RobotController* controller) {
+extern "C" void destroy(RobotController *controller)
+{
   printf("***** TCPIP::destroy called\n");
   // delete controller;
 }
-

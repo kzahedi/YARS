@@ -31,7 +31,7 @@ foreach(var ${tmp})
 endforeach(var)
 
 if(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
-  set(OGRE_PLUGINS_DIR "$ENV{HOME}/.local/lib/")
+  set(OGRE_PLUGINS_DIR "/usr/local/lib/OGRE/")
 endif(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
 
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/plugins.cfg.in   ${PROJECT_BINARY_DIR}/plugins.cfg)

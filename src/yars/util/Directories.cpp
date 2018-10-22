@@ -4,31 +4,31 @@
 #include <yars/util/Timer.h>
 #include <yars/util/FileSystemOperations.h>
 
-#define YARS_DIR_ROSIML_NAME         "RoSiML.xsd"
-#define YARS_CONFIG_FILE_NAME        ".yarsrc"
+#define YARS_DIR_ROSIML_NAME "RoSiML.xsd"
+#define YARS_CONFIG_FILE_NAME ".yarsrc"
 #define YARS_GLOBAL_CONFIG_FILE_NAME "yarsrc"
-#define YARS_GLOBAL_CONFIG_FILE_DIR  "/etc/"
+#define YARS_GLOBAL_CONFIG_FILE_DIR "/etc/"
 
-#define YARS_DIR_LOCAL_YARS_DIR      ".yars"
-#define YARS_DIR_XSD_DIR             "xsd"
-#define YARS_DIR_CURRENT_DIR         ((string)".")
-#define YARS_DIR_LIB_DIR             "lib"
+#define YARS_DIR_LOCAL_YARS_DIR ".yars"
+#define YARS_DIR_XSD_DIR "xsd"
+#define YARS_DIR_CURRENT_DIR ((string) ".")
+#define YARS_DIR_LIB_DIR "lib"
 
-#define YARS_DIR_PLY_DIR             "ply"
+#define YARS_DIR_PLY_DIR "ply"
 
-#ifdef  __APPLE__
-#define YARS_DIR_DELIMITER           "/"
-#define YARS_INSTALL_SUFFIX          "/yars"
+#ifdef __APPLE__
+#define YARS_DIR_DELIMITER "/"
+#define YARS_INSTALL_SUFFIX "/yars"
 #endif
 
-#ifdef  __linux__
-#define YARS_DIR_DELIMITER           "/"
-#define YARS_INSTALL_SUFFIX          "/yars"
+#ifdef __linux__
+#define YARS_DIR_DELIMITER "/"
+#define YARS_INSTALL_SUFFIX "/yars"
 #endif
 
-#ifdef  WIN32
-#define YARS_DIR_DELIMITER           "\\"
-#define YARS_INSTALL_SUFFIX          "\\yars"
+#ifdef WIN32
+#define YARS_DIR_DELIMITER "\\"
+#define YARS_INSTALL_SUFFIX "\\yars"
 #endif
 
 using namespace std;
@@ -51,9 +51,8 @@ Directories::Directories()
   __setupPlyDirectories();
   __setupConfigDirectories();
 
-  __findXsdDirectory();
+  // __findXsdDirectory();
 }
-
 
 /** \brief Returns the path to the XSD Grammar.
  *
@@ -68,8 +67,6 @@ bool Directories::xsd(string *xsdFile)
   return _xsdFound;
 }
 
-
-
 bool Directories::checkXsdPath(string xsdPath)
 {
   fs::path dir(xsdPath);
@@ -83,22 +80,22 @@ bool Directories::library(string *result, string library, string path)
   fullLibraryName << ROBOT_CONTROLLER_PREFIX << library << DYNAMIC_LIB_SUFFIX;
 
   fs::path file(fullLibraryName.str());
-  if(path.length() > 0)
+  if (path.length() > 0)
   {
     fs::path dir(path);
     fs::path complete(dir / file);
 
-    if(__doesFileExist(complete))
+    if (__doesFileExist(complete))
     {
       *result = complete.string();
       return true;
     }
   }
 
-  for(unsigned int i = 0; i < _libPathCandidates.size(); i++)
+  for (unsigned int i = 0; i < _libPathCandidates.size(); i++)
   {
-    fs::path searchPath( fs::path(_libPathCandidates[i]) / file);
-    if(__doesFileExist(searchPath))
+    fs::path searchPath(fs::path(_libPathCandidates[i]) / file);
+    if (__doesFileExist(searchPath))
     {
       *result = searchPath.string();
       return true;
@@ -110,7 +107,7 @@ bool Directories::library(string *result, string library, string path)
 bool Directories::checkLibrariesPath(string path, string library)
 {
   fs::path dir(path);
-  if(library.length() > 0)
+  if (library.length() > 0)
   {
     fs::path complete(dir / fs::path(library));
     return __doesFileExist(complete);
@@ -121,22 +118,22 @@ bool Directories::checkLibrariesPath(string path, string library)
 bool Directories::ply(string *result, string ply, string path)
 {
   fs::path file(ply);
-  if(path.length() > 0)
+  if (path.length() > 0)
   {
     fs::path dir(path);
     fs::path complete(dir / file);
 
-    if(__doesFileExist(complete))
+    if (__doesFileExist(complete))
     {
       *result = complete.string();
       return true;
     }
   }
 
-  for(unsigned int i = 0; i < _plyPathCandidates.size(); i++)
+  for (unsigned int i = 0; i < _plyPathCandidates.size(); i++)
   {
-    fs::path searchPath( fs::path(_plyPathCandidates[i]) / file);
-    if(__doesFileExist(searchPath))
+    fs::path searchPath(fs::path(_plyPathCandidates[i]) / file);
+    if (__doesFileExist(searchPath))
     {
       *result = searchPath.string();
       return true;
@@ -145,11 +142,10 @@ bool Directories::ply(string *result, string ply, string path)
   return false;
 }
 
-
 bool Directories::checkPlyPath(string path, string file)
 {
   fs::path dir(path);
-  if(file.length() > 0)
+  if (file.length() > 0)
   {
     fs::path complete(dir / fs::path(file));
     return __doesFileExist(complete);
@@ -170,7 +166,7 @@ bool Directories::checkPlyPath(string path, string file)
  * */
 bool Directories::__doesDirectoryExist(fs::path directoryPath)
 {
-  if(fs::exists(directoryPath) && fs::is_directory(directoryPath))
+  if (fs::exists(directoryPath) && fs::is_directory(directoryPath))
     return true;
   else
     return false;
@@ -184,13 +180,12 @@ bool Directories::__doesDirectoryExist(fs::path directoryPath)
  * */
 bool Directories::__doesFileExist(fs::path filePath)
 {
-  if(fs::exists(filePath) && (! fs::is_directory(filePath)))
+  if (fs::exists(filePath) && (!fs::is_directory(filePath)))
   {
     return true;
   }
   return false;
 }
-
 
 /** \brief Returns the first directory that contains a set of files.
  *
@@ -205,23 +200,24 @@ bool Directories::__doesFileExist(fs::path filePath)
  * files.
  * */
 bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
-    dirs, std::vector<string> filenames, string *returnPath)
+                                                           dirs,
+                                                       std::vector<string> filenames, string *returnPath)
 {
   fs::path path;
 
-  for(unsigned int i=0; i < dirs.size(); i++)
+  for (unsigned int i = 0; i < dirs.size(); i++)
   {
     path = fs::path(dirs[i]);
 
-    if(__doesDirectoryExist(path))
+    if (__doesDirectoryExist(path))
     {
       bool allFilesFound = true;
-      for(std::vector<string>::iterator s = filenames.begin(); s != filenames.end(); s++)
+      for (std::vector<string>::iterator s = filenames.begin(); s != filenames.end(); s++)
       {
         allFilesFound &= __doesFileExist(path / fs::path(*s));
       }
 
-      if(allFilesFound)
+      if (allFilesFound)
       {
         *returnPath = (string)dirs[i];
         return true;
@@ -245,18 +241,19 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
  * files.
  * */
 bool Directories::__getFirstExistingDirContainingFile(std::vector<string>
-    dirs, string *containedFileName, string *returnPath)
+                                                          dirs,
+                                                      string *containedFileName, string *returnPath)
 {
   fs::path path;
   fs::path file = fs::path(*containedFileName);
-  for(unsigned int i=0; i < dirs.size(); i++)
+  for (unsigned int i = 0; i < dirs.size(); i++)
   {
     path = fs::path(dirs[i]);
 
     //if(__doesDirectoryExist(path) || file.has_root_dir())
-    if(__doesDirectoryExist(path) || (*containedFileName)[0] == '/')
+    if (__doesDirectoryExist(path) || (*containedFileName)[0] == '/')
     {
-      if(__doesFileExist(path / file))
+      if (__doesFileExist(path / file))
       {
         *returnPath = (string)dirs[i] + YARS_DIR_DELIMITER + *containedFileName;
         return true;
@@ -266,8 +263,6 @@ bool Directories::__getFirstExistingDirContainingFile(std::vector<string>
   returnPath = NULL;
   return false;
 }
-
-
 
 // **************************************************************************
 // Configuration Directories functions
@@ -289,28 +284,29 @@ void Directories::__setupConfigDirectories()
   oss << home << YARS_DIR_DELIMITER << YARS_CONFIG_FILE_NAME;
   _configFilePathCandidate.push_back(oss.str());
 #ifndef _MSC_VER
-  oss.str(""); oss << YARS_INSTALL_PATH << YARS_DIR_DELIMITER << YARS_GLOBAL_CONFIG_FILE_NAME;
+  oss.str("");
+  oss << YARS_INSTALL_PATH << YARS_DIR_DELIMITER << YARS_GLOBAL_CONFIG_FILE_NAME;
 #endif // _MSC_VER
   _configFilePathCandidate.push_back(oss.str());
-  oss.str(""); oss << YARS_GLOBAL_CONFIG_FILE_DIR << YARS_GLOBAL_CONFIG_FILE_NAME;
+  oss.str("");
+  oss << YARS_GLOBAL_CONFIG_FILE_DIR << YARS_GLOBAL_CONFIG_FILE_NAME;
   _configFilePathCandidate.push_back(oss.str());
 }
 
 bool Directories::configFile(string *file)
 {
- for(std::vector<string>::iterator i = _configFilePathCandidate.begin();
-     i != _configFilePathCandidate.end(); i++)
- {
-   fs::path p (*i);
-   if(__doesFileExist(p))
-   {
-     *file = p.string();
-     return true;
-   }
- }
- return false;
+  for (std::vector<string>::iterator i = _configFilePathCandidate.begin();
+       i != _configFilePathCandidate.end(); i++)
+  {
+    fs::path p(*i);
+    if (__doesFileExist(p))
+    {
+      *file = p.string();
+      return true;
+    }
+  }
+  return false;
 }
-
 
 // **************************************************************************
 // Xsd Directories functions
@@ -344,12 +340,12 @@ void Directories::__findXsdDirectory()
   _xsdFound = false;
   string s = string(YARS_DIR_ROSIML_NAME);
 
-  if(__getFirstExistingDirContainingFile(_xsdPathCandidates,&s,&_xsdDirectory))
+  if (__getFirstExistingDirContainingFile(_xsdPathCandidates, &s, &_xsdDirectory))
   {
     fs::path complete = fs::path(_xsdDirectory);
-    if(!complete.has_root_path())
+    if (!complete.has_root_path())
     {
-      complete =  fs::initial_path() / complete;
+      complete = fs::initial_path() / complete;
     }
     _xsdDirectory = complete.string();
     _xsdFound = true;
@@ -393,7 +389,6 @@ void Directories::toString(string prefix, string *returnString)
   }
 }
 
-
 // **************************************************************************
 // Libs Directories functions
 // **************************************************************************
@@ -430,22 +425,22 @@ void Directories::__setupPlyDirectories()
  * \param[in]  argv[0] from command line
  * \param[out] the path to the yars binary, which is currently called
  */
-void Directories::getApplicationDirectory(string *s, char* argv)
+void Directories::getApplicationDirectory(string *s, char *argv)
 {
- string pathString = getenv ("PATH");
- std::vector<string> path = StringTokeniser::tokenise(pathString, ":");
- for(std::vector<string>::iterator i = path.begin(); i != path.end(); i++)
- {
-   fs::path p1(*i);
-   fs::path p2(argv);
-   fs::path p3(p1 / p2);
-   if(__doesFileExist(p3))
-   {
-     *s = p3.string();
-     return;
-   }
- }
- *s = "NOT FOUND";
+  string pathString = getenv("PATH");
+  std::vector<string> path = StringTokeniser::tokenise(pathString, ":");
+  for (std::vector<string>::iterator i = path.begin(); i != path.end(); i++)
+  {
+    fs::path p1(*i);
+    fs::path p2(argv);
+    fs::path p3(p1 / p2);
+    if (__doesFileExist(p3))
+    {
+      *s = p3.string();
+      return;
+    }
+  }
+  *s = "NOT FOUND";
 }
 
 void Directories::getFileNameDateTime(string *name)
@@ -458,7 +453,7 @@ void Directories::getFileNameDateTime(string *name)
   oss << *name << "-" << dateString;
   dirTmp = oss.str();
   *name = oss.str();
-  while(fs::exists(*name))
+  while (fs::exists(*name))
   {
     stringstream newOss;
     newOss << dirTmp << "-" << index;
@@ -477,7 +472,7 @@ void Directories::getUniqueDirectoryName(string *name)
   oss << *name << "-" << dateString;
   dirTmp = oss.str();
   *name = oss.str();
-  while(fs::exists(*name))
+  while (fs::exists(*name))
   {
     stringstream newOss;
     newOss << dirTmp << "-" << index;
@@ -495,21 +490,21 @@ bool Directories::doesFileExist(string file)
 void Directories::setFullPath(string *dirString)
 {
   fs::path dir(*dirString);
-  if(!dir.has_root_path())
+  if (!dir.has_root_path())
   {
-    dir =  fs::initial_path() / dir / YARS_DIR_ROSIML_NAME;
+    dir = fs::initial_path() / dir / YARS_DIR_ROSIML_NAME;
   }
   *dirString = dir.string();
 }
-
 
 bool Directories::getPly(string *result, string filename)
 {
   *result = "NONE";
   for (std::vector<string>::iterator i = _plyPathCandidates.begin();
-      i != _plyPathCandidates.end(); ++i)
+       i != _plyPathCandidates.end(); ++i)
   {
-    if(ply(result, filename, *i)) return true;
+    if (ply(result, filename, *i))
+      return true;
   }
   return false;
 }
@@ -518,9 +513,10 @@ bool Directories::getController(string *result, string filename)
 {
   *result = "NONE";
   for (std::vector<string>::iterator i = _libPathCandidates.begin();
-      i != _libPathCandidates.end(); ++i)
+       i != _libPathCandidates.end(); ++i)
   {
-    if(library(result, filename, *i)) return true;
+    if (library(result, filename, *i))
+      return true;
   }
   return false;
 }
