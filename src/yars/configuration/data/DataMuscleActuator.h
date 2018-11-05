@@ -177,6 +177,9 @@ public:
 
   DataMuscleActuator *_copy();
 
+  bool useGlobalCoordinateSystemSrc();
+  bool useGlobalCoordinateSystemDst();
+
 private:
   void __close();
   void __setMapping();
@@ -240,6 +243,8 @@ private:
 
   P3D _musclePosition;
   ::Quaternion _muscleOrientation;
+  bool _srcGlobal;
+  bool _dstGlobal;
 };
 
 #endif // __DATA_MUSCLE_H__

@@ -59,6 +59,21 @@ void SceneGraphMuscleNode::update()
   __body();
 
   _manual->setMaterialName(0, _data->texture(0));
+  Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(_data->texture(0));
+  // material->getTechnique(0)->getPass(0)->setDiffuse(_data->internalValue(0));
+  double v = _data->getExternalDesiredValue(0);
+  if (v > 0.5)
+  {
+    v = v - 0.5;
+    material->setDiffuse(1.0, 1.0 - 2.0 * v, 1.0 - 2.0 * v, 1.0);
+  }
+  else
+  {
+    material->setDiffuse(2.0 * v, 2.0 * v, 1.0, 1.0);
+  }
+  // material->setAmbient(v, 1.0-v, 1.0-v, 1.0);
+  material->load();
+  material->compile();
 
   Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
   for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)

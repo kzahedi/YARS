@@ -19,6 +19,10 @@
 #define YARS_STRING_SOURCE_ANCHOR (char *)"srcAnchor"
 #define YARS_STRING_DESTINATION_ANCHOR (char *)"dstAnchor"
 #define YARS_STRING_ANCHOR_DEFINITION (char *)"anchor_definition"
+#define YARS_STRING_LOCAL_GLOBAL_DEFINITION (char *)"local_global_definition"
+#define YARS_STRING_COORDINATE_SYSTEM (char *)"coordinateSystem"
+#define YARS_STRING_LOCAL (char *)"local"
+#define YARS_STRING_GLOBAL (char *)"global"
 #define YARS_STRING_MAPPING (char *)"mapping"
 #define YARS_STRING_POSE (char *)"pose"
 #define YARS_STRING_ANCHOR (char *)"anchor"
@@ -148,14 +152,22 @@ void DataMuscleActuator::add(DataParseElement *element)
   }
 
   if (element->opening(YARS_STRING_VISUALISATION))
+  {
     _visualiseMuscle = true;
+  }
 
   if (element->opening(YARS_STRING_TOP_TEXTURE))
+  {
     _texture[0] = element->attribute(YARS_STRING_NAME)->value();
+  }
   if (element->opening(YARS_STRING_BOTTOM_TEXTURE))
+  {
     _texture[1] = element->attribute(YARS_STRING_NAME)->value();
+  }
   if (element->opening(YARS_STRING_BODY_TEXTURE))
+  {
     _texture[2] = element->attribute(YARS_STRING_NAME)->value();
+  }
 
   if (_parsingSourceAnchor)
   {
@@ -165,6 +177,13 @@ void DataMuscleActuator::add(DataParseElement *element)
   }
   if (element->opening(YARS_STRING_SOURCE_ANCHOR))
   {
+    string g;
+    element->set(YARS_STRING_COORDINATE_SYSTEM, g);
+    _srcGlobal = false;
+    if (g == "global")
+    {
+      _srcGlobal = true;
+    }
     _parsingSourceAnchor = true;
   }
 
@@ -177,6 +196,13 @@ void DataMuscleActuator::add(DataParseElement *element)
 
   if (element->opening(YARS_STRING_DESTINATION_ANCHOR))
   {
+    string g;
+    element->set(YARS_STRING_COORDINATE_SYSTEM, g);
+    _dstGlobal = false;
+    if (g == "global")
+    {
+      _dstGlobal = true;
+    }
     _parsingDestinationAnchor = true;
   }
 
@@ -325,7 +351,13 @@ void DataMuscleActuator::createXsd(XsdSpecification *spec)
   objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER, YARS_STRING_OBJECT_CYLINDER_DEFINTION, 0));
   objectChoice->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
   anchorDefinition->add(objectChoice);
+  anchorDefinition->add(NA(YARS_STRING_COORDINATE_SYSTEM, YARS_STRING_LOCAL_GLOBAL_DEFINITION, false));
   spec->add(anchorDefinition);
+
+  XsdEnumeration *localGlobal = new XsdEnumeration(YARS_STRING_LOCAL_GLOBAL_DEFINITION, YARS_STRING_XSD_STRING);
+  localGlobal->add(YARS_STRING_LOCAL);
+  localGlobal->add(YARS_STRING_GLOBAL);
+  spec->add(localGlobal);
 
   XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
   forceParameter->add(NA(YARS_STRING_MAXIMUM, YARS_STRING_POSITIVE_DECIMAL, true));
@@ -420,6 +452,8 @@ DataMuscleActuator *DataMuscleActuator::_copy()
   copy->_velocityComponentMaxVelocity = _velocityComponentMaxVelocity;
   copy->_srcObject = _srcObject->copy();
   copy->_dstObject = _dstObject->copy();
+  copy->_srcGlobal = _srcGlobal;
+  copy->_dstGlobal = _dstGlobal;
   copy->_visualiseMuscle = _visualiseMuscle;
   for (int i = 0; i < 3; i++)
   {
@@ -731,4 +765,19 @@ void DataMuscleActuator::setMusclePosition(P3D p)
 void DataMuscleActuator::setMuscleQuaternion(::Quaternion q)
 {
   _muscleOrientation = q;
+}
+
+bool DataMuscleActuator::useMuscleVisualisation()
+{
+  return _visualiseMuscle;
+}
+
+bool DataMuscleActuator::useGlobalCoordinateSystemSrc()
+{
+  return _srcGlobal;
+}
+
+bool DataMuscleActuator::useGlobalCoordinateSystemDst()
+{
+  return _dstGlobal;
 }

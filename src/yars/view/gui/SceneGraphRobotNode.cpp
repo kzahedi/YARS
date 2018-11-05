@@ -36,10 +36,12 @@ SceneGraphRobotNode::SceneGraphRobotNode(
   {
     if ((*a)->type() == DATA_ACTUATOR_MUSCLE)
     {
-      cout << "visualise muscle" << endl;
       DataMuscleActuator *am = (DataMuscleActuator *)(*a);
-      SceneGraphMuscleNode *muscle = new SceneGraphMuscleNode(am, root, sm);
-      _actuators.push_back(muscle);
+      if (am->useMuscleVisualisation())
+      {
+        SceneGraphMuscleNode *muscle = new SceneGraphMuscleNode(am, root, sm);
+        _actuators.push_back(muscle);
+      }
     }
   }
 

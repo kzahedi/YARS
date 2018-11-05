@@ -1,37 +1,37 @@
 #include "DataRobot.h"
 #include "DataPoseFactory.h"
 
-# define YARS_STRING_POSE                  (char*)"pose"
-# define YARS_STRING_NAME                  (char*)"name"
-# define YARS_STRING_POSE_DEFINITION       (char*)"pose_definition"
-# define YARS_STRING_BODY_DEFINITION       (char*)"body_definition"
-# define YARS_STRING_SELF_COLLIDE          (char*)"selfCollide"
-# define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
+#define YARS_STRING_POSE (char *)"pose"
+#define YARS_STRING_NAME (char *)"name"
+#define YARS_STRING_POSE_DEFINITION (char *)"pose_definition"
+#define YARS_STRING_BODY_DEFINITION (char *)"body_definition"
+#define YARS_STRING_SELF_COLLIDE (char *)"selfCollide"
+#define YARS_STRING_TRUE_FALSE_DEFINITION (char *)"true_false_definition"
 
 DataRobot::DataRobot(DataNode *parent)
-  : DataNode(parent)
+    : DataNode(parent)
 {
-  _controller          = NULL;
-  _selfCollide         = false;
-  _processingSensors   = false;
+  _controller = NULL;
+  _selfCollide = false;
+  _processingSensors = false;
   _processingActuators = false;
 }
 
 DataRobot::~DataRobot()
 {
-  for(DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
+  for (DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
   {
     delete (*i);
   }
-  for(std::vector<DataSensor*>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
+  for (std::vector<DataSensor *>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
     delete (*i);
   }
-  for(std::vector<DataActuator*>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
+  for (std::vector<DataActuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
     delete (*i);
   }
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
+  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
   {
     delete (*i);
   }
@@ -39,7 +39,8 @@ DataRobot::~DataRobot()
   _sensors.clear();
   _actuators.clear();
   _macros.clear();
-  if(_controller != NULL) delete _controller;
+  if (_controller != NULL)
+    delete _controller;
 }
 
 string DataRobot::name()
@@ -82,12 +83,12 @@ int DataRobot::g_size()
   return (int)_geoms.size();
 }
 
-std::vector<DataSensor*>::iterator DataRobot::s_begin()
+std::vector<DataSensor *>::iterator DataRobot::s_begin()
 {
   return _sensors.begin();
 }
 
-std::vector<DataSensor*>::iterator DataRobot::s_end()
+std::vector<DataSensor *>::iterator DataRobot::s_end()
 {
   return _sensors.end();
 }
@@ -97,12 +98,12 @@ int DataRobot::s_size()
   return (int)_sensors.size();
 }
 
-std::vector<DataActuator*>::iterator DataRobot::a_begin()
+std::vector<DataActuator *>::iterator DataRobot::a_begin()
 {
   return _actuators.begin();
 }
 
-std::vector<DataActuator*>::iterator DataRobot::a_end()
+std::vector<DataActuator *>::iterator DataRobot::a_end()
 {
   return _actuators.end();
 }
@@ -114,7 +115,7 @@ int DataRobot::a_size()
 
 void DataRobot::add(DataParseElement *element)
 {
-  if(element->closing(YARS_STRING_ROBOT))
+  if (element->closing(YARS_STRING_ROBOT))
   {
     current = parent;
     // __assignSensorsToObjects(); // only needs to be called after copying
@@ -125,22 +126,22 @@ void DataRobot::add(DataParseElement *element)
     __setActuatorsInController();
   }
 
-  if(element->opening(YARS_STRING_ROBOT))
+  if (element->opening(YARS_STRING_ROBOT))
   {
     element->set(YARS_STRING_NAME, _name);
   }
 
-  if(element->opening(YARS_STRING_BODY))
+  if (element->opening(YARS_STRING_BODY))
   {
     element->set(YARS_STRING_SELF_COLLIDE, _selfCollide);
   }
 
-  if(element->opening(YARS_STRING_POSE))
+  if (element->opening(YARS_STRING_POSE))
   {
     DataPoseFactory::set(_pose, element);
   }
 
-  if(element->opening(YARS_STRING_MACRO))
+  if (element->opening(YARS_STRING_MACRO))
   {
     DataMacroInstance *macroInstance = new DataMacroInstance(this, _macrosDefinitions);
     current = macroInstance;
@@ -149,50 +150,50 @@ void DataRobot::add(DataParseElement *element)
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
-  if(object != NULL)
+  if (object != NULL)
   {
     current = object;
     _objects.push_back(object);
   }
 
-  if(element->opening(YARS_STRING_SENSOR_LIST))
+  if (element->opening(YARS_STRING_SENSOR_LIST))
   {
     _processingSensors = true;
   }
-  if(element->closing(YARS_STRING_SENSOR_LIST))
+  if (element->closing(YARS_STRING_SENSOR_LIST))
   {
     _processingSensors = false;
   }
-  if(element->opening(YARS_STRING_ACTUATOR_LIST))
+  if (element->opening(YARS_STRING_ACTUATOR_LIST))
   {
     _processingActuators = true;
   }
-  if(element->closing(YARS_STRING_ACTUATOR_LIST))
+  if (element->closing(YARS_STRING_ACTUATOR_LIST))
   {
     _processingActuators = false;
   }
 
-  if(_processingSensors)
+  if (_processingSensors)
   {
     DataSensor *sensor = DataSensorFactory::sensor(element, this);
-    if(sensor != NULL)
+    if (sensor != NULL)
     {
       current = sensor;
       _sensors.push_back(sensor);
     }
   }
 
-  if(_processingActuators)
+  if (_processingActuators)
   {
     DataActuator *actuator = DataActuatorFactory::actuator(element, this);
-    if(actuator != NULL)
+    if (actuator != NULL)
     {
       current = actuator;
       _actuators.push_back(actuator);
     }
   }
 
-  if(element->opening(YARS_STRING_CONTROLLER))
+  if (element->opening(YARS_STRING_CONTROLLER))
   {
     _controller = new DataController(this);
     current = _controller;
@@ -205,22 +206,22 @@ void DataRobot::setMacros(DataMacros *macros)
   _macrosDefinitions = macros;
 }
 
-DataMacros* DataRobot::macros()
+DataMacros *DataRobot::macros()
 {
   return _macrosDefinitions;
 }
 
-DataController* DataRobot::controller()
+DataController *DataRobot::controller()
 {
   return _controller;
 }
 
-DataSensor* DataRobot::sensor(int index)
+DataSensor *DataRobot::sensor(int index)
 {
   return _sensors[index];
 }
 
-DataActuator* DataRobot::actuator(int index)
+DataActuator *DataRobot::actuator(int index)
 {
   return _actuators[index];
 }
@@ -232,9 +233,9 @@ bool DataRobot::selfCollide()
 
 void DataRobot::__applyMacros()
 {
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
+  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
   {
-    for(DataObjects::iterator o = (*i)->begin(); o != (*i)->end(); o++)
+    for (DataObjects::iterator o = (*i)->begin(); o != (*i)->end(); o++)
     {
       _objects.push_back(*o);
     }
@@ -243,26 +244,26 @@ void DataRobot::__applyMacros()
 
 void DataRobot::__applyPose()
 {
-  for(DataObjects::iterator object_ptr = _objects.begin(); object_ptr != _objects.end(); object_ptr++)
+  for (DataObjects::iterator object_ptr = _objects.begin(); object_ptr != _objects.end(); object_ptr++)
   {
-    if((*object_ptr)->type() == DATA_OBJECT_COMPOSITE)
+    if ((*object_ptr)->type() == DATA_OBJECT_COMPOSITE)
     {
-      ((DataComposite*)(*object_ptr))->applyOffset(_pose);
+      ((DataComposite *)(*object_ptr))->applyOffset(_pose);
     }
     else
     {
-      if((*object_ptr)->useApplyOffset())
+      if ((*object_ptr)->useApplyOffset())
       {
         (*object_ptr)->applyOffset(_pose);
       }
     }
   }
 
-  for(std::vector<DataActuator*>::iterator actuator_ptr = _actuators.begin(); actuator_ptr != _actuators.end(); actuator_ptr++)
+  for (std::vector<DataActuator *>::iterator actuator_ptr = _actuators.begin(); actuator_ptr != _actuators.end(); actuator_ptr++)
   {
-    for(DataObjects::iterator j = _geoms.begin(); j != _geoms.end(); j++)
+    for (DataObjects::iterator j = _geoms.begin(); j != _geoms.end(); j++)
     {
-      if((*actuator_ptr)->source() == (*j)->name())
+      if ((*actuator_ptr)->source() == (*j)->name())
       {
         (*actuator_ptr)->applyOffset((*j)->pose());
       }
@@ -276,19 +277,26 @@ void DataRobot::__applyPose()
     {
       DataMuscleActuator *m = (DataMuscleActuator *)(*a);
 
-      string source      = m->source() ;
-      string srcName     = m->sourceAnchor()->name();
+      string source = m->source();
+      string srcName = m->sourceAnchor()->name();
 
-      string dstName     = m->destinationAnchor()->name();
+      string dstName = m->destinationAnchor()->name();
       string destination = m->destination();
 
-      DataObject *srcObject    = findObject(source);
-      DataObject *dstObject    = findObject(destination);
+      DataObject *srcObject = findObject(source);
+      DataObject *dstObject = findObject(destination);
       DataObject *srcConnector = findObject(srcName);
       DataObject *dstConnector = findObject(dstName);
 
-      srcConnector->applyOffset(srcObject->pose());
-      dstConnector->applyOffset(dstObject->pose());
+      if (m->useGlobalCoordinateSystemSrc() == false)
+      {
+        srcConnector->applyOffset(srcObject->pose());
+      }
+
+      if (m->useGlobalCoordinateSystemDst() == false)
+      {
+        dstConnector->applyOffset(dstObject->pose());
+      }
 
       // adding ball constraints
     }
@@ -298,25 +306,25 @@ void DataRobot::__applyPose()
 void DataRobot::createXsd(XsdSpecification *spec)
 {
   XsdSequence *robotDefinition = new XsdSequence(YARS_STRING_ROBOT_DEFINITION);
-  robotDefinition->add(NA(YARS_STRING_NAME,          YARS_STRING_XSD_STRING,               false));
-  robotDefinition->add(NE(YARS_STRING_BODY,          YARS_STRING_BODY_DEFINITION,          1, 1));
-  robotDefinition->add(NE(YARS_STRING_POSE,          YARS_STRING_POSE_DEFINITION,          0, 1));
+  robotDefinition->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
+  robotDefinition->add(NE(YARS_STRING_BODY, YARS_STRING_BODY_DEFINITION, 1, 1));
+  robotDefinition->add(NE(YARS_STRING_POSE, YARS_STRING_POSE_DEFINITION, 0, 1));
   robotDefinition->add(NE(YARS_STRING_ACTUATOR_LIST, YARS_STRING_ACTUATOR_LIST_DEFINITION, 0, 1));
-  robotDefinition->add(NE(YARS_STRING_SENSOR_LIST,   YARS_STRING_SENSOR_LIST_DEFINITION,   0, 1));
+  robotDefinition->add(NE(YARS_STRING_SENSOR_LIST, YARS_STRING_SENSOR_LIST_DEFINITION, 0, 1));
   // robotDefinition->add(NE(YARS_STRING_CONSTRAINTS,   YARS_STRING_CONSTRAINTS_DEFINITION,   0, 1));
-  robotDefinition->add(NE(YARS_STRING_CONTROLLER,    YARS_STRING_CONTROLLER_DEFINITION,    0, 1));
+  robotDefinition->add(NE(YARS_STRING_CONTROLLER, YARS_STRING_CONTROLLER_DEFINITION, 0, 1));
   spec->add(robotDefinition);
 
   XsdSequence *bodyDefinition = new XsdSequence(YARS_STRING_BODY_DEFINITION);
   bodyDefinition->add(NA(YARS_STRING_SELF_COLLIDE, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-  XsdChoice *objectChoice = new XsdChoice("",              "1", YARS_STRING_XSD_UNBOUNDED);
-  objectChoice->add(NE(YARS_STRING_OBJECT_BOX,             YARS_STRING_OBJECT_BOX_DEFINTION,             0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_SPHERE,          YARS_STRING_OBJECT_SPHERE_DEFINTION,          0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_PLY,             YARS_STRING_OBJECT_PLY_DEFINTION,             0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
+  XsdChoice *objectChoice = new XsdChoice("", "1", YARS_STRING_XSD_UNBOUNDED);
+  objectChoice->add(NE(YARS_STRING_OBJECT_BOX, YARS_STRING_OBJECT_BOX_DEFINTION, 0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_SPHERE, YARS_STRING_OBJECT_SPHERE_DEFINTION, 0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_PLY, YARS_STRING_OBJECT_PLY_DEFINTION, 0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER, YARS_STRING_OBJECT_CYLINDER_DEFINTION, 0));
   objectChoice->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_COMPOSITE,       YARS_STRING_OBJECT_COMPOSITE_DEFINITION,      0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_MACRO,           YARS_STRING_OBJECT_MACRO_DEFINTION,           0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_COMPOSITE, YARS_STRING_OBJECT_COMPOSITE_DEFINITION, 0));
+  objectChoice->add(NE(YARS_STRING_OBJECT_MACRO, YARS_STRING_OBJECT_MACRO_DEFINTION, 0));
   bodyDefinition->add(objectChoice);
   spec->add(bodyDefinition);
 
@@ -327,29 +335,31 @@ void DataRobot::createXsd(XsdSpecification *spec)
   DataMacroInstance::createXsd(spec);
 }
 
-DataRobot* DataRobot::copy()
+DataRobot *DataRobot::copy()
 {
   DataRobot *copy = new DataRobot(NULL);
-  copy->_pose                = _pose;
-  copy->_name                = _name;
-  copy->_processingSensors   = _processingSensors;
+  copy->_pose = _pose;
+  copy->_name = _name;
+  copy->_processingSensors = _processingSensors;
   copy->_processingActuators = _processingActuators;
-  copy->_selfCollide         = _selfCollide;
-  if(_controller        != NULL) copy->_controller        = _controller->copy();
-  if(_macrosDefinitions != NULL) copy->_macrosDefinitions = _macrosDefinitions->copy();
-  for(DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
+  copy->_selfCollide = _selfCollide;
+  if (_controller != NULL)
+    copy->_controller = _controller->copy();
+  if (_macrosDefinitions != NULL)
+    copy->_macrosDefinitions = _macrosDefinitions->copy();
+  for (DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
   {
     copy->_objects.push_back((*i)->copy());
   }
-  for(std::vector<DataSensor*>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
+  for (std::vector<DataSensor *>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
     copy->_sensors.push_back((*i)->copy());
   }
-  for(std::vector<DataActuator*>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
+  for (std::vector<DataActuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
     copy->_actuators.push_back((*i)->copy());
   }
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
+  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
   {
     copy->_macros.push_back((*i)->copy(this));
   }
@@ -364,9 +374,9 @@ DataRobot* DataRobot::copy()
 
 void DataRobot::__setActuatorsInController()
 {
-  if(_controller != NULL)
+  if (_controller != NULL)
   {
-    for(DataActuators::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+    for (DataActuators::iterator a = _actuators.begin(); a != _actuators.end(); a++)
     {
       _controller->addActuator(*a);
     }
@@ -376,9 +386,11 @@ void DataRobot::__setActuatorsInController()
 void DataRobot::__setMotorVector()
 {
   int nrOfValues = 0;
-  for(std::vector<DataActuator*>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
+  for (std::vector<DataActuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
-    for(int j = 0; j < (*i)->dimension(); j++) if((*i)->isActive(j)) nrOfValues++;
+    for (int j = 0; j < (*i)->dimension(); j++)
+      if ((*i)->isActive(j))
+        nrOfValues++;
   }
 
   _actuatorValues.resize(nrOfValues);
@@ -387,7 +399,7 @@ void DataRobot::__setMotorVector()
 void DataRobot::__setSensorVector()
 {
   int nrOfValues = 0;
-  for(std::vector<DataSensor*>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
+  for (std::vector<DataSensor *>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
     nrOfValues += (*i)->dimension();
   }
@@ -396,12 +408,12 @@ void DataRobot::__setSensorVector()
 
 void DataRobot::__gatherGeoms()
 {
-  for(DataObjects::iterator o = _objects.begin(); o != _objects.end(); o++)
+  for (DataObjects::iterator o = _objects.begin(); o != _objects.end(); o++)
   {
-    if((*o)->type() == DATA_OBJECT_COMPOSITE)
+    if ((*o)->type() == DATA_OBJECT_COMPOSITE)
     {
-      DataComposite *composite = (DataComposite*)(*o);
-      for(DataObjects::iterator oo = composite->g_begin(); oo != composite->g_end(); oo++)
+      DataComposite *composite = (DataComposite *)(*o);
+      for (DataObjects::iterator oo = composite->g_begin(); oo != composite->g_end(); oo++)
       {
         _geoms.push_back(*oo);
       }
@@ -411,17 +423,15 @@ void DataRobot::__gatherGeoms()
       _geoms.push_back(*o);
     }
   }
-
-
 }
 
 void DataRobot::__assignSensorsToObjects()
 {
-  for(std::vector<DataSensor*>::iterator s = _sensors.begin(); s != _sensors.end(); s++)
+  for (std::vector<DataSensor *>::iterator s = _sensors.begin(); s != _sensors.end(); s++)
   {
-    for(DataObjects::iterator g = _geoms.begin(); g != _geoms.end(); g++)
+    for (DataObjects::iterator g = _geoms.begin(); g != _geoms.end(); g++)
     {
-      if((*s)->object() == (*g)->name())
+      if ((*s)->object() == (*g)->name())
       {
         (*g)->addSensor(*s);
       }
@@ -462,22 +472,23 @@ int DataRobot::sv_size()
 void DataRobot::updateSensorValues()
 {
   int index = 0;
-  for(std::vector<DataSensor*>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
+  for (std::vector<DataSensor *>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
   {
-    for(int j = 0; j < (*i)->dimension(); j++) _sensorValues[index++] = (*i)->externalValue(j);
+    for (int j = 0; j < (*i)->dimension(); j++)
+      _sensorValues[index++] = (*i)->externalValue(j);
   }
 }
 
 void DataRobot::updateActuatorValues()
 {
   int index = 0;
-  for(std::vector<DataActuator*>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
+  for (std::vector<DataActuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
     int activeIndex = 0;
     // cout << "dimension: " << (*i)->dimension() << endl;
-    for(int j = 0; j < (*i)->dimension(); j++)
+    for (int j = 0; j < (*i)->dimension(); j++)
     {
-      if((*i)->isActive(j))
+      if ((*i)->isActive(j))
       {
         // cout << activeIndex << " set to " << _actuatorValues[index] << endl;
         (*i)->setDesiredValue(activeIndex++, _actuatorValues[index++]);
@@ -488,20 +499,23 @@ void DataRobot::updateActuatorValues()
 
 void DataRobot::resetTo(const DataRobot *robot)
 {
-  _pose                = robot->_pose;
-  _name                = robot->_name;
-  _selfCollide         = robot->_selfCollide;
+  _pose = robot->_pose;
+  _name = robot->_name;
+  _selfCollide = robot->_selfCollide;
 
-  if(_controller != NULL)                       _controller->resetTo(robot->_controller);
-  for(int i = 0; i < (int)_objects.size(); i++) _objects[i]->resetTo(robot->_objects[i]);
-  for(int i = 0; i < (int)_sensors.size(); i++) _sensors[i]->resetTo(robot->_sensors[i]);
+  if (_controller != NULL)
+    _controller->resetTo(robot->_controller);
+  for (int i = 0; i < (int)_objects.size(); i++)
+    _objects[i]->resetTo(robot->_objects[i]);
+  for (int i = 0; i < (int)_sensors.size(); i++)
+    _sensors[i]->resetTo(robot->_sensors[i]);
 }
 
-DataObject* DataRobot::findObject(string name)
+DataObject *DataRobot::findObject(string name)
 {
-  for(vector<DataObject*>::iterator o = _geoms.begin(); o != _geoms.end(); o++)
+  for (vector<DataObject *>::iterator o = _geoms.begin(); o != _geoms.end(); o++)
   {
-    if((*o)->name() == name)
+    if ((*o)->name() == name)
     {
       return *o;
     }
@@ -509,16 +523,15 @@ DataObject* DataRobot::findObject(string name)
   return NULL;
 }
 
-
 void DataRobot::__collectActuatorObjects()
 {
-  for(vector<DataActuator*>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  for (vector<DataActuator *>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
   {
-    if((*a)->type() == DATA_ACTUATOR_MUSCLE)
+    if ((*a)->type() == DATA_ACTUATOR_MUSCLE)
     {
-      DataMuscleActuator *m = (DataMuscleActuator*)(*a);
-      DataObject* src = m->sourceAnchor();
-      DataObject* dst = m->destinationAnchor();
+      DataMuscleActuator *m = (DataMuscleActuator *)(*a);
+      DataObject *src = m->sourceAnchor();
+      DataObject *dst = m->destinationAnchor();
       src->setUseApplyOffset(false);
       dst->setUseApplyOffset(false);
       _objects.push_back(src);
