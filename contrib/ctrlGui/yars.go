@@ -322,3 +322,17 @@ func yarsReadBytes(n int) []byte {
 	}
 	return bytes
 }
+
+// YarsFillInitialValues fills initial values
+func YarsFillInitialValues(cfg XMLCfg) {
+	for _, ya := range yarsCfg.Actuators {
+		for _, xa := range cfg.Actuator {
+			if ya.Name == xa.Name {
+				for i := 0; i < ya.Dimension; i++ {
+					ya.Value[i] = xa.Initial
+				}
+			}
+		}
+	}
+
+}

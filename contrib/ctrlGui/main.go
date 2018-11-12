@@ -150,6 +150,7 @@ func yarsPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 						if err != nil {
 							panic(err)
 						}
+						YarsFillInitialValues(cfg)
 						isInitialised = true
 					}
 				}
@@ -171,7 +172,7 @@ func actuatorPanel(win *glfw.Window, ctx *nk.Context, state *State) {
 	// YARS Panel
 	for i, a := range yarsCfg.Actuators {
 		var update int32
-		x, y, w, h, found := getActuator(cfg, a.Name)
+		x, y, w, h, _, found := getActuator(cfg, a.Name)
 		if found {
 			bounds := nk.NkRect(float32(x), float32(y), float32(w), float32(h))
 			update = nk.NkBegin(ctx, a.Name, bounds,

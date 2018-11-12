@@ -33,6 +33,7 @@ type XMLActuator struct {
 	Y       int      `xml:"y,attr"`
 	Width   int      `xml:"width,attr"`
 	Height  int      `xml:"height,attr"`
+	Initial float32  `xml:"initial,attr"`
 }
 
 // XMLCfg xml config
@@ -73,14 +74,14 @@ func getSensor(cfg XMLCfg, name string) (int, int, int, int, bool) {
 	return 0, 0, 0, 0, false
 }
 
-func getActuator(cfg XMLCfg, name string) (int, int, int, int, bool) {
+func getActuator(cfg XMLCfg, name string) (int, int, int, int, float32, bool) {
 	if len(cfg.Actuator) == 0 {
-		return 0, 0, 0, 0, false
+		return 0, 0, 0, 0, 0.0, false
 	}
 	for _, a := range cfg.Actuator {
 		if a.Name == name {
-			return a.X, a.Y, a.Width, a.Height, true
+			return a.X, a.Y, a.Width, a.Height, a.Initial, true
 		}
 	}
-	return 0, 0, 0, 0, false
+	return 0, 0, 0, 0, 0.0, false
 }
