@@ -10,27 +10,25 @@ LoggingModule::LoggingModule()
 
 LoggingModule::~LoggingModule()
 {
-
 }
 
 void LoggingModule::setPrecision(int precision)
 {
-  if(precision > _precision) _precision = precision;
-  if(_precision >= 0)
+  if (precision > _precision)
+    _precision = precision;
+  if (_precision >= 0)
   {
     _oss.precision(_precision);
-    _oss.setf(ios::fixed,ios::floatfield);
+    _oss.setf(ios::fixed, ios::floatfield);
   }
 }
 
-
-
 void LoggingModule::update()
 {
-  if(this->size() != _methods.size())
+  if (this->size() != _methods.size())
     resize(_methods.size());
 
-  for(int i = 0; i < (int)_methods.size(); i++)
+  for (int i = 0; i < (int)_methods.size(); i++)
     (*this)[i] = (this->*_methods[i])(_arguments[i]);
 }
 
@@ -39,7 +37,6 @@ void LoggingModule::addMethod(LoggingModuleFunctionPtr method, string argument)
   _methods.push_back(method);
   _arguments.push_back(argument);
 }
-
 
 string LoggingModule::name()
 {
@@ -108,7 +105,7 @@ string LoggingModule::getSensorInternalValues(string argument)
   _oss.str("");
   // for(int i = 0; i < _sensor->dimension(); i++)
   // {
-    _oss << _sensor->internalValue((int)argument[0]);
+  _oss << _sensor->internalValue((int)argument[0]);
   // }
   return _oss.str();
 }
@@ -118,7 +115,7 @@ string LoggingModule::getSensorExternalValues(string argument)
   _oss.str("");
   // for(int i = 0; i < _sensor->dimension(); i++)
   // {
-    _oss << _sensor->externalValue((int)argument[0]);
+  _oss << _sensor->externalValue((int)argument[0]);
   // }
   return _oss.str();
 }
@@ -126,7 +123,7 @@ string LoggingModule::getSensorExternalValues(string argument)
 string LoggingModule::getActuatorExternalValues(string)
 {
   _oss.str("");
-  for(int i = 0; i < _actuator->dimension(); i++)
+  for (int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->externalValue(i);
   }
@@ -136,16 +133,16 @@ string LoggingModule::getActuatorExternalValues(string)
 string LoggingModule::getActuatorInternalValues(string)
 {
   _oss.str("");
-  for(int i = 0; i < _actuator->dimension(); i++)
+  for (int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->internalValue(i);
-    if(_actuator->type() == DATA_ACTUATOR_MUSCLE)
+    if (_actuator->type() == DATA_ACTUATOR_MUSCLE)
     {
-      DataMuscleActuator *ma = (DataMuscleActuator*)(_actuator);
-      _oss << " " << ma->getVelocityComponent();
-      _oss << " " << ma->getLengthComponent();
-      _oss << " " << ma->getMuscleLength();
-      _oss << " " << ma->getMuscleVelocity();
+      DataMuscleActuator *ma = (DataMuscleActuator *)(_actuator);
+      _oss << "," << ma->getVelocityComponent();
+      _oss << "," << ma->getLengthComponent();
+      _oss << "," << ma->getMuscleLength();
+      _oss << "," << ma->getMuscleVelocity();
     }
   }
   return _oss.str();
@@ -154,7 +151,7 @@ string LoggingModule::getActuatorInternalValues(string)
 string LoggingModule::getActuatorDesiredValues(string)
 {
   _oss.str("");
-  for(int i = 0; i < _actuator->dimension(); i++)
+  for (int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->getExternalDesiredValue(i);
   }
@@ -164,7 +161,7 @@ string LoggingModule::getActuatorDesiredValues(string)
 string LoggingModule::getActuatorAppliedForce(string)
 {
   _oss.str("");
-  for(int i = 0; i < _actuator->dimension(); i++)
+  for (int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->getAppliedForce(i);
   }
@@ -174,7 +171,7 @@ string LoggingModule::getActuatorAppliedForce(string)
 string LoggingModule::getActuatorAppliedVelocity(string)
 {
   _oss.str("");
-  for(int i = 0; i < _actuator->dimension(); i++)
+  for (int i = 0; i < _actuator->dimension(); i++)
   {
     _oss << _actuator->getAppliedVelocity(i);
   }
@@ -185,29 +182,29 @@ string LoggingModule::getControllerVariable(string argument)
 {
   _oss.str("");
 
-  if(_controller->getLoggable(argument, _real))
+  if (_controller->getLoggable(argument, _real))
   {
     _oss << _real;
     return _oss.str();
   }
 
-  if(_controller->getLoggable(argument, _integer))
+  if (_controller->getLoggable(argument, _integer))
   {
     _oss << _integer;
     return _oss.str();
   }
 
-  if(_controller->getLoggable(argument, _matrix))
+  if (_controller->getLoggable(argument, _matrix))
   {
-    for(int r = 0; r < _matrix.rows() - 1; r++)
+    for (int r = 0; r < _matrix.rows() - 1; r++)
     {
-      for(int c = 0; c < _matrix.cols(); c++)
+      for (int c = 0; c < _matrix.cols(); c++)
       {
-        _oss << _matrix(r,c);
+        _oss << _matrix(r, c);
       }
     }
     int max_r = _matrix.rows() - 1;
-    for(int c = 0; c < _matrix.cols() - 1; c++)
+    for (int c = 0; c < _matrix.cols() - 1; c++)
     {
       _oss << _matrix(max_r, c);
     }
@@ -215,13 +212,13 @@ string LoggingModule::getControllerVariable(string argument)
     return _oss.str();
   }
 
-  if(_controller->getLoggable(argument, _vector))
+  if (_controller->getLoggable(argument, _vector))
   {
-    for(int i = 0; i < (int)_vector.size() - 1; i++)
+    for (int i = 0; i < (int)_vector.size() - 1; i++)
     {
       _oss << _vector[i];
     }
-    _oss << _vector[_vector.size()-1];
+    _oss << _vector[_vector.size() - 1];
     return _oss.str();
   }
 

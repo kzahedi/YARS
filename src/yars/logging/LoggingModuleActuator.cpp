@@ -11,27 +11,37 @@ LoggingModuleActuator::LoggingModuleActuator(DataLoggingActuator *data)
   setPrecision(data->precision());
   std::vector<int> order = _data->order();
 
-  for(std::vector<int>::iterator i = order.begin(); i != order.end(); i++)
+  for (std::vector<int>::iterator i = order.begin(); i != order.end(); i++)
   {
-    switch(*i)
+    switch (*i)
     {
-      case INTERNAL:         __useInternal();        break;
-      case EXTERNAL:         __useExternal();        break;
-      case DESIRED:          __useDesired();         break;
-      case APPLIED_FORCE:    __useAppliedForce();    break;
-      case APPLIED_VELOCITY: __useAppliedVelocity(); break;
+    case INTERNAL:
+      __useInternal();
+      break;
+    case EXTERNAL:
+      __useExternal();
+      break;
+    case DESIRED:
+      __useDesired();
+      break;
+    case APPLIED_FORCE:
+      __useAppliedForce();
+      break;
+    case APPLIED_VELOCITY:
+      __useAppliedVelocity();
+      break;
     }
   }
 }
 
 void LoggingModuleActuator::__useAppliedForce()
 {
-  if(_actuator->dimension() > 1)
+  if (_actuator->dimension() > 1)
   {
-    for(int i = 0; i < _actuator->dimension() - 1; i++)
+    for (int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
-      oss << _actuator->name() << " " << (i+1) << " applied force";
+      oss << _actuator->name() << " " << (i + 1) << " applied force";
       _variables.push_back(oss.str());
     }
     stringstream oss;
@@ -50,12 +60,12 @@ void LoggingModuleActuator::__useAppliedForce()
 
 void LoggingModuleActuator::__useAppliedVelocity()
 {
-  if(_actuator->dimension() > 1)
+  if (_actuator->dimension() > 1)
   {
-    for(int i = 0; i < _actuator->dimension() - 1; i++)
+    for (int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
-      oss << _actuator->name() << " " << (i+1) << " applied velocity";
+      oss << _actuator->name() << " " << (i + 1) << " applied velocity";
       _variables.push_back(oss.str());
     }
     stringstream oss;
@@ -73,12 +83,12 @@ void LoggingModuleActuator::__useAppliedVelocity()
 }
 void LoggingModuleActuator::__useDesired()
 {
-  if(_actuator->dimension() > 1)
+  if (_actuator->dimension() > 1)
   {
-    for(int i = 0; i < _actuator->dimension() - 1; i++)
+    for (int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
-      oss << _actuator->name() << " " << (i+1) << " desired";
+      oss << _actuator->name() << " " << (i + 1) << " desired";
       _variables.push_back(oss.str());
     }
     stringstream oss;
@@ -96,12 +106,12 @@ void LoggingModuleActuator::__useDesired()
 }
 void LoggingModuleActuator::__useExternal()
 {
-  if(_actuator->dimension() > 1)
+  if (_actuator->dimension() > 1)
   {
-    for(int i = 0; i < _actuator->dimension() - 1; i++)
+    for (int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
-      oss << _actuator->name() << " " << (i+1) << " external";
+      oss << _actuator->name() << " " << (i + 1) << " external";
       _variables.push_back(oss.str());
     }
     stringstream oss;
@@ -120,9 +130,9 @@ void LoggingModuleActuator::__useExternal()
 
 void LoggingModuleActuator::__useInternal()
 {
-  if(_actuator->dimension() > 1)
+  if (_actuator->dimension() > 1)
   {
-    for(int i = 0; i < _actuator->dimension() - 1; i++)
+    for (int i = 0; i < _actuator->dimension() - 1; i++)
     {
       stringstream oss;
       oss << _actuator->name() << " " << (i + 1) << " internal";
@@ -165,6 +175,9 @@ void LoggingModuleActuator::__useInternal()
       _variables.push_back(oss.str());
       oss.str("");
       oss << _actuator->name() << " Muscle Length";
+      _variables.push_back(oss.str());
+      oss.str("");
+      oss << _actuator->name() << " Muscle Velocity";
       _variables.push_back(oss.str());
     }
   }
