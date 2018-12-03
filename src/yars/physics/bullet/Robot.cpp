@@ -17,7 +17,10 @@ Robot::Robot(DataRobot *robot)
   __createBody();
   __createActuators();
   __createSensors();
-  __createController();
+  if (__YARS_GET_USE_CONTROLLER == true)
+  {
+    __createController();
+  }
 }
 
 Robot::~Robot()
@@ -112,8 +115,6 @@ void Robot::controllerUpdate()
 
 void Robot::__createController()
 {
-  if (__YARS_GET_USE_CONTROLLER == false)
-    return;
   if (_data->controller() == NULL)
     return;
   string c = _data->controller()->module();

@@ -68,7 +68,10 @@ void BulletPhysics::step()
   _world->step(__YARS_GET_STEP_SIZE);
   _robots->postPhysicsUpdate();
   _environment->postPhysicsUpdate();
-  _robots->controllerUpdate();
+  if (__YARS_GET_USE_CONTROLLER == true)
+  {
+    _robots->controllerUpdate();
+  }
   _reset = _robots->isReset();
   _quit = _robots->isQuit();
 }
