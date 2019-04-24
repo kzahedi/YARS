@@ -78,21 +78,21 @@ void DataSphere::createXsd(XsdSpecification *spec)
   XsdSequence *sphereDef = new XsdSequence(YARS_STRING_OBJECT_SPHERE_DEFINTION);
   sphereDef->add(NA(YARS_STRING_NAME,                 YARS_STRING_XSD_STRING,                      false));
   sphereDef->add(NA(YARS_STRING_VISUALISE,            YARS_STRING_TRUE_FALSE_DEFINITION,           false));
-  sphereDef->add(NE(YARS_STRING_DIMENSION,            YARS_STRING_RADIUS_DIMENSION_DEFINITION,     1, 1));
-  sphereDef->add(NE(YARS_STRING_POSE,                 YARS_STRING_POSE_DEFINITION,                 0, 1));
-  sphereDef->add(NE(YARS_STRING_SPHERE_VISUALISATION, YARS_STRING_SPHERE_VISUALISATION_DEFINITION, 0, 1));
-  sphereDef->add(NE(YARS_STRING_PHYSICS,              YARS_STRING_PHYSICS_DEFINITION,              1, 1));
+  sphereDef->add(XE(YARS_STRING_DIMENSION,            YARS_STRING_RADIUS_DIMENSION_DEFINITION,     1, 1));
+  sphereDef->add(XE(YARS_STRING_POSE,                 YARS_STRING_POSE_DEFINITION,                 0, 1));
+  sphereDef->add(XE(YARS_STRING_SPHERE_VISUALISATION, YARS_STRING_SPHERE_VISUALISATION_DEFINITION, 0, 1));
+  sphereDef->add(XE(YARS_STRING_PHYSICS,              YARS_STRING_PHYSICS_DEFINITION,              1, 1));
   spec->add(sphereDef);
 
   XsdChoice *options = new XsdChoice(YARS_STRING_SPHERE_VISUALISATION_DEFINITION, 1, 1);
   spec->add(options);
 
   XsdSequence *textureDefinition = new XsdSequence(OPTION_1);
-  textureDefinition->add(NE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
+  textureDefinition->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(textureDefinition);
 
   XsdSequence *option2 = new XsdSequence(OPTION_2);
-  option2->add(NE(YARS_STRING_OBJECT_MESH_VISUALISATION,
+  option2->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
                   YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, 1, 1));
   options->add(option2);
 

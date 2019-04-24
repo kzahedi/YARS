@@ -69,7 +69,7 @@ void DataController::createXsd(XsdSpecification *spec)
   controller->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
   controller->add(NA(YARS_STRING_FREQUENCY,
         YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  controller->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
+  controller->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
   spec->add(controller);
 
   XsdSequence *parameterDefinition = new XsdSequence(YARS_STRING_PARAMETER_DEFINITION);

@@ -47,7 +47,7 @@ void DataSignalPeriodic::createXsd(XsdSpecification *spec)
   XsdSequence *periodicSignal = new XsdSequence(YARS_STRING_PERIODIC_SIGNAL_DEFINITION);
   periodicSignal->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,           true));
   periodicSignal->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
-  periodicSignal->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
+  periodicSignal->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
   spec->add(periodicSignal);
 }
 

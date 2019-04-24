@@ -115,17 +115,17 @@ void DataScreens::add(DataParseElement *element)
 void DataScreens::createXsd(XsdSpecification *spec)
 {
   XsdSequence *screenConfigDefinition = new XsdSequence(YARS_STRING_SCREEN_CONFIG_DEFINITION);
-  screenConfigDefinition->add(NE(YARS_STRING_SCREEN,        YARS_STRING_SCREEN_DEFINITION,        1));
-  screenConfigDefinition->add(NE(YARS_STRING_DEFAULT,       YARS_STRING_SCREEN_DEFINITION,        0, 1));
-  screenConfigDefinition->add(NE(YARS_STRING_SKY,           YARS_STRING_NAME_DEFINITION,          0, 1));
-  screenConfigDefinition->add(NE(YARS_STRING_CAMERA_CONFIG, YARS_STRING_CAMERA_CONFIG_DEFINITION, 0, 1));
-  screenConfigDefinition->add(NE(YARS_STRING_FOLLOWABLES,   YARS_STRING_FOLLOWABLES_DEFINITION,   0, 1));
-  screenConfigDefinition->add(NE(YARS_STRING_RECORDING,     YARS_STRING_RECORDING_DEFINITION,     0, 1));
-  screenConfigDefinition->add(NE(YARS_STRING_VISUALISE,     YARS_STRING_VISUALISE_DEFINITION,     0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_SCREEN,        YARS_STRING_SCREEN_DEFINITION,        1));
+  screenConfigDefinition->add(XE(YARS_STRING_DEFAULT,       YARS_STRING_SCREEN_DEFINITION,        0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_SKY,           YARS_STRING_NAME_DEFINITION,          0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_CAMERA_CONFIG, YARS_STRING_CAMERA_CONFIG_DEFINITION, 0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_FOLLOWABLES,   YARS_STRING_FOLLOWABLES_DEFINITION,   0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_RECORDING,     YARS_STRING_RECORDING_DEFINITION,     0, 1));
+  screenConfigDefinition->add(XE(YARS_STRING_VISUALISE,     YARS_STRING_VISUALISE_DEFINITION,     0, 1));
   spec->add(screenConfigDefinition);
 
   XsdSequence *visualiseDefinition = new XsdSequence(YARS_STRING_VISUALISE_DEFINITION);
-  visualiseDefinition->add(NE(YARS_STRING_JOINTS, YARS_STRING_JOINTS_AXIS_DEFINITION, 0, 1));
+  visualiseDefinition->add(XE(YARS_STRING_JOINTS, YARS_STRING_JOINTS_AXIS_DEFINITION, 0, 1));
   spec->add(visualiseDefinition);
 
   XsdSequence *jointsVisDefinition = new XsdSequence(YARS_STRING_JOINTS_AXIS_DEFINITION);

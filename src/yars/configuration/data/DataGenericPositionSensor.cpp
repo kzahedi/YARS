@@ -78,10 +78,10 @@ void DataGenericPositionSensor::createXsd(XsdSpecification *spec)
 {
   XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_POSITION_SENSOR_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,             false));
-  sensor->add(NE(YARS_STRING_OBJECT,      YARS_STRING_NAME_DEFINITION,        1, 1));
-  sensor->add(NE(YARS_STRING_COORDINATES, YARS_STRING_COORDINATES_DEFINITION, 1, 1));
-  sensor->add(NE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,       0, 1));
-  sensor->add(NE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,      0, 1));
+  sensor->add(XE(YARS_STRING_OBJECT,      YARS_STRING_NAME_DEFINITION,        1, 1));
+  sensor->add(XE(YARS_STRING_COORDINATES, YARS_STRING_COORDINATES_DEFINITION, 1, 1));
+  sensor->add(XE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,       0, 1));
+  sensor->add(XE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,      0, 1));
   spec->add(sensor);
 
   XsdSequence *coordinates = new XsdSequence(YARS_STRING_COORDINATES_DEFINITION);

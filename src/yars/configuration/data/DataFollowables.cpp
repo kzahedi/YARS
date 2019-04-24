@@ -30,7 +30,7 @@ void DataFollowables::add(DataParseElement *element)
 void DataFollowables::createXsd(XsdSpecification *spec)
 {
   XsdSequence *followablesConfiguration = new XsdSequence(YARS_STRING_FOLLOWABLES_DEFINITION);
-  followablesConfiguration->add(NE(YARS_STRING_FOLLOWABLE, YARS_STRING_FOLLOWABLE_DEFINITION, 1));
+  followablesConfiguration->add(XE(YARS_STRING_FOLLOWABLE, YARS_STRING_FOLLOWABLE_DEFINITION, 1));
   spec->add(followablesConfiguration);
 
   XsdSequence *followableConfiguration = new XsdSequence(YARS_STRING_FOLLOWABLE_DEFINITION);

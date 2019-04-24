@@ -52,7 +52,7 @@ void DataSignalKeyboard::createXsd(XsdSpecification *spec)
   keyboardSignal->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,           true));
   keyboardSignal->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
   keyboardSignal->add(NA(YARS_STRING_KEY,       YARS_STRING_XSD_STRING,           true));
-  keyboardSignal->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
+  keyboardSignal->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
   spec->add(keyboardSignal);
 }
 

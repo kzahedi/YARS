@@ -56,6 +56,7 @@ void Robot::__createActuators()
   {
     Actuator *a = ActuatorFactory::create(*i, this);
     _actuators.push_back(a);
+    cout << "added " << a->data()->name() << " is active: " << a->data()->isActive(0) << endl;
   }
 }
 

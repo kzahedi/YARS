@@ -66,13 +66,13 @@ void DataLoggingSensor::createXsd(XsdSpecification *spec)
   loggingSensorDefinition->add(options);
 
   XsdSequence *optionA = new XsdSequence(YARS_INTERNAL_EXTERNAL_OPTION);
-  optionA->add(NE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  optionA->add(NE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
+  optionA->add(XE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
+  optionA->add(XE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
   options->add(optionA);
 
   XsdSequence *optionB = new XsdSequence(YARS_EXTERNAL_INTERNAL_OPTION);
-  optionB->add(NE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  optionB->add(NE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
+  optionB->add(XE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
+  optionB->add(XE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
   options->add(optionB);
 
   XsdSequence *emptyDefinition = new XsdSequence(YARS_STRING_EMPTY_DEFINITION);

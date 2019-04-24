@@ -52,9 +52,9 @@ void DataGenericAmbientLightSensor::createXsd(XsdSpecification *spec)
 {
   XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,         false));
-  sensor->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
-  sensor->add(NE(YARS_STRING_NOISE,   YARS_STRING_NOISE_DEFINITION,   0, 1));
-  sensor->add(NE(YARS_STRING_FILTER,  YARS_STRING_FILTER_DEFINITION,  0, 1));
+  sensor->add(XE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
+  sensor->add(XE(YARS_STRING_NOISE,   YARS_STRING_NOISE_DEFINITION,   0, 1));
+  sensor->add(XE(YARS_STRING_FILTER,  YARS_STRING_FILTER_DEFINITION,  0, 1));
   spec->add(sensor);
   DataNoise::createXsd(spec);
   DataFilter::createXsd(spec);

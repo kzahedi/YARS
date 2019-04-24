@@ -43,7 +43,7 @@ void DataRobots::setMacros(DataMacros *macros)
 void DataRobots::createXsd(XsdSpecification *spec)
 {
   XsdSequence *robotsDefinition = new XsdSequence(YARS_STRING_ROBOTS_DEFINITION);
-  robotsDefinition->add(NE(YARS_STRING_ROBOT, YARS_STRING_ROBOT_DEFINITION, 0));
+  robotsDefinition->add(XE(YARS_STRING_ROBOT, YARS_STRING_ROBOT_DEFINITION, 0));
   stringstream comment;
   comment << "A robot is a controllable physical object." << endl;
   comment << "  It can be controller via TCP/IP or a RobotController." << endl;

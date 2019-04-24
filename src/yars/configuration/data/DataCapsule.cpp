@@ -76,27 +76,27 @@ void DataCapsule::createXsd(XsdSpecification *spec)
   XsdSequence *capsuleDefinition = new XsdSequence(YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION);
   capsuleDefinition->add(NA(YARS_STRING_NAME,             YARS_STRING_XSD_STRING,                  false));
   capsuleDefinition->add(NA(YARS_STRING_VISUALISE,        YARS_STRING_TRUE_FALSE_DEFINITION,       false));
-  capsuleDefinition->add(NE(YARS_STRING_DIMENSION,        YARS_STRING_RADIUS_HEIGHT_DEFINITION,    1, 1));
-  capsuleDefinition->add(NE(YARS_STRING_POSE,             YARS_STRING_POSE_DEFINITION,             0, 1));
-  capsuleDefinition->add(NE(YARS_STRING_CC_VISUALISATION, YARS_STRING_CC_VISUALISATION_DEFINITION, 0, 1));
-  capsuleDefinition->add(NE(YARS_STRING_PHYSICS,          YARS_STRING_PHYSICS_DEFINITION,          1, 1));
+  capsuleDefinition->add(XE(YARS_STRING_DIMENSION,        YARS_STRING_RADIUS_HEIGHT_DEFINITION,    1, 1));
+  capsuleDefinition->add(XE(YARS_STRING_POSE,             YARS_STRING_POSE_DEFINITION,             0, 1));
+  capsuleDefinition->add(XE(YARS_STRING_CC_VISUALISATION, YARS_STRING_CC_VISUALISATION_DEFINITION, 0, 1));
+  capsuleDefinition->add(XE(YARS_STRING_PHYSICS,          YARS_STRING_PHYSICS_DEFINITION,          1, 1));
   spec->add(capsuleDefinition);
 
   XsdChoice *options = new XsdChoice(YARS_STRING_CC_VISUALISATION_DEFINITION, 1, 1);
   spec->add(options);
 
   XsdSequence *option1 = new XsdSequence(OPTION_1);
-  option1->add(NE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
+  option1->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(option1);
 
   XsdSequence *option2 = new XsdSequence(OPTION_2);
-  option2->add(NE(YARS_STRING_TOP_TEXTURE,    YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(NE(YARS_STRING_BOTTOM_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(NE(YARS_STRING_BODY_TEXTURE,   YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_TOP_TEXTURE,    YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_BOTTOM_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_BODY_TEXTURE,   YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(option2);
 
   XsdSequence *option3 = new XsdSequence(OPTION_3);
-  option3->add(NE(YARS_STRING_OBJECT_MESH_VISUALISATION,
+  option3->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
                   YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, "1", YARS_STRING_XSD_UNBOUNDED));
   options->add(option3);
 

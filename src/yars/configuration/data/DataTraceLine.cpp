@@ -125,12 +125,12 @@ void DataTraceLine::createXsd(XsdSpecification *spec)
   line->add(NA(YARS_STRING_BILLBOARD,      YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   line->add(NA(YARS_STRING_PROJECT,        YARS_STRING_PLANES_DEFINITION,         false));
 
-  line->add(NE(YARS_STRING_INIT,           YARS_STRING_INIT_DEFINITION,           0, 1));
-  line->add(NE(YARS_STRING_FINAL,          YARS_STRING_FINAL_DEFINITION,          0, 1));
-  line->add(NE(YARS_STRING_OFFSET,         YARS_STRING_OFFSET_DEFINITION,         0, 1));
-  line->add(NE(YARS_STRING_TEXTURE,        YARS_STRING_NAME_DEFINITION,           0, 1));
-  line->add(NE(YARS_STRING_PARTICLES,      YARS_STRING_NAME_DEFINITION,           0, 1));
-  line->add(NE(YARS_STRING_BILLBOARD,      YARS_STRING_NAME_DEFINITION,           0, 1));
+  line->add(XE(YARS_STRING_INIT,           YARS_STRING_INIT_DEFINITION,           0, 1));
+  line->add(XE(YARS_STRING_FINAL,          YARS_STRING_FINAL_DEFINITION,          0, 1));
+  line->add(XE(YARS_STRING_OFFSET,         YARS_STRING_OFFSET_DEFINITION,         0, 1));
+  line->add(XE(YARS_STRING_TEXTURE,        YARS_STRING_NAME_DEFINITION,           0, 1));
+  line->add(XE(YARS_STRING_PARTICLES,      YARS_STRING_NAME_DEFINITION,           0, 1));
+  line->add(XE(YARS_STRING_BILLBOARD,      YARS_STRING_NAME_DEFINITION,           0, 1));
   spec->add(line);
 
   XsdSequence *init = new XsdSequence(YARS_STRING_INIT_DEFINITION);

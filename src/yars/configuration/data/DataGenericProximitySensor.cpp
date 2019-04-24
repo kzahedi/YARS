@@ -128,13 +128,13 @@ void DataGenericProximitySensor::createXsd(XsdSpecification *spec)
 {
   XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_PROXIMITY_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,           YARS_STRING_XSD_STRING,               false));
-  sensor->add(NE(YARS_STRING_OBJECT,         YARS_STRING_NAME_DEFINITION,          1, 1));
-  sensor->add(NE(YARS_STRING_POSE,           YARS_STRING_POSE_DEFINITION,          1, 1));
-  sensor->add(NE(YARS_STRING_DISTANCE,       YARS_STRING_METER_DEFINITION,         1, 1));
-  sensor->add(NE(YARS_STRING_MAPPING,        YARS_STRING_MIN_MAX_DEFINITION,       1, 1));
-  sensor->add(NE(YARS_STRING_OPENING_ANGLES, YARS_STRING_OPENING_ANGLES_DEFINTION, 1, 1));
-  sensor->add(NE(YARS_STRING_NOISE,          YARS_STRING_NOISE_DEFINITION,         0, 1));
-  sensor->add(NE(YARS_STRING_FILTER,         YARS_STRING_FILTER_DEFINITION,        0, 1));
+  sensor->add(XE(YARS_STRING_OBJECT,         YARS_STRING_NAME_DEFINITION,          1, 1));
+  sensor->add(XE(YARS_STRING_POSE,           YARS_STRING_POSE_DEFINITION,          1, 1));
+  sensor->add(XE(YARS_STRING_DISTANCE,       YARS_STRING_METER_DEFINITION,         1, 1));
+  sensor->add(XE(YARS_STRING_MAPPING,        YARS_STRING_MIN_MAX_DEFINITION,       1, 1));
+  sensor->add(XE(YARS_STRING_OPENING_ANGLES, YARS_STRING_OPENING_ANGLES_DEFINTION, 1, 1));
+  sensor->add(XE(YARS_STRING_NOISE,          YARS_STRING_NOISE_DEFINITION,         0, 1));
+  sensor->add(XE(YARS_STRING_FILTER,         YARS_STRING_FILTER_DEFINITION,        0, 1));
   spec->add(sensor);
 
   XsdSequence *oaDefinition = new XsdSequence(YARS_STRING_OPENING_ANGLES_DEFINTION);

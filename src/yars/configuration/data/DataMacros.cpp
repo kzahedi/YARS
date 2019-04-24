@@ -51,7 +51,7 @@ void DataMacros::add(DataParseElement *element)
 void DataMacros::createXsd(XsdSpecification *spec)
 {
   XsdSequence *macrosConfigDefinition = new XsdSequence(YARS_STRING_MACROS_DEFINITION);
-  macrosConfigDefinition->add(NE(YARS_STRING_MACRO, YARS_STRING_MACRO_DEFINITION, 1));
+  macrosConfigDefinition->add(XE(YARS_STRING_MACRO, YARS_STRING_MACRO_DEFINITION, 1));
   spec->add(macrosConfigDefinition);
   DataMacro::createXsd(spec);
 }

@@ -402,15 +402,15 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   rotAxisDefinition->add(NA(YARS_STRING_TYPE,          YARS_STRING_ACTUATOR_AV_TYPE_DEFINITION,   true));
   rotAxisDefinition->add(NA(YARS_STRING_FRICTION,      YARS_STRING_POSITIVE_DECIMAL,              false));
   rotAxisDefinition->add(NA(YARS_STRING_MODE,          YARS_STRING_ACTUATOR_MODE_DEFINITION,      true));
-  rotAxisDefinition->add(NE(YARS_STRING_FORCE,         YARS_STRING_FORCE_DEFINITION,              1, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_VELOCITY,      YARS_STRING_VELOCITY_DEFINITION,           1, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_DEFLECTION,    YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_MAPPING,       YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_LIMIT,         YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_SPRING,        YARS_STRING_SPRING_DEFINITION,             0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_PID,           YARS_STRING_PID_DEFINITION,                0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_NOISE,         YARS_STRING_NOISE_DEFINITION,              0, 1));
-  rotAxisDefinition->add(NE(YARS_STRING_FILTER,        YARS_STRING_FILTER_DEFINITION,             0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_FORCE,         YARS_STRING_FORCE_DEFINITION,              1, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_VELOCITY,      YARS_STRING_VELOCITY_DEFINITION,           1, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_DEFLECTION,    YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_MAPPING,       YARS_STRING_MIN_MAX_DEFINITION,            0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_LIMIT,         YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_SPRING,        YARS_STRING_SPRING_DEFINITION,             0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_PID,           YARS_STRING_PID_DEFINITION,                0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_NOISE,         YARS_STRING_NOISE_DEFINITION,              0, 1));
+  rotAxisDefinition->add(XE(YARS_STRING_FILTER,        YARS_STRING_FILTER_DEFINITION,             0, 1));
   spec->add(rotAxisDefinition);
   // ROTATIONAL AXIS DEFINITION - END
 
@@ -419,14 +419,14 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   transAxisDefinition->add(NA(YARS_STRING_TYPE,       YARS_STRING_ACTUATOR_PV_TYPE_DEFINITION, true));
   transAxisDefinition->add(NA(YARS_STRING_FRICTION,   YARS_STRING_POSITIVE_DECIMAL,            false));
   transAxisDefinition->add(NA(YARS_STRING_MODE,       YARS_STRING_ACTUATOR_MODE_DEFINITION,    true));
-  transAxisDefinition->add(NE(YARS_STRING_FORCE,      YARS_STRING_FORCE_DEFINITION,            1, 1));
-  transAxisDefinition->add(NE(YARS_STRING_VELOCITY,   YARS_STRING_VELOCITY_DEFINITION,         1, 1));
-  transAxisDefinition->add(NE(YARS_STRING_DEFLECTION, YARS_STRING_MIN_MAX_DEFINITION,          0, 1));
-  transAxisDefinition->add(NE(YARS_STRING_MAPPING,    YARS_STRING_MIN_MAX_DEFINITION,          0, 1));
-  transAxisDefinition->add(NE(YARS_STRING_SPRING,     YARS_STRING_SPRING_DEFINITION,           0, 1));
-  transAxisDefinition->add(NE(YARS_STRING_PID,        YARS_STRING_PID_DEFINITION,              0, 1));
-  transAxisDefinition->add(NE(YARS_STRING_NOISE,      YARS_STRING_NOISE_DEFINITION,            0, 1));
-  transAxisDefinition->add(NE(YARS_STRING_FILTER,     YARS_STRING_FILTER_DEFINITION,           0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_FORCE,      YARS_STRING_FORCE_DEFINITION,            1, 1));
+  transAxisDefinition->add(XE(YARS_STRING_VELOCITY,   YARS_STRING_VELOCITY_DEFINITION,         1, 1));
+  transAxisDefinition->add(XE(YARS_STRING_DEFLECTION, YARS_STRING_MIN_MAX_DEFINITION,          0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_MAPPING,    YARS_STRING_MIN_MAX_DEFINITION,          0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_SPRING,     YARS_STRING_SPRING_DEFINITION,           0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_PID,        YARS_STRING_PID_DEFINITION,              0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_NOISE,      YARS_STRING_NOISE_DEFINITION,            0, 1));
+  transAxisDefinition->add(XE(YARS_STRING_FILTER,     YARS_STRING_FILTER_DEFINITION,           0, 1));
   spec->add(transAxisDefinition);
   // TRANSLATIONAL AXIS DEFINITION - END
 
@@ -434,11 +434,11 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   XsdSequence *genericDefinition = new XsdSequence(YARS_STRING_GENERIC_DEFINITION);
   genericDefinition->add(NA(YARS_STRING_NAME,          YARS_STRING_XSD_STRING,               true));
   genericDefinition->add(NA(YARS_STRING_SPRING,        YARS_STRING_TRUE_FALSE_DEFINITION,    false));
-  genericDefinition->add(NE(YARS_STRING_SOURCE,        YARS_STRING_NAME_DEFINITION,          1, 1));
-  genericDefinition->add(NE(YARS_STRING_DESTINATION,   YARS_STRING_NAME_DEFINITION,          0, 1));
-  genericDefinition->add(NE(YARS_STRING_POSE,          YARS_STRING_POSEG_DEFINITION,         1, 1));
-  genericDefinition->add(NE(YARS_STRING_ROTATIONAL,    YARS_STRING_ROTATIONAL_DEFINITION,    0, 1));
-  genericDefinition->add(NE(YARS_STRING_TRANSLATIONAL, YARS_STRING_TRANSLATIONAL_DEFINITION, 0, 1));
+  genericDefinition->add(XE(YARS_STRING_SOURCE,        YARS_STRING_NAME_DEFINITION,          1, 1));
+  genericDefinition->add(XE(YARS_STRING_DESTINATION,   YARS_STRING_NAME_DEFINITION,          0, 1));
+  genericDefinition->add(XE(YARS_STRING_POSE,          YARS_STRING_POSEG_DEFINITION,         1, 1));
+  genericDefinition->add(XE(YARS_STRING_ROTATIONAL,    YARS_STRING_ROTATIONAL_DEFINITION,    0, 1));
+  genericDefinition->add(XE(YARS_STRING_TRANSLATIONAL, YARS_STRING_TRANSLATIONAL_DEFINITION, 0, 1));
   spec->add(genericDefinition);
 
   XsdSequence *poseDefinition = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
@@ -453,16 +453,16 @@ void DataGenericActuator::createXsd(XsdSpecification *spec)
   spec->add(poseDefinition);
 
   XsdSequence *rotAxesDefinition = new XsdSequence(YARS_STRING_ROTATIONAL_DEFINITION);
-  rotAxesDefinition->add(NE(YARS_STRING_X_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
-  rotAxesDefinition->add(NE(YARS_STRING_Y_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
-  rotAxesDefinition->add(NE(YARS_STRING_Z_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
+  rotAxesDefinition->add(XE(YARS_STRING_X_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
+  rotAxesDefinition->add(XE(YARS_STRING_Y_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
+  rotAxesDefinition->add(XE(YARS_STRING_Z_AXIS, YARS_STRING_ROTATIONAL_AXIS_DEFINITION, 0, 1));
   spec->add(rotAxesDefinition);
 
   XsdSequence *transAxesDefinition = new XsdSequence(YARS_STRING_TRANSLATIONAL_DEFINITION);
-  transAxesDefinition->add(NE(YARS_STRING_LIMIT,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  transAxesDefinition->add(NE(YARS_STRING_X_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
-  transAxesDefinition->add(NE(YARS_STRING_Y_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
-  transAxesDefinition->add(NE(YARS_STRING_Z_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
+  transAxesDefinition->add(XE(YARS_STRING_LIMIT,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  transAxesDefinition->add(XE(YARS_STRING_X_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
+  transAxesDefinition->add(XE(YARS_STRING_Y_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
+  transAxesDefinition->add(XE(YARS_STRING_Z_AXIS, YARS_STRING_TRANSLATIONAL_AXIS_DEFINITION, 0, 1));
   spec->add(transAxesDefinition);
 
   XsdSequence *springDefinition = new XsdSequence(YARS_STRING_SPRING_DEFINITION);

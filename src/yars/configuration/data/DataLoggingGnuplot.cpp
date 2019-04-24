@@ -82,7 +82,7 @@ void DataLoggingGnuplot::createXsd(XsdSpecification *spec)
   gnuplotDefinition->add(NA(YARS_STRING_NAME,     YARS_STRING_XSD_STRING,                false));
   gnuplotDefinition->add(NA(YARS_STRING_PAIRWISE, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   gnuplotDefinition->add(NA(YARS_STRING_TERM,     YARS_STRING_GNUPLOT_TERM_DEFINITION,   false));
-  gnuplotDefinition->add(NE(YARS_STRING_TARGET,   YARS_STRING_TARGET_DEFINITION, 0));
+  gnuplotDefinition->add(XE(YARS_STRING_TARGET,   YARS_STRING_TARGET_DEFINITION, 0));
   spec->add(gnuplotDefinition);
 
   XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);

@@ -112,9 +112,9 @@ void DataLoggingSelforg::createXsd(XsdSpecification *spec)
   selforgDefinition->add(NA(YARS_STRING_GUILOGGER, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   selforgDefinition->add(NA(YARS_STRING_MATRIXVIZ, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   selforgDefinition->add(NA(YARS_STRING_FILE,      YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  selforgDefinition->add(NE(YARS_STRING_GUILOGGER, YARS_STRING_GUILOGGER_DEFINITION,      0));
-  selforgDefinition->add(NE(YARS_STRING_MATRIXVIZ, YARS_STRING_MATRIXVIZ_DEFINITION,      0));
-  selforgDefinition->add(NE(YARS_STRING_TARGET,    YARS_STRING_TARGET_DEFINITION,         0));
+  selforgDefinition->add(XE(YARS_STRING_GUILOGGER, YARS_STRING_GUILOGGER_DEFINITION,      0));
+  selforgDefinition->add(XE(YARS_STRING_MATRIXVIZ, YARS_STRING_MATRIXVIZ_DEFINITION,      0));
+  selforgDefinition->add(XE(YARS_STRING_TARGET,    YARS_STRING_TARGET_DEFINITION,         0));
   spec->add(selforgDefinition);
 
   XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);

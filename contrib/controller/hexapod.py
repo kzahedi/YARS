@@ -39,8 +39,9 @@ def update(sensors):
   a11 = s3
   a12 = s4
 
-  a = numpy.random.rand(1,12) * 2.0 - 1.0
-  a = a.tolist()[0]
-  print(a)
+  # a = numpy.random.rand(1,12) * 2.0 - 1.0
+  # a = a.tolist()[0]
+
+  a = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12]
 
   return a

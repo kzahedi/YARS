@@ -173,41 +173,41 @@ DataSensor* DataSensorFactory::__generateObjectAngularVelocitySensor(DataParseEl
 void DataSensorFactory::createXsd(XsdSpecification *spec)
 {
   XsdChoice *sensorListDefinition = new XsdChoice(YARS_STRING_SENSOR_LIST_DEFINITION,         "0", YARS_STRING_XSD_UNBOUNDED);
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_PROXIMITY,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_PROXIMITY,
                                YARS_STRING_GENERIC_PROXIMITY_DEFINITION,                      "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_CAMERA_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_CAMERA_SENSOR,
                                YARS_STRING_GENERIC_CAMERA_SENSOR_DEFINITION,                  "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR,
                                YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR_DEFINITION,           "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_INTERNAL_ENERGY_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_INTERNAL_ENERGY_SENSOR,
                                YARS_STRING_GENERIC_INTERNAL_ENERGY_SENSOR_DEFINITION,         "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_ORIENTATION_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_ORIENTATION_SENSOR,
                                YARS_STRING_GENERIC_ORIENTATION_SENSOR_DEFINITION,             "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_POSITION_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_POSITION_SENSOR,
                                YARS_STRING_GENERIC_POSITION_SENSOR_DEFINITION,                "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_LDR_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_LDR_SENSOR,
                                YARS_STRING_GENERIC_LDR_SENSOR_DEFINITION,                     "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_SHARP_IR_DM2Y3A003K0F,
+  sensorListDefinition->add(XE(YARS_STRING_SHARP_IR_DM2Y3A003K0F,
                                YARS_STRING_SHARP_IR_DM2Y3A003K0F_DEFINITION,                  "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_SHARP_IR_GP2D12_37,
+  sensorListDefinition->add(XE(YARS_STRING_SHARP_IR_GP2D12_37,
                                YARS_STRING_SHARP_IR_GP2D12_37_DEFINITION,                     "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_FEEDBACK_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_FEEDBACK_SENSOR,
                                YARS_STRING_GENERIC_FEEDBACK_SENSOR_DEFINITION,                "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_VELOCITY_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_VELOCITY_SENSOR,
                                YARS_STRING_GENERIC_VELOCITY_SENSOR_DEFINITION,                "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_DEFLECTION_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_DEFLECTION_SENSOR,
                                YARS_STRING_GENERIC_DEFLECTION_SENSOR_DEFINITION,              "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_SIGNAL_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_SIGNAL_SENSOR,
                                YARS_STRING_GENERIC_SIGNAL_SENSOR_DEFINITION,                  "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR,
                                YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR_DEFINITION,          "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_ACTUATOR_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_ACTUATOR_SENSOR,
                                YARS_STRING_GENERIC_ACTUATOR_SENSOR_DEFINITION,                "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR,
                                YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR_DEFINITION,         "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR,
                                YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
-  sensorListDefinition->add(NE(YARS_STRING_MUSCLE_SENSOR,
+  sensorListDefinition->add(XE(YARS_STRING_MUSCLE_SENSOR,
                                YARS_STRING_MUSCLE_SENSOR_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
   spec->add(sensorListDefinition);
 

@@ -100,11 +100,11 @@ void DataSimulator::createXsd(XsdSpecification *spec)
   simulatorDefinition->add(NA(YARS_STRING_FREQUENCY, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
   spec->add(simulatorDefinition);
 
-  XsdElement *solverDefinition = NE(YARS_STRING_SOLVER, "", 0, 1);
+  XsdElement *solverDefinition = XE(YARS_STRING_SOLVER, "", 0, 1);
   solverDefinition->add(NA(YARS_STRING_ITERATIONS, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
   simulatorDefinition->add(solverDefinition);
 
-  XsdElement *control = NE(YARS_STRING_CONTROL, "", 0, 1);
+  XsdElement *control = XE(YARS_STRING_CONTROL, "", 0, 1);
   control->add(NA(YARS_STRING_ITERATIONS, YARS_STRING_XSD_INTEGER, false));
   control->add(NA(YARS_STRING_AUTO_RESET, YARS_STRING_XSD_INTEGER, false));
   control->add(NA(YARS_STRING_SEED,       YARS_STRING_XSD_INTEGER, false));

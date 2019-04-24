@@ -40,7 +40,7 @@ void DataRecording::add(DataParseElement *element)
 void DataRecording::createXsd(XsdSpecification *spec)
 {
   XsdSequence *recording = new XsdSequence(YARS_STRING_RECORDING_DEFINITION);
-  recording->add(NE(YARS_STRING_INTERVAL, YARS_STRING_INTERVAL_DEFINITION, 0));
+  recording->add(XE(YARS_STRING_INTERVAL, YARS_STRING_INTERVAL_DEFINITION, 0));
   spec->add(recording);
 
   XsdSequence *intervalDefinition = new XsdSequence(YARS_STRING_INTERVAL_DEFINITION);

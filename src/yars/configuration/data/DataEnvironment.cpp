@@ -232,19 +232,19 @@ void DataEnvironment::createXsd(XsdSpecification *spec)
 {
   XsdSequence *definition = new XsdSequence(YARS_STRING_ENVIRONMENT_DEFINITION);
   definition->add(NA(YARS_STRING_NAME,                   YARS_STRING_XSD_STRING,                       false));
-  definition->add(NE(YARS_STRING_GRAVITATION,            YARS_STRING_XYZ_DEFINITION,                   0, 1));
-  definition->add(NE(YARS_STRING_OBJECT_GROUND,          YARS_STRING_OBJECT_GROUND_DEFINTION,          0, 1));
+  definition->add(XE(YARS_STRING_GRAVITATION,            YARS_STRING_XYZ_DEFINITION,                   0, 1));
+  definition->add(XE(YARS_STRING_OBJECT_GROUND,          YARS_STRING_OBJECT_GROUND_DEFINTION,          0, 1));
 
   XsdChoice *objectChoice = new XsdChoice("",              "1", YARS_STRING_XSD_UNBOUNDED);
-  objectChoice->add(NE(YARS_STRING_OBJECT_BOX,             YARS_STRING_OBJECT_BOX_DEFINTION,             0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_SPHERE,          YARS_STRING_OBJECT_SPHERE_DEFINTION,          0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_PLY,             YARS_STRING_OBJECT_PLY_DEFINTION,             0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_COMPOSITE,       YARS_STRING_OBJECT_COMPOSITE_DEFINITION,      0));
-  objectChoice->add(NE(YARS_STRING_OBJECT_MACRO,           YARS_STRING_OBJECT_MACRO_DEFINTION,           0));
-  objectChoice->add(NE(YARS_STRING_LIGHT_SOURCE,           YARS_STRING_LIGHT_SOURCE_DEFINITION,          0));
-  objectChoice->add(NE(YARS_STRING_AMBIENT_LIGHT,          YARS_STRING_AMBIENT_LIGHT_DEFINITION,         0,1));
+  objectChoice->add(XE(YARS_STRING_OBJECT_BOX,             YARS_STRING_OBJECT_BOX_DEFINTION,             0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_SPHERE,          YARS_STRING_OBJECT_SPHERE_DEFINTION,          0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_PLY,             YARS_STRING_OBJECT_PLY_DEFINTION,             0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_COMPOSITE,       YARS_STRING_OBJECT_COMPOSITE_DEFINITION,      0));
+  objectChoice->add(XE(YARS_STRING_OBJECT_MACRO,           YARS_STRING_OBJECT_MACRO_DEFINTION,           0));
+  objectChoice->add(XE(YARS_STRING_LIGHT_SOURCE,           YARS_STRING_LIGHT_SOURCE_DEFINITION,          0));
+  objectChoice->add(XE(YARS_STRING_AMBIENT_LIGHT,          YARS_STRING_AMBIENT_LIGHT_DEFINITION,         0,1));
   definition->add(objectChoice);
   spec->add(definition);
 
@@ -252,12 +252,12 @@ void DataEnvironment::createXsd(XsdSpecification *spec)
   ground->add(NA(YARS_STRING_FIXED,         YARS_STRING_TRUE_FALSE_DEFINITION,                   false));
   ground->add(NA(YARS_STRING_USE_FOG,       YARS_STRING_TRUE_FALSE_DEFINITION,                   false));
   ground->add(NA(YARS_STRING_FOG_INTENSITY, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL,               false));
-  ground->add(NE(YARS_STRING_GROUND_VISUALISATION, YARS_STRING_GROUND_VISUALISATION_DEFINITION, 0, 1));
+  ground->add(XE(YARS_STRING_GROUND_VISUALISATION, YARS_STRING_GROUND_VISUALISATION_DEFINITION, 0, 1));
   spec->add(ground);
 
   XsdSequence *textureDefinition = new XsdSequence(YARS_STRING_GROUND_VISUALISATION_DEFINITION);
-  textureDefinition->add(NE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 0, 1));
-  textureDefinition->add(NE(YARS_STRING_OBJECT_MESH_VISUALISATION,
+  textureDefinition->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 0, 1));
+  textureDefinition->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
                   YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, 0, YARS_STRING_XSD_UNBOUNDED));
   spec->add(textureDefinition);
 

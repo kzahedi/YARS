@@ -68,7 +68,7 @@ void DataLoggingCSV::createXsd(XsdSpecification *spec)
   fileDefinition->add(NA(YARS_STRING_DATE,          YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   fileDefinition->add(NA(YARS_STRING_DEBUG,         YARS_STRING_TRUE_FALSE_DEFINITION,     false));
   fileDefinition->add(NA(YARS_STRING_USE_TIME_STEP, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  fileDefinition->add(NE(YARS_STRING_TARGET,        YARS_STRING_TARGET_DEFINITION,         0));
+  fileDefinition->add(XE(YARS_STRING_TARGET,        YARS_STRING_TARGET_DEFINITION,         0));
   spec->add(fileDefinition);
 
   XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);

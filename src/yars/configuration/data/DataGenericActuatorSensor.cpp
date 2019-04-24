@@ -197,17 +197,17 @@ void DataGenericActuatorSensor::createXsd(XsdSpecification *spec)
 {
   XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_ACTUATOR_SENSOR_DEFINITION);
   sensor->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,         false));
-  sensor->add(NE(YARS_STRING_OBJECT,  YARS_STRING_NAME_DEFINITION,    1, 1));
+  sensor->add(XE(YARS_STRING_OBJECT,  YARS_STRING_NAME_DEFINITION,    1, 1));
 
-  sensor->add(NE(YARS_STRING_X,       YARS_STRING_AXIS_DEFINITION,    0, 1));
-  sensor->add(NE(YARS_STRING_Y,       YARS_STRING_AXIS_DEFINITION,    0, 1));
-  sensor->add(NE(YARS_STRING_Z,       YARS_STRING_AXIS_DEFINITION,    0, 1));
+  sensor->add(XE(YARS_STRING_X,       YARS_STRING_AXIS_DEFINITION,    0, 1));
+  sensor->add(XE(YARS_STRING_Y,       YARS_STRING_AXIS_DEFINITION,    0, 1));
+  sensor->add(XE(YARS_STRING_Z,       YARS_STRING_AXIS_DEFINITION,    0, 1));
   spec->add(sensor);
 
   XsdSequence *axisDefinition = new XsdSequence(YARS_STRING_AXIS_DEFINITION);
   axisDefinition->add(NA(YARS_STRING_TYPE,       YARS_STRING_TYPE_DEFINITION,   true));
-  axisDefinition->add(NE(YARS_STRING_DEFLECTION, YARS_STRING_DOMAIN_DEFINITION, 0, 1));
-  axisDefinition->add(NE(YARS_STRING_VELOCITY,   YARS_STRING_DOMAIN_DEFINITION, 0, 1));
+  axisDefinition->add(XE(YARS_STRING_DEFLECTION, YARS_STRING_DOMAIN_DEFINITION, 0, 1));
+  axisDefinition->add(XE(YARS_STRING_VELOCITY,   YARS_STRING_DOMAIN_DEFINITION, 0, 1));
   spec->add(axisDefinition);
 
   XsdEnumeration *typeDefinition = new XsdEnumeration(YARS_STRING_TYPE_DEFINITION,
@@ -217,10 +217,10 @@ void DataGenericActuatorSensor::createXsd(XsdSpecification *spec)
   spec->add(typeDefinition);
 
   XsdSequence *domainDefinition = new XsdSequence(YARS_STRING_DOMAIN_DEFINITION);
-  domainDefinition->add(NE(YARS_STRING_DOMAIN,  YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
-  domainDefinition->add(NE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
-  domainDefinition->add(NE(YARS_STRING_NOISE,   YARS_STRING_NOISE_DEFINITION,   0, 1));
-  domainDefinition->add(NE(YARS_STRING_FILTER,  YARS_STRING_FILTER_DEFINITION,  0, 1));
+  domainDefinition->add(XE(YARS_STRING_DOMAIN,  YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
+  domainDefinition->add(XE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
+  domainDefinition->add(XE(YARS_STRING_NOISE,   YARS_STRING_NOISE_DEFINITION,   0, 1));
+  domainDefinition->add(XE(YARS_STRING_FILTER,  YARS_STRING_FILTER_DEFINITION,  0, 1));
   spec->add(domainDefinition);
 
   DataNoise::createXsd(spec);

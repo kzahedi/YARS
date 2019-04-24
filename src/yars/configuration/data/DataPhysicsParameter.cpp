@@ -91,13 +91,13 @@ void DataPhysicsParameter::add(DataParseElement *element)
 void DataPhysicsParameter::createXsd(XsdSpecification *spec)
 {
   XsdSequence *physicsParameterDef = new XsdSequence(YARS_STRING_PHYSICS_DEFINITION);
-  physicsParameterDef->add(NE(YARS_STRING_MASS,             YARS_STRING_MASS_DEFINITION,             0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_COM,              YARS_STRING_COM_DEFINITION,              0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_FRICTION,         YARS_STRING_FRICTION_DEFINITION,         0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_ROLLING_FRICTION, YARS_STRING_ROLLING_FRICTION_DEFINITION, 0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_LINEAR_DAMPING,   YARS_STRING_LINEAR_DAMPING_DEFINITION,   0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_ANGULAR_DAMPING,  YARS_STRING_ANGULAR_DAMPING_DEFINITION,  0, 1));
-  physicsParameterDef->add(NE(YARS_STRING_RESTITUTION,      YARS_STRING_RESTITUTION_DEFINITION,      0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_MASS,             YARS_STRING_MASS_DEFINITION,             0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_COM,              YARS_STRING_COM_DEFINITION,              0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_FRICTION,         YARS_STRING_FRICTION_DEFINITION,         0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_ROLLING_FRICTION, YARS_STRING_ROLLING_FRICTION_DEFINITION, 0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_LINEAR_DAMPING,   YARS_STRING_LINEAR_DAMPING_DEFINITION,   0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_ANGULAR_DAMPING,  YARS_STRING_ANGULAR_DAMPING_DEFINITION,  0, 1));
+  physicsParameterDef->add(XE(YARS_STRING_RESTITUTION,      YARS_STRING_RESTITUTION_DEFINITION,      0, 1));
   spec->add(physicsParameterDef);
 
   XsdSequence *frictionDefinition = new XsdSequence(YARS_STRING_FRICTION_DEFINITION        );

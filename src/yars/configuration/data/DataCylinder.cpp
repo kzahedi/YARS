@@ -93,10 +93,10 @@ void DataCylinder::createXsd(XsdSpecification *spec)
   XsdSequence *cylinderDefinition = new XsdSequence(YARS_STRING_OBJECT_CYLINDER_DEFINTION);
   cylinderDefinition->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, false));
   cylinderDefinition->add(NA(YARS_STRING_VISUALISE, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-  cylinderDefinition->add(NE(YARS_STRING_DIMENSION, YARS_STRING_RADIUS_HEIGHT_DEFINITION, true));
-  cylinderDefinition->add(NE(YARS_STRING_POSE, YARS_STRING_POSE_DEFINITION, 0, 1));
-  cylinderDefinition->add(NE(YARS_STRING_C_VISUALISATION, YARS_STRING_C_VISUALISATION_DEFINITION, 0, 1));
-  cylinderDefinition->add(NE(YARS_STRING_PHYSICS, YARS_STRING_PHYSICS_DEFINITION, 1, 1));
+  cylinderDefinition->add(XE(YARS_STRING_DIMENSION, YARS_STRING_RADIUS_HEIGHT_DEFINITION, true));
+  cylinderDefinition->add(XE(YARS_STRING_POSE, YARS_STRING_POSE_DEFINITION, 0, 1));
+  cylinderDefinition->add(XE(YARS_STRING_C_VISUALISATION, YARS_STRING_C_VISUALISATION_DEFINITION, 0, 1));
+  cylinderDefinition->add(XE(YARS_STRING_PHYSICS, YARS_STRING_PHYSICS_DEFINITION, 1, 1));
   spec->add(cylinderDefinition);
 
   XsdSequence *radiusHeightDefinition = new XsdSequence(YARS_STRING_RADIUS_HEIGHT_DEFINITION);
@@ -108,17 +108,17 @@ void DataCylinder::createXsd(XsdSpecification *spec)
   spec->add(options);
 
   XsdSequence *option1 = new XsdSequence(OPTION_1);
-  option1->add(NE(YARS_STRING_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  option1->add(XE(YARS_STRING_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(option1);
 
   XsdSequence *option2 = new XsdSequence(OPTION_2);
-  option2->add(NE(YARS_STRING_TOP_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(NE(YARS_STRING_BOTTOM_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(NE(YARS_STRING_BODY_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_TOP_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_BOTTOM_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
+  option2->add(XE(YARS_STRING_BODY_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(option2);
 
   XsdSequence *option3 = new XsdSequence(OPTION_3);
-  option3->add(NE(YARS_STRING_OBJECT_MESH_VISUALISATION,
+  option3->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
                   YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, 1, 1));
   options->add(option3);
 

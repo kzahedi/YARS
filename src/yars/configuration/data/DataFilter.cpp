@@ -46,7 +46,7 @@ void DataFilter::createXsd(XsdSpecification *spec)
 {
   XsdSequence *filter = new XsdSequence(YARS_STRING_FILTER_DEFINITION);
   filter->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
-  filter->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
+  filter->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
   spec->add(filter);
 
   XsdSequence *parameterDefinition = new XsdSequence(YARS_STRING_PARAMETER_DEFINITION);

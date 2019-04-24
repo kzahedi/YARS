@@ -41,9 +41,9 @@ void DataSignals::add(DataParseElement *element)
 void DataSignals::createXsd(XsdSpecification *spec)
 {
   XsdSequence *signalListDefinition = new XsdSequence(YARS_STRING_SIGNALS_LIST_DEFINITION);
-  signalListDefinition->add(NE(YARS_STRING_KEYBOARD_SIGNAL,  YARS_STRING_KEYBOARD_SIGNAL_DEFINITION,  0));
-  signalListDefinition->add(NE(YARS_STRING_PERIODIC_SIGNAL,  YARS_STRING_PERIODIC_SIGNAL_DEFINITION,  0));
-  signalListDefinition->add(NE(YARS_STRING_TRIGGERED_SIGNAL, YARS_STRING_TRIGGERED_SIGNAL_DEFINITION, 0));
+  signalListDefinition->add(XE(YARS_STRING_KEYBOARD_SIGNAL,  YARS_STRING_KEYBOARD_SIGNAL_DEFINITION,  0));
+  signalListDefinition->add(XE(YARS_STRING_PERIODIC_SIGNAL,  YARS_STRING_PERIODIC_SIGNAL_DEFINITION,  0));
+  signalListDefinition->add(XE(YARS_STRING_TRIGGERED_SIGNAL, YARS_STRING_TRIGGERED_SIGNAL_DEFINITION, 0));
   spec->add(signalListDefinition);
 
   DataSignalKeyboard::createXsd(spec);

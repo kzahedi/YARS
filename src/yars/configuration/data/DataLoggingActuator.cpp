@@ -80,11 +80,11 @@ void DataLoggingActuator::createXsd(XsdSpecification *spec)
 
 
   XsdChoice *options = new XsdChoice(YARS_NO_NAME, "0", YARS_STRING_XSD_UNBOUNDED);
-  options->add(NE(YARS_STRING_INTERNAL,         YARS_STRING_EMPTY, 0,1));
-  options->add(NE(YARS_STRING_EXTERNAL,         YARS_STRING_EMPTY, 0,1));
-  options->add(NE(YARS_STRING_DESIRED,          YARS_STRING_EMPTY, 0,1));
-  options->add(NE(YARS_STRING_APPLIED_FORCE,    YARS_STRING_EMPTY, 0,1));
-  options->add(NE(YARS_STRING_APPLIED_VELOCITY, YARS_STRING_EMPTY, 0,1));
+  options->add(XE(YARS_STRING_INTERNAL,         YARS_STRING_EMPTY, 0,1));
+  options->add(XE(YARS_STRING_EXTERNAL,         YARS_STRING_EMPTY, 0,1));
+  options->add(XE(YARS_STRING_DESIRED,          YARS_STRING_EMPTY, 0,1));
+  options->add(XE(YARS_STRING_APPLIED_FORCE,    YARS_STRING_EMPTY, 0,1));
+  options->add(XE(YARS_STRING_APPLIED_VELOCITY, YARS_STRING_EMPTY, 0,1));
   loggingActuatorDefinition->add(options);
 
   XsdSequence *emptyDefinition = new XsdSequence(YARS_STRING_EMPTY);

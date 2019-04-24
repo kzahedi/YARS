@@ -53,7 +53,7 @@ void DataNoise::createXsd(XsdSpecification *spec)
 {
   XsdSequence *noiseDefinition = new XsdSequence(YARS_STRING_NOISE_DEFINITION);
   noiseDefinition->add(NA(YARS_STRING_MODULE,    YARS_STRING_NOISE_TYPE_DEFINITION, true));
-  noiseDefinition->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION,  true));
+  noiseDefinition->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION,  true));
   spec->add(noiseDefinition);
 
   XsdEnumeration *noiseTypesDefinition = new XsdEnumeration(YARS_STRING_NOISE_TYPE_DEFINITION, YARS_STRING_XSD_STRING);

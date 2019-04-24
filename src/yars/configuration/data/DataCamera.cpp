@@ -63,8 +63,8 @@ void DataCamera::add(DataParseElement *element)
 void DataCamera::createXsd(XsdSpecification *spec)
 {
   XsdSequence *options = new XsdSequence(YARS_STRING_SCREEN_CAMERA_DEFINITION);
-  options->add(NE(YARS_STRING_POSITION, YARS_STRING_XYZ_DEFINITION, 1, 1));
-  options->add(NE(YARS_STRING_LOOK_AT,  YARS_STRING_XYZ_DEFINITION, 1, 1));
+  options->add(XE(YARS_STRING_POSITION, YARS_STRING_XYZ_DEFINITION, 1, 1));
+  options->add(XE(YARS_STRING_LOOK_AT,  YARS_STRING_XYZ_DEFINITION, 1, 1));
   spec->add(options);
 }
 

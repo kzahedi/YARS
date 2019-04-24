@@ -248,13 +248,13 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
   sliderDefinition->add(NA(YARS_STRING_TYPE,        YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
   sliderDefinition->add(NA(YARS_STRING_FRICTION,    YARS_STRING_POSITIVE_DECIMAL,         false));
   sliderDefinition->add(NA(YARS_STRING_MODE,        YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
-  sliderDefinition->add(NE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
-  sliderDefinition->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
-  sliderDefinition->add(NE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
-  sliderDefinition->add(NE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
-  sliderDefinition->add(NE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
-  sliderDefinition->add(NE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-  sliderDefinition->add(NE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  sliderDefinition->add(XE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
+  sliderDefinition->add(XE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
+  sliderDefinition->add(XE(YARS_STRING_FORCE,       YARS_STRING_FORCE_DEFINITION,         1, 1));
+  sliderDefinition->add(XE(YARS_STRING_VELOCITY,    YARS_STRING_VELOCITY_DEFINITION,      1, 1));
+  sliderDefinition->add(XE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
+  sliderDefinition->add(XE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
+  sliderDefinition->add(XE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
   spec->add(sliderDefinition);
 
   XsdSequence *forceParameter = new XsdSequence(YARS_STRING_FORCE_DEFINITION);
@@ -267,17 +267,17 @@ void DataSliderActuator::createXsd(XsdSpecification *spec)
   spec->add(velocityParameter);
 
 
-  XsdElement *regularParameters = NE(YARS_STRING_REGULAR, "", 0, 1);
+  XsdElement *regularParameters = XE(YARS_STRING_REGULAR, "", 0, 1);
   regularParameters->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
   regularParameters->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
   regularParameters->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
   sliderDefinition->add(regularParameters);
 
-  sliderDefinition->add(NE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  sliderDefinition->add(NE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  sliderDefinition->add(NE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
-  sliderDefinition->add(NE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
-  sliderDefinition->add(NE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
+  sliderDefinition->add(XE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  sliderDefinition->add(XE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
+  sliderDefinition->add(XE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
+  sliderDefinition->add(XE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
+  sliderDefinition->add(XE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
   spec->add(sliderDefinition);
 
   XsdEnumeration *actuatorTypeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_TYPE_DEFINITION,

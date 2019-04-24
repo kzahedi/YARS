@@ -39,7 +39,7 @@ void DataLoggingConsole::createXsd(XsdSpecification *spec)
 {
   // TODO: define filename type
   XsdSequence *consoleDefinition = new XsdSequence(YARS_STRING_CONSOLE_DEFINITION);
-  consoleDefinition->add(NE(YARS_STRING_TARGET, YARS_STRING_TARGET_DEFINITION, 0));
+  consoleDefinition->add(XE(YARS_STRING_TARGET, YARS_STRING_TARGET_DEFINITION, 0));
   spec->add(consoleDefinition);
 
   XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);

@@ -96,28 +96,28 @@ void DataObjectFactory::createXsdWithoutComposite(XsdSpecification *spec)
 void DataObjectFactory::__createXsd(XsdSpecification *spec, bool withComposite)
 {
   XsdChoice *objectDefinition = new XsdChoice(YARS_STRING_OBJECT_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED);
-  objectDefinition->add(NE(YARS_STRING_OBJECT_BOX,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_BOX,
                            YARS_STRING_OBJECT_BOX_DEFINTION,            "0", YARS_STRING_XSD_UNBOUNDED));
 
-  objectDefinition->add(NE(YARS_STRING_OBJECT_SPHERE,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_SPHERE,
                            YARS_STRING_OBJECT_SPHERE_DEFINTION,         "0", YARS_STRING_XSD_UNBOUNDED));
 
-  objectDefinition->add(NE(YARS_STRING_OBJECT_PLY,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_PLY,
                            YARS_STRING_OBJECT_PLY_DEFINTION,            "0", YARS_STRING_XSD_UNBOUNDED));
 
-  objectDefinition->add(NE(YARS_STRING_OBJECT_CYLINDER,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_CYLINDER,
                            YARS_STRING_OBJECT_CYLINDER_DEFINTION,        "0", YARS_STRING_XSD_UNBOUNDED));
 
-  objectDefinition->add(NE(YARS_STRING_OBJECT_CAPPED_CYLINDER,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_CAPPED_CYLINDER,
                            YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, "0", YARS_STRING_XSD_UNBOUNDED));
 
   if(withComposite)
   {
-    objectDefinition->add(NE(YARS_STRING_OBJECT_COMPOSITE,
+    objectDefinition->add(XE(YARS_STRING_OBJECT_COMPOSITE,
           YARS_STRING_OBJECT_COMPOSITE_DEFINITION,      "0", YARS_STRING_XSD_UNBOUNDED));
   }
 
-  objectDefinition->add(NE(YARS_STRING_OBJECT_MACRO,
+  objectDefinition->add(XE(YARS_STRING_OBJECT_MACRO,
                            YARS_STRING_OBJECT_MACRO_DEFINTION,           "0", YARS_STRING_XSD_UNBOUNDED));
   spec->add(objectDefinition);
 

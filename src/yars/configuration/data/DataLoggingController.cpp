@@ -56,7 +56,7 @@ void DataLoggingController::createXsd(XsdSpecification *spec)
   XsdSequence *loggingControllerDefinition = new XsdSequence(YARS_STRING_LOGGING_CONTROLLER_DEFINITION);
   loggingControllerDefinition->add(NA(YARS_STRING_PRECISION, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
   loggingControllerDefinition->add(NA(YARS_STRING_TARGET,    YARS_STRING_XSD_STRING,                true));
-  loggingControllerDefinition->add(NE(YARS_STRING_USE,       YARS_STRING_CONTROLLER_USE_DEFINITION, true));
+  loggingControllerDefinition->add(XE(YARS_STRING_USE,       YARS_STRING_CONTROLLER_USE_DEFINITION, true));
   spec->add(loggingControllerDefinition);
 
   XsdSequence *useDefinition = new XsdSequence(YARS_STRING_CONTROLLER_USE_DEFINITION);

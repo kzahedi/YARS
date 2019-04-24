@@ -51,8 +51,8 @@ void DataFixedActuator::createXsd(XsdSpecification *spec)
 {
   XsdSequence *fixedDefinition = new XsdSequence(YARS_STRING_FIXED_DEFINITION);
   fixedDefinition->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,      false));
-  fixedDefinition->add(NE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION, 1, 1));
-  fixedDefinition->add(NE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 0, 1));
+  fixedDefinition->add(XE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION, 1, 1));
+  fixedDefinition->add(XE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION, 0, 1));
   spec->add(fixedDefinition);
 }
 

@@ -59,7 +59,7 @@ void DataLoggingObject::createXsd(XsdSpecification *spec)
   XsdSequence *loggingObjectDefinition = new XsdSequence(YARS_STRING_LOGGING_OBJECT_DEFINITION);
   loggingObjectDefinition->add(NA(YARS_STRING_TARGET, YARS_STRING_XSD_STRING, true));
   loggingObjectDefinition->add(NA(YARS_STRING_PRECISION, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  loggingObjectDefinition->add(NE(YARS_STRING_USE, YARS_STRING_OBJECT_USE_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
+  loggingObjectDefinition->add(XE(YARS_STRING_USE, YARS_STRING_OBJECT_USE_DEFINITION, "0", YARS_STRING_XSD_UNBOUNDED));
   spec->add(loggingObjectDefinition);
 
   XsdSequence *useDefinition = new XsdSequence(YARS_STRING_OBJECT_USE_DEFINITION);

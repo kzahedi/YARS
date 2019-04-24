@@ -49,7 +49,7 @@ void DataSignalTriggered::createXsd(XsdSpecification *spec)
   triggeredSignal->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,           true));
   triggeredSignal->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
   triggeredSignal->add(NA(YARS_STRING_SOURCE,    YARS_STRING_XSD_STRING,           true));
-  triggeredSignal->add(NE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
+  triggeredSignal->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
   spec->add(triggeredSignal);
 }
 

@@ -241,8 +241,8 @@ void DataScreen::add(DataParseElement *element)
 void DataScreen::createXsd(XsdSpecification *spec)
 {
   XsdChoice *sizeOptions = new XsdChoice(YARS_STRING_WINDOW_SIZE_OPTIONS, 1, 1);
-  sizeOptions->add(NE(YARS_STRING_RESOLUTION,  YARS_STRING_RESOLUTION_DEFINITION,   0, 1));
-  sizeOptions->add(NE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 0, 1));
+  sizeOptions->add(XE(YARS_STRING_RESOLUTION,  YARS_STRING_RESOLUTION_DEFINITION,   0, 1));
+  sizeOptions->add(XE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 0, 1));
 
   XsdSequence *screenDefinition = new XsdSequence(YARS_STRING_SCREEN_DEFINITION);
   screenDefinition->add(NA(YARS_STRING_NAME,         YARS_STRING_XSD_STRING,            true));
@@ -250,21 +250,21 @@ void DataScreen::createXsd(XsdSpecification *spec)
   screenDefinition->add(NA(YARS_STRING_AUTO_CAPTURE, YARS_STRING_TRUE_FALSE_DEFINITION, false));
   screenDefinition->add(NA(YARS_STRING_AUTO_FOLLOW,  YARS_STRING_TRUE_FALSE_DEFINITION, false));
   screenDefinition->add(sizeOptions);
-  screenDefinition->add(NE(YARS_STRING_POSITION,     YARS_STRING_XY_DEFINITION,              0, 1));
-  screenDefinition->add(NE(YARS_STRING_CAMERA,       YARS_STRING_SCREEN_CAMERA_DEFINITION,   0, 1));
-  screenDefinition->add(NE(YARS_STRING_OSD,          YARS_STRING_OSD_DEFINITION,             0, 1));
-  // screenDefinition->add(NE(YARS_STRING_AXIS,         YARS_STRING_AXIS_DEFINITION,            0));
+  screenDefinition->add(XE(YARS_STRING_POSITION,     YARS_STRING_XY_DEFINITION,              0, 1));
+  screenDefinition->add(XE(YARS_STRING_CAMERA,       YARS_STRING_SCREEN_CAMERA_DEFINITION,   0, 1));
+  screenDefinition->add(XE(YARS_STRING_OSD,          YARS_STRING_OSD_DEFINITION,             0, 1));
+  // screenDefinition->add(XE(YARS_STRING_AXIS,         YARS_STRING_AXIS_DEFINITION,            0));
   spec->add(screenDefinition);
 
   // XsdSequence *axisDefinition = new XsdSequence(YARS_STRING_AXIS_DEFINITION);
-  // axisDefinition->add(NE(YARS_STRING_POSE,  YARS_STRING_POSE_DEFINITION, 1, 1));
-  // axisDefinition->add(NE(YARS_STRING_SCALE, YARS_STRING_XYZ_DEFINITION,  1, 1));
+  // axisDefinition->add(XE(YARS_STRING_POSE,  YARS_STRING_POSE_DEFINITION, 1, 1));
+  // axisDefinition->add(XE(YARS_STRING_SCALE, YARS_STRING_XYZ_DEFINITION,  1, 1));
   // spec->add(axisDefinition);
 
 
   // XsdSequence *option1 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_1);
-  // option1->add(NE(YARS_STRING_WINDOW_SIZE,  YARS_STRING_RESOLUTION_DEFINITION,  0, 1));
-  // option1->add(NE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 0, 1));
+  // option1->add(XE(YARS_STRING_WINDOW_SIZE,  YARS_STRING_RESOLUTION_DEFINITION,  0, 1));
+  // option1->add(XE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 0, 1));
   // sizeOptions->add(option1);
 
   XsdSequence *resolutionDefinition = new XsdSequence(YARS_STRING_RESOLUTION_DEFINITION);
@@ -281,7 +281,7 @@ void DataScreen::createXsd(XsdSpecification *spec)
   spec->add(sizeResolutions);
 
   // XsdSequence *option2 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_2);
-  // option2->add(NE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 1, 1));
+  // option2->add(XE(YARS_STRING_WINDOW_SIZE, YARS_STRING_WIDTH_HEIGHT_DEFINITION, 1, 1));
 
   // sizeOptions->add(option2);
 
@@ -291,8 +291,8 @@ void DataScreen::createXsd(XsdSpecification *spec)
   spec->add(widthHeightDefinition);
 
   XsdSequence *osdDefinition = new XsdSequence(YARS_STRING_OSD_DEFINITION);
-  osdDefinition->add(NE(YARS_STRING_OSD_TIME,  YARS_STRING_OSD_FONT_DEFINITION, 0, 1));
-  osdDefinition->add(NE(YARS_STRING_OSD_ROBOT, YARS_STRING_OSD_FONT_DEFINITION, 0, 1));
+  osdDefinition->add(XE(YARS_STRING_OSD_TIME,  YARS_STRING_OSD_FONT_DEFINITION, 0, 1));
+  osdDefinition->add(XE(YARS_STRING_OSD_ROBOT, YARS_STRING_OSD_FONT_DEFINITION, 0, 1));
   spec->add(osdDefinition);
 
   XsdSequence *fontDefinition = new XsdSequence(YARS_STRING_OSD_FONT_DEFINITION);

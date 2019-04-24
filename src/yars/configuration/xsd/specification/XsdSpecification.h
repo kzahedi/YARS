@@ -8,7 +8,7 @@
 #include "XsdRegularExpression.h"
 
 
-# define NE new XsdElement
+# define XE new XsdElement
 # define NA new XsdAttribute
 
 # define DEFINITION "definition"

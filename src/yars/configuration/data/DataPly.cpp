@@ -78,21 +78,21 @@ void DataPly::createXsd(XsdSpecification *spec)
   plyDefinition->add(NA(YARS_STRING_SOFT,                YARS_STRING_TRUE_FALSE_DEFINITION,          false));
   plyDefinition->add(NA(YARS_STRING_VISUALISE,           YARS_STRING_TRUE_FALSE_DEFINITION,          false));
   plyDefinition->add(NA(YARS_STRING_FILE_NAME,           YARS_STRING_XSD_STRING,                     true));
-  plyDefinition->add(NE(YARS_STRING_POSE,                YARS_STRING_POSE_DEFINITION,                0, 1));
-  plyDefinition->add(NE(YARS_STRING_VISUALISATION,       YARS_STRING_PLY_VISUALISATION_DEFINITION,   1, 1));
-  plyDefinition->add(NE(YARS_STRING_PHYSICS,             YARS_STRING_PHYSICS_DEFINITION,             1, 1));
-  // plyDefinition->add(NE(YARS_STRING_SOFT_BODY_PARAMETER, YARS_STRING_SOFT_BODY_PARAMETER_DEFINITION, 0, 1));
+  plyDefinition->add(XE(YARS_STRING_POSE,                YARS_STRING_POSE_DEFINITION,                0, 1));
+  plyDefinition->add(XE(YARS_STRING_VISUALISATION,       YARS_STRING_PLY_VISUALISATION_DEFINITION,   1, 1));
+  plyDefinition->add(XE(YARS_STRING_PHYSICS,             YARS_STRING_PHYSICS_DEFINITION,             1, 1));
+  // plyDefinition->add(XE(YARS_STRING_SOFT_BODY_PARAMETER, YARS_STRING_SOFT_BODY_PARAMETER_DEFINITION, 0, 1));
   spec->add(plyDefinition);
 
   XsdChoice *options = new XsdChoice(YARS_STRING_PLY_VISUALISATION_DEFINITION, 1, 1);
   spec->add(options);
 
   XsdSequence *option1 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_1);
-  option1->add(NE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
+  option1->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
   options->add(option1);
 
   XsdSequence *option2 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_2);
-  option2->add(NE(YARS_STRING_OBJECT_MESH_VISUALISATION,
+  option2->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
                   YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, "1", YARS_STRING_XSD_UNBOUNDED));
   options->add(option2);
 
