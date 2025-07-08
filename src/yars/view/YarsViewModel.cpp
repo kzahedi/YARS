@@ -18,17 +18,61 @@ YarsViewModel::YarsViewModel()
   _timeStamp = 0;
   _first = -1;
   _last = 0;
+  _ogreHandler = NULL;
 
   if (__YARS_GET_USE_VISUALISATION)
   {
-    _ogreHandler = OgreHandler::instance();
-    initialiseView();
-    _ogreHandler->setupSceneManager();
-    FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)
-      (*i)->setupOSD();
-    if (__YARS_GET_USE_CAPTURE_CL)
-      toggleCaptureVideo();
+    // Check if we're in a headless environment (Linux/X11 only)
+#ifdef __linux__
+    const char *display = getenv("DISPLAY");
+    bool hasDisplay = (display != nullptr && strlen(display) > 0);
+
+    if (!hasDisplay)
+    {
+      std::cout << "No display detected - automatically switching to headless mode." << std::endl;
+      std::cout << "Physics simulation will run without visualization." << std::endl;
+      // Don't initialize GUI components, just continue with physics
+      return;
+    }
+#endif
+    // On macOS and Windows, assume GUI is available and let initialization handle any failures
+
+    try
+    {
+      _ogreHandler = OgreHandler::instance();
+      initialiseView();
+      _ogreHandler->setupSceneManager();
+      FOREACH(SdlWindow *, i, _windowManager)
+      if ((*i) != NULL)
+        (*i)->setupOSD();
+      if (__YARS_GET_USE_CAPTURE_CL)
+        toggleCaptureVideo();
+    }
+    catch (const Ogre::RenderingAPIException &e)
+    {
+      std::cerr << std::endl;
+      std::cerr << "===============================================" << std::endl;
+      std::cerr << "GUI INITIALIZATION FAILED - CONTINUING HEADLESS" << std::endl;
+      std::cerr << "===============================================" << std::endl;
+      std::cerr << "OpenGL Error: " << e.what() << std::endl;
+      std::cerr << std::endl;
+      std::cerr << "Automatically switching to headless mode." << std::endl;
+      std::cerr << "Physics simulation will continue without visualization." << std::endl;
+      std::cerr << std::endl;
+      std::cerr << "To avoid this message in the future, use: --nogui" << std::endl;
+      std::cerr << "===============================================" << std::endl;
+      // Reset to NULL and continue without GUI
+      _ogreHandler = NULL;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << std::endl;
+      std::cerr << "GUI initialization failed: " << e.what() << std::endl;
+      std::cerr << "Continuing in headless mode." << std::endl;
+      std::cerr << "Use --nogui flag to avoid this message." << std::endl;
+      // Reset to NULL and continue without GUI
+      _ogreHandler = NULL;
+    }
   }
 }
 
@@ -55,6 +99,9 @@ void YarsViewModel::visualiseScene()
     return;
   if (__YARS_CURRENT_DATA->screens() == NULL)
     return;
+  if (_ogreHandler == NULL)
+    return; // Skip visualization if GUI failed to initialize
+
   _ogreHandler->step();
 
   FOREACH(SdlWindow *, i, _windowManager)
@@ -70,7 +117,8 @@ void YarsViewModel::visualiseScene()
 
 void YarsViewModel::reset()
 {
-  _ogreHandler->reset();
+  if (_ogreHandler != NULL)
+    _ogreHandler->reset();
   FOREACH(SdlWindow *, i, _windowManager)
   (*i)->reset();
 }
@@ -79,9 +127,7 @@ void YarsViewModel::quit()
 {
   Y_DEBUG("YarsViewModel::quit called")
   _run = false;
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->quit();
-  _windowManager.clear();
+  // SDL cleanup will be handled by main thread when run() loop exits
   Y_DEBUG("YarsViewModel::quit completed")
 }
 
@@ -94,6 +140,9 @@ void YarsViewModel::__createWindow()
 
 void YarsViewModel::createNewWindow()
 {
+  if (_ogreHandler == NULL)
+    return; // Can't create windows without GUI
+
   SdlWindow *wm = new SdlWindow(_windowManager.size() + _newWindows.size());
   wm->addObserver(this);
 #ifdef USE_CAPTURE_VIDEO
@@ -119,6 +168,19 @@ void YarsViewModel::notify(ObservableMessage *m)
   // case -2:                    __removeClosedWindows(); break; // closed
   case __M_QUIT_CALLED:
     _run = false;
+    cleanupWindows();
+    for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); ++i)
+    {
+      (*i)->close();
+    }
+    break;
+  case __M_QUIT:
+    _run = false;
+    cleanupWindows();
+    for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); ++i)
+    {
+      (*i)->close();
+    }
     break;
   case __M_TOGGLE_SYNCED_GUI:
     _sync = !_sync;
@@ -181,6 +243,13 @@ void YarsViewModel::run()
       }
     }
   }
+
+  // Cleanup SDL resources on main thread after main loop exits
+  Y_DEBUG("YarsViewModel::run() main loop exited, cleaning up SDL resources on main thread")
+  FOREACH(SdlWindow *, i, _windowManager)
+  (*i)->close();
+  _windowManager.clear();
+  Y_DEBUG("YarsViewModel::run() SDL cleanup completed")
 }
 
 void YarsViewModel::synched()

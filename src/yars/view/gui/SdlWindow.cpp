@@ -55,7 +55,7 @@ using namespace _SDL_;
 #undef main
 #endif
 
-//#include <boost/thread.hpp>
+// #include <boost/thread.hpp>
 
 #include <string>
 
@@ -123,6 +123,8 @@ void SdlWindow::wait()
 
 void SdlWindow::step()
 {
+  if (_closed)
+    return;
 
 #ifdef USE_CAPTURE_VIDEO
   if (_captureRunning || _imgCaptureRunning)
@@ -131,7 +133,8 @@ void SdlWindow::step()
 #endif // USE_CAPTURE_VIDEO
   {
     if (_index == 0)
-      _textOverlay->setText(_statsString, "");
+      if (_textOverlay)
+        _textOverlay->setText(_statsString, "");
   }
   else
   {
@@ -151,7 +154,7 @@ void SdlWindow::step()
 
       _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
       // _fpsString << std::fixed << std::setprecision(2) << f << " FPS";
-      if (_index == 0)
+      if (_index == 0 && _textOverlay)
         _textOverlay->setText(_statsString, _fpsString.str());
       _lastTime = _currentTime;
       _lastStep = step;
@@ -161,8 +164,8 @@ void SdlWindow::step()
 
   if (_windowConfiguration->useFollow)
   {
-    _cpos = _camera->getPosition();
-    _cdir = _camera->getDirection();
+    _cpos = _cameraNode->getPosition();
+    _cdir = _camera->getRealDirection();
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -176,8 +179,8 @@ void SdlWindow::step()
 
     YARS_TO_OGRE(_camData->position(), _cpos);
     YARS_TO_OGRE(_camData->lookAt(), _clookAt);
-    _camera->setPosition(_cpos[0], _cpos[1], _cpos[2]);
-    _camera->lookAt(_clookAt[0], _clookAt[1], _clookAt[2]);
+    _cameraNode->setPosition(_cpos[0], _cpos[1], _cpos[2]);
+    _cameraNode->lookAt(Ogre::Vector3(_clookAt[0], _clookAt[1], _clookAt[2]), Ogre::Node::TS_WORLD);
   }
   else if (_cameraVelocity.length() > 0.01 ||
            _camAngularVelocity.length() > 0.0001)
@@ -186,13 +189,13 @@ void SdlWindow::step()
     // << _cameraVelocity[1] << " "
     // << _cameraVelocity[2] << endl;
 
-    _camera->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
-    _camera->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
+    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
+    _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
 
-    _camera->moveRelative(_cameraVelocity);
+    _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
 
-    _cpos = _camera->getPosition();
-    _cdir = _camera->getDirection();
+    _cpos = _cameraNode->getPosition();
+    _cdir = _camera->getRealDirection();
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -206,10 +209,23 @@ void SdlWindow::step()
 
   _cameraVelocity *= 0.9;
   _camAngularVelocity *= 0.9;
+
+  // Force window update and buffer swap to display rendered content
+  if (_window && _window->isActive())
+  {
+    _window->update();
+    _window->swapBuffers();
+  }
+
+  // Also swap SDL buffers
+  SDL_GL_SwapWindow(_sdlWindow);
 }
 
 void SdlWindow::handleEvent(SDL_Event &event)
 {
+  if (_closed)
+    return;
+
   if (event.window.windowID != _windowID)
     return;
 
@@ -282,12 +298,15 @@ void SdlWindow::handleEvent(SDL_Event &event)
     {
     case SDL_WINDOWEVENT_SHOWN:
       _visible = true;
+      std::cout << "Window shown event received - window is now visible!" << std::endl;
       break;
     case SDL_WINDOWEVENT_CLOSE:
       _closed = true;
+      std::cout << "Window close event received" << std::endl;
       notifyObservers(_m_closeWindow);
       break;
     case SDL_WINDOWEVENT_RESIZED:
+      std::cout << "Window resized to: " << event.window.data1 << "x" << event.window.data2 << std::endl;
       _window->resize(event.window.data1, event.window.data2);
       _window->windowMovedOrResized();
       const Ogre::Real aspectRatio = Ogre::Real(_viewport->getActualWidth()) / Ogre::Real(_viewport->getActualHeight());
@@ -295,7 +314,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
 
       Ogre::Real x = _viewport->getActualWidth() - 140;
       Ogre::Real y = 10;
-      if (_index == 0)
+      if (_index == 0 && _textOverlay)
         _textOverlay->setPosition(_legendString, x, y);
       break;
     }
@@ -322,6 +341,14 @@ void SdlWindow::__setupSDL()
   SDL_Init(SDL_INIT_EVERYTHING);
   // SDL_Init(SDL_INIT_VIDEO);
 
+  // Set OpenGL context attributes - use OpenGL 3.3 CORE with custom shaders
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+
   if (__YARS_GET_USE_WINDOW_GEOMETRY)
   {
     _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
@@ -329,16 +356,16 @@ void SdlWindow::__setupSDL()
                                   _windowConfiguration->geometry.y(),
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
   }
   else
   {
-    _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
+    _sdlWindow = SDL_CreateWindow("🔴 YARS 3D Simulation - Should be VISIBLE! 🔴",
                                   SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED,
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
   }
 
   if (_sdlWindow == NULL)
@@ -346,20 +373,44 @@ void SdlWindow::__setupSDL()
     printf("SDL_CreateWindow failed: %s\n", SDL_GetError());
     return;
   }
+  else
+  {
+    printf("SDL Window created successfully: %dx%d\n",
+           _windowConfiguration->geometry.width(),
+           _windowConfiguration->geometry.height());
 
-  // SDL_WarpMouse(800/2, 600/2);
-  // SDL_WM_GrabInput(SDL_GRAB_OFF);
-  // SDL_ShowCursor(SDL_ENABLE);
+    // Make window visible and bring to front on macOS
+    SDL_ShowWindow(_sdlWindow);
+    SDL_RaiseWindow(_sdlWindow);
 
-#ifdef __WINDOWS__
-  SDL_GLContext glcontext = NULL;
-  glcontext = SDL_GL_CreateContext(_sdlWindow);
+#ifdef __APPLE__
+    // macOS-specific: Request focus and make window key
+    SDL_SetWindowInputFocus(_sdlWindow);
+    printf("Applied macOS-specific window activation\n");
+#endif
+
+    // Force window to specific position and update
+    SDL_SetWindowPosition(_sdlWindow, 100, 100);
+    SDL_UpdateWindowSurface(_sdlWindow);
+    printf("Window positioned at (100,100) and surface updated\n");
+  }
+
+  // Create OpenGL context for all platforms
+  SDL_GLContext glcontext = SDL_GL_CreateContext(_sdlWindow);
   if (glcontext == NULL)
   {
     printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
     return;
   }
-#endif
+  else
+  {
+    printf("OpenGL context created successfully\n");
+  }
+
+  // SDL_WarpMouse(800/2, 600/2);
+  // SDL_WM_GrabInput(SDL_GRAB_OFF);
+  // SDL_ShowCursor(SDL_ENABLE);
+
   SDL_SysWMinfo syswm_info;
   SDL_VERSION(&syswm_info.version);
   if (!SDL_GetWindowWMInfo(_sdlWindow, &syswm_info))
@@ -398,7 +449,7 @@ void SdlWindow::__setupSDL()
   params["macAPICocoaUseNSView"] = "true";
 #endif
 
-  //params["displayFrequency"] = 100;
+  // params["displayFrequency"] = 100;
 
   _ogreHandler = OgreHandler::instance();
   stringstream oss;
@@ -426,16 +477,36 @@ void SdlWindow::__setupSDL()
   _camera = _sceneManager->createCamera(oss.str());
   _camera->setNearClipDistance(0.01f);
   _camera->setFarClipDistance(1000000.0f);
-  _camera->setPosition(pos[0], pos[1], pos[2]);
-  _camera->lookAt(lookAt[0], lookAt[1], lookAt[2]);
+
+  // Create camera scene node and attach camera to it (modern OGRE API)
+  oss.str("");
+  oss << "YARS CameraNode" << _index;
+  _cameraNode = _sceneManager->getRootSceneNode()->createChildSceneNode(oss.str());
+  _cameraNode->attachObject(_camera);
+
+  // Set initial position and orientation using scene node
+  _cameraNode->setPosition(pos[0], pos[1], pos[2]);
+  _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
+
+  // Debug camera positioning
+  std::cout << "=== CAMERA DEBUG INFO ===" << std::endl;
+  std::cout << "Camera position: (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ")" << std::endl;
+  std::cout << "Camera lookAt: (" << lookAt[0] << ", " << lookAt[1] << ", " << lookAt[2] << ")" << std::endl;
+  std::cout << "Camera near clip: " << _camera->getNearClipDistance() << std::endl;
+  std::cout << "Camera far clip: " << _camera->getFarClipDistance() << std::endl;
+  std::cout << "==========================" << std::endl;
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
 
   _viewport = _window->addViewport(_camera);
-  Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
+  Ogre::ColourValue fadeColour(0.1, 0.1, 0.5); // Dark blue background for contrast
   // _sceneManager->setFog(Ogre::FOG_EXP2, fadeColour, 0.001, 500.0, 1000.0);
   _viewport->setBackgroundColour(fadeColour);
+
+  // Use RTSS material scheme for shader-based materials
+  _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+  std::cout << "Viewport configured to use RTSS material scheme (shader-based)" << std::endl;
 
   _windowID = SDL_GetWindowID(_sdlWindow);
 
@@ -459,15 +530,15 @@ void SdlWindow::setupOSD()
   stringstream oss;
   oss << "text overlay " << _index;
   if (_index == 0)
-    _textOverlay = new TextOverlay(oss.str());
-
+    // TEMPORARILY DISABLED: TextOverlay creation for testing
+    _textOverlay = nullptr; // new TextOverlay(oss.str());
   oss.str("");
   oss << _data->osdTimeFontSize();
   fontsize = oss.str();
   oss.str("");
   oss << "time " << _index;
   _timeString = oss.str();
-  if (_index == 0)
+  if (_index == 0 && _textOverlay)
     _textOverlay->addTextBox(_timeString, "00d:00h:00m:00s", 10, 10, 100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, fontsize);
@@ -475,7 +546,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "stats " << _index;
   _statsString = oss.str();
-  if (_index == 0)
+  if (_index == 0 && _textOverlay)
     _textOverlay->addTextBox(_statsString, "", 10, 40, 100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, "16");
@@ -488,7 +559,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "robot " << _index;
   _robotString = oss.str();
-  if (_index == 0)
+  if (_index == 0 && _textOverlay)
     _textOverlay->addTextBox(_robotString, "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
                              _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
@@ -499,7 +570,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "legend " << _index;
   _legendString = oss.str();
-  if (_index == 0)
+  if (_index == 0 && _textOverlay)
     _textOverlay->addTextBox(_legendString,
                              "^0YARS, Zahedi", x, y, 15, 10,
                              Ogre::ColourValue(75.0 / 255.0, 117.0 / 255.0, 148.0 / 255.0, 1.0f),
@@ -802,7 +873,7 @@ void SdlWindow::__osd()
 {
   if (_windowConfiguration->osdElapsedTime)
   {
-    if (_index == 0)
+    if (_index == 0 && _textOverlay)
       _textOverlay->setText(_timeString, OSD::getElapsedTimeString());
   }
   if (_windowConfiguration->osdRobotInformation)
@@ -822,7 +893,7 @@ void SdlWindow::__osd()
         controller->unlockOSD();
       }
     }
-    if (_index == 0)
+    if (_index == 0 && _textOverlay)
       _textOverlay->setText(_robotString, oss.str(), (int)_viewport->getActualHeight());
   }
 }
@@ -893,28 +964,28 @@ bool SdlWindow::visible()
 
 void SdlWindow::__handleFingerUp(SDL_Event &event)
 {
-  //Rotation detected
-  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
-  // {
-  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
-  // }
-  // if( fabs( event.mgesture.dDist ) > 0.002 )
-  // {
-  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
-  // }
+  // Rotation detected
+  //  if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  //  {
+  //  cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  //  }
+  //  if( fabs( event.mgesture.dDist ) > 0.002 )
+  //  {
+  //  cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  //  }
 }
 
 void SdlWindow::__handleFingerDown(SDL_Event &event)
 {
-  //Rotation detected
-  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
-  // {
-  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
-  // }
-  // if( fabs( event.mgesture.dDist ) > 0.002 )
-  // {
-  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
-  // }
+  // Rotation detected
+  //  if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  //  {
+  //  cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  //  }
+  //  if( fabs( event.mgesture.dDist ) > 0.002 )
+  //  {
+  //  cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  //  }
 }
 
 void SdlWindow::setAdded()

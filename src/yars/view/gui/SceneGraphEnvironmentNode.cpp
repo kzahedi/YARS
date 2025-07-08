@@ -6,32 +6,73 @@
 #include <yars/configuration/YarsConfiguration.h>
 
 SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
-    DataEnvironment *data, Ogre::SceneNode* root, Ogre::SceneManager* sm)
- :SceneGraphObjectNode(root, sm)
+    DataEnvironment *data, Ogre::SceneNode *root, Ogre::SceneManager *sm)
+    : SceneGraphObjectNode(root, sm)
 {
   _data = data;
   _node = _root->createChildSceneNode();
-  _x    = 0.0;
-  _y    = 0.0;
+  _x = 0.0;
+  _y = 0.0;
 
-  if(_data->groundGiven())
+  if (_data->groundGiven())
   {
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Z, 0 );
+    Ogre::Plane plane(Ogre::Vector3::UNIT_Z, 0);
     Ogre::MeshManager::getSingleton().createPlane("ground",
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-        500,500,50,50,true,1,40,40,Ogre::Vector3::UNIT_Y);
+                                                  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
+                                                  500, 500, 50, 50, true, 1, 40, 40, Ogre::Vector3::UNIT_Y);
     _entity = _sceneManager->createEntity("GroundEntity", "ground");
     _node->attachObject(_entity);
     _entity->setCastShadows(false);
-    Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(data->texture());
-    _groundTextureUnitState = m->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 );
+
+    // Fix: Use safe material for ground instead of problematic YARS materials
+    std::string materialName = data->texture();
+    if (materialName.empty() || materialName.find("YARS/") == 0 || materialName.find("Chain/") == 0)
+    {
+      // Use custom flat white RTSS-friendly material
+      materialName = "GroundLit";
+      std::cout << "Using fallback material 'GroundLit' for ground instead of: '" << data->texture() << "'" << std::endl;
+    }
+
+    Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(materialName);
+    if (m.isNull())
+    {
+      std::cout << "Material '" << materialName << "' not found, skipping ground material" << std::endl;
+      // Don't create entity if material is not available to avoid crashes
+      return;
+    }
+
+    // Check if material has techniques before accessing (some materials have RTSS-only)
+    if (m->getNumTechniques() > 0)
+    {
+      Ogre::Technique *technique = m->getTechnique(0);
+      if (technique && technique->getNumPasses() > 0)
+      {
+        Ogre::Pass *pass = technique->getPass(0);
+        if (pass && pass->getNumTextureUnitStates() > 0)
+        {
+          _groundTextureUnitState = pass->getTextureUnitState(0);
+        }
+        else
+        {
+          _groundTextureUnitState = nullptr;
+        }
+      }
+      else
+      {
+        _groundTextureUnitState = nullptr;
+      }
+    }
+    else
+    {
+      _groundTextureUnitState = nullptr;
+    }
     _entity->setMaterial(m);
   }
 
   int index = 0;
-  for(vector<DataMeshVisualisation*>::iterator m = _data->m_begin(); m != _data->m_end(); m++)
+  for (vector<DataMeshVisualisation *>::iterator m = _data->m_begin(); m != _data->m_end(); m++)
   {
-    Ogre::SceneNode* meshNode = _node->createChildSceneNode();
+    Ogre::SceneNode *meshNode = _node->createChildSceneNode();
     _meshNodes.push_back(meshNode);
 
     stringstream oss;
@@ -39,7 +80,8 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     Ogre::Entity *entity = sm->createEntity(oss.str(), (*m)->name());
     _entities.push_back(entity);
 
-    if((*m)->texture().size() > 0) entity->setMaterialName((*m)->texture());
+    if ((*m)->texture().size() > 0)
+      entity->setMaterialName((*m)->texture());
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));
     meshNode->attachObject(entity);
@@ -50,29 +92,33 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     index++;
   }
 
-  for(DataObjects::iterator g = _data->g_begin(); g != _data->g_end(); g++)
+  for (DataObjects::iterator g = _data->g_begin(); g != _data->g_end(); g++)
   {
     SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
-    if(objectNode != NULL) _objects.push_back(objectNode);
+    if (objectNode != NULL)
+      _objects.push_back(objectNode);
   }
 
-  for(DataPointLightSources::iterator l = _data->l_begin(); l != _data->l_end(); l++)
+  for (DataPointLightSources::iterator l = _data->l_begin(); l != _data->l_end(); l++)
   {
     SceneGraphLightSourceNode *lightNode = new SceneGraphLightSourceNode(*l, root, sm);
-    if(lightNode != NULL) _lightSources.push_back(lightNode);
+    if (lightNode != NULL)
+      _lightSources.push_back(lightNode);
   }
 }
 
 SceneGraphEnvironmentNode::~SceneGraphEnvironmentNode()
 {
-  FOREACH(SceneGraphObjectNode*, o, _objects) delete *o;
+  FOREACH(SceneGraphObjectNode *, o, _objects)
+  delete *o;
   _objects.clear();
 }
 
-
 void SceneGraphEnvironmentNode::update()
 {
-  FOREACH(SceneGraphObjectNode*, o, _objects)  if(*o != NULL) (*o)->update();
+  FOREACH(SceneGraphObjectNode *, o, _objects)
+  if (*o != NULL)
+    (*o)->update();
   P3D p;
   __YARS_GET_CAMERA_POSITION(&p);
   // _node->setPosition(Ogre::Vector3(p.x, p.y, 0.0));
@@ -87,7 +133,10 @@ void SceneGraphEnvironmentNode::update()
 
   // cout << p.x << " " << p.y << endl;
 
-  // _groundTextureUnitState->setScrollAnimation(-(float)p.x, -(float)p.y);
-  // _groundTextureUnitState->setScrollAnimation(10.0, -10.0);
-  // _groundTextureUnitState->setScrollAnimation( -p.x, -p.y);
+  // Only animate texture if ground texture unit state exists
+  // if (_groundTextureUnitState != nullptr) {
+  //   _groundTextureUnitState->setScrollAnimation(-(float)p.x, -(float)p.y);
+  //   _groundTextureUnitState->setScrollAnimation(10.0, -10.0);
+  //   _groundTextureUnitState->setScrollAnimation( -p.x, -p.y);
+  // }
 }

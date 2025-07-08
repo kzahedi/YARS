@@ -22,7 +22,7 @@
 
 class SdlWindow : public Observable
 {
-  public:
+public:
     SdlWindow(int index);
     ~SdlWindow();
 
@@ -46,7 +46,7 @@ class SdlWindow : public Observable
     void toggleShadows();
     void setupOSD();
 
-  private:
+private:
     void __osd();
     void __setupSDL();
     void __processKeyEvent(char, int);
@@ -83,6 +83,7 @@ class SdlWindow : public Observable
 
     Ogre::RenderWindow *_window;
     Ogre::Camera *_camera;
+    Ogre::SceneNode *_cameraNode;
     Ogre::Viewport *_viewport;
     Ogre::SceneManager *_sceneManager;
 
@@ -129,6 +130,8 @@ class SdlWindow : public Observable
     bool _visible;
     bool _added;
     bool _closed;
+
+    static bool _simulationRunning;
 };
 
 #endif // __SDL_WINDOW_H__

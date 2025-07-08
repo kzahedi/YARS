@@ -1,0 +1,30 @@
+// Ultra-simple materials using OGRE's built-in capabilities
+material SimpleWhite
+{
+    technique
+    {
+        scheme ShaderGeneratorDefaultScheme
+
+        pass
+        {
+            ambient 1.0 1.0 1.0 1.0
+            diffuse 1.0 1.0 1.0 1.0
+            specular 0.0 0.0 0.0 0.0
+        }
+    }
+}
+
+material SimpleRed
+{
+    technique
+    {
+        scheme ShaderGeneratorDefaultScheme
+
+        pass
+        {
+            ambient 1.0 0.0 0.0 1.0
+            diffuse 1.0 0.0 0.0 1.0
+            specular 0.0 0.0 0.0 0.0
+        }
+    }
+}

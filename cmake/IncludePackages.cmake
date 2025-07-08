@@ -36,12 +36,34 @@ endif(YARS_DOCS)
 
 IF(YARS_USE_VISUALISATION)
 
-  find_package(SDL2)
-  include_directories(${SDL2_INCLUDE_DIR})
+  # Use pkg-config to find SDL2 properly
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(SDL2 REQUIRED sdl2)
 
-  set(OGRE_STATIC false)
-  find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX)
-  include_directories(${OGRE_INCLUDE_DIRS})
+  include_directories(${SDL2_INCLUDE_DIRS})
+
+  # Create SDL2::SDL2 target that OGRE expects
+  if(NOT TARGET SDL2::SDL2)
+    add_library(SDL2::SDL2 INTERFACE IMPORTED)
+    set_target_properties(SDL2::SDL2 PROPERTIES
+      INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIRS}"
+      INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}")
+  endif()
+
+  # Find ZLIB for OGRE
+  find_package(ZLIB REQUIRED)
+
+  # Use local OGRE installation with modern CMake config
+  set(OGRE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/ext/ogre/install)
+  set(CMAKE_PREFIX_PATH ${OGRE_ROOT}/CMake ${CMAKE_PREFIX_PATH})
+  find_package(OGRE REQUIRED CONFIG)
+
+  # Add OGRE include directories (both parent and OGRE subdirectory)
+  include_directories(${OGRE_ROOT}/include)
+  include_directories(${OGRE_ROOT}/include/OGRE)
+
+  # Set OGRE_FOUND to true for compatibility with existing checks
+  set(OGRE_FOUND TRUE)
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)

@@ -2,11 +2,11 @@
 #include <yars/view/gui/KeyHandler.h>
 #include <yars/util/Random.h>
 
-//#ifdef SUPPRESS_ALL_OUTPUT
+// #ifdef SUPPRESS_ALL_OUTPUT
 #define PRINT_START_UP_MESSAGE(a) ;
-//#else
-//#  define PRINT_START_UP_MESSAGE(a) cout << a << endl;
-//#endif
+// #else
+// #  define PRINT_START_UP_MESSAGE(a) cout << a << endl;
+// #endif
 
 YarsMainControl::YarsMainControl(int argc, char **argv)
 {
@@ -38,7 +38,7 @@ YarsMainControl::YarsMainControl(int argc, char **argv)
 
   Y_DEBUG("YarsMainControl adding myself as observable to the controls.");
 
-  //addObserver(_ycc); // 2. the configuration
+  // addObserver(_ycc); // 2. the configuration
   addObserver(_ypc); // 3. the physics
   addObserver(_ylc); // after physics!
 
@@ -131,13 +131,18 @@ void YarsMainControl::run()
 
 void YarsMainControl::__closeApplication()
 {
-  Data::close();
+  // In headless mode (no GUI) we can safely clean up the global Data
+  // instance here. When the visualisation is enabled, however, deleting
+  // Data in this (physics) thread may race with the GUI thread which is
+  // still rendering / handling SDL events. In that case we defer the
+  // actual destruction of Data until **after** the GUI thread has fully
+  // terminated (see yarsMain.cpp).
+
   if (!__YARS_GET_USE_VISUALISATION)
+  {
+    Data::close();
     exit(0);
-  // #ifdef USE_VISUALISATION
-  //   OSG::osgExit();
-  //   QCoreApplication::exit(0);
-  // #endif
+  }
 }
 
 void YarsMainControl::notify(ObservableMessage *message)

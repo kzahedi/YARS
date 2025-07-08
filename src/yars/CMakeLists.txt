@@ -37,9 +37,21 @@ if(YARS_USE_VISUALISATION)
   add_subdirectory(view/gui)
 
   if(APPLE)
-    target_link_libraries(${YARS_TARGET} freeimage freetype zzip z ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+    # Use explicit OGRE library paths for static linking
+    set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
+    target_link_libraries(${YARS_TARGET}
+      freeimage freetype zzip z
+      ${OGRE_ROOT}/lib/libOgreMainStatic.a
+      ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
+      ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
+      ${OGRE_ROOT}/lib/libOgreGLSupportStatic.a
+      ${OGRE_ROOT}/lib/OGRE/libRenderSystem_GL3PlusStatic.a
+      ${OGRE_ROOT}/lib/OGRE/libPlugin_ParticleFXStatic.a
+      ${OGRE_ROOT}/lib/OGRE/libPlugin_OctreeSceneManagerStatic.a
+      ${OGRE_ROOT}/lib/OGRE/libCodec_STBIStatic.a
+      ${OGRE_ROOT}/lib/OGRE/libCodec_FreeImageStatic.a)
 
-     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
+     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
       # "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreMain -framework Cocoa")
   endif(APPLE)
 

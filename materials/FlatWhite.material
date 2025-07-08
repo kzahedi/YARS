@@ -1,0 +1,10 @@
+material FlatWhiteRtss
+{
+    technique
+    {
+        pass
+        {
+            // Minimal pass for RTSS
+        }
+    }
+}

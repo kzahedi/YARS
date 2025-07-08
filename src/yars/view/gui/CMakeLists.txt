@@ -1,6 +1,7 @@
 include_directories(/Library/Frameworks/OgreOverlay.framework/Headers)
 
 set(GUI_SOURCES SdlWindow.cpp
+                NativeOgreWindow.cpp
                 SceneGraph.cpp
                 SceneGraphRobotNode.cpp
                 SceneGraphMuscleNode.cpp

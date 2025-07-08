@@ -1,0 +1,76 @@
+// Simple test materials for debugging
+vertex_program simple_color_vp glsl
+{
+  source shaders/simple_color.vert
+}
+
+fragment_program simple_color_fp glsl
+{
+  source shaders/simple_color.frag
+}
+
+material SimpleTest/Green
+{
+  technique
+  {
+    pass
+    {
+      vertex_program_ref simple_color_vp
+      fragment_program_ref simple_color_fp
+
+      vertex_program_ref_params
+      {
+        param_named_auto worldViewProjMatrix worldviewproj_matrix
+      }
+
+      fragment_program_ref_params
+      {
+        param_named color float4 0.0 0.8 0.0 1.0
+      }
+    }
+  }
+}
+
+material SimpleTest/Red
+{
+  technique
+  {
+    pass
+    {
+      vertex_program_ref simple_color_vp
+      fragment_program_ref simple_color_fp
+
+      vertex_program_ref_params
+      {
+        param_named_auto worldViewProjMatrix worldviewproj_matrix
+      }
+
+      fragment_program_ref_params
+      {
+        param_named color float4 0.8 0.0 0.0 1.0
+      }
+    }
+  }
+}
+
+material SimpleTest/Blue
+{
+  technique
+  {
+    pass
+    {
+      vertex_program_ref simple_color_vp
+      fragment_program_ref simple_color_fp
+
+      vertex_program_ref_params
+      {
+        param_named_auto worldViewProjMatrix worldviewproj_matrix
+      }
+
+      fragment_program_ref_params
+      {
+        param_named color float4 0.0 0.0 0.8 1.0
+      }
+    }
+  }
+}
