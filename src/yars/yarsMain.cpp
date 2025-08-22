@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <thread>
+#include <memory>
 
 #ifdef USE_VISUALISATION
 // #ifdef SUPPRESS_ALL_OUTPUT
@@ -19,27 +20,27 @@
 
 int mainFunction(int argc, char **argv)
 {
-  YarsMainControl *ymc = new YarsMainControl(argc, argv);
+  auto ymc = std::make_unique<YarsMainControl>(argc, argv);
 
   if (__YARS_GET_USE_VISUALISATION)
   {
     ConsoleView *cv = ConsoleView::instance();
-    YarsViewControl *yvc = new YarsViewControl();
-    YarsViewModel *yvm = new YarsViewModel();
-    yvc->setModel(yvm);
-    yvm->addObserver(ymc);
+    auto yvc = std::make_unique<YarsViewControl>();
+    auto yvm = std::make_unique<YarsViewModel>();
+    yvc->setModel(yvm.get());
+    yvm->addObserver(ymc.get());
 #ifndef SUPPRESS_ALL_OUTPUT
     yvm->addObserver(cv);
 #endif // SUPPRESS_ALL_OUTPUT
-    ymc->addObserver(yvc);
+    ymc->addObserver(yvc.get());
 
-    std::thread *pThread = new std::thread(
+    std::thread pThread(
         &YarsMainControl::run, // pointer to member function to execute in thread
-        ymc);
+        ymc.get());
 
     yvm->run();
 
-    pThread->join();
+    pThread.join();
 
     // Now that the physics thread has finished and the GUI thread
     // (this thread) has returned from YarsViewModel::run(), it is safe

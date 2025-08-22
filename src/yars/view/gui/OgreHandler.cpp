@@ -12,11 +12,11 @@
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 
-OgreHandler *OgreHandler::_me = NULL;
+OgreHandler *OgreHandler::_me = nullptr;
 
 OgreHandler *OgreHandler::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
     _me = new OgreHandler();
   return _me;
 }

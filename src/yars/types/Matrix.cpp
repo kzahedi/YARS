@@ -8,7 +8,7 @@ using namespace std;
 
 Matrix::Matrix()
 {
-  _cell = NULL;
+  _cell = nullptr;
   _rows = 0;
   _cols = 0;
 }
@@ -16,7 +16,7 @@ Matrix::Matrix()
 #ifndef _MSC_VER
 Matrix::Matrix(Matrix &m)
 {
-  _cell = NULL;
+  _cell = nullptr;
   __init(m.rows(), m.cols(), 0.0);
   __copy(m);
 }
@@ -24,26 +24,26 @@ Matrix::Matrix(Matrix &m)
 
 Matrix::Matrix(const Matrix &m)
 {
-  _cell = NULL;
+  _cell = nullptr;
   __init(m.rows(), m.cols(), 0.0);
   __copy(m);
 }
 
 Matrix::Matrix(int rows, int cols)
 {
-  _cell = NULL;
+  _cell = nullptr;
   __init(rows,cols,0.0); // standard matrix
 }
 
 Matrix::Matrix(int rows, int cols, double initialValue)
 {
-  _cell = NULL;
+  _cell = nullptr;
   __init(rows,cols,initialValue); // standard matrix
 }
 
 Matrix::Matrix(int rows, int cols, std::vector<double> initialValues)
 {
-  _cell = NULL;
+  _cell = nullptr;
   __init(rows,cols, 0.0);
   for(int i = 0; i < _rows; i++)
   {
@@ -308,7 +308,7 @@ void Matrix::__deleteCells()
     }
     delete [] _cell;
   }
-  _cell = NULL;
+  _cell = nullptr;
 }
 
 void Matrix::__copy(const Matrix &m)

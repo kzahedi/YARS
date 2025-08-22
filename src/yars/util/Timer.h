@@ -22,7 +22,8 @@
 #include <thread>
 #include <chrono>
 
-using namespace std;
+using std::string;
+using std::ostringstream;
 
 class Timer
 {

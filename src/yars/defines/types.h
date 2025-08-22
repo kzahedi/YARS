@@ -7,6 +7,6 @@
 // typedef double double;
 // typedef double double;
 
-typedef unsigned int uint;
+using uint = unsigned int;
 
 #endif // __TYPES_H__

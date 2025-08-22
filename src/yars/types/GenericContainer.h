@@ -21,12 +21,12 @@ class GenericContainer
     GenericContainer();
     ~GenericContainer();
 
-    typedef typename _CONT::iterator               iterator;
-    typedef typename _CONT::const_iterator         const_iterator;
-    typedef typename _CONT::size_type              size_type;
-    typedef typename _CONT::difference_type        difference_type;
-    typedef typename _CONT::reverse_iterator       reverse_iterator;
-    typedef typename _CONT::const_reverse_iterator const_reverse_iterator;
+    using iterator               = typename _CONT::iterator;
+    using const_iterator         = typename _CONT::const_iterator;
+    using size_type              = typename _CONT::size_type;
+    using difference_type        = typename _CONT::difference_type;
+    using reverse_iterator       = typename _CONT::reverse_iterator;
+    using const_reverse_iterator = typename _CONT::const_reverse_iterator;
 
     int getSize();
     // TODO: rename getSize to size
