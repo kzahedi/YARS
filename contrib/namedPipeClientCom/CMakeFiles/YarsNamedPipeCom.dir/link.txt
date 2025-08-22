@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../lib/libYarsNamedPipeCom.a CMakeFiles/YarsNamedPipeCom.dir/YarsNamedPipeCom.cpp.o
+/usr/bin/ranlib ../../lib/libYarsNamedPipeCom.a

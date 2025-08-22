@@ -1,0 +1,53 @@
+#!/bin/sh
+
+inc_prefix=
+lib_prefix=
+bin_prefix=
+exec_prefix_set=no
+
+usage="\
+Usage: yars-config [--exec] [--lib-prefix] [--bin-prefix] [--inc-prefix] [--version] [--cflags] [--libs]"
+
+if test $# -eq 0; then
+      echo "" 1>&2
+      exit 1
+fi
+
+while test $# -gt 0; do
+  case "$1" in
+  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
+
+  case $1 in
+    --inc-prefix)
+      echo $prefix
+      ;;
+    --version)
+      echo 0.7.8
+      ;;
+    --lib-prefix)
+      echo  /usr/local/lib
+      ;;
+    --bin-prefix)
+      echo  /usr/local/bin
+      ;;
+    --exec)
+      echo  /usr/local/bin/yars
+      ;;
+    --inc-prefix)
+      echo  /usr/local/include/yars
+      ;;
+    --cflags)
+      echo  -I/usr/local/include/yars
+      ;;
+    --libs)
+      echo  -L/usr/local/lib -lYarsRobotController
+      ;;
+    *)
+      echo "" 1>&2
+      exit 1
+      ;;
+  esac
+  shift
+done

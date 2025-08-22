@@ -1,0 +1,1 @@
+g++ -O3 -fPIC  -std=c++17 -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o ../../lib/libYarsClientCom.dylib -install_name @rpath/libYarsClientCom.dylib CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o   -L/usr/local/lib

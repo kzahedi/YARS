@@ -6,9 +6,9 @@
 #include <string>
 #include <iostream>
 
-#include "boost/function.hpp"
+#include <functional>
 
-typedef boost::function<void(void)> FuncPtrVoidVoid;
+typedef std::function<void(void)> FuncPtrVoidVoid;
 
 using namespace std;
 

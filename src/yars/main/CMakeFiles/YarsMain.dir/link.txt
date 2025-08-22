@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libYarsMain.a CMakeFiles/YarsMain.dir/YarsMainControl.cpp.o CMakeFiles/YarsMain.dir/RuntimeControl.cpp.o CMakeFiles/YarsMain.dir/SignalHandler.cpp.o
+/usr/bin/ranlib ../../../lib/libYarsMain.a

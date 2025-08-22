@@ -4,8 +4,7 @@
 
 #include <yars/util/Timer.h>
 
-#include <boost/tokenizer.hpp>
-#include <boost/foreach.hpp>
+#include <sstream>
 
 #include <sstream>
 #include <stdlib.h>
@@ -15,7 +14,6 @@
 #include <io.h>
 #endif // _MSC_VER
 
-using namespace boost;
 
 FileSystemOperations::FileSystemOperations()
 {
@@ -195,14 +193,14 @@ void FileSystemOperations::checkValidPath(string *name, bool isDir, bool fatal,
   fs::path path;
   if (name->c_str()[0] != '/') // path is a local path starting with a letter
   {
-    path = fs::initial_path() / fs::path(*name);
+    path = fs::current_path() / fs::path(*name);
     *name = path.string();
   }
   path = fs::path(*name);
 
   if (!path.is_absolute())
   {
-    path = fs::system_complete(path);
+    path = fs::absolute(path);
   }
 
   if (((isDir && doesDirExist(path)) || (!isDir && doesFileExist(path))))
@@ -259,7 +257,7 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string *
 
     if (!path.is_absolute())
     {
-      path = fs::system_complete(
+      path = fs::absolute(
           fs::path(*pathName) / fs::path(*name));
     }
 
@@ -303,12 +301,11 @@ bool FileSystemOperations::doesExecutableExist(string exe)
   if (path_string.length() == 0)
     YarsErrorHandler::push("Cannot read PATH system variable.");
 
-  char_separator<char> sep(":");
-  tokenizer<char_separator<char>> tokens(path_string, sep);
-
-  BOOST_FOREACH (string t, tokens)
+  std::istringstream iss(path_string);
+  std::string token;
+  while (std::getline(iss, token, ':'))
   {
-    path = fs::system_complete(fs::path(t) / fs::path(exe));
+    path = fs::absolute(fs::path(token) / fs::path(exe));
 #ifndef _MSC_VER
     if (access(path.string().c_str(), X_OK) == 0)
       return true;

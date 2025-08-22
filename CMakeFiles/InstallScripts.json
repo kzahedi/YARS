@@ -1,0 +1,23 @@
+{
+	"InstallScripts" : 
+	[
+		"/Volumes/Eregion/projects/yars/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/types/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/configuration/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/view/console/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/physics/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/util/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/main/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/logging/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/src/yars/rc/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/braitenbergCom/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/braitenbergPipe/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/namedPipeClientCom/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/cppClientCom/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/controller/cmake_install.cmake",
+		"/Volumes/Eregion/projects/yars/contrib/ctrlGui/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

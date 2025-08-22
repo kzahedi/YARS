@@ -345,7 +345,7 @@ void Directories::__findXsdDirectory()
     fs::path complete = fs::path(_xsdDirectory);
     if (!complete.has_root_path())
     {
-      complete = fs::initial_path() / complete;
+      complete = fs::current_path() / complete;
     }
     _xsdDirectory = complete.string();
     _xsdFound = true;
@@ -492,7 +492,7 @@ void Directories::setFullPath(string *dirString)
   fs::path dir(*dirString);
   if (!dir.has_root_path())
   {
-    dir = fs::initial_path() / dir / YARS_DIR_ROSIML_NAME;
+    dir = fs::current_path() / dir / YARS_DIR_ROSIML_NAME;
   }
   *dirString = dir.string();
 }

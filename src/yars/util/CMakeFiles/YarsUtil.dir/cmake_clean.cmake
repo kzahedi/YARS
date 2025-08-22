@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "../../../lib/libYarsUtil.a"
+  "../../../lib/libYarsUtil.pdb"
+  "CMakeFiles/YarsUtil.dir/Directories.cpp.o"
+  "CMakeFiles/YarsUtil.dir/Directories.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/FileSystemOperations.cpp.o"
+  "CMakeFiles/YarsUtil.dir/FileSystemOperations.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/Filter.cpp.o"
+  "CMakeFiles/YarsUtil.dir/Filter.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/Mapping.cpp.o"
+  "CMakeFiles/YarsUtil.dir/Mapping.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/MappingFunction.cpp.o"
+  "CMakeFiles/YarsUtil.dir/MappingFunction.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/NamedPipe.cpp.o"
+  "CMakeFiles/YarsUtil.dir/NamedPipe.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/PID.cpp.o"
+  "CMakeFiles/YarsUtil.dir/PID.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/PlyLoader.cpp.o"
+  "CMakeFiles/YarsUtil.dir/PlyLoader.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/Random.cpp.o"
+  "CMakeFiles/YarsUtil.dir/Random.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/Socket.cpp.o"
+  "CMakeFiles/YarsUtil.dir/Socket.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/StringTokeniser.cpp.o"
+  "CMakeFiles/YarsUtil.dir/StringTokeniser.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/VideoCodecs.cpp.o"
+  "CMakeFiles/YarsUtil.dir/VideoCodecs.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/YarsErrorHandler.cpp.o"
+  "CMakeFiles/YarsUtil.dir/YarsErrorHandler.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/filter/MovingAverage.cpp.o"
+  "CMakeFiles/YarsUtil.dir/filter/MovingAverage.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/noise/GaussianNoise.cpp.o"
+  "CMakeFiles/YarsUtil.dir/noise/GaussianNoise.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/noise/NoNoise.cpp.o"
+  "CMakeFiles/YarsUtil.dir/noise/NoNoise.cpp.o.d"
+  "CMakeFiles/YarsUtil.dir/noise/WhiteNoise.cpp.o"
+  "CMakeFiles/YarsUtil.dir/noise/WhiteNoise.cpp.o.d"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/YarsUtil.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

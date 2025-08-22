@@ -2,7 +2,7 @@
 
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <boost/function.hpp>
+#include <functional>
 
 KeyHandler *KeyHandler::_me = NULL;
 KeyboardShortcuts *KeyHandler::_keyboardShortcuts = NULL;

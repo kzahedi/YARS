@@ -1,0 +1,1 @@
+g++ -O3 -fPIC  -std=c++17 -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o ../../lib/libYarsControllerNIL.dylib -install_name @rpath/libYarsControllerNIL.dylib CMakeFiles/YarsControllerNIL.dir/NIL.cpp.o   -L/usr/local/lib

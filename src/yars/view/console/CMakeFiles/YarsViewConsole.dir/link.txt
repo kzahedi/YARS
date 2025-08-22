@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../lib/libYarsViewConsole.a CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o
+/usr/bin/ranlib ../../../../lib/libYarsViewConsole.a
