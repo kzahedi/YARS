@@ -318,7 +318,7 @@
       <!-- <target name="right wheel hinge sensor"/> -->
       <!-- <target name="wheel left hinge"/> -->
       <!-- <target name="wheel right hinge"/> -->
-      <target name="main body velocity"/>
+      <target name="main body"/>
     </console>
 
     <!-- <gnuplot size="100000" delay="100" pairwise="true"> -->
