@@ -16,4 +16,4 @@ add_library(YarsUtil ${LIBRARY_TYPE} filter/MovingAverage.cpp
                                      Directories.cpp
                                      FileSystemOperations.cpp)
 
-target_link_libraries(YarsUtil boost_filesystem)
+target_link_libraries(YarsUtil ${Boost_LIBRARIES})

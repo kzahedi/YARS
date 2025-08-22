@@ -1,7 +1,7 @@
-project(yars)
-
 # check for cmake version first:
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+project(yars)
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0005 NEW)
   cmake_policy(SET CMP0003 NEW)
