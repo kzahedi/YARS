@@ -14,6 +14,7 @@
 #include <io.h>
 #endif // _MSC_VER
 
+namespace yars {
 
 FileSystemOperations::FileSystemOperations()
 {
@@ -316,3 +317,5 @@ bool FileSystemOperations::doesExecutableExist(string exe)
   }
   return false;
 }
+
+} // namespace yars

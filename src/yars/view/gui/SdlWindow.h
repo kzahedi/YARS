@@ -1,8 +1,6 @@
 #ifndef __SDL_WINDOW_H__
 #define __SDL_WINDOW_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/ObservableMessage.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/view/gui/CameraMan.h>
 #include <yars/view/gui/WindowConfiguration.h>
@@ -20,7 +18,9 @@
 
 #include <pthread.h>
 
-class SdlWindow : public Observable
+namespace yars {
+
+class SdlWindow
 {
 public:
     SdlWindow(int index);
@@ -133,5 +133,7 @@ private:
 
     static bool _simulationRunning;
 };
+
+} // namespace yars
 
 #endif // __SDL_WINDOW_H__

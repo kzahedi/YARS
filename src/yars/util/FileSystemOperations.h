@@ -10,6 +10,8 @@
 namespace fs = std::filesystem;
 using namespace std;
 
+namespace yars {
+
 class FileSystemOperations
 {
   public:
@@ -36,5 +38,9 @@ class FileSystemOperations
     FileSystemOperations();
     ~FileSystemOperations();
 };
+
+} // namespace yars
+
+using yars::FileSystemOperations;
 
 #endif

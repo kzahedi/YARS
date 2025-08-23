@@ -16,6 +16,8 @@
 #endif
 // #include <OGRE/OgreStaticPluginLoader.h>
 
+namespace yars {
+
 class OgreHandler
 {
 public:
@@ -46,5 +48,7 @@ private:
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
   // TextOverlay        *_textOverlay;
 };
+
+} // namespace yars
 
 #endif // __OGRE_HANDLER_H__

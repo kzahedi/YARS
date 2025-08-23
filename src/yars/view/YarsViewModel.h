@@ -1,14 +1,15 @@
 #ifndef __YARS_VIEW_MODEL_H__
 #define __YARS_VIEW_MODEL_H__
 
-#include <yars/util/Observable.h>
 #include <yars/view/console/ConsoleView.h>
 #include <yars/view/gui/OgreHandler.h>
 #include <yars/view/gui/SdlWindow.h>
 
 #include <SDL2/SDL.h>
 
-class YarsViewModel : public Observable, public Observer
+namespace yars {
+
+class YarsViewModel
 {
   public:
     YarsViewModel();
@@ -19,7 +20,6 @@ class YarsViewModel : public Observable, public Observer
     void visualiseScene();
 
     void quit();
-    void notify(ObservableMessage *m);
     void run();
     void synched();
     void toggleShadows();
@@ -46,5 +46,7 @@ class YarsViewModel : public Observable, public Observer
     int                     _first;
     int                     _last;
 };
+
+} // namespace yars
 
 #endif // __YARS_VIEW_MODEL_H__

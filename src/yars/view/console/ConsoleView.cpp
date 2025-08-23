@@ -6,6 +6,8 @@
 #include <string>
 #include <sstream>
 
+namespace yars {
+
 ConsoleView*  ConsoleView::_me                         = NULL;
 int           ConsoleView::_currentDebugLevel          = YARS_INFO;
 unsigned long ConsoleView::_debugTiming                = 0;
@@ -144,3 +146,5 @@ void ConsoleView::printCapturingInformation(int frameIndex)
     fflush( stdout );
   }
 }
+
+} // namespace yars

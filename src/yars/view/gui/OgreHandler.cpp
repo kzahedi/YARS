@@ -12,6 +12,8 @@
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 
+namespace yars {
+
 OgreHandler *OgreHandler::_me = nullptr;
 
 OgreHandler *OgreHandler::instance()
@@ -468,3 +470,5 @@ OgreHandler::~OgreHandler()
   }
   // plugins and root cleanup handled elsewhere (application exit)
 }
+
+} // namespace yars

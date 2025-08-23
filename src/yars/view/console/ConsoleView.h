@@ -39,7 +39,7 @@
 #  define Y_WARN(...)
 #endif
 
-
+namespace yars {
 
 class ConsoleView
 {
@@ -90,6 +90,11 @@ class ConsoleView
     static double _printTimeUPS;
     static double _printRealTimeFactor;
 };
+
+} // namespace yars
+
+// Temporary global using directive for backward compatibility during namespace transition
+using yars::ConsoleView;
 
 #endif // __CONSOLE_VIEW_H__
 

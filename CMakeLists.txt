@@ -36,6 +36,12 @@ INCLUDE(cmake/CreateConfigFiles.cmake)
 add_subdirectory(src/yars)
 add_subdirectory(contrib)
 
+# Modern Google Test framework
+option(YARS_BUILD_TESTS "Build YARS tests" ON)
+if(YARS_BUILD_TESTS)
+  add_subdirectory(tests)
+endif()
+
 IF(YARS_TESTCASES)
   ENABLE_TESTING()
   add_subdirectory(testCases)

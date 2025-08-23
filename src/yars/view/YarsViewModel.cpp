@@ -7,6 +7,8 @@
 
 #include <OGRE/Ogre.h>
 
+namespace yars {
+
 YarsViewModel::YarsViewModel()
 {
   _drawFequency = 1;
@@ -160,36 +162,8 @@ void YarsViewModel::createNewWindow()
   _first++;
 }
 
-void YarsViewModel::notify(ObservableMessage *m)
-{
-  switch (m->type())
-  {
-  // case __M_NEW_WINDOW:        __newWindow();           break; // new    window
-  // case -2:                    __removeClosedWindows(); break; // closed
-  case __M_QUIT_CALLED:
-    _run = false;
-    cleanupWindows();
-    for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); ++i)
-    {
-      (*i)->close();
-    }
-    break;
-  case __M_QUIT:
-    _run = false;
-    cleanupWindows();
-    for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); ++i)
-    {
-      (*i)->close();
-    }
-    break;
-  case __M_TOGGLE_SYNCED_GUI:
-    _sync = !_sync;
-    break;
-  case __M_CLOSE_WINDOW:
-    cleanupWindows();
-    break;
-  }
-}
+// Observer pattern methods replaced with direct method calls
+// quit() method already handles window cleanup
 
 void YarsViewModel::cleanupWindows()
 {
@@ -286,3 +260,5 @@ void YarsViewModel::toggleCaptureVideo()
   }
 #endif // USE_CAPTURE_VIDEO
 }
+
+} // namespace yars

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace yars {
+
 PID::PID(double p, double i, double d, double c, int size)
 {
   _p                 = p;
@@ -145,3 +147,5 @@ void PID::reset()
 {
   __resize(_errors.size());
 }
+
+} // namespace yars

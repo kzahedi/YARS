@@ -84,6 +84,11 @@ bool YarsXSDSaxParser::read(string filename)
     cout << "Exception message is: \n"
       << message << "\n";
     XMLString::release(&message);
+    delete parser;
+    delete handler;
+    try {
+      XMLPlatformUtils::Terminate();
+    } catch (...) {}
     return false;
   }
   catch (const SAXParseException& toCatch) {
@@ -91,6 +96,11 @@ bool YarsXSDSaxParser::read(string filename)
     cout << "Exception message is: \n"
       << message << "\n";
     XMLString::release(&message);
+    delete parser;
+    delete handler;
+    try {
+      XMLPlatformUtils::Terminate();
+    } catch (...) {}
     return false;
   }
   // catch (...) {
@@ -109,6 +119,17 @@ bool YarsXSDSaxParser::read(string filename)
   if(errorCount > 0)
   {
     //cout << "Found " << errorCount << " errors while parsing." << endl;
+  }
+
+  try {
+    XMLPlatformUtils::Terminate();
+  }
+  catch (const XMLException& toCatch) {
+    char* message = XMLString::transcode(toCatch.getMessage());
+    cout << "Error during termination! :\n";
+    cout << "Exception message is: \n"
+      << message << "\n";
+    XMLString::release(&message);
   }
 
   if(_fatals.size() > 0 || (_errors.size() > 0))
@@ -181,6 +202,11 @@ bool YarsXSDSaxParser::parse(string xml)
     cout << "Exception message is: \n"
       << message << "\n";
     XMLString::release(&message);
+    delete parser;
+    delete handler;
+    try {
+      XMLPlatformUtils::Terminate();
+    } catch (...) {}
     return false;
   }
   catch (const SAXParseException& toCatch) {
@@ -188,10 +214,20 @@ bool YarsXSDSaxParser::parse(string xml)
     cout << "Exception message is: \n"
       << message << "\n";
     XMLString::release(&message);
+    delete parser;
+    delete handler;
+    try {
+      XMLPlatformUtils::Terminate();
+    } catch (...) {}
     return false;
   }
   catch (...) {
     cout << "Unexpected Exception \n" ;
+    delete parser;
+    delete handler;
+    try {
+      XMLPlatformUtils::Terminate();
+    } catch (...) {}
     return false;
   }
   int errorCount = parser->getErrorCount();
@@ -207,6 +243,17 @@ bool YarsXSDSaxParser::parse(string xml)
   {
     // TODO: throw YarsException
     //cout << "Found " << errorCount << " errors while parsing." << endl;
+  }
+
+  try {
+    XMLPlatformUtils::Terminate();
+  }
+  catch (const XMLException& toCatch) {
+    char* message = XMLString::transcode(toCatch.getMessage());
+    cout << "Error during termination! :\n";
+    cout << "Exception message is: \n"
+      << message << "\n";
+    XMLString::release(&message);
   }
 
   if(_fatals.size() > 0 || _errors.size() > 0)

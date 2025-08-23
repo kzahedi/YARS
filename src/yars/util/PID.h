@@ -8,6 +8,8 @@
 
 using namespace std;
 
+namespace yars {
+
 class PID
 {
   public:
@@ -62,5 +64,9 @@ class PID
     int _currentErrorIndex;
 
 };
+
+} // namespace yars
+
+using yars::PID;
 
 #endif // __PID_H__
