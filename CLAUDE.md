@@ -182,3 +182,4 @@ For questions about this refactoring, consult:
 - `REFACTORING_PLAN.md` - Detailed execution plan
 - `analysis.md` - Initial codebase analysis
 - GitHub Issues - Task tracking and progress
+- You can only claim that a task was successful, when you tested the newly compiled binary on braitenberg_logging,xml and have compared the new logfile with the reference logfile
