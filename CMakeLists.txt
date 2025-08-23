@@ -1,7 +1,10 @@
-# check for cmake version first:
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+# Modern CMake version for best practices
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-project(yars)
+project(yars 
+  VERSION 0.7.28
+  DESCRIPTION "YARS - Yet Another Robot Simulator"
+  LANGUAGES CXX)
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0005 NEW)
   cmake_policy(SET CMP0003 NEW)
@@ -16,11 +19,8 @@ endif(COMMAND cmake_policy)
 
 set(LIBRARY_TYPE STATIC)
 
-# Set Version Information
-# TODO: read this from defines/version.h
-set(YARS_MAJOR 0)
-set(YARS_MINOR 7)
-set(YARS_PATCH 28)
+# Version information automatically set by project() command above
+# These are now available as: PROJECT_VERSION, PROJECT_VERSION_MAJOR, etc.
 
 INCLUDE(cmake/SetOptions.cmake)
 INCLUDE(cmake/IncludePackages.cmake) # must be called first

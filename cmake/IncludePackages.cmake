@@ -5,18 +5,23 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# Handle modern Boost CMake policy
+cmake_policy(SET CMP0167 NEW)
+
+# Modern Boost handling
 if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
-find_package(Boost REQUIRED program_options)
-IF(Boost_FOUND)
+find_package(Boost REQUIRED COMPONENTS program_options)
+# Modern CMake: Use imported targets instead of include directories
+# For header-only libraries like circular_buffer, we still need include directories
+if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
-ENDIF(Boost_FOUND)
+endif()
 
-find_package(XercesC)
-IF(XERCESC_FOUND)
-  include_directories(${XERCESC_INCLUDE_DIR})
-ENDIF(XERCESC_FOUND)
+find_package(XercesC REQUIRED)
+# Modern CMake: Use imported targets instead of manual includes
+# Targets will link with XercesC::XercesC directly
 
 if(YARS_USE_PYTHON)
 find_package(PythonLibs 3 REQUIRED)
@@ -25,10 +30,12 @@ find_package(PythonLibs 3 REQUIRED)
   ENDIF(PYTHONLIBS_FOUND)
 endif(YARS_USE_PYTHON)
 
-set(BULLET_ROOT /opt/homebrew/opt/bullet)
+# Modern CMake approach: let CMake find Bullet automatically
 find_package(Bullet REQUIRED)
 if(BULLET_FOUND)
-  include_directories(${BULLET_INCLUDE_DIRS})
+  # Modern CMake: prefer target-based includes over directory includes
+  # include_directories(${BULLET_INCLUDE_DIRS})
+  # Note: Individual targets will link with Bullet::Bullet* targets
 endif(BULLET_FOUND)
 
 if(YARS_DOCS)

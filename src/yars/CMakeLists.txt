@@ -1,5 +1,8 @@
 add_executable(${YARS_TARGET} yarsMain.cpp)
 
+# Add Bullet Physics headers needed by yarsMain.cpp
+target_include_directories(${YARS_TARGET} PRIVATE ${BULLET_INCLUDE_DIRS})
+
 add_subdirectory(types)
 add_subdirectory(configuration)
 add_subdirectory(view/console)

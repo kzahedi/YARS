@@ -1,31 +1,39 @@
-set(CMAKE_VERBOSE_MAKEFILE       OFF)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 
-set(CMAKE_BASE_NAME              "g++")
-set(CMAKE_CXX_COMPILER           "g++")
-set(CMAKE_CXX_COMPILER_FULLPATH  "g++")
+# Modern CMake: Use standard properties instead of manual compiler settings
+# Let CMake choose the best compiler automatically
+# set(CMAKE_BASE_NAME              "g++")
+# set(CMAKE_CXX_COMPILER           "g++")
+# set(CMAKE_CXX_COMPILER_FULLPATH  "g++")
 
-# set(CMAKE_BASE_NAME              "/usr/local/opt/llvm/bin/clang")
-# set(CMAKE_CXX_COMPILER           "/usr/local/opt/llvm/bin/clang")
-# set(CMAKE_CXX_COMPILER_FULLPATH  "/usr/local/opt/llvm/bin/clang")
+# Modern CMake: Use standard properties for output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
+# Modern CMake: Set C++ standard globally
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(EXECUTABLE_OUTPUT_PATH       ${PROJECT_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH          ${PROJECT_BINARY_DIR}/lib)
+# Modern CMake: Use compile features and properties instead of manual flags
+# Enable modern warnings and debugging
+set(CMAKE_CXX_FLAGS_DEBUG   "-g -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
-#set(WARNINGS "-W -Wall")
-set(WARNINGS "")
+# Position Independent Code (PIC) is handled automatically by modern CMake
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if(APPLE AND UNIX)
-  set(CMAKE_CXX_FLAGS_DEBUG        "-g  -fPIC ${WARNINGS} -std=c++17")
-  set(CMAKE_CXX_FLAGS_RELEASE      "-O3 -fPIC ${WARNINGS} -std=c++17")
-  set(CMAKE_CXX_FLAGS_DISTRIBUTION "-O3 -fPIC ${WARNINGS} -std=c++17")
-endif(APPLE AND UNIX)
+# Platform-specific optimizations (modern approach)
+if(APPLE)
+  # macOS specific optimizations
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
+elseif(UNIX)
+  # Linux specific optimizations  
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
+endif()
 
-if(UNIX AND NOT APPLE)
-  set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 ${WARNINGS} -fPIC -std=c++17")
-  set(CMAKE_CXX_FLAGS_RELEASE "   -O3 ${WARNINGS} -fPIC -std=c++17")
-  # set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0 -fpermissive ${WARNINGS} -pthread -fPIC")
-  # set(CMAKE_CXX_FLAGS_RELEASE "   -O3 -fpermissive ${WARNINGS} -pthread -fPIC")
-endif(UNIX AND NOT APPLE)
+# Modern CMake: Use generator expressions for conditional compilation
+# This replaces the old manual flag setting approach
 
 

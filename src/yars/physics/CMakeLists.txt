@@ -47,7 +47,15 @@ set(PHYSICS_SRC ${PHYSICS_SRC} bullet/Ply.cpp)
 
 add_library(YarsPhysics ${LIBRARY_TYPE} ${PHYSICS_SRC})
 
-target_link_libraries(YarsPhysics ${BULLET_LIBRARIES})
-IF(UNIX AND NOT APPLE)
-  target_link_libraries(YarsPhysics dl)
-ENDIF(UNIX AND NOT APPLE)
+# Modern CMake: Use imported targets for better dependency management
+target_link_libraries(YarsPhysics 
+  PRIVATE
+    ${BULLET_LIBRARIES}  # Keep current approach for now, as Bullet may not have modern targets
+    $<$<AND:$<PLATFORM_ID:Linux>,$<NOT:$<PLATFORM_ID:Darwin>>>:dl>
+)
+
+# Bullet Physics headers (needed until Bullet provides modern CMake targets)
+target_include_directories(YarsPhysics PRIVATE ${BULLET_INCLUDE_DIRS})
+
+# Ensure proper C++ standard for this target
+target_compile_features(YarsPhysics PRIVATE cxx_std_17)
