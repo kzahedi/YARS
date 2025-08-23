@@ -6,14 +6,20 @@
 
 #include <pthread.h>
 
-class YarsPhysicsControl : public Observer
+class YarsPhysicsControl
 {
   public:
     YarsPhysicsControl();
     virtual ~YarsPhysicsControl() { };
 
     void setModel(YarsPhysicsModel *model);
-    void notify(ObservableMessage *message);
+    void notify(ObservableMessage *message); // Keep for compatibility
+    
+    // Direct control methods
+    void init();
+    void step();
+    void reset();
+    void quit();
 
   private:
     YarsPhysicsModel *_model;

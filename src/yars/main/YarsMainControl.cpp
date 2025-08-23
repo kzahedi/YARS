@@ -17,9 +17,9 @@ YarsMainControl::YarsMainControl(int argc, char **argv)
   _cv = ConsoleView::instance();
   _sig = SignalHandler::instance();
   _ycc->init(argc, argv);
-  _sig->addObserver(this);
+  // Signal handler setup - no longer uses observer pattern
 #ifndef SUPPRESS_ALL_OUTPUT
-  addObserver(_cv); // 1. first things first, we need debug output
+  // Console view setup - no longer uses observer pattern 
 #endif              // SUPPRESS_ALL_OUTPUT
   Y_DEBUG("YarsMainControl instantiating models and controls.");
   _keepOnRunning = true;
@@ -39,11 +39,9 @@ YarsMainControl::YarsMainControl(int argc, char **argv)
   Y_DEBUG("YarsMainControl adding myself as observable to the controls.");
 
   // addObserver(_ycc); // 2. the configuration
-  addObserver(_ypc); // 3. the physics
-  addObserver(_ylc); // after physics!
+  // Physics and logging controls setup - no longer uses observer pattern
 
-  _ypm->addObserver(this);
-  _ycc->addObserver(this);
+  // Models and configuration setup - no longer uses observer pattern
 
   Y_DEBUG("YarsMainControl sending init messages to all observers");
 
@@ -54,19 +52,20 @@ YarsMainControl::YarsMainControl(int argc, char **argv)
     PRINT_START_UP_MESSAGE("Starting key handler.");
     KeyHandler *keyHandler = KeyHandler::instance();
     keyHandler->registerKeyboardShortcuts();
-    keyHandler->addObserver(this);
+    // Key handler setup - no longer uses observer pattern
   }
 #endif // USE_VISUALISATION
 
   // at least, add runtime control, i.e. auto-reset, auto-end, etc.
   PRINT_START_UP_MESSAGE("Starting runtime control.");
   _rtc = new RuntimeControl();
-  addObserver(_rtc);
-  _rtc->addObserver(this);
 
   // TODO: clean up all controls and models
 
-  notifyObservers(_m_init);
+  // Initialize all components directly
+  _ypc->init();
+  _ylc->init();
+  if (_rtc) _rtc->init();
 }
 
 YarsMainControl::~YarsMainControl()
@@ -79,7 +78,7 @@ YarsMainControl::~YarsMainControl()
   delete _ycc;
   delete _ypc;
   delete _ypm;
-  // delete _rtc;
+  delete _rtc;
 }
 
 void YarsMainControl::run()
@@ -87,7 +86,7 @@ void YarsMainControl::run()
 
   if (__YARS_GET_SYNC_GUI)
   {
-    notifyObservers(_m_toggleSyncedGui);
+    // GUI sync handling - no longer uses observer pattern
   }
 
   while (_keepOnRunning)
@@ -104,11 +103,24 @@ void YarsMainControl::run()
     if (__YARS_IS_RESET_SIMULATION)
     {
       __YARS_UNSET_RESET_SIMULATION;
-      notifyObservers(_m_reset);
+      // Reset all components directly
+      _ypc->reset();
+      _ylc->reset();
+      if (_rtc) _rtc->reset();
     }
     else
     {
-      notifyObservers(_m_nextStep);
+      // Step all components directly
+      _ypc->step();
+      _ylc->step();
+      if (_rtc) 
+      {
+        _rtc->step();
+        if (_rtc->shouldQuit())
+        {
+          _keepOnRunning = false;
+        }
+      }
     }
   }
 
@@ -117,14 +129,17 @@ void YarsMainControl::run()
   {
     if (!__YARS_GET_SYNC_GUI)
     {
-      notifyObservers(_m_toggleSyncedGui);
+      // GUI sync handling - no longer uses observer pattern
       usleep(500);
     }
-    notifyObservers(_m_quit_gui_called);
+    // GUI quit handling - no longer uses observer pattern
   }
 #endif // USE_VISUALISATION
 
-  notifyObservers(_m_quit);
+  // Quit all components directly
+  _ypc->quit();
+  _ylc->quit();
+  if (_rtc) _rtc->quit();
 
   __closeApplication();
 }
@@ -162,13 +177,13 @@ void YarsMainControl::notify(ObservableMessage *message)
     break;
   case __M_RESET:
     YarsConfiguration::instance()->reset();
-    notifyObservers(_m_reset);
+    // Reset handling - no longer uses observer pattern
     break;
   case __M_AUTO_TOGGLE_CAPTURE_VIDEO:
-    notifyObservers(_m_autoToggleCaptureVideo); // pass it from RuntimeControl to others
+    // Video capture handling - no longer uses observer pattern
     break;
   case __M_SIGNAL_HANDLER_ACTIVATED:
-    notifyObservers(_m_quit_called);
+    // Signal handling - no longer uses observer pattern
     _keepOnRunning = false;
     break;
   }

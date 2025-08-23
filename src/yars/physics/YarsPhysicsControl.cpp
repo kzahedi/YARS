@@ -58,3 +58,37 @@ void YarsPhysicsControl::notify(ObservableMessage *message)
       break;
   }
 }
+
+// Direct control methods
+void YarsPhysicsControl::init()
+{
+  _model->initialisePhysics();
+}
+
+void YarsPhysicsControl::step()
+{
+  if(!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
+  {
+    _model->performOneSimulationStep();
+    __YARS_SET_USE_SINGLE_STEP(false);
+  }
+  else
+  {
+#ifndef _MSC_VER
+    usleep(100);
+#else
+    cout << "Pause not supported in windows version" << endl;
+#endif
+  }
+}
+
+void YarsPhysicsControl::reset()
+{
+  Y_DEBUG("YarsPhysicsControl: processing reset");
+  _model->reset();
+}
+
+void YarsPhysicsControl::quit()
+{
+  delete _model;
+}

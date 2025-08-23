@@ -1,8 +1,8 @@
 #ifndef __YARS_MAIN_CONTROL_H__
 #define __YARS_MAIN_CONTROL_H__
 
-// #include <yars/util/Observable.h>
-// #include <yars/util/Observer.h>
+#include <yars/util/Observable.h>
+#include <yars/util/Observer.h>
 
 #include <yars/main/RuntimeControl.h>
 #include <yars/main/SignalHandler.h>
@@ -22,7 +22,7 @@
  * It connects the observers and
  * observables, and initiates the run.
  */
-class YarsMainControl : public Observable, public Observer
+class YarsMainControl
 {
 public:
   /** \brief Standard constructor.

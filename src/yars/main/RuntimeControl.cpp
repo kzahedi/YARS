@@ -13,6 +13,7 @@ RuntimeControl::RuntimeControl()
   _recording = _data->current()->screens()->recording();
   _timer = new Timer();
   _captureRunning = false;
+  _shouldQuit = false;
 }
 
 RuntimeControl::~RuntimeControl()
@@ -52,7 +53,7 @@ void RuntimeControl::notify(ObservableMessage *m)
       {
         Y_INFO("Maximum number of physics iterations (%d) reached.", __YARS_GET_MAX_ITERATIONS);
         Y_DEBUG("Exiting YARS from RuntimeControl.");
-        notifyObservers(_m_quit_called);
+        _shouldQuit = true;
         Y_DEBUG("Exiting YARS from RuntimeControl notification sent.");
         return;
       }
@@ -77,4 +78,80 @@ void RuntimeControl::notify(ObservableMessage *m)
     }
     break;
   }
+}
+
+void RuntimeControl::init()
+{
+  if (__YARS_GET_USE_RANDOM_SEED)
+  {
+    Random::initialise(__YARS_GET_RANDOM_SEED);
+  }
+  _timer->reset();
+  _shouldQuit = false;
+}
+
+void RuntimeControl::step()
+{
+#ifdef USE_CAPTURE_VIDEO
+  if (_captureRunning == true && _recording->record() == false)
+    ; // TODO: Handle video capture toggle
+  if (_captureRunning == false && _recording->record() == true)
+    ; // TODO: Handle video capture toggle
+  _captureRunning = _recording->record();
+#endif // USE_CAPTURE_VIDEO
+
+  if (__YARS_GET_USE_PRINT_TIME_INFORMATION)
+  {
+    ConsoleView::printTime();
+  }
+  
+  if (__YARS_GET_MAX_ITERATIONS > 0)
+  {
+    if (__YARS_GET_STEP > (unsigned int)__YARS_GET_MAX_ITERATIONS)
+    {
+      Y_INFO("Maximum number of physics iterations (%d) reached.", __YARS_GET_MAX_ITERATIONS);
+      Y_DEBUG("Exiting YARS from RuntimeControl.");
+      _shouldQuit = true;
+      Y_DEBUG("Exiting YARS from RuntimeControl notification sent.");
+      return;
+    }
+  }
+
+  if (__YARS_GET_RESET > 0)
+  {
+    if (__YARS_GET_STEP > 0 && __YARS_GET_STEP % __YARS_GET_RESET == 0)
+    {
+      __YARS_SET_RESET_SIMULATION;
+    }
+  }
+
+  if (__YARS_GET_USE_REAL_TIME)
+  {
+    long remaining = (900000.0 / (double)__YARS_GET_SIMULATOR_FREQUENCY * __YARS_GET_REAL_TIME_FACTOR) - _timer->get();
+    if (remaining > 0)
+    {
+      _timer->sleep(remaining);
+    }
+    _timer->reset();
+  }
+}
+
+void RuntimeControl::reset()
+{
+  if (__YARS_GET_USE_RANDOM_SEED)
+  {
+    Random::initialise(__YARS_GET_RANDOM_SEED);
+  }
+  _timer->reset();
+  _shouldQuit = false;
+}
+
+void RuntimeControl::quit()
+{
+  _shouldQuit = true;
+}
+
+bool RuntimeControl::shouldQuit()
+{
+  return _shouldQuit;
 }

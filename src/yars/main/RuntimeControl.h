@@ -11,7 +11,7 @@
  * This class checks for the maximal number of iterations to be performed, when
  * to perform an automatic reset, and if timing information is to be print.
  */
-class RuntimeControl : public Observer, public Observable
+class RuntimeControl
 {
   public:
     /** \brief Constructor */
@@ -25,12 +25,19 @@ class RuntimeControl : public Observer, public Observable
      * \param[out] __M_QUIT_CALLED
      */
     void notify(ObservableMessage *message);
+    
+    void init();
+    void step();
+    void reset();
+    void quit();
+    bool shouldQuit();
+    
   private:
-
     Data  *_data;
     Timer *_timer;
     DataRecording *_recording;
     bool           _captureRunning;
+    bool           _shouldQuit;
 
 };
 #endif // __RUNTIME_CONTROL_H__
