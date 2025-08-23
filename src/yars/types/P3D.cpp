@@ -1,5 +1,7 @@
 #include "P3D.h"
 
+namespace yars {
+
 P3D::P3D()
 {
   x = 0;
@@ -215,3 +217,5 @@ double P3D::dist(P3D p)
   double z2 = (z - p.z) * (z - p.z);
   return sqrt(x2+y2+z2);
 }
+
+} // namespace yars

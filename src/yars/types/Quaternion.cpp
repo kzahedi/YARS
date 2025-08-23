@@ -1,5 +1,7 @@
 #include "Quaternion.h"
 
+namespace yars {
+
 Quaternion::Quaternion(double _w, double _x, double _y, double _z)
 {
   w = _w;
@@ -128,3 +130,5 @@ void Quaternion::invert()
   y = -y/d;
   z = -z/d;
 }
+
+} // namespace yars

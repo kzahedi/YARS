@@ -6,6 +6,7 @@
 #include <ostream>
 #include <math.h>
 
+namespace yars {
 
 /** \brief This class implements a three dimensional point.
  *
@@ -303,5 +304,9 @@ class P3D
 
 
 };
+
+} // namespace yars
+
+using yars::P3D;
 
 #endif // __POINT_3D_H__

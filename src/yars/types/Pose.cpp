@@ -18,13 +18,12 @@ Pose::Pose(const Pose &p)
 
 Pose::Pose(double x, double y, double z, double ox, double oy, double oz)
 {
-  (void)ox; (void)oy; (void)oz; // Suppress unused parameter warnings
   position.x    = x;
   position.y    = y;
   position.z    = z;
-  orientation.x = x;
-  orientation.y = y;
-  orientation.z = z;
+  orientation.x = ox;
+  orientation.y = oy;
+  orientation.z = oz;
   q << orientation;
 }
 

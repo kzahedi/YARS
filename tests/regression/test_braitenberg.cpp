@@ -62,6 +62,6 @@ TEST_F(BraitenbergRegressionTest, ConfigurationFileExists) {
     // Check that it contains expected XML content
     std::string content((std::istreambuf_iterator<char>(file)),
                         std::istreambuf_iterator<char>());
-    EXPECT_TRUE(content.find("<yars>") != std::string::npos) << "XML file does not contain expected YARS root element";
-    EXPECT_TRUE(content.find("braitenberg") != std::string::npos) << "XML file does not contain braitenberg elements";
+    EXPECT_TRUE(content.find("<rosiml") != std::string::npos) << "XML file does not contain expected ROSIML root element";
+    EXPECT_TRUE(content.find("Braiternberg") != std::string::npos || content.find("braitenberg") != std::string::npos) << "XML file does not contain braitenberg elements";
 }

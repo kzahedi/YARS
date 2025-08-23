@@ -10,7 +10,9 @@
 
 using namespace std;
 
-  class Quaternion
+namespace yars {
+
+class Quaternion
 {
   public:
     Quaternion(double _w = 1, double _x = 0, double _y = 0, double _z = 0);
@@ -84,6 +86,10 @@ using namespace std;
     double z;
 
 };
+
+} // namespace yars
+
+using yars::Quaternion;
 
 #endif // __QUATERNION_H__
 

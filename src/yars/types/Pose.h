@@ -20,7 +20,7 @@ class Pose
   public:
     P3D          position;
     P3D          orientation;
-    ::Quaternion q;
+    Quaternion q;
 
     Pose();
     Pose(double x, double y, double z, double qx, double qy, double qz, double qw);
