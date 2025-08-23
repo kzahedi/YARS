@@ -76,43 +76,43 @@ contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o: contrib/c
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o: contrib/cppClientCom/YarsClientCom.cpp
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o: contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o -MF CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o.d -o CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o -c /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o -MF CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o.d -o CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.o -c /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.i"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp > CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.i
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp > CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.i
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.s"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp -o CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.s
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/cppClientCom/YarsClientCom.cpp -o CMakeFiles/YarsClientCom.dir/YarsClientCom.cpp.s
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o: contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/flags.make
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o: src/yars/util/Socket.cpp
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o: contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o -MF CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o.d -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o -MF CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o.d -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.i"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp > CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.i
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp > CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.i
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.s"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.s
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/util/Socket.cpp -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/Socket.cpp.s
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o: contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/flags.make
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o: src/yars/util/YarsErrorHandler.cpp
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o: contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o -MF CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o.d -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o -MF CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o.d -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.i"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp > CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.i
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp > CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.i
 
 contrib/cppClientCom/CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.s"
-	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.s
+	cd /Volumes/Eregion/projects/yars/contrib/cppClientCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/util/YarsErrorHandler.cpp -o CMakeFiles/YarsClientCom.dir/__/__/src/yars/util/YarsErrorHandler.cpp.s
 
 # Object files for target YarsClientCom
 YarsClientCom_OBJECTS = \

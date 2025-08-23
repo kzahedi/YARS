@@ -76,211 +76,211 @@ src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o: src/yars/l
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o: src/yars/logging/YarsLoggingControl.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o -MF CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o.d -o CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o -MF CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o.d -o CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp > CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp > CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp -o CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingControl.cpp -o CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o: src/yars/logging/YarsLoggingModel.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o -MF CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o.d -o CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o -MF CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o.d -o CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp > CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp > CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp -o CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/YarsLoggingModel.cpp -o CMakeFiles/YarsLogging.dir/YarsLoggingModel.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o: src/yars/logging/LoggingHandler.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp > CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp > CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp -o CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingHandler.cpp -o CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o: src/yars/logging/LoggingModule.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModule.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingModule.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp > CMakeFiles/YarsLogging.dir/LoggingModule.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp > CMakeFiles/YarsLogging.dir/LoggingModule.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModule.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingModule.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp -o CMakeFiles/YarsLogging.dir/LoggingModule.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModule.cpp -o CMakeFiles/YarsLogging.dir/LoggingModule.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o: src/yars/logging/LoggingModuleObject.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleObject.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleObject.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o: src/yars/logging/LoggingModuleController.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleController.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleController.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o: src/yars/logging/LoggingModuleSensor.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleSensor.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleSensor.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o: src/yars/logging/LoggingModuleActuator.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o -MF CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o.d -o CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp > CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/LoggingModuleActuator.cpp -o CMakeFiles/YarsLogging.dir/LoggingModuleActuator.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o: src/yars/logging/Logger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o -MF CMakeFiles/YarsLogging.dir/Logger.cpp.o.d -o CMakeFiles/YarsLogging.dir/Logger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.o -MF CMakeFiles/YarsLogging.dir/Logger.cpp.o.d -o CMakeFiles/YarsLogging.dir/Logger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/Logger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp > CMakeFiles/YarsLogging.dir/Logger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp > CMakeFiles/YarsLogging.dir/Logger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/Logger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/Logger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp -o CMakeFiles/YarsLogging.dir/Logger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/Logger.cpp -o CMakeFiles/YarsLogging.dir/Logger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o: src/yars/logging/FileLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/FileLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/FileLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/FileLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/FileLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/FileLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp > CMakeFiles/YarsLogging.dir/FileLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp > CMakeFiles/YarsLogging.dir/FileLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/FileLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/FileLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp -o CMakeFiles/YarsLogging.dir/FileLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/FileLogger.cpp -o CMakeFiles/YarsLogging.dir/FileLogger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o: src/yars/logging/CSVLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/CSVLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/CSVLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp > CMakeFiles/YarsLogging.dir/CSVLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp > CMakeFiles/YarsLogging.dir/CSVLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/CSVLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/CSVLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp -o CMakeFiles/YarsLogging.dir/CSVLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/CSVLogger.cpp -o CMakeFiles/YarsLogging.dir/CSVLogger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o: src/yars/logging/GnuplotLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp > CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp > CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp -o CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/GnuplotLogger.cpp -o CMakeFiles/YarsLogging.dir/GnuplotLogger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o: src/yars/logging/SelforgLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp > CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp > CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp -o CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/SelforgLogger.cpp -o CMakeFiles/YarsLogging.dir/SelforgLogger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o: src/yars/logging/BlenderLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp > CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp > CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp -o CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/BlenderLogger.cpp -o CMakeFiles/YarsLogging.dir/BlenderLogger.cpp.s
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/flags.make
 src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o: src/yars/logging/ConsoleLogger.cpp
 src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o: src/yars/logging/CMakeFiles/YarsLogging.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o -MF CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o.d -o CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp > CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp > CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.i
 
 src/yars/logging/CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/logging && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp -o CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/logging && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/logging/ConsoleLogger.cpp -o CMakeFiles/YarsLogging.dir/ConsoleLogger.cpp.s
 
 # Object files for target YarsLogging
 YarsLogging_OBJECTS = \

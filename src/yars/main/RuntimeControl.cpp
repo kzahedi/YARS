@@ -7,6 +7,8 @@
 #ifdef _WIN32
 #endif // _WIN32
 
+namespace yars {
+
 RuntimeControl::RuntimeControl()
 {
   _data = Data::instance();
@@ -155,3 +157,5 @@ bool RuntimeControl::shouldQuit()
 {
   return _shouldQuit;
 }
+
+} // namespace yars

@@ -76,15 +76,15 @@ contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cp
 contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o: contrib/controller/NamedPipeController.cpp
 contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o: contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o"
-	cd /Volumes/Eregion/projects/yars/contrib/controller && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o -MF CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o.d -o CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o -c /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp
+	cd /Volumes/Eregion/projects/yars/contrib/controller && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o -MF CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o.d -o CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.o -c /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp
 
 contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.i"
-	cd /Volumes/Eregion/projects/yars/contrib/controller && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp > CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.i
+	cd /Volumes/Eregion/projects/yars/contrib/controller && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp > CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.i
 
 contrib/controller/CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.s"
-	cd /Volumes/Eregion/projects/yars/contrib/controller && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp -o CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.s
+	cd /Volumes/Eregion/projects/yars/contrib/controller && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/controller/NamedPipeController.cpp -o CMakeFiles/YarsControllerNamedPipe.dir/NamedPipeController.cpp.s
 
 # Object files for target YarsControllerNamedPipe
 YarsControllerNamedPipe_OBJECTS = \

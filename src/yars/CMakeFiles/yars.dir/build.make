@@ -76,15 +76,15 @@ src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o: src/yars/CMakeFiles/yars.dir/flags.
 src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o: src/yars/yarsMain.cpp
 src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o: src/yars/CMakeFiles/yars.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o -MF CMakeFiles/yars.dir/yarsMain.cpp.o.d -o CMakeFiles/yars.dir/yarsMain.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/CMakeFiles/yars.dir/yarsMain.cpp.o -MF CMakeFiles/yars.dir/yarsMain.cpp.o.d -o CMakeFiles/yars.dir/yarsMain.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp
 
 src/yars/CMakeFiles/yars.dir/yarsMain.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/yars.dir/yarsMain.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp > CMakeFiles/yars.dir/yarsMain.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp > CMakeFiles/yars.dir/yarsMain.cpp.i
 
 src/yars/CMakeFiles/yars.dir/yarsMain.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/yars.dir/yarsMain.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp -o CMakeFiles/yars.dir/yarsMain.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/yarsMain.cpp -o CMakeFiles/yars.dir/yarsMain.cpp.s
 
 # Object files for target yars
 yars_OBJECTS = \

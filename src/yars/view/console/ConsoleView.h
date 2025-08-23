@@ -10,7 +10,6 @@
 #include <stdarg.h>
 #include <string>
 
-#include <yars/util/Observer.h>
 #include <yars/types/P3D.h>
 #include <yars/types/Colour.h>
 
@@ -42,14 +41,15 @@
 
 
 
-class ConsoleView : public Observer
+class ConsoleView
 {
   public:
 
     static ConsoleView* instance();
     virtual ~ConsoleView() { };
 
-    void notify(ObservableMessage *m);
+    // Direct method to handle reset (replaces Observer pattern)
+    void onReset();
 
     static void printMessage(int type, const char *string, ...);
     static void printMessage(int type, std::string message, ...);

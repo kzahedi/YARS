@@ -76,15 +76,15 @@ src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: src/yars
 src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: src/yars/view/console/ConsoleView.cpp
 src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: src/yars/view/console/CMakeFiles/YarsViewConsole.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o"
-	cd /Volumes/Eregion/projects/yars/src/yars/view/console && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o -MF CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o.d -o CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp
+	cd /Volumes/Eregion/projects/yars/src/yars/view/console && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o -MF CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o.d -o CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o -c /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp
 
 src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.i"
-	cd /Volumes/Eregion/projects/yars/src/yars/view/console && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp > CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.i
+	cd /Volumes/Eregion/projects/yars/src/yars/view/console && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp > CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.i
 
 src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.s"
-	cd /Volumes/Eregion/projects/yars/src/yars/view/console && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp -o CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.s
+	cd /Volumes/Eregion/projects/yars/src/yars/view/console && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.cpp -o CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.s
 
 # Object files for target YarsViewConsole
 YarsViewConsole_OBJECTS = \

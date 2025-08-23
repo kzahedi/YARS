@@ -17,6 +17,8 @@
 
 #include <yars/view/console/ConsoleView.h>
 
+namespace yars {
+
 /** \brief This class does the main control.
  *
  * It connects the observers and
@@ -71,4 +73,7 @@ private:
   YarsPhysicsControl *_ypc;
   YarsPhysicsModel *_ypm;
 };
+
+} // namespace yars
+
 #endif // __YARS_MAIN_CONTROL_H__

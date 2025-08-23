@@ -68,6 +68,8 @@
 //#define __YARS_DATA_GET_CURRENT_ENVIRONMENT(index) Data::instance()->current()->environments()->environment(index)
 //#define __YARS_HAS_ENVIRONMENTS                    (Data::instance()->current()->environments() != NULL)
 
+namespace yars {
+
 /* \brief Catches ObservableMessage and translates them to function calls of
  * YarsConfigurationModel.
  */
@@ -149,4 +151,10 @@ private:
   Data *_data;
   bool _reset;
 };
+
+} // namespace yars
+
+// Temporary global using directive for backward compatibility during namespace transition
+using yars::YarsConfiguration;
+
 #endif // __YARS_CONFIGURATION_CONTROL_H__

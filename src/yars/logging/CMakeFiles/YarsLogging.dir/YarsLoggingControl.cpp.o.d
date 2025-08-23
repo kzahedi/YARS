@@ -910,7 +910,6 @@ src/yars/logging/CMakeFiles/YarsLogging.dir/YarsLoggingControl.cpp.o: \
   /opt/homebrew/include/boost/move/detail/type_traits.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cassert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /opt/homebrew/include/boost/move/iterator.hpp \
   /opt/homebrew/include/boost/move/detail/iterator_traits.hpp \

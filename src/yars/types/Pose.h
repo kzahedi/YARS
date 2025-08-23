@@ -13,6 +13,8 @@
 # define POSE_ANGLE_TYPE_RAD 0
 # define POSE_ANGLE_TYPE_DEG 1
 
+namespace yars {
+
 class Pose
 {
   public:
@@ -23,6 +25,7 @@ class Pose
     Pose();
     Pose(double x, double y, double z, double qx, double qy, double qz, double qw);
     Pose(double x, double y, double z, double rx, double ry, double rz);
+    Pose(const Pose &p);
 
     friend std::ostream& operator<<(std::ostream& str, const Pose& p)
     {
@@ -41,5 +44,10 @@ class Pose
     void operator<<(const Pose &p);
 
 };
+
+} // namespace yars
+
+// Temporary global using directive for backward compatibility during namespace transition
+using namespace yars;
 
 #endif // __POSE_H__

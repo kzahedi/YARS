@@ -1,7 +1,6 @@
 #ifndef __MAIN_LOOP_THREAD__
 #define __MAIN_LOOP_THREAD__
 
-#include <yars/util/Observer.h>
 #include <yars/main/YarsMainControl.h>
 
 #include <thread>
@@ -13,7 +12,7 @@
  * desynchronised GUI updates.
  *
  */
-class MainLoopThread : public Observer
+class MainLoopThread
 {
   public:
     /** \brief Standard constructor.
@@ -31,16 +30,6 @@ class MainLoopThread : public Observer
      *
      */
     void run();
-
-    /** \brief Catches messages from Observables.
-     *
-     * Catches messages from Observables and translates them to signals to the
-     * GUI.
-     *
-     * \param[in] message, ObservableMessage message to be send to the GUI.
-     *
-     */
-    void notify(ObservableMessage *m);
 
 
   private:

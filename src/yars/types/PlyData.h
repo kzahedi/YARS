@@ -4,6 +4,8 @@
 #include "Vertex.h"
 #include "Triangle.h"
 
+namespace yars {
+
 class PlyData
 {
   public:
@@ -17,5 +19,10 @@ class PlyData
 
     void removeDoubles();
 };
+
+} // namespace yars
+
+// Temporary global using directive for backward compatibility during namespace transition
+using namespace yars;
 
 #endif // __PLY_DATA_H__

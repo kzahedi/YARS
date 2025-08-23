@@ -25,6 +25,8 @@
 using std::string;
 using std::ostringstream;
 
+namespace yars {
+
 class Timer
 {
   public:
@@ -66,11 +68,11 @@ class Timer
     {
       stringstream oss;
 #ifndef _MSC_VER
-      char buf[2];
       time_t rawtime;
       struct tm * ptm;
       time ( &rawtime );
       ptm = gmtime ( &rawtime );
+      (void)ptm; // Suppress unused variable warning
 
       auto now = std::chrono::system_clock::now();
       auto time_t = std::chrono::system_clock::to_time_t(now);
@@ -110,6 +112,11 @@ class Timer
       std::chrono::high_resolution_clock::time_point _last;
 
 };
+
+} // namespace yars
+
+// Temporary global using directive for backward compatibility during namespace transition
+using namespace yars;
 
 #endif // __TIMER_H_
 

@@ -74,6 +74,16 @@ class __Domain
       max = p->max;
     };
 
+    /** \brief Copy constructor (by reference).
+     *
+     * Copies the values of the given __Domain<T>
+     **/
+    __Domain<T>(const __Domain<T> &d)
+    {
+      min = d.min;
+      max = d.max;
+    };
+
     /** \brief Returns the width of the domain.
      *
      * \return (max - min)

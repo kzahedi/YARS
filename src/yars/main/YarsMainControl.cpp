@@ -8,6 +8,8 @@
 // #  define PRINT_START_UP_MESSAGE(a) cout << a << endl;
 // #endif
 
+namespace yars {
+
 YarsMainControl::YarsMainControl(int argc, char **argv)
 {
   Random::initialise();
@@ -188,3 +190,5 @@ void YarsMainControl::notify(ObservableMessage *message)
     break;
   }
 }
+
+} // namespace yars

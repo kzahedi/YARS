@@ -1,17 +1,24 @@
 #ifndef __YARS_VIEW_CONTROL_H__
 #define __YARS_VIEW_CONTROL_H__
 
-#include <yars/util/Observer.h>
 #include <yars/view/YarsViewModel.h>
 
-class YarsViewControl : public Observer
+class YarsViewControl
 {
   public:
     YarsViewControl();
     ~YarsViewControl();
 
     void setModel(YarsViewModel *model);
-    void notify(ObservableMessage *message);
+    
+    // Direct methods to replace Observer pattern
+    void onReset();
+    void onResetViewpoint();
+    void onQuit();
+    void onNextStep();
+    void onNewWindow();
+    void onToggleShadows();
+    void onToggleCaptureVideo();
 
   private:
 

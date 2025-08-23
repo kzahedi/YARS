@@ -76,15 +76,15 @@ contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o: contr
 contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o: contrib/braitenbergCom/Braitenberg.cpp
 contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o: contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o"
-	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o -MF CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o.d -o CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o -c /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp
+	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o -MF CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o.d -o CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.o -c /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp
 
 contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.i"
-	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp > CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.i
+	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp > CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.i
 
 contrib/braitenbergCom/CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.s"
-	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp -o CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.s
+	cd /Volumes/Eregion/projects/yars/contrib/braitenbergCom && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Volumes/Eregion/projects/yars/contrib/braitenbergCom/Braitenberg.cpp -o CMakeFiles/braitenberg-tcpip.dir/Braitenberg.cpp.s
 
 # Object files for target braitenberg-tcpip
 braitenberg__tcpip_OBJECTS = \

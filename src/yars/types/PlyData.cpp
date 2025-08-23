@@ -6,6 +6,8 @@
 
 using namespace std;
 
+namespace yars {
+
 PlyData& PlyData::operator=(const PlyData &v)
 {
   vertices  = v.vertices;
@@ -33,13 +35,13 @@ void PlyData::removeDoubles()
   Vertices         new_vertices;
   std::vector<int> new_indices;
   new_indices.resize(vertices.size());
-  for (int i = 0; i < new_indices.size(); i++) new_indices[i] = -1;
+  for (size_t i = 0; i < new_indices.size(); i++) new_indices[i] = -1;
 
-  for(int i = 0; i < vertices.size(); i++)
+  for(size_t i = 0; i < vertices.size(); i++)
   {
     bool found = false;
     int index  = -1;
-    for(int j = 0; j < new_vertices.size(); j++)
+    for(size_t j = 0; j < new_vertices.size(); j++)
     {
       if(vertices[i] == new_vertices[j])
       {
@@ -68,3 +70,5 @@ void PlyData::removeDoubles()
 
   vertices = new_vertices;
 }
+
+} // namespace yars

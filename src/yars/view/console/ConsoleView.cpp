@@ -32,18 +32,9 @@ ConsoleView::ConsoleView()
 }
 
 
-void ConsoleView::notify(ObservableMessage *m)
+void ConsoleView::onReset()
 {
-  Y_DEBUG("ConsoleView: A message \"%s\" was send.",m->string().c_str()); // gets all keyboard messages
-  switch(m->type())
-  {
-    //case __M_NEXT_STEP:
-      // nothing
-      //break;
-    case __M_RESET:
-      Y_DEBUG("Reset called");
-      break;
-  }
+  Y_DEBUG("Reset called");
 }
 
 void ConsoleView::printViewpoint(P3D xyz, P3D hpr)

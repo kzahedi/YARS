@@ -4,12 +4,21 @@
 
 #include <yars/util/macros.h>
 
+namespace yars {
 
 Pose::Pose()
 { }
 
+Pose::Pose(const Pose &p)
+{
+  position = p.position;
+  orientation = p.orientation;
+  q = p.q;
+}
+
 Pose::Pose(double x, double y, double z, double ox, double oy, double oz)
 {
+  (void)ox; (void)oy; (void)oz; // Suppress unused parameter warnings
   position.x    = x;
   position.y    = y;
   position.z    = z;
@@ -84,4 +93,6 @@ void Pose::operator<<(const Pose &p)
   orientation << result;
   q = result;
 }
+
+} // namespace yars
 

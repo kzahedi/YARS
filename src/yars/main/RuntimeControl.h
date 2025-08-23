@@ -6,6 +6,8 @@
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Timer.h>
 
+namespace yars {
+
 /** \brief This class implements the YARS runtime control.
  *
  * This class checks for the maximal number of iterations to be performed, when
@@ -40,4 +42,7 @@ class RuntimeControl
     bool           _shouldQuit;
 
 };
+
+} // namespace yars
+
 #endif // __RUNTIME_CONTROL_H__

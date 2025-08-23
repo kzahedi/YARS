@@ -14,16 +14,10 @@ MainLoopThread::MainLoopThread(int argc, char **argv)
   _argv = argv;
   _lastTime = Timer::getTime();
   _ymc = new YarsMainControl(_argc, _argv);
-  _ymc->addObserver(this);
+  // Observer pattern removed - no longer observing YarsMainControl
 };
 
 void MainLoopThread::run()
 {
   _ymc->run();
 };
-
-void MainLoopThread::notify(ObservableMessage *message)
-{
-  Y_DEBUG("MainLoopThread::notify(\"%s\")", message->string().c_str());
-  if(!__YARS_GET_USE_VISUALISATION) return; // no need to send and wait for signals
-}

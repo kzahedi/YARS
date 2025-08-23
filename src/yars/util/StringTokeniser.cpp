@@ -2,6 +2,8 @@
 
 using namespace std;
 
+namespace yars {
+
 // taken from http://www.digitalpeer.com/id/simple
 std::vector<string> StringTokeniser::tokenise(const string& str, const string& delimiters)
 {
@@ -35,4 +37,6 @@ std::vector<string> StringTokeniser::tokenise(const string& str, const string& d
   }
   return tokens;
 }
+
+} // namespace yars
 

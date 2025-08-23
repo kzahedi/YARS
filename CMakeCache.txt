@@ -184,7 +184,7 @@ CMAKE_OSX_SYSROOT:STRING=
 CMAKE_PROJECT_COMPAT_VERSION:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_DESCRIPTION:STATIC=
+CMAKE_PROJECT_DESCRIPTION:STATIC=YARS - Yet Another Robot Simulator
 
 //Value Computed by CMake
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
@@ -193,16 +193,16 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 CMAKE_PROJECT_NAME:STATIC=yars
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION:STATIC=
+CMAKE_PROJECT_VERSION:STATIC=0.7.28
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MAJOR:STATIC=
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MINOR:STATIC=
+CMAKE_PROJECT_VERSION_MINOR:STATIC=7
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_PATCH:STATIC=
+CMAKE_PROJECT_VERSION_PATCH:STATIC=28
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION_TWEAK:STATIC=
@@ -341,45 +341,6 @@ YARS_USE_SOFT_BODIES:BOOL=OFF
 
 //Use visualisation.
 YARS_USE_VISUALISATION:BOOL=OFF
-
-//Dependencies for the target
-YarsConfiguration_LIB_DEPENDS:STATIC=general;/opt/homebrew/lib/libxerces-c.dylib;general;Boost::program_options;general;YarsUtil;
-
-//Dependencies for the target
-YarsControllerBraitenberg2a_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerBraitenberg2b_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerBraitenberg3a_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerBraitenberg3b_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerConstantValue_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerHexapod_LIB_DEPENDS:STATIC=general;YarsConfiguration;general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerNamedPipe_LIB_DEPENDS:STATIC=general;YarsRobotController;general;YarsConfiguration;general;YarsUtil;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerSquareWave_LIB_DEPENDS:STATIC=general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsControllerTCPIP_LIB_DEPENDS:STATIC=general;YarsUtil;general;YarsConfiguration;general;YarsRobotController;general;Boost::program_options;
-
-//Dependencies for the target
-YarsPhysics_LIB_DEPENDS:STATIC=general;/opt/homebrew/opt/bullet/lib/libBulletDynamics.dylib;general;/opt/homebrew/opt/bullet/lib/libBulletCollision.dylib;general;/opt/homebrew/opt/bullet/lib/libLinearMath.dylib;general;/opt/homebrew/opt/bullet/lib/libBulletSoftBody.dylib;
-
-//Dependencies for the target
-YarsRobotController_LIB_DEPENDS:STATIC=general;YarsUtil;general;Boost::program_options;
-
-//Dependencies for the target
-YarsUtil_LIB_DEPENDS:STATIC=general;Boost::program_options;
 
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=/opt/homebrew/lib/cmake/boost_atomic-1.89.0

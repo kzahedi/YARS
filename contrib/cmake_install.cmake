@@ -38,14 +38,33 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for each subdirectory.
+  # Include the install script for the subdirectory.
   include("/Volumes/Eregion/projects/yars/contrib/braitenbergCom/cmake_install.cmake")
-  include("/Volumes/Eregion/projects/yars/contrib/braitenbergPipe/cmake_install.cmake")
-  include("/Volumes/Eregion/projects/yars/contrib/namedPipeClientCom/cmake_install.cmake")
-  include("/Volumes/Eregion/projects/yars/contrib/cppClientCom/cmake_install.cmake")
-  include("/Volumes/Eregion/projects/yars/contrib/controller/cmake_install.cmake")
-  include("/Volumes/Eregion/projects/yars/contrib/ctrlGui/cmake_install.cmake")
+endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/Volumes/Eregion/projects/yars/contrib/braitenbergPipe/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/Volumes/Eregion/projects/yars/contrib/namedPipeClientCom/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/Volumes/Eregion/projects/yars/contrib/cppClientCom/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/Volumes/Eregion/projects/yars/contrib/controller/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/Volumes/Eregion/projects/yars/contrib/ctrlGui/cmake_install.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
