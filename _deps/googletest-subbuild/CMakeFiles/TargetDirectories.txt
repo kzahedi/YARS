@@ -1,0 +1,3 @@
+/Volumes/Eregion/projects/yars/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
+/Volumes/Eregion/projects/yars/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
+/Volumes/Eregion/projects/yars/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir

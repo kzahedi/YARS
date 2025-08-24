@@ -34,6 +34,13 @@ endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
 
+  # Add codec framework headers for image loading support
+  if(APPLE)
+    set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
+    include_directories(${OGRE_ROOT}/lib/Codec_STBIStatic.framework/Headers)
+    include_directories(${OGRE_ROOT}/lib/Codec_FreeImageStatic.framework/Headers)
+  endif(APPLE)
+
   add_subdirectory(view)
   add_subdirectory(view/gui)
 
@@ -41,7 +48,7 @@ if(YARS_USE_VISUALISATION)
     # Use explicit OGRE library paths for static linking
     set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
     target_link_libraries(${YARS_TARGET}
-      freeimage freetype zzip z
+      /opt/homebrew/lib/libfreetype.dylib
       ${OGRE_ROOT}/lib/libOgreMainStatic.a
       ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
       ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
@@ -50,7 +57,9 @@ if(YARS_USE_VISUALISATION)
       ${OGRE_ROOT}/lib/OGRE/libPlugin_ParticleFXStatic.a
       ${OGRE_ROOT}/lib/OGRE/libPlugin_OctreeSceneManagerStatic.a
       ${OGRE_ROOT}/lib/OGRE/libCodec_STBIStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libCodec_FreeImageStatic.a)
+      ${OGRE_ROOT}/lib/OGRE/libCodec_FreeImageStatic.a
+      /opt/homebrew/lib/libfreeimage.dylib
+      z)
 
      SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
       # "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreMain -framework Cocoa")
@@ -58,12 +67,12 @@ if(YARS_USE_VISUALISATION)
 
   if(UNIX AND NOT APPLE)
     target_link_libraries(${YARS_TARGET}
-      X11 GL z Xt zzip freeimage freetype
+      X11 GL z Xt zzip freetype
   ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
 
     endif(UNIX AND NOT APPLE)
 
-  target_link_libraries(${YARS_TARGET} SDL2)
+  target_link_libraries(${YARS_TARGET} /opt/homebrew/lib/libSDL2.dylib)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)

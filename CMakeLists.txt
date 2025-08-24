@@ -52,10 +52,10 @@ INCLUDE(cmake/CPackConfiguration.cmake)
 INCLUDE(cmake/UninstallConfiguration.cmake)
 INCLUDE(cmake/CreateSymbolicLinks.cmake)
 
-  # Test executables for debugging OGRE issues (if visualization is enabled)
-if(YARS_USE_VISUALISATION)
+  # Test executables for debugging OGRE issues (if visualization is enabled) - DISABLED
+if(FALSE)
   # Step-by-step OGRE test
-  add_executable(test_step_by_step test_step_by_step.cpp)
+  # add_executable(test_step_by_step test_step_by_step.cpp)
   target_link_libraries(test_step_by_step
     YarsConfiguration
     YarsGUI
@@ -109,7 +109,7 @@ if(YARS_USE_VISUALISATION)
     # Use same OGRE linking as main yars executable
     set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
     target_link_libraries(test_step_by_step
-      freeimage freetype zzip z
+      freetype zzip z
       ${OGRE_ROOT}/lib/libOgreMainStatic.a
       ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
       ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
@@ -125,7 +125,7 @@ if(YARS_USE_VISUALISATION)
     SET_TARGET_PROPERTIES(test_step_by_step PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
 
     target_link_libraries(test_minimal_ogre
-      freeimage freetype zzip z
+      freetype zzip z
       ${OGRE_ROOT}/lib/libOgreMainStatic.a
       ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
       ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
@@ -141,7 +141,7 @@ if(YARS_USE_VISUALISATION)
     SET_TARGET_PROPERTIES(test_minimal_ogre PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
 
     target_link_libraries(test_native_window
-      freeimage freetype zzip z
+      freetype zzip z
       ${OGRE_ROOT}/lib/libOgreMainStatic.a
       ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
       ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
@@ -156,4 +156,4 @@ if(YARS_USE_VISUALISATION)
     )
     SET_TARGET_PROPERTIES(test_native_window PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
   endif(APPLE)
-endif(YARS_USE_VISUALISATION)
+endif(FALSE)

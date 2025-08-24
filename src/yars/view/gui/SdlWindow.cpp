@@ -79,8 +79,13 @@ SdlWindow::SdlWindow(int index)
   _ctrlPressed = false;
   _altPressed = false;
   _metaPressed = false;
-  _imgCaptureRunning = false;
+  // Auto-enable image capture if frames directory is specified
+  string framesDir = __YARS_GET_FRAMES_DIRECTORY;
+  _imgCaptureRunning = (framesDir.length() > 0);
   _imgCaptureFrameIndex = 0;
+  if (_imgCaptureRunning) {
+    std::cout << "Auto-enabled frame capture to: " << framesDir << std::endl;
+  }
   _followableIndex = 0;
   _closed = false;
   _fps = 0;
@@ -303,7 +308,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
     case SDL_WINDOWEVENT_CLOSE:
       _closed = true;
       std::cout << "Window close event received" << std::endl;
-      notifyObservers(_m_closeWindow);
+      KeyHandler::notifyObservers(_m_closeWindow);
       break;
     case SDL_WINDOWEVENT_RESIZED:
       std::cout << "Window resized to: " << event.window.data1 << "x" << event.window.data2 << std::endl;
@@ -356,7 +361,7 @@ void SdlWindow::__setupSDL()
                                   _windowConfiguration->geometry.y(),
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
+                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
   }
   else
   {
@@ -365,7 +370,7 @@ void SdlWindow::__setupSDL()
                                   SDL_WINDOWPOS_CENTERED,
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
+                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
   }
 
   if (_sdlWindow == NULL)
@@ -650,7 +655,7 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
     break;
   case YarsKeyFunction::CloseWindow:
     _closed = true;
-    notifyObservers(_m_closeWindow);
+    KeyHandler::notifyObservers(_m_closeWindow);
     break;
     // case YarsKeyFunction::ToggleTraces:
     // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
@@ -727,7 +732,7 @@ void SdlWindow::__toggleFollowing()
 void SdlWindow::__toggleWriteFrames()
 {
   _imgCaptureRunning = !_imgCaptureRunning;
-  notifyObservers(_m_toggleSyncedGui);
+  KeyHandler::notifyObservers(_m_toggleSyncedGui);
   if (_imgCaptureRunning)
     __YARS_OPEN_FRAMES_DIRECTORY;
 }
@@ -736,7 +741,7 @@ void SdlWindow::__toggleWriteFrames()
 void SdlWindow::__toggleCaptureMovie()
 {
   _captureRunning = !_captureRunning;
-  notifyObservers(_m_toggleSyncedGui);
+  KeyHandler::notifyObservers(_m_toggleSyncedGui);
   if (_captureRunning)
   {
     __initMovie();
@@ -846,7 +851,7 @@ void SdlWindow::__captureImageFrame()
   _imgCaptureFrameIndex++;
   stringstream oss;
   oss << __YARS_GET_FRAMES_DIRECTORY << "/frame_" << setfill('0') << setw(8)
-      << _imgCaptureFrameIndex << ".png";
+      << _imgCaptureFrameIndex << ".tga";
   _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   _pRenderTex->update();
   _pRenderTex->writeContentsToFile(oss.str());

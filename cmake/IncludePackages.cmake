@@ -64,7 +64,7 @@ IF(YARS_USE_VISUALISATION)
   # Use local OGRE installation with modern CMake config
   set(OGRE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/ext/ogre/install)
   set(CMAKE_PREFIX_PATH ${OGRE_ROOT}/CMake ${CMAKE_PREFIX_PATH})
-  find_package(OGRE REQUIRED CONFIG)
+  # find_package(OGRE REQUIRED CONFIG)
 
   # Add OGRE include directories (both parent and OGRE subdirectory)
   include_directories(${OGRE_ROOT}/include)

@@ -836,6 +836,4 @@ src/yars/logging/CMakeFiles/YarsLogging.dir/LoggingHandler.cpp.o: \
   /Volumes/Eregion/projects/yars/src/yars/configuration/data/DataLoggingObject.h \
   /Volumes/Eregion/projects/yars/src/yars/util/stl_macros.h \
   /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/Observer.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/ObservableMessage.h \
   /Volumes/Eregion/projects/yars/src/yars/types/Colour.h

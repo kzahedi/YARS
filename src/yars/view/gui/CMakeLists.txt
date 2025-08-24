@@ -1,5 +1,12 @@
 include_directories(/Library/Frameworks/OgreOverlay.framework/Headers)
 
+# Add codec framework headers for image loading support
+if(APPLE)
+  set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
+  include_directories(${OGRE_ROOT}/lib/Codec_STBIStatic.framework/Headers)
+  include_directories(${OGRE_ROOT}/lib/Codec_FreeImageStatic.framework/Headers)
+endif(APPLE)
+
 set(GUI_SOURCES SdlWindow.cpp
                 NativeOgreWindow.cpp
                 SceneGraph.cpp
@@ -21,6 +28,8 @@ set(GUI_SOURCES SdlWindow.cpp
                 TextOverlay.cpp
                 ColoredTextAreaOverlayElement.cpp
                 OgreHandler.cpp
+                MaterialManager.cpp
+                ShaderManager.cpp
                 KeyHandler.cpp
                 FollowCamera.cpp
                 GuiMutex.cpp

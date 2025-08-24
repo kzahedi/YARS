@@ -1,1 +1,1 @@
-/usr/bin/c++ -O3 -DNDEBUG -flto -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o ../../lib/libYarsControllerNIL.dylib -install_name @rpath/libYarsControllerNIL.dylib CMakeFiles/YarsControllerNIL.dir/NIL.cpp.o   -L/usr/local/lib
+/usr/bin/c++ -g -Wall -Wextra -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o ../../lib/libYarsControllerNIL.dylib -install_name @rpath/libYarsControllerNIL.dylib CMakeFiles/YarsControllerNIL.dir/NIL.cpp.o   -L/usr/local/lib

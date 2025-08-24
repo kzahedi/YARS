@@ -1,4 +1,5 @@
 #include "SceneGraphBoxNode.h"
+#include "MaterialManager.h"
 
 #include <OGRE/Ogre.h>
 #include <OgreEdgeListBuilder.h>
@@ -125,16 +126,9 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
 
   for (int i = 0; i < 6; i++)
   {
-    // Fix: Replace problematic YARS materials with safe OGRE built-in materials
+    // Use MaterialManager to resolve material names
     std::string materialName = _data->texture(i);
-    if (materialName.find("YARS/") == 0 || materialName.find("Chain/") == 0)
-    {
-      materialName = "SimpleWhite";
-      if (i == 0)
-      { // Only print once per object to avoid spam
-        std::cout << "Using safe material 'SimpleWhite' for box instead of YARS materials" << std::endl;
-      }
-    }
+    materialName = MaterialManager::instance()->resolveMaterialName(materialName);
     _manual->setMaterialName(i, materialName);
   }
 

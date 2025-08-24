@@ -136,7 +136,7 @@ void YarsViewModel::quit()
 void YarsViewModel::__createWindow()
 {
   SdlWindow *wm = new SdlWindow(_windowManager.size());
-  wm->addObserver(this);
+  // TODO: Observer pattern not implemented - wm->addObserver(this);
   _windowManager.push_back(wm);
 }
 
@@ -146,7 +146,7 @@ void YarsViewModel::createNewWindow()
     return; // Can't create windows without GUI
 
   SdlWindow *wm = new SdlWindow(_windowManager.size() + _newWindows.size());
-  wm->addObserver(this);
+  // TODO: Observer pattern not implemented - wm->addObserver(this);
 #ifdef USE_CAPTURE_VIDEO
   if (wm->captureRunning())
   {

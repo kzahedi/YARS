@@ -28,11 +28,11 @@ int mainFunction(int argc, char **argv)
     auto yvc = std::make_unique<YarsViewControl>();
     auto yvm = std::make_unique<YarsViewModel>();
     yvc->setModel(yvm.get());
-    yvm->addObserver(ymc.get());
+    // TODO: Observer pattern not fully implemented - yvm->addObserver(ymc.get());
 #ifndef SUPPRESS_ALL_OUTPUT
-    yvm->addObserver(cv);
+    // TODO: Observer pattern not fully implemented - yvm->addObserver(cv);
 #endif // SUPPRESS_ALL_OUTPUT
-    ymc->addObserver(yvc.get());
+    // TODO: Observer pattern not fully implemented - ymc->addObserver(yvc.get());
 
     std::thread pThread(
         &YarsMainControl::run, // pointer to member function to execute in thread

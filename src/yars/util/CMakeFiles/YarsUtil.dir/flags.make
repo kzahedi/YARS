@@ -6,7 +6,7 @@ CXX_DEFINES = -DBOOST_PROGRAM_OPTIONS_NO_LIB -DYARS_INSTALL_PATH="'\"/usr/local\
 
 CXX_INCLUDES = -I/Volumes/Eregion/projects/yars/include -I/Volumes/Eregion/projects/yars/src -I/Library/Frameworks/Ogre.framework/Versions/1.11.3/Headers -I/Library/Frameworks/OgreOverlay.framework/Versions/1.11.3/Headers -I/Library/Frameworks/RenderSystem_GL.framework/Versions/1.11.3/Headers -I/Library/Frameworks/Plugin_ParticleFX.framework/Versions/1.11.3/Headers -isystem /opt/homebrew/include
 
-CXX_FLAGSarm64 = -O3 -DNDEBUG -flto -std=c++17 -arch arm64 -fPIC
+CXX_FLAGSarm64 = -g -Wall -Wextra -std=c++17 -arch arm64 -fPIC
 
-CXX_FLAGS = -O3 -DNDEBUG -flto -std=c++17 -arch arm64 -fPIC
+CXX_FLAGS = -g -Wall -Wextra -std=c++17 -arch arm64 -fPIC
 

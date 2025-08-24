@@ -1,4 +1,5 @@
 #include "SceneGraphEnvironmentNode.h"
+#include "MaterialManager.h"
 
 #include <yars/view/gui/SceneGraphObjectFactory.h>
 #include <yars/view/gui/SceneGraphLightSourceNode.h>
@@ -24,14 +25,10 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     _node->attachObject(_entity);
     _entity->setCastShadows(false);
 
-    // Fix: Use safe material for ground instead of problematic YARS materials
+    // Use MaterialManager to resolve material names properly
     std::string materialName = data->texture();
-    if (materialName.empty() || materialName.find("YARS/") == 0 || materialName.find("Chain/") == 0)
-    {
-      // Use custom flat white RTSS-friendly material
-      materialName = "GroundLit";
-      std::cout << "Using fallback material 'GroundLit' for ground instead of: '" << data->texture() << "'" << std::endl;
-    }
+    materialName = MaterialManager::instance()->resolveMaterialName(materialName);
+    std::cout << "Ground using material: '" << materialName << "' (original: '" << data->texture() << "')" << std::endl;
 
     Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(materialName);
     if (m.isNull())

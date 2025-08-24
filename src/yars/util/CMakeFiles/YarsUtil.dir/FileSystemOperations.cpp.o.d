@@ -815,8 +815,6 @@ src/yars/util/CMakeFiles/YarsUtil.dir/FileSystemOperations.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
   /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/Observer.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/ObservableMessage.h \
   /Volumes/Eregion/projects/yars/src/yars/types/P3D.h \
   /Volumes/Eregion/projects/yars/src/yars/defines/types.h \
   /Volumes/Eregion/projects/yars/src/yars/types/Colour.h \

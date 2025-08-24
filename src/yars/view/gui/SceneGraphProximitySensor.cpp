@@ -1,4 +1,5 @@
 #include "SceneGraphProximitySensor.h"
+#include "MaterialManager.h"
 
 #include <yars/types/Colour.h>
 
@@ -34,9 +35,10 @@ SceneGraphProximitySensor::SceneGraphProximitySensor(DataGenericProximitySensor 
   __cap();
   __body();
 
-  _manual->setMaterialName(0, "YARS/ProximitySensor");
-  _manual->setMaterialName(1, "YARS/ProximitySensor");
-  _manual->setMaterialName(2, "YARS/ProximitySensor");
+  std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/ProximitySensor");
+  _manual->setMaterialName(0, materialName);
+  _manual->setMaterialName(1, materialName);
+  _manual->setMaterialName(2, materialName);
 
   _node->attachObject(_manual);
 }

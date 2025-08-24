@@ -640,8 +640,6 @@ src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pstl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sample.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/bit \
-  /Volumes/Eregion/projects/yars/src/yars/util/Observer.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/ObservableMessage.h \
   /Volumes/Eregion/projects/yars/src/yars/types/P3D.h \
   /Volumes/Eregion/projects/yars/src/yars/defines/types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/ostream \
@@ -821,6 +819,8 @@ src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: \
   /Volumes/Eregion/projects/yars/src/yars/util/OSD.h \
   /Volumes/Eregion/projects/yars/src/yars/configuration/YarsConfiguration.h \
   /Volumes/Eregion/projects/yars/src/yars/util/Observable.h \
+  /Volumes/Eregion/projects/yars/src/yars/util/Observer.h \
+  /Volumes/Eregion/projects/yars/src/yars/util/ObservableMessage.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/list \
   /Volumes/Eregion/projects/yars/src/yars/configuration/container/ConfigurationContainer.h \
   /Volumes/Eregion/projects/yars/src/yars/configuration/container/KeyboardShortcuts.h \
@@ -1002,6 +1002,7 @@ src/yars/view/console/CMakeFiles/YarsViewConsole.dir/ConsoleView.cpp.o: \
   /opt/homebrew/include/boost/move/detail/type_traits.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cassert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /opt/homebrew/include/boost/move/iterator.hpp \
   /opt/homebrew/include/boost/move/detail/iterator_traits.hpp \

@@ -1,4 +1,5 @@
 #include "SceneGraphSphereNode.h"
+#include "MaterialManager.h"
 
 #include <yars/defines/defaults.h>
 
@@ -35,15 +36,9 @@ SceneGraphSphereNode::SceneGraphSphereNode(
   __topCap();
   __bottomCap();
 
-  // Fix: Replace problematic YARS materials with safe OGRE built-in materials
+  // Use MaterialManager to resolve material names
   std::string materialName = _data->texture();
-  if (materialName.find("YARS/") == 0 || materialName.find("Chain/") == 0)
-  {
-    // Use custom flat white RTSS-friendly material
-    materialName = "SimpleLit";
-
-    std::cout << "Using fallback material 'SimpleLit' for sphere instead of: '" << _data->texture() << "'" << std::endl;
-  }
+  materialName = MaterialManager::instance()->resolveMaterialName(materialName);
 
   for (unsigned int i = 0; i < _manual->getNumSections(); i++)
     _manual->setMaterialName(i, materialName);

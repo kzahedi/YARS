@@ -1,0 +1,3 @@
+added wheel left hinge is active: 1
+added wheel right hinge is active: 1
+running 000000000001 iterations: 010ms | 0.00 x RTrunning 000000021595 iterations: 03m35s950ms | 431.02 x RTrunning 000000043576 iterations: 07m15s760ms | 438.74 x RTMaximum number of physics iterations (50000) reached.

@@ -254,3 +254,7 @@ ldd ./bin/yars | grep boost
 ```
 
 This knowledge base captures the current state and provides the foundation for continued modernization efforts.
+- NEVER SAY THAT YOU ARE SUCCESSFUL IF YARS DOES NOT COMPILE OR RUN WITHOUT ERROR
+- DONT START EVERY REPLY WITH "You are absolutle right" I HATE THAT
+- use the image export of yars to check if the simulation is rendering the textures correctly
+- make sure to set a timeout when you call yars, in case it does not end

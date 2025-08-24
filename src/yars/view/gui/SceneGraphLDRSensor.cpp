@@ -1,4 +1,5 @@
 #include "SceneGraphLDRSensor.h"
+#include "MaterialManager.h"
 
 #include <yars/types/Colour.h>
 
@@ -41,8 +42,9 @@ SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor
   __cap();
   __body();
 
-  _manual->setMaterialName(0, "YARS/LDRSensor");
-  _manual->setMaterialName(1, "YARS/LDRSensor");
+  std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/LDRSensor");
+  _manual->setMaterialName(0, materialName);
+  _manual->setMaterialName(1, materialName);
 
   _node->attachObject(_manual);
 }

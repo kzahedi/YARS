@@ -864,6 +864,7 @@ src/yars/configuration/CMakeFiles/YarsConfiguration.dir/ProgramOptions.cpp.o: \
   /opt/homebrew/include/boost/core/enable_if.hpp \
   /opt/homebrew/include/boost/assert.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /opt/homebrew/include/boost/core/no_exceptions_support.hpp \
   /opt/homebrew/include/boost/mem_fn.hpp \
@@ -959,8 +960,6 @@ src/yars/configuration/CMakeFiles/YarsConfiguration.dir/ProgramOptions.cpp.o: \
   /opt/homebrew/include/boost/program_options/variables_map.hpp \
   /opt/homebrew/include/boost/program_options/version.hpp \
   /Volumes/Eregion/projects/yars/src/yars/view/console/ConsoleView.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/Observer.h \
-  /Volumes/Eregion/projects/yars/src/yars/util/ObservableMessage.h \
   /Volumes/Eregion/projects/yars/src/yars/defines/program_options.h \
   /Volumes/Eregion/projects/yars/src/yars/defines/keyboard_shortcuts.h \
   /Volumes/Eregion/projects/yars/src/yars/configuration/data/XmlChangeLog.h \

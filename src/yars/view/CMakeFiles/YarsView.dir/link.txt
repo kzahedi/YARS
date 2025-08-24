@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libYarsView.a CMakeFiles/YarsView.dir/YarsViewModel.cpp.o CMakeFiles/YarsView.dir/YarsViewControl.cpp.o
+/usr/bin/ranlib ../../../lib/libYarsView.a

@@ -12,6 +12,7 @@
 
 set(CPACK_BUILD_SOURCE_DIRS "/Volumes/Eregion/projects/yars;/Volumes/Eregion/projects/yars")
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
+set(CPACK_COMPONENTS_ALL "Unspecified;gmock;gtest")
 set(CPACK_COMPONENT_UNSPECIFIED_HIDDEN "TRUE")
 set(CPACK_COMPONENT_UNSPECIFIED_REQUIRED "TRUE")
 set(CPACK_DEFAULT_PACKAGE_DESCRIPTION_FILE "/opt/homebrew/share/cmake/Templates/CPack.GenericDescription.txt")

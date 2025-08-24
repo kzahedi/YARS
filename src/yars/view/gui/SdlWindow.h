@@ -8,6 +8,7 @@
 #include <yars/view/gui/TextOverlay.h>
 #include <yars/view/gui/OgreHandler.h>
 #include <yars/view/gui/GuiMutex.h>
+#include <yars/util/Observable.h>
 
 #include <OGRE/Ogre.h>
 #include <SDL2/SDL.h>
@@ -20,7 +21,7 @@
 
 namespace yars {
 
-class SdlWindow
+class SdlWindow : public Observable
 {
 public:
     SdlWindow(int index);

@@ -106,10 +106,10 @@ bin/yars: lib/libYarsViewConsole.a
 bin/yars: lib/libYarsDataTypes.a
 bin/yars: /opt/homebrew/lib/libxerces-c.dylib
 bin/yars: /opt/homebrew/lib/libboost_program_options.a
-bin/yars: /opt/homebrew/opt/bullet/lib/libBulletDynamics.dylib
-bin/yars: /opt/homebrew/opt/bullet/lib/libBulletCollision.dylib
-bin/yars: /opt/homebrew/opt/bullet/lib/libLinearMath.dylib
-bin/yars: /opt/homebrew/opt/bullet/lib/libBulletSoftBody.dylib
+bin/yars: /opt/homebrew/lib/libBulletDynamics.dylib
+bin/yars: /opt/homebrew/lib/libBulletCollision.dylib
+bin/yars: /opt/homebrew/lib/libLinearMath.dylib
+bin/yars: /opt/homebrew/lib/libBulletSoftBody.dylib
 bin/yars: src/yars/CMakeFiles/yars.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Volumes/Eregion/projects/yars/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/yars"
 	cd /Volumes/Eregion/projects/yars/src/yars && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/yars.dir/link.txt --verbose=$(VERBOSE)
