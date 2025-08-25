@@ -5,7 +5,7 @@
   </simulator>
 
   <screens>
-    <screen name="Braiternberg 6 inputs" show="true" follow="false">
+    <screen name="Braiternberg 6 inputs" show="true" follow="false" capture="true">
       <size   width="800" height="800"/>
       <camera>
         <position x="0.00" y="0.00" z="10"/>

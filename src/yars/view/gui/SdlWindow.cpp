@@ -850,15 +850,23 @@ void SdlWindow::__captureImageFrame()
   ConsoleView::printCapturingInformation(_imgCaptureFrameIndex);
   _imgCaptureFrameIndex++;
   stringstream oss;
-  oss << __YARS_GET_FRAMES_DIRECTORY << "/frame_" << setfill('0') << setw(8)
-      << _imgCaptureFrameIndex << ".tga";
+  string framesDir = __YARS_GET_FRAMES_DIRECTORY;
+  oss << framesDir << "/frame_" << setfill('0') << setw(8)
+      << _imgCaptureFrameIndex << ".png";
+  std::cout << "FRAME CAPTURE: Attempting to write to: " << oss.str() << std::endl;
   _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   _pRenderTex->update();
-  _pRenderTex->writeContentsToFile(oss.str());
+  try {
+    _pRenderTex->writeContentsToFile(oss.str());
+    std::cout << "FRAME CAPTURE: Successfully wrote frame " << _imgCaptureFrameIndex << std::endl;
+  } catch (const std::exception& e) {
+    std::cout << "FRAME CAPTURE ERROR: " << e.what() << std::endl;
+  }
 }
 
 void SdlWindow::captureVideo()
 {
+  std::cout << "DEBUG: captureVideo() called, _imgCaptureRunning=" << _imgCaptureRunning << std::endl;
 #ifdef USE_CAPTURE_VIDEO
   if (_captureRunning)
     __captureMovieFrame();
@@ -873,6 +881,11 @@ bool SdlWindow::captureRunning()
   return _captureRunning;
 }
 #endif // USE_CAPTURE_VIDEO
+
+bool SdlWindow::imgCaptureRunning()
+{
+  return _imgCaptureRunning;
+}
 
 void SdlWindow::__osd()
 {

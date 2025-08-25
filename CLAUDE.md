@@ -258,3 +258,4 @@ This knowledge base captures the current state and provides the foundation for c
 - DONT START EVERY REPLY WITH "You are absolutle right" I HATE THAT
 - use the image export of yars to check if the simulation is rendering the textures correctly
 - make sure to set a timeout when you call yars, in case it does not end
+- ALWAYS COMPILE AND RUN yard  IN THE SUBDIRECTORY ./build
