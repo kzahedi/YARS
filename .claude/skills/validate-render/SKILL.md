@@ -26,22 +26,48 @@ Automatically invoked when:
 # Navigate to build directory
 cd build
 
-# Run YARS with frame capture (adjust XML config as needed for export)
+# Create frames directory for output
+mkdir -p frames
+
+# Run YARS with frame capture
+# NOTE: Frame export requires setting frames directory in XML config
+# or via __YARS_GET_FRAMES_DIRECTORY macro
+# Frame capture auto-enables if directory is set (see SdlWindow.cpp:82-88)
 timeout 60s ./bin/yars --xml ../xml/braitenberg.xml --iterations 10
 
-# Compare exported frame with reference
-# (Exact comparison command depends on image export location and format)
+# Expected output: frames/frame_00000001.png through frame_00000010.png
+
+# Compare first frame with reference using ImageMagick
+compare -metric RMSE frames/frame_00000001.png ../screenshot.png diff.png
+
+# Or use visual diff
+# open frames/frame_00000001.png
+# open ../screenshot.png
 ```
 
 ## Success Criteria
 
-- ✅ YARS renders without OpenGL errors
-- ✅ Frame is successfully exported as PNG
-- ✅ Exported image matches reference screenshot (or differences are expected)
+- ✅ YARS builds and runs without errors
+- ✅ Frames are successfully exported to frames/ directory
+- ✅ Exported images are valid PNG files
+- ✅ Visual comparison shows matching rendering (textures, geometry, lighting)
+- ✅ Pixel difference within acceptable threshold
 
-## Notes
+## Configuration Notes
 
-- Always set timeout when running YARS to prevent hanging
-- Use YARS image export functionality (frame capture feature)
-- Visual comparison may need tolerance for minor rendering differences
-- Reference screenshot.png should be in project root or specified location
+**Frame Export Setup** (from SdlWindow.cpp):
+- Auto-enables when `__YARS_GET_FRAMES_DIRECTORY` is set
+- Exports to: `{framesDir}/frame_{index:08d}.png`
+- Uses Ogre3D's `RenderTexture::writeContentsToFile()`
+
+**To Enable Frame Export:**
+1. Check XML config for frames directory setting
+2. OR modify configuration to set frames output directory
+3. Frames will be captured automatically each step
+
+## Known Limitations
+
+- Need to determine exact XML config or command-line option for frames directory
+- Reference screenshot.png may be from specific simulation state
+- May need to match exact camera position/orientation
+- Lighting and shadow settings affect visual comparison
