@@ -55,12 +55,10 @@ DataScreen* DataScreens::screen(int index)
 
 DataScreen* DataScreens::screen(string name)
 {
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
+  for(auto i = begin(); i != end(); i++)
   {
     if((*i)->name() == name)
-    {
-      return (*i);
-    }
+      return *i;
   }
   return nullptr;
 }
@@ -156,10 +154,8 @@ string DataScreens::sky()
 DataScreens* DataScreens::copy()
 {
   DataScreens *copy = new DataScreens(nullptr);
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
-  {
+  for(auto i = begin(); i != end(); i++)
     copy->push_back((*i)->copy());
-  }
   copy->_cameraConfig        = _cameraConfig->copy();
   copy->_sky                 = _sky;
   copy->_jointsAxisDimension = _jointsAxisDimension;
@@ -211,9 +207,7 @@ DataRecording* DataScreens::recording()
 bool DataScreens::hasVisible()
 {
   bool r = false;
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
-  {
+  for(auto i = begin(); i != end(); i++)
     r |= (*i)->autoShow();
-  }
   return r;
 }

@@ -24,7 +24,7 @@ void Composite::init()
   double mass = 0;
   btScalar *masses = new btScalar[_data->g_size()];
   int index = 0;
-  for (DataObjects::iterator oo = _data->g_begin(); oo != _data->g_end(); oo++)
+  for (auto oo = _data->g_begin(); oo != _data->g_end(); oo++)
   {
     btCollisionShape *child = nullptr;
     mass += (*oo)->physics()->mass();
@@ -125,10 +125,8 @@ void Composite::init()
   _rigidBody->setActivationState(DISABLE_DEACTIVATION);
   _rigidBody->setCollisionFlags(_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-  for (std::vector<Object *>::iterator o = begin(); o != end(); o++)
-  {
-    (*o)->setRigidBody(_rigidBody);
-  }
+  for (auto* obj : *this)
+    obj->setRigidBody(_rigidBody);
 }
 
 void Composite::setInitialTransform(btTransform transform)

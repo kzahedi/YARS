@@ -133,19 +133,16 @@ void YarsViewModel::notify(ObservableMessage *m)
 void YarsViewModel::cleanupWindows()
 {
   vector<SdlWindow *> toBeDeleted;
-  for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); i++)
+  for (auto i = _windowManager.begin(); i != _windowManager.end(); i++)
   {
     if ((*i)->closed())
-    {
       toBeDeleted.push_back(*i);
-    }
   }
 
-  for (std::vector<SdlWindow *>::iterator i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
+  for (auto i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
   {
     (*i)->close();
     _windowManager.erase(i);
-    // _newWindows.erase(i);
   }
 }
 
@@ -173,7 +170,7 @@ void YarsViewModel::run()
       visualiseScene();
     }
 
-    for (std::vector<SdlWindow *>::iterator i = _newWindows.begin(); i != _newWindows.end(); i++)
+    for (auto i = _newWindows.begin(); i != _newWindows.end(); i++)
     {
       if ((*i)->added() == false)
       {

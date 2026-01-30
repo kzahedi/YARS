@@ -83,14 +83,10 @@ DataTraces* DataTraces::copy()
 {
   DataTraces *copy = new DataTraces(nullptr);
   copy->_name = _name;
-  for(std::vector<DataTraceLine*>::iterator i = _lines.begin(); i != _lines.end(); i++)
-  {
+  for(auto i = _lines.begin(); i != _lines.end(); i++)
     copy->_lines.push_back((*i)->copy());
-  }
-  for(std::vector<DataTracePoint*>::iterator i = _points.begin(); i != _points.end(); i++)
-  {
+  for(auto i = _points.begin(); i != _points.end(); i++)
     copy->_points.push_back((*i)->copy());
-  }
   return copy;
 }
 
