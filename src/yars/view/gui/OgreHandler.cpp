@@ -3,6 +3,7 @@
 #include <yars/util/Directories.h>
 
 #include <OGRE/Overlay/OgreOverlaySystem.h>
+#include <OGRE/Overlay/OgreFontManager.h>
 
 // RTSS Material Listener: generates shaders for materials without them
 class RTSSMaterialListener : public Ogre::MaterialManager::Listener
@@ -218,6 +219,30 @@ void OgreHandler::setupSceneManager()
           *mat,
           Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
           Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    }
+
+    // Load fonts explicitly and generate RTSS shaders for font materials
+    auto& fontMgr = Ogre::FontManager::getSingleton();
+    auto fontIt = fontMgr.getResourceIterator();
+    while (fontIt.hasMoreElements())
+    {
+      Ogre::ResourcePtr fontRes = fontIt.getNext();
+      Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
+      if (!font->isLoaded())
+        font->load();
+
+      // Get font material and generate RTSS shader
+      Ogre::MaterialPtr fontMat = font->getMaterial();
+      if (fontMat && fontMat->getTechnique(0))
+      {
+        if (!fontMat->getTechnique(0)->getPass(0)->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+        {
+          _shaderGenerator->createShaderBasedTechnique(
+              *fontMat,
+              Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+              Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+        }
+      }
     }
   }
 
