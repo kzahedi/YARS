@@ -105,10 +105,11 @@ void YarsConfiguration::init(int argc, char **argv)
     __printKeyboardShortcuts();
   }
 
-  if (false && Y_GET_DEBUG_LEVEL != YARS_FATAL) // TODO
-  {
-    __processRobotConfiguration();
-  }
+  // Robot configuration processing disabled (not yet implemented)
+  // if (Y_GET_DEBUG_LEVEL != YARS_FATAL)
+  // {
+  //   __processRobotConfiguration();
+  // }
 }
 
 void YarsConfiguration::__printVideoCodecs()
@@ -213,7 +214,7 @@ void YarsConfiguration::__readXmlFiles()
   string xml = getXml();
 
   YarsXSDSaxParser *parser = new YarsXSDSaxParser();
-  // TODO parser should add new xml files to current data-structure (might already be the case?)
+  // Note: Parser adds parsed content to Data::instance() data structure
   parser->read(xml);
   if (parser->errors() > 0)
   {
@@ -237,7 +238,7 @@ void YarsConfiguration::__readXmlFiles()
 
 void YarsConfiguration::__setCurrent(int index)
 {
-  // TODO: randomisation triggered here
+  // Initializes data with index, triggering any randomization in the configuration
   Data::instance()->initialise(index);
 }
 
@@ -263,9 +264,6 @@ void YarsConfiguration::__validateDirectoriesAndNames()
   __generateLoggingPath();
   __generateVideoPath();
   __generateFramesPath();
-
-  // TODO TODO
-  //setCurrentScenario(0);
 }
 
 void YarsConfiguration::__validateCaptureName()
@@ -372,19 +370,7 @@ void YarsConfiguration::__printConfiguration()
   std::vector<string> controllers;
   string simName;
   P3D cameraPosition;
-  P3D cameraRotation;
   ScreenGeometry d;
-  Colour c;
-  Colour ground;
-  Colour sky;
-  // TODO TODO
-  // __YARS_GET_WINDOW_SIZE(&d);
-  // __YARS_GET_GLOBAL_XML(&xml);
-  // __YARS_GET_SIMULATION_NAME(&simName);
-  // __YARS_GET_CAMERA_POSITION(&cameraPosition);
-  // __YARS_GET_CAMERA_ROTATION(&cameraRotation);
-  // __YARS_GET_GROUND_COLOR(&ground);
-  // __YARS_GET_SKY_COLOR(&sky);
   getControllerLocations(&controllers);
 
   uint width = d.width();
@@ -426,19 +412,7 @@ void YarsConfiguration::__printConfiguration()
       cout << "                                : " << controllers[i] << endl;
     }
   }
-  cout << "  Scenario settings             : " << endl;
-  // TODO TODO
-  // for(int i = 0; i < numberOfScenarios(); i++)
-  // {
-  //   setCurrentScenario(i);
-  //   string name;
-  //   getCurrentScenarioName(&name);
-  //   int simulatorFrequency = __YARS_GET_SIMULATOR_FREQUENCY;
-  //   int controllerFrequency = __YARS_GET_CONTROLLER_FREQUENCY;
-  //   cout << "                           Name : " << name << endl;
-  //   cout << "            Simulator Frequency :  " << simulatorFrequency << endl;
-  //   cout << "           Controller Frequency :  " << controllerFrequency << endl;
-  // }
+  cout << "  Scenario settings             : (not displayed)" << endl;
 }
 
 void YarsConfiguration::__printKeyboardShortcuts()
