@@ -254,13 +254,10 @@ void DataRobotSimulationDescription::__applySimulatorFrequencyToControllers()
   _controllers->clear();
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin();
-        m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
       if((*m)->controller() != nullptr)
-      {
         (*m)->controller()->applySimulatorFrequency(_simulator->simulatorFrequency());
-      }
     }
   }
 }
@@ -272,37 +269,24 @@ void DataRobotSimulationDescription::__checkUniqness()
 
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
       allNames.push_back((*m)->name());
       // objects
-      for(DataObjects::iterator g = (*m)->g_begin(); g != (*m)->g_end(); g++)
-      {
+      for(auto g = (*m)->g_begin(); g != (*m)->g_end(); g++)
         allNames.push_back((*g)->name());
-      }
       // sensors
-      for(std::vector<DataSensor*>::iterator s = (*m)->s_begin(); s != (*m)->s_end(); s++)
-      {
+      for(auto s = (*m)->s_begin(); s != (*m)->s_end(); s++)
         allNames.push_back((*s)->name());
-      }
       // actuators
-      for(std::vector<DataActuator*>::iterator a = (*m)->a_begin(); a != (*m)->a_end(); a++)
-      {
+      for(auto a = (*m)->a_begin(); a != (*m)->a_end(); a++)
         allNames.push_back((*a)->name());
-      }
     }
   }
   if(_environment != nullptr)
   {
-    // for(std::vector<DataEnvironment*>::iterator e = _environments->begin(); e != _environments->end(); e++)
-    // {
-    //   allNames.push_back((*e)->name());
-      // objects
-      for(DataObjects::iterator o = _environment->g_begin(); o != _environment->g_end(); o++)
-      {
-        allNames.push_back((*o)->name());
-      }
-    // }
+    for(auto o = _environment->g_begin(); o != _environment->g_end(); o++)
+      allNames.push_back((*o)->name());
   }
 
   if(allNames.size() > 0)
@@ -326,10 +310,8 @@ void DataRobotSimulationDescription::__checkUniqness()
     if(duplicates.size() > 0)
     {
       cout << "Duplicate names found:" << endl;
-      for(std::vector<string>::iterator s = duplicates.begin(); s != duplicates.end(); s++)
-      {
-        cout << "  \"" << *s << "\"" << endl;
-      }
+      for(auto& s : duplicates)
+        cout << "  \"" << s << "\"" << endl;
       cout << "Quitting yars." << endl;
       exit(-1);
     }
@@ -421,14 +403,12 @@ void DataRobotSimulationDescription::__updateFollowables()
   DataFollowables *followables = _screens->followables();
   if(followables         == nullptr) return;
   if(followables->size() == 0)    return;
-  for(std::vector<string>::iterator i = followables->begin(); i != followables->end(); i++)
+  for(auto i = followables->begin(); i != followables->end(); i++)
   {
-    for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+    for(auto o = _geoms->begin(); o != _geoms->end(); o++)
     {
       if(*i == (*o)->name())
-      {
         followables->add(*o);
-      }
     }
   }
 }
@@ -437,10 +417,10 @@ void DataRobotSimulationDescription::__updateTraces()
 {
   if(_traces == nullptr) return;
   if(_traces->l_size() != 0)
-    for(std::vector<DataTraceLine*>::iterator l = _traces->l_begin(); l != _traces->l_end(); l++)
+    for(auto l = _traces->l_begin(); l != _traces->l_end(); l++)
     {
       bool found = false;
-      for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+      for(auto o = _geoms->begin(); o != _geoms->end(); o++)
       {
         if((*l)->target() == (*o)->name())
         {
@@ -457,8 +437,8 @@ void DataRobotSimulationDescription::__updateTraces()
     }
 
   if(_traces->p_size() != 0)
-    for(std::vector<DataTracePoint*>::iterator p = _traces->p_begin(); p != _traces->p_end(); p++)
-      for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+    for(auto p = _traces->p_begin(); p != _traces->p_end(); p++)
+      for(auto o = _geoms->begin(); o != _geoms->end(); o++)
         if((*p)->target() == (*o)->name())
           (*p)->setTarget(*o);
 }
@@ -468,23 +448,16 @@ void DataRobotSimulationDescription::__updateGeomsContainer()
   _geoms->clear();
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataObjects::iterator g = (*m)->g_begin(); g != (*m)->g_end(); g++)
-      {
+      for(auto g = (*m)->g_begin(); g != (*m)->g_end(); g++)
         _geoms->add(*g);
-      }
     }
   }
   if(_environment != nullptr)
   {
-    // for(std::vector<DataEnvironment*>::iterator e = _environments->begin(); e != _environments->end(); e++)
-    // {
-    for(DataObjects::iterator o = _environment->g_begin(); o != _environment->g_end(); o++)
-    {
+    for(auto o = _environment->g_begin(); o != _environment->g_end(); o++)
       _geoms->add(*o);
-    }
-    // }
   }
 }
 
@@ -493,12 +466,10 @@ void DataRobotSimulationDescription::__updateSensorsContainer()
   _sensors->clear();
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataSensors::iterator s = (*m)->s_begin(); s != (*m)->s_end(); s++)
-      {
+      for(auto s = (*m)->s_begin(); s != (*m)->s_end(); s++)
         _sensors->add(*s);
-      }
     }
   }
 }
@@ -508,12 +479,10 @@ void DataRobotSimulationDescription::__updateActuatorsContainer()
   _actuators->clear();
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataActuators::iterator a = (*m)->a_begin(); a != (*m)->a_end(); a++)
-      {
+      for(auto a = (*m)->a_begin(); a != (*m)->a_end(); a++)
         _actuators->add(*a);
-      }
     }
   }
 }
@@ -523,10 +492,8 @@ void DataRobotSimulationDescription::__updateControllersContainer()
   _controllers->clear();
   if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
-    {
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
       _controllers->add((*m)->controller());
-    }
   }
 }
 
@@ -563,7 +530,7 @@ void DataRobotSimulationDescription::__convertForces()
   DataHingeActuator *ha   = nullptr;
   DataSliderActuator *sa  = nullptr;
   DataGenericActuator *ga = nullptr;
-  for(DataActuators::iterator i = _actuators->begin(); i != _actuators->end(); i++)
+  for(auto i = _actuators->begin(); i != _actuators->end(); i++)
   {
     switch((*i)->type())
     {
