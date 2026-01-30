@@ -55,7 +55,7 @@ class DataScreens : public std::vector<DataScreen*>, public DataNode
     /**
      * @brief Returns the screen definition given by name.
      *
-     * Returns NULL if no screen definition with the given name is found.
+     * Returns nullptr if no screen definition with the given name is found.
      *
      * @param name
      *

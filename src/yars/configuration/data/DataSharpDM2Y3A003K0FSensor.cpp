@@ -61,7 +61,7 @@ void DataSharpDM2Y3A003K0FSensor::createXsd(XsdSpecification *spec)
 
 DataSharpDM2Y3A003K0FSensor* DataSharpDM2Y3A003K0FSensor::_copy()
 {
-  DataSharpDM2Y3A003K0FSensor *copy = new DataSharpDM2Y3A003K0FSensor(NULL);
+  DataSharpDM2Y3A003K0FSensor *copy = new DataSharpDM2Y3A003K0FSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_pose = _pose;

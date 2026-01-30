@@ -12,12 +12,12 @@ class GenericSpringActuator : public Actuator
     GenericSpringActuator(DataGenericActuator *data, Robot *robot);
     ~GenericSpringActuator();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
-    btTypedConstraint* constraint();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
+    btTypedConstraint* constraint() override;
 
-    DataGenericActuator* data();
+    DataGenericActuator* data() override;
 
   private:
     void __prePhysicsRot(     int axisIndex, int index, AxisParameter p);

@@ -14,8 +14,8 @@ class OrientationSensor : public Sensor
     OrientationSensor(DataGenericOrientationSensor *data, Robot *robot);
     ~OrientationSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericOrientationSensor *_data;

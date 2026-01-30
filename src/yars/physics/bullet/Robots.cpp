@@ -8,7 +8,7 @@ Robots::Robots()
   _reset = false;
   _quit  = false;
   DataRobots *robots = __YARS_GET_ROBOTS;
-  if(robots == NULL) return;
+  if(robots == nullptr) return;
 
   FOREACH(DataRobot*, i, (*robots)) push_back(new Robot(*i));
 }

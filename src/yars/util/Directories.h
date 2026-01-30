@@ -1,8 +1,7 @@
 #ifndef __YARS_DIRECTORIES_H__
 #define __YARS_DIRECTORIES_H__
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <filesystem>
 
 #include <string>
 #include <vector>
@@ -17,7 +16,7 @@
 #define DYNAMIC_LIB_SUFFIX ".dylib"
 #endif // __APPLE__
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace std;
 
 class Directories

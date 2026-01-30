@@ -83,7 +83,7 @@ void DataPointLightSource::createXsd(XsdSpecification *spec)
 
 DataPointLightSource* DataPointLightSource::copy()
 {
-  DataPointLightSource *copy = new DataPointLightSource(NULL);
+  DataPointLightSource *copy = new DataPointLightSource(nullptr);
   copy->_position       = _position;
   copy->_color          = _color;
   copy->_brightness     = _brightness;

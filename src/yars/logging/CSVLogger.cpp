@@ -2,7 +2,8 @@
 #include <yars/util/Timer.h>
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <boost/algorithm/string/replace.hpp>
+#include <algorithm>
+#include <regex>
 
 CSVLogger::CSVLogger(DataLoggingCSV *data)
 {
@@ -73,7 +74,7 @@ void CSVLogger::update()
     }
     for(int i = 0; i < (int)values.size() - 1; i++)
     {
-      _oss << boost::replace_all_copy(values[i], " ", ",") << ",";
+      _oss << std::regex_replace(values[i], std::regex(" "), ",") << ",";
     }
     _oss << values[values.size() - 1] << endl;
   }

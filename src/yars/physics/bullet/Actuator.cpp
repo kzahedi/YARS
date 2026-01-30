@@ -19,7 +19,7 @@ Actuator::Actuator(string name, string source, string destination, Robot *robot)
   _sourceObject = __find(source);
   _destinationObject = __find(destination);
 
-  if (_sourceObject == NULL)
+  if (_sourceObject == nullptr)
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "In " << name << ": Source " << source << " was not found.";
@@ -51,7 +51,7 @@ Object *Actuator::__find(string name)
     (*e) << "Actuators: Cannot find object \"" << name << "\"" << endl;
     YarsErrorHandler::push();
   }
-  return NULL;
+  return nullptr;
 }
 
 vector<btTypedConstraint *>::iterator Actuator::c_begin()

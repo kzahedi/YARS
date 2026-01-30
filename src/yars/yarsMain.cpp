@@ -31,7 +31,7 @@ int mainFunction(int argc, char **argv)
 #endif // SUPPRESS_ALL_OUTPUT
     ymc->addObserver(yvc);
 
-    boost::thread* pThread = new boost::thread(
+    std::thread* pThread = new std::thread(
         &YarsMainControl::run,     // pointer to member function to execute in thread
         ymc);
 

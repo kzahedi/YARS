@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-ConsoleView*  ConsoleView::_me                         = NULL;
+ConsoleView*  ConsoleView::_me                         = nullptr;
 int           ConsoleView::_currentDebugLevel          = YARS_INFO;
 unsigned long ConsoleView::_debugTiming                = 0;
 unsigned long ConsoleView::_printTimeLastMeasurement   = 0;
@@ -18,7 +18,7 @@ double         ConsoleView::_printRealTimeFactor        = 0.0;
 
 ConsoleView* ConsoleView::instance()
 {
-  if(_me == NULL)
+  if(_me == nullptr)
   {
     _me = new ConsoleView();
   }

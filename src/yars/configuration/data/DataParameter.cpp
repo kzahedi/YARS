@@ -56,7 +56,7 @@ void DataParameter::createXsd()
 
 DataParameter *DataParameter::copy()
 {
-  DataParameter *copy = new DataParameter(NULL);
+  DataParameter *copy = new DataParameter(nullptr);
   copy->_name = _name;
   copy->_value = _value;
   return copy;

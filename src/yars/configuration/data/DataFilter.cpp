@@ -62,7 +62,7 @@ DataParameter* DataFilter::parameter(int index)
 
 DataFilter* DataFilter::copy()
 {
-  DataFilter *copy = new DataFilter(NULL);
+  DataFilter *copy = new DataFilter(nullptr);
   copy->_module = _module;
   for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
   {

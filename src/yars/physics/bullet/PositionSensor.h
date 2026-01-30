@@ -14,8 +14,8 @@ class PositionSensor : public Sensor
     PositionSensor(DataGenericPositionSensor *data, Robot *robot);
     ~PositionSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericPositionSensor *_data;

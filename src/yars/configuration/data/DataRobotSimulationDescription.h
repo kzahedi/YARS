@@ -41,7 +41,7 @@ class DataRobotSimulationDescription : public DataNode
      *
      * @param parent
      */
-    DataRobotSimulationDescription(DataNode *parent = NULL);
+    DataRobotSimulationDescription(DataNode *parent = nullptr);
     //DataRobotSimulationDescription(DataRobotSimulationDescription *other);
     //DataRobotSimulationDescription&    operator=(const Matrix &m);
 
@@ -142,7 +142,7 @@ class DataRobotSimulationDescription : public DataNode
      */
     void add(DataParseElement* element);
 
-    static void createXsd(XsdSpecification *spec = NULL);
+    static void createXsd(XsdSpecification *spec = nullptr);
     void clear();
 
     DataRobotSimulationDescription* copy();

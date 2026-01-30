@@ -1,6 +1,6 @@
 #include "DataNode.h"
 
-DataNode*         DataNode::current = NULL;
+DataNode*         DataNode::current = nullptr;
 
 DataNode::DataNode(DataNode *_parent)
 {

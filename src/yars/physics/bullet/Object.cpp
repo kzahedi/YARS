@@ -6,10 +6,10 @@ Object::Object(DataObject *data)
 {
   _data = data;
   _isVisible = true;
-  _collisionShape = NULL;
-  _rigidBody = NULL;
-  _softBody = NULL;
-  if (_data != NULL)
+  _collisionShape = nullptr;
+  _rigidBody = nullptr;
+  _softBody = nullptr;
+  if (_data != nullptr)
     _type = _data->type();
   __setInitialValues();
 }
@@ -17,9 +17,9 @@ Object::Object(DataObject *data)
 Object::~Object()
 {
   delete _collisionShape;
-  if (_rigidBody != NULL)
+  if (_rigidBody != nullptr)
     delete _rigidBody;
-  if (_softBody != NULL)
+  if (_softBody != nullptr)
     delete _softBody;
 
   // delete _motionState;
@@ -34,7 +34,7 @@ void Object::postPhysicsUpdate()
 {
   // cout << _rigidBody->hasContactResponse() << endl;
 
-  if (_data != NULL)
+  if (_data != nullptr)
   {
     const btVector3 vel = _rigidBody->getLinearVelocity();
     const btVector3 ang = _rigidBody->getAngularVelocity();
@@ -65,12 +65,12 @@ void Object::setCollided(bool collided)
 
 void Object::reset()
 {
-  if (_collisionShape != NULL)
+  if (_collisionShape != nullptr)
   {
     delete _collisionShape;
   }
 
-  if (_rigidBody != NULL)
+  if (_rigidBody != nullptr)
   {
     delete _rigidBody;
   }
@@ -110,13 +110,13 @@ btSoftBody *Object::softBody()
 
 void Object::__resetPose()
 {
-  if (_data == NULL)
+  if (_data == nullptr)
     return; // ground plane
 
   P3D p = _data->pose().position;
   ::Quaternion q = _data->quaternion();
 
-  if (_rigidBody != NULL)
+  if (_rigidBody != nullptr)
   {
     btVector3 zero(0.0, 0.0, 0.0);
     _rigidBody->setWorldTransform(btTransform(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z)));
@@ -124,7 +124,7 @@ void Object::__resetPose()
     _rigidBody->setAngularVelocity(zero);
   }
 
-  if (_softBody != NULL)
+  if (_softBody != nullptr)
   {
     _softBody->setWorldTransform(btTransform(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z)));
   }

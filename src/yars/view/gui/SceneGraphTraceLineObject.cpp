@@ -10,9 +10,9 @@ SceneGraphTraceLineObject::SceneGraphTraceLineObject(
 {
   _trace      = trace;
   _node       = _root->createChildSceneNode();
-  _billboard  = NULL;
-  _particles  = NULL;
-  _trail      = NULL;
+  _billboard  = nullptr;
+  _particles  = nullptr;
+  _trail      = nullptr;
   _reset      = false;
   update();
 
@@ -81,7 +81,7 @@ void SceneGraphTraceLineObject::update()
   {
     P3D p = _trace->position();
     _node->setPosition(p.x, p.y, p.z);
-    if(_billboard != NULL) _billboard->getBillboard(0)->setPosition(p.x, p.z, -p.y);
+    if(_billboard != nullptr) _billboard->getBillboard(0)->setPosition(p.x, p.z, -p.y);
   }
   if(_reset == true)
   {

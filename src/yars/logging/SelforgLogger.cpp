@@ -19,8 +19,8 @@ SelforgLogger::SelforgLogger(DataLoggingSelforg *data, int index)
   _useGuilogger      = data->useGuilogger();
   _filename          = data->filename();
   _dtime             = __YARS_GET_STEP_SIZE * _frequency;
-  _matrixvizFD       = NULL;
-  _guiloggerFD       = NULL;
+  _matrixvizFD       = nullptr;
+  _guiloggerFD       = nullptr;
   _guiloggerStepSize = data->glStepSize();
   _matrixvizStepSize = data->mvStepSize();
 
@@ -116,12 +116,12 @@ void SelforgLogger::update()
 
 void SelforgLogger::close()
 {
-  if(_matrixvizFD != NULL)
+  if(_matrixvizFD != nullptr)
   {
     fprintf(_matrixvizFD,"#QUIT\n");
     fclose(_matrixvizFD);
   }
-  if(_guiloggerFD != NULL)
+  if(_guiloggerFD != nullptr)
   {
     fprintf(_guiloggerFD,"#QUIT\n");
     fclose(_guiloggerFD);

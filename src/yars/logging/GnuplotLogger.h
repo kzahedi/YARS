@@ -18,9 +18,9 @@ class GnuplotLogger : public Logger
   public:
     GnuplotLogger(DataLoggingGnuplot *data, int index);
 
-    void update();
-    void init();
-    void close();
+    void update() override;
+    void init() override;
+    void close() override;
 
   private:
     FILE               *_gnuplotFD;

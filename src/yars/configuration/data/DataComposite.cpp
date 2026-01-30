@@ -64,7 +64,7 @@ void DataComposite::add(DataParseElement *element)
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
-  if (object != NULL)
+  if (object != nullptr)
   {
     current = object;
     object->add(element);
@@ -127,7 +127,7 @@ void DataComposite::applyOffset(Pose pose)
 
 DataComposite *DataComposite::_copy()
 {
-  DataComposite *copy = new DataComposite(NULL); // no parent required -> no parsing occurs from here on
+  DataComposite *copy = new DataComposite(nullptr); // no parent required -> no parsing occurs from here on
   for (DataObjects::iterator i = g_begin(); i != g_end(); i++)
   {
     copy->add((*i)->copy());

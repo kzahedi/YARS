@@ -38,7 +38,7 @@ DataObject* DataObjectFactory::object(DataParseElement *element, DataNode *paren
   {
     return __generatePly(element, parent);
   }
-  return NULL;
+  return nullptr;
 }
 
 DataObject* DataObjectFactory::__generateBox(DataParseElement *element, DataNode *parent)

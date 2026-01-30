@@ -83,19 +83,15 @@ void SceneGraph::__createEnvironmentNode()
 
 void SceneGraph::update()
 {
-  // cout << "SceneGraph::update 0" << endl;
   _environment->update();
-  // cout << "SceneGraph::update 1" << endl;
   FOREACH(SceneGraphRobotNode*,       m, _robots)     (*m)->update();
-  // cout << "SceneGraph::update 2" << endl;
   FOREACH(SceneGraphTraceLineObject*, t, _traceLines) (*t)->update();
-  // cout << "SceneGraph::update 3" << endl;
 }
 
 void SceneGraph::__createTraces()
 {
   DataTraces *traces = Data::instance()->current()->traces();
-  if(traces == NULL) return;
+  if(traces == nullptr) return;
 
   int index = 0;
   for(std::vector<DataTraceLine*>::iterator l = traces->l_begin(); l != traces->l_end(); l++)

@@ -4,7 +4,7 @@
 #include <yars/util/Observer.h>
 #include <yars/main/YarsMainControl.h>
 
-#include <boost/thread.hpp>
+#include <thread>
 
 /** \brief This class is only required if YARS is compiled an run with GUI.
  *

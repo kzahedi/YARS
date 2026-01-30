@@ -39,7 +39,7 @@ Object* Sensor::__findObject(string name)
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 Actuator* Sensor::__findAcutaor(string name)
@@ -51,12 +51,12 @@ Actuator* Sensor::__findAcutaor(string name)
       return *i;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void Sensor::__findTarget()
 {
-  if(_targetObject == NULL && _targetActuator == NULL)
+  if(_targetObject == nullptr && _targetActuator == nullptr)
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "In " << _name << " (Sensor): Target " << _object << " was not found.";

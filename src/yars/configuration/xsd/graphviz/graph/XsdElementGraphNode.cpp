@@ -45,7 +45,7 @@ string XsdElementGraphNode::customLabel(string label)
     {
       XsdGraphNode *node      = __findNode((*a)->type());
 
-      if(node != NULL)
+      if(node != nullptr)
       {
         s_type << "<td bgcolor=\"" << ATTRIBUTE_BGCOLOR << "\" valign=\"top\">";
         s_type << "<table border=\"0\" cellborder=\"1\" cellspacing=\"0\" cellpadding=\"0\">";
@@ -92,7 +92,7 @@ XsdGraphNode* XsdElementGraphNode::__findNode(string name)
       return (*n);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 

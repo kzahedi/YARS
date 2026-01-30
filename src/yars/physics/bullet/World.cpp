@@ -11,11 +11,11 @@
 
 using namespace std;
 
-World *World::_me = NULL;
+World *World::_me = nullptr;
 
 World *World::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
   {
     _me = new World();
   }

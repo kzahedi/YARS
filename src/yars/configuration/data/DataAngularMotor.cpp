@@ -50,8 +50,8 @@
 DataHingeActuator::DataHingeActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_HINGE)
 {
-  _noise                      = NULL;
-  _filter                     = NULL;
+  _noise                      = nullptr;
+  _filter                     = nullptr;
   _deflectionSet              = false;
   _desiredValue               = 0.0;
   _isActive                   = true;
@@ -289,10 +289,10 @@ string DataHingeActuator::mode()
 
 DataHingeActuator* DataHingeActuator::_copy()
 {
-  DataHingeActuator *copy = new DataHingeActuator(NULL);
+  DataHingeActuator *copy = new DataHingeActuator(nullptr);
 
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise  != nullptr) copy->_noise  = _noise->copy();
   copy->_deflection         = _deflection;
   copy->_mapping            = _mapping;
   copy->_parameter          = _parameter;

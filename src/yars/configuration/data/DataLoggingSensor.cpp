@@ -24,13 +24,13 @@ using namespace std;
 DataLoggingSensor::DataLoggingSensor(DataNode *parent)
   : DataNode(parent)
 {
-  _sensor = NULL;
+  _sensor = nullptr;
   _precision = -1;
 }
 
 DataLoggingSensor::~DataLoggingSensor()
 {
-  if(_sensor != NULL) delete _sensor;
+  if(_sensor != nullptr) delete _sensor;
   clear();
 }
 
@@ -81,7 +81,7 @@ void DataLoggingSensor::createXsd(XsdSpecification *spec)
 
 DataLoggingSensor* DataLoggingSensor::copy()
 {
-  DataLoggingSensor *copy = new DataLoggingSensor(NULL);
+  DataLoggingSensor *copy = new DataLoggingSensor(nullptr);
   copy->_target = _target;
   for(std::vector<string>::iterator v = begin(); v != end(); v++) copy->push_back(*v);
   FOREACH(int, v, _order) copy->_order.push_back(*v);

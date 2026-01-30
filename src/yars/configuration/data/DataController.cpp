@@ -90,7 +90,7 @@ void DataController::setModule(string module)
 
 DataController* DataController::copy()
 {
-  DataController *copy = new DataController(NULL);
+  DataController *copy = new DataController(nullptr);
   copy->_module    = _module;
   copy->_name      = _name;
   copy->_frequency = _frequency;
@@ -215,7 +215,7 @@ DataActuator* DataController::actuator(string name)
   {
     if((*a)->name() == name) return (*a);
   }
-  return NULL;
+  return nullptr;
 }
 
 void DataController::addActuator(DataActuator *actuator)

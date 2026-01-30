@@ -129,12 +129,12 @@ void XsdGraph::__createGraph()
 void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdElement *element)
 {
   XsdGraphNode *node             = __findNode(element->type());
-  XsdGraphNodeInstance *instance = NULL;
+  XsdGraphNodeInstance *instance = nullptr;
   stringstream sst;
   sst << element->minOccurs() << ":" << element->maxOccurs();
 
   int index = 0;
-  if(node != NULL)
+  if(node != nullptr)
   {
     instance = new XsdGraphNodeInstance(element->name(), element->type(), node, sst.str());
     __add(instance, node->spec());
@@ -186,7 +186,7 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdChoice *choice)
   std::vector<XsdGraphNodeInstance*> v;
   FOREACHF(XsdSequence*,  s, choice, ->s_begin(), ->s_end())
   {
-    XsdGraphNodeInstance *i = new XsdGraphNodeInstance("", "", NULL, "");
+    XsdGraphNodeInstance *i = new XsdGraphNodeInstance("", "", nullptr, "");
     __add(i, *s);
     v.push_back(i);
   }
@@ -206,9 +206,9 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdChoice *choice)
 void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdAttribute *attribute, int index)
 {
   XsdGraphNode *node             = __findNode(attribute->type());
-  XsdGraphNodeInstance *instance = NULL;
+  XsdGraphNodeInstance *instance = nullptr;
 
-  if(node != NULL)
+  if(node != nullptr)
   {
     instance = new XsdGraphNodeInstance(attribute->name(), attribute->type(), node, "");
     instance->setPort(index);
@@ -222,9 +222,9 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdAttribute *attribute, int 
 void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdRegularExpression *regexp)
 {
   XsdGraphNode *node             = __findNode(regexp->type());
-  XsdGraphNodeInstance *instance = NULL;
+  XsdGraphNodeInstance *instance = nullptr;
 
-  if(node != NULL)
+  if(node != nullptr)
   {
     instance = new XsdGraphNodeInstance(regexp->name(), regexp->type(), node, "");
     __add(instance, node->spec());
@@ -237,9 +237,9 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdRegularExpression *regexp)
 void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdInterval *interval)
 {
   XsdGraphNode *node             = __findNode(interval->type());
-  XsdGraphNodeInstance *instance = NULL;
+  XsdGraphNodeInstance *instance = nullptr;
 
-  if(node != NULL)
+  if(node != nullptr)
   {
     instance = new XsdGraphNodeInstance(interval->name(), interval->type(), node, "");
     __add(instance, node->spec());
@@ -252,9 +252,9 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdInterval *interval)
 void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdEnumeration *enumeration)
 {
   XsdGraphNode *node             = __findNode(enumeration->type());
-  XsdGraphNodeInstance *instance = NULL;
+  XsdGraphNodeInstance *instance = nullptr;
 
-  if(node != NULL)
+  if(node != nullptr)
   {
     instance = new XsdGraphNodeInstance(enumeration->name(), enumeration->type(), node, "");
     __add(instance, node->spec());
@@ -305,5 +305,5 @@ XsdGraphNode* XsdGraph::__findNode(string name)
       return (*n);
     }
   }
-  return NULL;
+  return nullptr;
 }

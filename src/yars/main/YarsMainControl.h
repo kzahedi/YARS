@@ -45,7 +45,7 @@ public:
      * \param[in] __M_QUIT_CALLED
      * \param[in] __M_RESET
      */
-  void notify(ObservableMessage *message);
+  void notify(ObservableMessage *message) override;
   /** \brief Starts the main-loop.
      *
      * \param[out] __M_TOGGLE_CAMERA_FOLLOW_MODE

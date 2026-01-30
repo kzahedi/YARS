@@ -137,12 +137,12 @@ XsdSpecification::XsdSpecification()
 
 XsdSpecification::~XsdSpecification()
 {
-  FOREACH(XsdSequence*,          s, _sequences)    if(*s != NULL) delete (*s);
-  FOREACH(XsdEnumeration*,       e, _enumerations) if(*e != NULL) delete (*e);
-  FOREACH(XsdChoice*,            c, _choices)      if(*c != NULL) delete (*c);
-  FOREACH(XsdInterval*,          i, _intervals)    if(*i != NULL) delete (*i);
-  FOREACH(XsdRegularExpression*, r, _regExps)      if(*r != NULL) delete (*r);
-  // FOREACH(XsdNode*,              n, _nodes)        if(*n != NULL) delete (*n);
+  FOREACH(XsdSequence*,          s, _sequences)    if(*s != nullptr) delete (*s);
+  FOREACH(XsdEnumeration*,       e, _enumerations) if(*e != nullptr) delete (*e);
+  FOREACH(XsdChoice*,            c, _choices)      if(*c != nullptr) delete (*c);
+  FOREACH(XsdInterval*,          i, _intervals)    if(*i != nullptr) delete (*i);
+  FOREACH(XsdRegularExpression*, r, _regExps)      if(*r != nullptr) delete (*r);
+  // FOREACH(XsdNode*,              n, _nodes)        if(*n != nullptr) delete (*n);
 
   _sequences.clear();
   _enumerations.clear();

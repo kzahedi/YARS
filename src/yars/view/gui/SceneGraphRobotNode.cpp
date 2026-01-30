@@ -13,7 +13,7 @@ SceneGraphRobotNode::SceneGraphRobotNode(
   for (DataObjects::iterator g = robot->g_begin(); g != robot->g_end(); g++)
   {
     SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
-    if (objectNode != NULL)
+    if (objectNode != nullptr)
     {
       _objects.push_back(objectNode);
       for (std::vector<DataSensor *>::iterator s = (*g)->s_begin(); s != (*g)->s_end(); s++)
@@ -80,25 +80,25 @@ SceneGraphRobotNode::~SceneGraphRobotNode()
 void SceneGraphRobotNode::update()
 {
   FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->update();
   FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->update();
   FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->update();
 }
 
 void SceneGraphRobotNode::reset()
 {
   FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->reset();
   FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->reset();
   FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != NULL)
+  if (*o != nullptr)
     (*o)->reset();
 }

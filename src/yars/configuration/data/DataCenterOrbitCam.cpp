@@ -33,7 +33,7 @@ void DataCenterOrbitCam::add(DataParseElement *element)
 
 DataCenterOrbitCam* DataCenterOrbitCam::copy()
 {
-  DataCenterOrbitCam *copy = new DataCenterOrbitCam(NULL);
+  DataCenterOrbitCam *copy = new DataCenterOrbitCam(nullptr);
   copy->_speed = _speed;
   return copy;
 }

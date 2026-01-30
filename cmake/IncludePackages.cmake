@@ -11,8 +11,9 @@ if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
 
-# Boost components needed (thread requires linking on some platforms)
-find_package(Boost REQUIRED COMPONENTS program_options filesystem thread)
+# Boost components needed - only program_options now
+# (filesystem and thread replaced with C++17 std::filesystem and std::thread)
+find_package(Boost REQUIRED COMPONENTS program_options)
 IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 ENDIF(Boost_FOUND)

@@ -5,8 +5,8 @@ ActuatorVelocitySensor::ActuatorVelocitySensor(DataGenericVelocitySensor *data, 
 {
   _data   = data;
   _type   = _targetActuator->data()->type();
-  _hinge  = NULL;
-  _slider = NULL;
+  _hinge  = nullptr;
+  _slider = nullptr;
   switch(_type)
   {
     case DATA_ACTUATOR_HINGE:

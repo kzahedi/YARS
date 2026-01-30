@@ -9,7 +9,7 @@ YarsPhysicsModel::YarsPhysicsModel()
 YarsPhysicsModel::~YarsPhysicsModel()
 {
   Y_DEBUG("YarsPhysicsModel destructor called.");
-  if (_physics != NULL)
+  if (_physics != nullptr)
   {
     _physics->close();
     delete _physics;

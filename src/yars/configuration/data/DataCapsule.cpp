@@ -106,7 +106,7 @@ void DataCapsule::createXsd(XsdSpecification *spec)
 
 DataCapsule* DataCapsule::_copy()
 {
-  DataCapsule *copy = new DataCapsule(NULL); // no parent needed, because no parsing takes place after copying
+  DataCapsule *copy = new DataCapsule(nullptr); // no parent needed, because no parsing takes place after copying
   copy->setDimension(_dimension);
   copy->setVisualise(_visualise);
   copy->setPose(_pose);

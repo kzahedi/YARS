@@ -134,7 +134,7 @@ void DataPhysicsParameter::createXsd(XsdSpecification *spec)
 
 DataPhysicsParameter* DataPhysicsParameter::copy()
 {
-  DataPhysicsParameter *copy = new DataPhysicsParameter(NULL); // NULL because no parsing takes place after copying
+  DataPhysicsParameter *copy = new DataPhysicsParameter(nullptr); // nullptr because no parsing takes place after copying
 
   copy->_linearDamping      = _linearDamping;
   copy->_mass               = _mass;

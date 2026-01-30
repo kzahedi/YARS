@@ -10,15 +10,16 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include <iomanip>
+#include <ctime>
 
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/format.hpp>
+#ifndef _MSC_VER
+#include <sys/time.h>
+#endif
 
 #include <thread>
 #include <chrono>
 
-using namespace boost::gregorian;
 using namespace std;
 
 class Timer
@@ -50,46 +51,49 @@ class Timer
 
     static void getDateString(std::string *dateString)
     {
-      date d(day_clock::local_day());
-      *dateString = to_iso_extended_string(d);
+      auto now = std::chrono::system_clock::now();
+      auto time_t_now = std::chrono::system_clock::to_time_t(now);
+      std::tm tm_now;
+#ifndef _MSC_VER
+      localtime_r(&time_t_now, &tm_now);
+#else
+      localtime_s(&tm_now, &time_t_now);
+#endif
+      std::ostringstream oss;
+      oss << std::put_time(&tm_now, "%Y-%m-%d");
+      *dateString = oss.str();
     };
 
     static void getDateTimeString(std::string *dateString)
     {
-      stringstream oss;
+      auto now = std::chrono::system_clock::now();
+      auto time_t_now = std::chrono::system_clock::to_time_t(now);
+      std::tm tm_now;
 #ifndef _MSC_VER
-      char buf[2];
-      time_t rawtime;
-      struct tm * ptm;
-      time ( &rawtime );
-      ptm = gmtime ( &rawtime );
-
-      date d(day_clock::local_day());
-      string s = to_iso_extended_string(d);
-      oss << s << "-";
-      oss << boost::format("%02d-%02d-%02d") % ptm->tm_hour % ptm->tm_min % ptm->tm_sec;
-#else // _MSC_VER
-      cout << "getDateTimeString not yet supported in windows version" << endl;
-#endif // _MSC_VER
-
+      localtime_r(&time_t_now, &tm_now);
+#else
+      localtime_s(&tm_now, &time_t_now);
+#endif
+      std::ostringstream oss;
+      oss << std::put_time(&tm_now, "%Y-%m-%d-%H-%M-%S");
       *dateString = oss.str();
     };
 
     Timer()
     {
-      _last = boost::posix_time::microsec_clock::local_time();
+      _last = std::chrono::steady_clock::now();
     };
 
     void reset()
     {
-      _last = boost::posix_time::microsec_clock::local_time();
+      _last = std::chrono::steady_clock::now();
     };
 
     long get()
     {
-      boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
-      boost::posix_time::time_duration  diff = now - _last;
-      return diff.total_microseconds();
+      auto now = std::chrono::steady_clock::now();
+      auto diff = std::chrono::duration_cast<std::chrono::microseconds>(now - _last);
+      return diff.count();
     };
 
 
@@ -99,7 +103,7 @@ class Timer
     };
 
   private:
-      boost::posix_time::ptime _last;
+      std::chrono::steady_clock::time_point _last;
 
 };
 

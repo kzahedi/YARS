@@ -43,7 +43,7 @@ DataEnvironment::DataEnvironment(DataNode *parent)
   _gravitation[0] = 0.0;
   _gravitation[1] = 0.0;
   _gravitation[2] = -9.81;
-  _ambientLight   = NULL;
+  _ambientLight   = nullptr;
 }
 
 DataEnvironment::~DataEnvironment()
@@ -57,7 +57,7 @@ DataEnvironment::~DataEnvironment()
     delete (*i);
   }
   delete _gravitation;
-  if(_ambientLight != NULL) delete _ambientLight;
+  if(_ambientLight != nullptr) delete _ambientLight;
 }
 
 string DataEnvironment::name()
@@ -85,7 +85,7 @@ void DataEnvironment::add(DataParseElement *element)
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
-  if(object != NULL)
+  if(object != nullptr)
   {
     current = object;
     _objects.push_back(object);
@@ -282,10 +282,10 @@ void DataEnvironment::createXsd(XsdSpecification *spec)
 
 DataEnvironment* DataEnvironment::copy()
 {
-  DataEnvironment *copy = new DataEnvironment(NULL);
+  DataEnvironment *copy = new DataEnvironment(nullptr);
   copy->_name = _name;
   for(int i = 0; i < 3; i++) copy->_gravitation[i] = _gravitation[i];
-  if(_macrosDefinitions != NULL) copy->_macrosDefinitions = _macrosDefinitions->copy();
+  if(_macrosDefinitions != nullptr) copy->_macrosDefinitions = _macrosDefinitions->copy();
 
   for(vector<DataMeshVisualisation*>::iterator m = m_begin(); m != m_end(); m++)
   {
@@ -304,8 +304,8 @@ DataEnvironment* DataEnvironment::copy()
     copy->_macros.push_back((*i)->copy(this));
   }
   copy->_normal = _normal;
-  // copy->_textureDefinition = NULL;
-  // if(_textureDefinition != NULL)
+  // copy->_textureDefinition = nullptr;
+  // if(_textureDefinition != nullptr)
   // {
     // copy->_textureDefinition = _textureDefinition->copy();
   // }

@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-YarsErrorHandler *YarsErrorHandler::_me = NULL;
+YarsErrorHandler *YarsErrorHandler::_me = nullptr;
 
 YarsErrorHandler::YarsErrorHandler()
 {
@@ -15,7 +15,7 @@ YarsErrorHandler::YarsErrorHandler()
 
 YarsErrorHandler *YarsErrorHandler::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
   {
     _me = new YarsErrorHandler();
   }

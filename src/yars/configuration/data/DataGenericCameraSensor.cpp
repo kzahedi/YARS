@@ -92,14 +92,14 @@ void DataGenericCameraSensor::createXsd(XsdSpecification *spec)
 
 DataGenericCameraSensor* DataGenericCameraSensor::_copy()
 {
-  DataGenericCameraSensor *copy = new DataGenericCameraSensor(NULL);
+  DataGenericCameraSensor *copy = new DataGenericCameraSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_pose = _pose;
   copy->_openingAngles = _openingAngles;
   copy->_mapping = _mapping;
-  if (_noise != NULL) copy->_noise = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   return copy;
 }
 

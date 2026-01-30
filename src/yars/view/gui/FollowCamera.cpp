@@ -4,7 +4,7 @@
 FollowCamera::FollowCamera(WindowConfiguration *c, string name)
 {
   this->configuration = c;
-  followable          = NULL;
+  followable          = nullptr;
   _myName             = name;
 }
 

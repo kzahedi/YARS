@@ -8,14 +8,14 @@
 Environment::Environment()
 {
   _data = Data::instance()->current()->environment();
-  _groundShape = NULL;
+  _groundShape = nullptr;
   __init();
 }
 
 Environment::~Environment()
 {
   for(std::vector<Object*>::iterator i = begin(); i != end(); i++) delete *i;
-  if(_groundShape != NULL) delete _groundShape;
+  if(_groundShape != nullptr) delete _groundShape;
   clear();
 }
 
@@ -63,7 +63,7 @@ void Environment::__init()
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
     groundRigidBody->setCollisionFlags(groundRigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-    Object *ground = new Object(NULL);
+    Object *ground = new Object(nullptr);
     ground->setRigidBody(groundRigidBody);
     push_back(ground);
   }

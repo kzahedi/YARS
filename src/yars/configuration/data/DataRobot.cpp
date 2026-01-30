@@ -11,7 +11,7 @@
 DataRobot::DataRobot(DataNode *parent)
     : DataNode(parent)
 {
-  _controller = NULL;
+  _controller = nullptr;
   _selfCollide = false;
   _processingSensors = false;
   _processingActuators = false;
@@ -39,7 +39,7 @@ DataRobot::~DataRobot()
   _sensors.clear();
   _actuators.clear();
   _macros.clear();
-  if (_controller != NULL)
+  if (_controller != nullptr)
     delete _controller;
 }
 
@@ -150,7 +150,7 @@ void DataRobot::add(DataParseElement *element)
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
-  if (object != NULL)
+  if (object != nullptr)
   {
     current = object;
     _objects.push_back(object);
@@ -176,7 +176,7 @@ void DataRobot::add(DataParseElement *element)
   if (_processingSensors)
   {
     DataSensor *sensor = DataSensorFactory::sensor(element, this);
-    if (sensor != NULL)
+    if (sensor != nullptr)
     {
       current = sensor;
       _sensors.push_back(sensor);
@@ -186,7 +186,7 @@ void DataRobot::add(DataParseElement *element)
   if (_processingActuators)
   {
     DataActuator *actuator = DataActuatorFactory::actuator(element, this);
-    if (actuator != NULL)
+    if (actuator != nullptr)
     {
       current = actuator;
       _actuators.push_back(actuator);
@@ -337,15 +337,15 @@ void DataRobot::createXsd(XsdSpecification *spec)
 
 DataRobot *DataRobot::copy()
 {
-  DataRobot *copy = new DataRobot(NULL);
+  DataRobot *copy = new DataRobot(nullptr);
   copy->_pose = _pose;
   copy->_name = _name;
   copy->_processingSensors = _processingSensors;
   copy->_processingActuators = _processingActuators;
   copy->_selfCollide = _selfCollide;
-  if (_controller != NULL)
+  if (_controller != nullptr)
     copy->_controller = _controller->copy();
-  if (_macrosDefinitions != NULL)
+  if (_macrosDefinitions != nullptr)
     copy->_macrosDefinitions = _macrosDefinitions->copy();
   for (DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
   {
@@ -374,7 +374,7 @@ DataRobot *DataRobot::copy()
 
 void DataRobot::__setActuatorsInController()
 {
-  if (_controller != NULL)
+  if (_controller != nullptr)
   {
     for (DataActuators::iterator a = _actuators.begin(); a != _actuators.end(); a++)
     {
@@ -503,7 +503,7 @@ void DataRobot::resetTo(const DataRobot *robot)
   _name = robot->_name;
   _selfCollide = robot->_selfCollide;
 
-  if (_controller != NULL)
+  if (_controller != nullptr)
     _controller->resetTo(robot->_controller);
   for (int i = 0; i < (int)_objects.size(); i++)
     _objects[i]->resetTo(robot->_objects[i]);
@@ -520,7 +520,7 @@ DataObject *DataRobot::findObject(string name)
       return *o;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void DataRobot::__collectActuatorObjects()

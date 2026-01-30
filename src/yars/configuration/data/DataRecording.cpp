@@ -51,7 +51,7 @@ void DataRecording::createXsd(XsdSpecification *spec)
 
 DataRecording* DataRecording::copy()
 {
-  DataRecording *copy = new DataRecording(NULL);
+  DataRecording *copy = new DataRecording(nullptr);
   for(std::vector<RecordingInterval>::iterator i = begin(); i != end(); i++)
   {
     copy->push_back(*i);

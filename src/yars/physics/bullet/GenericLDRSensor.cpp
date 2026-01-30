@@ -11,7 +11,7 @@ GenericLDRSensor::GenericLDRSensor(DataGenericLightDependentResistorSensor *data
   : Sensor(data->name(), data->object(), robot)
 {
   _data         = data;
-  _ambientLight = NULL;
+  _ambientLight = nullptr;
   _pose         = _data->pose();
   _ambientLight = Data::instance()->current()->environment()->ambientLight();
   _env          = Data::instance()->current()->environment();

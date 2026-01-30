@@ -84,7 +84,7 @@ void DataLoggingFile::createXsd(XsdSpecification *spec)
 
 DataLoggingFile* DataLoggingFile::copy()
 {
-  DataLoggingFile *copy = new DataLoggingFile(NULL);
+  DataLoggingFile *copy = new DataLoggingFile(nullptr);
   for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
   {
     copy->_targets.push_back(*i);

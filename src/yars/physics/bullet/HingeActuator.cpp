@@ -19,7 +19,7 @@ HingeActuator::HingeActuator(DataHingeActuator *data, Robot *robot)
     : Actuator("HingeActuator", data->source(), data->destination(), robot)
 {
   _data = data;
-  _hingeConstraint = NULL;
+  _hingeConstraint = nullptr;
   _angle = 0.0;
   _lastAngle = 0.0;
   _isActive = true;
@@ -63,7 +63,7 @@ HingeActuator::HingeActuator(DataHingeActuator *data, Robot *robot)
 
 HingeActuator::~HingeActuator()
 {
-  if (_hingeConstraint != NULL)
+  if (_hingeConstraint != nullptr)
     delete _hingeConstraint;
 }
 
@@ -269,7 +269,7 @@ void HingeActuator::__initHinge()
 {
   _axisPose = _data->pose();
 
-  if (_sourceObject != NULL && _destinationObject != NULL)
+  if (_sourceObject != nullptr && _destinationObject != nullptr)
   {
     btRigidBody *source = _sourceObject->rigidBody();
     btRigidBody *destination = _destinationObject->rigidBody();

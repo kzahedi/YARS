@@ -15,7 +15,7 @@ FixedActuator::FixedActuator(DataFixedActuator *data, Robot *robot)
   btTransform sTransform = btTransform::getIdentity();
   btTransform dTransform = btTransform::getIdentity();
 
-  if(_sourceObject != NULL && _destinationObject != NULL)
+  if(_sourceObject != nullptr && _destinationObject != nullptr)
   {
     btRigidBody *source      = _sourceObject->rigidBody();
     btRigidBody *destination = _destinationObject->rigidBody();
@@ -24,7 +24,7 @@ FixedActuator::FixedActuator(DataFixedActuator *data, Robot *robot)
 
     _fixedConstraint = new btSliderConstraint(*source, *destination, sTransform, dTransform, true);
   }
-  else if(_sourceObject != NULL)
+  else if(_sourceObject != nullptr)
   {
     btRigidBody *source = _sourceObject->rigidBody();
     _fixedConstraint    = new btSliderConstraint(*source, sTransform, true);

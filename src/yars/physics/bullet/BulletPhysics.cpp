@@ -39,9 +39,9 @@ void BulletPhysics::reset()
   _resetCalled = true;
   Y_DEBUG("BulletPhysics reset called.");
 
-  if (_environment != NULL)
+  if (_environment != nullptr)
     delete _environment;
-  if (_robots != NULL)
+  if (_robots != nullptr)
     delete _robots;
 
   _world = World::reset();
@@ -93,7 +93,7 @@ void BulletPhysics::__initWorld()
 
   FOREACH(Object *, o, (*_environment))
   {
-    if ((*o)->rigidBody() != NULL)
+    if ((*o)->rigidBody() != nullptr)
     {
       _world->addRigidBody((*o)->rigidBody(), worldMask, worldCollideWith);
     }
@@ -109,14 +109,14 @@ void BulletPhysics::__initWorld()
       robotCollideWith = 0xffffff;
     FOREACHF(Object *, o, (*m), ->o_begin(), ->o_end())
     {
-      if ((*o) != NULL)
+      if ((*o) != nullptr)
       {
-        if ((*o)->rigidBody() != NULL)
+        if ((*o)->rigidBody() != nullptr)
         {
           _world->addRigidBody((*o)->rigidBody(), robotMask, robotCollideWith);
         }
 #ifdef USE_SOFT_BODIES
-        if ((*o)->softBody() != NULL)
+        if ((*o)->softBody() != nullptr)
         {
           _world->addSoftBody((*o)->softBody(), robotMask, robotCollideWith);
         }
@@ -126,7 +126,7 @@ void BulletPhysics::__initWorld()
 
     FOREACHF(Actuator *, a, (*m), ->a_begin(), ->a_end())
     {
-      if ((*a)->constraint() != NULL)
+      if ((*a)->constraint() != nullptr)
       {
         // false -> connected things don't collide
         _world->addConstraint((*a)->constraint(), false);

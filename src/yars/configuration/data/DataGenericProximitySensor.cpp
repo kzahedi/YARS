@@ -33,7 +33,7 @@ DataGenericProximitySensor::DataGenericProximitySensor(DataNode *parent)
   : DataSensor(parent, DATA_GENERIC_PROXIMITY_SENSOR)
 {
   _noise  = new DataNoise(this);
-  _n = NULL;
+  _n = nullptr;
   _measuredDistance = 0;
   YM_INIT;
 }
@@ -78,7 +78,7 @@ void DataGenericProximitySensor::add(DataParseElement *element)
     element->set(YARS_STRING_Y, _openingAngles.y);
     CONVERT_TO_RAD(_openingAngles.x);
     CONVERT_TO_RAD(_openingAngles.y);
-    if(element->attribute(YARS_STRING_TYPE) != NULL)
+    if(element->attribute(YARS_STRING_TYPE) != nullptr)
     {
       if(element->attribute(YARS_STRING_TYPE)->value() == YARS_STRING_RAD)
       {
@@ -153,7 +153,7 @@ void DataGenericProximitySensor::createXsd(XsdSpecification *spec)
 
 DataGenericProximitySensor* DataGenericProximitySensor::_copy()
 {
-  DataGenericProximitySensor *copy = new DataGenericProximitySensor(NULL);
+  DataGenericProximitySensor *copy = new DataGenericProximitySensor(nullptr);
   copy->_name             = _name;
   copy->_object           = _object;
   copy->_pose             = _pose;
@@ -161,8 +161,8 @@ DataGenericProximitySensor* DataGenericProximitySensor::_copy()
   copy->_mapping          = _mapping;
   copy->_openingAngles    = _openingAngles;
   copy->_measuredDistance = _measuredDistance;
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise  != nullptr) copy->_noise  = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->__setMapping();
   return copy;
 }
@@ -216,7 +216,7 @@ void DataGenericProximitySensor::setExternalValue(int index, double v)
 
 void DataGenericProximitySensor::__setMapping()
 {
-  if(_n != NULL) delete _n;
+  if(_n != nullptr) delete _n;
   _externalDomain     = _mapping;
   _internalDomain.min = 0; _internalDomain.max = _distance;
   _internalExternalMapping.setInputDomain(_internalDomain);

@@ -29,7 +29,7 @@ DataMacro* DataMacros::macro(string name)
       return (*i);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 
@@ -59,7 +59,7 @@ void DataMacros::createXsd(XsdSpecification *spec)
 
 DataMacros* DataMacros::copy()
 {
-  DataMacros *copy = new DataMacros(NULL);
+  DataMacros *copy = new DataMacros(nullptr);
   for(std::vector<DataMacro*>::iterator i = begin(); i != end(); i++)
   {
     copy->push_back((*i)->copy());

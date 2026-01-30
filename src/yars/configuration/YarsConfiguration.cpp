@@ -20,11 +20,11 @@
 
 #include <fstream>
 
-YarsConfiguration *YarsConfiguration::_me = NULL;
+YarsConfiguration *YarsConfiguration::_me = nullptr;
 
 YarsConfiguration *YarsConfiguration::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
   {
     _me = new YarsConfiguration();
   }
@@ -34,7 +34,7 @@ YarsConfiguration *YarsConfiguration::instance()
 YarsConfiguration::YarsConfiguration()
 {
   _argc = 0;
-  _argv = NULL;
+  _argv = nullptr;
   _directories = new Directories();
   _keyboardShortcuts = new KeyboardShortcuts();
   _programOptions = new ProgramOptionsConfiguration();
@@ -192,7 +192,7 @@ void YarsConfiguration::__printListCommandFollowModes()
 {
 #ifdef USE_VISUALISATION
   std::vector<FollowCamera *> list;
-  CameraFactory::create(&list, NULL);
+  CameraFactory::create(&list, nullptr);
   cout << "--- Followable Modes ---" << endl;
   int index = 0;
   for (std::vector<FollowCamera *>::iterator i = list.begin(); i != list.end(); i++)
@@ -678,13 +678,13 @@ void YarsConfiguration::__setPathsInData()
 void YarsConfiguration::__setControllerPaths()
 {
   DataRobots *robots = _data->last()->robots();
-  if (robots == NULL)
+  if (robots == nullptr)
     return;
 
   for (std::vector<DataRobot *>::iterator i = robots->begin(); i != robots->end(); i++)
   {
     DataRobot *robot = *i;
-    if (robot->controller() != NULL)
+    if (robot->controller() != nullptr)
     {
       string module = robot->controller()->module();
       string result;

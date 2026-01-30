@@ -88,13 +88,13 @@ Domain DataGenericDeflectionSensor::domain()
 
 DataGenericDeflectionSensor* DataGenericDeflectionSensor::_copy()
 {
-  DataGenericDeflectionSensor *copy = new DataGenericDeflectionSensor(NULL);
+  DataGenericDeflectionSensor *copy = new DataGenericDeflectionSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_mapping = _mapping;
   copy->_domain = _domain;
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   copy->__setMapping();
   copy->_useRad = _useRad;
   return copy;

@@ -220,5 +220,5 @@ KeyboardShortcut* KeyboardShortcuts::get(bool alt, bool ctrl, bool shift, char c
       return (*i);
     }
   }
-  return NULL;
+  return nullptr;
 }

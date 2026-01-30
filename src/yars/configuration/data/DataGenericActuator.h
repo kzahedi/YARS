@@ -94,10 +94,10 @@ class AxisParameter
       isDeflectionSet = false;
       isActive        = false;
       isDefined       = false;
-      noise           = NULL;
-      filter          = NULL;
+      noise           = nullptr;
+      filter          = nullptr;
       controlType     = -1;
-      n               = NULL;
+      n               = nullptr;
       internalValue   = 0.0;
       externalValue   = 0.0;
       inDesiredValue  = 0.0;
@@ -128,8 +128,8 @@ class AxisParameter
       // useSpring       = a.useSpring;
       springDamping   = a.springDamping;
       springStiffness = a.springStiffness;
-      if(a.noise  != NULL) noise  = a.noise->copy();
-      if(a.filter != NULL) filter = a.filter->copy();
+      if(a.noise  != nullptr) noise  = a.noise->copy();
+      if(a.filter != nullptr) filter = a.filter->copy();
       return *this;
     };
 

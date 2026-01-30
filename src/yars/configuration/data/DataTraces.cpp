@@ -81,7 +81,7 @@ int DataTraces::p_size()
 
 DataTraces* DataTraces::copy()
 {
-  DataTraces *copy = new DataTraces(NULL);
+  DataTraces *copy = new DataTraces(nullptr);
   copy->_name = _name;
   for(std::vector<DataTraceLine*>::iterator i = _lines.begin(); i != _lines.end(); i++)
   {

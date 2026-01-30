@@ -49,7 +49,7 @@ class ConsoleView : public Observer
     static ConsoleView* instance();
     virtual ~ConsoleView() { };
 
-    void notify(ObservableMessage *m);
+    void notify(ObservableMessage *m) override;
 
     static void printMessage(int type, const char *string, ...);
     static void printMessage(int type, std::string message, ...);

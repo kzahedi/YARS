@@ -10,13 +10,13 @@ class DataSensorFactory
 {
   public:
     /**
-     * @brief Returns a sensors, if element is the opening tag of one, or NULL
+     * @brief Returns a sensors, if element is the opening tag of one, or nullptr
      * otherwise
      *
      * @param element
      * @param parent
      *
-     * @return NULL or DataSensor*
+     * @return nullptr or DataSensor*
      *
      * @sa DataGenericProximitySensor
      * @sa DataGenericCameraSensor

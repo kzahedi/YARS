@@ -10,7 +10,7 @@ class YarsLoggingControl : public Observer
     YarsLoggingControl();
     virtual ~YarsLoggingControl() { };
 
-    void notify(ObservableMessage *message);
+    void notify(ObservableMessage *message) override;
     void setModel(YarsLoggingModel *model);
 
   private:

@@ -4,8 +4,7 @@
 #include <yars/configuration/xsd/graphviz/XsdGraphvizGenerator.h>
 #include <yars/configuration/data/DataRobotSimulationDescription.h>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <filesystem>
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +15,7 @@
 
 using namespace std;
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 class XsdGraphvizExporter
 {

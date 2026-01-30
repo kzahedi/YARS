@@ -35,11 +35,11 @@ YarsXSDGenerator::YarsXSDGenerator()
     XMLString::release(&pMsg);
   }
 
-  _impl =  DOMImplementationRegistry::getDOMImplementation(NULL);
+  _impl =  DOMImplementationRegistry::getDOMImplementation(nullptr);
   _out  = ((DOMImplementationLS*)_impl)->createLSOutput();
   _out->setEncoding(X("UTF-8"));
 
-  if (_impl != NULL)
+  if (_impl != nullptr)
   {
     try
     {
@@ -89,7 +89,7 @@ YarsXSDGenerator::YarsXSDGenerator()
     {
       XERCES_STD_QUALIFIER cerr << "An error occurred creating the document" << XERCES_STD_QUALIFIER endl;
     }
-  }  // (inpl != NULL)
+  }  // (inpl != nullptr)
   else
   {
     XERCES_STD_QUALIFIER cerr << "Requested implementation is not supported" << XERCES_STD_QUALIFIER endl;
@@ -110,10 +110,10 @@ void YarsXSDGenerator::__addSequence(XsdSequence *s)
 {
   // DOMComment *comment     = _doc->createComment(X("comment"));
   DOMElement *parent      = _doc->createElement(YARS_XSD_COMPLEX_TYPE);
-  XsdElement *xsdElement  = NULL;
-  XsdChoice  *xsdChoice   = NULL;
-  DOMElement *element     = NULL;
-  DOMElement *choice      = NULL;
+  XsdElement *xsdElement  = nullptr;
+  XsdChoice  *xsdChoice   = nullptr;
+  DOMElement *element     = nullptr;
+  DOMElement *choice      = nullptr;
 
   parent->setAttribute(YARS_XSD_NAME, X(s->name().c_str()));
 

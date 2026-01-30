@@ -44,21 +44,21 @@ private:
 
 static RTSSMaterialListener* gRTSSMaterialListener = nullptr;
 
-OgreHandler *OgreHandler::_me = NULL;
+OgreHandler *OgreHandler::_me = nullptr;
 
 OgreHandler *OgreHandler::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
     _me = new OgreHandler();
   return _me;
 }
 
 void OgreHandler::shutdown()
 {
-  if (_me != NULL)
+  if (_me != nullptr)
   {
     delete _me;
-    _me = NULL;
+    _me = nullptr;
   }
 }
 
@@ -326,11 +326,8 @@ void OgreHandler::reset()
 
 void OgreHandler::step()
 {
-  // cout << "OgreHandler 0" << endl;
   _sceneGraph->update();
-  // cout << "OgreHandler 1" << endl;
   _root->renderOneFrame();
-  // cout << "OgreHandler 2" << endl;
 }
 
 Ogre::Root *OgreHandler::root()

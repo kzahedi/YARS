@@ -35,7 +35,7 @@
 #define __YARS_GET_SKY Data::instance()->current()->screens()->sky()
 #define __YARS_CURRENT_DATA Data::instance()->current()
 #define __YARS_DATA_GET_CURRENT_ENVIRONMENT(index) Data::instance()->current()->environment()
-#define __YARS_HAS_ENVIRONMENTS (Data::instance()->current()->environment() != NULL)
+#define __YARS_HAS_ENVIRONMENTS (Data::instance()->current()->environment() != nullptr)
 
 #define __YARS_USE_RIGID_BODY_DYNAMICS true
 
@@ -66,7 +66,7 @@
   Data::instance()->current()->simulator()->useRandomSeed()
 
 //#define __YARS_DATA_GET_CURRENT_ENVIRONMENT(index) Data::instance()->current()->environments()->environment(index)
-//#define __YARS_HAS_ENVIRONMENTS                    (Data::instance()->current()->environments() != NULL)
+//#define __YARS_HAS_ENVIRONMENTS                    (Data::instance()->current()->environments() != nullptr)
 
 /* \brief Catches ObservableMessage and translates them to function calls of
  * YarsConfigurationModel.

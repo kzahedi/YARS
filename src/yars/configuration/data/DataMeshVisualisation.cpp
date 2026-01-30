@@ -66,7 +66,7 @@ void DataMeshVisualisation::createXsd(XsdSpecification *spec)
 
 DataMeshVisualisation* DataMeshVisualisation::copy()
 {
-  DataMeshVisualisation* copy = new DataMeshVisualisation(NULL);
+  DataMeshVisualisation* copy = new DataMeshVisualisation(nullptr);
   copy->_name    = _name;
   copy->_pose    = _pose;
   copy->_scale   = _scale;

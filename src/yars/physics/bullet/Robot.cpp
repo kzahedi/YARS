@@ -9,7 +9,7 @@
 Robot::Robot(DataRobot *robot)
 {
   _data = robot;
-  _controller = NULL;
+  _controller = nullptr;
   _reset = false;
   _quit = false;
   _seed = -1;
@@ -31,12 +31,12 @@ Robot::~Robot()
     delete *i;
   _actuators.clear();
   _sensors.clear();
-  if (_controller != NULL)
+  if (_controller != nullptr)
   {
     _controller->close();
     delete _controller;
   }
-  if (_controllerLib != NULL)
+  if (_controllerLib != nullptr)
   {
     dlclose(_controllerLib);
   }
@@ -96,7 +96,7 @@ void Robot::postPhysicsUpdate()
 
 void Robot::controllerUpdate()
 {
-  if (_controller != NULL)
+  if (_controller != nullptr)
   {
     if (__YARS_GET_STEP % _controllerFrequency == 0)
     {
@@ -116,7 +116,7 @@ void Robot::controllerUpdate()
 
 void Robot::__createController()
 {
-  if (_data->controller() == NULL)
+  if (_data->controller() == nullptr)
     return;
   string c = _data->controller()->module();
   _controllerLib = dlopen(c.c_str(), RTLD_LAZY);
@@ -217,7 +217,7 @@ void Robot::reset()
   // __createActuators();
   // __createSensors();
 
-  if (_controller != NULL)
+  if (_controller != nullptr)
   {
     _controller->reset();
     __setupController();

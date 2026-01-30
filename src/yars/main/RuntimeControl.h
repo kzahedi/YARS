@@ -24,7 +24,7 @@ class RuntimeControl : public Observer, public Observable
      * \param[out] __M_RESET
      * \param[out] __M_QUIT_CALLED
      */
-    void notify(ObservableMessage *message);
+    void notify(ObservableMessage *message) override;
   private:
 
     Data  *_data;

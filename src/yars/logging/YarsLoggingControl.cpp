@@ -3,7 +3,7 @@
 
 YarsLoggingControl::YarsLoggingControl()
 {
-  _model = NULL;
+  _model = nullptr;
 }
 
 void YarsLoggingControl::notify(ObservableMessage *message)
@@ -13,7 +13,7 @@ void YarsLoggingControl::notify(ObservableMessage *message)
   case __M_NEXT_STEP:
     if (!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
     {
-      if (_model != NULL)
+      if (_model != nullptr)
       {
         _model->step();
       }

@@ -54,7 +54,7 @@ DataSliderActuator::DataSliderActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_SLIDER)
 {
   _noise                       = new DataNoise(this);
-  _filter                      = NULL;
+  _filter                      = nullptr;
   _deflectionSet               = false;
   _isActive                    = true;
   _currentTransitionalVelocity = 0.0;
@@ -62,7 +62,7 @@ DataSliderActuator::DataSliderActuator(DataNode *parent)
   _appliedForce                = 0.0;
   _appliedVelocity             = 0.0;
   _friction                    = 0.0;
-  _n                           = NULL;
+  _n                           = nullptr;
 
   _internalValue.resize(1);
   _externalValue.resize(1);
@@ -342,10 +342,10 @@ string DataSliderActuator::mode()
 
 DataSliderActuator* DataSliderActuator::_copy()
 {
-  DataSliderActuator *copy = new DataSliderActuator(NULL);
+  DataSliderActuator *copy = new DataSliderActuator(nullptr);
 
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise  != nullptr) copy->_noise  = _noise->copy();
   copy->_mapping            = _mapping;
   copy->_parameter          = _parameter;
   copy->_pose               = _pose;

@@ -48,7 +48,7 @@ void DataGenericOrientationSensor::add(DataParseElement *element)
   if(element->opening(YARS_STRING_GENERIC_ORIENTATION_SENSOR))
   {
     element->set(YARS_STRING_NAME, _name);
-    if(element->attribute(YARS_STRING_TYPE) != NULL)
+    if(element->attribute(YARS_STRING_TYPE) != nullptr)
     {
       if(element->attribute(YARS_STRING_TYPE)->value() == YARS_STRING_DEG)
       {
@@ -156,12 +156,12 @@ bool DataGenericOrientationSensor::useDegree()
 
 DataGenericOrientationSensor* DataGenericOrientationSensor::_copy()
 {
-  DataGenericOrientationSensor *copy = new DataGenericOrientationSensor(NULL);
+  DataGenericOrientationSensor *copy = new DataGenericOrientationSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_mapping = _mapping;
-  if (_noise != NULL) copy->_noise = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->_x = _x;
   copy->_y = _y;
   copy->_z = _z;

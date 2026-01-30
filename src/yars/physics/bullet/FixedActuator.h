@@ -12,12 +12,12 @@ class FixedActuator : public Actuator
     FixedActuator(DataFixedActuator *data, Robot *robot);
 
     // applies the motor value to hinge
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
 
-    DataFixedActuator* data();
-    btTypedConstraint* constraint();
+    DataFixedActuator* data() override;
+    btTypedConstraint* constraint() override;
 
   private:
 

@@ -3,12 +3,11 @@
 
 #include <yars/util/YarsErrorHandler.h>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <filesystem>
 #include <vector>
 #include <iostream>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace std;
 
 class FileSystemOperations

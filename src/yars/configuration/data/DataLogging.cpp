@@ -167,7 +167,7 @@ void DataLogging::createXsd(XsdSpecification *spec)
 
 DataLogging* DataLogging::copy()
 {
-  DataLogging *copy = new DataLogging(NULL);
+  DataLogging *copy = new DataLogging(nullptr);
   FOREACH(DataLoggingObject*, lo, _objects)
   {
     DataLoggingObject *o = (*lo)->copy();
@@ -290,32 +290,32 @@ void DataLogging::finish()
   stringstream oss;
   FOREACH(DataLoggingObject*, o, _objects)
   {
-    missing |= ( (*o)->object() == NULL );
-    if((*o)->object() == NULL)
+    missing |= ( (*o)->object() == nullptr );
+    if((*o)->object() == nullptr)
     {
       oss << "Object logger \"" << (*o)->target() << "\" refers to non-existing object." << endl;
     }
   }
   FOREACH(DataLoggingSensor*, s, _sensors)
   {
-    missing |= ( (*s)->sensor() == NULL );
-    if((*s)->sensor() == NULL)
+    missing |= ( (*s)->sensor() == nullptr );
+    if((*s)->sensor() == nullptr)
     {
       oss << "Sensor logger \"" << (*s)->target() << "\" refers to non-existing sensor." << endl;
     }
   }
   FOREACH(DataLoggingActuator*, s, _actuators)
   {
-    missing |= ( (*s)->actuator() == NULL );
-    if((*s)->actuator() == NULL)
+    missing |= ( (*s)->actuator() == nullptr );
+    if((*s)->actuator() == nullptr)
     {
       oss << "Actuator logger \"" << (*s)->target() << "\" refers to non-existing actuator." << endl;
     }
   }
   FOREACH(DataLoggingController*, s, _controllers)
   {
-    missing |= ( (*s)->controller() == NULL );
-    if((*s)->controller() == NULL)
+    missing |= ( (*s)->controller() == nullptr );
+    if((*s)->controller() == nullptr)
     {
       oss << "Controller logger \"" << (*s)->target() << "\" refers to non-existing controller." << endl;
     }

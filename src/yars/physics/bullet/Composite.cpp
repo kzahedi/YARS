@@ -26,7 +26,7 @@ void Composite::init()
   int index = 0;
   for (DataObjects::iterator oo = _data->g_begin(); oo != _data->g_end(); oo++)
   {
-    btCollisionShape *child = NULL;
+    btCollisionShape *child = nullptr;
     mass += (*oo)->physics()->mass();
     masses[index++] = (*oo)->physics()->mass();
     Pose pose = (*oo)->pose();

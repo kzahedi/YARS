@@ -191,7 +191,7 @@ bool Directories::__doesFileExist(fs::path filePath)
  *
  * This function checks a set of directories for the first directory that
  * contains a set of given files. All files must be in the directory. If this is
- * the case, the directory and true is returned, NULL and false otherwise.
+ * the case, the directory and true is returned, nullptr and false otherwise.
  *
  * \param[in] dirs The directories to be checked
  * \param[in] filesnames The set of files to be checked
@@ -224,7 +224,7 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
       }
     }
   }
-  returnPath = NULL;
+  returnPath = nullptr;
   return false;
 }
 
@@ -232,7 +232,7 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
  *
  * This function checks a set of directories for the first directory that
  * contains a given file. If this is the case, the directory and true is
- * returned, NULL and false otherwise.
+ * returned, nullptr and false otherwise.
  *
  * \param[in] dirs The directories to be checked
  * \param[in] filesname The file to be checked
@@ -260,7 +260,7 @@ bool Directories::__getFirstExistingDirContainingFile(std::vector<string>
       }
     }
   }
-  returnPath = NULL;
+  returnPath = nullptr;
   return false;
 }
 
@@ -345,7 +345,7 @@ void Directories::__findXsdDirectory()
     fs::path complete = fs::path(_xsdDirectory);
     if (!complete.has_root_path())
     {
-      complete = fs::initial_path() / complete;
+      complete = fs::current_path() / complete;
     }
     _xsdDirectory = complete.string();
     _xsdFound = true;
@@ -492,7 +492,7 @@ void Directories::setFullPath(string *dirString)
   fs::path dir(*dirString);
   if (!dir.has_root_path())
   {
-    dir = fs::initial_path() / dir / YARS_DIR_ROSIML_NAME;
+    dir = fs::current_path() / dir / YARS_DIR_ROSIML_NAME;
   }
   *dirString = dir.string();
 }

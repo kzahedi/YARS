@@ -74,7 +74,7 @@ DataParameter* DataNoise::parameter(int index)
 
 DataNoise* DataNoise::copy()
 {
-  DataNoise *copy = new DataNoise(NULL);
+  DataNoise *copy = new DataNoise(nullptr);
   copy->_module = _module;
   for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
   {

@@ -19,8 +19,8 @@
 
 YarsLoggingModel::YarsLoggingModel()
 {
-  _traces         = NULL;
-  _loggingHandler = NULL;
+  _traces         = nullptr;
+  _loggingHandler = nullptr;
 }
 
 YarsLoggingModel::~YarsLoggingModel()
@@ -34,7 +34,7 @@ void YarsLoggingModel::reset()
   // __cleanup();
   // init();
 
-  if(_traces != NULL)
+  if(_traces != nullptr)
   {
     for(vector<DataTraceLine*>::iterator l = _traces->l_begin(); l != _traces->l_end(); l++)
     {
@@ -48,7 +48,7 @@ void YarsLoggingModel::reset()
     }
   }
   // TODO: this is a quick hack. needs to be set in RoSiML
-  if(_loggingHandler != NULL)
+  if(_loggingHandler != nullptr)
   {
     _loggingHandler->reset();
   }
@@ -57,7 +57,7 @@ void YarsLoggingModel::reset()
 void YarsLoggingModel::init()
 {
   DataLogging *loggingData = Data::instance()->current()->logging();
-  if(loggingData != NULL)
+  if(loggingData != nullptr)
   {
     _loggingHandler = new LoggingHandler();
 
@@ -128,7 +128,7 @@ void YarsLoggingModel::init()
     //     s++)
     // {
     //   SelforgLogging *sol = new SelforgLogging();
-    //   // only one is not NULL
+    //   // only one is not nullptr
     //   sol->set((*s)->object());
     //   sol->set((*s)->sensor());
     //   sol->set((*s)->actuator());
@@ -145,11 +145,11 @@ void YarsLoggingModel::init()
   {
     _traces = Data::instance()->current()->traces();
 
-    if(_traces != NULL)
+    if(_traces != nullptr)
     {
       // for(std::vector<DataTracePoint*>::iterator p = _traces->p_begin(); p != _traces->p_end(); p++) (*p)->update();
       for(std::vector<DataTraceLine*>::iterator  l = _traces->l_begin(); l != _traces->l_end(); l++)
-        if ((*l) != NULL) (*l)->update();
+        if ((*l) != nullptr) (*l)->update();
     }
   }
 }
@@ -162,7 +162,7 @@ void YarsLoggingModel::step()
     {
       _traces = Data::instance()->current()->traces();
 
-      if(_traces != NULL && !__YARS_GET_USE_PAUSE)
+      if(_traces != nullptr && !__YARS_GET_USE_PAUSE)
       {
         for(std::vector<DataTracePoint*>::iterator p = _traces->p_begin(); p != _traces->p_end(); p++) (*p)->update();
         for(std::vector<DataTraceLine*>::iterator  l = _traces->l_begin(); l != _traces->l_end(); l++) (*l)->update();
@@ -172,15 +172,15 @@ void YarsLoggingModel::step()
 
   // if(__YARS_GET_STEP % __YARS_GET_BEHAVIOUR_FREQUENCY == 0)
   // {
-  if(_loggingHandler != NULL) _loggingHandler->update();
+  if(_loggingHandler != nullptr) _loggingHandler->update();
   // }
     
 }
 
 void YarsLoggingModel::__cleanup()
 {
-  if(_loggingHandler != NULL) _loggingHandler->close();
-  if(_traces         != NULL) delete _traces;
-  //if(_loggingHandler != NULL) delete _loggingHandler;
+  if(_loggingHandler != nullptr) _loggingHandler->close();
+  if(_traces         != nullptr) delete _traces;
+  //if(_loggingHandler != nullptr) delete _loggingHandler;
 }
 

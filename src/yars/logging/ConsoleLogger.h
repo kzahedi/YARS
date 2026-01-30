@@ -9,9 +9,9 @@ class ConsoleLogger : public Logger
   public:
     ConsoleLogger(DataLoggingConsole *data);
 
-    void update();
-    void init();
-    void close();
+    void update() override;
+    void init() override;
+    void close() override;
 
   private:
     DataLoggingConsole *_data;

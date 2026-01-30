@@ -321,7 +321,7 @@ void DataScreen::createXsd(XsdSpecification *spec)
 
 DataScreen* DataScreen::copy()
 {
-  DataScreen *copy       = new DataScreen(NULL);
+  DataScreen *copy       = new DataScreen(nullptr);
   copy->_name            = _name;
   copy->_axes            = _axes;
   copy->_screenGeometry  = _screenGeometry;

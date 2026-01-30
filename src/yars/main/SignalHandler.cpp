@@ -4,11 +4,11 @@
 #include <iostream>
 
 Observable    *SignalHandler::_observable = new Observable();
-SignalHandler *SignalHandler::_me = NULL;
+SignalHandler *SignalHandler::_me = nullptr;
 
 SignalHandler* SignalHandler::instance()
 {
-  if(_me == NULL)
+  if(_me == nullptr)
   {
     _me = new SignalHandler();
   }

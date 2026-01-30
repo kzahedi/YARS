@@ -76,7 +76,7 @@ void DataOffsetCam::add(DataParseElement *element)
 
 DataOffsetCam* DataOffsetCam::copy()
 {
-  DataOffsetCam *copy = new DataOffsetCam(NULL);
+  DataOffsetCam *copy = new DataOffsetCam(nullptr);
   copy->_lookAtX = _lookAtX;
   copy->_lookAtY = _lookAtY;
   copy->_lookAtZ = _lookAtZ;

@@ -16,7 +16,7 @@ DataObject::DataObject(DataNode *parent, int type)
 DataObject::~DataObject()
 {
   YM_CLOSE;
-  if(_physics != NULL) delete _physics;
+  if(_physics != nullptr) delete _physics;
 }
 
 int DataObject::type()

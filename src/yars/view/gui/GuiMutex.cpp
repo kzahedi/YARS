@@ -2,31 +2,31 @@
 
 #include <iostream>
 
-GuiMutex* GuiMutex::_me = NULL;
+GuiMutex* GuiMutex::_me = nullptr;
 
 void GuiMutex::lock()
 {
-  if(_me == NULL) _me = new GuiMutex();
+  if(_me == nullptr) _me = new GuiMutex();
   _me->_lock();
 }
 
 void GuiMutex::unlock()
 {
-  if(_me == NULL) _me = new GuiMutex();
+  if(_me == nullptr) _me = new GuiMutex();
   _me->_unlock();
 }
 
 void GuiMutex::lock(string file, int line)
 {
   cout << "LOCK: " << file << ":" << line << endl;
-  if(_me == NULL) _me = new GuiMutex();
+  if(_me == nullptr) _me = new GuiMutex();
   _me->_lock();
 }
 
 void GuiMutex::unlock(string file, int line)
 {
   cout << "UNLOCK: " << file << ":" << line << endl;
-  if(_me == NULL) _me = new GuiMutex();
+  if(_me == nullptr) _me = new GuiMutex();
   _me->_unlock();
 }
 

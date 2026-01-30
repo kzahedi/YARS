@@ -25,7 +25,7 @@ YarsViewModel::YarsViewModel()
     initialiseView();
     _ogreHandler->setupSceneManager();
     FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)
+    if ((*i) != nullptr)
       (*i)->setupOSD();
     if (__YARS_GET_USE_CAPTURE_CL)
       toggleCaptureVideo();
@@ -42,7 +42,7 @@ void YarsViewModel::initialiseView()
   DataRobotSimulationDescription *data = __YARS_CURRENT_DATA;
   if (!__YARS_GET_USE_VISUALISATION)
     return;
-  if (data->screens() == NULL)
+  if (data->screens() == nullptr)
     return;
   FOREACHP(DataScreen *, i, data->screens())
   if ((*i)->autoShow())
@@ -53,17 +53,17 @@ void YarsViewModel::visualiseScene()
 {
   if (!__YARS_GET_USE_VISUALISATION)
     return;
-  if (__YARS_CURRENT_DATA->screens() == NULL)
+  if (__YARS_CURRENT_DATA->screens() == nullptr)
     return;
   _ogreHandler->step();
 
   FOREACH(SdlWindow *, i, _windowManager)
-  if ((*i) != NULL)
+  if ((*i) != nullptr)
     (*i)->step();
   while (SDL_PollEvent(&_event))
   {
     FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)
+    if ((*i) != nullptr)
       (*i)->handleEvent(_event);
   }
 }

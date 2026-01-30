@@ -13,7 +13,7 @@ class YarsPhysicsControl : public Observer
     virtual ~YarsPhysicsControl() { };
 
     void setModel(YarsPhysicsModel *model);
-    void notify(ObservableMessage *message);
+    void notify(ObservableMessage *message) override;
 
   private:
     YarsPhysicsModel *_model;

@@ -43,7 +43,7 @@ using namespace _SDL_;
 #define __SHADOWTYPE_NONE 6
 
 #define CHECK_IF_THERE_ARE_FOLLOWABLES                                      \
-  if (Data::instance()->current()->screens()->followables() == NULL)        \
+  if (Data::instance()->current()->screens()->followables() == nullptr)        \
     return;                                                                 \
   if (Data::instance()->current()->screens()->followables()->o_size() == 0) \
     return;
@@ -56,7 +56,7 @@ using namespace _SDL_;
 #undef main
 #endif
 
-//#include <boost/thread.hpp>
+// Threading now uses C++17 std::thread
 
 #include <string>
 
@@ -103,7 +103,7 @@ SdlWindow::SdlWindow(int index)
 
 #ifdef USE_CAPTURE_VIDEO
   _captureRunning = false;
-  _videoCapture = NULL;
+  _videoCapture = nullptr;
 #endif // USE_CAPTURE_VIDEO
 }
 
@@ -340,7 +340,7 @@ void SdlWindow::__setupSDL()
                                   SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   }
 
-  if (_sdlWindow == NULL)
+  if (_sdlWindow == nullptr)
   {
     printf("SDL_CreateWindow failed: %s\n", SDL_GetError());
     return;
@@ -351,9 +351,9 @@ void SdlWindow::__setupSDL()
   // SDL_ShowCursor(SDL_ENABLE);
 
 #ifdef __WINDOWS__
-  SDL_GLContext glcontext = NULL;
+  SDL_GLContext glcontext = nullptr;
   glcontext = SDL_GL_CreateContext(_sdlWindow);
-  if (glcontext == NULL)
+  if (glcontext == nullptr)
   {
     printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
     return;
@@ -389,11 +389,14 @@ void SdlWindow::__setupSDL()
   params["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.x11.window);
 #endif
 #ifdef __APPLE__
-  // OGRE 14 + SDL2 on macOS: Let OGRE create its own OpenGL context
-  // but use the SDL window's Cocoa view
+  // OGRE 14 + SDL2 on macOS: Use Cocoa API with external NSView
+  // Note: Must pass externalWindowHandle because OGRE's builtin window is broken
   params["externalWindowHandle"] = OSX_cocoa_view(syswm_info);
   params["macAPI"] = "cocoa";
   params["macAPICocoaUseNSView"] = "true";
+  // Try adding context options that might help with rendering
+  params["vsync"] = "false";
+  params["gamma"] = "false";
 #endif
 
   //params["displayFrequency"] = 100;
@@ -701,7 +704,7 @@ void SdlWindow::__initMovie()
   _capturingOffset = __YARS_GET_STEP;
   _frameIndex = 0;
 
-  if (_videoCapture != NULL)
+  if (_videoCapture != nullptr)
   {
     delete _videoCapture;
   }
@@ -717,7 +720,7 @@ void SdlWindow::__closeMovie()
   _captureRunning = false;
   _videoCapture->finish();
   delete _videoCapture;
-  _videoCapture = NULL;
+  _videoCapture = nullptr;
 }
 
 void SdlWindow::__captureMovieFrame()
@@ -818,7 +821,7 @@ void SdlWindow::__osd()
     for (std::vector<DataRobot *>::iterator m = robots->begin(); m != robots->end(); m++)
     {
       DataController *controller = (*m)->controller();
-      if (controller != NULL)
+      if (controller != nullptr)
       {
         controller->lockOSD();
         for (std::vector<string>::const_iterator s = controller->s_begin(); s != controller->s_end(); s++)
@@ -940,14 +943,14 @@ bool SdlWindow::closed()
 
 void SdlWindow::close()
 {
-  _pRenderTex = NULL; // might have to be removed from ogre first
-  // &_renderTexture = NULL; // might have to removed from ogre first
+  _pRenderTex = nullptr; // might have to be removed from ogre first
+  // &_renderTexture = nullptr; // might have to removed from ogre first
 
-  _window = NULL;       // might have to be removed from ogre first
-  _camera = NULL;       // might have to be removed from ogre first
-  _viewport = NULL;     // might have to be removed from ogre first
-  _sceneManager = NULL; // might have to be removed from ogre first
-  _ogreHandler = NULL;  // might have to be removed from ogre first
+  _window = nullptr;       // might have to be removed from ogre first
+  _camera = nullptr;       // might have to be removed from ogre first
+  _viewport = nullptr;     // might have to be removed from ogre first
+  _sceneManager = nullptr; // might have to be removed from ogre first
+  _ogreHandler = nullptr;  // might have to be removed from ogre first
 
   SDL_DestroyWindow(_sdlWindow);
 }

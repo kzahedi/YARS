@@ -43,7 +43,7 @@ void DataMacroInstance::add(DataParseElement *element)
     element->set(YARS_STRING_NAME, _prefix);
     element->set(YARS_STRING_REF,  ref);
 
-    if(_macros != NULL)
+    if(_macros != nullptr)
     {
       for(std::vector<DataMacro*>::iterator i = _macros->begin(); i != _macros->end(); i++)
       {
@@ -167,7 +167,7 @@ void DataMacroInstance::createXsd(XsdSpecification *spec)
 
 DataMacroInstance* DataMacroInstance::copy(DataNode *parent)
 {
-  DataMacroInstance *copy = new DataMacroInstance(parent, NULL);
+  DataMacroInstance *copy = new DataMacroInstance(parent, nullptr);
   copy->_macros = _macros->copy();
   copy->_pose = _pose;
   copy->_target = _target;

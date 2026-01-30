@@ -86,7 +86,7 @@ void DataMuscleSensor::createXsd(XsdSpecification *spec)
 
 DataMuscleSensor*  DataMuscleSensor::_copy()
 {
-  DataMuscleSensor *copy = new DataMuscleSensor(NULL);
+  DataMuscleSensor *copy = new DataMuscleSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   for(int i = 0; i < _dimension; i++)
@@ -94,8 +94,8 @@ DataMuscleSensor*  DataMuscleSensor::_copy()
     copy->_mapping[i] = _mapping[i];
     copy->_domain[i] = _domain[i];
   }
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   copy->__setMapping();
   return copy;
 }

@@ -132,10 +132,10 @@ int DataObjectVelocitySensor::dimension()
 
 DataObjectVelocitySensor* DataObjectVelocitySensor::_copy()
 {
-  DataObjectVelocitySensor *copy = new DataObjectVelocitySensor(NULL);
+  DataObjectVelocitySensor *copy = new DataObjectVelocitySensor(nullptr);
 
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise  != nullptr) copy->_noise  = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->_name      = _name;
   copy->_object    = _object;
   copy->_mapping   = _mapping;

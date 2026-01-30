@@ -2,17 +2,17 @@
 
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <boost/function.hpp>
+#include <functional>
 
-KeyHandler *KeyHandler::_me = NULL;
-KeyboardShortcuts *KeyHandler::_keyboardShortcuts = NULL;
+KeyHandler *KeyHandler::_me = nullptr;
+KeyboardShortcuts *KeyHandler::_keyboardShortcuts = nullptr;
 Observable *KeyHandler::_o = new Observable();
 
 std::vector<int> KeyHandler::_registeredKeyEventCodes;
 
 KeyHandler *KeyHandler::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
     _me = new KeyHandler();
   return _me;
 }
@@ -74,9 +74,9 @@ void KeyHandler::notifyObservers(ObservableMessage *m)
 int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
 {
   KeyboardShortcut *key = _keyboardShortcuts->get(alt, ctrl, shift, c);
-  if (key == NULL)
+  if (key == nullptr)
     return -1;
-  if (key->function != NULL)
+  if (key->function != nullptr)
   {
     // cout << "Key " << *key << endl;
     key->function();

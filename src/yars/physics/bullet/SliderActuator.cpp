@@ -17,7 +17,7 @@ SliderActuator::SliderActuator(DataSliderActuator *data, Robot *robot)
     : Actuator("SliderActuator", data->source(), data->destination(), robot)
 {
   _data = data;
-  _sliderConstraint = NULL;
+  _sliderConstraint = nullptr;
   _position = 0.0;
   _lastPosition = 0.0;
   _isActive = true;
@@ -31,7 +31,7 @@ SliderActuator::SliderActuator(DataSliderActuator *data, Robot *robot)
 
   Pose axis = _data->pose();
 
-  if (_sourceObject != NULL && _destinationObject != NULL)
+  if (_sourceObject != nullptr && _destinationObject != nullptr)
   {
     btRigidBody *source = _sourceObject->rigidBody();
     btRigidBody *destination = _destinationObject->rigidBody();
@@ -114,7 +114,7 @@ SliderActuator::SliderActuator(DataSliderActuator *data, Robot *robot)
 
 SliderActuator::~SliderActuator()
 {
-  if (_sliderConstraint != NULL)
+  if (_sliderConstraint != nullptr)
     delete _sliderConstraint;
 }
 

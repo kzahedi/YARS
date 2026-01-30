@@ -12,7 +12,7 @@ void TripodCam::init(DataObject *f, DataCamera *cam)
 
 void TripodCam::update(P3D vel)
 {
-  if(followable == NULL) return;
+  if(followable == nullptr) return;
   updateFollowablePosition();
   _camera->setLookAt(followablePosition);
 }

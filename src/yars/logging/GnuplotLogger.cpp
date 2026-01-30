@@ -29,7 +29,7 @@ GnuplotLogger::GnuplotLogger(DataLoggingGnuplot *data, int index)
 void GnuplotLogger::init()
 {
   _gnuplotFD = popen("gnuplot","w");
-  if(_gnuplotFD == NULL) YarsErrorHandler::push("Cannot open gnuplot executable");
+  if(_gnuplotFD == nullptr) YarsErrorHandler::push("Cannot open gnuplot executable");
   for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
   {
     for(std::vector<string>::iterator v = (*l)->v_begin(); v != (*l)->v_end(); v++)

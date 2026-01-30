@@ -24,11 +24,35 @@ All notable changes to YARS are documented in this file.
 - Font definitions updated for OGRE 14 format (added `font` keyword)
 - Materials updated to work with RTSS (removed fixed-function features)
 
+### C++17 Migration (Boost Replacement)
+- Replaced `boost::thread` with `std::thread` in MainLoopThread.h, yarsMain.cpp
+- Replaced `boost::function` with `std::function` in KeyboardShortcut.h, KeyHandler.cpp
+- Replaced `boost::filesystem` with `std::filesystem` in Directories.h/cpp, FileSystemOperations.h/cpp, XsdGraphvizExporter.h
+- Replaced `boost::date_time` with `std::chrono` in Timer.h
+- Replaced `boost::format` with `std::put_time` and `std::ostringstream`
+- Replaced `boost::tokenizer` and `BOOST_FOREACH` with C++17 string operations
+- Replaced `boost::replace_all_copy` with `std::regex_replace` in CSVLogger.cpp
+- Replaced `fs::initial_path()` with `fs::current_path()` (std::filesystem)
+- Replaced `fs::system_complete()` with `fs::absolute()` (std::filesystem)
+- Removed boost::filesystem and boost::thread from CMake dependencies
+- Remaining Boost dependencies: program_options (no C++17 equivalent), circular_buffer (used in GnuplotLogger.h, DataTrace.h)
+
+### Code Modernization (C++11/14/17)
+- Replaced NULL with nullptr in modified files:
+  - KeyHandler.cpp
+  - FileSystemOperations.cpp
+  - Directories.cpp
+  - YarsConfiguration.cpp
+  - KeyboardShortcut.cpp
+  - KeyboardShortcuts.cpp
+
 ### Removed
 - Fixed-function pipeline support (not available in GL3Plus)
 - Stencil shadows (disabled pending shader-based implementation)
 - normalise_normals material setting (deprecated in OGRE 14)
 - separateUV cubemap setting (deprecated)
+- boost::filesystem dependency (replaced with std::filesystem)
+- boost::thread dependency (replaced with std::thread)
 
 ### Fixed
 - Plugin loading on macOS using installPlugin() instead of loadPlugin()

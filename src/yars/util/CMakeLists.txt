@@ -16,4 +16,4 @@ add_library(YarsUtil ${LIBRARY_TYPE} filter/MovingAverage.cpp
                                      Directories.cpp
                                      FileSystemOperations.cpp)
 
-target_link_libraries(YarsUtil Boost::filesystem)
+# Using C++17 std::filesystem (no longer needs Boost::filesystem)

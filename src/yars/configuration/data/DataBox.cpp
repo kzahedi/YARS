@@ -138,14 +138,14 @@ void DataBox::createXsd(XsdSpecification *spec)
 
 DataBox* DataBox::_copy()
 {
-  DataBox *copy = new DataBox(NULL); // no parent needed, because no parsing takes place after copying
+  DataBox *copy = new DataBox(nullptr); // no parent needed, because no parsing takes place after copying
   copy->setDimension(_dimension);
   copy->setVisualise(_visualise);
   copy->setPose(_pose);
   copy->setPhysics(_physics->copy());
   copy->setName(_name);
   copy->_isSoft = _isSoft;
-  // if(_mesh != NULL) copy->_mesh = _mesh->copy();
+  // if(_mesh != nullptr) copy->_mesh = _mesh->copy();
   for(int i = 0; i < 6; i++) copy->_texture[i] = _texture[i];
   return copy;
 }

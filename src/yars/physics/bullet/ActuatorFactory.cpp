@@ -17,7 +17,7 @@ Actuator* ActuatorFactory::create(DataActuator *actuator, Robot *robot)
     case DATA_ACTUATOR_MUSCLE:  return __createMuscle(actuator, robot); break;
   }
   YarsErrorHandler::push("Actuator error. Unknown type given.");
-  return NULL;
+  return nullptr;
 }
 
 Actuator* ActuatorFactory::__createMuscle(DataActuator *actuator, Robot *robot)
@@ -62,5 +62,5 @@ Actuator* ActuatorFactory::__createGeneric(DataActuator *actuator, Robot *robot)
     return (Actuator*)a;
   }
   YarsErrorHandler::push("Unknown generic actuator selected");
-  return NULL;
+  return nullptr;
 }

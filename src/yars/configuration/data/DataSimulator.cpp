@@ -91,7 +91,7 @@ void DataSimulator::__processControlParameters(DataParseElement *element)
   element->set(YARS_STRING_ITERATIONS, _iterations);
   element->set(YARS_STRING_AUTO_RESET, _autoReset);
   element->set(YARS_STRING_SEED,       _randomSeed);
-  if(element->attribute(YARS_STRING_SEED) != NULL) _useRandomSeed = true;
+  if(element->attribute(YARS_STRING_SEED) != nullptr) _useRandomSeed = true;
 }
 
 void DataSimulator::createXsd(XsdSpecification *spec)
@@ -135,7 +135,7 @@ void DataSimulator::setStepSize(double stepSize)
 
 DataSimulator* DataSimulator::copy()
 {
-  DataSimulator *copy = new DataSimulator(NULL);
+  DataSimulator *copy = new DataSimulator(nullptr);
   copy->_simulatorFrequency = _simulatorFrequency;
   copy->_iterations         = _iterations;
   copy->_autoReset          = _autoReset;

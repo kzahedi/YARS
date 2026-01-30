@@ -86,7 +86,7 @@ double DataTracePoint::pointSize()
 
 DataTracePoint* DataTracePoint::copy()
 {
-  DataTracePoint *copy = new DataTracePoint(NULL);
+  DataTracePoint *copy = new DataTracePoint(nullptr);
   copy->_target       = _target;
   copy->_color        = _color;
   copy->_offset       = _offset;

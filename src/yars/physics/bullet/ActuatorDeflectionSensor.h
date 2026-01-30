@@ -14,8 +14,8 @@ class ActuatorDeflectionSensor : public Sensor
     ActuatorDeflectionSensor(DataGenericDeflectionSensor *data, Robot *robot);
     ~ActuatorDeflectionSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericDeflectionSensor *_data;

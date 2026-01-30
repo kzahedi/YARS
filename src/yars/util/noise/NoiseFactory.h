@@ -14,10 +14,10 @@ class NoiseFactory
   public:
     static Noise* create(DataNoise *data)
     {
-      if(data == NULL)              return new NoNoise(NULL);
+      if(data == nullptr)              return new NoNoise(nullptr);
       if(data->module() == "gauss") return new GaussianNoise(data);
       if(data->module() == "white") return new WhiteNoise(data);
-                                    return new NoNoise(NULL);
+                                    return new NoNoise(nullptr);
     }
 
 };

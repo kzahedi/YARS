@@ -4,9 +4,6 @@
 
 #include <yars/util/Timer.h>
 
-#include <boost/tokenizer.hpp>
-#include <boost/foreach.hpp>
-
 #include <sstream>
 #include <stdlib.h>
 #ifndef _MSC_VER
@@ -14,8 +11,6 @@
 #else
 #  include <io.h>
 #endif // _MSC_VER
-
-using namespace boost;
 
 FileSystemOperations::FileSystemOperations()
 { }
@@ -77,7 +72,7 @@ string* FileSystemOperations::getFirstExistingDirContainingDir(std::vector<strin
     {
       Y_DEBUG("FileSystemOperations: dir %s is given as absolute path "
           " but does not exist.", fs::path(path).string().c_str());
-      return NULL;
+      return nullptr;
     }
   }
 
@@ -98,7 +93,7 @@ string* FileSystemOperations::getFirstExistingDirContainingDir(std::vector<strin
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 string* FileSystemOperations::getFirstExistingDirContainingFile(std::vector<string>
@@ -120,7 +115,7 @@ string* FileSystemOperations::getFirstExistingDirContainingFile(std::vector<stri
     {
       Y_DEBUG("FileSystemOperations: file %s is given as absolute path "
           "but does not exist.", fs::path(path).string().c_str());
-      return NULL;
+      return nullptr;
     }
   }
 
@@ -141,7 +136,7 @@ string* FileSystemOperations::getFirstExistingDirContainingFile(std::vector<stri
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 string* FileSystemOperations::getFirstExistingDir(std::vector<string> dirs)
@@ -160,7 +155,7 @@ string* FileSystemOperations::getFirstExistingDir(std::vector<string> dirs)
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 string* FileSystemOperations::getFirstExistingFile(std::vector<string> files)
@@ -179,7 +174,7 @@ string* FileSystemOperations::getFirstExistingFile(std::vector<string> files)
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 void FileSystemOperations::checkValidPath(string *name, bool isDir, bool fatal,
@@ -189,14 +184,14 @@ void FileSystemOperations::checkValidPath(string *name, bool isDir, bool fatal,
   fs::path path;
   if(name->c_str()[0] != '/') // path is a local path starting with a letter
   {
-    path = fs::initial_path() / fs::path(*name);
+    path = fs::current_path() / fs::path(*name);
     *name = path.string();
   }
   path = fs::path(*name);
 
   if(! path.is_absolute())
   {
-    path = fs::system_complete(path);
+    path = fs::absolute(path);
   }
 
   if(((isDir && doesDirExist(path)) || (!isDir && doesFileExist(path))))
@@ -225,7 +220,7 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string
 {
   fs::path path;
 
-  if(pathName == NULL)
+  if(pathName == nullptr)
   {
     if(fatal)
     {
@@ -254,7 +249,7 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string
 
     if(! path.is_absolute())
     {
-      path = fs::system_complete(
+      path = fs::absolute(
           fs::path(*pathName) / fs::path(*name));
     }
 
@@ -297,17 +292,36 @@ bool FileSystemOperations::doesExecutableExist(string exe)
   string path_string = string(getenv("PATH"));
   if (path_string.length() == 0) YarsErrorHandler::push("Cannot read PATH system variable.");
 
-  char_separator<char> sep(":");
-  tokenizer< char_separator<char> > tokens(path_string, sep);
-
-  BOOST_FOREACH(string t, tokens)
+  // Split PATH by ':' delimiter using C++17 string operations
+  size_t start = 0;
+  size_t end = 0;
+  while ((end = path_string.find(':', start)) != string::npos)
   {
-    path = fs::system_complete( fs::path(t) / fs::path(exe));
+    string t = path_string.substr(start, end - start);
+    if (!t.empty())
+    {
+      path = fs::weakly_canonical(fs::path(t) / fs::path(exe));
 #ifndef _MSC_VER
-    if (access(path.string().c_str(), X_OK) == 0) return true;
+      if (access(path.string().c_str(), X_OK) == 0) return true;
 #else // _MSC_VER
-    if (_access(path.string().c_str(), 0)) return true;
+      if (_access(path.string().c_str(), 0)) return true;
 #endif // _MSC_VER
+    }
+    start = end + 1;
+  }
+  // Handle the last segment after the final ':'
+  if (start < path_string.length())
+  {
+    string t = path_string.substr(start);
+    if (!t.empty())
+    {
+      path = fs::weakly_canonical(fs::path(t) / fs::path(exe));
+#ifndef _MSC_VER
+      if (access(path.string().c_str(), X_OK) == 0) return true;
+#else // _MSC_VER
+      if (_access(path.string().c_str(), 0)) return true;
+#endif // _MSC_VER
+    }
   }
   return false;
 }

@@ -70,12 +70,12 @@ void DataGenericBinaryContactSensor::createXsd(XsdSpecification *spec)
 
 DataGenericBinaryContactSensor* DataGenericBinaryContactSensor::_copy()
 {
-  DataGenericBinaryContactSensor *copy = new DataGenericBinaryContactSensor(NULL);
+  DataGenericBinaryContactSensor *copy = new DataGenericBinaryContactSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_domain = _domain;
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   return copy;
 }
 

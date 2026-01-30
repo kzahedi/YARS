@@ -14,8 +14,8 @@ class ActuatorVelocitySensor : public Sensor
     ActuatorVelocitySensor(DataGenericVelocitySensor *data, Robot *robot);
     ~ActuatorVelocitySensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericVelocitySensor *_data;

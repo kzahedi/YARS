@@ -20,12 +20,12 @@ void VideoCapture::init(int width, int height, int fpsrate, int bitrate, string 
 
   int err;
 
-  if (!(oformat = av_guess_format(NULL, VIDEO_TMP_FILE, NULL))) {
+  if (!(oformat = av_guess_format(nullptr, VIDEO_TMP_FILE, nullptr))) {
     cout << "Failed to define output format" << endl;
     exit(-1);
   }
 
-  if ((err = avformat_alloc_output_context2(&ofctx, oformat, NULL, VIDEO_TMP_FILE) < 0)) {
+  if ((err = avformat_alloc_output_context2(&ofctx, oformat, nullptr, VIDEO_TMP_FILE) < 0)) {
     cout << "Failed to allocate output context" << endl;
     exit(-1);
   }
@@ -69,7 +69,7 @@ void VideoCapture::init(int width, int height, int fpsrate, int bitrate, string 
   }
   avcodec_parameters_from_context(videoStream->codecpar, cctx);
 
-  if ((err = avcodec_open2(cctx, codec, NULL)) < 0) {
+  if ((err = avcodec_open2(cctx, codec, nullptr)) < 0) {
     cout << "Failed to open codec" << endl;
     __free();
     exit(-1);
@@ -83,7 +83,7 @@ void VideoCapture::init(int width, int height, int fpsrate, int bitrate, string 
     }
   }
 
-  if ((err = avformat_write_header(ofctx, NULL)) < 0) {
+  if ((err = avformat_write_header(ofctx, nullptr)) < 0) {
     cout << "Failed to write header" << endl;
     __free();
     exit(-1);
@@ -125,7 +125,7 @@ void VideoCapture::addFrame(uint8_t *data) {
 
   AVPacket pkt;
   av_init_packet(&pkt);
-  pkt.data = NULL;
+  pkt.data = nullptr;
   pkt.size = 0;
 
   if (avcodec_receive_packet(cctx, &pkt) == 0) {
@@ -139,11 +139,11 @@ void VideoCapture::finish() {
   //DELAYED FRAMES
   AVPacket pkt;
   av_init_packet(&pkt);
-  pkt.data = NULL;
+  pkt.data = nullptr;
   pkt.size = 0;
 
   for (;;) {
-    avcodec_send_frame(cctx, NULL);
+    avcodec_send_frame(cctx, nullptr);
     if (avcodec_receive_packet(cctx, &pkt) == 0) {
       av_interleaved_write_frame(ofctx, &pkt);
       av_packet_unref(&pkt);
@@ -180,15 +180,15 @@ void VideoCapture::__free() {
   if (swsCtx) {
     sws_freeContext(swsCtx);
   }
-  videoFrame = NULL;
-  cctx       = NULL;
-  ofctx      = NULL;
-  swsCtx     = NULL;
+  videoFrame = nullptr;
+  cctx       = nullptr;
+  ofctx      = nullptr;
+  swsCtx     = nullptr;
 
 }
 
 void VideoCapture::__remux() {
-  AVFormatContext *ifmt_ctx = NULL, *ofmt_ctx = NULL;
+  AVFormatContext *ifmt_ctx = nullptr, *ofmt_ctx = nullptr;
   int err;
 
   if ((err = avformat_open_input(&ifmt_ctx, VIDEO_TMP_FILE, 0, 0)) < 0) {
@@ -199,13 +199,13 @@ void VideoCapture::__remux() {
     cout << "Failed to retrieve input stream information" << endl;
     __end(ifmt_ctx, ofmt_ctx);
   }
-  if ((err = avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, filename.c_str()))) {
+  if ((err = avformat_alloc_output_context2(&ofmt_ctx, nullptr, nullptr, filename.c_str()))) {
     cout << "Failed to allocate output context" << endl;
     __end(ifmt_ctx, ofmt_ctx);
   }
 
   AVStream *inVideoStream = ifmt_ctx->streams[0];
-  AVStream *outVideoStream = avformat_new_stream(ofmt_ctx, NULL);
+  AVStream *outVideoStream = avformat_new_stream(ofmt_ctx, nullptr);
   if (!outVideoStream) {
     cout << "Failed to allocate output video stream" << endl;
     __end(ifmt_ctx, ofmt_ctx);

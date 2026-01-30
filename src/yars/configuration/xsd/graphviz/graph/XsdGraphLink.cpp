@@ -6,8 +6,8 @@ using namespace std;
 
 XsdGraphLink::XsdGraphLink()
 {
-  _source      = NULL;
-  _destination = NULL;
+  _source      = nullptr;
+  _destination = nullptr;
 }
 
 string XsdGraphLink::label()
