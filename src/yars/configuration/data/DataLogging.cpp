@@ -225,7 +225,7 @@ DataLogging* DataLogging::copy()
 
 void DataLogging::checkGeoms(DataObjects *geoms)
 {
-  for(DataObjects::iterator o = geoms->begin(); o != geoms->end(); o++)
+  for(auto o = geoms->begin(); o != geoms->end(); o++)
   {
     FOREACH(DataLoggingObject*, lo, _objects)
     {
@@ -240,7 +240,7 @@ void DataLogging::checkGeoms(DataObjects *geoms)
 
 void DataLogging::checkSensors(DataSensors *sensors)
 {
-  for(DataSensors::iterator s = sensors->begin(); s != sensors->end(); s++)
+  for(auto s = sensors->begin(); s != sensors->end(); s++)
   {
     FOREACH(DataLoggingSensor*, ls, _sensors)
     {
@@ -255,7 +255,7 @@ void DataLogging::checkSensors(DataSensors *sensors)
 
 void DataLogging::checkActuators(DataActuators *actuators)
 {
-  for(DataActuators::iterator a = actuators->begin(); a != actuators->end(); a++)
+  for(auto a = actuators->begin(); a != actuators->end(); a++)
   {
     FOREACH(DataLoggingActuator*, la, _actuators)
     {
@@ -270,7 +270,7 @@ void DataLogging::checkActuators(DataActuators *actuators)
 
 void DataLogging::checkControllers(DataControllers *controllers)
 {
-  for(DataControllers::iterator c = controllers->begin(); c != controllers->end(); c++)
+  for(auto c = controllers->begin(); c != controllers->end(); c++)
   {
     FOREACH(DataLoggingController*, lc, _controllers)
     {

@@ -94,9 +94,9 @@ void SceneGraph::__createTraces()
   if(traces == nullptr) return;
 
   int index = 0;
-  for(std::vector<DataTraceLine*>::iterator l = traces->l_begin(); l != traces->l_end(); l++)
+  for(auto l = traces->l_begin(); l != traces->l_end(); l++)
   {
-    SceneGraphTraceLineObject *traceLine = new SceneGraphTraceLineObject((*l), _root, _sceneManager, index);
+    SceneGraphTraceLineObject *traceLine = new SceneGraphTraceLineObject(*l, _root, _sceneManager, index);
     _traceLines.push_back(traceLine);
     index++;
   }

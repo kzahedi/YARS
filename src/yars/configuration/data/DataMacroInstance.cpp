@@ -45,11 +45,11 @@ void DataMacroInstance::add(DataParseElement *element)
 
     if(_macros != nullptr)
     {
-      for(std::vector<DataMacro*>::iterator i = _macros->begin(); i != _macros->end(); i++)
+      for(auto i = _macros->begin(); i != _macros->end(); i++)
       {
         if((*i)->name() == ref)
         {
-          for(DataObjects::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+          for(auto j = (*i)->begin(); j != (*i)->end(); j++)
           {
             DataObject *copy = (*j)->copy();
             string name = _prefix + (*j)->name();
@@ -57,7 +57,7 @@ void DataMacroInstance::add(DataParseElement *element)
             if(copy->type() == DATA_OBJECT_COMPOSITE)
             {
               DataComposite *composite = (DataComposite*)copy;
-              for(DataObjects::iterator o = composite->g_begin(); o != composite->g_end(); o++)
+              for(auto o = composite->g_begin(); o != composite->g_end(); o++)
               {
                 string geom_name = _prefix + (*o)->name();
                 (*o)->setName(geom_name);
@@ -72,25 +72,21 @@ void DataMacroInstance::add(DataParseElement *element)
 
   if(element->closing(YARS_STRING_OBJECT_MACRO))
   {
-    for(DataObjects::iterator i = begin(); i != end(); i++)
+    for(auto i = begin(); i != end(); i++)
     {
       if((*i)->type() == DATA_OBJECT_COMPOSITE)
-      {
         ((DataComposite*)(*i))->applyOffset(_pose);
-      }
       else
-      {
         (*i)->applyOffset(_pose);
-      }
     }
     if(_textures.size() > 0)
     {
-      for(DataObjects::iterator i = begin(); i != end(); i++)
+      for(auto i = begin(); i != end(); i++)
       {
         if((*i)->type() == DATA_OBJECT_COMPOSITE)
         {
           DataComposite *composite = (DataComposite*)(*i);
-          for(DataObjects::iterator o = composite->g_begin(); o != composite->g_end(); o++)
+          for(auto o = composite->g_begin(); o != composite->g_end(); o++)
           {
             if((*o)->name() == _target) __setTexture(*o);
           }

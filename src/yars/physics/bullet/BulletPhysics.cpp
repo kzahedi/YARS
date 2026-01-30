@@ -133,11 +133,8 @@ void BulletPhysics::__initWorld()
       }
       if ((*a)->c_size() > 0)
       {
-        for (vector<btTypedConstraint *>::iterator i = (*a)->c_begin();
-             i != (*a)->c_end(); i++)
-        {
+        for (auto i = (*a)->c_begin(); i != (*a)->c_end(); i++)
           _world->addConstraint(*i, false);
-        }
       }
     }
   }

@@ -28,7 +28,7 @@ void Robots::prePhysicsUpdate()
 
 void Robots::postPhysicsUpdate()
 {
-  for(std::vector<Robot*>::iterator i = begin(); i != end(); i++)
+  for(auto i = begin(); i != end(); i++)
   {
     (*i)->postPhysicsUpdate();
     _reset |= (*i)->isReset();

@@ -94,10 +94,8 @@ DataController* DataController::copy()
   copy->_module    = _module;
   copy->_name      = _name;
   copy->_frequency = _frequency;
-  for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
-  {
+  for(auto i = begin(); i != end(); i++)
     copy->push_back((*i)->copy());
-  }
   return copy;
 }
 
@@ -124,7 +122,7 @@ void DataController::addLoggable(string name, std::vector<double> *vector)
 
 bool DataController::getLoggable(string name, double &real)
 {
-  for(map<string, double*>::iterator i = _reals.begin(); i != _reals.end(); i++)
+  for(auto i = _reals.begin(); i != _reals.end(); i++)
   {
     if(i->first == name)
     {
@@ -137,7 +135,7 @@ bool DataController::getLoggable(string name, double &real)
 
 bool DataController::getLoggable(string name, int &integer)
 {
-  for(map<string, int*>::iterator i = _ints.begin(); i != _ints.end(); i++)
+  for(auto i = _ints.begin(); i != _ints.end(); i++)
   {
     if(i->first == name)
     {
@@ -150,7 +148,7 @@ bool DataController::getLoggable(string name, int &integer)
 
 bool DataController::getLoggable(string name, ::Matrix &matrix)
 {
-  for(map<string, Matrix*>::iterator m = _matrices.begin(); m != _matrices.end(); m++)
+  for(auto m = _matrices.begin(); m != _matrices.end(); m++)
   {
     if(m->first == name)
     {
@@ -163,7 +161,7 @@ bool DataController::getLoggable(string name, ::Matrix &matrix)
 
 bool DataController::getLoggable(string name, std::vector<double> &vec)
 {
-  for(map<string, std::vector<double>* >::iterator i = _vectors.begin(); i != _vectors.end(); i++)
+  for(auto i = _vectors.begin(); i != _vectors.end(); i++)
   {
     if(i->first == name)
     {
@@ -211,9 +209,9 @@ void DataController::addLine(string s)
 
 DataActuator* DataController::actuator(string name)
 {
-  for(DataActuators::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  for(auto a = _actuators.begin(); a != _actuators.end(); a++)
   {
-    if((*a)->name() == name) return (*a);
+    if((*a)->name() == name) return *a;
   }
   return nullptr;
 }

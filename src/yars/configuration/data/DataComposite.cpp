@@ -119,19 +119,15 @@ void DataComposite::add(DataObject *object)
 
 void DataComposite::applyOffset(Pose pose)
 {
-  for (DataObjects::iterator i = _geoms.begin(); i != _geoms.end(); i++)
-  {
+  for (auto i = _geoms.begin(); i != _geoms.end(); i++)
     (*i)->applyOffset(pose);
-  }
 }
 
 DataComposite *DataComposite::_copy()
 {
   DataComposite *copy = new DataComposite(nullptr); // no parent required -> no parsing occurs from here on
-  for (DataObjects::iterator i = g_begin(); i != g_end(); i++)
-  {
+  for (auto i = g_begin(); i != g_end(); i++)
     copy->add((*i)->copy());
-  }
   copy->setPhysics(_physics->copy());
   return copy;
 }

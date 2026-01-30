@@ -48,14 +48,10 @@ DataEnvironment::DataEnvironment(DataNode *parent)
 
 DataEnvironment::~DataEnvironment()
 {
-  for(DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
-  {
-    delete (*i);
-  }
-  for(std::vector<DataPointLightSource*>::iterator i = _lightSources.begin(); i != _lightSources.end(); i++)
-  {
-    delete (*i);
-  }
+  for(auto* obj : _objects)
+    delete obj;
+  for(auto* light : _lightSources)
+    delete light;
   delete _gravitation;
   if(_ambientLight != nullptr) delete _ambientLight;
 }
@@ -214,12 +210,10 @@ DataMacros* DataEnvironment::macros()
 
 void DataEnvironment::__applyMacros()
 {
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
+  for(auto i = _macros.begin(); i != _macros.end(); i++)
   {
-    for(DataObjects::iterator o = (*i)->begin(); o != (*i)->end(); o++)
-    {
+    for(auto o = (*i)->begin(); o != (*i)->end(); o++)
       _objects.push_back(*o);
-    }
   }
 }
 
@@ -287,22 +281,14 @@ DataEnvironment* DataEnvironment::copy()
   for(int i = 0; i < 3; i++) copy->_gravitation[i] = _gravitation[i];
   if(_macrosDefinitions != nullptr) copy->_macrosDefinitions = _macrosDefinitions->copy();
 
-  for(vector<DataMeshVisualisation*>::iterator m = m_begin(); m != m_end(); m++)
-  {
+  for(auto m = m_begin(); m != m_end(); m++)
     copy->_meshes.push_back((*m)->copy());
-  }
-  for(DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
-  {
+  for(auto i = _objects.begin(); i != _objects.end(); i++)
     copy->_objects.push_back((*i)->copy());
-  }
-  for(std::vector<DataPointLightSource*>::iterator i = _lightSources.begin(); i != _lightSources.end(); i++)
-  {
+  for(auto i = _lightSources.begin(); i != _lightSources.end(); i++)
     copy->_lightSources.push_back((*i)->copy());
-  }
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
+  for(auto i = _macros.begin(); i != _macros.end(); i++)
     copy->_macros.push_back((*i)->copy(this));
-  }
   copy->_normal = _normal;
   // copy->_textureDefinition = nullptr;
   // if(_textureDefinition != nullptr)
@@ -320,16 +306,13 @@ DataEnvironment* DataEnvironment::copy()
 
 void DataEnvironment::__gatherGeoms()
 {
-  for(DataObjects::iterator o = _objects.begin(); o != _objects.end(); o++)
+  for(auto o = _objects.begin(); o != _objects.end(); o++)
   {
     if((*o)->type() == DATA_OBJECT_COMPOSITE)
     {
       DataComposite *composite = (DataComposite*)(*o);
-      for(DataObjects::iterator oo = composite->g_begin();
-          oo != composite->g_end(); oo++)
-      {
+      for(auto oo = composite->g_begin(); oo != composite->g_end(); oo++)
         _geoms.push_back(*oo);
-      }
     }
     else
     {
