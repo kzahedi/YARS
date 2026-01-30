@@ -1,4 +1,5 @@
-include_directories(/Library/Frameworks/OgreOverlay.framework/Headers)
+# OGRE includes are set in cmake/IncludePackages.cmake
+# No need for hardcoded paths here
 
 set(GUI_SOURCES SdlWindow.cpp
                 SceneGraph.cpp
@@ -42,5 +43,3 @@ if(APPLE)
 else(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
 endif(APPLE)
-
-

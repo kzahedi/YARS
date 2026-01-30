@@ -8,6 +8,7 @@
 #include <yars/util/OSD.h>
 
 #include <OGRE/Ogre.h>
+#include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 
 #ifndef __APPLE__
 namespace _SDL_
@@ -161,8 +162,9 @@ void SdlWindow::step()
 
   if (_windowConfiguration->useFollow)
   {
-    _cpos = _camera->getPosition();
-    _cdir = _camera->getDirection();
+    // OGRE 14: Use camera node for position/direction
+    _cpos = _cameraNode->getPosition();
+    _cdir = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -176,23 +178,20 @@ void SdlWindow::step()
 
     YARS_TO_OGRE(_camData->position(), _cpos);
     YARS_TO_OGRE(_camData->lookAt(), _clookAt);
-    _camera->setPosition(_cpos[0], _cpos[1], _cpos[2]);
-    _camera->lookAt(_clookAt[0], _clookAt[1], _clookAt[2]);
+    _cameraNode->setPosition(_cpos[0], _cpos[1], _cpos[2]);
+    _cameraNode->lookAt(Ogre::Vector3(_clookAt[0], _clookAt[1], _clookAt[2]), Ogre::Node::TS_WORLD);
   }
   else if (_cameraVelocity.length() > 0.01 ||
            _camAngularVelocity.length() > 0.0001)
   {
-    // cout << _cameraVelocity[0] << " "
-    // << _cameraVelocity[1] << " "
-    // << _cameraVelocity[2] << endl;
+    // OGRE 14: Use camera node for yaw/pitch/move
+    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
+    _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
 
-    _camera->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
-    _camera->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
+    _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
 
-    _camera->moveRelative(_cameraVelocity);
-
-    _cpos = _camera->getPosition();
-    _cdir = _camera->getDirection();
+    _cpos = _cameraNode->getPosition();
+    _cdir = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -390,9 +389,8 @@ void SdlWindow::__setupSDL()
   params["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.x11.window);
 #endif
 #ifdef __APPLE__
-  params["externalGLControl"] = "1";
-  // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
-  //    params["externalGLContext"] = Ogre::StringConverter::toString( glcontext );
+  // OGRE 14 + SDL2 on macOS: Let OGRE create its own OpenGL context
+  // but use the SDL window's Cocoa view
   params["externalWindowHandle"] = OSX_cocoa_view(syswm_info);
   params["macAPI"] = "cocoa";
   params["macAPICocoaUseNSView"] = "true";
@@ -426,8 +424,14 @@ void SdlWindow::__setupSDL()
   _camera = _sceneManager->createCamera(oss.str());
   _camera->setNearClipDistance(0.01f);
   _camera->setFarClipDistance(1000000.0f);
-  _camera->setPosition(pos[0], pos[1], pos[2]);
-  _camera->lookAt(lookAt[0], lookAt[1], lookAt[2]);
+
+  // OGRE 14: Create camera node and attach camera
+  oss.str("");
+  oss << "YARS CameraNode" << _index;
+  _cameraNode = _sceneManager->getRootSceneNode()->createChildSceneNode(oss.str());
+  _cameraNode->attachObject(_camera);
+  _cameraNode->setPosition(pos[0], pos[1], pos[2]);
+  _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
@@ -436,6 +440,8 @@ void SdlWindow::__setupSDL()
   Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
   // _sceneManager->setFog(Ogre::FOG_EXP2, fadeColour, 0.001, 500.0, 1000.0);
   _viewport->setBackgroundColour(fadeColour);
+  // OGRE 14: Set viewport to use RTSS scheme for shader generation
+  _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
   _windowID = SDL_GetWindowID(_sdlWindow);
 

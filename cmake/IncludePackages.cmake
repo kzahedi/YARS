@@ -11,8 +11,8 @@ if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
 
-# Modern Boost only needs these components explicitly linked
-find_package(Boost REQUIRED COMPONENTS program_options filesystem)
+# Boost components needed (thread requires linking on some platforms)
+find_package(Boost REQUIRED COMPONENTS program_options filesystem thread)
 IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 ENDIF(Boost_FOUND)
@@ -43,9 +43,64 @@ IF(YARS_USE_VISUALISATION)
   find_package(SDL2)
   include_directories(${SDL2_INCLUDE_DIR})
 
-  set(OGRE_STATIC false)
-  find_package(OGRE REQUIRED OgreOverlay Plugin_ParticleFX)
+  # ===========================================================
+  # LOCAL OGRE BUILD (ext/ogre)
+  # ===========================================================
+  # Use the OGRE we built in ext/ogre/build
+  set(OGRE_BUILD_DIR "${CMAKE_SOURCE_DIR}/ext/ogre/build")
+  set(OGRE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/ext/ogre")
+
+  if(APPLE)
+    # On macOS, OGRE builds as frameworks
+    set(OGRE_FRAMEWORK_DIR "${OGRE_BUILD_DIR}/lib/macosx")
+
+    # Verify OGRE was built
+    if(NOT EXISTS "${OGRE_FRAMEWORK_DIR}/Ogre.framework")
+      message(FATAL_ERROR "OGRE not built. Please run: cd ext/ogre/build && cmake .. && make")
+    endif()
+
+    # Set framework paths
+    set(CMAKE_FRAMEWORK_PATH ${CMAKE_FRAMEWORK_PATH} ${OGRE_FRAMEWORK_DIR})
+
+    # Include directories - use wrapper structure for <OGRE/Ogre.h> style includes
+    # The ${OGRE_BUILD_DIR}/include/OGRE directory has symlinks to source headers
+    set(OGRE_INCLUDE_DIRS
+      "${OGRE_BUILD_DIR}/include"           # For <OGRE/Ogre.h> style includes
+      "${OGRE_BUILD_DIR}/include/OGRE"      # For Overlay headers that need main OGRE headers without prefix
+      "${OGRE_FRAMEWORK_DIR}/Ogre.framework/Headers"  # Generated headers
+    )
+
+    # Libraries (frameworks)
+    set(OGRE_LIBRARIES
+      "-framework Ogre"
+      "-framework OgreOverlay"
+      "-framework OgreRTShaderSystem"
+      "-framework RenderSystem_GL3Plus"
+      "-framework Plugin_ParticleFX"
+      "-framework Codec_STBI"
+      "-framework OgreBites"
+      "-framework Cocoa"
+      "-framework OpenGL"
+      "-framework IOKit"
+      "-framework CoreFoundation"
+      "-framework CoreGraphics"
+    )
+
+    # Link directory for frameworks
+    link_directories(${OGRE_FRAMEWORK_DIR})
+
+    set(OGRE_FOUND TRUE)
+    set(OGRE_Overlay_LIBRARIES "-framework OgreOverlay")
+
+    message(STATUS "Using local OGRE build from: ${OGRE_FRAMEWORK_DIR}")
+
+  else()
+    # Linux: Not implemented yet
+    message(FATAL_ERROR "Linux OGRE integration not yet implemented")
+  endif()
+
   include_directories(${OGRE_INCLUDE_DIRS})
+  # ===========================================================
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)

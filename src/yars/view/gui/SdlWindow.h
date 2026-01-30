@@ -83,6 +83,7 @@ class SdlWindow : public Observable
 
     Ogre::RenderWindow *_window;
     Ogre::Camera *_camera;
+    Ogre::SceneNode *_cameraNode;  // OGRE 14: cameras attach to nodes
     Ogre::Viewport *_viewport;
     Ogre::SceneManager *_sceneManager;
 

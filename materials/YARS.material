@@ -392,13 +392,20 @@ material YARS/CloudySky
   {
     pass
     {
-      lighting off
       depth_write off
+      cull_hardware none
+
+      vertex_program_ref YARS/SkyVP
+      {
+      }
+
+      fragment_program_ref YARS/SkyFP
+      {
+      }
 
       texture_unit
       {
         texture clouds.jpg
-        scroll_anim 0.05 0
       }
     }
   }

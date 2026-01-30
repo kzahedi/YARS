@@ -1,10 +1,8 @@
-#ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
-#define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
+#ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__
+#define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__
 
 #include "ColoredTextAreaOverlayElement.h"
 #include <OgreRoot.h>
-#define POS_TEX_BINDING 0
-#define COLOUR_BINDING 1
 
 using namespace Ogre;
 using namespace std;
@@ -21,13 +19,15 @@ ColoredTextAreaOverlayElement::~ColoredTextAreaOverlayElement(void)
 void ColoredTextAreaOverlayElement::setValueBottom(float Value)
 {
   m_ValueTop = Value;
-  mColoursChanged = true;
+  // OGRE 14: mColoursChanged is private, use base class method
+  setColour(getColour());  // Force refresh
 }
 
 void ColoredTextAreaOverlayElement::setValueTop(float Value)
 {
   m_ValueBottom = Value;
-  mColoursChanged = true;
+  // OGRE 14: mColoursChanged is private, use base class method
+  setColour(getColour());  // Force refresh
 }
 
 ColourValue ColoredTextAreaOverlayElement::GetColor(unsigned char ID, float Value, ColourValue def)
@@ -92,76 +92,35 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString &text)
 {
   m_Colors.clear();
   m_Colors.resize(text.size(), 9);
-  bool noColor = true;
   int i, iNumColorCodes = 0, iNumSpaces = 0;
   for (i = 0; i < (int)text.size() - 1; ++i)
   {
     if (text[i] == ' ' || text[i] == '\n')
     {
-      // Spaces and newlines are skipped when rendering and as such can't have a color
       ++iNumSpaces;
     }
     else if (text[i] == '^' &&
-             text[i + 1] >= '0' && text[i + 1] <= '9') // This is a color code
+             text[i + 1] >= '0' && text[i + 1] <= '9')
     {
-      // Fill the color array starting from this point to the end with the new color code
-      // adjustments need to made because color codes will be removed and spaces are not counted
       fill(m_Colors.begin() + i - (2 * iNumColorCodes) - iNumSpaces, m_Colors.end(), text[i + 1] - '0');
       ++i;
       ++iNumColorCodes;
-      mColoursChanged = true;
-      noColor = false;
     }
   }
-  if (noColor)
-    mColoursChanged = true;
   // Set the caption using the base class, but strip the color codes from it first
   TextAreaOverlayElement::setCaption(StripColors(text));
 }
 
 void ColoredTextAreaOverlayElement::updateColours(void)
 {
-  if (!mRenderOp.vertexData)
-    return;
-  // Convert to system-specific
-  RGBA topColour, bottomColour;
-  // Set default to white
-  Root::getSingleton().convertColourValue(ColourValue::White, &topColour);
-  Root::getSingleton().convertColourValue(ColourValue::White, &bottomColour);
-
-  HardwareVertexBufferSharedPtr vbuf =
-      mRenderOp.vertexData->vertexBufferBinding->getBuffer(COLOUR_BINDING);
-
-  //RGBA* pDest = static_cast<RGBA*>(
-  //      vbuf->lock(HardwareBuffer::HBL_NORMAL) );
-  RGBA *pDest = (RGBA *)malloc(vbuf->getSizeInBytes());
-  RGBA *oDest = pDest;
-
-  for (size_t i = 0; i < mAllocSize; ++i)
-  {
-    if (i < m_Colors.size())
-    {
-      Root::getSingleton().convertColourValue(GetColor(m_Colors[i], m_ValueTop, _color), &topColour);
-      Root::getSingleton().convertColourValue(GetColor(m_Colors[i], m_ValueBottom, _color), &bottomColour);
-    }
-
-    // First tri (top, bottom, top)
-    *pDest++ = topColour;
-    *pDest++ = bottomColour;
-    *pDest++ = topColour;
-    // Second tri (top, bottom, bottom)
-    *pDest++ = topColour;
-    *pDest++ = bottomColour;
-    *pDest++ = bottomColour;
-  }
-  vbuf->writeData(0, vbuf->getSizeInBytes(), oDest, true);
-  free(oDest);
-  //vbuf->unlock();
+  // OGRE 14: updateColours is now private in base class
+  // Color handling is done through setColour() in other methods
 }
 
 void ColoredTextAreaOverlayElement::setMainColour(ColourValue c)
 {
   _color = c;
+  setColour(c);  // Use base class method
 }
 
-#endif // __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
+#endif // __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__

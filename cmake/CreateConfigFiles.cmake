@@ -16,6 +16,10 @@ configure_file(${CMAKE_SOURCE_DIR}/src/cfg/yars.h.in ${PROJECT_BINARY_DIR}/inclu
 
 if(OGRE_RESOURCES_DIRECTORIES MATCHES "Ogre-Resources-Dirs-NOTDEFINED")
   set(OGRE_RESOURCES_DIRECTORIES "")
+  # OGRE 14 essential resources (required for shadows, RTShader, etc.)
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/ext/ogre/Media/Main")
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/ext/ogre/Media/RTShaderLib/GLSL")
+  # YARS-specific resources
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/materials")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/fonts")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/meshes")

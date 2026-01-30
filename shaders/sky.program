@@ -1,0 +1,41 @@
+vertex_program YARS/SkyVP glsl
+{
+    source sky_vp.glsl
+
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+        param_named scrollAnim float 0.0
+    }
+}
+
+fragment_program YARS/SkyFP glsl
+{
+    source sky_fp.glsl
+
+    default_params
+    {
+        param_named tex0 int 0
+    }
+}
+
+// Simple shaders for basic textured materials
+vertex_program YARS/SimpleVP glsl
+{
+    source simple_vp.glsl
+
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program YARS/SimpleFP glsl
+{
+    source simple_fp.glsl
+
+    default_params
+    {
+        param_named tex0 int 0
+    }
+}

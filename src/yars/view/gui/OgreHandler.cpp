@@ -2,12 +2,46 @@
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Directories.h>
 
-#if __APPLE__
-#include <Overlay/OgreOverlaySystem.h>
-#else
 #include <OGRE/Overlay/OgreOverlaySystem.h>
-#include <OGRE/RenderSystems/GL/OgreGLPlugin.h>
-#endif
+
+// RTSS Material Listener: generates shaders for materials without them
+class RTSSMaterialListener : public Ogre::MaterialManager::Listener
+{
+public:
+  RTSSMaterialListener(Ogre::RTShader::ShaderGenerator* sg) : _shaderGenerator(sg) {}
+
+  Ogre::Technique* handleSchemeNotFound(unsigned short schemeIndex,
+                                         const Ogre::String& schemeName,
+                                         Ogre::Material* originalMaterial,
+                                         unsigned short lodIndex,
+                                         const Ogre::Renderable* rend) override
+  {
+    if (schemeName != Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME)
+      return nullptr;
+
+    // Attempt to create RTSS shader for this material
+    bool success = _shaderGenerator->createShaderBasedTechnique(
+        *originalMaterial,
+        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+        schemeName);
+
+    if (success)
+    {
+      // Find and return the generated technique
+      for (auto tech : originalMaterial->getTechniques())
+      {
+        if (tech->getSchemeName() == schemeName)
+          return tech;
+      }
+    }
+    return nullptr;
+  }
+
+private:
+  Ogre::RTShader::ShaderGenerator* _shaderGenerator;
+};
+
+static RTSSMaterialListener* gRTSSMaterialListener = nullptr;
 
 OgreHandler *OgreHandler::_me = NULL;
 
@@ -16,6 +50,51 @@ OgreHandler *OgreHandler::instance()
   if (_me == NULL)
     _me = new OgreHandler();
   return _me;
+}
+
+void OgreHandler::shutdown()
+{
+  if (_me != NULL)
+  {
+    delete _me;
+    _me = NULL;
+  }
+}
+
+OgreHandler::~OgreHandler()
+{
+  // Clean up RTSS
+  if (_shaderGenerator)
+  {
+    _shaderGenerator->removeSceneManager(_sceneManager);
+    Ogre::RTShader::ShaderGenerator::destroy();
+    _shaderGenerator = nullptr;
+  }
+
+  // Remove material listener
+  if (gRTSSMaterialListener)
+  {
+    Ogre::MaterialManager::getSingleton().removeListener(gRTSSMaterialListener);
+    delete gRTSSMaterialListener;
+    gRTSSMaterialListener = nullptr;
+  }
+
+  // Clean up STBI codec
+  Ogre::STBIImageCodec::shutdown();
+
+  // Clean up scene graph
+  if (_sceneGraph)
+  {
+    delete _sceneGraph;
+    _sceneGraph = nullptr;
+  }
+
+  // Delete root (this cleans up scene manager, plugins, etc.)
+  if (_root)
+  {
+    delete _root;
+    _root = nullptr;
+  }
 }
 
 OgreHandler::OgreHandler()
@@ -29,28 +108,24 @@ OgreHandler::OgreHandler()
   _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
 #endif                                           // __APPLE__
 
-#ifdef __APPLE__
-  // _GLPlugin = new Ogre::GLPlugin();
-  // _GLPlugin->install();
+  // Install plugins directly (framework static linking on macOS)
+  _GL3PlusPlugin = new Ogre::GL3PlusPlugin();
+  _root->installPlugin(_GL3PlusPlugin);
 
-  // _particlePlugin = new Ogre::ParticleFXPlugin();
-  // _particlePlugin->install();
-  // _root->loadPlugin("Plugin_ParticleFX");
-  // _root->loadPlugin("RenderSystem_GL");
-  // _root->loadPlugin("Codec_FreeImage");
-#else  // __APPLE__
-  _root->loadPlugin("Plugin_ParticleFX");
-  _root->loadPlugin("RenderSystem_GL");
-  // _root->loadPlugin("Codec_FreeImage");
-#endif // __APPLE__
+  _particlePlugin = new Ogre::ParticleFXPlugin();
+  _root->installPlugin(_particlePlugin);
 
-  if (_root->getAvailableRenderers().size() != 1)
+  // Initialize STBI codec for image loading (PNG, JPG, etc.)
+  Ogre::STBIImageCodec::startup();
+
+  if (_root->getAvailableRenderers().empty())
   {
-    OGRE_EXCEPT(Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL", "main");
+    OGRE_EXCEPT(Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL3Plus", "main");
   }
   _root->setRenderSystem(_root->getAvailableRenderers()[0]);
   _root->initialise(false);
-  _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC, "Default SceneManager");
+  // OGRE 14: ST_GENERIC removed, use "DefaultSceneManager"
+  _sceneManager = _root->createSceneManager("DefaultSceneManager", "YARS SceneManager");
 }
 
 void OgreHandler::setupSceneManager()
@@ -58,46 +133,95 @@ void OgreHandler::setupSceneManager()
   Ogre::OverlaySystem *mOverlaySystem = new Ogre::OverlaySystem();
   _sceneManager->addRenderQueueListener(mOverlaySystem);
 
-  // Load resource paths from config file
+  // Initialize RTSS (Runtime Shader System) BEFORE loading resources
+  // This allows RTSS to hook into the material manager for fixed-function emulation
+  if (Ogre::RTShader::ShaderGenerator::initialize())
+  {
+    _shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+    _shaderGenerator->addSceneManager(_sceneManager);
+
+    // Set shader cache path and target language
+    _shaderGenerator->setTargetLanguage("glsl");
+
+    // Add RTSS shader library to OgreInternal resource group (where RTSS looks for FFPLib)
+    // Use absolute path based on build directory
+    Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
+    rgm.addResourceLocation(
+        "/Users/zahedi/code/YARS/ext/ogre/Media/RTShaderLib",
+        "FileSystem",
+        Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+    // Initialize OgreInternal resources for RTSS
+    rgm.initialiseResourceGroup(Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+
+    // Register material listener to generate shaders on demand
+    gRTSSMaterialListener = new RTSSMaterialListener(_shaderGenerator);
+    Ogre::MaterialManager::getSingleton().addListener(gRTSSMaterialListener);
+
+    // Set the scene manager to use RTSS shaders
+    Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+  }
+
+  // Load resources from resources.cfg (generated by cmake with absolute paths)
+  Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
+
   if (Directories::doesFileExist("resources.cfg"))
   {
     Ogre::ConfigFile cf;
     cf.load("resources.cfg");
-
-    // Go through all sections & settings in the file
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-    Ogre::String secName, typeName, archName;
-    while (seci.hasMoreElements())
+    for (const auto& section : cf.getSettingsBySection())
     {
-      secName = seci.peekNextKey();
-      Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-      Ogre::ConfigFile::SettingsMultiMap::iterator i;
-      for (i = settings->begin(); i != settings->end(); ++i)
+      const Ogre::String& secName = section.first;
+      for (const auto& setting : section.second)
       {
-        typeName = i->first;
-        archName = i->second;
-        Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-            archName, typeName, secName);
+        const Ogre::String& typeName = setting.first;
+        const Ogre::String& archName = setting.second;
+        rgm.addResourceLocation(archName, typeName, secName);
       }
     }
   }
+  else
+  {
+    OGRE_EXCEPT(Ogre::Exception::ERR_FILE_NOT_FOUND, "resources.cfg not found. Run from build directory.", "OgreHandler::setupSceneManager");
+  }
 
-  // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("materials", "FileSystem");
-  // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("fonts",     "FileSystem");
-  // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("particles", "FileSystem");
-  // Ogre::ResourceGroupManager::getSingleton().addResourceLocation("meshes",    "FileSystem");
-  Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+  rgm.initialiseAllResourceGroups();
+
+  // Generate RTSS shaders for all materials without shaders
+  if (_shaderGenerator)
+  {
+    auto& matMgr = Ogre::MaterialManager::getSingleton();
+    auto it = matMgr.getResourceIterator();
+    while (it.hasMoreElements())
+    {
+      Ogre::ResourcePtr resPtr = it.getNext();
+      Ogre::MaterialPtr mat = Ogre::static_pointer_cast<Ogre::Material>(resPtr);
+
+      if (!mat->isLoaded())
+        mat->load();
+
+      // Skip materials that already have shaders
+      if (!mat->getTechnique(0))
+        continue;
+      if (mat->getTechnique(0)->getPass(0)->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+        continue;
+
+      _shaderGenerator->createShaderBasedTechnique(
+          *mat,
+          Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+          Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    }
+  }
 
   _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);
   // _sceneManager->setSkyBox(true, "YARS/SkyBox", 100000.0);
 
   _sceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-  Ogre::SceneNode *node = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
+  // OGRE 14: Lights must be attached to nodes, position is set on the node
+  Ogre::SceneNode *lightNode = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
+  lightNode->setPosition(75, 150, 75);
   Ogre::Light *lightSun = _sceneManager->createLight("sun");
-  lightSun->setPosition(75, 150, 75);
   lightSun->setSpecularColour(0.25, 0.25, 0.25);
-  node->attachObject(lightSun);
+  lightNode->attachObject(lightSun);
 
   //lightSun->setType(Ogre::Light::LT_DIRECTIONAL);
   //lightSun->setPosition(25,25,100);
@@ -129,7 +253,9 @@ void OgreHandler::setupSceneManager()
   // _sceneManager->setShadowTextureCasterMaterial("ShadowCaster");
   // _sceneManager->setShadowTextureReceiverMaterial("ShadowReceiver");
   // #else // USE_SHADOW_MAPS
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+  // OGRE 14: Disable shadows for now - stencil shadows require shader support
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
   //#endif // USE_SHADOW_MAPS
 
   // _sceneManager->setShadowTextureSelfShadow(true);

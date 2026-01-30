@@ -9,9 +9,9 @@ add_subdirectory(main)
 add_subdirectory(logging)
 add_subdirectory(rc)
 
-target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE}) # ${Boost_LIBRARIES}) # ${BULLET_LIBRARIES})
+target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE})
 target_link_libraries(${YARS_TARGET} ${Boost_LIBRARIES})
-target_link_libraries(${YARS_TARGET} Boost::program_options)
+target_link_libraries(${YARS_TARGET} Boost::program_options Boost::thread)
 
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)
@@ -36,32 +36,20 @@ if(YARS_USE_VISUALISATION)
   add_subdirectory(view)
   add_subdirectory(view/gui)
 
-  if(APPLE)
-    target_link_libraries(${YARS_TARGET} freeimage freetype zzip z ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+  # Add framework search path for OGRE
+  set(OGRE_FRAMEWORK_DIR "${CMAKE_SOURCE_DIR}/ext/ogre/build/lib/macosx")
+  target_link_options(${YARS_TARGET} PRIVATE "-F${OGRE_FRAMEWORK_DIR}")
 
-     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa")
-      # "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreMain -framework Cocoa")
-  endif(APPLE)
+  # Link OGRE libraries (set in cmake/IncludePackages.cmake)
+  target_link_libraries(${YARS_TARGET} ${OGRE_LIBRARIES})
 
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(${YARS_TARGET}
-      X11 GL z Xt zzip freeimage freetype
-  ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
+  # SDL2 (use variable from FindSDL2 module)
+  target_link_libraries(${YARS_TARGET} ${SDL2_LIBRARY})
 
-    endif(UNIX AND NOT APPLE)
-
-  target_link_libraries(${YARS_TARGET} SDL2)
+  # YARS view libraries
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
-endif(YARS_USE_VISUALISATION)
 
-if(NOT APPLE AND YARS_USE_VISUALISATION)
-  target_link_libraries(${YARS_TARGET}
-    /usr/lib/x86_64-linux-gnu/libOgreMain.so
-    /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
-    ${OGRE_RenderSystem_GL_LIBRARIES}
-    ${OGRE_Plugin_ParticleFX_LIBRARIES}
-    )
-endif(NOT APPLE AND YARS_USE_VISUALISATION)
+endif(YARS_USE_VISUALISATION)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)
