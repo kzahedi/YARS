@@ -65,7 +65,7 @@ string* FileSystemOperations::getFirstExistingDirContainingDir(std::vector<strin
 
   // check if this is an absolute path
   path = fs::path(*containedDirName);
-  if(path.is_complete())
+  if(path.is_absolute())
   {
     if(doesDirExist(path))
     {
@@ -108,7 +108,7 @@ string* FileSystemOperations::getFirstExistingDirContainingFile(std::vector<stri
 
   // check if this is an absolute path
   path = fs::path(*containedFileName);
-  if(path.is_complete())
+  if(path.is_absolute())
   {
     if(doesFileExist(path))
     {
@@ -194,7 +194,7 @@ void FileSystemOperations::checkValidPath(string *name, bool isDir, bool fatal,
   }
   path = fs::path(*name);
 
-  if(! path.is_complete())
+  if(! path.is_absolute())
   {
     path = fs::system_complete(path);
   }
@@ -252,7 +252,7 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string
   {
     path = fs::path(*name);
 
-    if(! path.is_complete())
+    if(! path.is_absolute())
     {
       path = fs::system_complete(
           fs::path(*pathName) / fs::path(*name));

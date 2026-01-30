@@ -5,10 +5,14 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# Handle modern Boost (1.70+) which uses BoostConfig.cmake
+# system and thread are header-only in modern Boost
 if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
-find_package(Boost REQUIRED program_options filesystem date_time system thread)
+
+# Modern Boost only needs these components explicitly linked
+find_package(Boost REQUIRED COMPONENTS program_options filesystem)
 IF(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 ENDIF(Boost_FOUND)

@@ -8,50 +8,38 @@ add_library(YarsControllerNIL SHARED NIL.cpp)
 add_library(YarsControllerSine SHARED SineController.cpp)
 
 add_library(YarsControllerSquareWave SHARED SquareWave.cpp)
-target_link_libraries(YarsControllerSquareWave YarsRobotController boost_system boost_date_time)
+target_link_libraries(YarsControllerSquareWave YarsRobotController)
 
 add_library(YarsControllerBraitenberg2b SHARED Braitenberg2b.cpp)
 target_link_libraries(YarsControllerBraitenberg2b
-  YarsRobotController
-  boost_system
-  boost_date_time)
+  YarsRobotController)
 
 add_library(YarsControllerBraitenberg2a SHARED Braitenberg2a.cpp)
 target_link_libraries(YarsControllerBraitenberg2a
-  YarsRobotController
-  boost_system
-  boost_date_time
-  )
+  YarsRobotController)
 
 add_library(YarsControllerBraitenberg3b SHARED Braitenberg3b.cpp)
 target_link_libraries(YarsControllerBraitenberg3b
-  YarsRobotController
-  boost_system
-  boost_date_time)
+  YarsRobotController)
 
 add_library(YarsControllerBraitenberg3a SHARED Braitenberg3a.cpp)
 target_link_libraries(YarsControllerBraitenberg3a
-  YarsRobotController
-  boost_system
-  boost_date_time)
+  YarsRobotController)
 
 add_library(YarsControllerHexapod SHARED Hexapod.cpp)
 target_link_libraries(YarsControllerHexapod
   YarsConfiguration
-  YarsRobotController
-  boost_system)
+  YarsRobotController)
 
 add_library(YarsControllerConstantValue SHARED ConstantValue.cpp)
 target_link_libraries(YarsControllerConstantValue
-  YarsRobotController
-  boost_system)
+  YarsRobotController)
 
 add_library(YarsControllerNamedPipe SHARED NamedPipeController.cpp)
 target_link_libraries(YarsControllerNamedPipe
   YarsRobotController
   YarsConfiguration
   YarsUtil
-  boost_system
   ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
@@ -67,10 +55,7 @@ target_link_libraries(YarsControllerTCPIP
   YarsUtil
   YarsConfiguration
   YarsRobotController
-  boost_system
-  boost_filesystem
-  boost_date_time
-  )
+  ${Boost_LIBRARIES})
 
 OPTION(YARS_USE_MATLAB_CONTROLLER "Compile MATLAB Controller" OFF)
 if(YARS_USE_MATLAB_CONTROLLER)
@@ -129,4 +114,3 @@ if(YARS_USE_GO)
 
   add_custom_target(braitenberg_go.dylib ALL DEPENDS ${OUTPUT_DIR}/.timestamp ${ARGN})
 endif(YARS_USE_GO)
-

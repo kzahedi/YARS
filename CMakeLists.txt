@@ -1,18 +1,18 @@
+# CMake minimum version must come first
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+
 project(yars)
 
-# check for cmake version first:
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0005 NEW)
-  cmake_policy(SET CMP0003 NEW)
-  cmake_policy(SET CMP0006 NEW)
-  cmake_policy(SET CMP0007 NEW) # list does not count empty elements
-  cmake_policy(SET CMP0002 NEW)
-  cmake_policy(SET CMP0042 NEW)
-  cmake_policy(SET CMP0054 NEW)
-  cmake_policy(SET CMP0009 NEW) # don't follow symlink for file(GLOB_RECURSE
-  cmake_policy(SET CMP0045 NEW) # don't follow symlink for file(GLOB_RECURSE
-endif(COMMAND cmake_policy)
+# C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# CMake policies
+cmake_policy(SET CMP0005 NEW)
+cmake_policy(SET CMP0003 NEW)
+cmake_policy(SET CMP0007 NEW) # list does not count empty elements
+cmake_policy(SET CMP0042 NEW)
+cmake_policy(SET CMP0054 NEW)
 
 set(LIBRARY_TYPE STATIC)
 
