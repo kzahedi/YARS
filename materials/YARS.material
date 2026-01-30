@@ -421,7 +421,8 @@ material YARS/SkyBox
       depth_write off
       texture_unit
       {
-        cubic_texture MonumentValley2004.jpg clouds.jpg clouds.jpg clouds.jpg clouds.jpg clouds.jpg separateUV
+        // cubic_texture with separateUV deprecated in OGRE 14
+        texture clouds.jpg
         // tex_address_mode clamp
       }
     }
