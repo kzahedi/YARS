@@ -2,6 +2,7 @@
 #include <yars/util/macros.h>
 
 #include <sstream>
+#include <cmath>
 
 MappingFunction::MappingFunction(double inStartVal, double inEndVal, double
     outStartVal, double outEndVal)
@@ -126,7 +127,9 @@ void MappingFunction::setInputOutputRange(int mapNum, double inStartVal,
   }
   else
   {
-    // TODO: error handling
+    std::stringstream oss;
+    oss << "MappingFunction::setInputOutputRange mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 }
 
@@ -142,23 +145,35 @@ void MappingFunction::calculateConstants(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
-    // TODO: error message /handling
-    return;
+    std::stringstream oss;
+    oss << "MappingFunction::calculateConstants mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 
-  // TODO: error handling if NaN or infinity occurs ...
+  double inDiff = mapData_[mapNum].inStartVal - mapData_[mapNum].inEndVal;
+  if(inDiff == 0.0)
+  {
+    std::stringstream oss;
+    oss << "MappingFunction::calculateConstants division by zero (inStartVal == inEndVal)";
+    throw(oss.str().c_str());
+  }
+
   mapData_[mapNum].a = (mapData_[mapNum].outStartVal -
-                        mapData_[mapNum].outEndVal)
-                      /(mapData_[mapNum].inStartVal  -
-                        mapData_[mapNum].inEndVal);
+                        mapData_[mapNum].outEndVal) / inDiff;
   mapData_[mapNum].b = mapData_[mapNum].outStartVal -
-                      ((mapData_[mapNum].inStartVal
-                        /(mapData_[mapNum].inStartVal -
-                          mapData_[mapNum].inEndVal)
-                       )
+                      ((mapData_[mapNum].inStartVal / inDiff)
                        * (mapData_[mapNum].outStartVal -
                           mapData_[mapNum].outEndVal)
                       );
+
+  // Check for NaN or infinity
+  if(std::isnan(mapData_[mapNum].a) || std::isinf(mapData_[mapNum].a) ||
+     std::isnan(mapData_[mapNum].b) || std::isinf(mapData_[mapNum].b))
+  {
+    std::stringstream oss;
+    oss << "MappingFunction::calculateConstants resulted in NaN or infinity";
+    throw(oss.str().c_str());
+  }
 }
 
 double MappingFunction::getInStartVal()
@@ -170,8 +185,9 @@ double MappingFunction::getInStartVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
-    // TODO: error message /handling
-    return 0.0;
+    std::stringstream oss;
+    oss << "MappingFunction::getInStartVal mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 
   return mapData_[mapNum].inStartVal;
@@ -186,8 +202,9 @@ double MappingFunction::getInEndVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
-    // TODO: error message /handling
-    return 0.0;
+    std::stringstream oss;
+    oss << "MappingFunction::getInEndVal mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 
   return mapData_[mapNum].inEndVal;
@@ -202,8 +219,9 @@ double MappingFunction::getOutStartVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
-    // TODO: error message /handling
-    return 0.0;
+    std::stringstream oss;
+    oss << "MappingFunction::getOutStartVal mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 
   return mapData_[mapNum].outStartVal;
@@ -218,8 +236,9 @@ double MappingFunction::getOutEndVal(int mapNum)
 {
   if(! (doesMapNumExist(mapNum)))
   {
-    // TODO: error message /handling
-    return 0.0;
+    std::stringstream oss;
+    oss << "MappingFunction::getOutEndVal mapNum " << mapNum << " does not exist.";
+    throw(oss.str().c_str());
   }
 
   return mapData_[mapNum].outEndVal;
