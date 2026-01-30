@@ -5,6 +5,10 @@
 #include <OGRE/Overlay/OgreOverlaySystem.h>
 #include <OGRE/Overlay/OgreFontManager.h>
 
+#ifdef __APPLE__
+#include "OSX_wrap.h"
+#endif
+
 // RTSS Material Listener: generates shaders for materials without them
 class RTSSMaterialListener : public Ogre::MaterialManager::Listener
 {
@@ -326,6 +330,11 @@ void OgreHandler::reset()
 
 void OgreHandler::step()
 {
+#ifdef __APPLE__
+  // Pump Cocoa events to ensure window system is responsive
+  OSX_pump_events();
+#endif
+
   _sceneGraph->update();
   _root->renderOneFrame();
 }

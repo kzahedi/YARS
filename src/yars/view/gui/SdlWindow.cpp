@@ -110,16 +110,24 @@ SdlWindow::SdlWindow(int index)
 void SdlWindow::wait()
 {
   SDL_Event event;
-  while (SDL_PollEvent(&event) && _visible == false)
+  int timeout = 100;  // Max ~1 second wait (100 * 10ms)
+
+  while (!_visible && timeout > 0)
   {
-    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SHOWN)
+    while (SDL_PollEvent(&event))
     {
-      _visible = true;
+      if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SHOWN)
+      {
+        _visible = true;
+        return;
+      }
     }
-    usleep(100);
-    if (_visible == true)
-      return;
+    usleep(10000);  // 10ms
+    timeout--;
   }
+
+  // If we didn't get the SHOWN event, assume window is ready after timeout
+  _visible = true;
 }
 
 void SdlWindow::step()
@@ -453,7 +461,10 @@ void SdlWindow::__setupSDL()
   _viewport->update();
   _window->setActive(true);
   _window->setVisible(true);
-  // glutSwapBuffers();
+
+  // macOS: Perform initial buffer swap to initialize GL context properly
+  _window->swapBuffers();
+  SDL_GL_SwapWindow(_sdlWindow);
 }
 
 void SdlWindow::setupOSD()

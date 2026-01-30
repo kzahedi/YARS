@@ -4,32 +4,39 @@
 #include <yars/util/Observer.h>
 #include <yars/util/ObservableMessage.h>
 
-#include <list>
+#include <vector>
+#include <algorithm>
 
 class Observable
 {
-    public:
-       void addObserver(Observer* o)
-       {
-         observers.push_back(o);
-       };
+  public:
+    void addObserver(Observer* o)
+    {
+      if (o != nullptr) {
+        observers.push_back(o);
+      }
+    }
 
-       void removeObserver(Observer* o)
-       {
-         observers.remove(o);
-       };
+    void removeObserver(Observer* o)
+    {
+      observers.erase(
+        std::remove(observers.begin(), observers.end(), o),
+        observers.end()
+      );
+    }
 
-       void notifyObservers(ObservableMessage *message)
-       {
-         for ( std::list<Observer*>::iterator iterator = observers.begin() ; iterator != observers.end(); iterator++ )
-         {
-           (*iterator)->notify(message);
-         }
-       };
+    void notifyObservers(ObservableMessage *message)
+    {
+      for (auto* observer : observers) {
+        if (observer != nullptr) {
+          observer->notify(message);
+        }
+      }
+    }
 
-    protected:
-       std::list<Observer*> observers;
-
+  protected:
+    std::vector<Observer*> observers;
 };
+
 #endif // __OBSERVABLE_H__
 

@@ -56,5 +56,25 @@ void OSX_GL_clear_current( Ogre::RenderWindow * ogre_render_window ) {
   // see /System/Library/Frameworks/AppKit.framework/Versions/C/Headers/NSOpenGL.h
   //  Ogre::OSXCocoaWindow * cocoa_window = (Ogre::OSXCocoaWindow*)ogre_render_window;
   //  NSOpenGLContext * context = cocoa_window->nsopenGLContext();
-  [NSOpenGLContext clearCurrentContext]; 
+  [NSOpenGLContext clearCurrentContext];
+}
+
+void OSX_pump_events() {
+  // Pump the Cocoa event loop to ensure window is properly displayed
+  @autoreleasepool {
+    // Ensure NSApplication is initialized
+    if (NSApp == nil) {
+      [NSApplication sharedApplication];
+      [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+      [NSApp finishLaunching];
+    }
+
+    NSEvent *event;
+    while ((event = [NSApp nextEventMatchingMask:NSEventMaskAny
+                                       untilDate:nil
+                                          inMode:NSDefaultRunLoopMode
+                                         dequeue:YES])) {
+      [NSApp sendEvent:event];
+    }
+  }
 }

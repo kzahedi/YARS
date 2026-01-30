@@ -89,6 +89,7 @@ void YarsViewModel::__createWindow()
 {
   SdlWindow *wm = new SdlWindow(_windowManager.size());
   wm->addObserver(this);
+  wm->wait();  // Wait for window to be visible before adding to manager
   _windowManager.push_back(wm);
 }
 
