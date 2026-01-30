@@ -221,28 +221,42 @@ void OgreHandler::setupSceneManager()
           Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
     }
 
-    // Load fonts explicitly and generate RTSS shaders for font materials
+    // Load fonts explicitly and apply custom font shaders for GL3Plus
     auto& fontMgr = Ogre::FontManager::getSingleton();
     auto fontIt = fontMgr.getResourceIterator();
-    while (fontIt.hasMoreElements())
-    {
-      Ogre::ResourcePtr fontRes = fontIt.getNext();
-      Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
-      if (!font->isLoaded())
-        font->load();
+    auto& gpuMgr = Ogre::GpuProgramManager::getSingleton();
 
-      // Get font material and generate RTSS shader
-      Ogre::MaterialPtr fontMat = font->getMaterial();
-      if (fontMat && fontMat->getTechnique(0))
+    // Verify font shaders exist before applying
+    bool haveFontShaders = gpuMgr.resourceExists("YARS/FontVP") &&
+                           gpuMgr.resourceExists("YARS/FontFP");
+
+    if (haveFontShaders)
+    {
+      while (fontIt.hasMoreElements())
       {
-        if (!fontMat->getTechnique(0)->getPass(0)->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+        Ogre::ResourcePtr fontRes = fontIt.getNext();
+        Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
+
+        if (!font->isLoaded())
+          font->load();
+
+        // Get font material and apply custom font shaders
+        Ogre::MaterialPtr fontMat = font->getMaterial();
+        if (fontMat && fontMat->getTechnique(0))
         {
-          _shaderGenerator->createShaderBasedTechnique(
-              *fontMat,
-              Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-              Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+          Ogre::Pass* pass = fontMat->getTechnique(0)->getPass(0);
+          if (!pass->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+          {
+            pass->setVertexProgram("YARS/FontVP");
+            pass->setFragmentProgram("YARS/FontFP");
+          }
         }
       }
+    }
+    else
+    {
+      Ogre::LogManager::getSingleton().logMessage(
+        "YARS: Font shaders not found - overlay text may not render correctly");
     }
   }
 
