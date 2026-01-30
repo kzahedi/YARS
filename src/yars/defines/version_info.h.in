@@ -1,0 +1,13 @@
+#ifndef __YARS_VERSION_INFO_H__
+#define __YARS_VERSION_INFO_H__
+
+// YARS Version Information
+// This file is configured by CMake - do not edit manually
+
+#define YARS_VERSION_MAJOR @YARS_MAJOR@
+#define YARS_VERSION_MINOR @YARS_MINOR@
+#define YARS_VERSION_PATCH @YARS_PATCH@
+
+#define YARS_VERSION_STRING "@YARS_MAJOR@.@YARS_MINOR@.@YARS_PATCH@"
+
+#endif // __YARS_VERSION_INFO_H__

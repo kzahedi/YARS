@@ -17,10 +17,18 @@ cmake_policy(SET CMP0054 NEW)
 set(LIBRARY_TYPE STATIC)
 
 # Set Version Information
-# TODO: read this from defines/version.h
+# Version is defined here and exported to version_info.h for C++ access
 set(YARS_MAJOR 0)
 set(YARS_MINOR 7)
 set(YARS_PATCH 28)
+set(YARS_VERSION "${YARS_MAJOR}.${YARS_MINOR}.${YARS_PATCH}")
+
+# Generate version header for C++ code
+configure_file(
+    ${CMAKE_SOURCE_DIR}/src/yars/defines/version_info.h.in
+    ${PROJECT_BINARY_DIR}/include/yars/version_info.h
+    @ONLY
+)
 
 INCLUDE(cmake/SetOptions.cmake)
 INCLUDE(cmake/IncludePackages.cmake) # must be called first
