@@ -52,27 +52,20 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
 
   for(auto g = _data->g_begin(); g != _data->g_end(); g++)
   {
-    SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
-    if(objectNode != nullptr) _objects.push_back(objectNode);
+    std::unique_ptr<SceneGraphObjectNode> objectNode(SceneGraphObjectFactory::create(*g, root, sm));
+    if(objectNode != nullptr) _objects.push_back(std::move(objectNode));
   }
 
   for(auto l = _data->l_begin(); l != _data->l_end(); l++)
   {
-    SceneGraphLightSourceNode *lightNode = new SceneGraphLightSourceNode(*l, root, sm);
-    if(lightNode != nullptr) _lightSources.push_back(lightNode);
+    _lightSources.push_back(std::make_unique<SceneGraphLightSourceNode>(*l, root, sm));
   }
-}
-
-SceneGraphEnvironmentNode::~SceneGraphEnvironmentNode()
-{
-  FOREACH(SceneGraphObjectNode*, o, _objects) delete *o;
-  _objects.clear();
 }
 
 
 void SceneGraphEnvironmentNode::update()
 {
-  FOREACH(SceneGraphObjectNode*, o, _objects)  if(*o != nullptr) (*o)->update();
+  for(auto& o : _objects) if(o) o->update();
   P3D p;
   __YARS_GET_CAMERA_POSITION(&p);
   // _node->setPosition(Ogre::Vector3(p.x, p.y, 0.0));
