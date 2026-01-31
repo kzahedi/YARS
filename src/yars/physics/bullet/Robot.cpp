@@ -25,17 +25,12 @@ Robot::Robot(DataRobot *robot)
 
 Robot::~Robot()
 {
-  for (auto* actuator : _actuators)
-    delete actuator;
-  for (auto* sensor : _sensors)
-    delete sensor;
-  _actuators.clear();
-  _sensors.clear();
-  if (_controller != nullptr)
+  // unique_ptr handles cleanup automatically
+  if (_controller)
   {
     _controller->close();
-    delete _controller;
   }
+  _controller.reset();  // Explicitly reset before dlclose
   if (_controllerLib != nullptr)
   {
     dlclose(_controllerLib);
@@ -45,16 +40,16 @@ Robot::~Robot()
 void Robot::__createBody()
 {
   for (auto i = _data->o_begin(); i != _data->o_end(); i++)
-    _objects.push_back(ObjectFactory::create(*i));
+    _objects.push_back(std::unique_ptr<Object>(ObjectFactory::create(*i)));
 }
 
 void Robot::__createActuators()
 {
   for (auto i = _data->a_begin(); i != _data->a_end(); i++)
   {
-    Actuator *a = ActuatorFactory::create(*i, this);
-    _actuators.push_back(a);
+    auto a = std::unique_ptr<Actuator>(ActuatorFactory::create(*i, this));
     cout << "added " << a->data()->name() << " is active: " << a->data()->isActive(0) << endl;
+    _actuators.push_back(std::move(a));
   }
 }
 
@@ -62,33 +57,32 @@ void Robot::__createSensors()
 {
   for (auto i = _data->s_begin(); i != _data->s_end(); i++)
   {
-    Sensor *s = SensorFactory::create(*i, this);
-    _sensors.push_back(s);
+    _sensors.push_back(std::unique_ptr<Sensor>(SensorFactory::create(*i, this)));
   }
 }
 
 void Robot::prePhysicsUpdate()
 {
   _data->updateActuatorValues();
-  FOREACH(Actuator *, a, _actuators)
-  (*a)->prePhysicsUpdate();
-  FOREACH(Sensor *, s, _sensors)
-  (*s)->prePhysicsUpdate();
+  for (auto& a : _actuators)
+    a->prePhysicsUpdate();
+  for (auto& s : _sensors)
+    s->prePhysicsUpdate();
 }
 
 void Robot::postPhysicsUpdate()
 {
-  FOREACH(Object *, o, _objects)
-  (*o)->postPhysicsUpdate();
+  for (auto& o : _objects)
+    o->postPhysicsUpdate();
 
-  FOREACH(Object *, o, _objects)
-  FOREACHP(Object *, oo, (*o))
-  (*oo)->postPhysicsUpdate();
+  for (auto& o : _objects)
+    for (auto oo = o->begin(); oo != o->end(); ++oo)
+      (*oo)->postPhysicsUpdate();
 
-  FOREACH(Actuator *, a, _actuators)
-  (*a)->postPhysicsUpdate();
-  FOREACH(Sensor *, s, _sensors)
-  (*s)->postPhysicsUpdate();
+  for (auto& a : _actuators)
+    a->postPhysicsUpdate();
+  for (auto& s : _sensors)
+    s->postPhysicsUpdate();
   _data->updateSensorValues();
 }
 
@@ -135,39 +129,39 @@ void Robot::__createController()
     return;
   }
 
-  _controller = _create_controller();
+  _controller.reset(_create_controller());
 
   __setupController();
 
   _controller->init();
 }
 
-std::vector<Object *>::iterator Robot::o_begin()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_begin()
 {
   return _objects.begin();
 }
 
-std::vector<Object *>::iterator Robot::o_end()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_end()
 {
   return _objects.end();
 }
 
-std::vector<Actuator *>::iterator Robot::a_begin()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_begin()
 {
   return _actuators.begin();
 }
 
-std::vector<Actuator *>::iterator Robot::a_end()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_end()
 {
   return _actuators.end();
 }
 
-std::vector<Sensor *>::iterator Robot::s_begin()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_begin()
 {
   return _sensors.begin();
 }
 
-std::vector<Sensor *>::iterator Robot::s_end()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_end()
 {
   return _sensors.end();
 }
@@ -189,33 +183,15 @@ int Robot::seed()
 
 void Robot::reset()
 {
-  FOREACH(Object *, o, _objects)
-  {
-    (*o)->reset();
-  }
-  FOREACH(Actuator *, a, _actuators)
-  {
-    (*a)->reset();
-  }
-  FOREACH(Sensor *, s, _sensors)
-  {
-    (*s)->reset();
-  }
+  for (auto& o : _objects)
+    o->reset();
+  for (auto& a : _actuators)
+    a->reset();
+  for (auto& s : _sensors)
+    s->reset();
   _seed = -1;
 
-  // FOREACH(Object*,   o, _objects)   delete *o;
-  // FOREACH(Actuator*, a, _actuators) delete *a;
-  // FOREACH(Sensor*,   s, _sensors)   delete *s;
-
-  // _objects.clear();
-  // _actuators.clear();
-  // _sensors.clear();
-
-  // __createBody();
-  // __createActuators();
-  // __createSensors();
-
-  if (_controller != nullptr)
+  if (_controller)
   {
     _controller->reset();
     __setupController();

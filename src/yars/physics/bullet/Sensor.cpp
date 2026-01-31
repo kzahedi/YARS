@@ -25,11 +25,11 @@ Sensor::Sensor(string name, string object, Robot *robot)
 
 Object* Sensor::__findObject(string name)
 {
-  for(auto i = _robot->o_begin(); i != _robot->o_end(); i++)
+  for(auto i = _robot->o_begin(); i != _robot->o_end(); ++i)
   {
     if((*i)->data()->name() == name)
-      return *i;
-    FOREACHP(Object*, o, (*i))
+      return i->get();
+    for (auto o = (*i)->begin(); o != (*i)->end(); ++o)
     {
       if((*o)->data()->name() == name)
         return *o;
@@ -40,10 +40,10 @@ Object* Sensor::__findObject(string name)
 
 Actuator* Sensor::__findAcutaor(string name)
 {
-  for(auto i = _robot->a_begin(); i != _robot->a_end(); i++)
+  for(auto i = _robot->a_begin(); i != _robot->a_end(); ++i)
   {
     if((*i)->data()->name() == name)
-      return *i;
+      return i->get();
   }
   return nullptr;
 }

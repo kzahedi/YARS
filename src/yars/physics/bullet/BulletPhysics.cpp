@@ -107,9 +107,9 @@ void BulletPhysics::__initWorld()
     int robotCollideWith = ~robotMask;
     if ((*m)->selfCollide())
       robotCollideWith = 0xffffff;
-    FOREACHF(Object *, o, (*m), ->o_begin(), ->o_end())
+    for (auto o = (*m)->o_begin(); o != (*m)->o_end(); ++o)
     {
-      if ((*o) != nullptr)
+      if (*o)
       {
         if ((*o)->rigidBody() != nullptr)
         {
@@ -124,7 +124,7 @@ void BulletPhysics::__initWorld()
       }
     }
 
-    FOREACHF(Actuator *, a, (*m), ->a_begin(), ->a_end())
+    for (auto a = (*m)->a_begin(); a != (*m)->a_end(); ++a)
     {
       if ((*a)->constraint() != nullptr)
       {
