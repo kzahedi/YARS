@@ -12,19 +12,20 @@ SceneGraphRobotNode::SceneGraphRobotNode(
 {
   for (auto g = robot->g_begin(); g != robot->g_end(); g++)
   {
-    SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
+    std::unique_ptr<SceneGraphObjectNode> objectNode(SceneGraphObjectFactory::create(*g, root, sm));
     if (objectNode != nullptr)
     {
-      _objects.push_back(objectNode);
+      auto* nodePtr = objectNode.get();
+      _objects.push_back(std::move(objectNode));
       for (auto s = (*g)->s_begin(); s != (*g)->s_end(); s++)
       {
         switch ((*s)->type())
         {
         case DATA_GENERIC_PROXIMITY_SENSOR:
-          __createProximitySensor((DataGenericProximitySensor *)(*s), objectNode->node(), sm);
+          __createProximitySensor((DataGenericProximitySensor *)(*s), nodePtr->node(), sm);
           break;
         case DATA_GENERIC_LIGHT_DEPENDENT_RESISTOR_SENSOR:
-          __createLDRSensor((DataGenericLightDependentResistorSensor *)(*s), objectNode->node(), sm);
+          __createLDRSensor((DataGenericLightDependentResistorSensor *)(*s), nodePtr->node(), sm);
           break;
         }
       }
@@ -39,8 +40,7 @@ SceneGraphRobotNode::SceneGraphRobotNode(
       DataMuscleActuator *am = (DataMuscleActuator *)(*a);
       if (am->useMuscleVisualisation())
       {
-        SceneGraphMuscleNode *muscle = new SceneGraphMuscleNode(am, root, sm);
-        _actuators.push_back(muscle);
+        _actuators.push_back(std::make_unique<SceneGraphMuscleNode>(am, root, sm));
       }
     }
   }
@@ -51,9 +51,7 @@ SceneGraphRobotNode::SceneGraphRobotNode(
     {
       if ((*a)->type() != DATA_ACTUATOR_FIXED)
       {
-        SceneGraphJointAxisVisualisationNode *actuator =
-            new SceneGraphJointAxisVisualisationNode(*a, root, sm);
-        _actuators.push_back(actuator);
+        _actuators.push_back(std::make_unique<SceneGraphJointAxisVisualisationNode>(*a, root, sm));
       }
     }
   }
@@ -61,44 +59,30 @@ SceneGraphRobotNode::SceneGraphRobotNode(
 
 void SceneGraphRobotNode::__createProximitySensor(DataGenericProximitySensor *data, Ogre::SceneNode *node, Ogre::SceneManager *sm)
 {
-  SceneGraphProximitySensor *sensor = new SceneGraphProximitySensor(data, node, sm);
-  _sensors.push_back(sensor);
+  _sensors.push_back(std::make_unique<SceneGraphProximitySensor>(data, node, sm));
 }
 
 void SceneGraphRobotNode::__createLDRSensor(DataGenericLightDependentResistorSensor *data, Ogre::SceneNode *node, Ogre::SceneManager *sm)
 {
-  SceneGraphLDRSensor *sensor = new SceneGraphLDRSensor(data, node, sm);
-  _sensors.push_back(sensor);
-}
-
-SceneGraphRobotNode::~SceneGraphRobotNode()
-{
-  // FOREACH(SceneGraphObjectNode*, o, _objects) delete *o;
-  // _objects.clear();
+  _sensors.push_back(std::make_unique<SceneGraphLDRSensor>(data, node, sm));
 }
 
 void SceneGraphRobotNode::update()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != nullptr)
-    (*o)->update();
-  FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != nullptr)
-    (*o)->update();
-  FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != nullptr)
-    (*o)->update();
+  for (auto& o : _objects)
+    if (o) o->update();
+  for (auto& o : _sensors)
+    if (o) o->update();
+  for (auto& o : _actuators)
+    if (o) o->update();
 }
 
 void SceneGraphRobotNode::reset()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != nullptr)
-    (*o)->reset();
-  FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != nullptr)
-    (*o)->reset();
-  FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != nullptr)
-    (*o)->reset();
+  for (auto& o : _objects)
+    if (o) o->reset();
+  for (auto& o : _sensors)
+    if (o) o->reset();
+  for (auto& o : _actuators)
+    if (o) o->reset();
 }
