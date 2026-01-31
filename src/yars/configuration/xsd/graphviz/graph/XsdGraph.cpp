@@ -5,7 +5,6 @@
 
 #include <yars/util/YarsErrorHandler.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <yars/configuration/xsd/graphviz/graph/XsdSequenceGraphNode.h>
 #include <yars/configuration/xsd/graphviz/graph/XsdChoiceGraphNode.h>
@@ -93,13 +92,13 @@ std::vector<XsdGraphNode*>::iterator XsdGraph::n_end()
 }
 XsdGraphNodeInstance* XsdGraph::get(string parent, string name)
 {
-  FOREACH(XsdGraphNodeInstance*, i, _instances)
+  for (auto* i : _instances)
   {
-    if((*i)->name() == parent)
+    if (i->name() == parent)
     {
-      FOREACHP(XsdGraphNodeInstance*, c, (*i))
+      for (auto c = i->begin(); c != i->end(); ++c)
       {
-        if((*c)->name() == name)
+        if ((*c)->name() == name)
         {
           return (*c);
         }
@@ -184,16 +183,16 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdChoice *choice)
   // }
 
   std::vector<XsdGraphNodeInstance*> v;
-  FOREACHF(XsdSequence*,  s, choice, ->s_begin(), ->s_end())
+  for (auto s = choice->s_begin(); s != choice->s_end(); ++s)
   {
     XsdGraphNodeInstance *i = new XsdGraphNodeInstance("", "", nullptr, "");
     __add(i, *s);
     v.push_back(i);
   }
 
-  FOREACH(XsdGraphNodeInstance*, p, v)
+  for (auto* p : v)
   {
-    FOREACHP(XsdGraphNodeInstance*, i, (*p))
+    for (auto i = p->begin(); i != p->end(); ++i)
     {
       parent->push_back(*i);
       (*i)->setPort(index);
@@ -298,11 +297,11 @@ void XsdGraph::__add(XsdGraphNodeInstance *parent, XsdNode *node)
 
 XsdGraphNode* XsdGraph::__findNode(string name)
 {
-  FOREACH(XsdGraphNode*, n, _nodes)
+  for (auto* n : _nodes)
   {
-    if((*n)->name() == name)
+    if (n->name() == name)
     {
-      return (*n);
+      return n;
     }
   }
   return nullptr;
