@@ -6,6 +6,7 @@
 #include <yars/util/Timer.h>
 
 #include <OGRE/Ogre.h>
+#include <algorithm>
 
 YarsViewModel::YarsViewModel()
 {
@@ -24,9 +25,8 @@ YarsViewModel::YarsViewModel()
     _ogreHandler = OgreHandler::instance();
     initialiseView();
     _ogreHandler->setupSceneManager();
-    FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != nullptr)
-      (*i)->setupOSD();
+    for (auto& w : _windowManager)
+      if (w) w->setupOSD();
     if (__YARS_GET_USE_CAPTURE_CL)
       toggleCaptureVideo();
   }
@@ -44,9 +44,9 @@ void YarsViewModel::initialiseView()
     return;
   if (data->screens() == nullptr)
     return;
-  FOREACHP(DataScreen *, i, data->screens())
-  if ((*i)->autoShow())
-    __createWindow();
+  for (auto i = data->screens()->begin(); i != data->screens()->end(); ++i)
+    if ((*i)->autoShow())
+      __createWindow();
 }
 
 void YarsViewModel::visualiseScene()
@@ -58,49 +58,46 @@ void YarsViewModel::visualiseScene()
   _ogreHandler->step();
 
   // Swap buffers for all windows after OGRE renders
-  FOREACH(SdlWindow *, i, _windowManager)
-  if ((*i) != nullptr)
-    (*i)->swapBuffers();
+  for (auto& w : _windowManager)
+    if (w) w->swapBuffers();
 
-  FOREACH(SdlWindow *, i, _windowManager)
-  if ((*i) != nullptr)
-    (*i)->step();
+  for (auto& w : _windowManager)
+    if (w) w->step();
   while (SDL_PollEvent(&_event))
   {
-    FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != nullptr)
-      (*i)->handleEvent(_event);
+    for (auto& w : _windowManager)
+      if (w) w->handleEvent(_event);
   }
 }
 
 void YarsViewModel::reset()
 {
   _ogreHandler->reset();
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->reset();
+  for (auto& w : _windowManager)
+    w->reset();
 }
 
 void YarsViewModel::quit()
 {
   Y_DEBUG("YarsViewModel::quit called")
   _run = false;
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->quit();
+  for (auto& w : _windowManager)
+    w->quit();
   _windowManager.clear();
   Y_DEBUG("YarsViewModel::quit completed")
 }
 
 void YarsViewModel::__createWindow()
 {
-  SdlWindow *wm = new SdlWindow(_windowManager.size());
+  auto wm = std::make_unique<SdlWindow>(_windowManager.size());
   wm->addObserver(this);
   wm->wait();  // Wait for window to be visible before adding to manager
-  _windowManager.push_back(wm);
+  _windowManager.push_back(std::move(wm));
 }
 
 void YarsViewModel::createNewWindow()
 {
-  SdlWindow *wm = new SdlWindow(_windowManager.size() + _newWindows.size());
+  auto wm = std::make_unique<SdlWindow>(_windowManager.size() + _newWindows.size());
   wm->addObserver(this);
 #ifdef USE_CAPTURE_VIDEO
   if (wm->captureRunning())
@@ -112,7 +109,7 @@ void YarsViewModel::createNewWindow()
   wm->wait();
   _ogreHandler->step();
   wm->step();
-  _newWindows.push_back(wm);
+  _newWindows.push_back(std::move(wm));
   _timeStamp = Timer::getTime();
   _first++;
 }
@@ -137,18 +134,17 @@ void YarsViewModel::notify(ObservableMessage *m)
 
 void YarsViewModel::cleanupWindows()
 {
-  vector<SdlWindow *> toBeDeleted;
-  for (auto i = _windowManager.begin(); i != _windowManager.end(); i++)
+  // Close windows marked as closed
+  for (auto& w : _windowManager)
   {
-    if ((*i)->closed())
-      toBeDeleted.push_back(*i);
+    if (w && w->closed())
+      w->close();
   }
-
-  for (auto i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
-  {
-    (*i)->close();
-    _windowManager.erase(i);
-  }
+  // Remove closed windows using erase-remove idiom
+  _windowManager.erase(
+    std::remove_if(_windowManager.begin(), _windowManager.end(),
+      [](const std::unique_ptr<SdlWindow>& w) { return !w || w->closed(); }),
+    _windowManager.end());
 }
 
 void YarsViewModel::run()
@@ -163,8 +159,8 @@ void YarsViewModel::run()
 #ifdef USE_CAPTURE_VIDEO
         if (_toggleVideo == true)
         {
-          FOREACH(SdlWindow *, i, _windowManager)
-          (*i)->captureVideo();
+          for (auto& w : _windowManager)
+            w->captureVideo();
         }
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
@@ -175,14 +171,19 @@ void YarsViewModel::run()
       visualiseScene();
     }
 
-    for (auto i = _newWindows.begin(); i != _newWindows.end(); i++)
+    for (auto& w : _newWindows)
     {
-      if ((*i)->added() == false)
+      if (w && !w->added())
       {
-        _windowManager.push_back(*i);
-        (*i)->setAdded();
+        w->setAdded();
+        _windowManager.push_back(std::move(w));
       }
     }
+    // Remove moved-from windows from _newWindows
+    _newWindows.erase(
+      std::remove_if(_newWindows.begin(), _newWindows.end(),
+        [](const std::unique_ptr<SdlWindow>& w) { return !w; }),
+      _newWindows.end());
   }
 }
 
@@ -197,8 +198,8 @@ void YarsViewModel::synched()
 
 void YarsViewModel::toggleShadows()
 {
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->toggleShadows();
+  for (auto& w : _windowManager)
+    w->toggleShadows();
 }
 
 void YarsViewModel::toggleCaptureVideo()
@@ -209,14 +210,14 @@ void YarsViewModel::toggleCaptureVideo()
 #if USE_CAPTURE_VIDEO
   if (_toggleVideo == true)
   {
-    FOREACH(SdlWindow *, i, _windowManager)
-    (*i)->startCaptureVideo();
+    for (auto& w : _windowManager)
+      w->startCaptureVideo();
   }
   else
   {
     cout << "stopped video recording" << endl;
-    FOREACH(SdlWindow *, i, _windowManager)
-    (*i)->stopCaptureVideo();
+    for (auto& w : _windowManager)
+      w->stopCaptureVideo();
   }
 #endif // USE_CAPTURE_VIDEO
 }

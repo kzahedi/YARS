@@ -7,6 +7,7 @@
 #include <yars/view/gui/SdlWindow.h>
 
 #include <SDL2/SDL.h>
+#include <memory>
 
 class YarsViewModel : public Observable, public Observer
 {
@@ -32,8 +33,8 @@ class YarsViewModel : public Observable, public Observer
     void __newWindow();
     void __createWindow();
 
-    std::vector<SdlWindow*> _windowManager;
-    std::vector<SdlWindow*> _newWindows;
+    std::vector<std::unique_ptr<SdlWindow>> _windowManager;
+    std::vector<std::unique_ptr<SdlWindow>> _newWindows;
     int                     _drawFequency;
     int                     _visualiseCalled;
     bool                    _run;
