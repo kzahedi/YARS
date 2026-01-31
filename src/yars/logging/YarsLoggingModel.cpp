@@ -1,6 +1,5 @@
 #include <yars/logging/YarsLoggingModel.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <yars/logging/ConsoleLogger.h>
 #include <yars/logging/FileLogger.h>

@@ -2,7 +2,6 @@
 
 #include <yars/configuration/data/XmlChangeLog.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/StringTokeniser.h>
 
 #include <cstdlib>
