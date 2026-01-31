@@ -90,15 +90,17 @@ void YarsViewModel::quit()
 void YarsViewModel::__createWindow()
 {
   auto wm = std::make_unique<SdlWindow>(_windowManager.size());
-  wm->addObserver(this);
-  wm->wait();  // Wait for window to be visible before adding to manager
+  wm->setCloseCallback([this]() { cleanupWindows(); });
+  wm->setSyncToggleCallback([this]() { toggleSync(); });
+  wm->wait();
   _windowManager.push_back(std::move(wm));
 }
 
 void YarsViewModel::createNewWindow()
 {
   auto wm = std::make_unique<SdlWindow>(_windowManager.size() + _newWindows.size());
-  wm->addObserver(this);
+  wm->setCloseCallback([this]() { cleanupWindows(); });
+  wm->setSyncToggleCallback([this]() { toggleSync(); });
 #ifdef USE_CAPTURE_VIDEO
   if (wm->captureRunning())
   {
@@ -114,22 +116,9 @@ void YarsViewModel::createNewWindow()
   _first++;
 }
 
-void YarsViewModel::notify(ObservableMessage *m)
+void YarsViewModel::toggleSync()
 {
-  switch (m->type())
-  {
-  // case __M_NEW_WINDOW:        __newWindow();           break; // new    window
-  // case -2:                    __removeClosedWindows(); break; // closed
-  case __M_QUIT_CALLED:
-    _run = false;
-    break;
-  case __M_TOGGLE_SYNCED_GUI:
-    _sync = !_sync;
-    break;
-  case __M_CLOSE_WINDOW:
-    cleanupWindows();
-    break;
-  }
+  _sync = !_sync;
 }
 
 void YarsViewModel::cleanupWindows()

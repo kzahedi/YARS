@@ -1,28 +1,40 @@
 #ifndef __YARS_PHYSICS_MODEL_H__
 #define __YARS_PHYSICS_MODEL_H__
 
-#include <yars/util/Observable.h>
 #include <yars/physics/PhysicsInterface.h>
 #include <yars/physics/bullet/BulletPhysics.h>
 
-class YarsPhysicsModel : public Observable
+#include <functional>
+
+/** \brief Physics model for YARS simulation.
+ *
+ * Manages the physics engine and provides callbacks for reset/quit events.
+ */
+class YarsPhysicsModel
 {
-  public:
-    YarsPhysicsModel();
-    ~YarsPhysicsModel();
+public:
+  using ResetCallback = std::function<void()>;
+  using QuitCallback = std::function<void()>;
 
-    // slots
-    void initialisePhysics();
-    void performOneSimulationStep();
-    void performMultipleSimulationSteps(int numberOfSteps);
-    void shutdown();
-    void reset();
+  YarsPhysicsModel();
+  ~YarsPhysicsModel();
 
-  private:
+  void initialisePhysics();
+  void performOneSimulationStep();
+  void performMultipleSimulationSteps(int numberOfSteps);
+  void shutdown();
+  void reset();
 
-    PhysicsInterface *_physics;
+  /** \brief Set callback for physics-triggered reset. */
+  void setResetCallback(ResetCallback callback) { _resetCallback = std::move(callback); }
 
+  /** \brief Set callback for physics-triggered quit. */
+  void setQuitCallback(QuitCallback callback) { _quitCallback = std::move(callback); }
+
+private:
+  PhysicsInterface *_physics;
+  ResetCallback _resetCallback;
+  QuitCallback _quitCallback;
 };
+
 #endif // __YARS_PHYSICS_MODEL_H__
-
-

@@ -1,64 +1,51 @@
 #include "main/YarsMainControl.h"
-
 #include "view/console/ConsoleView.h"
 
 #include <iostream>
+#include <thread>
 
 #ifdef USE_VISUALISATION
-//#ifdef SUPPRESS_ALL_OUTPUT
-#  define PRINT_START_UP_MESSAGE(a) ;
-//#else
-//#  define PRINT_START_UP_MESSAGE(a) cout << a << endl;
-//#endif
-
-#include "main/MainLoopThread.h"
-#include "view/YarsViewControl.h"
 #include "view/YarsViewModel.h"
 
 int mainFunction(int argc, char **argv)
 {
   YarsMainControl *ymc = new YarsMainControl(argc, argv);
 
-  if(__YARS_GET_USE_VISUALISATION)
+  if (__YARS_GET_USE_VISUALISATION)
   {
-    ConsoleView     *cv  = ConsoleView::instance();
-    YarsViewControl *yvc = new YarsViewControl();
-    YarsViewModel   *yvm = new YarsViewModel();
-    yvc->setModel(yvm);
-    yvm->addObserver(ymc);
-#ifndef SUPPRESS_ALL_OUTPUT
-    yvm->addObserver(cv);
-#endif // SUPPRESS_ALL_OUTPUT
-    ymc->addObserver(yvc);
+    YarsViewModel *yvm = new YarsViewModel();
 
-    std::thread* pThread = new std::thread(
-        &YarsMainControl::run,     // pointer to member function to execute in thread
-        ymc);
+    // Run physics in a separate thread
+    std::thread physicsThread(&YarsMainControl::run, ymc);
 
+    // Run GUI in main thread
     yvm->run();
 
-    pThread->join();
+    physicsThread.join();
+
+    delete yvm;
   }
   else
   {
-    // YarsMainControl *ymc = new YarsMainControl(argc, argv);
     ymc->run();
   }
 
-  //return app.exec();
+  delete ymc;
   cout << "Good bye." << endl;
   return 0;
 }
 
 #else // NO VISUALISATION
+
 int mainFunction(int argc, char **argv)
 {
   YarsMainControl *ymc = new YarsMainControl(argc, argv);
   ymc->run();
+  delete ymc;
   return 0;
 }
-#endif
 
+#endif
 
 int main(int argc, char **argv)
 {

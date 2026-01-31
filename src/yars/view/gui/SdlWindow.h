@@ -1,8 +1,6 @@
 #ifndef __SDL_WINDOW_H__
 #define __SDL_WINDOW_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/ObservableMessage.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/view/gui/CameraMan.h>
 #include <yars/view/gui/WindowConfiguration.h>
@@ -19,26 +17,40 @@
 #endif // USE_CAPTURE_VIDEO
 
 #include <pthread.h>
+#include <functional>
 
-class SdlWindow : public Observable
+/** \brief SDL window wrapper for YARS GUI.
+ *
+ * Manages SDL window, OGRE rendering, and user input.
+ */
+class SdlWindow
 {
-  public:
-    SdlWindow(int index);
-    ~SdlWindow();
+public:
+  using CloseCallback = std::function<void()>;
+  using SyncToggleCallback = std::function<void()>;
 
-    void reset();
-    void quit();
-    void step();
-    void swapBuffers();  // Swap OpenGL buffers (for externalGLControl mode)
-    void handleEvent(SDL_Event &event);
-    bool visible();
-    void wait();
-    bool added();
-    void setAdded();
-    bool closed();
-    void close();
+  SdlWindow(int index);
+  ~SdlWindow();
 
-    void captureVideo();
+  void reset();
+  void quit();
+  void step();
+  void swapBuffers();
+  void handleEvent(SDL_Event &event);
+  bool visible();
+  void wait();
+  bool added();
+  void setAdded();
+  bool closed();
+  void close();
+
+  void captureVideo();
+
+  /** \brief Set callback for window close. */
+  void setCloseCallback(CloseCallback callback) { _closeCallback = std::move(callback); }
+
+  /** \brief Set callback for sync toggle. */
+  void setSyncToggleCallback(SyncToggleCallback callback) { _syncToggleCallback = std::move(callback); }
 #ifdef USE_CAPTURE_VIDEO
     bool captureRunning();
     void startCaptureVideo();
@@ -128,10 +140,12 @@ class SdlWindow : public Observable
     P3D _camAngularVelocity;
     Uint32 _windowID;
     SDL_Window *_sdlWindow;
-    SDL_GLContext _glContext;  // OpenGL context for macOS/Windows
+    SDL_GLContext _glContext;
     bool _visible;
     bool _added;
     bool _closed;
+    CloseCallback _closeCallback;
+    SyncToggleCallback _syncToggleCallback;
 };
 
 #endif // __SDL_WINDOW_H__

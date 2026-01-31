@@ -1,36 +1,43 @@
 #ifndef __RUNTIME_CONTROL_H__
 #define __RUNTIME_CONTROL_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/Observer.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Timer.h>
 
-/** \brief This class implements the YARS runtime control.
+#include <functional>
+
+/** \brief Runtime control for YARS simulation.
  *
- * This class checks for the maximal number of iterations to be performed, when
- * to perform an automatic reset, and if timing information is to be print.
+ * Handles iteration limits, auto-reset, timing, and video capture control.
  */
-class RuntimeControl : public Observer, public Observable
+class RuntimeControl
 {
-  public:
-    /** \brief Constructor */
-    RuntimeControl();
-    ~RuntimeControl();
+public:
+  using QuitCallback = std::function<void()>;
+  using VideoCaptureCallback = std::function<void()>;
 
-    /** \brief Implements the runtime control.
-     *
-     * \param[in]  __M_NEXT_STEP
-     * \param[out] __M_RESET
-     * \param[out] __M_QUIT_CALLED
-     */
-    void notify(ObservableMessage *message) override;
-  private:
+  RuntimeControl();
+  ~RuntimeControl();
 
-    Data  *_data;
-    Timer *_timer;
-    DataRecording *_recording;
-    bool           _captureRunning;
+  /** \brief Initialize/reset the runtime control state. */
+  void init();
 
+  /** \brief Called each simulation step. */
+  void step();
+
+  /** \brief Set callback for quit requests. */
+  void setQuitCallback(QuitCallback callback) { _quitCallback = std::move(callback); }
+
+  /** \brief Set callback for video capture toggle. */
+  void setVideoCaptureCallback(VideoCaptureCallback callback) { _videoCaptureCallback = std::move(callback); }
+
+private:
+  Data *_data;
+  Timer *_timer;
+  DataRecording *_recording;
+  bool _captureRunning;
+  QuitCallback _quitCallback;
+  VideoCaptureCallback _videoCaptureCallback;
 };
+
 #endif // __RUNTIME_CONTROL_H__

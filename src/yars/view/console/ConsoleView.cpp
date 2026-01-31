@@ -28,22 +28,7 @@ ConsoleView* ConsoleView::instance()
 ConsoleView::ConsoleView()
 {
   _framePerSecondInterval = 1000.0;
-  _debugTiming            = Timer::getTime();
-}
-
-
-void ConsoleView::notify(ObservableMessage *m)
-{
-  Y_DEBUG("ConsoleView: A message \"%s\" was send.",m->string().c_str()); // gets all keyboard messages
-  switch(m->type())
-  {
-    //case __M_NEXT_STEP:
-      // nothing
-      //break;
-    case __M_RESET:
-      Y_DEBUG("Reset called");
-      break;
-  }
+  _debugTiming = Timer::getTime();
 }
 
 void ConsoleView::printViewpoint(P3D xyz, P3D hpr)

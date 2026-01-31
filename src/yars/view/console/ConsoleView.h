@@ -10,7 +10,6 @@
 #include <stdarg.h>
 #include <string>
 
-#include <yars/util/Observer.h>
 #include <yars/types/P3D.h>
 #include <yars/types/Colour.h>
 
@@ -42,16 +41,17 @@
 
 
 
-class ConsoleView : public Observer
+/** \brief Console output handler for YARS.
+ *
+ * Provides debug, info, warning, and error message output.
+ */
+class ConsoleView
 {
-  public:
+public:
+  static ConsoleView *instance();
+  virtual ~ConsoleView() {}
 
-    static ConsoleView* instance();
-    virtual ~ConsoleView() { };
-
-    void notify(ObservableMessage *m) override;
-
-    static void printMessage(int type, const char *string, ...);
+  static void printMessage(int type, const char *string, ...);
     static void printMessage(int type, std::string message, ...);
     static void setDebugLevel(int level);
     static int  getDebugLevel();

@@ -1,6 +1,5 @@
 
-add_library(YarsLogging ${LIBRARY_TYPE} YarsLoggingControl.cpp
-                                        YarsLoggingModel.cpp
+add_library(YarsLogging ${LIBRARY_TYPE} YarsLoggingModel.cpp
 
                                         LoggingHandler.cpp
                                         LoggingModule.cpp
