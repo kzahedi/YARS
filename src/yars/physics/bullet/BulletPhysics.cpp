@@ -91,11 +91,11 @@ void BulletPhysics::__initWorld()
   int worldMask = 1;
   int worldCollideWith = 0xffffff;
 
-  FOREACH(Object *, o, (*_environment))
+  for (auto& o : *_environment)
   {
-    if ((*o)->rigidBody() != nullptr)
+    if (o->rigidBody() != nullptr)
     {
-      _world->addRigidBody((*o)->rigidBody(), worldMask, worldCollideWith);
+      _world->addRigidBody(o->rigidBody(), worldMask, worldCollideWith);
     }
   }
 
