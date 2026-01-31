@@ -1,6 +1,5 @@
 #include <yars/configuration/xsd/graphviz/graph/XsdElementGraphNode.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <iostream>
 
@@ -26,7 +25,7 @@ string XsdElementGraphNode::customLabel(string label)
   stringstream s_label;
   stringstream s_optional;
   stringstream s_type;
-  FOREACHF(XsdAttribute*, a, _spec, ->a_begin(), ->a_end())
+  for (auto a = _spec->a_begin(); a != _spec->a_end(); ++a)
   {
     s_label << "<td bgcolor=\"" << ATTRIBUTE_BGCOLOR << "\">"<< (*a)->name() << "</td>";
     if((*a)->required())
