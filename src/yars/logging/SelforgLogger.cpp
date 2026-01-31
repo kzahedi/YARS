@@ -1,7 +1,6 @@
 #include <yars/logging/SelforgLogger.h>
 
 #include <yars/util/Timer.h>
-#include <yars/util/stl_macros.h>
 #include <yars/configuration/YarsConfiguration.h>
 
 #ifdef _MSC_VER
@@ -52,9 +51,9 @@ void SelforgLogger::init()
 
   _oss.str("");
   _oss << "#C";
-  FOREACH(string, n, names)
+  for (auto& n : names)
   {
-    _oss << " " << __convert(*n);
+    _oss << " " << __convert(n);
   }
   _oss << endl;
 
