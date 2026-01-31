@@ -29,6 +29,7 @@ class SdlWindow : public Observable
     void reset();
     void quit();
     void step();
+    void swapBuffers();  // Swap OpenGL buffers (for externalGLControl mode)
     void handleEvent(SDL_Event &event);
     bool visible();
     void wait();
@@ -127,6 +128,7 @@ class SdlWindow : public Observable
     P3D _camAngularVelocity;
     Uint32 _windowID;
     SDL_Window *_sdlWindow;
+    SDL_GLContext _glContext;  // OpenGL context for macOS/Windows
     bool _visible;
     bool _added;
     bool _closed;

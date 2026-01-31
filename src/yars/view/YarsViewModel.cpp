@@ -57,6 +57,11 @@ void YarsViewModel::visualiseScene()
     return;
   _ogreHandler->step();
 
+  // Swap buffers for all windows after OGRE renders
+  FOREACH(SdlWindow *, i, _windowManager)
+  if ((*i) != nullptr)
+    (*i)->swapBuffers();
+
   FOREACH(SdlWindow *, i, _windowManager)
   if ((*i) != nullptr)
     (*i)->step();

@@ -130,6 +130,23 @@ void SdlWindow::wait()
   _visible = true;
 }
 
+void SdlWindow::swapBuffers()
+{
+#ifdef __APPLE__
+  // macOS with externalGLControl: Use SDL to swap buffers
+  if (_glContext != nullptr && _sdlWindow != nullptr)
+  {
+    SDL_GL_SwapWindow(_sdlWindow);
+  }
+#else
+  // Other platforms: Let OGRE handle buffer swap
+  if (_window != nullptr)
+  {
+    _window->swapBuffers();
+  }
+#endif
+}
+
 void SdlWindow::step()
 {
 
@@ -329,6 +346,21 @@ void SdlWindow::__setupSDL()
   SDL_Init(SDL_INIT_EVERYTHING);
   // SDL_Init(SDL_INIT_VIDEO);
 
+  // Create SDL window with OpenGL support
+  Uint32 windowFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
+
+#ifdef __APPLE__
+  // macOS: Request OpenGL 4.1 Core Profile (highest supported on macOS, matches OGRE GL3Plus)
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+  // Use sRGB framebuffer
+  SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1);
+#endif
+
   if (__YARS_GET_USE_WINDOW_GEOMETRY)
   {
     _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
@@ -336,7 +368,7 @@ void SdlWindow::__setupSDL()
                                   _windowConfiguration->geometry.y(),
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  windowFlags);
   }
   else
   {
@@ -345,7 +377,7 @@ void SdlWindow::__setupSDL()
                                   SDL_WINDOWPOS_CENTERED,
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_RESIZABLE); // | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  windowFlags);
   }
 
   if (_sdlWindow == nullptr)
@@ -358,15 +390,19 @@ void SdlWindow::__setupSDL()
   // SDL_WM_GrabInput(SDL_GRAB_OFF);
   // SDL_ShowCursor(SDL_ENABLE);
 
-#ifdef __WINDOWS__
-  SDL_GLContext glcontext = nullptr;
-  glcontext = SDL_GL_CreateContext(_sdlWindow);
-  if (glcontext == nullptr)
+  // Create GL context for platforms that need explicit context management
+  _glContext = nullptr;
+#if defined(__WINDOWS__) || defined(__APPLE__)
+  _glContext = SDL_GL_CreateContext(_sdlWindow);
+  if (_glContext == nullptr)
   {
     printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
     return;
   }
+  // Make context current before OGRE uses it
+  SDL_GL_MakeCurrent(_sdlWindow, _glContext);
 #endif
+
   SDL_SysWMinfo syswm_info;
   SDL_VERSION(&syswm_info.version);
   if (!SDL_GetWindowWMInfo(_sdlWindow, &syswm_info))
@@ -375,20 +411,14 @@ void SdlWindow::__setupSDL()
     return;
   }
 
-#ifdef __APPLE__
-  // I suspect triple buffering is on by default, which makes vsync pointless?
-  // except maybe for poorly implemented render loops which will then be forced to wait
-  //    ogre_render_window->setVSyncEnabled( false );
-#else
-  // NOTE: SDL_GL_SWAP_CONTROL was SDL 1.2 and has been retired
-  SDL_GL_SetSwapInterval(1);
-#endif
+  // Disable vsync - let the application control timing
+  SDL_GL_SetSwapInterval(0);
 
   Ogre::NameValuePairList params;
 #ifdef __WINDOWS__
   params["externalGLControl"] = "1";
   // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
-  params["externalGLContext"] = Ogre::StringConverter::toString((unsigned long)glcontext);
+  params["externalGLContext"] = Ogre::StringConverter::toString((unsigned long)_glContext);
   params["externalWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.win.window);
 #endif
 #ifdef __linux__
@@ -397,14 +427,13 @@ void SdlWindow::__setupSDL()
   params["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.x11.window);
 #endif
 #ifdef __APPLE__
-  // OGRE 14 + SDL2 on macOS: Use Cocoa API with external NSView
-  // Note: Must pass externalWindowHandle because OGRE's builtin window is broken
+  // OGRE 14 + SDL2 on macOS: Pass SDL's GL context and NSView to OGRE
+  // SDL_GLContext on macOS is actually an NSOpenGLContext pointer
   params["externalWindowHandle"] = OSX_cocoa_view(syswm_info);
+  params["externalGLContext"] = Ogre::StringConverter::toString((size_t)_glContext);
+  params["externalGLControl"] = "true";
   params["macAPI"] = "cocoa";
   params["macAPICocoaUseNSView"] = "true";
-  // Try adding context options that might help with rendering
-  params["vsync"] = "false";
-  params["gamma"] = "false";
 #endif
 
   //params["displayFrequency"] = 100;
@@ -462,9 +491,12 @@ void SdlWindow::__setupSDL()
   _window->setActive(true);
   _window->setVisible(true);
 
-  // macOS: Perform initial buffer swap to initialize GL context properly
-  _window->swapBuffers();
+  // Initial buffer swap
+#ifdef __APPLE__
   SDL_GL_SwapWindow(_sdlWindow);
+#else
+  _window->swapBuffers();
+#endif
 }
 
 void SdlWindow::setupOSD()

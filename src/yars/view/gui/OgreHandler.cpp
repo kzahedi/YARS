@@ -330,11 +330,6 @@ void OgreHandler::reset()
 
 void OgreHandler::step()
 {
-#ifdef __APPLE__
-  // Pump Cocoa events to ensure window system is responsive
-  OSX_pump_events();
-#endif
-
   _sceneGraph->update();
   _root->renderOneFrame();
 }
