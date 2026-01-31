@@ -119,7 +119,6 @@ void XsdGraph::__createGraph()
   // attributes not used
   for (auto e = seq->e_begin(); e != seq->e_end(); ++e) __add(_root, *e);
   // int index = 0;
-  // FOREACHP(XsdGraphNodeInstance*, n, _root)
   // {
     // (*n)->setPort(index++);
   // }
