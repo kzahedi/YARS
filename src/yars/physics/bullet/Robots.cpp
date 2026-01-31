@@ -1,45 +1,47 @@
 #include <yars/physics/bullet/Robots.h>
 
 #include <yars/configuration/YarsConfiguration.h>
-#include <yars/util/stl_macros.h>
 
 Robots::Robots()
 {
   _reset = false;
   _quit  = false;
+  _seed  = -1;
   DataRobots *robots = __YARS_GET_ROBOTS;
   if(robots == nullptr) return;
 
-  FOREACH(DataRobot*, i, (*robots)) push_back(new Robot(*i));
+  for (auto i = robots->begin(); i != robots->end(); ++i)
+    push_back(std::make_unique<Robot>(*i));
 }
 
 Robots::~Robots()
 {
-  FOREACH(Robot*, i, (*this)) delete *i;
-  clear();
+  // unique_ptr handles cleanup automatically
 }
 
 void Robots::prePhysicsUpdate()
 {
   _reset = false;
   _quit  = false;
-  FOREACH(Robot*, i, (*this)) (*i)->prePhysicsUpdate();
+  for (auto& robot : *this)
+    robot->prePhysicsUpdate();
 }
 
 void Robots::postPhysicsUpdate()
 {
-  for(auto i = begin(); i != end(); i++)
+  for (auto& robot : *this)
   {
-    (*i)->postPhysicsUpdate();
-    _reset |= (*i)->isReset();
-    _quit  |= (*i)->isQuit();
-    if(_seed == -1) _seed = (*i)->seed();
+    robot->postPhysicsUpdate();
+    _reset |= robot->isReset();
+    _quit  |= robot->isQuit();
+    if(_seed == -1) _seed = robot->seed();
   }
 }
 
 void Robots::controllerUpdate()
 {
-  FOREACH(Robot*, i, (*this)) (*i)->controllerUpdate();
+  for (auto& robot : *this)
+    robot->controllerUpdate();
 }
 
 bool Robots::isReset()
@@ -58,7 +60,8 @@ void Robots::reset()
   {
     // HIER RANDOM SEED SETZEN
   }
-  FOREACH(Robot*, m, (*this)) (*m)->reset();
+  for (auto& robot : *this)
+    robot->reset();
   _seed = -1;
 }
 

@@ -100,14 +100,14 @@ void BulletPhysics::__initWorld()
   }
 
   int index = 2;
-  FOREACH(Robot *, m, (*_robots))
+  for (auto& m : *_robots)
   {
     index++;
     int robotMask = (1 << index);
     int robotCollideWith = ~robotMask;
-    if ((*m)->selfCollide())
+    if (m->selfCollide())
       robotCollideWith = 0xffffff;
-    for (auto o = (*m)->o_begin(); o != (*m)->o_end(); ++o)
+    for (auto o = m->o_begin(); o != m->o_end(); ++o)
     {
       if (*o)
       {
@@ -124,7 +124,7 @@ void BulletPhysics::__initWorld()
       }
     }
 
-    for (auto a = (*m)->a_begin(); a != (*m)->a_end(); ++a)
+    for (auto a = m->a_begin(); a != m->a_end(); ++a)
     {
       if ((*a)->constraint() != nullptr)
       {
