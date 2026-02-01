@@ -49,6 +49,13 @@ IF(YARS_TESTCASES)
   add_subdirectory(testCases)
 ENDIF(YARS_TESTCASES)
 
+# Catch2 unit tests
+option(YARS_BUILD_TESTS "Build Catch2 unit and integration tests" OFF)
+if(YARS_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
+
 INCLUDE(cmake/InstallConfiguration.cmake)
 INCLUDE(cmake/CPackConfiguration.cmake)
 INCLUDE(cmake/UninstallConfiguration.cmake)
