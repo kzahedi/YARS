@@ -119,39 +119,43 @@ void VideoCapture::addFrame(uint8_t *data) {
   videoFrame->pts = frameCounter++;
 
   if ((err = avcodec_send_frame(cctx, videoFrame)) < 0) {
-    cout << "Failed to send frame" << endl;
+    cout << "Failed to send frame: " << err << endl;
     exit(-1);
   }
 
-  AVPacket pkt;
-  av_init_packet(&pkt);
-  pkt.data = nullptr;
-  pkt.size = 0;
-
-  if (avcodec_receive_packet(cctx, &pkt) == 0) {
-    pkt.flags |= AV_PKT_FLAG_KEY;
-    av_interleaved_write_frame(ofctx, &pkt);
-    av_packet_unref(&pkt);
+  // Receive all available encoded packets
+  AVPacket *pkt = av_packet_alloc();
+  if (!pkt) {
+    cout << "Failed to allocate packet" << endl;
+    exit(-1);
   }
+
+  while (avcodec_receive_packet(cctx, pkt) == 0) {
+    av_interleaved_write_frame(ofctx, pkt);
+    av_packet_unref(pkt);
+  }
+  av_packet_free(&pkt);
 }
 
 void VideoCapture::finish() {
   //DELAYED FRAMES
-  AVPacket pkt;
-  av_init_packet(&pkt);
-  pkt.data = nullptr;
-  pkt.size = 0;
+  AVPacket *pkt = av_packet_alloc();
+  if (!pkt) {
+    cout << "Failed to allocate packet" << endl;
+    return;
+  }
 
   for (;;) {
     avcodec_send_frame(cctx, nullptr);
-    if (avcodec_receive_packet(cctx, &pkt) == 0) {
-      av_interleaved_write_frame(ofctx, &pkt);
-      av_packet_unref(&pkt);
+    if (avcodec_receive_packet(cctx, pkt) == 0) {
+      av_interleaved_write_frame(ofctx, pkt);
+      av_packet_unref(pkt);
     }
     else {
       break;
     }
   }
+  av_packet_free(&pkt);
 
   av_write_trailer(ofctx);
   if (!(oformat->flags & AVFMT_NOFILE)) {

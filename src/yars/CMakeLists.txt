@@ -27,8 +27,20 @@ if(APPLE)
 endif(APPLE)
 
 if(YARS_USE_CAPTURE_VIDEO)
-  target_link_libraries(${YARS_TARGET} avformat avcodec avutil avfilter avresample postproc
-    swscale avdevice swresample)
+  # FFmpeg libraries for video capture (modern FFmpeg 5.0+)
+  # Note: avresample and postproc are removed in modern FFmpeg
+  find_library(AVFORMAT_LIBRARY avformat HINTS /opt/homebrew/lib)
+  find_library(AVCODEC_LIBRARY avcodec HINTS /opt/homebrew/lib)
+  find_library(AVUTIL_LIBRARY avutil HINTS /opt/homebrew/lib)
+  find_library(SWSCALE_LIBRARY swscale HINTS /opt/homebrew/lib)
+  find_library(SWRESAMPLE_LIBRARY swresample HINTS /opt/homebrew/lib)
+  find_library(AVDEVICE_LIBRARY avdevice HINTS /opt/homebrew/lib)
+  find_library(AVFILTER_LIBRARY avfilter HINTS /opt/homebrew/lib)
+
+  target_include_directories(${YARS_TARGET} PRIVATE /opt/homebrew/include)
+  target_link_libraries(${YARS_TARGET}
+    ${AVFORMAT_LIBRARY} ${AVCODEC_LIBRARY} ${AVUTIL_LIBRARY}
+    ${SWSCALE_LIBRARY} ${SWRESAMPLE_LIBRARY})
 endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
