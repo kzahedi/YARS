@@ -12,12 +12,12 @@ class HingeActuator : public Actuator
     HingeActuator(DataHingeActuator *data, Robot *robot);
     ~HingeActuator();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
-    btTypedConstraint* constraint();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
+    btTypedConstraint* constraint() override;
 
-    DataHingeActuator* data();
+    DataHingeActuator* data() override;
 
   private:
     void __processAngularHinge();

@@ -39,7 +39,7 @@ void DataCameraConfig::add(DataParseElement *element)
 
 DataCameraConfig* DataCameraConfig::copy()
 {
-  DataCameraConfig *copy = new DataCameraConfig(NULL);
+  DataCameraConfig *copy = new DataCameraConfig(nullptr);
   copy->_orbit  = _orbit->copy();
   copy->_center = _center->copy();
   copy->_offset = _offset->copy();

@@ -39,9 +39,9 @@ void BulletPhysics::reset()
   _resetCalled = true;
   Y_DEBUG("BulletPhysics reset called.");
 
-  if (_environment != NULL)
+  if (_environment != nullptr)
     delete _environment;
-  if (_robots != NULL)
+  if (_robots != nullptr)
     delete _robots;
 
   _world = World::reset();
@@ -91,32 +91,32 @@ void BulletPhysics::__initWorld()
   int worldMask = 1;
   int worldCollideWith = 0xffffff;
 
-  FOREACH(Object *, o, (*_environment))
+  for (auto& o : *_environment)
   {
-    if ((*o)->rigidBody() != NULL)
+    if (o->rigidBody() != nullptr)
     {
-      _world->addRigidBody((*o)->rigidBody(), worldMask, worldCollideWith);
+      _world->addRigidBody(o->rigidBody(), worldMask, worldCollideWith);
     }
   }
 
   int index = 2;
-  FOREACH(Robot *, m, (*_robots))
+  for (auto& m : *_robots)
   {
     index++;
     int robotMask = (1 << index);
     int robotCollideWith = ~robotMask;
-    if ((*m)->selfCollide())
+    if (m->selfCollide())
       robotCollideWith = 0xffffff;
-    FOREACHF(Object *, o, (*m), ->o_begin(), ->o_end())
+    for (auto o = m->o_begin(); o != m->o_end(); ++o)
     {
-      if ((*o) != NULL)
+      if (*o)
       {
-        if ((*o)->rigidBody() != NULL)
+        if ((*o)->rigidBody() != nullptr)
         {
           _world->addRigidBody((*o)->rigidBody(), robotMask, robotCollideWith);
         }
 #ifdef USE_SOFT_BODIES
-        if ((*o)->softBody() != NULL)
+        if ((*o)->softBody() != nullptr)
         {
           _world->addSoftBody((*o)->softBody(), robotMask, robotCollideWith);
         }
@@ -124,20 +124,17 @@ void BulletPhysics::__initWorld()
       }
     }
 
-    FOREACHF(Actuator *, a, (*m), ->a_begin(), ->a_end())
+    for (auto a = m->a_begin(); a != m->a_end(); ++a)
     {
-      if ((*a)->constraint() != NULL)
+      if ((*a)->constraint() != nullptr)
       {
         // false -> connected things don't collide
         _world->addConstraint((*a)->constraint(), false);
       }
       if ((*a)->c_size() > 0)
       {
-        for (vector<btTypedConstraint *>::iterator i = (*a)->c_begin();
-             i != (*a)->c_end(); i++)
-        {
+        for (auto i = (*a)->c_begin(); i != (*a)->c_end(); i++)
           _world->addConstraint(*i, false);
-        }
       }
     }
   }

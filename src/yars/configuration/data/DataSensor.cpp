@@ -3,15 +3,15 @@
 DataSensor::DataSensor(DataNode *parent, int type)
   : DataNode(parent)
 {
-  _noise  = NULL;
-  _filter = NULL;
+  _noise  = nullptr;
+  _filter = nullptr;
   _type   = type;
 }
 
 DataSensor::~DataSensor()
 {
-  if(_noise  != NULL) delete _noise;
-  if(_filter != NULL) delete _filter;
+  if(_noise  != nullptr) delete _noise;
+  if(_filter != nullptr) delete _filter;
 }
 
 int DataSensor::type()

@@ -1,0 +1,1 @@
+/Users/zahedi/code/YARS/ext/ogre/PlugIns/ParticleFX/include/OgreScaleAffector.h

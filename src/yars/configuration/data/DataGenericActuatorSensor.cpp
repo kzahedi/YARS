@@ -237,7 +237,7 @@ Domain DataGenericActuatorSensor::domain(int index)
 
 DataGenericActuatorSensor* DataGenericActuatorSensor::_copy()
 {
-  DataGenericActuatorSensor *copy = new DataGenericActuatorSensor(NULL);
+  DataGenericActuatorSensor *copy = new DataGenericActuatorSensor(nullptr);
   copy->_name      = _name;
   copy->_object    = _object;
   copy->_dimension = _dimension;
@@ -306,7 +306,7 @@ void DataGenericActuatorSensor::__setMapping()
     _internalExternalMapping[i].setInputDomain(_internalDomain[i]);
     _internalExternalMapping[i].setOutputDomain(_externalDomain[i]);
     if(i < _noise.size()) _n[i] = NoiseFactory::create(_noise[i]);
-    else                  _n[i] = NoiseFactory::create(NULL);
+    else                  _n[i] = NoiseFactory::create(nullptr);
   }
 
   for(int i = 0; i < _dimension; i++)

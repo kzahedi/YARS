@@ -40,10 +40,10 @@ void DataFollowables::createXsd(XsdSpecification *spec)
 
 DataFollowables* DataFollowables::copy()
 {
-  DataFollowables *copy = new DataFollowables(NULL);
-  for(std::vector<string>::iterator i = begin(); i != end(); i++)
+  DataFollowables *copy = new DataFollowables(nullptr);
+  for(const auto& name : *this)
   {
-    copy->push_back((*i));
+    copy->push_back(name);
   }
   return copy;
 }

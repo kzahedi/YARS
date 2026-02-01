@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLoggingActuator.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
 
 #include <sstream>
@@ -27,13 +26,13 @@ using namespace std;
 DataLoggingActuator::DataLoggingActuator(DataNode *parent)
   : DataNode(parent)
 {
-  _actuator = NULL;
+  _actuator = nullptr;
   _precision = -1;
 }
 
 DataLoggingActuator::~DataLoggingActuator()
 {
-  if(_actuator != NULL) delete _actuator;
+  if(_actuator != nullptr) delete _actuator;
   clear();
 }
 
@@ -93,10 +92,10 @@ void DataLoggingActuator::createXsd(XsdSpecification *spec)
 
 DataLoggingActuator* DataLoggingActuator::copy()
 {
-  DataLoggingActuator *copy = new DataLoggingActuator(NULL);
+  DataLoggingActuator *copy = new DataLoggingActuator(nullptr);
   copy->_target = _target;
-  for(std::vector<string>::iterator v = begin(); v != end(); v++) copy->push_back(*v);
-  FOREACH(int, v, _order) copy->_order.push_back(*v);
+  for (auto& v : *this) copy->push_back(v);
+  for (auto v : _order) copy->_order.push_back(v);
   copy->_precision = _precision;
   return copy;
 }

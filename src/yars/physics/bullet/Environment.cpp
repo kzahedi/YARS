@@ -8,28 +8,25 @@
 Environment::Environment()
 {
   _data = Data::instance()->current()->environment();
-  _groundShape = NULL;
+  _groundShape = nullptr;
   __init();
 }
 
 Environment::~Environment()
 {
-  for(std::vector<Object*>::iterator i = begin(); i != end(); i++) delete *i;
-  if(_groundShape != NULL) delete _groundShape;
-  clear();
+  // unique_ptr handles cleanup of objects automatically
+  if(_groundShape != nullptr) delete _groundShape;
 }
 
 void Environment::__create()
 {
-  for(DataObjects::iterator i = _data->o_begin(); i != _data->o_end(); i++)
-  {
-    push_back(ObjectFactory::create(*i));
-  }
+  for(auto i = _data->o_begin(); i != _data->o_end(); i++)
+    push_back(std::unique_ptr<Object>(ObjectFactory::create(*i)));
 }
 
 void Environment::reset()
 {
-  for(std::vector<Object*>::iterator o = begin(); o != end(); o++) (*o)->reset();
+  for(auto& obj : *this) obj->reset();
 }
 
 void Environment::prePhysicsUpdate()
@@ -39,7 +36,7 @@ void Environment::prePhysicsUpdate()
 
 void Environment::postPhysicsUpdate()
 {
-  FOREACH(Object*, o, (*this)) (*o)->postPhysicsUpdate();
+  for(auto& obj : *this) obj->postPhysicsUpdate();
 }
 
 
@@ -63,9 +60,9 @@ void Environment::__init()
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
     groundRigidBody->setCollisionFlags(groundRigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-    Object *ground = new Object(NULL);
+    auto ground = std::make_unique<Object>(nullptr);
     ground->setRigidBody(groundRigidBody);
-    push_back(ground);
+    push_back(std::move(ground));
   }
 
 

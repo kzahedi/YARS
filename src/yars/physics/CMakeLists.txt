@@ -1,5 +1,4 @@
 set(PHYSICS_SRC YarsPhysicsModel.cpp
-                YarsPhysicsControl.cpp
 
                 bullet/BulletPhysics.cpp
                 bullet/World.cpp

@@ -1,10 +1,10 @@
 #include "Data.h"
 
-Data* Data::_me = NULL;
+Data* Data::_me = nullptr;
 
 Data* Data::instance()
 {
-  if(_me == NULL)
+  if(_me == nullptr)
   {
     _me = new Data();
   }
@@ -18,21 +18,21 @@ DataRobotSimulationDescription* Data::current()
 
 Data::Data()
 {
-  _current = NULL;
+  _current = nullptr;
 }
 
 Data::~Data()
 {
-  for(std::vector<DataRobotSimulationDescription*>::iterator i = _description.begin(); i != _description.end(); i++)
+  for(auto* desc : _description)
   {
-    delete *i;
+    delete desc;
   }
   _description.clear();
 }
 
 DataRobotSimulationDescription* Data::newSpecification()
 {
-  DataRobotSimulationDescription *desc = new DataRobotSimulationDescription(NULL);
+  DataRobotSimulationDescription *desc = new DataRobotSimulationDescription(nullptr);
   _description.push_back(desc);
   return desc;
 }
@@ -46,12 +46,12 @@ XsdSpecification* Data::xsd()
 
 void Data::clear()
 {
-  for(std::vector<DataRobotSimulationDescription*>::iterator i = _description.begin(); i != _description.end(); i++)
+  for(auto* desc : _description)
   {
-    delete *i;
+    delete desc;
   }
   _description.clear();
-  _current = NULL;
+  _current = nullptr;
 }
 
 DataRobotSimulationDescription* Data::get(int index)
@@ -71,7 +71,7 @@ int Data::size()
 
 void Data::initialise(int index)
 {
-  if(_current != NULL)
+  if(_current != nullptr)
   {
     _current->resetTo(_description[index]); // get the initial values (e.g. in case of reset)
   }
@@ -83,5 +83,5 @@ void Data::initialise(int index)
 
 void Data::close()
 {
-  if(_me != NULL) delete _me;
+  if(_me != nullptr) delete _me;
 }

@@ -1,6 +1,5 @@
 #include <yars/configuration/xsd/graphviz/graph/XsdChoiceGraphNode.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <iostream>
 
@@ -26,7 +25,7 @@ string XsdChoiceGraphNode::customLabel(string label)
   stringstream s_label;
   stringstream s_optional;
   stringstream s_type;
-  FOREACHF(XsdAttribute*, a, _spec, ->a_begin(), ->a_end())
+  for (auto a = _spec->a_begin(); a != _spec->a_end(); ++a)
   {
     s_label << "<td bgcolor=\"" << ATTRIBUTE_BGCOLOR << "\">"<< (*a)->name() << "</td>";
     if((*a)->required())
@@ -45,7 +44,7 @@ string XsdChoiceGraphNode::customLabel(string label)
     {
       XsdGraphNode *node      = __findNode((*a)->type());
 
-      if(node != NULL)
+      if(node != nullptr)
       {
         s_type << "<td bgcolor=\"" << ATTRIBUTE_BGCOLOR << "\" valign=\"top\">";
         s_type << "<table border=\"0\" cellborder=\"1\" cellspacing=\"0\" cellpadding=\"0\">";
@@ -92,6 +91,6 @@ XsdGraphNode* XsdChoiceGraphNode::__findNode(string name)
       return (*n);
     }
   }
-  return NULL;
+  return nullptr;
 }
 

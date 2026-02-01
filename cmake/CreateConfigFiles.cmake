@@ -16,6 +16,10 @@ configure_file(${CMAKE_SOURCE_DIR}/src/cfg/yars.h.in ${PROJECT_BINARY_DIR}/inclu
 
 if(OGRE_RESOURCES_DIRECTORIES MATCHES "Ogre-Resources-Dirs-NOTDEFINED")
   set(OGRE_RESOURCES_DIRECTORIES "")
+  # OGRE 14 essential resources (required for shadows, RTShader, etc.)
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/ext/ogre/Media/Main")
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/ext/ogre/Media/RTShaderLib/GLSL")
+  # YARS-specific resources
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/materials")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/fonts")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/meshes")
@@ -34,9 +38,13 @@ if(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
   set(OGRE_PLUGINS_DIR "/usr/local/lib/OGRE/")
 endif(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
 
+# RTSS shader library path (needed for OgreInternal resource group)
+set(OGRE_RTSS_PATH "${CMAKE_SOURCE_DIR}/ext/ogre/Media/RTShaderLib")
+
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/plugins.cfg.in   ${PROJECT_BINARY_DIR}/plugins.cfg)
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/ogre.cfg.in      ${PROJECT_BINARY_DIR}/ogre.cfg)
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/resources.cfg.in ${PROJECT_BINARY_DIR}/resources.cfg)
+configure_file(${CMAKE_SOURCE_DIR}/src/cfg/rtss.cfg.in      ${PROJECT_BINARY_DIR}/rtss.cfg)
 
 set(VERSION    "0.7.8")
 set(INC_PREFIX "${CMAKE_INSTALL_PREFIX}/include/yars")

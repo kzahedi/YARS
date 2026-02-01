@@ -14,8 +14,8 @@ class MuscleSensor : public Sensor
     MuscleSensor(DataMuscleSensor *data, Robot *robot);
     ~MuscleSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataMuscleSensor *_data;

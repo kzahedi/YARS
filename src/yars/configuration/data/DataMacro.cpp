@@ -15,10 +15,8 @@ DataMacro::DataMacro(DataNode *parent)
 
 DataMacro::~DataMacro()
 {
-  for(DataObjects::iterator i = begin(); i != end(); i++)
-  {
-    delete *i;
-  }
+  for(auto* obj : *this)
+    delete obj;
   clear();
 }
 
@@ -40,7 +38,7 @@ void DataMacro::add(DataParseElement *element)
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
-  if(object != NULL)
+  if(object != nullptr)
   {
     current = object;
     push_back(object);
@@ -68,11 +66,9 @@ void DataMacro::createXsd(XsdSpecification *spec)
 
 DataMacro* DataMacro::copy()
 {
-  DataMacro *copy = new DataMacro(NULL);
+  DataMacro *copy = new DataMacro(nullptr);
   copy->_name = _name;
-  for(DataObjects::iterator i = begin(); i != end(); i++)
-  {
+  for(auto i = begin(); i != end(); i++)
     copy->push_back((*i)->copy());
-  }
   return copy;
 }

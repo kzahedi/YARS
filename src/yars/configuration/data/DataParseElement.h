@@ -65,12 +65,12 @@ class DataParseElement : public std::vector<DataParseAttribute*>
     void add(DataParseAttribute *attribute);
 
     /**
-     * @brief Returns the attribute, which is identified by its name, on NULL
+     * @brief Returns the attribute, which is identified by its name, on nullptr
      * if no attribute with the specified name was found.
      *
      * @param name
      *
-     * @return attribute, or NULL if not found
+     * @return attribute, or nullptr if not found
      * @s DataParseAttribute
      */
     DataParseAttribute* attribute(string name);

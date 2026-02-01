@@ -51,11 +51,9 @@ void DataRecording::createXsd(XsdSpecification *spec)
 
 DataRecording* DataRecording::copy()
 {
-  DataRecording *copy = new DataRecording(NULL);
-  for(std::vector<RecordingInterval>::iterator i = begin(); i != end(); i++)
-  {
+  DataRecording *copy = new DataRecording(nullptr);
+  for(auto i = begin(); i != end(); i++)
     copy->push_back(*i);
-  }
   return copy;
 }
 
@@ -73,9 +71,9 @@ void DataRecording::resetTo(const DataRecording*)
 bool DataRecording::record()
 {
   if(size() == 0) return false;
-  for(std::vector<RecordingInterval>::iterator i = begin(); i != end(); i++)
+  for(auto i = begin(); i != end(); i++)
   {
-    if((*i).min <= __YARS_GET_STEP && __YARS_GET_STEP <= (*i).max) return true;
+    if(i->min <= __YARS_GET_STEP && __YARS_GET_STEP <= i->max) return true;
   }
   return false;
 }

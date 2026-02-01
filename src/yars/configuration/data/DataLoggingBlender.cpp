@@ -43,7 +43,7 @@ void DataLoggingBlender::createXsd(XsdSpecification *spec)
 
 DataLoggingBlender* DataLoggingBlender::copy()
 {
-  DataLoggingBlender *copy = new DataLoggingBlender(NULL);
+  DataLoggingBlender *copy = new DataLoggingBlender(nullptr);
   copy->_filename  = _filename;
   copy->_cfg       = _cfg;
   copy->_framerate = _framerate;

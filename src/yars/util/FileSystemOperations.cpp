@@ -5,28 +5,22 @@
 #include <yars/util/Timer.h>
 
 #include <sstream>
-
-#include <sstream>
 #include <stdlib.h>
 #ifndef _MSC_VER
-#include <unistd.h>
+#  include <unistd.h>
 #else
-#include <io.h>
+#  include <io.h>
 #endif // _MSC_VER
 
-namespace yars {
-
 FileSystemOperations::FileSystemOperations()
-{
-}
+{ }
 
 FileSystemOperations::~FileSystemOperations()
-{
-}
+{ }
 
 bool FileSystemOperations::doesDirExist(fs::path dirPath)
 {
-  if (fs::exists(dirPath) && fs::is_directory(dirPath))
+  if(fs::exists(dirPath) && fs::is_directory(dirPath))
     return true;
   else
     return false;
@@ -34,7 +28,7 @@ bool FileSystemOperations::doesDirExist(fs::path dirPath)
 
 bool FileSystemOperations::doesFileExist(fs::path filePath)
 {
-  if (fs::exists(filePath) && (!fs::is_directory(filePath)))
+  if(fs::exists(filePath) && (! fs::is_directory(filePath)))
     return true;
   else
     return false;
@@ -42,9 +36,9 @@ bool FileSystemOperations::doesFileExist(fs::path filePath)
 
 bool FileSystemOperations::doesDirExist(string *dirName)
 {
-  // fs::path dirPath = fs::path(*dirName, fs::native);
+  //fs::path dirPath = fs::path(*dirName, fs::native);
   fs::path dirPath = fs::path(*dirName);
-  if (doesDirExist(dirPath))
+  if(doesDirExist(dirPath))
     return true;
   else
     return false;
@@ -53,189 +47,186 @@ bool FileSystemOperations::doesDirExist(string *dirName)
 bool FileSystemOperations::doesFileExist(string *fileName)
 {
   fs::path filePath = fs::path(*fileName);
-  if (doesFileExist(filePath))
+  if(doesFileExist(filePath))
     return true;
   else
     return false;
 }
 
-string *FileSystemOperations::getFirstExistingDirContainingDir(std::vector<string>
-                                                                   dirs,
-                                                               string *containedDirName)
+string* FileSystemOperations::getFirstExistingDirContainingDir(std::vector<string>
+    dirs, string *containedDirName)
 {
   fs::path path;
 
   // check if this is an absolute path
   path = fs::path(*containedDirName);
-  if (path.is_absolute())
+  if(path.is_absolute())
   {
-    if (doesDirExist(path))
+    if(doesDirExist(path))
     {
       Y_DEBUG("FileSystemOperations: dir %s is given as absolute path.",
-              fs::path(path).string().c_str());
+          fs::path(path).string().c_str());
       return (new string(""));
     }
     else
     {
       Y_DEBUG("FileSystemOperations: dir %s is given as absolute path "
-              " but does not exist.",
-              fs::path(path).string().c_str());
-      return NULL;
+          " but does not exist.", fs::path(path).string().c_str());
+      return nullptr;
     }
   }
 
   // .. if not check if it is contained in the search hierarchy
-  for (unsigned int i = 0; i < dirs.size(); i++)
+  for(unsigned int i=0; i < dirs.size(); i++)
   {
     path = fs::path(dirs[i]);
 
-    if (doesDirExist(path))
+    if(doesDirExist(path))
     {
-      if (doesDirExist(path / fs::path(*containedDirName)))
+      if(doesDirExist(path / fs::path(*containedDirName)))
       {
         Y_DEBUG("FileSystemOperations: dir %s in dir %s found.",
-                (*containedDirName).c_str(),
-                path.string().c_str());
+            (*containedDirName).c_str(),
+            path.string().c_str());
         return (new string(dirs[i]));
       }
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
-string *FileSystemOperations::getFirstExistingDirContainingFile(std::vector<string>
-                                                                    dirs,
-                                                                string *containedFileName)
+string* FileSystemOperations::getFirstExistingDirContainingFile(std::vector<string>
+    dirs, string *containedFileName)
 {
   fs::path path;
 
   // check if this is an absolute path
   path = fs::path(*containedFileName);
-  if (path.is_absolute())
+  if(path.is_absolute())
   {
-    if (doesFileExist(path))
+    if(doesFileExist(path))
     {
       Y_DEBUG("FileSystemOperations: file %s is given as absolute path.",
-              fs::path(path).string().c_str());
+          fs::path(path).string().c_str());
       return (new string(""));
     }
     else
     {
       Y_DEBUG("FileSystemOperations: file %s is given as absolute path "
-              "but does not exist.",
-              fs::path(path).string().c_str());
-      return NULL;
+          "but does not exist.", fs::path(path).string().c_str());
+      return nullptr;
     }
   }
 
   // .. if not check if it is contained in the search hierarchy
-  for (unsigned int i = 0; i < dirs.size(); i++)
+  for(unsigned int i=0; i < dirs.size(); i++)
   {
     path = fs::path(dirs[i]);
 
-    if (doesDirExist(path))
+    if(doesDirExist(path))
     {
-      if (doesFileExist(path / fs::path(*containedFileName)))
+      if(doesFileExist(path / fs::path(*containedFileName)))
       {
         Y_DEBUG("FileSystemOperations: file %s in dir %s found.",
-                (*containedFileName).c_str(),
-                path.string().c_str());
+          (*containedFileName).c_str(),
+          path.string().c_str());
         return (new string(dirs[i]));
       }
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
-string *FileSystemOperations::getFirstExistingDir(std::vector<string> dirs)
+string* FileSystemOperations::getFirstExistingDir(std::vector<string> dirs)
 {
   fs::path path;
 
-  for (unsigned int i = 0; i < dirs.size(); i++)
+  for(unsigned int i=0; i < dirs.size(); i++)
   {
     path = fs::path(dirs[i]);
 
-    if (doesDirExist(path))
+    if(doesDirExist(path))
     {
       Y_DEBUG("FileSystemOperations: dir %s found.",
-              path.string().c_str());
+        path.string().c_str());
       return (new string(dirs[i]));
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
-string *FileSystemOperations::getFirstExistingFile(std::vector<string> files)
+string* FileSystemOperations::getFirstExistingFile(std::vector<string> files)
 {
   fs::path path;
 
-  for (unsigned int i = 0; i < files.size(); i++)
+  for(unsigned int i=0; i < files.size(); i++)
   {
     path = fs::path(files[i]);
 
-    if (doesFileExist(path))
+    if(doesFileExist(path))
     {
       Y_DEBUG("FileSystemOperations: file %s found.",
-              path.string().c_str());
+        path.string().c_str());
       return (new string(files[i]));
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 void FileSystemOperations::checkValidPath(string *name, bool isDir, bool fatal,
-                                          string description)
+    string description)
 {
 
   fs::path path;
-  if (name->c_str()[0] != '/') // path is a local path starting with a letter
+  if(name->c_str()[0] != '/') // path is a local path starting with a letter
   {
     path = fs::current_path() / fs::path(*name);
     *name = path.string();
   }
   path = fs::path(*name);
 
-  if (!path.is_absolute())
+  if(! path.is_absolute())
   {
     path = fs::absolute(path);
   }
 
-  if (((isDir && doesDirExist(path)) || (!isDir && doesFileExist(path))))
+  if(((isDir && doesDirExist(path)) || (!isDir && doesFileExist(path))))
   {
     Y_INFO("Using %s %s", description.c_str(),
-           path.string().c_str());
+        path.string().c_str());
   }
   else
   {
-    if (fatal)
+    if(fatal)
     {
       Y_FATAL("ERROR: %s %s does not exist --> exiting.",
-              description.c_str(), path.string().c_str());
+          description.c_str(), path.string().c_str());
       exit(-1);
     }
     else
     {
       Y_FATAL("WARNING: %s %s does not exist.",
-              description.c_str(), path.string().c_str());
+          description.c_str(), path.string().c_str());
     }
   }
 }
 
-void FileSystemOperations::checkValidPathFromAlternatives(string *name, string *pathName, std::vector<string> *pathCandidates, bool fatal, string description)
+void FileSystemOperations::checkValidPathFromAlternatives(string *name, string
+    *pathName, std::vector<string> *pathCandidates, bool fatal, string description)
 {
   fs::path path;
 
-  if (pathName == NULL)
+  if(pathName == nullptr)
   {
-    if (fatal)
+    if(fatal)
     {
       Y_FATAL("ERROR: %s %s could not be found in:", description.c_str(),
-              (*name).c_str());
-      for (unsigned int i = 0; i < (*pathCandidates).size(); i++)
+          (*name).c_str());
+      for(unsigned int i=0; i<(*pathCandidates).size(); i++)
       {
         Y_FATAL("  %s", (*pathCandidates)[i].c_str());
       }
@@ -245,8 +236,8 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string *
     else
     {
       Y_INFO("WARNING: %s %s could not be found in:", description.c_str(),
-             (*name).c_str());
-      for (unsigned int i = 0; i < (*pathCandidates).size(); i++)
+          (*name).c_str());
+      for(unsigned int i=0; i<(*pathCandidates).size(); i++)
       {
         Y_INFO("  %s", (*pathCandidates)[i].c_str());
       }
@@ -256,29 +247,29 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string *
   {
     path = fs::path(*name);
 
-    if (!path.is_absolute())
+    if(! path.is_absolute())
     {
       path = fs::absolute(
           fs::path(*pathName) / fs::path(*name));
     }
 
-    if (fs::exists(path))
+    if(fs::exists(path))
     {
       Y_INFO("Using %s %s", description.c_str(),
-             path.string().c_str());
+          path.string().c_str());
     }
     else
     {
-      if (fatal)
+      if(fatal)
       {
         Y_FATAL("ERROR: %s %s does not exist --> exiting.",
-                description.c_str(), path.string().c_str());
+            description.c_str(), path.string().c_str());
         exit(-1);
       }
       else
       {
         Y_FATAL("WARNING: %s %s does not exist.",
-                description.c_str(), path.string().c_str());
+            description.c_str(), path.string().c_str());
       }
     }
   }
@@ -286,7 +277,7 @@ void FileSystemOperations::checkValidPathFromAlternatives(string *name, string *
 
 void FileSystemOperations::createDir(string dirName)
 {
-  if (fs::exists(dirName))
+  if(fs::exists(dirName))
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "FileSystemOperations::createDir: The directory " << dirName << " already exists." << std::endl;
@@ -299,23 +290,38 @@ bool FileSystemOperations::doesExecutableExist(string exe)
 {
   fs::path path;
   string path_string = string(getenv("PATH"));
-  if (path_string.length() == 0)
-    YarsErrorHandler::push("Cannot read PATH system variable.");
+  if (path_string.length() == 0) YarsErrorHandler::push("Cannot read PATH system variable.");
 
-  std::istringstream iss(path_string);
-  std::string token;
-  while (std::getline(iss, token, ':'))
+  // Split PATH by ':' delimiter using C++17 string operations
+  size_t start = 0;
+  size_t end = 0;
+  while ((end = path_string.find(':', start)) != string::npos)
   {
-    path = fs::absolute(fs::path(token) / fs::path(exe));
+    string t = path_string.substr(start, end - start);
+    if (!t.empty())
+    {
+      path = fs::weakly_canonical(fs::path(t) / fs::path(exe));
 #ifndef _MSC_VER
-    if (access(path.string().c_str(), X_OK) == 0)
-      return true;
-#else  // _MSC_VER
-    if (_access(path.string().c_str(), 0))
-      return true;
+      if (access(path.string().c_str(), X_OK) == 0) return true;
+#else // _MSC_VER
+      if (_access(path.string().c_str(), 0)) return true;
 #endif // _MSC_VER
+    }
+    start = end + 1;
+  }
+  // Handle the last segment after the final ':'
+  if (start < path_string.length())
+  {
+    string t = path_string.substr(start);
+    if (!t.empty())
+    {
+      path = fs::weakly_canonical(fs::path(t) / fs::path(exe));
+#ifndef _MSC_VER
+      if (access(path.string().c_str(), X_OK) == 0) return true;
+#else // _MSC_VER
+      if (_access(path.string().c_str(), 0)) return true;
+#endif // _MSC_VER
+    }
   }
   return false;
 }
-
-} // namespace yars

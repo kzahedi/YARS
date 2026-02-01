@@ -1,6 +1,5 @@
 #include <yars/configuration/xsd/graphviz/graph/XsdIntervalGraphNode.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <yars/configuration/data/Data.h>
 

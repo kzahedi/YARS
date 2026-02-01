@@ -3,19 +3,17 @@
 ConsoleLogger::ConsoleLogger(DataLoggingConsole *data)
 {
   _data = data;
-  for(std::vector<string>::iterator s = data->t_begin(); s != data->t_end(); s++) push_back(*s);
+  for(auto s = data->t_begin(); s != data->t_end(); s++) push_back(*s);
 }
 
 
 void ConsoleLogger::update()
 {
   std::vector<string> values;
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->begin(); v != (*l)->end(); v++)
-    {
+    for(auto v = (*l)->begin(); v != (*l)->end(); v++)
       values.push_back(*v);
-    }
   }
   if(values.size() > 0)
   {
@@ -30,12 +28,10 @@ void ConsoleLogger::update()
 void ConsoleLogger::init()
 {
   std::vector<string> names;
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->v_begin(); v != (*l)->v_end(); v++)
-    {
+    for(auto v = (*l)->v_begin(); v != (*l)->v_end(); v++)
       names.push_back(*v);
-    }
   }
   if(names.size() > 0)
   {

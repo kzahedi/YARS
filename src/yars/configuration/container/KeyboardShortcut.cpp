@@ -9,7 +9,7 @@ KeyboardShortcut::KeyboardShortcut()
   metaChar      = 0; // cannot be pressed on the keyboard
   description   = "";
   keyCode       = "";
-  function      = NULL;
+  function      = nullptr;
   id            = -1;
 }
 

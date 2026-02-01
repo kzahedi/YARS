@@ -8,6 +8,7 @@
 #include <yars/util/OSD.h>
 
 #include <OGRE/Ogre.h>
+#include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 
 #ifndef __APPLE__
 namespace _SDL_
@@ -42,7 +43,7 @@ using namespace _SDL_;
 #define __SHADOWTYPE_NONE 6
 
 #define CHECK_IF_THERE_ARE_FOLLOWABLES                                      \
-  if (Data::instance()->current()->screens()->followables() == NULL)        \
+  if (Data::instance()->current()->screens()->followables() == nullptr)        \
     return;                                                                 \
   if (Data::instance()->current()->screens()->followables()->o_size() == 0) \
     return;
@@ -55,7 +56,7 @@ using namespace _SDL_;
 #undef main
 #endif
 
-// #include <boost/thread.hpp>
+// Threading now uses C++17 std::thread
 
 #include <string>
 
@@ -79,13 +80,8 @@ SdlWindow::SdlWindow(int index)
   _ctrlPressed = false;
   _altPressed = false;
   _metaPressed = false;
-  // Auto-enable image capture if frames directory is specified
-  string framesDir = __YARS_GET_FRAMES_DIRECTORY;
-  _imgCaptureRunning = (framesDir.length() > 0);
+  _imgCaptureRunning = false;
   _imgCaptureFrameIndex = 0;
-  if (_imgCaptureRunning) {
-    std::cout << "Auto-enabled frame capture to: " << framesDir << std::endl;
-  }
   _followableIndex = 0;
   _closed = false;
   _fps = 0;
@@ -107,29 +103,52 @@ SdlWindow::SdlWindow(int index)
 
 #ifdef USE_CAPTURE_VIDEO
   _captureRunning = false;
-  _videoCapture = NULL;
+  _videoCapture = nullptr;
 #endif // USE_CAPTURE_VIDEO
 }
 
 void SdlWindow::wait()
 {
   SDL_Event event;
-  while (SDL_PollEvent(&event) && _visible == false)
+  int timeout = 100;  // Max ~1 second wait (100 * 10ms)
+
+  while (!_visible && timeout > 0)
   {
-    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SHOWN)
+    while (SDL_PollEvent(&event))
     {
-      _visible = true;
+      if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SHOWN)
+      {
+        _visible = true;
+        return;
+      }
     }
-    usleep(100);
-    if (_visible == true)
-      return;
+    usleep(10000);  // 10ms
+    timeout--;
   }
+
+  // If we didn't get the SHOWN event, assume window is ready after timeout
+  _visible = true;
+}
+
+void SdlWindow::swapBuffers()
+{
+#ifdef __APPLE__
+  // macOS with externalGLControl: Use SDL to swap buffers
+  if (_glContext != nullptr && _sdlWindow != nullptr)
+  {
+    SDL_GL_SwapWindow(_sdlWindow);
+  }
+#else
+  // Other platforms: Let OGRE handle buffer swap
+  if (_window != nullptr)
+  {
+    _window->swapBuffers();
+  }
+#endif
 }
 
 void SdlWindow::step()
 {
-  if (_closed)
-    return;
 
 #ifdef USE_CAPTURE_VIDEO
   if (_captureRunning || _imgCaptureRunning)
@@ -138,8 +157,7 @@ void SdlWindow::step()
 #endif // USE_CAPTURE_VIDEO
   {
     if (_index == 0)
-      if (_textOverlay)
-        _textOverlay->setText(_statsString, "");
+      _textOverlay->setText(_statsString, "");
   }
   else
   {
@@ -159,7 +177,7 @@ void SdlWindow::step()
 
       _fpsString << std::fixed << std::setprecision(2) << rt << " RT\n";
       // _fpsString << std::fixed << std::setprecision(2) << f << " FPS";
-      if (_index == 0 && _textOverlay)
+      if (_index == 0)
         _textOverlay->setText(_statsString, _fpsString.str());
       _lastTime = _currentTime;
       _lastStep = step;
@@ -169,8 +187,9 @@ void SdlWindow::step()
 
   if (_windowConfiguration->useFollow)
   {
+    // OGRE 14: Use camera node for position/direction
     _cpos = _cameraNode->getPosition();
-    _cdir = _camera->getRealDirection();
+    _cdir = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -190,17 +209,14 @@ void SdlWindow::step()
   else if (_cameraVelocity.length() > 0.01 ||
            _camAngularVelocity.length() > 0.0001)
   {
-    // cout << _cameraVelocity[0] << " "
-    // << _cameraVelocity[1] << " "
-    // << _cameraVelocity[2] << endl;
-
+    // OGRE 14: Use camera node for yaw/pitch/move
     _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
     _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
 
     _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
 
     _cpos = _cameraNode->getPosition();
-    _cdir = _camera->getRealDirection();
+    _cdir = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
     _clookAt = _cpos;
     for (int i = 0; i < 3; i++)
       _clookAt[i] += _cdir[i];
@@ -214,23 +230,10 @@ void SdlWindow::step()
 
   _cameraVelocity *= 0.9;
   _camAngularVelocity *= 0.9;
-
-  // Force window update and buffer swap to display rendered content
-  if (_window && _window->isActive())
-  {
-    _window->update();
-    _window->swapBuffers();
-  }
-
-  // Also swap SDL buffers
-  SDL_GL_SwapWindow(_sdlWindow);
 }
 
 void SdlWindow::handleEvent(SDL_Event &event)
 {
-  if (_closed)
-    return;
-
   if (event.window.windowID != _windowID)
     return;
 
@@ -303,15 +306,13 @@ void SdlWindow::handleEvent(SDL_Event &event)
     {
     case SDL_WINDOWEVENT_SHOWN:
       _visible = true;
-      std::cout << "Window shown event received - window is now visible!" << std::endl;
       break;
     case SDL_WINDOWEVENT_CLOSE:
       _closed = true;
-      std::cout << "Window close event received" << std::endl;
-      KeyHandler::notifyObservers(_m_closeWindow);
+      if (_closeCallback)
+        _closeCallback();
       break;
     case SDL_WINDOWEVENT_RESIZED:
-      std::cout << "Window resized to: " << event.window.data1 << "x" << event.window.data2 << std::endl;
       _window->resize(event.window.data1, event.window.data2);
       _window->windowMovedOrResized();
       const Ogre::Real aspectRatio = Ogre::Real(_viewport->getActualWidth()) / Ogre::Real(_viewport->getActualHeight());
@@ -319,7 +320,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
 
       Ogre::Real x = _viewport->getActualWidth() - 140;
       Ogre::Real y = 10;
-      if (_index == 0 && _textOverlay)
+      if (_index == 0)
         _textOverlay->setPosition(_legendString, x, y);
       break;
     }
@@ -346,13 +347,20 @@ void SdlWindow::__setupSDL()
   SDL_Init(SDL_INIT_EVERYTHING);
   // SDL_Init(SDL_INIT_VIDEO);
 
-  // Set OpenGL context attributes - use OpenGL 3.3 CORE with custom shaders
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  // Create SDL window with OpenGL support
+  Uint32 windowFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
+
+#ifdef __APPLE__
+  // macOS: Request OpenGL 4.1 Core Profile (highest supported on macOS, matches OGRE GL3Plus)
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+  // Use sRGB framebuffer
+  SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1);
+#endif
 
   if (__YARS_GET_USE_WINDOW_GEOMETRY)
   {
@@ -361,60 +369,40 @@ void SdlWindow::__setupSDL()
                                   _windowConfiguration->geometry.y(),
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
+                                  windowFlags);
   }
   else
   {
-    _sdlWindow = SDL_CreateWindow("🔴 YARS 3D Simulation - Should be VISIBLE! 🔴",
+    _sdlWindow = SDL_CreateWindow(_windowConfiguration->name.c_str(),
                                   SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED,
                                   _windowConfiguration->geometry.width(),
                                   _windowConfiguration->geometry.height(),
-                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP);
+                                  windowFlags);
   }
 
-  if (_sdlWindow == NULL)
+  if (_sdlWindow == nullptr)
   {
     printf("SDL_CreateWindow failed: %s\n", SDL_GetError());
     return;
-  }
-  else
-  {
-    printf("SDL Window created successfully: %dx%d\n",
-           _windowConfiguration->geometry.width(),
-           _windowConfiguration->geometry.height());
-
-    // Make window visible and bring to front on macOS
-    SDL_ShowWindow(_sdlWindow);
-    SDL_RaiseWindow(_sdlWindow);
-
-#ifdef __APPLE__
-    // macOS-specific: Request focus and make window key
-    SDL_SetWindowInputFocus(_sdlWindow);
-    printf("Applied macOS-specific window activation\n");
-#endif
-
-    // Force window to specific position and update
-    SDL_SetWindowPosition(_sdlWindow, 100, 100);
-    SDL_UpdateWindowSurface(_sdlWindow);
-    printf("Window positioned at (100,100) and surface updated\n");
-  }
-
-  // Create OpenGL context for all platforms
-  SDL_GLContext glcontext = SDL_GL_CreateContext(_sdlWindow);
-  if (glcontext == NULL)
-  {
-    printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
-    return;
-  }
-  else
-  {
-    printf("OpenGL context created successfully\n");
   }
 
   // SDL_WarpMouse(800/2, 600/2);
   // SDL_WM_GrabInput(SDL_GRAB_OFF);
   // SDL_ShowCursor(SDL_ENABLE);
+
+  // Create GL context for platforms that need explicit context management
+  _glContext = nullptr;
+#if defined(__WINDOWS__) || defined(__APPLE__)
+  _glContext = SDL_GL_CreateContext(_sdlWindow);
+  if (_glContext == nullptr)
+  {
+    printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
+    return;
+  }
+  // Make context current before OGRE uses it
+  SDL_GL_MakeCurrent(_sdlWindow, _glContext);
+#endif
 
   SDL_SysWMinfo syswm_info;
   SDL_VERSION(&syswm_info.version);
@@ -424,20 +412,14 @@ void SdlWindow::__setupSDL()
     return;
   }
 
-#ifdef __APPLE__
-  // I suspect triple buffering is on by default, which makes vsync pointless?
-  // except maybe for poorly implemented render loops which will then be forced to wait
-  //    ogre_render_window->setVSyncEnabled( false );
-#else
-  // NOTE: SDL_GL_SWAP_CONTROL was SDL 1.2 and has been retired
-  SDL_GL_SetSwapInterval(1);
-#endif
+  // Disable vsync - let the application control timing
+  SDL_GL_SetSwapInterval(0);
 
   Ogre::NameValuePairList params;
 #ifdef __WINDOWS__
   params["externalGLControl"] = "1";
   // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
-  params["externalGLContext"] = Ogre::StringConverter::toString((unsigned long)glcontext);
+  params["externalGLContext"] = Ogre::StringConverter::toString((unsigned long)_glContext);
   params["externalWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.win.window);
 #endif
 #ifdef __linux__
@@ -446,15 +428,16 @@ void SdlWindow::__setupSDL()
   params["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)syswm_info.info.x11.window);
 #endif
 #ifdef __APPLE__
-  params["externalGLControl"] = "1";
-  // only supported for Win32 on Ogre 1.8 not on other platforms (documentation needs fixing to accurately reflect this)
-  //    params["externalGLContext"] = Ogre::StringConverter::toString( glcontext );
+  // OGRE 14 + SDL2 on macOS: Pass SDL's GL context and NSView to OGRE
+  // SDL_GLContext on macOS is actually an NSOpenGLContext pointer
   params["externalWindowHandle"] = OSX_cocoa_view(syswm_info);
+  params["externalGLContext"] = Ogre::StringConverter::toString((size_t)_glContext);
+  params["externalGLControl"] = "true";
   params["macAPI"] = "cocoa";
   params["macAPICocoaUseNSView"] = "true";
 #endif
 
-  // params["displayFrequency"] = 100;
+  //params["displayFrequency"] = 100;
 
   _ogreHandler = OgreHandler::instance();
   stringstream oss;
@@ -483,35 +466,23 @@ void SdlWindow::__setupSDL()
   _camera->setNearClipDistance(0.01f);
   _camera->setFarClipDistance(1000000.0f);
 
-  // Create camera scene node and attach camera to it (modern OGRE API)
+  // OGRE 14: Create camera node and attach camera
   oss.str("");
   oss << "YARS CameraNode" << _index;
   _cameraNode = _sceneManager->getRootSceneNode()->createChildSceneNode(oss.str());
   _cameraNode->attachObject(_camera);
-
-  // Set initial position and orientation using scene node
   _cameraNode->setPosition(pos[0], pos[1], pos[2]);
   _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
-
-  // Debug camera positioning
-  std::cout << "=== CAMERA DEBUG INFO ===" << std::endl;
-  std::cout << "Camera position: (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ")" << std::endl;
-  std::cout << "Camera lookAt: (" << lookAt[0] << ", " << lookAt[1] << ", " << lookAt[2] << ")" << std::endl;
-  std::cout << "Camera near clip: " << _camera->getNearClipDistance() << std::endl;
-  std::cout << "Camera far clip: " << _camera->getFarClipDistance() << std::endl;
-  std::cout << "==========================" << std::endl;
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
 
   _viewport = _window->addViewport(_camera);
-  Ogre::ColourValue fadeColour(0.1, 0.1, 0.5); // Dark blue background for contrast
+  Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
   // _sceneManager->setFog(Ogre::FOG_EXP2, fadeColour, 0.001, 500.0, 1000.0);
   _viewport->setBackgroundColour(fadeColour);
-
-  // Use RTSS material scheme for shader-based materials
+  // OGRE 14: Set viewport to use RTSS scheme for shader generation
   _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-  std::cout << "Viewport configured to use RTSS material scheme (shader-based)" << std::endl;
 
   _windowID = SDL_GetWindowID(_sdlWindow);
 
@@ -520,7 +491,13 @@ void SdlWindow::__setupSDL()
   _viewport->update();
   _window->setActive(true);
   _window->setVisible(true);
-  // glutSwapBuffers();
+
+  // Initial buffer swap
+#ifdef __APPLE__
+  SDL_GL_SwapWindow(_sdlWindow);
+#else
+  _window->swapBuffers();
+#endif
 }
 
 void SdlWindow::setupOSD()
@@ -535,15 +512,15 @@ void SdlWindow::setupOSD()
   stringstream oss;
   oss << "text overlay " << _index;
   if (_index == 0)
-    // TEMPORARILY DISABLED: TextOverlay creation for testing
-    _textOverlay = nullptr; // new TextOverlay(oss.str());
+    _textOverlay = new TextOverlay(oss.str());
+
   oss.str("");
   oss << _data->osdTimeFontSize();
   fontsize = oss.str();
   oss.str("");
   oss << "time " << _index;
   _timeString = oss.str();
-  if (_index == 0 && _textOverlay)
+  if (_index == 0)
     _textOverlay->addTextBox(_timeString, "00d:00h:00m:00s", 10, 10, 100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, fontsize);
@@ -551,7 +528,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "stats " << _index;
   _statsString = oss.str();
-  if (_index == 0 && _textOverlay)
+  if (_index == 0)
     _textOverlay->addTextBox(_statsString, "", 10, 40, 100, 20,
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
                              osdFont, "16");
@@ -564,7 +541,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "robot " << _index;
   _robotString = oss.str();
-  if (_index == 0 && _textOverlay)
+  if (_index == 0)
     _textOverlay->addTextBox(_robotString, "", 10, _viewport->getActualHeight() - _data->osdRobotFontHeight() - 10,
                              _data->osdRobotFontWidth(), _data->osdRobotFontHeight(),
                              Ogre::ColourValue(osdColour.red(), osdColour.green(), osdColour.blue(), osdColour.alpha()),
@@ -575,7 +552,7 @@ void SdlWindow::setupOSD()
   oss.str("");
   oss << "legend " << _index;
   _legendString = oss.str();
-  if (_index == 0 && _textOverlay)
+  if (_index == 0)
     _textOverlay->addTextBox(_legendString,
                              "^0YARS, Zahedi", x, y, 15, 10,
                              Ogre::ColourValue(75.0 / 255.0, 117.0 / 255.0, 148.0 / 255.0, 1.0f),
@@ -655,7 +632,8 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
     break;
   case YarsKeyFunction::CloseWindow:
     _closed = true;
-    KeyHandler::notifyObservers(_m_closeWindow);
+    if (_closeCallback)
+      _closeCallback();
     break;
     // case YarsKeyFunction::ToggleTraces:
     // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
@@ -732,7 +710,8 @@ void SdlWindow::__toggleFollowing()
 void SdlWindow::__toggleWriteFrames()
 {
   _imgCaptureRunning = !_imgCaptureRunning;
-  KeyHandler::notifyObservers(_m_toggleSyncedGui);
+  if (_syncToggleCallback)
+    _syncToggleCallback();
   if (_imgCaptureRunning)
     __YARS_OPEN_FRAMES_DIRECTORY;
 }
@@ -741,7 +720,8 @@ void SdlWindow::__toggleWriteFrames()
 void SdlWindow::__toggleCaptureMovie()
 {
   _captureRunning = !_captureRunning;
-  KeyHandler::notifyObservers(_m_toggleSyncedGui);
+  if (_syncToggleCallback)
+    _syncToggleCallback();
   if (_captureRunning)
   {
     __initMovie();
@@ -771,7 +751,7 @@ void SdlWindow::__initMovie()
   _capturingOffset = __YARS_GET_STEP;
   _frameIndex = 0;
 
-  if (_videoCapture != NULL)
+  if (_videoCapture != nullptr)
   {
     delete _videoCapture;
   }
@@ -787,7 +767,7 @@ void SdlWindow::__closeMovie()
   _captureRunning = false;
   _videoCapture->finish();
   delete _videoCapture;
-  _videoCapture = NULL;
+  _videoCapture = nullptr;
 }
 
 void SdlWindow::__captureMovieFrame()
@@ -850,23 +830,15 @@ void SdlWindow::__captureImageFrame()
   ConsoleView::printCapturingInformation(_imgCaptureFrameIndex);
   _imgCaptureFrameIndex++;
   stringstream oss;
-  string framesDir = __YARS_GET_FRAMES_DIRECTORY;
-  oss << framesDir << "/frame_" << setfill('0') << setw(8)
+  oss << __YARS_GET_FRAMES_DIRECTORY << "/frame_" << setfill('0') << setw(8)
       << _imgCaptureFrameIndex << ".png";
-  std::cout << "FRAME CAPTURE: Attempting to write to: " << oss.str() << std::endl;
   _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
   _pRenderTex->update();
-  try {
-    _pRenderTex->writeContentsToFile(oss.str());
-    std::cout << "FRAME CAPTURE: Successfully wrote frame " << _imgCaptureFrameIndex << std::endl;
-  } catch (const std::exception& e) {
-    std::cout << "FRAME CAPTURE ERROR: " << e.what() << std::endl;
-  }
+  _pRenderTex->writeContentsToFile(oss.str());
 }
 
 void SdlWindow::captureVideo()
 {
-  std::cout << "DEBUG: captureVideo() called, _imgCaptureRunning=" << _imgCaptureRunning << std::endl;
 #ifdef USE_CAPTURE_VIDEO
   if (_captureRunning)
     __captureMovieFrame();
@@ -882,36 +854,31 @@ bool SdlWindow::captureRunning()
 }
 #endif // USE_CAPTURE_VIDEO
 
-bool SdlWindow::imgCaptureRunning()
-{
-  return _imgCaptureRunning;
-}
-
 void SdlWindow::__osd()
 {
   if (_windowConfiguration->osdElapsedTime)
   {
-    if (_index == 0 && _textOverlay)
+    if (_index == 0)
       _textOverlay->setText(_timeString, OSD::getElapsedTimeString());
   }
   if (_windowConfiguration->osdRobotInformation)
   {
     std::stringstream oss;
     DataRobots *robots = Data::instance()->current()->robots();
-    for (std::vector<DataRobot *>::iterator m = robots->begin(); m != robots->end(); m++)
+    for (auto* robot : *robots)
     {
-      DataController *controller = (*m)->controller();
-      if (controller != NULL)
+      DataController *controller = robot->controller();
+      if (controller != nullptr)
       {
         controller->lockOSD();
-        for (std::vector<string>::const_iterator s = controller->s_begin(); s != controller->s_end(); s++)
+        for (auto s = controller->s_begin(); s != controller->s_end(); s++)
         {
           oss << *s;
         }
         controller->unlockOSD();
       }
     }
-    if (_index == 0 && _textOverlay)
+    if (_index == 0)
       _textOverlay->setText(_robotString, oss.str(), (int)_viewport->getActualHeight());
   }
 }
@@ -982,28 +949,28 @@ bool SdlWindow::visible()
 
 void SdlWindow::__handleFingerUp(SDL_Event &event)
 {
-  // Rotation detected
-  //  if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
-  //  {
-  //  cout << "Rotation detected: " << event.mgesture.dTheta << endl;
-  //  }
-  //  if( fabs( event.mgesture.dDist ) > 0.002 )
-  //  {
-  //  cout << "Zoom detected: " << event.mgesture.dDist << endl;
-  //  }
+  //Rotation detected
+  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  // {
+  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // }
+  // if( fabs( event.mgesture.dDist ) > 0.002 )
+  // {
+  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // }
 }
 
 void SdlWindow::__handleFingerDown(SDL_Event &event)
 {
-  // Rotation detected
-  //  if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
-  //  {
-  //  cout << "Rotation detected: " << event.mgesture.dTheta << endl;
-  //  }
-  //  if( fabs( event.mgesture.dDist ) > 0.002 )
-  //  {
-  //  cout << "Zoom detected: " << event.mgesture.dDist << endl;
-  //  }
+  //Rotation detected
+  // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
+  // {
+  // cout << "Rotation detected: " << event.mgesture.dTheta << endl;
+  // }
+  // if( fabs( event.mgesture.dDist ) > 0.002 )
+  // {
+  // cout << "Zoom detected: " << event.mgesture.dDist << endl;
+  // }
 }
 
 void SdlWindow::setAdded()
@@ -1023,14 +990,14 @@ bool SdlWindow::closed()
 
 void SdlWindow::close()
 {
-  _pRenderTex = NULL; // might have to be removed from ogre first
-  // &_renderTexture = NULL; // might have to removed from ogre first
+  _pRenderTex = nullptr; // might have to be removed from ogre first
+  // &_renderTexture = nullptr; // might have to removed from ogre first
 
-  _window = NULL;       // might have to be removed from ogre first
-  _camera = NULL;       // might have to be removed from ogre first
-  _viewport = NULL;     // might have to be removed from ogre first
-  _sceneManager = NULL; // might have to be removed from ogre first
-  _ogreHandler = NULL;  // might have to be removed from ogre first
+  _window = nullptr;       // might have to be removed from ogre first
+  _camera = nullptr;       // might have to be removed from ogre first
+  _viewport = nullptr;     // might have to be removed from ogre first
+  _sceneManager = nullptr; // might have to be removed from ogre first
+  _ogreHandler = nullptr;  // might have to be removed from ogre first
 
   SDL_DestroyWindow(_sdlWindow);
 }

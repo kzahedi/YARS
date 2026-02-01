@@ -10,7 +10,7 @@ void VideoCodecs::printAvailableVideoCodecs()
   // lqt_registry_init();
   // lqt_codec_info_t **codecs = lqt_query_registry(0,1,1,0);
   // int i = 0;
-  // while(codecs[i] != NULL)
+  // while(codecs[i] != nullptr)
   // {
     // cout << "************************************************************" << endl;
     // lqt_dump_codec_info(codecs[i]);
@@ -18,7 +18,7 @@ void VideoCodecs::printAvailableVideoCodecs()
     // i++;
   // }
   // i = 0;
-  // while(codecs[i] != NULL)
+  // while(codecs[i] != nullptr)
   // {
     // cout << "Codec identifier " << i << ": " << codecs[i]->name << " [" << codecs[i]->long_name << "]" << endl;
     // for(int j = 0; j < codecs[i]->num_fourccs; j++)

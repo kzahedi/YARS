@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ class LoggingHandler
 {
   public:
     LoggingHandler();
-    ~LoggingHandler();
+    ~LoggingHandler() = default;
 
     void init();
     void update();
@@ -28,8 +29,8 @@ class LoggingHandler
     void addLogger(Logger        *logger);
 
   private:
-    std::vector<LoggingModule*> _modules;
-    std::vector<Logger*>        _logger;
+    std::vector<std::unique_ptr<LoggingModule>> _modules;
+    std::vector<std::unique_ptr<Logger>>        _logger;
 };
 
 #endif // __LOGGING_MOUDLE_HANDLER_H__

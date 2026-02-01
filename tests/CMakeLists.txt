@@ -1,44 +1,47 @@
-# Google Test Framework for YARS
+# YARS Test Suite
+# Uses Catch2 for unit and integration testing
 
-# Download and configure Google Test
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG v1.14.0
+find_package(Catch2 3 REQUIRED)
+
+include(CTest)
+include(Catch)
+
+# Unit tests
+add_executable(yars_unit_tests
+  unit/test_p3d.cpp
+  unit/test_quaternion.cpp
+  unit/test_matrix.cpp
 )
 
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-# Add test executable
-add_executable(
-  yars_tests
-  test_main.cpp
-  types/test_p3d.cpp
-  types/test_pose.cpp
-  regression/test_braitenberg.cpp
+target_include_directories(yars_unit_tests PRIVATE
+  ${CMAKE_SOURCE_DIR}/src
 )
 
-# Link Google Test and minimal YARS libraries
-target_link_libraries(
-  yars_tests
-  gtest
-  gtest_main
+target_link_libraries(yars_unit_tests PRIVATE
+  Catch2::Catch2WithMain
   YarsDataTypes
   YarsUtil
 )
 
-# Include YARS headers
-target_include_directories(yars_tests PRIVATE 
-  ${CMAKE_SOURCE_DIR}/src
-  ${CMAKE_SOURCE_DIR}/src/yars
+# Register tests with CTest
+catch_discover_tests(yars_unit_tests)
+
+# Integration tests (require more dependencies)
+add_executable(yars_integration_tests
+  integration/test_configuration.cpp
 )
 
-# Add test discovery
-include(GoogleTest)
-gtest_discover_tests(yars_tests)
+target_include_directories(yars_integration_tests PRIVATE
+  ${CMAKE_SOURCE_DIR}/src
+)
 
-# Enable testing
-enable_testing()
+target_link_libraries(yars_integration_tests PRIVATE
+  Catch2::Catch2WithMain
+  YarsConfiguration
+  YarsDataTypes
+  YarsUtil
+  YarsViewConsole
+  YarsGUI
+)
+
+catch_discover_tests(yars_integration_tests)

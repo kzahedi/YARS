@@ -16,9 +16,9 @@ class SelforgLogger : public Logger
     SelforgLogger(DataLoggingSelforg *data, int index);
     virtual ~SelforgLogger() { };
 
-    void update();
-    void init();
-    void close();
+    void update() override;
+    void init() override;
+    void close() override;
 
   private:
     string __convert(string in);

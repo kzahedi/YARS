@@ -62,7 +62,7 @@ DataHingeActuator::DataHingeActuator(DataNode *parent)
     : DataActuator(parent, DATA_ACTUATOR_HINGE)
 {
   _noise = new DataNoise(this);
-  _filter = NULL;
+  _filter = nullptr;
   _deflectionSet = false;
   _isActive = true;
   _currentAngularVelocity = 0.0;
@@ -70,7 +70,7 @@ DataHingeActuator::DataHingeActuator(DataNode *parent)
   _appliedForce = 0.0;
   _appliedVelocity = 0.0;
   _friction = 0.0;
-  _n = NULL;
+  _n = nullptr;
 
   _internalValue.resize(1);
   _externalValue.resize(1);
@@ -354,11 +354,11 @@ double DataHingeActuator::friction()
 
 DataHingeActuator *DataHingeActuator::_copy()
 {
-  DataHingeActuator *copy = new DataHingeActuator(NULL);
+  DataHingeActuator *copy = new DataHingeActuator(nullptr);
 
-  if (_filter != NULL)
+  if (_filter != nullptr)
     copy->_filter = _filter->copy();
-  if (_noise != NULL)
+  if (_noise != nullptr)
     copy->_noise = _noise->copy();
   copy->_deflection = _deflection;
   copy->_mapping = _mapping;

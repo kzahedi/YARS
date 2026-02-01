@@ -74,9 +74,9 @@ void SceneGraphLDRSensor::__cap()
 void SceneGraphLDRSensor::__body()
 {
   _manual->begin("body", Ogre::RenderOperation::OT_TRIANGLE_FAN);
-  for (std::vector<::P3D>::iterator i = _points.begin(); i != _points.end(); i++)
+  for (const auto& point : _points)
   {
-    _manual->position((*i).x, (*i).y, (*i).z);
+    _manual->position(point.x, point.y, point.z);
   }
   _manual->setVisible(true);
   _manual->setCastShadows(false);

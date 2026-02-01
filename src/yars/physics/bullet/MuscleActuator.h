@@ -12,12 +12,12 @@ class MuscleActuator : public Actuator
     MuscleActuator(DataMuscleActuator *data, Robot *robot);
     ~MuscleActuator();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
-    btTypedConstraint* constraint();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
+    btTypedConstraint* constraint() override;
 
-    DataMuscleActuator* data();
+    DataMuscleActuator* data() override;
 
   private:
     void __processPositional();

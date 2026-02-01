@@ -5,23 +5,23 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Handle modern Boost CMake policy
-cmake_policy(SET CMP0167 NEW)
-
-# Modern Boost handling
+# Handle modern Boost (1.70+) which uses BoostConfig.cmake
+# system and thread are header-only in modern Boost
 if(APPLE)
   set(Boost_USE_STATIC_LIBS ON)
 endif(APPLE)
-find_package(Boost REQUIRED COMPONENTS program_options)
-# Modern CMake: Use imported targets instead of include directories
-# For header-only libraries like circular_buffer, we still need include directories
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-endif()
 
-find_package(XercesC REQUIRED)
-# Modern CMake: Use imported targets instead of manual includes
-# Targets will link with XercesC::XercesC directly
+# Boost components needed - only program_options now
+# (filesystem and thread replaced with C++17 std::filesystem and std::thread)
+find_package(Boost REQUIRED COMPONENTS program_options)
+IF(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+ENDIF(Boost_FOUND)
+
+find_package(XercesC)
+IF(XERCESC_FOUND)
+  include_directories(${XERCESC_INCLUDE_DIR})
+ENDIF(XERCESC_FOUND)
 
 if(YARS_USE_PYTHON)
 find_package(PythonLibs 3 REQUIRED)
@@ -30,12 +30,9 @@ find_package(PythonLibs 3 REQUIRED)
   ENDIF(PYTHONLIBS_FOUND)
 endif(YARS_USE_PYTHON)
 
-# Modern CMake approach: let CMake find Bullet automatically
-find_package(Bullet REQUIRED)
+find_package(Bullet)
 if(BULLET_FOUND)
-  # Modern CMake: prefer target-based includes over directory includes
-  # include_directories(${BULLET_INCLUDE_DIRS})
-  # Note: Individual targets will link with Bullet::Bullet* targets
+  include_directories(${BULLET_INCLUDE_DIR})
 endif(BULLET_FOUND)
 
 if(YARS_DOCS)
@@ -44,34 +41,67 @@ endif(YARS_DOCS)
 
 IF(YARS_USE_VISUALISATION)
 
-  # Use pkg-config to find SDL2 properly
-  find_package(PkgConfig REQUIRED)
-  pkg_check_modules(SDL2 REQUIRED sdl2)
+  find_package(SDL2)
+  include_directories(${SDL2_INCLUDE_DIR})
 
-  include_directories(${SDL2_INCLUDE_DIRS})
+  # ===========================================================
+  # LOCAL OGRE BUILD (ext/ogre)
+  # ===========================================================
+  # Use the OGRE we built in ext/ogre/build
+  set(OGRE_BUILD_DIR "${CMAKE_SOURCE_DIR}/ext/ogre/build")
+  set(OGRE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/ext/ogre")
 
-  # Create SDL2::SDL2 target that OGRE expects
-  if(NOT TARGET SDL2::SDL2)
-    add_library(SDL2::SDL2 INTERFACE IMPORTED)
-    set_target_properties(SDL2::SDL2 PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIRS}"
-      INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}")
+  if(APPLE)
+    # On macOS, OGRE builds as frameworks
+    set(OGRE_FRAMEWORK_DIR "${OGRE_BUILD_DIR}/lib/macosx")
+
+    # Verify OGRE was built
+    if(NOT EXISTS "${OGRE_FRAMEWORK_DIR}/Ogre.framework")
+      message(FATAL_ERROR "OGRE not built. Please run: cd ext/ogre/build && cmake .. && make")
+    endif()
+
+    # Set framework paths
+    set(CMAKE_FRAMEWORK_PATH ${CMAKE_FRAMEWORK_PATH} ${OGRE_FRAMEWORK_DIR})
+
+    # Include directories - use wrapper structure for <OGRE/Ogre.h> style includes
+    # The ${OGRE_BUILD_DIR}/include/OGRE directory has symlinks to source headers
+    set(OGRE_INCLUDE_DIRS
+      "${OGRE_BUILD_DIR}/include"           # For <OGRE/Ogre.h> style includes
+      "${OGRE_BUILD_DIR}/include/OGRE"      # For Overlay headers that need main OGRE headers without prefix
+      "${OGRE_FRAMEWORK_DIR}/Ogre.framework/Headers"  # Generated headers
+    )
+
+    # Libraries (frameworks)
+    set(OGRE_LIBRARIES
+      "-framework Ogre"
+      "-framework OgreOverlay"
+      "-framework OgreRTShaderSystem"
+      "-framework RenderSystem_GL3Plus"
+      "-framework Plugin_ParticleFX"
+      "-framework Codec_STBI"
+      "-framework OgreBites"
+      "-framework Cocoa"
+      "-framework OpenGL"
+      "-framework IOKit"
+      "-framework CoreFoundation"
+      "-framework CoreGraphics"
+    )
+
+    # Link directory for frameworks
+    link_directories(${OGRE_FRAMEWORK_DIR})
+
+    set(OGRE_FOUND TRUE)
+    set(OGRE_Overlay_LIBRARIES "-framework OgreOverlay")
+
+    message(STATUS "Using local OGRE build from: ${OGRE_FRAMEWORK_DIR}")
+
+  else()
+    # Linux: Not implemented yet
+    message(FATAL_ERROR "Linux OGRE integration not yet implemented")
   endif()
 
-  # Find ZLIB for OGRE
-  find_package(ZLIB REQUIRED)
-
-  # Use local OGRE installation with modern CMake config
-  set(OGRE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/ext/ogre/install)
-  set(CMAKE_PREFIX_PATH ${OGRE_ROOT}/CMake ${CMAKE_PREFIX_PATH})
-  # find_package(OGRE REQUIRED CONFIG)
-
-  # Add OGRE include directories (both parent and OGRE subdirectory)
-  include_directories(${OGRE_ROOT}/include)
-  include_directories(${OGRE_ROOT}/include/OGRE)
-
-  # Set OGRE_FOUND to true for compatibility with existing checks
-  set(OGRE_FOUND TRUE)
+  include_directories(${OGRE_INCLUDE_DIRS})
+  # ===========================================================
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)

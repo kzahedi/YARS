@@ -6,8 +6,7 @@
 #include <yars/util/Timer.h>
 
 #include <OGRE/Ogre.h>
-
-namespace yars {
+#include <algorithm>
 
 YarsViewModel::YarsViewModel()
 {
@@ -20,61 +19,16 @@ YarsViewModel::YarsViewModel()
   _timeStamp = 0;
   _first = -1;
   _last = 0;
-  _ogreHandler = NULL;
 
   if (__YARS_GET_USE_VISUALISATION)
   {
-    // Check if we're in a headless environment (Linux/X11 only)
-#ifdef __linux__
-    const char *display = getenv("DISPLAY");
-    bool hasDisplay = (display != nullptr && strlen(display) > 0);
-
-    if (!hasDisplay)
-    {
-      std::cout << "No display detected - automatically switching to headless mode." << std::endl;
-      std::cout << "Physics simulation will run without visualization." << std::endl;
-      // Don't initialize GUI components, just continue with physics
-      return;
-    }
-#endif
-    // On macOS and Windows, assume GUI is available and let initialization handle any failures
-
-    try
-    {
-      _ogreHandler = OgreHandler::instance();
-      initialiseView();
-      _ogreHandler->setupSceneManager();
-      FOREACH(SdlWindow *, i, _windowManager)
-      if ((*i) != NULL)
-        (*i)->setupOSD();
-      if (__YARS_GET_USE_CAPTURE_CL)
-        toggleCaptureVideo();
-    }
-    catch (const Ogre::RenderingAPIException &e)
-    {
-      std::cerr << std::endl;
-      std::cerr << "===============================================" << std::endl;
-      std::cerr << "GUI INITIALIZATION FAILED - CONTINUING HEADLESS" << std::endl;
-      std::cerr << "===============================================" << std::endl;
-      std::cerr << "OpenGL Error: " << e.what() << std::endl;
-      std::cerr << std::endl;
-      std::cerr << "Automatically switching to headless mode." << std::endl;
-      std::cerr << "Physics simulation will continue without visualization." << std::endl;
-      std::cerr << std::endl;
-      std::cerr << "To avoid this message in the future, use: --nogui" << std::endl;
-      std::cerr << "===============================================" << std::endl;
-      // Reset to NULL and continue without GUI
-      _ogreHandler = NULL;
-    }
-    catch (const std::exception &e)
-    {
-      std::cerr << std::endl;
-      std::cerr << "GUI initialization failed: " << e.what() << std::endl;
-      std::cerr << "Continuing in headless mode." << std::endl;
-      std::cerr << "Use --nogui flag to avoid this message." << std::endl;
-      // Reset to NULL and continue without GUI
-      _ogreHandler = NULL;
-    }
+    _ogreHandler = OgreHandler::instance();
+    initialiseView();
+    _ogreHandler->setupSceneManager();
+    for (auto& w : _windowManager)
+      if (w) w->setupOSD();
+    if (__YARS_GET_USE_CAPTURE_CL)
+      toggleCaptureVideo();
   }
 }
 
@@ -88,65 +42,65 @@ void YarsViewModel::initialiseView()
   DataRobotSimulationDescription *data = __YARS_CURRENT_DATA;
   if (!__YARS_GET_USE_VISUALISATION)
     return;
-  if (data->screens() == NULL)
+  if (data->screens() == nullptr)
     return;
-  FOREACHP(DataScreen *, i, data->screens())
-  if ((*i)->autoShow())
-    __createWindow();
+  for (auto i = data->screens()->begin(); i != data->screens()->end(); ++i)
+    if ((*i)->autoShow())
+      __createWindow();
 }
 
 void YarsViewModel::visualiseScene()
 {
   if (!__YARS_GET_USE_VISUALISATION)
     return;
-  if (__YARS_CURRENT_DATA->screens() == NULL)
+  if (__YARS_CURRENT_DATA->screens() == nullptr)
     return;
-  if (_ogreHandler == NULL)
-    return; // Skip visualization if GUI failed to initialize
-
   _ogreHandler->step();
 
-  FOREACH(SdlWindow *, i, _windowManager)
-  if ((*i) != NULL)
-    (*i)->step();
+  // Swap buffers for all windows after OGRE renders
+  for (auto& w : _windowManager)
+    if (w) w->swapBuffers();
+
+  for (auto& w : _windowManager)
+    if (w) w->step();
   while (SDL_PollEvent(&_event))
   {
-    FOREACH(SdlWindow *, i, _windowManager)
-    if ((*i) != NULL)
-      (*i)->handleEvent(_event);
+    for (auto& w : _windowManager)
+      if (w) w->handleEvent(_event);
   }
 }
 
 void YarsViewModel::reset()
 {
-  if (_ogreHandler != NULL)
-    _ogreHandler->reset();
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->reset();
+  _ogreHandler->reset();
+  for (auto& w : _windowManager)
+    w->reset();
 }
 
 void YarsViewModel::quit()
 {
   Y_DEBUG("YarsViewModel::quit called")
   _run = false;
-  // SDL cleanup will be handled by main thread when run() loop exits
+  for (auto& w : _windowManager)
+    w->quit();
+  _windowManager.clear();
   Y_DEBUG("YarsViewModel::quit completed")
 }
 
 void YarsViewModel::__createWindow()
 {
-  SdlWindow *wm = new SdlWindow(_windowManager.size());
-  // TODO: Observer pattern not implemented - wm->addObserver(this);
-  _windowManager.push_back(wm);
+  auto wm = std::make_unique<SdlWindow>(_windowManager.size());
+  wm->setCloseCallback([this]() { cleanupWindows(); });
+  wm->setSyncToggleCallback([this]() { toggleSync(); });
+  wm->wait();
+  _windowManager.push_back(std::move(wm));
 }
 
 void YarsViewModel::createNewWindow()
 {
-  if (_ogreHandler == NULL)
-    return; // Can't create windows without GUI
-
-  SdlWindow *wm = new SdlWindow(_windowManager.size() + _newWindows.size());
-  // TODO: Observer pattern not implemented - wm->addObserver(this);
+  auto wm = std::make_unique<SdlWindow>(_windowManager.size() + _newWindows.size());
+  wm->setCloseCallback([this]() { cleanupWindows(); });
+  wm->setSyncToggleCallback([this]() { toggleSync(); });
 #ifdef USE_CAPTURE_VIDEO
   if (wm->captureRunning())
   {
@@ -157,31 +111,29 @@ void YarsViewModel::createNewWindow()
   wm->wait();
   _ogreHandler->step();
   wm->step();
-  _newWindows.push_back(wm);
+  _newWindows.push_back(std::move(wm));
   _timeStamp = Timer::getTime();
   _first++;
 }
 
-// Observer pattern methods replaced with direct method calls
-// quit() method already handles window cleanup
+void YarsViewModel::toggleSync()
+{
+  _sync = !_sync;
+}
 
 void YarsViewModel::cleanupWindows()
 {
-  vector<SdlWindow *> toBeDeleted;
-  for (std::vector<SdlWindow *>::iterator i = _windowManager.begin(); i != _windowManager.end(); i++)
+  // Close windows marked as closed
+  for (auto& w : _windowManager)
   {
-    if ((*i)->closed())
-    {
-      toBeDeleted.push_back(*i);
-    }
+    if (w && w->closed())
+      w->close();
   }
-
-  for (std::vector<SdlWindow *>::iterator i = toBeDeleted.begin(); i != toBeDeleted.end(); i++)
-  {
-    (*i)->close();
-    _windowManager.erase(i);
-    // _newWindows.erase(i);
-  }
+  // Remove closed windows using erase-remove idiom
+  _windowManager.erase(
+    std::remove_if(_windowManager.begin(), _windowManager.end(),
+      [](const std::unique_ptr<SdlWindow>& w) { return !w || w->closed(); }),
+    _windowManager.end());
 }
 
 void YarsViewModel::run()
@@ -196,8 +148,8 @@ void YarsViewModel::run()
 #ifdef USE_CAPTURE_VIDEO
         if (_toggleVideo == true)
         {
-          FOREACH(SdlWindow *, i, _windowManager)
-          (*i)->captureVideo();
+          for (auto& w : _windowManager)
+            w->captureVideo();
         }
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
@@ -208,22 +160,20 @@ void YarsViewModel::run()
       visualiseScene();
     }
 
-    for (std::vector<SdlWindow *>::iterator i = _newWindows.begin(); i != _newWindows.end(); i++)
+    for (auto& w : _newWindows)
     {
-      if ((*i)->added() == false)
+      if (w && !w->added())
       {
-        _windowManager.push_back(*i);
-        (*i)->setAdded();
+        w->setAdded();
+        _windowManager.push_back(std::move(w));
       }
     }
+    // Remove moved-from windows from _newWindows
+    _newWindows.erase(
+      std::remove_if(_newWindows.begin(), _newWindows.end(),
+        [](const std::unique_ptr<SdlWindow>& w) { return !w; }),
+      _newWindows.end());
   }
-
-  // Cleanup SDL resources on main thread after main loop exits
-  Y_DEBUG("YarsViewModel::run() main loop exited, cleaning up SDL resources on main thread")
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->close();
-  _windowManager.clear();
-  Y_DEBUG("YarsViewModel::run() SDL cleanup completed")
 }
 
 void YarsViewModel::synched()
@@ -237,8 +187,8 @@ void YarsViewModel::synched()
 
 void YarsViewModel::toggleShadows()
 {
-  FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->toggleShadows();
+  for (auto& w : _windowManager)
+    w->toggleShadows();
 }
 
 void YarsViewModel::toggleCaptureVideo()
@@ -249,16 +199,14 @@ void YarsViewModel::toggleCaptureVideo()
 #if USE_CAPTURE_VIDEO
   if (_toggleVideo == true)
   {
-    FOREACH(SdlWindow *, i, _windowManager)
-    (*i)->startCaptureVideo();
+    for (auto& w : _windowManager)
+      w->startCaptureVideo();
   }
   else
   {
     cout << "stopped video recording" << endl;
-    FOREACH(SdlWindow *, i, _windowManager)
-    (*i)->stopCaptureVideo();
+    for (auto& w : _windowManager)
+      w->stopCaptureVideo();
   }
 #endif // USE_CAPTURE_VIDEO
 }
-
-} // namespace yars

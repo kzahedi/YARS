@@ -1,0 +1,1 @@
+/Users/zahedi/code/YARS/ext/ogre/build/lib/macosx/Codec_STBI.framework/Headers/OgreSTBICodec.h

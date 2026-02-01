@@ -1,7 +1,6 @@
 #include <yars/logging/SelforgLogger.h>
 
 #include <yars/util/Timer.h>
-#include <yars/util/stl_macros.h>
 #include <yars/configuration/YarsConfiguration.h>
 
 #ifdef _MSC_VER
@@ -19,8 +18,8 @@ SelforgLogger::SelforgLogger(DataLoggingSelforg *data, int index)
   _useGuilogger      = data->useGuilogger();
   _filename          = data->filename();
   _dtime             = __YARS_GET_STEP_SIZE * _frequency;
-  _matrixvizFD       = NULL;
-  _guiloggerFD       = NULL;
+  _matrixvizFD       = nullptr;
+  _guiloggerFD       = nullptr;
   _guiloggerStepSize = data->glStepSize();
   _matrixvizStepSize = data->mvStepSize();
 
@@ -35,10 +34,8 @@ SelforgLogger::SelforgLogger(DataLoggingSelforg *data, int index)
   if(_useMatrixviz) _matrixvizFD = popen("matrixviz","w");
   if(_useGuilogger) _guiloggerFD = popen("guilogger -m pipe","w");
 
-  for(std::vector<string>::iterator s = data->t_begin(); s != data->t_end(); s++)
-  {
+  for(auto s = data->t_begin(); s != data->t_end(); s++)
     push_back(*s);
-  }
 }
 
 void SelforgLogger::init()
@@ -46,19 +43,17 @@ void SelforgLogger::init()
   _time = 0;
   std::vector<string> names;
   names.push_back("t");
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->v_begin(); v != (*l)->v_end(); v++)
-    {
+    for(auto v = (*l)->v_begin(); v != (*l)->v_end(); v++)
       names.push_back(*v);
-    }
   }
 
   _oss.str("");
   _oss << "#C";
-  FOREACH(string, n, names)
+  for (auto& n : names)
   {
-    _oss << " " << __convert(*n);
+    _oss << " " << __convert(n);
   }
   _oss << endl;
 
@@ -84,12 +79,10 @@ void SelforgLogger::update()
   _time = ((double)__YARS_GET_STEP) * _dtime;
   std::vector<string> values;
   _oss.str("");
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->begin(); v != (*l)->end(); v++)
-    {
+    for(auto v = (*l)->begin(); v != (*l)->end(); v++)
       values.push_back(*v);
-    }
   }
   _oss << _time;
   if(values.size() > 0)
@@ -116,12 +109,12 @@ void SelforgLogger::update()
 
 void SelforgLogger::close()
 {
-  if(_matrixvizFD != NULL)
+  if(_matrixvizFD != nullptr)
   {
     fprintf(_matrixvizFD,"#QUIT\n");
     fclose(_matrixvizFD);
   }
-  if(_guiloggerFD != NULL)
+  if(_guiloggerFD != nullptr)
   {
     fprintf(_guiloggerFD,"#QUIT\n");
     fclose(_guiloggerFD);

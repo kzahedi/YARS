@@ -53,12 +53,12 @@ static bool CustomMaterialCombinerCallback(
  ***************************************************************************/
 
 
-CollisionCallback* CollisionCallback::_me = NULL;
+CollisionCallback* CollisionCallback::_me = nullptr;
 
 CollisionCallback* CollisionCallback::instance()
 {
   gContactAddedCallback = CustomMaterialCombinerCallback;
-  if(_me == NULL) _me = new CollisionCallback();
+  if(_me == nullptr) _me = new CollisionCallback();
   return _me;
 }
 

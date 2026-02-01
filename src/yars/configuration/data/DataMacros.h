@@ -29,7 +29,7 @@ class DataMacros : public std::vector<DataMacro*>, public DataNode
     DataMacro* macro(int index);
 
     /**
-     * @brief Returns the macro with name given as parameter, or NULL otherwise.
+     * @brief Returns the macro with name given as parameter, or nullptr otherwise.
      *
      * @param name
      *

@@ -27,8 +27,8 @@ class GenericProximitySensor : public Sensor
     GenericProximitySensor(DataGenericProximitySensor *data, Robot *robot);
    ~GenericProximitySensor();
 
-   void prePhysicsUpdate();
-   void postPhysicsUpdate();
+   void prePhysicsUpdate() override;
+   void postPhysicsUpdate() override;
 
   private:
 

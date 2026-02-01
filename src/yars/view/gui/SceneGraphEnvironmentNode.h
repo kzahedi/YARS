@@ -7,6 +7,7 @@
 #include <OGRE/Ogre.h>
 
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ class SceneGraphEnvironmentNode : public SceneGraphObjectNode
 {
 public:
   SceneGraphEnvironmentNode(DataEnvironment *, Ogre::SceneNode *, Ogre::SceneManager *);
-  ~SceneGraphEnvironmentNode();
+  ~SceneGraphEnvironmentNode() = default;
 
   void update();
   void reset(){};
@@ -22,9 +23,9 @@ public:
 private:
   DataEnvironment *_data;
   Ogre::SceneNode *_meshNode;
-  std::vector<SceneGraphObjectNode *> _lightSources;
-  std::vector<SceneGraphObjectNode *> _objects;
-  std::vector<SceneGraphObjectNode *> _meshes;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _lightSources;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _objects;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _meshes;
   std::vector<Ogre::SceneNode *> _meshNodes;
   vector<Ogre::Entity *> _entities;
   Ogre::TextureUnitState *_groundTextureUnitState;

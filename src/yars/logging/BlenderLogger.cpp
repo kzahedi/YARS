@@ -29,10 +29,10 @@ void BlenderLogger::update()
     _oss.str("");
     _oss << "Frame," << __YARS_GET_STEP << ",";
     DataRobots *robots = Data::instance()->current()->robots();
-    for (DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
+    for (auto r = robots->begin(); r != robots->end(); r++)
     {
       string name = (*r)->name();
-      for (DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
+      for (auto o = (*r)->o_begin(); o != (*r)->o_end(); o++)
       {
         Pose p = (*o)->pose();
         _oss << name << " " << (*o)->name() << ","
@@ -61,10 +61,10 @@ void BlenderLogger::init()
     names.open(_data->cfg().c_str());
     names << "Frame Index" << endl;
     DataRobots *robots = Data::instance()->current()->robots();
-    for (DataRobots::iterator r = robots->begin(); r != robots->end(); r++)
+    for (auto r = robots->begin(); r != robots->end(); r++)
     {
       string name = (*r)->name();
-      for (DataObjects::iterator o = (*r)->o_begin(); o != (*r)->o_end(); o++)
+      for (auto o = (*r)->o_begin(); o != (*r)->o_end(); o++)
       {
         _oss.str("");
         _oss << name << " " << (*o)->name() << endl;

@@ -9,5 +9,6 @@ Ogre::String OSX_cocoa_view( SDL_SysWMinfo &info );
 
 void OSX_GL_set_current( Ogre::RenderWindow * ogre_render_window );
 void OSX_GL_clear_current( Ogre::RenderWindow * ogre_render_window );
+void OSX_pump_events();
 
 #endif // __OSX_WRAP_H__

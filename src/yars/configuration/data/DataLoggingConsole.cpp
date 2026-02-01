@@ -50,10 +50,10 @@ void DataLoggingConsole::createXsd(XsdSpecification *spec)
 
 DataLoggingConsole* DataLoggingConsole::copy()
 {
-  DataLoggingConsole *copy = new DataLoggingConsole(NULL);
-  for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
+  DataLoggingConsole *copy = new DataLoggingConsole(nullptr);
+  for(const auto& target : _targets)
   {
-    copy->_targets.push_back(*i);
+    copy->_targets.push_back(target);
   }
   return copy;
 }

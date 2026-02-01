@@ -61,7 +61,7 @@ GenericSpringActuator::GenericSpringActuator(DataGenericActuator *data, Robot *r
   P3D axis   = pose.orientation;
   P3D anchor = pose.position;
 
-  if(_sourceObject != NULL && _destinationObject != NULL)
+  if(_sourceObject != nullptr && _destinationObject != nullptr)
   {
     _source                  = _sourceObject->rigidBody();
     btRigidBody *destination = _destinationObject->rigidBody();
@@ -205,7 +205,7 @@ GenericSpringActuator::GenericSpringActuator(DataGenericActuator *data, Robot *r
 
 GenericSpringActuator::~GenericSpringActuator()
 {
-  if(_genericConstraint != NULL) delete _genericConstraint;
+  if(_genericConstraint != nullptr) delete _genericConstraint;
 }
 
 

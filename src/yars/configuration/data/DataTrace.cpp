@@ -11,7 +11,7 @@ DataTrace::DataTrace()
   set_capacity(10);
   clear();
   _useLocal = true;
-  _target = NULL;
+  _target = nullptr;
 }
 
 void DataTrace::update()

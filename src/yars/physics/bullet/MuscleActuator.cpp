@@ -17,7 +17,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
     : Actuator("MuscleActuator", data->source(), data->destination(), robot)
 {
   _data = data;
-  _muscleConstraint = NULL;
+  _muscleConstraint = nullptr;
   _lastLength = 0.0;
   _length = 0.0;
   _muscleVelocity = 0.0;
@@ -44,7 +44,7 @@ MuscleActuator::MuscleActuator(DataMuscleActuator *data, Robot *robot)
 
 MuscleActuator::~MuscleActuator()
 {
-  if (_muscleConstraint != NULL)
+  if (_muscleConstraint != nullptr)
     delete _muscleConstraint;
 }
 

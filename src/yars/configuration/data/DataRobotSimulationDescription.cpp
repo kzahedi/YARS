@@ -2,7 +2,6 @@
 
 #include <yars/configuration/data/XmlChangeLog.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/StringTokeniser.h>
 
 #include <cstdlib>
@@ -12,39 +11,39 @@
 
 
 DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)
-  : DataNode(NULL)
+  : DataNode(nullptr)
 {
 
 #include <yars/defines/version.h> // do not move from here
 
-  _simulator   = NULL;
-  _screens     = NULL;
-  _macros      = NULL;
-  _robots    = NULL;
-  _environment = NULL;
-  _signals     = NULL;
-  _traces      = NULL;
-  _logging     = NULL;
+  _simulator   = nullptr;
+  _screens     = nullptr;
+  _macros      = nullptr;
+  _robots    = nullptr;
+  _environment = nullptr;
+  _signals     = nullptr;
+  _traces      = nullptr;
+  _logging     = nullptr;
   _geoms       = new DataObjects();
   _sensors     = new DataSensors();
   _actuators   = new DataActuators();
   _controllers = new DataControllers();
 
   current      = this;
-  parent       = NULL;
+  parent       = nullptr;
 
 }
 
 DataRobotSimulationDescription::~DataRobotSimulationDescription()
 {
-  if(_screens     != NULL) delete _screens;
-  if(_robots      != NULL) delete _robots;
-  if(_macros      != NULL) delete _macros;
-  if(_environment != NULL) delete _environment;
-  if(_signals     != NULL) delete _signals;
-  if(_simulator   != NULL) delete _simulator;
-  if(_traces      != NULL) delete _traces;
-  if(_logging     != NULL) delete _logging;
+  if(_screens     != nullptr) delete _screens;
+  if(_robots      != nullptr) delete _robots;
+  if(_macros      != nullptr) delete _macros;
+  if(_environment != nullptr) delete _environment;
+  if(_signals     != nullptr) delete _signals;
+  if(_simulator   != nullptr) delete _simulator;
+  if(_traces      != nullptr) delete _traces;
+  if(_logging     != nullptr) delete _logging;
   delete _geoms;
   delete _sensors;
   delete _actuators;
@@ -108,7 +107,7 @@ DataSignals* DataRobotSimulationDescription::dataSignals()
 
 void DataRobotSimulationDescription::add(DataParseElement *element)
 {
-  if(current == NULL) current = this;
+  if(current == nullptr) current = this;
   if(current == this)
   {
     __getChild(element);
@@ -252,15 +251,12 @@ void DataRobotSimulationDescription::__getChild(DataParseElement *element)
 void DataRobotSimulationDescription::__applySimulatorFrequencyToControllers()
 {
   _controllers->clear();
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin();
-        m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      if((*m)->controller() != NULL)
-      {
+      if((*m)->controller() != nullptr)
         (*m)->controller()->applySimulatorFrequency(_simulator->simulatorFrequency());
-      }
     }
   }
 }
@@ -270,39 +266,26 @@ void DataRobotSimulationDescription::__checkUniqness()
 {
   std::vector<string> allNames;
 
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
       allNames.push_back((*m)->name());
       // objects
-      for(DataObjects::iterator g = (*m)->g_begin(); g != (*m)->g_end(); g++)
-      {
+      for(auto g = (*m)->g_begin(); g != (*m)->g_end(); g++)
         allNames.push_back((*g)->name());
-      }
       // sensors
-      for(std::vector<DataSensor*>::iterator s = (*m)->s_begin(); s != (*m)->s_end(); s++)
-      {
+      for(auto s = (*m)->s_begin(); s != (*m)->s_end(); s++)
         allNames.push_back((*s)->name());
-      }
       // actuators
-      for(std::vector<DataActuator*>::iterator a = (*m)->a_begin(); a != (*m)->a_end(); a++)
-      {
+      for(auto a = (*m)->a_begin(); a != (*m)->a_end(); a++)
         allNames.push_back((*a)->name());
-      }
     }
   }
-  if(_environment != NULL)
+  if(_environment != nullptr)
   {
-    // for(std::vector<DataEnvironment*>::iterator e = _environments->begin(); e != _environments->end(); e++)
-    // {
-    //   allNames.push_back((*e)->name());
-      // objects
-      for(DataObjects::iterator o = _environment->g_begin(); o != _environment->g_end(); o++)
-      {
-        allNames.push_back((*o)->name());
-      }
-    // }
+    for(auto o = _environment->g_begin(); o != _environment->g_end(); o++)
+      allNames.push_back((*o)->name());
   }
 
   if(allNames.size() > 0)
@@ -326,10 +309,8 @@ void DataRobotSimulationDescription::__checkUniqness()
     if(duplicates.size() > 0)
     {
       cout << "Duplicate names found:" << endl;
-      for(std::vector<string>::iterator s = duplicates.begin(); s != duplicates.end(); s++)
-      {
-        cout << "  \"" << *s << "\"" << endl;
-      }
+      for(auto& s : duplicates)
+        cout << "  \"" << s << "\"" << endl;
       cout << "Quitting yars." << endl;
       exit(-1);
     }
@@ -375,20 +356,20 @@ void DataRobotSimulationDescription::createXsd(XsdSpecification *spec)
 
 void DataRobotSimulationDescription::clear()
 {
-  if(_screens     != NULL) delete _screens;
-  if(_robots    != NULL) delete _robots;
-  if(_macros      != NULL) delete _macros;
-  if(_environment != NULL) delete _environment;
-  if(_signals     != NULL) delete _signals;
-  if(_simulator   != NULL) delete _simulator;
-  if(_logging     != NULL) delete _logging;
-  _screens     = NULL;
-  _robots    = NULL;
-  _macros      = NULL;
-  _environment = NULL;
-  _signals     = NULL;
-  _simulator   = NULL;
-  _logging     = NULL;
+  if(_screens     != nullptr) delete _screens;
+  if(_robots    != nullptr) delete _robots;
+  if(_macros      != nullptr) delete _macros;
+  if(_environment != nullptr) delete _environment;
+  if(_signals     != nullptr) delete _signals;
+  if(_simulator   != nullptr) delete _simulator;
+  if(_logging     != nullptr) delete _logging;
+  _screens     = nullptr;
+  _robots    = nullptr;
+  _macros      = nullptr;
+  _environment = nullptr;
+  _signals     = nullptr;
+  _simulator   = nullptr;
+  _logging     = nullptr;
   current = this;
 }
 
@@ -397,14 +378,14 @@ DataRobotSimulationDescription* DataRobotSimulationDescription::copy()
 {
   DataRobotSimulationDescription *copy = new DataRobotSimulationDescription();
   copy->_version      = _version;
-  if(_simulator   != NULL) copy->_simulator   = _simulator->copy();
-  if(_screens     != NULL) copy->_screens     = _screens->copy();
-  if(_macros      != NULL) copy->_macros      = _macros->copy();
-  if(_robots    != NULL) copy->_robots    = _robots->copy();
-  if(_environment != NULL) copy->_environment = _environment->copy();
-  if(_signals     != NULL) copy->_signals     = _signals->copy();
-  if(_traces      != NULL) copy->_traces      = _traces->copy();
-  if(_logging     != NULL) copy->_logging     = _logging->copy();
+  if(_simulator   != nullptr) copy->_simulator   = _simulator->copy();
+  if(_screens     != nullptr) copy->_screens     = _screens->copy();
+  if(_macros      != nullptr) copy->_macros      = _macros->copy();
+  if(_robots    != nullptr) copy->_robots    = _robots->copy();
+  if(_environment != nullptr) copy->_environment = _environment->copy();
+  if(_signals     != nullptr) copy->_signals     = _signals->copy();
+  if(_traces      != nullptr) copy->_traces      = _traces->copy();
+  if(_logging     != nullptr) copy->_logging     = _logging->copy();
   copy->__updateGeomsContainer();
   copy->__updateSensorsContainer();
   copy->__updateActuatorsContainer();
@@ -417,30 +398,28 @@ DataRobotSimulationDescription* DataRobotSimulationDescription::copy()
 
 void DataRobotSimulationDescription::__updateFollowables()
 {
-  if(_screens == NULL) return;
+  if(_screens == nullptr) return;
   DataFollowables *followables = _screens->followables();
-  if(followables         == NULL) return;
+  if(followables         == nullptr) return;
   if(followables->size() == 0)    return;
-  for(std::vector<string>::iterator i = followables->begin(); i != followables->end(); i++)
+  for(auto i = followables->begin(); i != followables->end(); i++)
   {
-    for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+    for(auto o = _geoms->begin(); o != _geoms->end(); o++)
     {
       if(*i == (*o)->name())
-      {
         followables->add(*o);
-      }
     }
   }
 }
 
 void DataRobotSimulationDescription::__updateTraces()
 {
-  if(_traces == NULL) return;
+  if(_traces == nullptr) return;
   if(_traces->l_size() != 0)
-    for(std::vector<DataTraceLine*>::iterator l = _traces->l_begin(); l != _traces->l_end(); l++)
+    for(auto l = _traces->l_begin(); l != _traces->l_end(); l++)
     {
       bool found = false;
-      for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+      for(auto o = _geoms->begin(); o != _geoms->end(); o++)
       {
         if((*l)->target() == (*o)->name())
         {
@@ -457,8 +436,8 @@ void DataRobotSimulationDescription::__updateTraces()
     }
 
   if(_traces->p_size() != 0)
-    for(std::vector<DataTracePoint*>::iterator p = _traces->p_begin(); p != _traces->p_end(); p++)
-      for(DataObjects::iterator o = _geoms->begin(); o != _geoms->end(); o++)
+    for(auto p = _traces->p_begin(); p != _traces->p_end(); p++)
+      for(auto o = _geoms->begin(); o != _geoms->end(); o++)
         if((*p)->target() == (*o)->name())
           (*p)->setTarget(*o);
 }
@@ -466,39 +445,30 @@ void DataRobotSimulationDescription::__updateTraces()
 void DataRobotSimulationDescription::__updateGeomsContainer()
 {
   _geoms->clear();
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataObjects::iterator g = (*m)->g_begin(); g != (*m)->g_end(); g++)
-      {
+      for(auto g = (*m)->g_begin(); g != (*m)->g_end(); g++)
         _geoms->add(*g);
-      }
     }
   }
-  if(_environment != NULL)
+  if(_environment != nullptr)
   {
-    // for(std::vector<DataEnvironment*>::iterator e = _environments->begin(); e != _environments->end(); e++)
-    // {
-    for(DataObjects::iterator o = _environment->g_begin(); o != _environment->g_end(); o++)
-    {
+    for(auto o = _environment->g_begin(); o != _environment->g_end(); o++)
       _geoms->add(*o);
-    }
-    // }
   }
 }
 
 void DataRobotSimulationDescription::__updateSensorsContainer()
 {
   _sensors->clear();
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataSensors::iterator s = (*m)->s_begin(); s != (*m)->s_end(); s++)
-      {
+      for(auto s = (*m)->s_begin(); s != (*m)->s_end(); s++)
         _sensors->add(*s);
-      }
     }
   }
 }
@@ -506,14 +476,12 @@ void DataRobotSimulationDescription::__updateSensorsContainer()
 void DataRobotSimulationDescription::__updateActuatorsContainer()
 {
   _actuators->clear();
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
     {
-      for(DataActuators::iterator a = (*m)->a_begin(); a != (*m)->a_end(); a++)
-      {
+      for(auto a = (*m)->a_begin(); a != (*m)->a_end(); a++)
         _actuators->add(*a);
-      }
     }
   }
 }
@@ -521,18 +489,16 @@ void DataRobotSimulationDescription::__updateActuatorsContainer()
 void DataRobotSimulationDescription::__updateControllersContainer()
 {
   _controllers->clear();
-  if(_robots != NULL)
+  if(_robots != nullptr)
   {
-    for(std::vector<DataRobot*>::iterator m = _robots->begin(); m != _robots->end(); m++)
-    {
+    for(auto m = _robots->begin(); m != _robots->end(); m++)
       _controllers->add((*m)->controller());
-    }
   }
 }
 
 void DataRobotSimulationDescription::__checkLoggingDefinitions()
 {
-  if(_logging == NULL) return;
+  if(_logging == nullptr) return;
   _logging->checkGeoms(_geoms);
   _logging->checkSensors(_sensors);
   _logging->checkActuators(_actuators);
@@ -547,23 +513,23 @@ void DataRobotSimulationDescription::resetTo(const DataRobotSimulationDescriptio
 
   _robots->resetTo(rsd->_robots);
   _environment->resetTo(rsd->_environment);
-  if(_traces != NULL) _traces->resetTo(rsd->_traces);
+  if(_traces != nullptr) _traces->resetTo(rsd->_traces);
 
   // _simulator << rsd._simulator; // not required
   // _screen    << rsd._screens;   // not required
   // _macros    << rsd._macros;    // not required
-  // if(_environment != NULL) copy->_environment = _environment->copy();
-  // if(_signals     != NULL) copy->_signals     = _signals->copy();
-  // if(_traces      != NULL) copy->_traces      = _traces->copy();
-  // if(_logging     != NULL) copy->_logging     = _logging->copy();
+  // if(_environment != nullptr) copy->_environment = _environment->copy();
+  // if(_signals     != nullptr) copy->_signals     = _signals->copy();
+  // if(_traces      != nullptr) copy->_traces      = _traces->copy();
+  // if(_logging     != nullptr) copy->_logging     = _logging->copy();
 }
 
 void DataRobotSimulationDescription::__convertForces()
 {
-  DataHingeActuator *ha   = NULL;
-  DataSliderActuator *sa  = NULL;
-  DataGenericActuator *ga = NULL;
-  for(DataActuators::iterator i = _actuators->begin(); i != _actuators->end(); i++)
+  DataHingeActuator *ha   = nullptr;
+  DataSliderActuator *sa  = nullptr;
+  DataGenericActuator *ga = nullptr;
+  for(auto i = _actuators->begin(); i != _actuators->end(); i++)
   {
     switch((*i)->type())
     {

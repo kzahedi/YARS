@@ -14,17 +14,19 @@
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
 
+#include <memory>
+
 #ifdef USE_VISUALISATION
 #include <yars/view/gui/CameraFactory.h>
 #endif // USE_VISUALISATION
 
 #include <fstream>
 
-YarsConfiguration *YarsConfiguration::_me = NULL;
+YarsConfiguration *YarsConfiguration::_me = nullptr;
 
 YarsConfiguration *YarsConfiguration::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
   {
     _me = new YarsConfiguration();
   }
@@ -34,7 +36,7 @@ YarsConfiguration *YarsConfiguration::instance()
 YarsConfiguration::YarsConfiguration()
 {
   _argc = 0;
-  _argv = NULL;
+  _argv = nullptr;
   _directories = new Directories();
   _keyboardShortcuts = new KeyboardShortcuts();
   _programOptions = new ProgramOptionsConfiguration();
@@ -105,10 +107,11 @@ void YarsConfiguration::init(int argc, char **argv)
     __printKeyboardShortcuts();
   }
 
-  if (false && Y_GET_DEBUG_LEVEL != YARS_FATAL) // TODO
-  {
-    __processRobotConfiguration();
-  }
+  // Robot configuration processing disabled (not yet implemented)
+  // if (Y_GET_DEBUG_LEVEL != YARS_FATAL)
+  // {
+  //   __processRobotConfiguration();
+  // }
 }
 
 void YarsConfiguration::__printVideoCodecs()
@@ -152,8 +155,7 @@ void YarsConfiguration::__processExportCommand()
 
   if (_programOptions->exportCommand == __PO_OPTION_EXPORT_XSD)
   {
-    YarsXSDGenerator *xsd = new YarsXSDGenerator();
-    // cout << (*xsd) << endl;
+    auto xsd = std::make_unique<YarsXSDGenerator>();
     ofstream myfile;
     stringstream filename;
     filename << "rosiml.xsd";
@@ -161,7 +163,6 @@ void YarsConfiguration::__processExportCommand()
     myfile << (*xsd) << endl;
     myfile.close();
     cout << "rosiml.xsd written to current directory." << endl;
-    delete xsd;
   }
 }
 
@@ -191,16 +192,16 @@ void YarsConfiguration::__printListCommandFollowModes()
 {
 #ifdef USE_VISUALISATION
   std::vector<FollowCamera *> list;
-  CameraFactory::create(&list, NULL);
+  CameraFactory::create(&list, nullptr);
   cout << "--- Followable Modes ---" << endl;
   int index = 0;
-  for (std::vector<FollowCamera *>::iterator i = list.begin(); i != list.end(); i++)
+  for (auto* cam : list)
   {
     string s;
-    (*i)->name(&s);
+    cam->name(&s);
     cout << index << " : " << s << endl;
     index++;
-    delete *i;
+    delete cam;
   }
   cout << "--- End Followable Modes ---" << endl;
   list.clear();
@@ -212,21 +213,19 @@ void YarsConfiguration::__readXmlFiles()
   Data::instance()->clear();
   string xml = getXml();
 
-  YarsXSDSaxParser *parser = new YarsXSDSaxParser();
-  // TODO parser should add new xml files to current data-structure (might already be the case?)
+  auto parser = std::make_unique<YarsXSDSaxParser>();
+  // Note: Parser adds parsed content to Data::instance() data structure
   parser->read(xml);
   if (parser->errors() > 0)
   {
-    for (std::vector<string>::iterator i = parser->w_begin(); i != parser->w_end(); i++)
+    for (auto i = parser->w_begin(); i != parser->w_end(); ++i)
       cout << "WARNING: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->e_begin(); i != parser->e_end(); i++)
+    for (auto i = parser->e_begin(); i != parser->e_end(); ++i)
       cout << "ERROR: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->f_begin(); i != parser->f_end(); i++)
+    for (auto i = parser->f_begin(); i != parser->f_end(); ++i)
       cout << "FATAL: " << *i << endl;
-    delete parser;
     exit(-1);
   }
-  delete parser;
 
   if (useRandomSeed())
     Data::instance()->last()->simulator()->setRandomSeed(getRandomSeed());
@@ -237,18 +236,17 @@ void YarsConfiguration::__readXmlFiles()
 
 void YarsConfiguration::__setCurrent(int index)
 {
-  // TODO: randomisation triggered here
+  // Initializes data with index, triggering any randomization in the configuration
   Data::instance()->initialise(index);
 }
 
 void YarsConfiguration::__processProgramOptions()
 {
-  ProgramOptions *po = new ProgramOptions(
+  auto po = std::make_unique<ProgramOptions>(
       _argc, _argv,
       (ConfigurationContainer *)this,
       _keyboardShortcuts,
       _programOptions);
-  delete po;
 }
 
 void YarsConfiguration::__validateDirectoriesAndNames()
@@ -263,9 +261,6 @@ void YarsConfiguration::__validateDirectoriesAndNames()
   __generateLoggingPath();
   __generateVideoPath();
   __generateFramesPath();
-
-  // TODO TODO
-  //setCurrentScenario(0);
 }
 
 void YarsConfiguration::__validateCaptureName()
@@ -372,19 +367,7 @@ void YarsConfiguration::__printConfiguration()
   std::vector<string> controllers;
   string simName;
   P3D cameraPosition;
-  P3D cameraRotation;
   ScreenGeometry d;
-  Colour c;
-  Colour ground;
-  Colour sky;
-  // TODO TODO
-  // __YARS_GET_WINDOW_SIZE(&d);
-  // __YARS_GET_GLOBAL_XML(&xml);
-  // __YARS_GET_SIMULATION_NAME(&simName);
-  // __YARS_GET_CAMERA_POSITION(&cameraPosition);
-  // __YARS_GET_CAMERA_ROTATION(&cameraRotation);
-  // __YARS_GET_GROUND_COLOR(&ground);
-  // __YARS_GET_SKY_COLOR(&sky);
   getControllerLocations(&controllers);
 
   uint width = d.width();
@@ -426,19 +409,7 @@ void YarsConfiguration::__printConfiguration()
       cout << "                                : " << controllers[i] << endl;
     }
   }
-  cout << "  Scenario settings             : " << endl;
-  // TODO TODO
-  // for(int i = 0; i < numberOfScenarios(); i++)
-  // {
-  //   setCurrentScenario(i);
-  //   string name;
-  //   getCurrentScenarioName(&name);
-  //   int simulatorFrequency = __YARS_GET_SIMULATOR_FREQUENCY;
-  //   int controllerFrequency = __YARS_GET_CONTROLLER_FREQUENCY;
-  //   cout << "                           Name : " << name << endl;
-  //   cout << "            Simulator Frequency :  " << simulatorFrequency << endl;
-  //   cout << "           Controller Frequency :  " << controllerFrequency << endl;
-  // }
+  cout << "  Scenario settings             : (not displayed)" << endl;
 }
 
 void YarsConfiguration::__printKeyboardShortcuts()
@@ -704,13 +675,12 @@ void YarsConfiguration::__setPathsInData()
 void YarsConfiguration::__setControllerPaths()
 {
   DataRobots *robots = _data->last()->robots();
-  if (robots == NULL)
+  if (robots == nullptr)
     return;
 
-  for (std::vector<DataRobot *>::iterator i = robots->begin(); i != robots->end(); i++)
+  for (auto* robot : *robots)
   {
-    DataRobot *robot = *i;
-    if (robot->controller() != NULL)
+    if (robot->controller() != nullptr)
     {
       string module = robot->controller()->module();
       string result;

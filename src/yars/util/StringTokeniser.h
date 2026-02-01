@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <string_view>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ namespace yars {
 class StringTokeniser
 {
   public:
-    static std::vector<string> tokenise(const string& str, const string& delimiters);
+    static std::vector<string> tokenise(string_view str, string_view delimiters);
 
 };
 

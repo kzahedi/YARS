@@ -165,7 +165,7 @@ GenericParamter DataGenericActuator::parameter()
 
 DataGenericActuator* DataGenericActuator::_copy()
 {
-  DataGenericActuator *copy = new DataGenericActuator(NULL);
+  DataGenericActuator *copy = new DataGenericActuator(nullptr);
   copy->_pose               = _pose;
   copy->_parameter          = _parameter;
   copy->_destination        = _destination;

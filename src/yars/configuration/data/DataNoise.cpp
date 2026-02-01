@@ -23,9 +23,9 @@ DataNoise::DataNoise(DataNode *parent)
 
 DataNoise::~DataNoise()
 {
-  for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
+  for(auto* param : *this)
   {
-    delete (*i);
+    delete param;
   }
   clear();
 }
@@ -74,11 +74,11 @@ DataParameter* DataNoise::parameter(int index)
 
 DataNoise* DataNoise::copy()
 {
-  DataNoise *copy = new DataNoise(NULL);
+  DataNoise *copy = new DataNoise(nullptr);
   copy->_module = _module;
-  for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
+  for(auto* param : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(param->copy());
   }
   return copy;
 }

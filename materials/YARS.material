@@ -428,13 +428,20 @@ material YARS/CloudySky
   {
     pass
     {
-      lighting off
       depth_write off
+      cull_hardware none
+
+      vertex_program_ref YARS/SkyVP
+      {
+      }
+
+      fragment_program_ref YARS/SkyFP
+      {
+      }
 
       texture_unit
       {
         texture clouds.jpg
-        scroll_anim 0.05 0
       }
     }
   }
@@ -450,7 +457,8 @@ material YARS/SkyBox
       depth_write off
       texture_unit
       {
-        cubic_texture MonumentValley2004.jpg clouds.jpg clouds.jpg clouds.jpg clouds.jpg clouds.jpg separateUV
+        // cubic_texture with separateUV deprecated in OGRE 14
+        texture clouds.jpg
         // tex_address_mode clamp
       }
     }
@@ -685,3 +693,113 @@ material YARS/Suzanne
     }
   }
 }
+
+// Robot body part materials
+material top
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.8 0.8 0.8
+      ambient 0.5 0.5 0.5
+      specular 0.5 0.5 0.5 25.0
+    }
+  }
+}
+
+material bottom
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.6 0.6 0.6
+      ambient 0.4 0.4 0.4
+      specular 0.5 0.5 0.5 25.0
+    }
+  }
+}
+
+material body
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.7 0.7 0.7
+      ambient 0.5 0.5 0.5
+      specular 0.5 0.5 0.5 25.0
+    }
+  }
+}
+
+material rays
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.9 0.9 0.2
+      ambient 0.5 0.5 0.3
+      specular 0.8 0.8 0.5 25.0
+    }
+  }
+}
+
+material cap
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.5 0.5 0.5
+      ambient 0.3 0.3 0.3
+      specular 0.4 0.4 0.4 25.0
+    }
+  }
+}
+
+// Wheel slice materials (top 1-10)
+material "top 1" : top {}
+material "top 2" : top {}
+material "top 3" : top {}
+material "top 4" : top {}
+material "top 5" : top {}
+material "top 6" : top {}
+material "top 7" : top {}
+material "top 8" : top {}
+material "top 9" : top {}
+material "top 10" : top {}
+
+// Wheel slice materials (bottom 1-10)
+material "bottom 1" : bottom {}
+material "bottom 2" : bottom {}
+material "bottom 3" : bottom {}
+material "bottom 4" : bottom {}
+material "bottom 5" : bottom {}
+material "bottom 6" : bottom {}
+material "bottom 7" : bottom {}
+material "bottom 8" : bottom {}
+material "bottom 9" : bottom {}
+material "bottom 10" : bottom {}
+
+// Wall face materials
+material face1
+{
+  technique
+  {
+    pass
+    {
+      diffuse 0.8 0.8 0.8
+      ambient 0.5 0.5 0.5
+      specular 0.3 0.3 0.3 15.0
+    }
+  }
+}
+
+material face2 : face1 {}
+material face3 : face1 {}
+material face4 : face1 {}
+material face5 : face1 {}
+material face6 : face1 {}

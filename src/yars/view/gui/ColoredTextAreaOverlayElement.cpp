@@ -1,10 +1,8 @@
-#ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
-#define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
+#ifndef __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__
+#define __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__
 
 #include "ColoredTextAreaOverlayElement.h"
 #include <OgreRoot.h>
-#define POS_TEX_BINDING 0
-#define COLOUR_BINDING 1
 
 using namespace Ogre;
 using namespace std;
@@ -21,13 +19,15 @@ ColoredTextAreaOverlayElement::~ColoredTextAreaOverlayElement(void)
 void ColoredTextAreaOverlayElement::setValueBottom(float Value)
 {
   m_ValueTop = Value;
-  // mColoursChanged = true; // Removed - private member
+  // OGRE 14: mColoursChanged is private, use base class method
+  setColour(getColour());  // Force refresh
 }
 
 void ColoredTextAreaOverlayElement::setValueTop(float Value)
 {
   m_ValueBottom = Value;
-  // mColoursChanged = true; // Removed - private member
+  // OGRE 14: mColoursChanged is private, use base class method
+  setColour(getColour());  // Force refresh
 }
 
 ColourValue ColoredTextAreaOverlayElement::GetColor(unsigned char ID, float Value, ColourValue def)
@@ -92,44 +92,35 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString &text)
 {
   m_Colors.clear();
   m_Colors.resize(text.size(), 9);
-  bool noColor = true;
   int i, iNumColorCodes = 0, iNumSpaces = 0;
   for (i = 0; i < (int)text.size() - 1; ++i)
   {
     if (text[i] == ' ' || text[i] == '\n')
     {
-      // Spaces and newlines are skipped when rendering and as such can't have a color
       ++iNumSpaces;
     }
     else if (text[i] == '^' &&
-             text[i + 1] >= '0' && text[i + 1] <= '9') // This is a color code
+             text[i + 1] >= '0' && text[i + 1] <= '9')
     {
-      // Fill the color array starting from this point to the end with the new color code
-      // adjustments need to made because color codes will be removed and spaces are not counted
       fill(m_Colors.begin() + i - (2 * iNumColorCodes) - iNumSpaces, m_Colors.end(), text[i + 1] - '0');
       ++i;
       ++iNumColorCodes;
-      noColor = false;
     }
   }
-  if (noColor)
-    // mColoursChanged = true; // Removed - private member
-    // Set the caption using the base class, but strip the color codes from it first
-    TextAreaOverlayElement::setCaption(StripColors(text));
+  // Set the caption using the base class, but strip the color codes from it first
+  TextAreaOverlayElement::setCaption(StripColors(text));
 }
 
 void ColoredTextAreaOverlayElement::updateColours(void)
 {
-  // Simplified - private member access removed
-  // Color functionality disabled for compatibility with modern OGRE
-  // Colors are now handled through the basic overlay system
+  // OGRE 14: updateColours is now private in base class
+  // Color handling is done through setColour() in other methods
 }
 
 void ColoredTextAreaOverlayElement::setMainColour(ColourValue c)
 {
   _color = c;
-  // Use public API to set color
-  setColour(c);
+  setColour(c);  // Use base class method
 }
 
-#endif // __COLORED_TEXT_AREA_OVERLAY_ELEMENT_H__
+#endif // __COLORED_TEXT_AREA_OVERLAY_ELEMENT_CPP__

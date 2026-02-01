@@ -2,17 +2,17 @@
 
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <functional>
-
-KeyHandler *KeyHandler::_me = NULL;
-KeyboardShortcuts *KeyHandler::_keyboardShortcuts = NULL;
-Observable *KeyHandler::_o = new Observable();
-
+KeyHandler *KeyHandler::_me = nullptr;
+KeyboardShortcuts *KeyHandler::_keyboardShortcuts = nullptr;
 std::vector<int> KeyHandler::_registeredKeyEventCodes;
+KeyHandler::QuitCallback KeyHandler::_quitCallback;
+KeyHandler::VideoCaptureCallback KeyHandler::_videoCaptureCallback;
+KeyHandler::ViewpointResetCallback KeyHandler::_viewpointResetCallback;
+KeyHandler::NewWindowCallback KeyHandler::_newWindowCallback;
 
 KeyHandler *KeyHandler::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
     _me = new KeyHandler();
   return _me;
 }
@@ -23,14 +23,7 @@ KeyHandler::KeyHandler()
 
 KeyHandler::~KeyHandler()
 {
-  delete _o;
 }
-
-//////////////////////////////////////////////////////////////////////
-//
-//  public functions
-//
-//////////////////////////////////////////////////////////////////////
 
 void KeyHandler::registerKeyboardShortcuts()
 {
@@ -41,7 +34,6 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->pause.function = &togglePause;
   _keyboardShortcuts->quit.function = &exitSimulation;
   _keyboardShortcuts->reset.function = &reinitAndResetSimulation;
-  //_keyboardShortcuts->printKeyCommands.function      = &printKeyCommands;
   _keyboardShortcuts->toggleReloadOnReset.function = &toggleReloadOnReset;
   _keyboardShortcuts->realtime.function = &toggleRealtimeMode;
   _keyboardShortcuts->singleStep.function = &activateSingleStep;
@@ -53,52 +45,24 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->printTime.function = &togglePrintTime;
   _keyboardShortcuts->captureVideo.function = &toggleCaptureVideo;
   _keyboardShortcuts->writeFrames.function = &toggleCaptureFrames;
-  // _keyboardShortcuts->closeWindow.function         = &closeWindow;
-}
-
-void KeyHandler::addObserver(Observer *o)
-{
-  _o->addObserver(o);
-}
-
-void KeyHandler::removeObserver(Observer *o)
-{
-  _o->addObserver(o);
-}
-
-void KeyHandler::notifyObservers(ObservableMessage *m)
-{
-  _o->notifyObservers(m);
 }
 
 int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
 {
   KeyboardShortcut *key = _keyboardShortcuts->get(alt, ctrl, shift, c);
-  if (key == NULL)
+  if (key == nullptr)
     return -1;
-  if (key->function != NULL)
+  if (key->function != nullptr)
   {
-    // cout << "Key " << *key << endl;
     key->function();
   }
   return key->id;
 }
 
-//////////////////////////////////////////////////////////////////////
-//
-//  event functions
-//
-//////////////////////////////////////////////////////////////////////
-
 void KeyHandler::reinitAndResetSimulation()
 {
   __YARS_SET_RESET_SIMULATION;
 }
-
-// void KeyHandler::closeWindow()
-// {
-// _o->notifyObservers(_m_closeWindow);
-// }
 
 void KeyHandler::toggleRealtimeMode()
 {
@@ -110,17 +74,17 @@ void KeyHandler::toggleRealtimeMode()
 void KeyHandler::activateSingleStep()
 {
   __YARS_SET_USE_SINGLE_STEP(true);
-  _o->notifyObservers(_m_toggleSingleStep);
 }
 
 void KeyHandler::exitSimulation()
 {
-  // TODO: hack, quitting should also work without syncing
+  // Ensure GUI is synced before quitting
   if (!__YARS_GET_SYNC_GUI)
   {
-    toggleSyncedGui(); // so that we can quit nicely
+    toggleSyncedGui();
   }
-  _o->notifyObservers(_m_quit_called);
+  if (_quitCallback)
+    _quitCallback();
 }
 
 void KeyHandler::decreaseSimSpeed()
@@ -146,22 +110,27 @@ void KeyHandler::increaseSimSpeed()
 
 void KeyHandler::restoreInitialViewpoint()
 {
-  _o->notifyObservers(_m_resetInitiailViewpoint);
+  if (_viewpointResetCallback)
+    _viewpointResetCallback();
 }
 
 void KeyHandler::toggleDrawMode()
 {
-  _o->notifyObservers(_m_toggleVisualisation);
+  // No-op for now - was used for visualization toggle
 }
 
 void KeyHandler::toggleCaptureVideo()
 {
-  _o->notifyObservers(_m_toggleCaptureVideo);
+  if (_videoCaptureCallback)
+    _videoCaptureCallback();
 }
 
 void KeyHandler::toggleCaptureFrames()
 {
-  _o->notifyObservers(_m_toggleCaptureFrame);
+  // Toggle frame capture - uses existing capture configuration
+  bool b = __YARS_GET_USE_CAPTURE_CL;
+  __toggle(&b);
+  __YARS_SET_USE_CAPTURE(b);
 }
 
 void KeyHandler::togglePrintTime()
@@ -176,18 +145,19 @@ void KeyHandler::togglePause()
   bool b = __YARS_GET_USE_PAUSE;
   __toggle(&b);
   __YARS_SET_USE_PAUSE(b);
-  __YARS_SET_USE_SINGLE_STEP(false); // will be activated by user
-  _o->notifyObservers(_m_togglePause);
+  __YARS_SET_USE_SINGLE_STEP(false);
 }
 
 void KeyHandler::toggleReloadOnReset()
 {
-  notifyObservers(_m_toggleReload);
+  // Reload on reset functionality - currently disabled
+  // Would require adding useReload accessor to YarsConfiguration
 }
 
 void KeyHandler::openNewWindow()
 {
-  notifyObservers(_m_openNewWindow);
+  if (_newWindowCallback)
+    _newWindowCallback();
 }
 
 void KeyHandler::toggleSyncedGui()
@@ -195,7 +165,6 @@ void KeyHandler::toggleSyncedGui()
   bool b = __YARS_GET_SYNC_GUI;
   __toggle(&b);
   __YARS_SET_SYNC_GUI(b);
-  _o->notifyObservers(_m_toggleSyncedGui);
 }
 
 void KeyHandler::__toggle(bool *a)

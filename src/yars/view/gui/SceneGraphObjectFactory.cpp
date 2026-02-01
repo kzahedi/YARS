@@ -13,7 +13,7 @@
 SceneGraphObjectNode* SceneGraphObjectFactory::create(
     DataObject* object, Ogre::SceneNode* r, Ogre::SceneManager* sm)
 {
-  if(object->visualise() == false) return NULL;
+  if(object->visualise() == false) return nullptr;
   if(object->m_size() > 0)         return __createMesh(object, r, sm);
   else
   {
@@ -38,7 +38,7 @@ SceneGraphObjectNode* SceneGraphObjectFactory::create(
       default:
         YarsErrorHandler::push("SceneGraphObjectNode::create. Unknown object type %d", object->type());
     }
-    return NULL;
+    return nullptr;
   }
 }
 

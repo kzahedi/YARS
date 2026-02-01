@@ -5,13 +5,14 @@
 #include <yars/physics/bullet/Object.h>
 
 #include <vector>
+#include <memory>
 #include <btBulletDynamicsCommon.h>
 
 using namespace std;
 
 /* This class creates a plane as ground */
 
-class Environment : public std::vector<Object*>
+class Environment : public std::vector<std::unique_ptr<Object>>
 {
   public:
     Environment();

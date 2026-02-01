@@ -8,7 +8,6 @@
 #include <yars/view/gui/TextOverlay.h>
 #include <yars/view/gui/OgreHandler.h>
 #include <yars/view/gui/GuiMutex.h>
-#include <yars/util/Observable.h>
 
 #include <OGRE/Ogre.h>
 #include <SDL2/SDL.h>
@@ -18,27 +17,40 @@
 #endif // USE_CAPTURE_VIDEO
 
 #include <pthread.h>
+#include <functional>
 
-namespace yars {
-
-class SdlWindow : public Observable
+/** \brief SDL window wrapper for YARS GUI.
+ *
+ * Manages SDL window, OGRE rendering, and user input.
+ */
+class SdlWindow
 {
 public:
-    SdlWindow(int index);
-    ~SdlWindow();
+  using CloseCallback = std::function<void()>;
+  using SyncToggleCallback = std::function<void()>;
 
-    void reset();
-    void quit();
-    void step();
-    void handleEvent(SDL_Event &event);
-    bool visible();
-    void wait();
-    bool added();
-    void setAdded();
-    bool closed();
-    void close();
+  SdlWindow(int index);
+  ~SdlWindow();
 
-    void captureVideo();
+  void reset();
+  void quit();
+  void step();
+  void swapBuffers();
+  void handleEvent(SDL_Event &event);
+  bool visible();
+  void wait();
+  bool added();
+  void setAdded();
+  bool closed();
+  void close();
+
+  void captureVideo();
+
+  /** \brief Set callback for window close. */
+  void setCloseCallback(CloseCallback callback) { _closeCallback = std::move(callback); }
+
+  /** \brief Set callback for sync toggle. */
+  void setSyncToggleCallback(SyncToggleCallback callback) { _syncToggleCallback = std::move(callback); }
 #ifdef USE_CAPTURE_VIDEO
     bool captureRunning();
     void startCaptureVideo();
@@ -47,7 +59,7 @@ public:
     void toggleShadows();
     void setupOSD();
 
-private:
+  private:
     void __osd();
     void __setupSDL();
     void __processKeyEvent(char, int);
@@ -84,7 +96,7 @@ private:
 
     Ogre::RenderWindow *_window;
     Ogre::Camera *_camera;
-    Ogre::SceneNode *_cameraNode;
+    Ogre::SceneNode *_cameraNode;  // OGRE 14: cameras attach to nodes
     Ogre::Viewport *_viewport;
     Ogre::SceneManager *_sceneManager;
 
@@ -128,13 +140,12 @@ private:
     P3D _camAngularVelocity;
     Uint32 _windowID;
     SDL_Window *_sdlWindow;
+    SDL_GLContext _glContext;
     bool _visible;
     bool _added;
     bool _closed;
-
-    static bool _simulationRunning;
+    CloseCallback _closeCallback;
+    SyncToggleCallback _syncToggleCallback;
 };
-
-} // namespace yars
 
 #endif // __SDL_WINDOW_H__

@@ -71,12 +71,12 @@ void DataGenericSignalSensor::createXsd(XsdSpecification *spec)
 
 DataGenericSignalSensor* DataGenericSignalSensor::_copy()
 {
-  DataGenericSignalSensor *copy = new DataGenericSignalSensor(NULL);
+  DataGenericSignalSensor *copy = new DataGenericSignalSensor(nullptr);
   copy->_name = _name;
   copy->_signal = _signal;
   copy->_mapping = _mapping;
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   return copy;
 }
 

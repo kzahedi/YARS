@@ -53,7 +53,7 @@ void DataLoggingSelforg::add(DataParseElement *element)
 
     if(_useMatrixviz || _useGuilogger)
     {
-      if(getenv("DISPLAY") == NULL)
+      if(getenv("DISPLAY") == nullptr)
       {
         YarsErrorHandler::push("Can't open display");
         exit(-1);
@@ -134,10 +134,10 @@ void DataLoggingSelforg::createXsd(XsdSpecification *spec)
 
 DataLoggingSelforg* DataLoggingSelforg::copy()
 {
-  DataLoggingSelforg *copy = new DataLoggingSelforg(NULL);
-  for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
+  DataLoggingSelforg *copy = new DataLoggingSelforg(nullptr);
+  for(const auto& target : _targets)
   {
-    copy->_targets.push_back(*i);
+    copy->_targets.push_back(target);
   }
   copy->_name              = _name;
   copy->_filename          = _filename;

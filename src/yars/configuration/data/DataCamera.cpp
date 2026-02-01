@@ -70,7 +70,7 @@ void DataCamera::createXsd(XsdSpecification *spec)
 
 DataCamera* DataCamera::copy()
 {
-  DataCamera *copy = new DataCamera(NULL);
+  DataCamera *copy = new DataCamera(nullptr);
   copy->_lookAt    = _lookAt;
   copy->_position  = _position;
   return copy;

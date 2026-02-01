@@ -191,7 +191,7 @@ bool Directories::__doesFileExist(fs::path filePath)
  *
  * This function checks a set of directories for the first directory that
  * contains a set of given files. All files must be in the directory. If this is
- * the case, the directory and true is returned, NULL and false otherwise.
+ * the case, the directory and true is returned, nullptr and false otherwise.
  *
  * \param[in] dirs The directories to be checked
  * \param[in] filesnames The set of files to be checked
@@ -212,9 +212,9 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
     if (__doesDirectoryExist(path))
     {
       bool allFilesFound = true;
-      for (std::vector<string>::iterator s = filenames.begin(); s != filenames.end(); s++)
+      for (const auto& filename : filenames)
       {
-        allFilesFound &= __doesFileExist(path / fs::path(*s));
+        allFilesFound &= __doesFileExist(path / fs::path(filename));
       }
 
       if (allFilesFound)
@@ -224,7 +224,7 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
       }
     }
   }
-  returnPath = NULL;
+  returnPath = nullptr;
   return false;
 }
 
@@ -232,7 +232,7 @@ bool Directories::__getFirstExistingDirContainingFiles(std::vector<string>
  *
  * This function checks a set of directories for the first directory that
  * contains a given file. If this is the case, the directory and true is
- * returned, NULL and false otherwise.
+ * returned, nullptr and false otherwise.
  *
  * \param[in] dirs The directories to be checked
  * \param[in] filesname The file to be checked
@@ -260,7 +260,7 @@ bool Directories::__getFirstExistingDirContainingFile(std::vector<string>
       }
     }
   }
-  returnPath = NULL;
+  returnPath = nullptr;
   return false;
 }
 
@@ -295,10 +295,9 @@ void Directories::__setupConfigDirectories()
 
 bool Directories::configFile(string *file)
 {
-  for (std::vector<string>::iterator i = _configFilePathCandidate.begin();
-       i != _configFilePathCandidate.end(); i++)
+  for (const auto& candidate : _configFilePathCandidate)
   {
-    fs::path p(*i);
+    fs::path p(candidate);
     if (__doesFileExist(p))
     {
       *file = p.string();
@@ -371,21 +370,21 @@ void Directories::__findXsdDirectory()
 void Directories::toString(string prefix, string *returnString)
 {
   *returnString = "";
-  for (std::vector<string>::iterator i = _xsdPathCandidates.begin(); i != _xsdPathCandidates.end(); ++i)
+  for (const auto& path : _xsdPathCandidates)
   {
-    *returnString += prefix + "XSD:      " + *i + "\n";
+    *returnString += prefix + "XSD:      " + path + "\n";
   }
-  for (std::vector<string>::iterator i = _libPathCandidates.begin(); i != _libPathCandidates.end(); ++i)
+  for (const auto& path : _libPathCandidates)
   {
-    *returnString += prefix + "Libs:     " + *i + "\n";
+    *returnString += prefix + "Libs:     " + path + "\n";
   }
-  for (std::vector<string>::iterator i = _plyPathCandidates.begin(); i != _plyPathCandidates.end(); ++i)
+  for (const auto& path : _plyPathCandidates)
   {
-    *returnString += prefix + "Plys:     " + *i + "\n";
+    *returnString += prefix + "Plys:     " + path + "\n";
   }
-  for (std::vector<string>::iterator i = _configFilePathCandidate.begin(); i != _configFilePathCandidate.end(); ++i)
+  for (const auto& path : _configFilePathCandidate)
   {
-    *returnString += prefix + "Configure File: " + *i + "\n";
+    *returnString += prefix + "Configure File: " + path + "\n";
   }
 }
 
@@ -428,10 +427,10 @@ void Directories::__setupPlyDirectories()
 void Directories::getApplicationDirectory(string *s, char *argv)
 {
   string pathString = getenv("PATH");
-  std::vector<string> path = StringTokeniser::tokenise(pathString, ":");
-  for (std::vector<string>::iterator i = path.begin(); i != path.end(); i++)
+  std::vector<string> pathDirs = StringTokeniser::tokenise(pathString, ":");
+  for (const auto& dir : pathDirs)
   {
-    fs::path p1(*i);
+    fs::path p1(dir);
     fs::path p2(argv);
     fs::path p3(p1 / p2);
     if (__doesFileExist(p3))
@@ -500,10 +499,9 @@ void Directories::setFullPath(string *dirString)
 bool Directories::getPly(string *result, string filename)
 {
   *result = "NONE";
-  for (std::vector<string>::iterator i = _plyPathCandidates.begin();
-       i != _plyPathCandidates.end(); ++i)
+  for (const auto& path : _plyPathCandidates)
   {
-    if (ply(result, filename, *i))
+    if (ply(result, filename, path))
       return true;
   }
   return false;
@@ -512,10 +510,9 @@ bool Directories::getPly(string *result, string filename)
 bool Directories::getController(string *result, string filename)
 {
   *result = "NONE";
-  for (std::vector<string>::iterator i = _libPathCandidates.begin();
-       i != _libPathCandidates.end(); ++i)
+  for (const auto& path : _libPathCandidates)
   {
-    if (library(result, filename, *i))
+    if (library(result, filename, path))
       return true;
   }
   return false;

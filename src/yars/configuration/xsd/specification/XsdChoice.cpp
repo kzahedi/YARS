@@ -117,9 +117,9 @@ void XsdChoice::setMinOccurs(string minOccurs)
 
 void XsdChoice::add(std::vector<XsdElement*> elements)
 {
-  for(std::vector<XsdElement*>::iterator i = elements.begin(); i != elements.end(); i++)
+  for(auto* element : elements)
   {
-    add(*i);
+    add(element);
   }
 }
 

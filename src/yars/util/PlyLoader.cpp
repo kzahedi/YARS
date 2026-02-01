@@ -9,11 +9,11 @@
 #include <fstream>
 #include <vector>
 
-PlyLoader* PlyLoader::_me = NULL;
+PlyLoader* PlyLoader::_me = nullptr;
 
 PlyLoader* PlyLoader::instance()
 {
-  if(_me == NULL) _me = new PlyLoader();
+  if(_me == nullptr) _me = new PlyLoader();
   return _me;
 }
 

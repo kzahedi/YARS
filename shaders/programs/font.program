@@ -1,0 +1,19 @@
+// Font rendering shaders for OGRE 14 GL3Plus
+
+vertex_program YARS/FontVP glsl
+{
+    source font_vp.glsl
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+fragment_program YARS/FontFP glsl
+{
+    source font_fp.glsl
+    default_params
+    {
+        param_named fontTex int 0
+    }
+}

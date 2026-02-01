@@ -15,8 +15,8 @@ class GenericActuatorSensor : public Sensor
     GenericActuatorSensor(DataGenericActuatorSensor *data, Robot *robot);
     ~GenericActuatorSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericActuatorSensor *_data;

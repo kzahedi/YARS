@@ -62,7 +62,7 @@ void DataSharpGP2D12_37Sensor::createXsd(XsdSpecification *spec)
 
 DataSharpGP2D12_37Sensor* DataSharpGP2D12_37Sensor::_copy()
 {
-  DataSharpGP2D12_37Sensor *copy = new DataSharpGP2D12_37Sensor(NULL);
+  DataSharpGP2D12_37Sensor *copy = new DataSharpGP2D12_37Sensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_pose = _pose;

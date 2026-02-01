@@ -124,15 +124,8 @@ set(CFG_SRC YarsConfiguration.cpp
             )
 
 add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})
+target_link_libraries(YarsConfiguration ${XERCESC_LIBRARY_FILE} ${Boost_LIBRARIES} YarsUtil)
 
-# Modern CMake: Use imported targets and cleaner dependency management
-# Note: XercesC may not provide modern imported targets, fallback to old approach
-target_link_libraries(YarsConfiguration 
-  PRIVATE
-    ${XERCESC_LIBRARY_FILE}
-    Boost::program_options
-    YarsUtil
-)
-
-# Ensure proper C++ standard for this target
-target_compile_features(YarsConfiguration PRIVATE cxx_std_17)
+if(UNIX AND NOT APPLE)
+  target_link_libraries(YarsConfiguration Boost::program_options)
+endif(UNIX AND NOT APPLE)

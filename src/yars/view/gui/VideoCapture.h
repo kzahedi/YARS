@@ -37,11 +37,11 @@ class VideoCapture {
   public:
 
     VideoCapture() {
-      oformat = NULL;
-      ofctx = NULL;
-      videoStream = NULL;
-      videoFrame = NULL;
-      swsCtx = NULL;
+      oformat = nullptr;
+      ofctx = nullptr;
+      videoStream = nullptr;
+      videoFrame = nullptr;
+      swsCtx = nullptr;
       frameCounter = 0;
 
       // Initialize libavcodec

@@ -65,12 +65,12 @@ void DataGenericFeedbackSensor::createXsd(XsdSpecification *spec)
 
 DataGenericFeedbackSensor*  DataGenericFeedbackSensor::_copy()
 {
-  DataGenericFeedbackSensor *copy = new DataGenericFeedbackSensor(NULL);
+  DataGenericFeedbackSensor *copy = new DataGenericFeedbackSensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_mapping = _mapping;
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   copy->__setMapping();
   return copy;
 }

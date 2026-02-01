@@ -49,7 +49,7 @@ Sensor* SensorFactory::create(DataSensor *sensor, Robot *robot)
       return __createMuscleSensor(sensor, robot);
       break;  }
   YarsErrorHandler::push("SensorFactory::create unknown sensor type given %d", sensor->type());
-  return NULL;
+  return nullptr;
 }
 
 Sensor* SensorFactory::__createMuscleSensor(DataSensor *sensor, Robot *robot)

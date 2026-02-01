@@ -1,15 +1,15 @@
 #ifndef __NATIVE_OGRE_WINDOW_H__
 #define __NATIVE_OGRE_WINDOW_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/ObservableMessage.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/view/gui/WindowConfiguration.h>
 #include <yars/view/gui/OgreHandler.h>
 
 #include <OGRE/Ogre.h>
 
-class NativeOgreWindow : public Observable
+#include <functional>
+
+class NativeOgreWindow
 {
 public:
     NativeOgreWindow(int index);

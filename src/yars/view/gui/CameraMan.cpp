@@ -8,22 +8,22 @@
 
 CameraMan::CameraMan(WindowConfiguration *windowConfiguration)
 {
-  _followable = NULL;
+  _followable = nullptr;
   _windowConfiguration = windowConfiguration;
   CameraFactory::create(&_followCameras, _windowConfiguration);
   _windowConfiguration->camNames.clear();
 
-  for(std::vector<FollowCamera*>::iterator i = _followCameras.begin(); i != _followCameras.end(); i++)
+  for(auto* cam : _followCameras)
   {
     string s;
-    (*i)->name(&s);
+    cam->name(&s);
     _windowConfiguration->camNames.push_back(s);
   }
 }
 
 void CameraMan::update(P3D vel)
 {
-  if(_followable == NULL) return;
+  if(_followable == nullptr) return;
   if(_windowConfiguration->followModeChanged)
   {
     _windowConfiguration->followModeChanged = false;
@@ -38,7 +38,7 @@ void CameraMan::update(P3D vel)
 void CameraMan::follow(DataObject* followable)
 {
   _followable = followable;
-  if(_followable == NULL) return;
+  if(_followable == nullptr) return;
   __CURRENT_CAM->init(followable, __CURRENT_DATA);
 }
 

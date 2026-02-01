@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLoggingController.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
 
 #include <sstream>
@@ -22,13 +21,13 @@ using namespace std;
 DataLoggingController::DataLoggingController(DataNode *parent)
   : DataNode(parent)
 {
-  _controller = NULL;
+  _controller = nullptr;
   _precision = -1;
 }
 
 DataLoggingController::~DataLoggingController()
 {
-  if(_controller != NULL) delete _controller;
+  if(_controller != nullptr) delete _controller;
   clear();
 }
 
@@ -66,10 +65,10 @@ void DataLoggingController::createXsd(XsdSpecification *spec)
 
 DataLoggingController* DataLoggingController::copy()
 {
-  DataLoggingController *copy = new DataLoggingController(NULL);
+  DataLoggingController *copy = new DataLoggingController(nullptr);
   copy->_target = _target;
-  for(std::vector<string>::iterator v = begin(); v != end(); v++) copy->push_back(*v);
-  FOREACH(int, v, _order) copy->_order.push_back(*v);
+  for (auto& v : *this) copy->push_back(v);
+  for (auto v : _order) copy->_order.push_back(v);
   copy->_precision = _precision;
   return copy;
 }

@@ -61,7 +61,7 @@ GenericActuator::GenericActuator(DataGenericActuator *data, Robot *robot)
   P3D axis   = pose.orientation;
   P3D anchor = pose.position;
 
-  if(_sourceObject != NULL && _destinationObject != NULL)
+  if(_sourceObject != nullptr && _destinationObject != nullptr)
   {
     _source                  = _sourceObject->rigidBody();
     btRigidBody *destination = _destinationObject->rigidBody();
@@ -196,7 +196,7 @@ GenericActuator::GenericActuator(DataGenericActuator *data, Robot *robot)
 
 GenericActuator::~GenericActuator()
 {
-  if(_genericConstraint != NULL) delete _genericConstraint;
+  if(_genericConstraint != nullptr) delete _genericConstraint;
 }
 
 

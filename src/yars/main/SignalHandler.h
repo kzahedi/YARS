@@ -1,29 +1,29 @@
 #ifndef __SIGNAL_HANDLER_H__
 #define __SIGNAL_HANDLER_H__
 
-#include <yars/util/Observer.h>
-#include <yars/util/Observable.h>
-#include <yars/util/ObservableMessage.h>
-
 #include <signal.h>
+#include <functional>
 
-/** \brief This class implements the YARS signal handler.
+/** \brief Signal handler for YARS.
+ *
+ * Catches SIGABRT, SIGTERM, SIGINT and calls quit callback.
  */
 class SignalHandler
 {
-  public:
-    ~SignalHandler();
-    static SignalHandler* instance();
-    static void sighandler(int signal);
+public:
+  using QuitCallback = std::function<void()>;
 
-    static void addObserver(Observer *o);
-    static void removeObserver(Observer *o);
-    static void notifyObservers(ObservableMessage *m);
+  ~SignalHandler();
+  static SignalHandler *instance();
+  static void sighandler(int signal);
 
-  private:
-    SignalHandler();
-    static SignalHandler* _me;
-    static Observable *_observable;
+  /** \brief Set callback for quit signals. */
+  void setQuitCallback(QuitCallback callback) { _quitCallback = std::move(callback); }
+
+private:
+  SignalHandler();
+  static SignalHandler *_me;
+  static QuitCallback _quitCallback;
 };
-#endif // __SIGNAL_HANDLER_H__
 
+#endif // __SIGNAL_HANDLER_H__

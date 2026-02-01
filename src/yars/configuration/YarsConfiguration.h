@@ -1,7 +1,6 @@
 #ifndef __YARS_CONFIGURATION_CONTROL_H__
 #define __YARS_CONFIGURATION_CONTROL_H__
 
-#include <yars/util/Observable.h>
 #include <yars/configuration/container/ConfigurationContainer.h>
 #include <yars/configuration/container/KeyboardShortcuts.h>
 #include <yars/configuration/container/ProgramOptionsConfiguration.h>
@@ -35,7 +34,7 @@
 #define __YARS_GET_SKY Data::instance()->current()->screens()->sky()
 #define __YARS_CURRENT_DATA Data::instance()->current()
 #define __YARS_DATA_GET_CURRENT_ENVIRONMENT(index) Data::instance()->current()->environment()
-#define __YARS_HAS_ENVIRONMENTS (Data::instance()->current()->environment() != NULL)
+#define __YARS_HAS_ENVIRONMENTS (Data::instance()->current()->environment() != nullptr)
 
 #define __YARS_USE_RIGID_BODY_DYNAMICS true
 
@@ -66,15 +65,13 @@
   Data::instance()->current()->simulator()->useRandomSeed()
 
 //#define __YARS_DATA_GET_CURRENT_ENVIRONMENT(index) Data::instance()->current()->environments()->environment(index)
-//#define __YARS_HAS_ENVIRONMENTS                    (Data::instance()->current()->environments() != NULL)
+//#define __YARS_HAS_ENVIRONMENTS                    (Data::instance()->current()->environments() != nullptr)
 
-namespace yars {
-
-/* \brief Catches ObservableMessage and translates them to function calls of
- * YarsConfigurationModel.
+/** \brief Configuration manager for YARS.
+ *
+ * Handles command-line parsing, keyboard shortcuts, and runtime settings.
  */
-class YarsConfiguration : public Observable,
-                          public ConfigurationContainer
+class YarsConfiguration : public ConfigurationContainer
 {
 public:
   static YarsConfiguration *instance();
@@ -151,10 +148,4 @@ private:
   Data *_data;
   bool _reset;
 };
-
-} // namespace yars
-
-// Temporary global using directive for backward compatibility during namespace transition
-using yars::YarsConfiguration;
-
 #endif // __YARS_CONFIGURATION_CONTROL_H__

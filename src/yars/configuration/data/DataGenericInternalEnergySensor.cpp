@@ -57,11 +57,11 @@ void DataGenericInternalEnergySensor::createXsd(XsdSpecification *spec)
 
 DataGenericInternalEnergySensor* DataGenericInternalEnergySensor::_copy()
 {
-  DataGenericInternalEnergySensor *copy = new DataGenericInternalEnergySensor(NULL);
+  DataGenericInternalEnergySensor *copy = new DataGenericInternalEnergySensor(nullptr);
 
   copy->_name = _name;
-  if (_noise != NULL) copy->_noise = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->_mapping = _mapping;
   return copy;
 }

@@ -23,7 +23,7 @@ DataScreens::DataScreens(DataNode *parent)
   : DataNode(parent)
 {
   _default                    = new DataScreen(this);
-  _followables                = NULL;
+  _followables                = nullptr;
   _sky                        = "YARS/CloudySky";
   _cameraConfig               = new DataCameraConfig(this);
   _visualiseJoints            = false;
@@ -41,7 +41,7 @@ DataScreens::~DataScreens()
   {
     delete at(i);
   }
-  if(_followables != NULL) delete _followables;
+  if(_followables != nullptr) delete _followables;
 }
 
 DataScreen* DataScreens::screen(int index)
@@ -55,19 +55,17 @@ DataScreen* DataScreens::screen(int index)
 
 DataScreen* DataScreens::screen(string name)
 {
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
+  for(auto i = begin(); i != end(); i++)
   {
     if((*i)->name() == name)
-    {
-      return (*i);
-    }
+      return *i;
   }
-  return NULL;
+  return nullptr;
 }
 
 void DataScreens::add(DataParseElement *element)
 {
-  DataScreen *screen = NULL;
+  DataScreen *screen = nullptr;
   if(element->opening(YARS_STRING_SCREEN))
   {
     screen  = new DataScreen(this);
@@ -155,11 +153,9 @@ string DataScreens::sky()
 
 DataScreens* DataScreens::copy()
 {
-  DataScreens *copy = new DataScreens(NULL);
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
-  {
+  DataScreens *copy = new DataScreens(nullptr);
+  for(auto i = begin(); i != end(); i++)
     copy->push_back((*i)->copy());
-  }
   copy->_cameraConfig        = _cameraConfig->copy();
   copy->_sky                 = _sky;
   copy->_jointsAxisDimension = _jointsAxisDimension;
@@ -169,7 +165,7 @@ DataScreens* DataScreens::copy()
   copy->_zTexture            = _zTexture;
   copy->_recording           = _recording->copy();
 
-  if(_followables  != NULL) copy->_followables  = _followables->copy();
+  if(_followables  != nullptr) copy->_followables  = _followables->copy();
   return copy;
 }
 
@@ -211,9 +207,7 @@ DataRecording* DataScreens::recording()
 bool DataScreens::hasVisible()
 {
   bool r = false;
-  for(std::vector<DataScreen*>::iterator i = begin(); i != end(); i++)
-  {
+  for(auto i = begin(); i != end(); i++)
     r |= (*i)->autoShow();
-  }
   return r;
 }

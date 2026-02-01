@@ -174,7 +174,7 @@ double DataTraceLine::lineWidth()
 
 DataTraceLine* DataTraceLine::copy()
 {
-  DataTraceLine *copy    = new DataTraceLine(NULL);
+  DataTraceLine *copy    = new DataTraceLine(nullptr);
   copy->_target          = _target;
   copy->_lineWidth       = _lineWidth;
   copy->_finalWidth      = _finalWidth;

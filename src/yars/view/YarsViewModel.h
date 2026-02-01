@@ -6,34 +6,38 @@
 #include <yars/view/gui/SdlWindow.h>
 
 #include <SDL2/SDL.h>
+#include <memory>
 
-namespace yars {
-
+/** \brief View model for YARS GUI.
+ *
+ * Manages SDL windows and OGRE rendering.
+ */
 class YarsViewModel
 {
-  public:
-    YarsViewModel();
-    ~YarsViewModel();
+public:
+  YarsViewModel();
+  ~YarsViewModel();
 
-    void initialiseView();
-    void reset();
-    void visualiseScene();
+  void initialiseView();
+  void reset();
+  void visualiseScene();
 
-    void quit();
-    void run();
-    void synched();
-    void toggleShadows();
-    void toggleCaptureVideo();
-    void createNewWindow();
-    void cleanupWindows();
+  void quit();
+  void run();
+  void synched();
+  void toggleShadows();
+  void toggleCaptureVideo();
+  void createNewWindow();
+  void cleanupWindows();
+  void toggleSync();
 
   private:
     void __initialiseFollowable();
     void __newWindow();
     void __createWindow();
 
-    std::vector<SdlWindow*> _windowManager;
-    std::vector<SdlWindow*> _newWindows;
+    std::vector<std::unique_ptr<SdlWindow>> _windowManager;
+    std::vector<std::unique_ptr<SdlWindow>> _newWindows;
     int                     _drawFequency;
     int                     _visualiseCalled;
     bool                    _run;
@@ -46,7 +50,5 @@ class YarsViewModel
     int                     _first;
     int                     _last;
 };
-
-} // namespace yars
 
 #endif // __YARS_VIEW_MODEL_H__

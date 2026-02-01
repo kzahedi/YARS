@@ -40,7 +40,7 @@ DataSensor* DataSensorFactory::sensor(DataParseElement *element, DataNode *paren
   if(element->opening(YARS_STRING_GENERIC_OBJECT_VELOCITY_SENSOR))         return __generateObjectVelocitySensor        (element, parent);
   if(element->opening(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR)) return __generateObjectAngularVelocitySensor (element, parent);
   if(element->opening(YARS_STRING_MUSCLE_SENSOR))                          return __generateMuscleSensor(element, parent);
-  return NULL;
+  return nullptr;
 }
 
 DataSensor* DataSensorFactory::__generateMuscleSensor(DataParseElement *element, DataNode *parent)

@@ -31,12 +31,12 @@ DataGenericLightDependentResistorSensor::DataGenericLightDependentResistorSensor
   : DataSensor(parent, DATA_GENERIC_LIGHT_DEPENDENT_RESISTOR_SENSOR)
 {
   _noise = new DataNoise(this);
-  _n     = NULL;
+  _n     = nullptr;
 }
 
 DataGenericLightDependentResistorSensor::~DataGenericLightDependentResistorSensor()
 {
-  if(_n != NULL) delete _n;
+  if(_n != nullptr) delete _n;
   delete _noise;
 }
 
@@ -130,15 +130,15 @@ void DataGenericLightDependentResistorSensor::createXsd(XsdSpecification *spec)
 
 DataGenericLightDependentResistorSensor* DataGenericLightDependentResistorSensor::_copy()
 {
-  DataGenericLightDependentResistorSensor *copy = new DataGenericLightDependentResistorSensor(NULL);
+  DataGenericLightDependentResistorSensor *copy = new DataGenericLightDependentResistorSensor(nullptr);
   copy->_name          = _name;
   copy->_object        = _object;
   copy->_pose          = _pose;
   copy->_openingAngle  = _openingAngle;
   copy->_mapping       = _mapping;
   copy->_colour        = _colour;
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise  != nullptr) copy->_noise  = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->__setMapping();
   return copy;
 }
@@ -191,7 +191,7 @@ void DataGenericLightDependentResistorSensor::setExternalValue(int index, double
 
 void DataGenericLightDependentResistorSensor::__setMapping()
 {
-  if(_n != NULL) delete _n;
+  if(_n != nullptr) delete _n;
   _externalDomain     = _mapping;
   _internalDomain.min = 0.0; _internalDomain.max = 1.0;
   _internalExternalMapping.setInputDomain(_internalDomain);

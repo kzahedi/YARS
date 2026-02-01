@@ -147,7 +147,7 @@ void DataSoftBodyParameters::add(DataParseElement *element)
 
 DataSoftBodyParameters* DataSoftBodyParameters::copy()
 {
-  DataSoftBodyParameters *copy = new DataSoftBodyParameters(NULL);
+  DataSoftBodyParameters *copy = new DataSoftBodyParameters(nullptr);
   copy->kVCF        = kVCF;
   copy->kDP         = kDP;
   copy->kDG         = kDG;

@@ -12,12 +12,12 @@ class GenericActuator : public Actuator
     GenericActuator(DataGenericActuator *data, Robot *robot);
     ~GenericActuator();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
-    btTypedConstraint* constraint();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
+    btTypedConstraint* constraint() override;
 
-    DataGenericActuator* data();
+    DataGenericActuator* data() override;
 
   private:
     void __prePhysicsRot(int axisIndex, int index, AxisParameter p);

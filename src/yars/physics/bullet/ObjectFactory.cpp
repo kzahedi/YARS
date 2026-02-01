@@ -45,7 +45,7 @@ Object *ObjectFactory::create(DataObject *object)
     break;
   }
   YarsErrorHandler::push("ObjectFactory::create error. Unknown type given %d.", object->type());
-  return NULL;
+  return nullptr;
 }
 
 Object *ObjectFactory::__sphere(DataObject *object)

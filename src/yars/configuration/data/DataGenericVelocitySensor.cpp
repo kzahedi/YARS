@@ -84,13 +84,13 @@ void DataGenericVelocitySensor::createXsd(XsdSpecification *spec)
 
 DataGenericVelocitySensor* DataGenericVelocitySensor::_copy()
 {
-  DataGenericVelocitySensor *copy = new DataGenericVelocitySensor(NULL);
+  DataGenericVelocitySensor *copy = new DataGenericVelocitySensor(nullptr);
   copy->_name = _name;
   copy->_object = _object;
   copy->_mapping = _mapping;
   copy->_domain = _domain;
-  if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
   copy->__setMapping();
   return copy;
 }

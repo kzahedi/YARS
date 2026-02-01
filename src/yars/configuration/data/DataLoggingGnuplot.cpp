@@ -57,7 +57,7 @@ void DataLoggingGnuplot::add(DataParseElement *element)
   if(element->opening(YARS_STRING_TARGET))
   {
 
-    if(getenv("DISPLAY") == NULL)
+    if(getenv("DISPLAY") == nullptr)
     {
       YarsErrorHandler::push("Can't open display");
       exit(-1);
@@ -124,10 +124,10 @@ string DataLoggingGnuplot::term()
 
 DataLoggingGnuplot* DataLoggingGnuplot::copy()
 {
-  DataLoggingGnuplot *copy = new DataLoggingGnuplot(NULL);
-  for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
+  DataLoggingGnuplot *copy = new DataLoggingGnuplot(nullptr);
+  for(const auto& target : _targets)
   {
-    copy->_targets.push_back(*i);
+    copy->_targets.push_back(target);
   }
   copy->_size = _size;
   copy->_delay = _delay;

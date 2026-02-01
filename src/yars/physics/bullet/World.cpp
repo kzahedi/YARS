@@ -11,11 +11,11 @@
 
 using namespace std;
 
-World *World::_me = NULL;
+World *World::_me = nullptr;
 
 World *World::instance()
 {
-  if (_me == NULL)
+  if (_me == nullptr)
   {
     _me = new World();
   }
@@ -79,7 +79,7 @@ World *World::reset()
 
 void World::step(double stepSize)
 {
-  _world->stepSimulation(__YARS_GET_STEP_SIZE, 10, __YARS_GET_STEP_SIZE);
+  _world->stepSimulation(stepSize, 10, stepSize);
 }
 
 void World::addRigidBody(btRigidBody *rigidBody, unsigned int mask, unsigned int with)

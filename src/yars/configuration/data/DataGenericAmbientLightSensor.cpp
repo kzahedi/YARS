@@ -13,7 +13,7 @@ DataGenericAmbientLightSensor::DataGenericAmbientLightSensor(DataNode* parent)
   : DataSensor(parent,DATA_GENERIC_AMBIENT_LIGHT_SENSOR)
 {
   _noise = new DataNoise(this);
-  _n     = NULL;
+  _n     = nullptr;
 }
 
 DataGenericAmbientLightSensor::~DataGenericAmbientLightSensor()
@@ -63,10 +63,10 @@ void DataGenericAmbientLightSensor::createXsd(XsdSpecification *spec)
 
 DataGenericAmbientLightSensor* DataGenericAmbientLightSensor::_copy()
 {
-  DataGenericAmbientLightSensor *copy = new DataGenericAmbientLightSensor(NULL);
+  DataGenericAmbientLightSensor *copy = new DataGenericAmbientLightSensor(nullptr);
   copy->_name = _name;
-  if (_noise != NULL) copy->_noise = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->_mapping = _mapping;
   copy->__setMapping();
   return copy;
@@ -115,7 +115,7 @@ void DataGenericAmbientLightSensor::setExternalValue(int index, double v)
 
 void DataGenericAmbientLightSensor::__setMapping()
 {
-  if(_n != NULL) delete _n;
+  if(_n != nullptr) delete _n;
   _externalDomain     = _mapping;
   _internalDomain.min = 0.0; _internalDomain.max = 1.0;
   _internalExternalMapping.setInputDomain(_internalDomain);

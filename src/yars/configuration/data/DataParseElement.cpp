@@ -36,18 +36,18 @@ void DataParseElement::add(DataParseAttribute *attribute)
 
 DataParseAttribute* DataParseElement::attribute(string name)
 {
-  for(std::vector<DataParseAttribute*>::iterator i = begin(); i != end(); i++)
+  for(auto* attr : *this)
   {
-    if( (*i)->name() == name)
+    if(attr->name() == name)
     {
-      return (*i);
+      return attr;
     }
   }
-  return NULL;
+  return nullptr;
 }
 bool DataParseElement::hasAttriute(string name)
 {
-  return attribute(name) != NULL;
+  return attribute(name) != nullptr;
 }
 
 bool DataParseElement::opening(string name)
@@ -72,7 +72,7 @@ bool DataParseElement::closing(char *name)
 
 void DataParseElement::set(string name, double &value)
 {
-  if(attribute(name) != NULL)
+  if(attribute(name) != nullptr)
   {
     value = attribute(name)->realValue();
   }
@@ -80,7 +80,7 @@ void DataParseElement::set(string name, double &value)
 
 void DataParseElement::set(string name, string &value)
 {
-  if(attribute(name) != NULL)
+  if(attribute(name) != nullptr)
   {
     value = attribute(name)->value();
   }
@@ -88,7 +88,7 @@ void DataParseElement::set(string name, string &value)
 
 void DataParseElement::set(string name, bool &value)
 {
-  if(attribute(name) != NULL)
+  if(attribute(name) != nullptr)
   {
     value = attribute(name)->boolValue();
   }
@@ -96,7 +96,7 @@ void DataParseElement::set(string name, bool &value)
 
 void DataParseElement::set(string name, int &value)
 {
-  if(attribute(name) != NULL)
+  if(attribute(name) != nullptr)
   {
     value = attribute(name)->intValue();
   }
@@ -104,7 +104,7 @@ void DataParseElement::set(string name, int &value)
 
 void DataParseElement::set(string name, unsigned long &value)
 {
-  if(attribute(name) != NULL)
+  if(attribute(name) != nullptr)
   {
     value = attribute(name)->unsignedlongValue();
   }

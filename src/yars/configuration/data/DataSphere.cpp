@@ -106,14 +106,14 @@ void DataSphere::createXsd(XsdSpecification *spec)
 
 DataSphere* DataSphere::_copy()
 {
-  DataSphere *copy = new DataSphere(NULL); // no parent needed, because no parsing takes place after copying
+  DataSphere *copy = new DataSphere(nullptr); // no parent needed, because no parsing takes place after copying
   copy->setRadius(_radius);
   copy->setVisualise(_visualise);
   copy->setPose(_pose);
   copy->setPhysics(_physics->copy());
   copy->setName(name());
   copy->_texture = _texture;
-  // if(_mesh != NULL) copy->_mesh = _mesh->copy();
+  // if(_mesh != nullptr) copy->_mesh = _mesh->copy();
   return copy;
 }
 

@@ -14,8 +14,8 @@ class ObjectVelocitySensor : public Sensor
     ObjectVelocitySensor(DataObjectVelocitySensor *data, Robot *robot);
     ~ObjectVelocitySensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataObjectVelocitySensor *_data;

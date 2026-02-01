@@ -1,79 +1,53 @@
 #ifndef __YARS_MAIN_CONTROL_H__
 #define __YARS_MAIN_CONTROL_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/Observer.h>
-
 #include <yars/main/RuntimeControl.h>
 #include <yars/main/SignalHandler.h>
 
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <yars/physics/YarsPhysicsControl.h>
 #include <yars/physics/YarsPhysicsModel.h>
 
-#include <yars/logging/YarsLoggingControl.h>
 #include <yars/logging/YarsLoggingModel.h>
 
 #include <yars/view/console/ConsoleView.h>
 
-namespace yars {
-
-/** \brief This class does the main control.
+/** \brief Main control class for YARS simulation.
  *
- * It connects the observers and
- * observables, and initiates the run.
+ * Coordinates physics, logging, and runtime control.
+ * Uses direct function calls instead of Observer pattern.
  */
 class YarsMainControl
 {
 public:
-  /** \brief Standard constructor.
-     *
-     * Takes argc and argv.
-     *
-     * \param[in] argc, from main(int argc, char **argv)
-     * \param[in] argv, from main(int argc, char **argv)
-     */
+  /** \brief Constructor.
+   *
+   * \param[in] argc from main()
+   * \param[in] argv from main()
+   */
   YarsMainControl(int argc, char **argv);
-  /** \brief Desctructor.
-     *
-     * Closes cleans up
-     *
-     */
+
+  /** \brief Destructor. */
   ~YarsMainControl();
 
-  /** \brief Called from Observables.
-     *
-     * \param[in] __M_QUIT_CALLED
-     * \param[in] __M_RESET
-     */
-  void notify(ObservableMessage *message);
-  /** \brief Starts the main-loop.
-     *
-     * \param[out] __M_TOGGLE_CAMERA_FOLLOW_MODE
-     * \param[out] __M_TOGGLE_SYNCED_GUI
-     * \param[out] __M_TOGGLE_CAPTURE_VIDEO
-     * \param[out] __M_INIT
-     * \param[out] __M_NEXT_STEP
-     * \param[out] __M_QUIT_CALLED
-     * \param[out] __M_QUIT
-     */
+  /** \brief Starts the main simulation loop. */
   void run();
 
+  /** \brief Request simulation to quit. */
+  void requestQuit();
+
 private:
+  void __init();
+  void __step();
+  void __reset();
+  void __quit();
   void __closeApplication();
 
   bool _keepOnRunning;
-  ConsoleView *_cv;
+  YarsConfiguration *_ycc;
+  YarsPhysicsModel *_ypm;
+  YarsLoggingModel *_ylm;
   RuntimeControl *_rtc;
   SignalHandler *_sig;
-  YarsConfiguration *_ycc;
-  YarsLoggingControl *_ylc;
-  YarsLoggingModel *_ylm;
-  YarsPhysicsControl *_ypc;
-  YarsPhysicsModel *_ypm;
 };
-
-} // namespace yars
-
 #endif // __YARS_MAIN_CONTROL_H__

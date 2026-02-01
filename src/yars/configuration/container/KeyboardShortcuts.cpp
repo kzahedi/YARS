@@ -174,19 +174,19 @@ KeyboardShortcuts::KeyboardShortcuts()
 
 void KeyboardShortcuts::process()
 {
-  for(std::vector<KeyboardShortcut*>::iterator i = _keys.begin(); i != _keys.end(); i++)
+  for(auto* key : _keys)
   {
-    (*i)->set();
+    key->set();
   }
 }
 
 void KeyboardShortcuts::toString(string *s)
 {
   stringstream oss;
-  for(std::vector<KeyboardShortcut*>::iterator i = _keys.begin(); i != _keys.end(); i++)
+  for(auto* key : _keys)
   {
     string t;
-    (*i)->toString(&t);
+    key->toString(&t);
     oss << t << endl;
   }
   *s = oss.str();
@@ -195,30 +195,17 @@ void KeyboardShortcuts::toString(string *s)
 
 KeyboardShortcut* KeyboardShortcuts::get(bool alt, bool ctrl, bool shift, char c)
 {
-  for(std::vector<KeyboardShortcut*>::iterator i = _keys.begin(); i != _keys.end(); i++)
+  for(auto* key : _keys)
   {
-    bool a = ((*i)->alt          == alt);
-    bool b = ((*i)->ctrl         == ctrl);
-    bool k = (tolower((*i)->key) == tolower(c));
-    bool s = ((*i)->shift        == shift);
-
-    // keep for debugging
-    // if(k)
-    // {
-      // cout << ">       : " << (*i)->description << endl;
-      // cout << "key     : " << (*i)->key         << endl;
-      // cout << "keyCode : " << (*i)->keyCode     << endl;
-      // cout << "alt     : " << (*i)->alt         << " " << alt   << " " << a << endl;
-      // cout << "ctrl    : " << (*i)->ctrl        << " " << ctrl  << " " << b << endl;
-      // cout << "shift   : " << (*i)->shift       << " " << shift << " " << b << endl;
-      // cout << "key     : " << (*i)->key         << " " << c     << " " << k << endl;
-      // cout << "id      : " << (*i)->id          << endl;
-    // }
+    bool a = (key->alt          == alt);
+    bool b = (key->ctrl         == ctrl);
+    bool k = (tolower(key->key) == tolower(c));
+    bool s = (key->shift        == shift);
 
     if(a && b && k && s)
     {
-      return (*i);
+      return key;
     }
   }
-  return NULL;
+  return nullptr;
 }

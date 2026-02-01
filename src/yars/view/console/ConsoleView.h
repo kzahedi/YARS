@@ -39,19 +39,19 @@
 #  define Y_WARN(...)
 #endif
 
-namespace yars {
 
+
+/** \brief Console output handler for YARS.
+ *
+ * Provides debug, info, warning, and error message output.
+ */
 class ConsoleView
 {
-  public:
+public:
+  static ConsoleView *instance();
+  virtual ~ConsoleView() {}
 
-    static ConsoleView* instance();
-    virtual ~ConsoleView() { };
-
-    // Direct method to handle reset (replaces Observer pattern)
-    void onReset();
-
-    static void printMessage(int type, const char *string, ...);
+  static void printMessage(int type, const char *string, ...);
     static void printMessage(int type, std::string message, ...);
     static void setDebugLevel(int level);
     static int  getDebugLevel();
@@ -90,11 +90,6 @@ class ConsoleView
     static double _printTimeUPS;
     static double _printRealTimeFactor;
 };
-
-} // namespace yars
-
-// Temporary global using directive for backward compatibility during namespace transition
-using yars::ConsoleView;
 
 #endif // __CONSOLE_VIEW_H__
 

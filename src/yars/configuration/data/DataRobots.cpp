@@ -8,7 +8,7 @@ using namespace std;
 DataRobots::DataRobots(DataNode *parent)
   : DataNode(parent)
 {
-  _macros = NULL;
+  _macros = nullptr;
 }
 
 DataRobots::~DataRobots()
@@ -55,12 +55,12 @@ void DataRobots::createXsd(XsdSpecification *spec)
 
 DataRobots* DataRobots::copy()
 {
-  DataRobots *copy = new DataRobots(NULL);
-  for(std::vector<DataRobot*>::iterator i = begin(); i != end(); i++)
+  DataRobots *copy = new DataRobots(nullptr);
+  for(auto* robot : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(robot->copy());
   }
-  if(_macros != NULL) copy->_macros = _macros->copy();
+  if(_macros != nullptr) copy->_macros = _macros->copy();
   return copy;
 }
 

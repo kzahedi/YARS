@@ -14,10 +14,7 @@
 
 using namespace std;
 
-namespace yars {
-  class YarsConfiguration; // forward declaration
-}
-using yars::YarsConfiguration;
+class YarsConfiguration; // forward declaration
 
 #  define __YARS_GET_USE_CR                            YarsConfiguration::instance()->getUseCR()
 #  define __YARS_GET_VIDEO_CODEC                       YarsConfiguration::instance()->getVideoCodec()

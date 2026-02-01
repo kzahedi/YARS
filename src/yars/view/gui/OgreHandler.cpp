@@ -1,20 +1,52 @@
 #include "OgreHandler.h"
-#include "MaterialManager.h"
-#include "ShaderManager.h"
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Directories.h>
-#include <filesystem>
 
-#if __APPLE__
-#include <Overlay/OgreOverlaySystem.h>
-#else
 #include <OGRE/Overlay/OgreOverlaySystem.h>
-#include <OGRE/RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
+#include <OGRE/Overlay/OgreFontManager.h>
+
+#ifdef __APPLE__
+#include "OSX_wrap.h"
 #endif
 
-#include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
+// RTSS Material Listener: generates shaders for materials without them
+class RTSSMaterialListener : public Ogre::MaterialManager::Listener
+{
+public:
+  RTSSMaterialListener(Ogre::RTShader::ShaderGenerator* sg) : _shaderGenerator(sg) {}
 
-namespace yars {
+  Ogre::Technique* handleSchemeNotFound(unsigned short schemeIndex,
+                                         const Ogre::String& schemeName,
+                                         Ogre::Material* originalMaterial,
+                                         unsigned short lodIndex,
+                                         const Ogre::Renderable* rend) override
+  {
+    if (schemeName != Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME)
+      return nullptr;
+
+    // Attempt to create RTSS shader for this material
+    bool success = _shaderGenerator->createShaderBasedTechnique(
+        *originalMaterial,
+        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+        schemeName);
+
+    if (success)
+    {
+      // Find and return the generated technique
+      for (auto tech : originalMaterial->getTechniques())
+      {
+        if (tech->getSchemeName() == schemeName)
+          return tech;
+      }
+    }
+    return nullptr;
+  }
+
+private:
+  Ogre::RTShader::ShaderGenerator* _shaderGenerator;
+};
+
+static RTSSMaterialListener* gRTSSMaterialListener = nullptr;
 
 OgreHandler *OgreHandler::_me = nullptr;
 
@@ -25,292 +57,238 @@ OgreHandler *OgreHandler::instance()
   return _me;
 }
 
+void OgreHandler::shutdown()
+{
+  if (_me != nullptr)
+  {
+    delete _me;
+    _me = nullptr;
+  }
+}
+
+OgreHandler::~OgreHandler()
+{
+  // Clean up RTSS
+  if (_shaderGenerator)
+  {
+    _shaderGenerator->removeSceneManager(_sceneManager);
+    Ogre::RTShader::ShaderGenerator::destroy();
+    _shaderGenerator = nullptr;
+  }
+
+  // Remove material listener
+  if (gRTSSMaterialListener)
+  {
+    Ogre::MaterialManager::getSingleton().removeListener(gRTSSMaterialListener);
+    delete gRTSSMaterialListener;
+    gRTSSMaterialListener = nullptr;
+  }
+
+  // Clean up STBI codec
+  Ogre::STBIImageCodec::shutdown();
+
+  // Clean up scene graph
+  if (_sceneGraph)
+  {
+    delete _sceneGraph;
+    _sceneGraph = nullptr;
+  }
+
+  // Delete root (this cleans up scene manager, plugins, etc.)
+  if (_root)
+  {
+    delete _root;
+    _root = nullptr;
+  }
+}
+
 OgreHandler::OgreHandler()
 {
   Ogre::LogManager *lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
 
 #ifdef __APPLE__
-  // For macOS: Don't load plugins.cfg since we're using static plugins
-  _root = new Ogre::Root("", "", ""); // no plugin config file for static linking
-#else                                 // __APPLE__
+  _root = new Ogre::Root("plugins.cfg", "", ""); // no log file created here (see 1 line above)
+#else                                            // __APPLE__
   _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
-#endif                                // __APPLE__
+#endif                                           // __APPLE__
 
-#ifdef __APPLE__
-  try
+  // Install plugins directly (framework static linking on macOS)
+  _GL3PlusPlugin = new Ogre::GL3PlusPlugin();
+  _root->installPlugin(_GL3PlusPlugin);
+
+  _particlePlugin = new Ogre::ParticleFXPlugin();
+  _root->installPlugin(_particlePlugin);
+
+  // Initialize STBI codec for image loading (PNG, JPG, etc.)
+  Ogre::STBIImageCodec::startup();
+
+  if (_root->getAvailableRenderers().empty())
   {
-    _GLPlugin = new Ogre::GL3PlusPlugin();
-    _GLPlugin->install();
-
-    _particlePlugin = new Ogre::ParticleFXPlugin();
-    _particlePlugin->install();
-
+    OGRE_EXCEPT(Ogre::Exception::ERR_INTERNAL_ERROR, "Failed to initialize RenderSystem_GL3Plus", "main");
   }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Failed to initialize OGRE plugins: " << e.what() << std::endl;
-    throw;
-  }
-#else  // __APPLE__
-  _root->loadPlugin("Plugin_ParticleFX");
-  _root->loadPlugin("RenderSystem_GL3Plus");
-#endif // __APPLE__
-
-  if (_root->getAvailableRenderers().size() == 0)
-  {
-    OGRE_EXCEPT(Ogre::Exception::ERR_INTERNAL_ERROR, "No render systems available", "OgreHandler");
-  }
-
-  // Use GL3Plus renderer with OpenGL 3.0 compatibility profile
-  const Ogre::RenderSystemList &renderers = _root->getAvailableRenderers();
-  Ogre::RenderSystem *renderSystem = renderers.front();
-  std::cout << "Available renderer: " << renderSystem->getName() << std::endl;
-  std::cout << "Using renderer for OpenGL 3.0 compatibility mode" << std::endl;
-  _root->setRenderSystem(renderSystem);
-
-  // Check environment before attempting OpenGL context creation
-  const char *display = getenv("DISPLAY");
-  bool hasDisplay = (display != nullptr && strlen(display) > 0);
-
-  if (!hasDisplay)
-  {
-    std::cout << "No DISPLAY environment variable detected." << std::endl;
-  }
-
-  std::cout << "Attempting to initialize OpenGL 3.3 core renderer with custom shaders..." << std::endl;
-
-  try
-  {
-    // Renderer already set above - don't override it
-    _root->initialise(false);
-    _sceneManager = _root->createSceneManager("DefaultSceneManager");
-    std::cout << "OpenGL 3.3 core renderer initialized successfully!" << std::endl;
-  }
-  catch (const Ogre::RenderingAPIException &e)
-  {
-    std::cerr << std::endl;
-    std::cerr << "===============================================" << std::endl;
-    std::cerr << "OPENGL CONTEXT CREATION FAILED" << std::endl;
-    std::cerr << "===============================================" << std::endl;
-    std::cerr << "Error: " << e.what() << std::endl;
-    std::cerr << std::endl;
-
-    // Provide specific guidance based on environment
-    if (!hasDisplay)
-    {
-      std::cerr << "DETECTED ISSUE: No display server connection" << std::endl;
-      std::cerr << "- You're running in a headless environment" << std::endl;
-      std::cerr << "- Try running from a GUI terminal application" << std::endl;
-    }
-    else
-    {
-      std::cerr << "POSSIBLE ISSUES:" << std::endl;
-      std::cerr << "- OpenGL 3.3+ core not supported by graphics driver" << std::endl;
-      std::cerr << "- GPU acceleration disabled" << std::endl;
-      std::cerr << "- Display server configuration problem" << std::endl;
-    }
-
-    std::cerr << std::endl;
-    std::cerr << "SOLUTION:" << std::endl;
-    std::cerr << "Use --nogui flag to run without visualization:" << std::endl;
-    std::cerr << "  ./yars --xml your_simulation.xml --nogui" << std::endl;
-    std::cerr << "===============================================" << std::endl;
-    throw;
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "OGRE initialization failed: " << e.what() << std::endl;
-    throw;
-  }
+  _root->setRenderSystem(_root->getAvailableRenderers()[0]);
+  _root->initialise(false);
+  // OGRE 14: ST_GENERIC removed, use "DefaultSceneManager"
+  _sceneManager = _root->createSceneManager("DefaultSceneManager", "YARS SceneManager");
 }
-
-// Helper listener that automatically generates shader techniques for
-// materials that lack a GPU program when the RT Shader System material
-// scheme is requested. This is essentially the logic used in many OGRE
-// samples to work with the GL3+ RenderSystem.
-class SGTechniqueResolverListener : public Ogre::MaterialManager::Listener
-{
-public:
-  SGTechniqueResolverListener(Ogre::RTShader::ShaderGenerator *pShaderGenerator)
-      : mShaderGenerator(pShaderGenerator) {}
-
-  // Called when a material with the requested scheme is not found.
-  Ogre::Technique *handleSchemeNotFound(uint16_t schemeIndex, const Ogre::String &schemeName,
-                                        Ogre::Material *originalMaterial, uint16_t lodIndex,
-                                        const Ogre::Renderable *rend) override
-  {
-    if (schemeName != Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME)
-      return nullptr;
-
-    // Create shader generated technique for this material.
-    bool generated = mShaderGenerator->createShaderBasedTechnique(*originalMaterial,
-                                                                  Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-                                                                  schemeName,
-                                                                  true /* overProgrammable */);
-    if (!generated)
-      return nullptr;
-
-    // Validate will compile the generated programs.
-    mShaderGenerator->validateMaterial(schemeName, originalMaterial->getName());
-
-    // Return the generated technique.
-    for (unsigned short i = 0; i < originalMaterial->getNumTechniques(); ++i)
-    {
-      Ogre::Technique *tech = originalMaterial->getTechnique(i);
-      if (tech->getSchemeName() == schemeName)
-        return tech;
-    }
-    return nullptr;
-  }
-
-private:
-  Ogre::RTShader::ShaderGenerator *mShaderGenerator;
-};
 
 void OgreHandler::setupSceneManager()
 {
   Ogre::OverlaySystem *mOverlaySystem = new Ogre::OverlaySystem();
   _sceneManager->addRenderQueueListener(mOverlaySystem);
 
-  // ----------------------------------------------------------------------
-  // 1) Resource setup (needs to happen BEFORE RTSS initialisation so that
-  //    all shader-lib materials and program scripts are available).
-  // ----------------------------------------------------------------------
-
-  std::cout << "Loading basic resources for rendering" << std::endl;
-
-  Ogre::ResourceGroupManager &rgm = Ogre::ResourceGroupManager::getSingleton();
-
-  // Register YARS resources (meshes, materials) and OGRE sample resources
-  rgm.addResourceLocation(".", "FileSystem", "General"); // Current directory contains materials
-  rgm.addResourceLocation("../../meshes", "FileSystem", "General");
-  rgm.addResourceLocation("../ext/ogre/source/Media/Main", "FileSystem", "General");
-
-  // RT Shader System core library (program + material scripts)
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib", "FileSystem", "RTShaderLib");
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib/materials", "FileSystem", "RTShaderLib");
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib/GLSL", "FileSystem", "RTShaderLib");
-
-  // Initialise groups *before* we attempt to generate shaders.
-  rgm.initialiseResourceGroup("RTShaderLib");
-  rgm.initialiseResourceGroup("General");
-
-  // ----------------------------------------------------------------------
-  // 2) Runtime Shader System initialisation and automatic technique
-  //    generation listener.
-  // ----------------------------------------------------------------------
-
-  std::cout << "Runtime Shader System: Initialising..." << std::endl;
-
+  // Initialize RTSS (Runtime Shader System) BEFORE loading resources
+  // This allows RTSS to hook into the material manager for fixed-function emulation
   if (Ogre::RTShader::ShaderGenerator::initialize())
   {
-    // Use ShaderManager for comprehensive RTSS setup
-    if (ShaderManager::instance()->initializeRTSS(_sceneManager)) {
-      _shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-      
-      // Install our listener so missing techniques are generated on demand.
-      _materialListener = new SGTechniqueResolverListener(_shaderGenerator);
-      Ogre::MaterialManager::getSingleton().addListener(_materialListener);
+    _shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+    _shaderGenerator->addSceneManager(_sceneManager);
 
-      // Ensure the RTSS scheme is the active one for all viewports by default.
-      Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    // Set shader cache path and target language
+    _shaderGenerator->setTargetLanguage("glsl");
 
-      // Initialize MaterialManager after ShaderManager setup
-      try {
-          MaterialManager::instance()->validateAllMaterials();
-          std::cout << "MaterialManager initialized successfully" << std::endl;
-      } catch (const std::exception& e) {
-          std::cerr << "Failed to initialize MaterialManager: " << e.what() << std::endl;
+    // Add RTSS shader library to OgreInternal resource group (where RTSS looks for FFPLib)
+    // Read path from rtss.cfg (generated by cmake)
+    Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
+    Ogre::String rtssPath;
+    if (Directories::doesFileExist("rtss.cfg"))
+    {
+      Ogre::ConfigFile rtssConfig;
+      rtssConfig.load("rtss.cfg");
+      rtssPath = rtssConfig.getSetting("ShaderLibPath", "RTSS");
+    }
+    else
+    {
+      // Fallback: try relative path from build directory
+      rtssPath = "../ext/ogre/Media/RTShaderLib";
+    }
+    rgm.addResourceLocation(rtssPath, "FileSystem", Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+    // Initialize OgreInternal resources for RTSS
+    rgm.initialiseResourceGroup(Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+
+    // Register material listener to generate shaders on demand
+    gRTSSMaterialListener = new RTSSMaterialListener(_shaderGenerator);
+    Ogre::MaterialManager::getSingleton().addListener(gRTSSMaterialListener);
+
+    // Set the scene manager to use RTSS shaders
+    Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+  }
+
+  // Load resources from resources.cfg (generated by cmake with absolute paths)
+  Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
+
+  if (Directories::doesFileExist("resources.cfg"))
+  {
+    Ogre::ConfigFile cf;
+    cf.load("resources.cfg");
+    for (const auto& section : cf.getSettingsBySection())
+    {
+      const Ogre::String& secName = section.first;
+      for (const auto& setting : section.second)
+      {
+        const Ogre::String& typeName = setting.first;
+        const Ogre::String& archName = setting.second;
+        rgm.addResourceLocation(archName, typeName, secName);
       }
-      
-      // Validate shader generation
-      ShaderManager::instance()->validateShaderGeneration();
-
-      std::cout << "RTSS initialized successfully for material compatibility" << std::endl;
     }
   }
   else
   {
-    std::cout << "RTSS initialization failed - using fixed-function materials" << std::endl;
-    _shaderGenerator = nullptr;
+    OGRE_EXCEPT(Ogre::Exception::ERR_FILE_NOT_FOUND, "resources.cfg not found. Run from build directory.", "OgreHandler::setupSceneManager");
   }
 
-  // ----------------------------------------------------------------------
-  // 3) Diagnostics
-  // ----------------------------------------------------------------------
+  rgm.initialiseAllResourceGroups();
 
-  // Check if our custom materials loaded
-  std::cout << "Checking for SimpleWhite material..." << std::endl;
-  Ogre::MaterialPtr testMat = Ogre::MaterialManager::getSingleton().getByName("SimpleWhite");
-  if (!testMat)
+  // Generate RTSS shaders for all materials without shaders
+  if (_shaderGenerator)
   {
-    std::cout << "ERROR: SimpleWhite material not found!" << std::endl;
-  }
-  else
-  {
-    std::cout << "SUCCESS: SimpleWhite material found!" << std::endl;
-  }
+    auto& matMgr = Ogre::MaterialManager::getSingleton();
+    auto it = matMgr.getResourceIterator();
+    while (it.hasMoreElements())
+    {
+      Ogre::ResourcePtr resPtr = it.getNext();
+      Ogre::MaterialPtr mat = Ogre::static_pointer_cast<Ogre::Material>(resPtr);
 
-  // Try to load some basic YARS materials safely
-  std::cout << "Loading basic YARS materials..." << std::endl;
-  try
-  {
-    // Only load safe, basic materials that shouldn't cause issues
-    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../materials", "FileSystem", "YARS");
-    Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("YARS");
-    std::cout << "Successfully loaded YARS materials directory" << std::endl;
-    
-    // Create RTSS techniques for YARS materials now that they are loaded
-    try {
-        MaterialManager::instance()->createRTSSForLegacyMaterials();
-        std::cout << "Created RTSS techniques for YARS materials" << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << "Warning: Failed to create RTSS techniques for YARS materials: " << e.what() << std::endl;
+      if (!mat->isLoaded())
+        mat->load();
+
+      // Skip materials that already have shaders
+      if (!mat->getTechnique(0))
+        continue;
+      if (mat->getTechnique(0)->getPass(0)->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+        continue;
+
+      _shaderGenerator->createShaderBasedTechnique(
+          *mat,
+          Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+          Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    }
+
+    // Load fonts explicitly and apply custom font shaders for GL3Plus
+    auto& fontMgr = Ogre::FontManager::getSingleton();
+    auto fontIt = fontMgr.getResourceIterator();
+    auto& gpuMgr = Ogre::GpuProgramManager::getSingleton();
+
+    // Verify font shaders exist before applying
+    bool haveFontShaders = gpuMgr.resourceExists("YARS/FontVP") &&
+                           gpuMgr.resourceExists("YARS/FontFP");
+
+    if (haveFontShaders)
+    {
+      while (fontIt.hasMoreElements())
+      {
+        Ogre::ResourcePtr fontRes = fontIt.getNext();
+        Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
+
+        if (!font->isLoaded())
+          font->load();
+
+        // Get font material and apply custom font shaders
+        Ogre::MaterialPtr fontMat = font->getMaterial();
+        if (fontMat && fontMat->getTechnique(0))
+        {
+          Ogre::Pass* pass = fontMat->getTechnique(0)->getPass(0);
+          if (!pass->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+          {
+            pass->setVertexProgram("YARS/FontVP");
+            pass->setFragmentProgram("YARS/FontFP");
+          }
+        }
+      }
+    }
+    else
+    {
+      Ogre::LogManager::getSingleton().logMessage(
+        "YARS: Font shaders not found - overlay text may not render correctly");
     }
   }
-  catch (const std::exception &e)
-  {
-    std::cout << "Could not load YARS materials: " << e.what() << std::endl;
-  }
 
-  // Temporarily disable sky dome to test RTSS functionality
-  // _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);
+  _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);
   // _sceneManager->setSkyBox(true, "YARS/SkyBox", 100000.0);
 
-  _sceneManager->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3)); // Moderate ambient light for better shading
-
-  // Create directional light for proper scene illumination
-  Ogre::SceneNode *node = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
+  _sceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+  // OGRE 14: Lights must be attached to nodes, position is set on the node
+  Ogre::SceneNode *lightNode = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
+  lightNode->setPosition(75, 150, 75);
   Ogre::Light *lightSun = _sceneManager->createLight("sun");
-  lightSun->setType(Ogre::Light::LT_DIRECTIONAL);
-  node->setDirection(Ogre::Vector3(-1, -1, -1));
-  lightSun->setDiffuseColour(1.2, 1.2, 1.0);  // Warm directional light
-  lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
-  node->attachObject(lightSun);
+  lightSun->setSpecularColour(0.25, 0.25, 0.25);
+  lightNode->attachObject(lightSun);
 
-  // Re-enable SceneGraph for basic rendering
-  std::cout << "Creating SceneGraph for basic rendering" << std::endl;
+  //lightSun->setType(Ogre::Light::LT_DIRECTIONAL);
+  //lightSun->setPosition(25,25,100);
+  //lightSun->setDiffuseColour(Ogre::ColourValue(0.8, 0.8, 0.8));
+  //lightSun->setSpecularColour(1.0, 1.0, 1.0);
+  //lightSun->setDirection(Ogre::Vector3(-1, -1, 0));
+
+  // Ogre::Light* specularSun = _sceneManager->createLight("spec sun");
+  // specularSun->setPosition(75,150,75);
+  // specularSun->setDiffuseColour(0.0, 0.0, 0.0);
+  // specularSun->setSpecularColour(0.5, 0.5, 0.5);
+  // node->attachObject(specularSun);
+
   _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
   _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
-
-  // Debug: Print some basic scene statistics
-  std::cout << "=== SCENE DEBUG INFO ===" << std::endl;
-  std::cout << "Root node children count: " << _sceneManager->getRootSceneNode()->numChildren() << std::endl;
-  std::cout << "Scene graph construction completed" << std::endl;
-
-  // Force an immediate render to test if rendering works
-  try
-  {
-    _sceneManager->_updateSceneGraph(nullptr);
-    std::cout << "Manual scene graph update completed" << std::endl;
-  }
-  catch (const std::exception &e)
-  {
-    std::cout << "Manual render failed: " << e.what() << std::endl;
-  }
-
-  std::cout << "========================" << std::endl;
 
   // _textOverlay  = new TextOverlay("Legend Text Overlay");
   // Ogre::Real x = 10;
@@ -320,9 +298,24 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Disable shadows to avoid rendering pipeline issues
+  // #ifdef USE_SHADOW_MAPS
+  // _sceneManager->setShadowTexturePixelFormat(Ogre::PF_FLOAT16_R);
+  // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_ADDITIVE);
+  // _sceneManager->setShadowTextureSelfShadow(true);
+  // _sceneManager->setShadowTextureCasterMaterial("ShadowCaster");
+  // _sceneManager->setShadowTextureReceiverMaterial("ShadowReceiver");
+  // #else // USE_SHADOW_MAPS
+  // OGRE 14: Shadows disabled - require custom shadow shaders for OGRE 14
+  // TODO: Implement shader-based shadows (texture shadow mapping)
   _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
-  std::cout << "Shadow system disabled for stability" << std::endl;
+  //#endif // USE_SHADOW_MAPS
+
+  // _sceneManager->setShadowTextureSelfShadow(true);
+  // _sceneManager->setShadowTextureCasterMaterial("DepthShadowmap/Caster/Float");
+  // _sceneManager->setShadowTextureReceiverMaterial("Ogre/DepthShadowmap/Caster/Float");
+  // _sceneManager->setShadowTexturePixelFormat(Ogre::PF_FLOAT32_R);
+  // _sceneManager->setShadowCasterRenderBackFaces(false);
+  // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
@@ -337,53 +330,11 @@ void OgreHandler::reset()
 
 void OgreHandler::step()
 {
-  // cout << "OgreHandler 0" << endl;
   _sceneGraph->update();
-  // cout << "OgreHandler 1" << endl;
-
-  try
-  {
-    _root->renderOneFrame();
-    // cout << "OgreHandler 2" << endl;
-  }
-  catch (const Ogre::InvalidStateException &e)
-  {
-    static bool errorShown = false;
-    if (!errorShown)
-    {
-      std::cout << "RENDERING FAILED: " << e.what() << std::endl;
-      std::cout << "This is expected due to RTSS shader issues. GUI window remains functional." << std::endl;
-      errorShown = true;
-    }
-    // Continue simulation - window stays open
-  }
-  catch (const std::exception &e)
-  {
-    static bool errorShown = false;
-    if (!errorShown)
-    {
-      std::cout << "RENDERING ERROR: " << e.what() << std::endl;
-      std::cout << "This is expected due to material compatibility issues" << std::endl;
-      errorShown = true;
-    }
-    // Continue simulation - window stays open
-  }
+  _root->renderOneFrame();
 }
 
 Ogre::Root *OgreHandler::root()
 {
   return _root;
 }
-
-OgreHandler::~OgreHandler()
-{
-  if (_shaderGenerator)
-  {
-    Ogre::MaterialManager::getSingleton().removeListener(_materialListener);
-    delete _materialListener;
-    Ogre::RTShader::ShaderGenerator::destroy();
-  }
-  // plugins and root cleanup handled elsewhere (application exit)
-}
-
-} // namespace yars

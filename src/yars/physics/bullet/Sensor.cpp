@@ -25,38 +25,32 @@ Sensor::Sensor(string name, string object, Robot *robot)
 
 Object* Sensor::__findObject(string name)
 {
-  for(std::vector<Object*>::iterator i = _robot->o_begin(); i != _robot->o_end(); i++)
+  for(auto i = _robot->o_begin(); i != _robot->o_end(); ++i)
   {
     if((*i)->data()->name() == name)
-    {
-      return *i;
-    }
-    FOREACHP(Object*, o, (*i))
+      return i->get();
+    for (auto o = (*i)->begin(); o != (*i)->end(); ++o)
     {
       if((*o)->data()->name() == name)
-      {
         return *o;
-      }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 Actuator* Sensor::__findAcutaor(string name)
 {
-  for(std::vector<Actuator*>::iterator i = _robot->a_begin(); i != _robot->a_end(); i++)
+  for(auto i = _robot->a_begin(); i != _robot->a_end(); ++i)
   {
     if((*i)->data()->name() == name)
-    {
-      return *i;
-    }
+      return i->get();
   }
-  return NULL;
+  return nullptr;
 }
 
 void Sensor::__findTarget()
 {
-  if(_targetObject == NULL && _targetActuator == NULL)
+  if(_targetObject == nullptr && _targetActuator == nullptr)
   {
     YarsErrorHandler *e = YarsErrorHandler::instance();
     (*e) << "In " << _name << " (Sensor): Target " << _object << " was not found.";

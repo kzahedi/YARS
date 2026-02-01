@@ -1,4 +1,5 @@
-include_directories(/Library/Frameworks/OgreOverlay.framework/Headers)
+# OGRE includes are set in cmake/IncludePackages.cmake
+# No need for hardcoded paths here
 
 # Add codec framework headers for image loading support
 if(APPLE)
@@ -8,7 +9,7 @@ if(APPLE)
 endif(APPLE)
 
 set(GUI_SOURCES SdlWindow.cpp
-                NativeOgreWindow.cpp
+                # NativeOgreWindow.cpp - disabled, uses Observer pattern and old OGRE APIs
                 SceneGraph.cpp
                 SceneGraphRobotNode.cpp
                 SceneGraphMuscleNode.cpp
@@ -29,7 +30,7 @@ set(GUI_SOURCES SdlWindow.cpp
                 ColoredTextAreaOverlayElement.cpp
                 OgreHandler.cpp
                 MaterialManager.cpp
-                ShaderManager.cpp
+                # ShaderManager.cpp - disabled, uses deprecated OGRE 14 FFP APIs
                 KeyHandler.cpp
                 FollowCamera.cpp
                 GuiMutex.cpp
@@ -52,5 +53,3 @@ if(APPLE)
 else(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
 endif(APPLE)
-
-

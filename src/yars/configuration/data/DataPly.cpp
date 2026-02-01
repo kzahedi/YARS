@@ -101,7 +101,7 @@ void DataPly::createXsd(XsdSpecification *spec)
 
 DataPly* DataPly::_copy()
 {
-  DataPly *copy   = new DataPly(NULL);
+  DataPly *copy   = new DataPly(nullptr);
   copy->_filename = _filename;
   copy->_pose     = _pose;
   copy->_texture  = _texture;

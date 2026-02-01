@@ -9,7 +9,7 @@
 Robot::Robot(DataRobot *robot)
 {
   _data = robot;
-  _controller = NULL;
+  _controller = nullptr;
   _reset = false;
   _quit = false;
   _seed = -1;
@@ -25,18 +25,13 @@ Robot::Robot(DataRobot *robot)
 
 Robot::~Robot()
 {
-  for (std::vector<Actuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
-    delete *i;
-  for (std::vector<Sensor *>::iterator i = _sensors.begin(); i != _sensors.end(); i++)
-    delete *i;
-  _actuators.clear();
-  _sensors.clear();
-  if (_controller != NULL)
+  // unique_ptr handles cleanup automatically
+  if (_controller)
   {
     _controller->close();
-    delete _controller;
   }
-  if (_controllerLib != NULL)
+  _controller.reset();  // Explicitly reset before dlclose
+  if (_controllerLib != nullptr)
   {
     dlclose(_controllerLib);
   }
@@ -44,59 +39,53 @@ Robot::~Robot()
 
 void Robot::__createBody()
 {
-  for (DataObjects::iterator i = _data->o_begin(); i != _data->o_end(); i++)
-  {
-    _objects.push_back(ObjectFactory::create(*i));
-  }
+  for (auto i = _data->o_begin(); i != _data->o_end(); ++i)
+    _objects.push_back(std::unique_ptr<Object>(ObjectFactory::create(*i)));
 }
 
 void Robot::__createActuators()
 {
-  for (std::vector<DataActuator *>::iterator i = _data->a_begin(); i != _data->a_end(); i++)
+  for (auto i = _data->a_begin(); i != _data->a_end(); ++i)
   {
-    Actuator *a = ActuatorFactory::create(*i, this);
-    _actuators.push_back(a);
-    cout << "added " << a->data()->name() << " is active: " << a->data()->isActive(0) << endl;
+    auto a = std::unique_ptr<Actuator>(ActuatorFactory::create(*i, this));
+    _actuators.push_back(std::move(a));
   }
 }
 
 void Robot::__createSensors()
 {
-  for (std::vector<DataSensor *>::iterator i = _data->s_begin(); i != _data->s_end(); i++)
-  {
-    Sensor *s = SensorFactory::create(*i, this);
-    _sensors.push_back(s);
-  }
+  for (auto i = _data->s_begin(); i != _data->s_end(); ++i)
+    _sensors.push_back(std::unique_ptr<Sensor>(SensorFactory::create(*i, this)));
 }
 
 void Robot::prePhysicsUpdate()
 {
   _data->updateActuatorValues();
-  FOREACH(Actuator *, a, _actuators)
-  (*a)->prePhysicsUpdate();
-  FOREACH(Sensor *, s, _sensors)
-  (*s)->prePhysicsUpdate();
+  for (auto& a : _actuators)
+    a->prePhysicsUpdate();
+  for (auto& s : _sensors)
+    s->prePhysicsUpdate();
 }
 
 void Robot::postPhysicsUpdate()
 {
-  FOREACH(Object *, o, _objects)
-  (*o)->postPhysicsUpdate();
+  for (auto& o : _objects)
+  {
+    o->postPhysicsUpdate();
+    for (auto oo = o->begin(); oo != o->end(); ++oo)
+      (*oo)->postPhysicsUpdate();
+  }
 
-  FOREACH(Object *, o, _objects)
-  FOREACHP(Object *, oo, (*o))
-  (*oo)->postPhysicsUpdate();
-
-  FOREACH(Actuator *, a, _actuators)
-  (*a)->postPhysicsUpdate();
-  FOREACH(Sensor *, s, _sensors)
-  (*s)->postPhysicsUpdate();
+  for (auto& a : _actuators)
+    a->postPhysicsUpdate();
+  for (auto& s : _sensors)
+    s->postPhysicsUpdate();
   _data->updateSensorValues();
 }
 
 void Robot::controllerUpdate()
 {
-  if (_controller != NULL)
+  if (_controller != nullptr)
   {
     if (__YARS_GET_STEP % _controllerFrequency == 0)
     {
@@ -116,7 +105,7 @@ void Robot::controllerUpdate()
 
 void Robot::__createController()
 {
-  if (_data->controller() == NULL)
+  if (_data->controller() == nullptr)
     return;
   string c = _data->controller()->module();
   _controllerLib = dlopen(c.c_str(), RTLD_LAZY);
@@ -137,39 +126,39 @@ void Robot::__createController()
     return;
   }
 
-  _controller = _create_controller();
+  _controller.reset(_create_controller());
 
   __setupController();
 
   _controller->init();
 }
 
-std::vector<Object *>::iterator Robot::o_begin()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_begin()
 {
   return _objects.begin();
 }
 
-std::vector<Object *>::iterator Robot::o_end()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_end()
 {
   return _objects.end();
 }
 
-std::vector<Actuator *>::iterator Robot::a_begin()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_begin()
 {
   return _actuators.begin();
 }
 
-std::vector<Actuator *>::iterator Robot::a_end()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_end()
 {
   return _actuators.end();
 }
 
-std::vector<Sensor *>::iterator Robot::s_begin()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_begin()
 {
   return _sensors.begin();
 }
 
-std::vector<Sensor *>::iterator Robot::s_end()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_end()
 {
   return _sensors.end();
 }
@@ -191,33 +180,15 @@ int Robot::seed()
 
 void Robot::reset()
 {
-  FOREACH(Object *, o, _objects)
-  {
-    (*o)->reset();
-  }
-  FOREACH(Actuator *, a, _actuators)
-  {
-    (*a)->reset();
-  }
-  FOREACH(Sensor *, s, _sensors)
-  {
-    (*s)->reset();
-  }
+  for (auto& o : _objects)
+    o->reset();
+  for (auto& a : _actuators)
+    a->reset();
+  for (auto& s : _sensors)
+    s->reset();
   _seed = -1;
 
-  // FOREACH(Object*,   o, _objects)   delete *o;
-  // FOREACH(Actuator*, a, _actuators) delete *a;
-  // FOREACH(Sensor*,   s, _sensors)   delete *s;
-
-  // _objects.clear();
-  // _actuators.clear();
-  // _sensors.clear();
-
-  // __createBody();
-  // __createActuators();
-  // __createSensors();
-
-  if (_controller != NULL)
+  if (_controller)
   {
     _controller->reset();
     __setupController();
@@ -239,7 +210,7 @@ void Robot::__setupController()
   std::vector<NameDimensionDomain> sensors;
   std::vector<NameDimensionDomain> motors;
 
-  for (DataActuators::iterator a = _data->a_begin(); a != _data->a_end(); a++)
+  for (auto a = _data->a_begin(); a != _data->a_end(); ++a)
   {
     int n = 0;
     for (uint j = 0; j < (*a)->dimension(); j++)
@@ -256,11 +227,11 @@ void Robot::__setupController()
       }
     }
 
-    if (nd.internal.size() > 0)
+    if (!nd.internal.empty())
       motors.push_back(nd);
   }
 
-  for (DataSensors::iterator s = _data->s_begin(); s != _data->s_end(); s++)
+  for (auto s = _data->s_begin(); s != _data->s_end(); ++s)
   {
     NameDimensionDomain nd = NameDimensionDomain((*s)->name(), (*s)->dimension());
     nd.names.resize((*s)->dimension());
@@ -290,11 +261,8 @@ void Robot::__setupController()
   _controller->setFrequency(_controllerFrequency);
 
   RobotControllerParameter rcp;
-  for (std::vector<DataParameter *>::iterator i = _data->controller()->begin();
-       i != _data->controller()->end(); i++)
-  {
-    rcp.add((*i)->name(), (*i)->value());
-  }
+  for (auto* param : *_data->controller())
+    rcp.add(param->name(), param->value());
   _controller->setParameter(rcp);
   _controller->setArguments(__YARS_GET_ARGC, __YARS_GET_ARGV);
 }

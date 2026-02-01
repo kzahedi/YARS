@@ -128,7 +128,7 @@ void DataCylinder::createXsd(XsdSpecification *spec)
 
 DataCylinder *DataCylinder::_copy()
 {
-  DataCylinder *copy = new DataCylinder(NULL); // no parent needed, because no parsing takes place after copying
+  DataCylinder *copy = new DataCylinder(nullptr); // no parent needed, because no parsing takes place after copying
   copy->setDimension(_dimension);
   copy->setVisualise(_visualise);
   copy->setPose(_pose);
@@ -136,7 +136,7 @@ DataCylinder *DataCylinder::_copy()
   copy->setName(name());
   for (int i = 0; i < 3; i++)
     copy->_texture[i] = _texture[i];
-  // if(_mesh != NULL) copy->_mesh = _mesh->copy();
+  // if(_mesh != nullptr) copy->_mesh = _mesh->copy();
   return copy;
 }
 

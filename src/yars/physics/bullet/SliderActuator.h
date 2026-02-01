@@ -12,12 +12,12 @@ class SliderActuator : public Actuator
     SliderActuator(DataSliderActuator *data, Robot *robot);
     ~SliderActuator();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
-    void reset();
-    btTypedConstraint* constraint();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
+    void reset() override;
+    btTypedConstraint* constraint() override;
 
-    DataSliderActuator* data();
+    DataSliderActuator* data() override;
 
   private:
     void __processPositional();

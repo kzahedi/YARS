@@ -15,16 +15,7 @@ class RobotControllerParameter : public map<string,string>
   public:
     bool exists(const string &key)
     {
-      map<string,string>::iterator iter = find(key);
-
-      if( iter != end() )
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return find(key) != end();
     };
 
     void add(string name, string value)
@@ -34,17 +25,10 @@ class RobotControllerParameter : public map<string,string>
 
     void get(string name, string *value)
     {
-      map<string,string>::iterator iter;
-      iter = find(name);
-
-      if( iter != end() )
-      {
+      if (auto iter = find(name); iter != end())
         *value = iter->second;
-      }
       else
-      {
         *value = "";
-      }
     }
 
     int intValue(string name)
@@ -115,10 +99,8 @@ class RobotControllerParameter : public map<string,string>
     std::vector<string> names()
     {
       std::vector<string> names;
-      for(RobotControllerParameter::const_iterator i = begin(); i != end(); i++)
-      {
-        names.push_back(i->first);
-      }
+      for(const auto& [key, value] : *this)
+        names.push_back(key);
       return names;
     }
 
@@ -155,10 +137,8 @@ class RobotControllerParameter : public map<string,string>
     friend std::ostream& operator<<(std::ostream& str, const RobotControllerParameter& p)
     {
       str << "Robot Controller Parameter given: " << endl;
-      for(RobotControllerParameter::const_iterator i = p.begin(); i != p.end(); i++)
-      {
-        str << "  " << i->first << " = " << i->second << endl;
-      }
+      for(const auto& [key, value] : p)
+        str << "  " << key << " = " << value << endl;
       return str;
     };
 

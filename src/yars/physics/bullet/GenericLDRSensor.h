@@ -14,8 +14,8 @@ class GenericLDRSensor : public Sensor
     GenericLDRSensor(DataGenericLightDependentResistorSensor *data, Robot *robot);
     ~GenericLDRSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericLightDependentResistorSensor* _data;

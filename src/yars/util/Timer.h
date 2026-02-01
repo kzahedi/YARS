@@ -10,22 +10,17 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
-
-#include <chrono>
 #include <iomanip>
+#include <ctime>
 
 #ifndef _MSC_VER
 #include <sys/time.h>
-#include <ctime>
 #endif
 
 #include <thread>
 #include <chrono>
 
-using std::string;
-using std::ostringstream;
-
-namespace yars {
+using namespace std;
 
 class Timer
 {
@@ -57,47 +52,46 @@ class Timer
     static void getDateString(std::string *dateString)
     {
       auto now = std::chrono::system_clock::now();
-      auto time_t = std::chrono::system_clock::to_time_t(now);
-      auto tm = *std::localtime(&time_t);
-      std::stringstream ss;
-      ss << std::put_time(&tm, "%Y-%m-%d");
-      *dateString = ss.str();
+      auto time_t_now = std::chrono::system_clock::to_time_t(now);
+      std::tm tm_now;
+#ifndef _MSC_VER
+      localtime_r(&time_t_now, &tm_now);
+#else
+      localtime_s(&tm_now, &time_t_now);
+#endif
+      std::ostringstream oss;
+      oss << std::put_time(&tm_now, "%Y-%m-%d");
+      *dateString = oss.str();
     };
 
     static void getDateTimeString(std::string *dateString)
     {
-      stringstream oss;
-#ifndef _MSC_VER
-      time_t rawtime;
-      struct tm * ptm;
-      time ( &rawtime );
-      ptm = gmtime ( &rawtime );
-      (void)ptm; // Suppress unused variable warning
-
       auto now = std::chrono::system_clock::now();
-      auto time_t = std::chrono::system_clock::to_time_t(now);
-      auto tm = *std::localtime(&time_t);
-      oss << std::put_time(&tm, "%Y-%m-%d-%H-%M-%S");
-#else // _MSC_VER
-      cout << "getDateTimeString not yet supported in windows version" << endl;
-#endif // _MSC_VER
-
+      auto time_t_now = std::chrono::system_clock::to_time_t(now);
+      std::tm tm_now;
+#ifndef _MSC_VER
+      localtime_r(&time_t_now, &tm_now);
+#else
+      localtime_s(&tm_now, &time_t_now);
+#endif
+      std::ostringstream oss;
+      oss << std::put_time(&tm_now, "%Y-%m-%d-%H-%M-%S");
       *dateString = oss.str();
     };
 
     Timer()
     {
-      _last = std::chrono::high_resolution_clock::now();
+      _last = std::chrono::steady_clock::now();
     };
 
     void reset()
     {
-      _last = std::chrono::high_resolution_clock::now();
+      _last = std::chrono::steady_clock::now();
     };
 
     long get()
     {
-      auto now = std::chrono::high_resolution_clock::now();
+      auto now = std::chrono::steady_clock::now();
       auto diff = std::chrono::duration_cast<std::chrono::microseconds>(now - _last);
       return diff.count();
     };
@@ -109,14 +103,9 @@ class Timer
     };
 
   private:
-      std::chrono::high_resolution_clock::time_point _last;
+      std::chrono::steady_clock::time_point _last;
 
 };
-
-} // namespace yars
-
-// Temporary global using directive for backward compatibility during namespace transition
-using namespace yars;
 
 #endif // __TIMER_H_
 

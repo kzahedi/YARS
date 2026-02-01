@@ -103,7 +103,7 @@ void TextOverlay::printf(const std::string& ID,  const char *fmt, /* args*/ ...)
   char        text[256];
   va_list        ap;
 
-  if (fmt == NULL)
+  if (fmt == nullptr)
   {
     *text=0;
   }
@@ -140,5 +140,5 @@ void TextOverlay::setPosition(const std::string& ID, Ogre::Real x, Ogre::Real y)
 bool TextOverlay::hasOverlay(const std::string& ID)
 {
   Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
-  return (textBox != NULL);
+  return (textBox != nullptr);
 }

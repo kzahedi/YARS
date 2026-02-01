@@ -8,6 +8,7 @@
 
 #include <OGRE/Ogre.h>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class SceneGraphRobotNode
 {
 public:
   SceneGraphRobotNode(DataRobot *robot, Ogre::SceneNode *root, Ogre::SceneManager *sm);
-  ~SceneGraphRobotNode();
+  ~SceneGraphRobotNode() = default;
 
   void update();
   void reset();
@@ -24,9 +25,9 @@ private:
   void __createProximitySensor(DataGenericProximitySensor *data, Ogre::SceneNode *node, Ogre::SceneManager *sm);
   void __createLDRSensor(DataGenericLightDependentResistorSensor *data, Ogre::SceneNode *node, Ogre::SceneManager *sm);
 
-  std::vector<SceneGraphObjectNode *> _objects;
-  std::vector<SceneGraphObjectNode *> _sensors;
-  std::vector<SceneGraphObjectNode *> _actuators;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _objects;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _sensors;
+  std::vector<std::unique_ptr<SceneGraphObjectNode>> _actuators;
   std::vector<string> _osd;
 };
 

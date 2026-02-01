@@ -14,8 +14,8 @@ class BinaryContactSensor : public Sensor
     BinaryContactSensor(DataGenericBinaryContactSensor *data, Robot *robot);
     ~BinaryContactSensor();
 
-    void prePhysicsUpdate();
-    void postPhysicsUpdate();
+    void prePhysicsUpdate() override;
+    void postPhysicsUpdate() override;
 
   private:
     DataGenericBinaryContactSensor *_data;

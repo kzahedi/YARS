@@ -128,13 +128,13 @@ int DataGenericPositionSensor::dimension()
 
 DataGenericPositionSensor* DataGenericPositionSensor::_copy()
 {
-  DataGenericPositionSensor *copy = new DataGenericPositionSensor(NULL);
+  DataGenericPositionSensor *copy = new DataGenericPositionSensor(nullptr);
 
   copy->_name = _name;
   copy->_object = _object;
   copy->_mapping = _mapping;
-  if (_noise != NULL) copy->_noise = _noise->copy();
-  if (_filter != NULL) copy->_filter = _filter->copy();
+  if (_noise != nullptr) copy->_noise = _noise->copy();
+  if (_filter != nullptr) copy->_filter = _filter->copy();
   copy->_x = _x;
   copy->_y = _y;
   copy->_z = _z;

@@ -15,10 +15,10 @@ Ply::Ply(DataPly *data) : Object(data)
 {
   _data = data;
 
-  _vertices = NULL;
-  _indices = NULL;
-  _indexVertexArrays = NULL;
-  _trimesh = NULL;
+  _vertices = nullptr;
+  _indices = nullptr;
+  _indexVertexArrays = nullptr;
+  _trimesh = nullptr;
 
   init();
 }
@@ -28,8 +28,8 @@ void Ply::init()
   _pd = PlyLoader::instance()->get(_data->filename().c_str());
   _pd.removeDoubles();
 
-  _indexVertexArrays = NULL;
-  _trimesh = NULL;
+  _indexVertexArrays = nullptr;
+  _trimesh = nullptr;
   _nVertices = _pd.vertices.size();
   _nTriangles = _pd.triangles.size();
 
@@ -62,9 +62,9 @@ Ply::~Ply()
 {
   delete _vertices;
   delete _indices;
-  if (_trimesh != NULL)
+  if (_trimesh != nullptr)
     delete _trimesh;
-  if (_indexVertexArrays != NULL)
+  if (_indexVertexArrays != nullptr)
     delete _indexVertexArrays;
 }
 

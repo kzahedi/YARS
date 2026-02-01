@@ -64,7 +64,7 @@ void DataAmbientLight::createXsd(XsdSpecification *spec)
 
 DataAmbientLight* DataAmbientLight::copy()
 {
-  DataAmbientLight *copy = new DataAmbientLight(NULL);
+  DataAmbientLight *copy = new DataAmbientLight(nullptr);
   copy->_position       = _position;
   copy->_color          = _color;
   copy->_brightness     = _brightness;

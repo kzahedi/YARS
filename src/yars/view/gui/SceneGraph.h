@@ -8,6 +8,7 @@
 #include <OGRE/Ogre.h>
 
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -26,9 +27,9 @@ private:
 
   Ogre::SceneManager *_sceneManager;
   Ogre::SceneNode *_root;
-  std::vector<SceneGraphRobotNode *> _robots;
-  SceneGraphEnvironmentNode *_environment;
-  std::vector<SceneGraphTraceLineObject *> _traceLines;
+  std::vector<std::unique_ptr<SceneGraphRobotNode>> _robots;
+  std::unique_ptr<SceneGraphEnvironmentNode> _environment;
+  std::vector<std::unique_ptr<SceneGraphTraceLineObject>> _traceLines;
 };
 
 #endif // __SCENE_GRAPH_H__

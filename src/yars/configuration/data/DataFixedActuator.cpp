@@ -64,7 +64,7 @@ void DataFixedActuator::applyOffset(Pose pose)
 
 DataFixedActuator* DataFixedActuator::_copy()
 {
-  DataFixedActuator *copy = new DataFixedActuator(NULL);
+  DataFixedActuator *copy = new DataFixedActuator(nullptr);
   copy->_name = _name;
   copy->_source = _source;
   copy->_destination = _destination;

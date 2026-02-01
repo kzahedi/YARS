@@ -8,10 +8,8 @@ DataMacros::DataMacros(DataNode *parent)
 
 DataMacros::~DataMacros()
 {
-  for(std::vector<DataMacro*>::iterator i = begin(); i != end(); i++)
-  {
-    delete *i;
-  }
+  for(auto* macro : *this)
+    delete macro;
   clear();
 }
 
@@ -22,14 +20,12 @@ DataMacro* DataMacros::macro(int index)
 
 DataMacro* DataMacros::macro(string name)
 {
-  for(std::vector<DataMacro*>::iterator i = begin(); i != end(); i++)
+  for(auto i = begin(); i != end(); i++)
   {
     if((*i)->name() == name)
-    {
-      return (*i);
-    }
+      return *i;
   }
-  return NULL;
+  return nullptr;
 }
 
 
@@ -59,10 +55,8 @@ void DataMacros::createXsd(XsdSpecification *spec)
 
 DataMacros* DataMacros::copy()
 {
-  DataMacros *copy = new DataMacros(NULL);
-  for(std::vector<DataMacro*>::iterator i = begin(); i != end(); i++)
-  {
+  DataMacros *copy = new DataMacros(nullptr);
+  for(auto i = begin(); i != end(); i++)
     copy->push_back((*i)->copy());
-  }
   return copy;
 }

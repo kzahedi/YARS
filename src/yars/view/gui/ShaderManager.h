@@ -3,8 +3,7 @@
 
 #include <OGRE/Ogre.h>
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
-#include <OGRE/RTShaderSystem/OgreShaderFFPTransform.h>
-#include <OGRE/RTShaderSystem/OgreShaderFFPTexturing.h>
+// OgreShaderFFPTransform.h and OgreShaderFFPTexturing.h removed in OGRE 14
 #include <string>
 
 namespace yars {

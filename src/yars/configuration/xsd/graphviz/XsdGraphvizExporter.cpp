@@ -126,12 +126,12 @@ void XsdGraphvizExporter::writeDotFile(string filetype)
   ofstream myfile;
 
   stringstream filename;
-  for(std::vector<Pair*>::iterator i = name.begin(); i != name.end(); i++)
+  for(auto* pair : name)
   {
     filename.str("");
-    if((*i)->filename.length() == 0) filename << "./dot/" << (*i)->name     << ".dot";
-    else                             filename << "./dot/" << (*i)->filename << ".dot";
-    xsd->generate((*i)->parent, (*i)->name, (*i)->lr, (*i)->depth);
+    if(pair->filename.length() == 0) filename << "./dot/" << pair->name     << ".dot";
+    else                             filename << "./dot/" << pair->filename << ".dot";
+    xsd->generate(pair->parent, pair->name, pair->lr, pair->depth);
     myfile.open(filename.str().c_str());
     myfile << (*xsd) << endl;
     myfile.close();
@@ -142,16 +142,16 @@ void XsdGraphvizExporter::writeDotFile(string filetype)
   {
     cout << "Found dot executable. Exporting dot -> " << filetype << endl;
     stringstream oss;
-    for(std::vector<Pair*>::iterator i = name.begin(); i != name.end(); i++)
+    for(auto* pair : name)
     {
       oss.str("");
       filename.str("");
-      if((*i)->filename.length() == 0) filename << "./dot/" << (*i)->name     << ".dot";
-      else                             filename << "./dot/" << (*i)->filename << ".dot";
+      if(pair->filename.length() == 0) filename << "./dot/" << pair->name     << ".dot";
+      else                             filename << "./dot/" << pair->filename << ".dot";
       oss << "dot -T" << filetype << " " << filename.str() << " -o ";
       filename.str("");
-      if((*i)->filename.length() == 0) filename << filetype << "/" << (*i)->name << "." << filetype;
-      else                             filename << filetype << "/" << (*i)->filename << "." << filetype;
+      if(pair->filename.length() == 0) filename << filetype << "/" << pair->name << "." << filetype;
+      else                             filename << filetype << "/" << pair->filename << "." << filetype;
       oss << filename.str();
       system(oss.str().c_str());
       cout << oss. str() << endl;

@@ -75,7 +75,7 @@ void DataOrbitCam::add(DataParseElement *element)
 
 DataOrbitCam* DataOrbitCam::copy()
 {
-  DataOrbitCam *copy = new DataOrbitCam(NULL);
+  DataOrbitCam *copy = new DataOrbitCam(nullptr);
   copy->_lookAtX = _lookAtX;
   copy->_lookAtY = _lookAtY;
   copy->_lookAtZ = _lookAtZ;

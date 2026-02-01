@@ -12,9 +12,9 @@ class BlenderLogger : public Logger
   public:
     BlenderLogger(DataLoggingBlender *data);
 
-    void update();
-    void init();
-    void close();
+    void update() override;
+    void init() override;
+    void close() override;
 
   private:
     DataLoggingBlender *_data;

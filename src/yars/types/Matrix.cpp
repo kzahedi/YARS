@@ -68,7 +68,7 @@ Matrix::~Matrix()
 
 void Matrix::__init(const int rows, const int cols, double initialValue)
 {
-  if(_cell != NULL)
+  if(_cell != nullptr)
   {
     __deleteCells();
   }
@@ -300,7 +300,7 @@ Matrix& Matrix::operator=(const Matrix &m)
 
 void Matrix::__deleteCells()
 {
-  if (_cell != NULL)
+  if (_cell != nullptr)
   {
     for(int i=_rows-1; i>=0; i--)
     {

@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLoggingObject.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <yars/util/YarsErrorHandler.h>
 
@@ -25,13 +24,13 @@ using namespace std;
 DataLoggingObject::DataLoggingObject(DataNode *parent)
   : DataNode(parent)
 {
-  _object = NULL;
+  _object = nullptr;
   _precision = -1;
 }
 
 DataLoggingObject::~DataLoggingObject()
 {
-  if(_object != NULL) delete _object;
+  if(_object != nullptr) delete _object;
   clear();
 }
 
@@ -80,12 +79,12 @@ void DataLoggingObject::createXsd(XsdSpecification *spec)
 
 DataLoggingObject* DataLoggingObject::copy()
 {
-  DataLoggingObject *copy = new DataLoggingObject(NULL);
+  DataLoggingObject *copy = new DataLoggingObject(nullptr);
   copy->_target = _target;
   copy->_precision = _precision;
-  for(std::vector<string>::iterator v = begin(); v != end(); v++)
+  for(const auto& v : *this)
   {
-    copy->push_back(*v);
+    copy->push_back(v);
   }
   return copy;
 }

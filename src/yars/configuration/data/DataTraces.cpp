@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataTraces.h>
 
-#include <yars/util/stl_macros.h>
 
 # define YARS_STRING_TRACE (char*)"trace"
 # define YARS_STRING_POINT (char*)"point"
@@ -81,21 +80,17 @@ int DataTraces::p_size()
 
 DataTraces* DataTraces::copy()
 {
-  DataTraces *copy = new DataTraces(NULL);
+  DataTraces *copy = new DataTraces(nullptr);
   copy->_name = _name;
-  for(std::vector<DataTraceLine*>::iterator i = _lines.begin(); i != _lines.end(); i++)
-  {
+  for(auto i = _lines.begin(); i != _lines.end(); i++)
     copy->_lines.push_back((*i)->copy());
-  }
-  for(std::vector<DataTracePoint*>::iterator i = _points.begin(); i != _points.end(); i++)
-  {
+  for(auto i = _points.begin(); i != _points.end(); i++)
     copy->_points.push_back((*i)->copy());
-  }
   return copy;
 }
 
 void DataTraces::resetTo(DataTraces* other)
 {
-  FOREACH(DataTraceLine*,  l, _lines)  (*l)->clear();
-  FOREACH(DataTracePoint*, p, _points) (*p)->clear();
+  for (auto* l : _lines)  l->clear();
+  for (auto* p : _points) p->clear();
 }

@@ -9,7 +9,7 @@ YarsPhysicsModel::YarsPhysicsModel()
 YarsPhysicsModel::~YarsPhysicsModel()
 {
   Y_DEBUG("YarsPhysicsModel destructor called.");
-  if (_physics != NULL)
+  if (_physics != nullptr)
   {
     _physics->close();
     delete _physics;
@@ -27,14 +27,20 @@ void YarsPhysicsModel::performOneSimulationStep()
 {
   Y_DEBUG("YarsPhysicsModel::performOneSimulationStep called.");
   _physics->step();
+
   if (_physics->isReset())
   {
     __YARS_SET_USE_PAUSE(true);
-    notifyObservers(_m_reset);
+    if (_resetCallback)
+      _resetCallback();
     __YARS_SET_USE_PAUSE(false);
   }
+
   if (_physics->isQuit())
-    notifyObservers(_m_quit_called);
+  {
+    if (_quitCallback)
+      _quitCallback();
+  }
 }
 
 void YarsPhysicsModel::performMultipleSimulationSteps(int numberOfSteps)

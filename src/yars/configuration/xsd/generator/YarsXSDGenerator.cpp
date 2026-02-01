@@ -35,11 +35,11 @@ YarsXSDGenerator::YarsXSDGenerator()
     XMLString::release(&pMsg);
   }
 
-  _impl =  DOMImplementationRegistry::getDOMImplementation(NULL);
+  _impl =  DOMImplementationRegistry::getDOMImplementation(nullptr);
   _out  = ((DOMImplementationLS*)_impl)->createLSOutput();
   _out->setEncoding(X("UTF-8"));
 
-  if (_impl != NULL)
+  if (_impl != nullptr)
   {
     try
     {
@@ -52,26 +52,16 @@ YarsXSDGenerator::YarsXSDGenerator()
       Data             *data = Data::instance();
       XsdSpecification *spec = data->xsd();
 
-      for(std::vector<XsdSequence*>::iterator s = spec->s_begin(); s != spec->s_end(); s++)
-      {
+      for(auto s = spec->s_begin(); s != spec->s_end(); ++s)
         __addSequence(*s);
-      }
-      for(std::vector<XsdEnumeration*>::iterator e = spec->e_begin(); e != spec->e_end(); e++)
-      {
+      for(auto e = spec->e_begin(); e != spec->e_end(); ++e)
         __addEnumeration(*e);
-      }
-      for(std::vector<XsdChoice*>::iterator c = spec->c_begin(); c != spec->c_end(); c++)
-      {
+      for(auto c = spec->c_begin(); c != spec->c_end(); ++c)
         __addChoice(*c);
-      }
-      for(std::vector<XsdInterval*>::iterator i = spec->i_begin(); i != spec->i_end(); i++)
-      {
+      for(auto i = spec->i_begin(); i != spec->i_end(); ++i)
         __addInterval(*i);
-      }
-      for(std::vector<XsdRegularExpression*>::iterator r = spec->r_begin(); r != spec->r_end(); r++)
-      {
+      for(auto r = spec->r_begin(); r != spec->r_end(); ++r)
         __addRegularExpression(*r);
-      }
 
       __addRoot(spec->root());
 
@@ -89,7 +79,7 @@ YarsXSDGenerator::YarsXSDGenerator()
     {
       XERCES_STD_QUALIFIER cerr << "An error occurred creating the document" << XERCES_STD_QUALIFIER endl;
     }
-  }  // (inpl != NULL)
+  }  // (inpl != nullptr)
   else
   {
     XERCES_STD_QUALIFIER cerr << "Requested implementation is not supported" << XERCES_STD_QUALIFIER endl;
@@ -110,10 +100,10 @@ void YarsXSDGenerator::__addSequence(XsdSequence *s)
 {
   // DOMComment *comment     = _doc->createComment(X("comment"));
   DOMElement *parent      = _doc->createElement(YARS_XSD_COMPLEX_TYPE);
-  XsdElement *xsdElement  = NULL;
-  XsdChoice  *xsdChoice   = NULL;
-  DOMElement *element     = NULL;
-  DOMElement *choice      = NULL;
+  XsdElement *xsdElement  = nullptr;
+  XsdChoice  *xsdChoice   = nullptr;
+  DOMElement *element     = nullptr;
+  DOMElement *choice      = nullptr;
 
   parent->setAttribute(YARS_XSD_NAME, X(s->name().c_str()));
 
@@ -121,7 +111,7 @@ void YarsXSDGenerator::__addSequence(XsdSequence *s)
   {
     DOMElement *sequence    = _doc->createElement(YARS_XSD_SEQUENCE);
     parent->appendChild(sequence);
-    for(std::vector<XsdNode*>::iterator n = s->n_begin(); n != s->n_end(); n++)
+    for(auto n = s->n_begin(); n != s->n_end(); ++n)
     {
       switch((*n)->nodeType())
       {
@@ -142,7 +132,7 @@ void YarsXSDGenerator::__addSequence(XsdSequence *s)
   }
   if(s->a_size() > 0)
   {
-    for(std::vector<XsdAttribute*>::iterator a = s->a_begin(); a != s->a_end(); a++)
+    for(auto a = s->a_begin(); a != s->a_end(); ++a)
     {
       element = _doc->createElement(YARS_XSD_ATTRIBUTE);
       __createAttribute(element, *a);
@@ -166,7 +156,7 @@ void YarsXSDGenerator::__createChoice(DOMElement *choice, XsdChoice *c)
 
   if(c->e_size() > 0)
   {
-    for(std::vector<XsdElement*>::iterator i = c->e_begin(); i != c->e_end(); i++)
+    for(auto i = c->e_begin(); i != c->e_end(); ++i)
     {
       DOMElement *element = _doc->createElement(YARS_XSD_ELEMENT);
       __createElement(element, *i);
@@ -176,7 +166,7 @@ void YarsXSDGenerator::__createChoice(DOMElement *choice, XsdChoice *c)
 
   if(c->s_size() > 0)
   {
-    for(std::vector<XsdSequence*>::iterator s = c->s_begin(); s != c->s_end(); s++)
+    for(auto s = c->s_begin(); s != c->s_end(); ++s)
     {
       DOMElement *sequence = _doc->createElement(YARS_XSD_SEQUENCE);
       __createSequence(sequence, *s);
@@ -190,7 +180,7 @@ void YarsXSDGenerator::__createSequence(DOMElement *sequence, XsdSequence *s)
 {
   if(s->e_size() > 0)
   {
-    for(std::vector<XsdElement*>::iterator i = s->e_begin(); i != s->e_end(); i++)
+    for(auto i = s->e_begin(); i != s->e_end(); ++i)
     {
       DOMElement *element = _doc->createElement(YARS_XSD_ELEMENT);
       __createElement(element, *i);
@@ -220,7 +210,7 @@ void YarsXSDGenerator::__createElement(DOMElement *element, XsdElement *e)
   if(e->a_size() > 0)
   {
     DOMElement *complexType = _doc->createElement(YARS_XSD_COMPLEX_TYPE);
-    for(std::vector<XsdAttribute*>::iterator a = e->a_begin(); a != e->a_end(); a++)
+    for(auto a = e->a_begin(); a != e->a_end(); ++a)
     {
       DOMElement *attr = _doc->createElement(YARS_XSD_ATTRIBUTE);
       __createAttribute(attr, *a);
@@ -252,7 +242,7 @@ void YarsXSDGenerator::__addEnumeration(XsdEnumeration *e)
 
   parent->setAttribute(YARS_XSD_NAME, X(e->name().c_str()));
   parent->appendChild(restriction);
-  for(std::vector<string>::iterator v = e->v_begin(); v != e->v_end(); v++)
+  for(auto v = e->v_begin(); v != e->v_end(); ++v)
   {
     DOMElement *element = _doc->createElement(YARS_XSD_ENUMERATION);
     element->setAttribute(YARS_XSD_VALUE, X(v->c_str()));
@@ -275,14 +265,14 @@ void YarsXSDGenerator::__addChoice(XsdChoice *c)
   }
   parent->setAttribute(YARS_XSD_NAME, X(c->name().c_str()));
 
-  for(std::vector<XsdElement*>::iterator e = c->e_begin(); e != c->e_end(); e++)
+  for(auto e = c->e_begin(); e != c->e_end(); ++e)
   {
     DOMElement *element = _doc->createElement(YARS_XSD_ELEMENT);
     __createElement(element, *e);
     choice->appendChild(element);
   }
 
-  for(std::vector<XsdSequence*>::iterator s = c->s_begin(); s != c->s_end(); s++)
+  for(auto s = c->s_begin(); s != c->s_end(); ++s)
   {
     DOMElement *sequence = _doc->createElement(YARS_XSD_SEQUENCE);
     __createSequence(sequence, *s);
@@ -293,7 +283,7 @@ void YarsXSDGenerator::__addChoice(XsdChoice *c)
 
   if(c->a_size() > 0)
   {
-    for(std::vector<XsdAttribute*>::iterator a = c->a_begin(); a != c->a_end(); a++)
+    for(auto a = c->a_begin(); a != c->a_end(); ++a)
     {
       DOMElement *element = _doc->createElement(YARS_XSD_ATTRIBUTE);
       __createAttribute(element, *a);
@@ -349,7 +339,7 @@ void YarsXSDGenerator::__addRoot(XsdSequence *s)
   {
     DOMElement *sequence    = _doc->createElement(YARS_XSD_SEQUENCE);
     parent->appendChild(sequence);
-    for(std::vector<XsdElement*>::iterator e = s->e_begin(); e != s->e_end(); e++)
+    for(auto e = s->e_begin(); e != s->e_end(); ++e)
     {
       DOMElement *element = _doc->createElement(YARS_XSD_ELEMENT);
       __createElement(element, *e);
@@ -359,7 +349,7 @@ void YarsXSDGenerator::__addRoot(XsdSequence *s)
   }
   if(s->a_size() > 0)
   {
-    for(std::vector<XsdAttribute*>::iterator a = s->a_begin(); a != s->a_end(); a++)
+    for(auto a = s->a_begin(); a != s->a_end(); ++a)
     {
       DOMElement *element = _doc->createElement(YARS_XSD_ATTRIBUTE);
       __createAttribute(element, *a);

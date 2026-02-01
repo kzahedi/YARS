@@ -3,14 +3,13 @@
 #include <yars/configuration/YarsConfiguration.h>
 
 #include <algorithm>
+#include <regex>
 
 CSVLogger::CSVLogger(DataLoggingCSV *data)
 {
   _data = data;
-  for(std::vector<string>::iterator s = data->t_begin(); s != data->t_end(); s++)
-  {
+  for(auto s = data->t_begin(); s != data->t_end(); s++)
     push_back(*s);
-  }
 }
 
 void CSVLogger::init()
@@ -29,12 +28,10 @@ void CSVLogger::init()
   }
   if(_data->debug()) cout << "opening " << _oss.str().c_str() << endl;
   _output.open(_oss.str().c_str());
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->v_begin(); v != (*l)->v_end(); v++)
-    {
+    for(auto v = (*l)->v_begin(); v != (*l)->v_end(); v++)
       names.push_back(*v);
-    }
   }
   if(names.size() > 0)
   {
@@ -58,12 +55,10 @@ void CSVLogger::update()
   if(_data->isLogging(__YARS_GET_STEP) == false) return;
   std::vector<string> values;
   _oss.str("");
-  for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
+  for(auto l = _modules.begin(); l != _modules.end(); l++)
   {
-    for(std::vector<string>::iterator v = (*l)->begin(); v != (*l)->end(); v++)
-    {
+    for(auto v = (*l)->begin(); v != (*l)->end(); v++)
       values.push_back(*v);
-    }
   }
   if(values.size() > 0)
   {
@@ -73,9 +68,7 @@ void CSVLogger::update()
     }
     for(int i = 0; i < (int)values.size() - 1; i++)
     {
-      string temp = values[i];
-      std::replace(temp.begin(), temp.end(), ' ', ',');
-      _oss << temp << ",";
+      _oss << std::regex_replace(values[i], std::regex(" "), ",") << ",";
     }
     _oss << values[values.size() - 1] << endl;
   }

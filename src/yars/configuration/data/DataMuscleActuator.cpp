@@ -82,13 +82,13 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
     : DataActuator(parent, DATA_ACTUATOR_MUSCLE)
 {
   _noise = new DataNoise(this);
-  _filter = NULL;
+  _filter = nullptr;
   _deflectionSet = false;
   _currentTransitionalVelocity = 0.0;
   _appliedForce = 0.0;
   _appliedVelocity = 0.0;
   _friction = 0.0;
-  _n = NULL;
+  _n = nullptr;
   _erp = 0.5;
   _cfm = 0.0;
   _parsingSourceAnchor = false;
@@ -424,11 +424,11 @@ string DataMuscleActuator::mode()
 
 DataMuscleActuator *DataMuscleActuator::_copy()
 {
-  DataMuscleActuator *copy = new DataMuscleActuator(NULL);
+  DataMuscleActuator *copy = new DataMuscleActuator(nullptr);
 
-  if (_filter != NULL)
+  if (_filter != nullptr)
     copy->_filter = _filter->copy();
-  if (_noise != NULL)
+  if (_noise != nullptr)
     copy->_noise = _noise->copy();
   copy->_mapping = _mapping;
   copy->_parameter = _parameter;
