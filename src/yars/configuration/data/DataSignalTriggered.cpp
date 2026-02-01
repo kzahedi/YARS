@@ -58,9 +58,9 @@ DataSignalTriggered* DataSignalTriggered::_copy()
   DataSignalTriggered *copy = new DataSignalTriggered(nullptr);
   copy->_name = _name;
   copy->_module = _module;
-  for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
+  for(auto* param : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(param->copy());
   }
   return copy;
 }

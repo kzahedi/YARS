@@ -23,9 +23,9 @@ Data::Data()
 
 Data::~Data()
 {
-  for(std::vector<DataRobotSimulationDescription*>::iterator i = _description.begin(); i != _description.end(); i++)
+  for(auto* desc : _description)
   {
-    delete *i;
+    delete desc;
   }
   _description.clear();
 }
@@ -46,9 +46,9 @@ XsdSpecification* Data::xsd()
 
 void Data::clear()
 {
-  for(std::vector<DataRobotSimulationDescription*>::iterator i = _description.begin(); i != _description.end(); i++)
+  for(auto* desc : _description)
   {
-    delete *i;
+    delete desc;
   }
   _description.clear();
   _current = nullptr;

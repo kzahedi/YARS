@@ -135,9 +135,9 @@ void DataLoggingSelforg::createXsd(XsdSpecification *spec)
 DataLoggingSelforg* DataLoggingSelforg::copy()
 {
   DataLoggingSelforg *copy = new DataLoggingSelforg(nullptr);
-  for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
+  for(const auto& target : _targets)
   {
-    copy->_targets.push_back(*i);
+    copy->_targets.push_back(target);
   }
   copy->_name              = _name;
   copy->_filename          = _filename;

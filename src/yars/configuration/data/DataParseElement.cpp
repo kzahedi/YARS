@@ -36,11 +36,11 @@ void DataParseElement::add(DataParseAttribute *attribute)
 
 DataParseAttribute* DataParseElement::attribute(string name)
 {
-  for(std::vector<DataParseAttribute*>::iterator i = begin(); i != end(); i++)
+  for(auto* attr : *this)
   {
-    if( (*i)->name() == name)
+    if(attr->name() == name)
     {
-      return (*i);
+      return attr;
     }
   }
   return nullptr;

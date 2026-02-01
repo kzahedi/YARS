@@ -62,9 +62,9 @@ DataSignalKeyboard* DataSignalKeyboard::_copy()
   copy->_name = _name;
   copy->_module = _module;
   copy->_key = _key;
-  for(std::vector<DataParameter*>::iterator i = begin(); i != end(); i++)
+  for(auto* param : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(param->copy());
   }
   return copy;
 }

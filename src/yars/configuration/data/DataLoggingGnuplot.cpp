@@ -125,9 +125,9 @@ string DataLoggingGnuplot::term()
 DataLoggingGnuplot* DataLoggingGnuplot::copy()
 {
   DataLoggingGnuplot *copy = new DataLoggingGnuplot(nullptr);
-  for(std::vector<string>::iterator i = _targets.begin(); i != _targets.end(); i++)
+  for(const auto& target : _targets)
   {
-    copy->_targets.push_back(*i);
+    copy->_targets.push_back(target);
   }
   copy->_size = _size;
   copy->_delay = _delay;

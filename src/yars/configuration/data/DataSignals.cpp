@@ -54,9 +54,9 @@ void DataSignals::createXsd(XsdSpecification *spec)
 DataSignals* DataSignals::copy()
 {
   DataSignals* copy = new DataSignals(nullptr);
-  for(std::vector<DataSignal*>::iterator i = begin(); i != end(); i++)
+  for(auto* signal : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(signal->copy());
   }
   return copy;
 }

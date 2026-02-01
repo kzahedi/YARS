@@ -56,9 +56,9 @@ void DataRobots::createXsd(XsdSpecification *spec)
 DataRobots* DataRobots::copy()
 {
   DataRobots *copy = new DataRobots(nullptr);
-  for(std::vector<DataRobot*>::iterator i = begin(); i != end(); i++)
+  for(auto* robot : *this)
   {
-    copy->push_back((*i)->copy());
+    copy->push_back(robot->copy());
   }
   if(_macros != nullptr) copy->_macros = _macros->copy();
   return copy;

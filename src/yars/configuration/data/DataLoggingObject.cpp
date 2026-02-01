@@ -82,9 +82,9 @@ DataLoggingObject* DataLoggingObject::copy()
   DataLoggingObject *copy = new DataLoggingObject(nullptr);
   copy->_target = _target;
   copy->_precision = _precision;
-  for(std::vector<string>::iterator v = begin(); v != end(); v++)
+  for(const auto& v : *this)
   {
-    copy->push_back(*v);
+    copy->push_back(v);
   }
   return copy;
 }
