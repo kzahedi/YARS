@@ -48,7 +48,6 @@ void Robot::__createActuators()
   for (auto i = _data->a_begin(); i != _data->a_end(); i++)
   {
     auto a = std::unique_ptr<Actuator>(ActuatorFactory::create(*i, this));
-    cout << "added " << a->data()->name() << " is active: " << a->data()->isActive(0) << endl;
     _actuators.push_back(std::move(a));
   }
 }
@@ -73,11 +72,11 @@ void Robot::prePhysicsUpdate()
 void Robot::postPhysicsUpdate()
 {
   for (auto& o : _objects)
+  {
     o->postPhysicsUpdate();
-
-  for (auto& o : _objects)
     for (auto oo = o->begin(); oo != o->end(); ++oo)
       (*oo)->postPhysicsUpdate();
+  }
 
   for (auto& a : _actuators)
     a->postPhysicsUpdate();

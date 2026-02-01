@@ -63,7 +63,8 @@ void YarsMainControl::__init()
 
 void YarsMainControl::__step()
 {
-  if (!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
+  bool isPaused = __YARS_GET_USE_PAUSE;
+  if (!isPaused || (isPaused && __YARS_GET_USE_SINGLE_STEP))
   {
     _ypm->performOneSimulationStep();
     _ylm->step();
@@ -108,7 +109,8 @@ void YarsMainControl::run()
 
   while (_keepOnRunning)
   {
-    if (!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
+    bool isPaused = __YARS_GET_USE_PAUSE;
+    if (!isPaused || (isPaused && __YARS_GET_USE_SINGLE_STEP))
     {
       __YARS_SET_STEP(__YARS_GET_STEP + 1);
       __YARS_SET_CONTINUOUS_STEP(__YARS_GET_CONTINUOUS_STEP + 1);

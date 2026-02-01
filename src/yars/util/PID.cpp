@@ -127,7 +127,7 @@ int PID::size()
 void PID::__resize(int size)
 {
   _errors.resize(size);
-  for(std::vector<double>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
+  for(auto& e : _errors) e = 0.0;
 }
 
 
@@ -138,7 +138,7 @@ void PID::__reset(double c)
   _error             = 0;
   _lastError         = 0;
   _integral          = 0;
-  for(std::vector<double>::iterator i = _errors.begin(); i != _errors.end(); i++) *i = 0.0;
+  for(auto& e : _errors) e = 0.0;
 }
 
 void PID::reset()

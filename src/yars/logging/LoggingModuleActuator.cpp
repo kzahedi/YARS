@@ -11,9 +11,9 @@ LoggingModuleActuator::LoggingModuleActuator(DataLoggingActuator *data)
   setPrecision(data->precision());
   std::vector<int> order = _data->order();
 
-  for (std::vector<int>::iterator i = order.begin(); i != order.end(); i++)
+  for (int orderType : order)
   {
-    switch (*i)
+    switch (orderType)
     {
     case INTERNAL:
       __useInternal();

@@ -19,10 +19,10 @@ GaussianNoise::GaussianNoise(DataNoise *data)
 {
   _mean  = 0.0;
   _sigma = 1.0;
-  for(std::vector<DataParameter*>::iterator p = data->begin(); p != data->end(); p++)
+  for(auto* param : *data)
   {
-    if((*p)->name() == "mean")  _mean  = (*p)->realValue();
-    if((*p)->name() == "sigma") _sigma = (*p)->realValue();
+    if(param->name() == "mean")  _mean  = param->realValue();
+    if(param->name() == "sigma") _sigma = param->realValue();
   }
 }
 

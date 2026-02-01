@@ -15,9 +15,9 @@ LoggingModuleSensor::LoggingModuleSensor(DataLoggingSensor *data)
   {
     for(int index = 0; index < _sensor->dimension(); index++)
     {
-      for(std::vector<int>::iterator i = order.begin(); i != order.end(); i++)
+      for(int orderType : order)
       {
-        switch(*i)
+        switch(orderType)
         {
           case INTERNAL: __useInternal(index); break;
           case EXTERNAL: __useExternal(index); break;
@@ -27,9 +27,9 @@ LoggingModuleSensor::LoggingModuleSensor(DataLoggingSensor *data)
   }
   else
   {
-    for(std::vector<int>::iterator i = order.begin(); i != order.end(); i++)
+    for(int orderType : order)
     {
-      switch(*i)
+      switch(orderType)
       {
         case INTERNAL: __useInternal(-1); break;
         case EXTERNAL: __useExternal(-1); break;

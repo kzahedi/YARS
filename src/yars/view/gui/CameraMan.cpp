@@ -13,10 +13,10 @@ CameraMan::CameraMan(WindowConfiguration *windowConfiguration)
   CameraFactory::create(&_followCameras, _windowConfiguration);
   _windowConfiguration->camNames.clear();
 
-  for(std::vector<FollowCamera*>::iterator i = _followCameras.begin(); i != _followCameras.end(); i++)
+  for(auto* cam : _followCameras)
   {
     string s;
-    (*i)->name(&s);
+    cam->name(&s);
     _windowConfiguration->camNames.push_back(s);
   }
 }
