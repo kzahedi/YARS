@@ -12,6 +12,8 @@
 
 #include <yars/view/console/ConsoleView.h>
 
+#include <functional>
+
 /** \brief Main control class for YARS simulation.
  *
  * Coordinates physics, logging, and runtime control.
@@ -36,6 +38,12 @@ public:
   /** \brief Request simulation to quit. */
   void requestQuit();
 
+  /** \brief Set callback to quit the view when physics ends. */
+  void setViewQuitCallback(std::function<void()> callback);
+
+  /** \brief Set callback for synchronized GUI updates. */
+  void setViewSyncCallback(std::function<void()> callback);
+
 private:
   void __init();
   void __step();
@@ -49,5 +57,7 @@ private:
   YarsLoggingModel *_ylm;
   RuntimeControl *_rtc;
   SignalHandler *_sig;
+  std::function<void()> _viewQuitCallback;
+  std::function<void()> _viewSyncCallback;
 };
 #endif // __YARS_MAIN_CONTROL_H__

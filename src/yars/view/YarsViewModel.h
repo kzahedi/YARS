@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include <memory>
+#include <atomic>
 
 /** \brief View model for YARS GUI.
  *
@@ -40,7 +41,7 @@ public:
     std::vector<std::unique_ptr<SdlWindow>> _newWindows;
     int                     _drawFequency;
     int                     _visualiseCalled;
-    bool                    _run;
+    std::atomic<bool>       _run;
     bool                    _sync;
     bool                    _syncedStep;
     bool                    _toggleVideo;

@@ -15,8 +15,10 @@ using namespace std;
 
 void VideoCapture::init(int width, int height, int fpsrate, int bitrate, string fn) {
 
-  fps      = fpsrate;
-  filename = fn;
+  fps         = fpsrate;
+  filename    = fn;
+  videoWidth  = width;
+  videoHeight = height;
 
   int err;
 
@@ -108,12 +110,13 @@ void VideoCapture::addFrame(uint8_t *data) {
   }
 
   if (!swsCtx) {
-    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_RGB32, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
+    // OGRE renders in PF_B8G8R8A8 (BGRA byte order), so use AV_PIX_FMT_BGRA
+    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_BGRA, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
   }
 
   int inLinesize[1] = { 4 * cctx->width };
 
-  // From RGB to YUV
+  // From BGRA to YUV
   sws_scale(swsCtx, (const uint8_t * const *)&data, inLinesize, 0, cctx->height, videoFrame->data, videoFrame->linesize);
 
   videoFrame->pts = frameCounter++;
@@ -195,63 +198,95 @@ void VideoCapture::__remux() {
   AVFormatContext *ifmt_ctx = nullptr, *ofmt_ctx = nullptr;
   int err;
 
-  if ((err = avformat_open_input(&ifmt_ctx, VIDEO_TMP_FILE, 0, 0)) < 0) {
+  // Explicitly specify h264 format for raw H.264 input
+  const AVInputFormat *ifmt = av_find_input_format("h264");
+  if ((err = avformat_open_input(&ifmt_ctx, VIDEO_TMP_FILE, ifmt, 0)) < 0) {
     cout << "Failed to open input file for remuxing" << endl;
     __end(ifmt_ctx, ofmt_ctx);
-  }
-  if ((err = avformat_find_stream_info(ifmt_ctx, 0)) < 0) {
-    cout << "Failed to retrieve input stream information" << endl;
-    __end(ifmt_ctx, ofmt_ctx);
-  }
-  if ((err = avformat_alloc_output_context2(&ofmt_ctx, nullptr, nullptr, filename.c_str()))) {
-    cout << "Failed to allocate output context" << endl;
-    __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
 
-  AVStream *inVideoStream = ifmt_ctx->streams[0];
+  // For raw H.264, we need to set up stream info manually
+  // Try to find stream info but don't fail if it can't determine everything
+  avformat_find_stream_info(ifmt_ctx, 0);
+
+  if ((err = avformat_alloc_output_context2(&ofmt_ctx, nullptr, nullptr, filename.c_str())) < 0) {
+    cout << "Failed to allocate output context" << endl;
+    __end(ifmt_ctx, ofmt_ctx);
+    return;
+  }
+
   AVStream *outVideoStream = avformat_new_stream(ofmt_ctx, nullptr);
   if (!outVideoStream) {
     cout << "Failed to allocate output video stream" << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
+
+  // Set up codec parameters manually since we know the dimensions
   outVideoStream->time_base = (AVRational){ 1, fps };
-  avcodec_parameters_copy(outVideoStream->codecpar, inVideoStream->codecpar);
+  outVideoStream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
+  outVideoStream->codecpar->codec_id = AV_CODEC_ID_H264;
+  outVideoStream->codecpar->width = videoWidth;
+  outVideoStream->codecpar->height = videoHeight;
+  outVideoStream->codecpar->format = AV_PIX_FMT_YUV420P;
   outVideoStream->codecpar->codec_tag = 0;
+
+  // Copy extradata if available from input stream
+  if (ifmt_ctx->nb_streams > 0 && ifmt_ctx->streams[0]->codecpar->extradata_size > 0) {
+    outVideoStream->codecpar->extradata_size = ifmt_ctx->streams[0]->codecpar->extradata_size;
+    outVideoStream->codecpar->extradata = (uint8_t*)av_mallocz(
+      outVideoStream->codecpar->extradata_size + AV_INPUT_BUFFER_PADDING_SIZE);
+    memcpy(outVideoStream->codecpar->extradata,
+           ifmt_ctx->streams[0]->codecpar->extradata,
+           outVideoStream->codecpar->extradata_size);
+  }
 
   if (!(ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
     if ((err = avio_open(&ofmt_ctx->pb, filename.c_str(), AVIO_FLAG_WRITE)) < 0) {
       cout << "Failed to open output file" << endl;
       __end(ifmt_ctx, ofmt_ctx);
+      return;
     }
   }
 
   if ((err = avformat_write_header(ofmt_ctx, 0)) < 0) {
     cout << "Failed to write header to output file" << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
 
-  AVPacket videoPkt;
-  int ts = 0;
-  while (true) {
-    if ((err = av_read_frame(ifmt_ctx, &videoPkt)) < 0) {
-      break;
-    }
-    videoPkt.stream_index = outVideoStream->index;
-    videoPkt.pts = ts;
-    videoPkt.dts = ts;
-    videoPkt.duration = av_rescale_q(videoPkt.duration, inVideoStream->time_base, outVideoStream->time_base);
-    ts += videoPkt.duration;
-    videoPkt.pos = -1;
+  AVPacket *videoPkt = av_packet_alloc();
+  if (!videoPkt) {
+    cout << "Failed to allocate packet for remuxing" << endl;
+    __end(ifmt_ctx, ofmt_ctx);
+    return;
+  }
 
-    if ((err = av_interleaved_write_frame(ofmt_ctx, &videoPkt)) < 0) {
+  // After write_header, time_base may have changed; use the actual muxer time_base
+  // Frame duration in the muxer's time_base (1 frame = 1/fps seconds)
+  int64_t frameDuration = av_rescale_q(1, (AVRational){1, fps}, outVideoStream->time_base);
+  int64_t ts = 0;
+
+  while (av_read_frame(ifmt_ctx, videoPkt) >= 0) {
+    videoPkt->stream_index = outVideoStream->index;
+    videoPkt->pts = ts;
+    videoPkt->dts = ts;
+    videoPkt->duration = frameDuration;
+    ts += frameDuration;
+    videoPkt->pos = -1;
+
+    if ((err = av_interleaved_write_frame(ofmt_ctx, videoPkt)) < 0) {
       cout << "Failed to mux packet" << endl;
-      av_packet_unref(&videoPkt);
+      av_packet_unref(videoPkt);
       break;
     }
-    av_packet_unref(&videoPkt);
+    av_packet_unref(videoPkt);
   }
+  av_packet_free(&videoPkt);
 
   av_write_trailer(ofmt_ctx);
+  __end(ifmt_ctx, ofmt_ctx);
 }
 
 void VideoCapture::__end(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx)

@@ -69,6 +69,12 @@ void YarsMainControl::__step()
     _ypm->performOneSimulationStep();
     _ylm->step();
     __YARS_SET_USE_SINGLE_STEP(false);
+
+    // Signal GUI to do synchronized update (for video capture)
+    if (_viewSyncCallback && __YARS_GET_SYNC_GUI)
+    {
+      _viewSyncCallback();
+    }
   }
   else
   {
@@ -130,12 +136,13 @@ void YarsMainControl::run()
 #ifdef USE_VISUALISATION
   if (__YARS_GET_USE_VISUALISATION)
   {
-    // Give GUI time to quit gracefully
-    if (!__YARS_GET_SYNC_GUI)
+    // Signal view to quit so it can finalize video capture
+    if (_viewQuitCallback)
     {
-      __YARS_SET_SYNC_GUI(true);
-      usleep(500);
+      _viewQuitCallback();
     }
+    // Give GUI time to quit gracefully
+    usleep(500000); // 500ms for video finalization
   }
 #endif
 
@@ -146,6 +153,16 @@ void YarsMainControl::run()
 void YarsMainControl::requestQuit()
 {
   _keepOnRunning = false;
+}
+
+void YarsMainControl::setViewQuitCallback(std::function<void()> callback)
+{
+  _viewQuitCallback = callback;
+}
+
+void YarsMainControl::setViewSyncCallback(std::function<void()> callback)
+{
+  _viewSyncCallback = callback;
 }
 
 void YarsMainControl::__closeApplication()

@@ -79,12 +79,10 @@ void YarsViewModel::reset()
 
 void YarsViewModel::quit()
 {
-  Y_DEBUG("YarsViewModel::quit called")
+  Y_DEBUG("YarsViewModel::quit called - signaling run loop to exit")
+  // Only set the flag - actual cleanup happens in run() when it exits
+  // This is thread-safe since _run is atomic
   _run = false;
-  for (auto& w : _windowManager)
-    w->quit();
-  _windowManager.clear();
-  Y_DEBUG("YarsViewModel::quit completed")
 }
 
 void YarsViewModel::__createWindow()
@@ -174,6 +172,16 @@ void YarsViewModel::run()
         [](const std::unique_ptr<SdlWindow>& w) { return !w; }),
       _newWindows.end());
   }
+
+  // Cleanup after exiting run loop
+  Y_DEBUG("YarsViewModel::run exiting - cleaning up windows")
+  for (auto& w : _windowManager)
+  {
+    if (w) w->quit();
+  }
+  _windowManager.clear();
+  _newWindows.clear();
+  Y_DEBUG("YarsViewModel::run cleanup completed")
 }
 
 void YarsViewModel::synched()
@@ -195,6 +203,9 @@ void YarsViewModel::toggleCaptureVideo()
 {
   _sync = !_sync;
   _toggleVideo = !_toggleVideo;
+
+  // Also set global sync flag for physics thread
+  __YARS_SET_SYNC_GUI(_sync);
 
 #if USE_CAPTURE_VIDEO
   if (_toggleVideo == true)

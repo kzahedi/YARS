@@ -67,6 +67,8 @@ class VideoCapture {
     SwsContext      *swsCtx;
     int             frameCounter;
     int             fps;
+    int             videoWidth;
+    int             videoHeight;
     string          filename;
 
 };

@@ -15,6 +15,12 @@ int mainFunction(int argc, char **argv)
   {
     YarsViewModel *yvm = new YarsViewModel();
 
+    // Set callback so physics can signal view to quit when simulation ends
+    ymc->setViewQuitCallback([yvm]() { yvm->quit(); });
+
+    // Set callback for synchronized GUI updates (video capture)
+    ymc->setViewSyncCallback([yvm]() { yvm->synched(); });
+
     // Run physics in a separate thread
     std::thread physicsThread(&YarsMainControl::run, ymc);
 

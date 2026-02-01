@@ -754,7 +754,14 @@ void SdlWindow::__initMovie()
 
 void SdlWindow::__closeMovie()
 {
-  Ogre::TextureManager::getSingleton().remove("StreamTex");
+  // Clean up the render texture used for video capture
+  stringstream oss;
+  oss << "render texture " << _index;
+  if (Ogre::TextureManager::getSingleton().resourceExists(oss.str()))
+  {
+    Ogre::TextureManager::getSingleton().remove(oss.str());
+    _renderTexture.reset();
+  }
   _captureRunning = false;
   _videoCapture->finish();
   delete _videoCapture;
@@ -772,7 +779,14 @@ void SdlWindow::__captureMovieFrame()
     __closeMovie();
     __initMovie();
   }
-  int ret, got_output;
+
+  // Ensure render texture is initialized
+  if (!_renderTexture)
+  {
+    Y_DEBUG("Warning: _renderTexture is null in __captureMovieFrame");
+    return;
+  }
+
   uint width = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
 
@@ -785,6 +799,7 @@ void SdlWindow::__captureMovieFrame()
 
   _videoCapture->addFrame(pData);
 
+  buffer->unlock();
   _frameIndex++;
 }
 
