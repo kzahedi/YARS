@@ -147,11 +147,11 @@ XsdSpecification::~XsdSpecification()
 
 void XsdSpecification::add(XsdSequence* sequence)
 {
-  for(std::vector<XsdSequence*>::iterator i = _sequences.begin(); i != _sequences.end(); i++)
+  for(auto i = _sequences.begin(); i != _sequences.end(); ++i)
   {
     if((*i)->name() == sequence->name())
     {
-      _sequences.erase(i); // if the same element was found, it must be the last in the vector
+      _sequences.erase(i);
       break;
     }
   }
@@ -161,11 +161,11 @@ void XsdSpecification::add(XsdSequence* sequence)
 
 void XsdSpecification::add(XsdRegularExpression* regExp)
 {
-  for(std::vector<XsdRegularExpression*>::iterator i = _regExps.begin(); i != _regExps.end(); i++)
+  for(auto i = _regExps.begin(); i != _regExps.end(); ++i)
   {
     if((*i)->name() == regExp->name())
     {
-      _regExps.erase(i); // if the same element was found, it must be the last in the vector
+      _regExps.erase(i);
       break;
     }
   }
@@ -175,11 +175,11 @@ void XsdSpecification::add(XsdRegularExpression* regExp)
 
 void XsdSpecification::add(XsdChoice* choice)
 {
-  for(std::vector<XsdChoice*>::iterator i = _choices.begin(); i != _choices.end(); i++)
+  for(auto i = _choices.begin(); i != _choices.end(); ++i)
   {
     if((*i)->name() == choice->name())
     {
-      _choices.erase(i); // if the same element was found, it must be the last in the vector
+      _choices.erase(i);
       break;
     }
   }
@@ -189,11 +189,11 @@ void XsdSpecification::add(XsdChoice* choice)
 
 void XsdSpecification::add(XsdInterval* interval)
 {
-  for(std::vector<XsdInterval*>::iterator i = _intervals.begin(); i != _intervals.end(); i++)
+  for(auto i = _intervals.begin(); i != _intervals.end(); ++i)
   {
     if((*i)->name() == interval->name())
     {
-      _intervals.erase(i); // if the same element was found, it must be the last in the vector
+      _intervals.erase(i);
       break;
     }
   }
@@ -203,11 +203,11 @@ void XsdSpecification::add(XsdInterval* interval)
 
 void XsdSpecification::add(XsdEnumeration *enumeration)
 {
-  for(std::vector<XsdEnumeration*>::iterator i = _enumerations.begin(); i != _enumerations.end(); i++)
+  for(auto i = _enumerations.begin(); i != _enumerations.end(); ++i)
   {
     if((*i)->name() == enumeration->name())
     {
-      _enumerations.erase(i); // if the same element was found, it must be the last in the vector
+      _enumerations.erase(i);
       break;
     }
   }

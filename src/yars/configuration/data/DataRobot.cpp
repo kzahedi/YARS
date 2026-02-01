@@ -228,10 +228,8 @@ void DataRobot::__applyMacros()
 {
   for (auto* macro : _macros)
   {
-    for (auto o = macro->begin(); o != macro->end(); o++)
-    {
-      _objects.push_back(*o);
-    }
+    for (auto* obj : *macro)
+      _objects.push_back(obj);
   }
 }
 
@@ -390,7 +388,7 @@ void DataRobot::__gatherGeoms()
     if (obj->type() == DATA_OBJECT_COMPOSITE)
     {
       auto* composite = static_cast<DataComposite*>(obj);
-      for (auto oo = composite->g_begin(); oo != composite->g_end(); oo++)
+      for (auto oo = composite->g_begin(); oo != composite->g_end(); ++oo)
         _geoms.push_back(*oo);
     }
     else

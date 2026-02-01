@@ -193,13 +193,13 @@ DataLogging* DataLogging::copy()
 
 void DataLogging::checkGeoms(DataObjects *geoms)
 {
-  for (auto o = geoms->begin(); o != geoms->end(); o++)
+  for (auto* geom : *geoms)
   {
     for (auto* lo : _objects)
     {
-      if ((*o)->name() == lo->target())
+      if (geom->name() == lo->target())
       {
-        lo->set(*o);
+        lo->set(geom);
         break;
       }
     }
@@ -208,13 +208,13 @@ void DataLogging::checkGeoms(DataObjects *geoms)
 
 void DataLogging::checkSensors(DataSensors *sensors)
 {
-  for (auto s = sensors->begin(); s != sensors->end(); s++)
+  for (auto* sensor : *sensors)
   {
     for (auto* ls : _sensors)
     {
-      if ((*s)->name() == ls->target())
+      if (sensor->name() == ls->target())
       {
-        ls->set(*s);
+        ls->set(sensor);
         break;
       }
     }
@@ -223,13 +223,13 @@ void DataLogging::checkSensors(DataSensors *sensors)
 
 void DataLogging::checkActuators(DataActuators *actuators)
 {
-  for (auto a = actuators->begin(); a != actuators->end(); a++)
+  for (auto* actuator : *actuators)
   {
     for (auto* la : _actuators)
     {
-      if ((*a)->name() == la->target())
+      if (actuator->name() == la->target())
       {
-        la->set(*a);
+        la->set(actuator);
         break;
       }
     }
@@ -238,13 +238,13 @@ void DataLogging::checkActuators(DataActuators *actuators)
 
 void DataLogging::checkControllers(DataControllers *controllers)
 {
-  for (auto c = controllers->begin(); c != controllers->end(); c++)
+  for (auto* controller : *controllers)
   {
     for (auto* lc : _controllers)
     {
-      if ((*c)->name() == lc->target())
+      if (controller->name() == lc->target())
       {
-        lc->set(*c);
+        lc->set(controller);
         break;
       }
     }
