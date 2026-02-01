@@ -39,13 +39,13 @@ Robot::~Robot()
 
 void Robot::__createBody()
 {
-  for (auto i = _data->o_begin(); i != _data->o_end(); i++)
+  for (auto i = _data->o_begin(); i != _data->o_end(); ++i)
     _objects.push_back(std::unique_ptr<Object>(ObjectFactory::create(*i)));
 }
 
 void Robot::__createActuators()
 {
-  for (auto i = _data->a_begin(); i != _data->a_end(); i++)
+  for (auto i = _data->a_begin(); i != _data->a_end(); ++i)
   {
     auto a = std::unique_ptr<Actuator>(ActuatorFactory::create(*i, this));
     _actuators.push_back(std::move(a));
@@ -54,10 +54,8 @@ void Robot::__createActuators()
 
 void Robot::__createSensors()
 {
-  for (auto i = _data->s_begin(); i != _data->s_end(); i++)
-  {
+  for (auto i = _data->s_begin(); i != _data->s_end(); ++i)
     _sensors.push_back(std::unique_ptr<Sensor>(SensorFactory::create(*i, this)));
-  }
 }
 
 void Robot::prePhysicsUpdate()
@@ -212,7 +210,7 @@ void Robot::__setupController()
   std::vector<NameDimensionDomain> sensors;
   std::vector<NameDimensionDomain> motors;
 
-  for (auto a = _data->a_begin(); a != _data->a_end(); a++)
+  for (auto a = _data->a_begin(); a != _data->a_end(); ++a)
   {
     int n = 0;
     for (uint j = 0; j < (*a)->dimension(); j++)
@@ -229,11 +227,11 @@ void Robot::__setupController()
       }
     }
 
-    if (nd.internal.size() > 0)
+    if (!nd.internal.empty())
       motors.push_back(nd);
   }
 
-  for (auto s = _data->s_begin(); s != _data->s_end(); s++)
+  for (auto s = _data->s_begin(); s != _data->s_end(); ++s)
   {
     NameDimensionDomain nd = NameDimensionDomain((*s)->name(), (*s)->dimension());
     nd.names.resize((*s)->dimension());
@@ -263,8 +261,8 @@ void Robot::__setupController()
   _controller->setFrequency(_controllerFrequency);
 
   RobotControllerParameter rcp;
-  for (auto i = _data->controller()->begin(); i != _data->controller()->end(); i++)
-    rcp.add((*i)->name(), (*i)->value());
+  for (auto* param : *_data->controller())
+    rcp.add(param->name(), param->value());
   _controller->setParameter(rcp);
   _controller->setArguments(__YARS_GET_ARGC, __YARS_GET_ARGV);
 }
