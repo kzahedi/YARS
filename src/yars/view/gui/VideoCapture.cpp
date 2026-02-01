@@ -110,8 +110,8 @@ void VideoCapture::addFrame(uint8_t *data) {
   }
 
   if (!swsCtx) {
-    // OGRE renders in PF_B8G8R8A8 (BGRA byte order), so use AV_PIX_FMT_BGRA
-    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_BGRA, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
+    // OGRE PF_B8G8R8A8 on macOS stores as ARGB in memory
+    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_ARGB, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
   }
 
   int inLinesize[1] = { 4 * cctx->width };
