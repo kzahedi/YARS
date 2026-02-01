@@ -231,41 +231,60 @@ void OgreHandler::setupSceneManager()
 
     // Load fonts explicitly and apply custom font shaders for GL3Plus
     auto& fontMgr = Ogre::FontManager::getSingleton();
-    auto fontIt = fontMgr.getResourceIterator();
     auto& gpuMgr = Ogre::GpuProgramManager::getSingleton();
 
-    // Verify font shaders exist before applying
-    bool haveFontShaders = gpuMgr.resourceExists("YARS/FontVP") &&
-                           gpuMgr.resourceExists("YARS/FontFP");
-
-    if (haveFontShaders)
+    // Try to get the font shader programs (may have been loaded from font.program script)
+    // Use AUTODETECT to search all resource groups
+    Ogre::GpuProgramPtr fontVP, fontFP;
+    try
     {
-      while (fontIt.hasMoreElements())
-      {
-        Ogre::ResourcePtr fontRes = fontIt.getNext();
-        Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
-
-        if (!font->isLoaded())
-          font->load();
-
-        // Get font material and apply custom font shaders
-        Ogre::MaterialPtr fontMat = font->getMaterial();
-        if (fontMat && fontMat->getTechnique(0))
-        {
-          Ogre::Pass* pass = fontMat->getTechnique(0)->getPass(0);
-          if (!pass->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
-          {
-            pass->setVertexProgram("YARS/FontVP");
-            pass->setFragmentProgram("YARS/FontFP");
-          }
-        }
-      }
+      fontVP = gpuMgr.getByName("YARS/FontVP", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+      fontFP = gpuMgr.getByName("YARS/FontFP", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
     }
-    else
+    catch (const std::exception& e)
     {
       Ogre::LogManager::getSingleton().logMessage(
-        "YARS: Font shaders not found - overlay text may not render correctly");
+        "YARS: Error loading font shaders: " + Ogre::String(e.what()));
     }
+    catch (...)
+    {
+      Ogre::LogManager::getSingleton().logMessage("YARS: Unknown error loading font shaders");
+    }
+
+    bool haveFontShaders = fontVP && fontFP;
+    Ogre::LogManager::getSingleton().logMessage(
+      "YARS: Font shaders " + Ogre::String(haveFontShaders ? "found" : "NOT found") +
+      " (VP=" + Ogre::StringConverter::toString(fontVP != nullptr) +
+      ", FP=" + Ogre::StringConverter::toString(fontFP != nullptr) + ")");
+
+    // Apply font shaders to all fonts
+    auto fontIt = fontMgr.getResourceIterator();
+    int fontCount = 0;
+    while (fontIt.hasMoreElements())
+    {
+      Ogre::ResourcePtr fontRes = fontIt.getNext();
+      Ogre::FontPtr font = Ogre::static_pointer_cast<Ogre::Font>(fontRes);
+
+      if (!font->isLoaded())
+        font->load();
+
+      // Get font material and apply custom font shaders
+      Ogre::MaterialPtr fontMat = font->getMaterial();
+      if (fontMat && fontMat->getTechnique(0))
+      {
+        Ogre::Pass* pass = fontMat->getTechnique(0)->getPass(0);
+        if (haveFontShaders && !pass->hasGpuProgram(Ogre::GPT_VERTEX_PROGRAM))
+        {
+          pass->setVertexProgram("YARS/FontVP");
+          pass->setFragmentProgram("YARS/FontFP");
+          Ogre::LogManager::getSingleton().logMessage(
+            "YARS: Applied font shaders to material '" + fontMat->getName() + "'");
+        }
+        fontCount++;
+      }
+    }
+    Ogre::LogManager::getSingleton().logMessage(
+      "YARS: Processed " + Ogre::StringConverter::toString(fontCount) + " fonts");
   }
 
   _sceneManager->setSkyDome(true, Data::instance()->current()->screens()->sky(), 20, 10);

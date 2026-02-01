@@ -29,6 +29,7 @@ catch_discover_tests(yars_unit_tests)
 # Integration tests (require more dependencies)
 add_executable(yars_integration_tests
   integration/test_configuration.cpp
+  integration/test_simulation.cpp
 )
 
 target_include_directories(yars_integration_tests PRIVATE

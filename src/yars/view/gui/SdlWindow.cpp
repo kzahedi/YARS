@@ -585,10 +585,6 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
 
   switch (KeyHandler::instance()->handleKeyEvent(alt, cmd, shift, chr))
   {
-  // case YarsKeyFunction::Quit:
-  // close();
-  // notifyObservers(_m_quit_called);
-  // break;
   case YarsKeyFunction::PrintViewPoint:
     ConsoleView::printViewpoint(_windowConfiguration->cameraPosition, _windowConfiguration->cameraLookAt);
     break;
@@ -701,11 +697,6 @@ void SdlWindow::__toggleFollowing()
   if (_windowConfiguration->useFollow)
     _cameraMan->follow(_followableObject);
 }
-
-// void SdlWindow::__openNewWindow()
-// {
-// notifyObservers(_m_newWindow);
-// }
 
 void SdlWindow::__toggleWriteFrames()
 {

@@ -77,14 +77,10 @@ material Chain/Circuit/Top/Green
     pass
     {
       vertex_program_ref chain_simple_color_vp
-      fragment_program_ref chain_simple_color_fp
-
-      vertex_program_ref_params
       {
         param_named_auto worldViewProjMatrix worldviewproj_matrix
       }
-
-      fragment_program_ref_params
+      fragment_program_ref chain_simple_color_fp
       {
         param_named color float4 0.0 0.8 0.0 1.0
       }
