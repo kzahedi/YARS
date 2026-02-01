@@ -36,7 +36,7 @@ XsdGraph::XsdGraph()
 
 XsdGraph::~XsdGraph()
 {
-  for(std::vector<XsdGraphNode*>::iterator n = _nodes.begin(); n != _nodes.end(); n++) delete *n;
+  for(auto* node : _nodes) delete node;
 }
 
 

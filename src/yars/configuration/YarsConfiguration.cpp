@@ -195,13 +195,13 @@ void YarsConfiguration::__printListCommandFollowModes()
   CameraFactory::create(&list, nullptr);
   cout << "--- Followable Modes ---" << endl;
   int index = 0;
-  for (std::vector<FollowCamera *>::iterator i = list.begin(); i != list.end(); i++)
+  for (auto* cam : list)
   {
     string s;
-    (*i)->name(&s);
+    cam->name(&s);
     cout << index << " : " << s << endl;
     index++;
-    delete *i;
+    delete cam;
   }
   cout << "--- End Followable Modes ---" << endl;
   list.clear();
@@ -218,11 +218,11 @@ void YarsConfiguration::__readXmlFiles()
   parser->read(xml);
   if (parser->errors() > 0)
   {
-    for (std::vector<string>::iterator i = parser->w_begin(); i != parser->w_end(); i++)
+    for (auto i = parser->w_begin(); i != parser->w_end(); i++)
       cout << "WARNING: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->e_begin(); i != parser->e_end(); i++)
+    for (auto i = parser->e_begin(); i != parser->e_end(); i++)
       cout << "ERROR: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->f_begin(); i != parser->f_end(); i++)
+    for (auto i = parser->f_begin(); i != parser->f_end(); i++)
       cout << "FATAL: " << *i << endl;
     delete parser;
     exit(-1);
@@ -681,9 +681,8 @@ void YarsConfiguration::__setControllerPaths()
   if (robots == nullptr)
     return;
 
-  for (std::vector<DataRobot *>::iterator i = robots->begin(); i != robots->end(); i++)
+  for (auto* robot : *robots)
   {
-    DataRobot *robot = *i;
     if (robot->controller() != nullptr)
     {
       string module = robot->controller()->module();

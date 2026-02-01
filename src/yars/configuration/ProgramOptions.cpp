@@ -354,9 +354,9 @@ void ProgramOptions::__parseProgramOptionsParameters()
   if(unknown.size() > 0)
   {
     cout << "Unknown options given:" << endl;
-    for(std::vector<string>::iterator i = unknown.begin(); i != unknown.end(); i++)
+    for(const auto& opt : unknown)
     {
-      cout << "  " << *i << endl;
+      cout << "  " << opt << endl;
     }
     cout << "Please use --help to check." << endl;
     __exit(0);

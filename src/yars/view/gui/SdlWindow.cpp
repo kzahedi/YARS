@@ -865,13 +865,13 @@ void SdlWindow::__osd()
   {
     std::stringstream oss;
     DataRobots *robots = Data::instance()->current()->robots();
-    for (std::vector<DataRobot *>::iterator m = robots->begin(); m != robots->end(); m++)
+    for (auto* robot : *robots)
     {
-      DataController *controller = (*m)->controller();
+      DataController *controller = robot->controller();
       if (controller != nullptr)
       {
         controller->lockOSD();
-        for (std::vector<string>::const_iterator s = controller->s_begin(); s != controller->s_end(); s++)
+        for (auto s = controller->s_begin(); s != controller->s_end(); s++)
         {
           oss << *s;
         }
