@@ -35,6 +35,9 @@ using namespace std;
 
 #include <iostream>
 
+// Static member definition
+std::vector<string> Directories::_libPathCandidates;
+
 /** \brief Private constructor.
  *
  * Calls the set-up and find functions
@@ -403,6 +406,9 @@ void Directories::toString(string prefix, string *returnString)
  */
 void Directories::__setupLibsDirectories()
 {
+  // Only initialize once since _libPathCandidates is static
+  if (!_libPathCandidates.empty()) return;
+
   string home(getenv("HOME"));
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR);
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
@@ -413,9 +419,9 @@ void Directories::__setupLibsDirectories()
 void Directories::__setupPlyDirectories()
 {
   string home(getenv("HOME"));
-  _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR);
-  _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR + YARS_DIR_DELIMITER + YARS_DIR_PLY_DIR);
-  _libPathCandidates.push_back(home + YARS_DIR_DELIMITER + YARS_DIR_LOCAL_YARS_DIR + YARS_DIR_DELIMITER + YARS_DIR_PLY_DIR);
+  _plyPathCandidates.push_back(YARS_DIR_CURRENT_DIR);
+  _plyPathCandidates.push_back(YARS_DIR_CURRENT_DIR + YARS_DIR_DELIMITER + YARS_DIR_PLY_DIR);
+  _plyPathCandidates.push_back(home + YARS_DIR_DELIMITER + YARS_DIR_LOCAL_YARS_DIR + YARS_DIR_DELIMITER + YARS_DIR_PLY_DIR);
 }
 
 /** \brief Returns the directory from which yars was started. Currently only
@@ -516,4 +522,13 @@ bool Directories::getController(string *result, string filename)
       return true;
   }
   return false;
+}
+
+void Directories::addLibraryPath(const string& path)
+{
+  if (!path.empty())
+  {
+    // Insert at beginning so user-specified paths take precedence
+    _libPathCandidates.insert(_libPathCandidates.begin(), path);
+  }
 }

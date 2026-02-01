@@ -1,4 +1,5 @@
 #include "SceneGraphCapsuleNode.h"
+#include "MaterialManager.h"
 
 #include <yars/defines/defaults.h>
 
@@ -38,12 +39,12 @@ SceneGraphCapsuleNode::SceneGraphCapsuleNode(
   __topCap();
   __bottomCap();
 
-  _manual->setMaterialName(0, _data->texture(2));
+  _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture(2)));
 
   for (int i = 1; i <= DEFAULT_CAPPED_CYLINDER_QUALITY / 2 + 1; i++)
-    _manual->setMaterialName(i, _data->texture(0));
+    _manual->setMaterialName(i, MaterialManager::instance()->resolveMaterialName(_data->texture(0)));
   for (int i = DEFAULT_CAPPED_CYLINDER_QUALITY / 2 + 1; i < DEFAULT_CAPPED_CYLINDER_QUALITY + 3; i++)
-    _manual->setMaterialName(i, _data->texture(1));
+    _manual->setMaterialName(i, MaterialManager::instance()->resolveMaterialName(_data->texture(1)));
 
   Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
   for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)

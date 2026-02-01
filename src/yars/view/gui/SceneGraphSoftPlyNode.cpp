@@ -1,4 +1,5 @@
 #include "SceneGraphSoftPlyNode.h"
+#include "MaterialManager.h"
 
 #include <yars/util/PlyLoader.h>
 
@@ -35,7 +36,7 @@ SceneGraphSoftPlyNode::SceneGraphSoftPlyNode(DataPly *ply, Ogre::SceneNode *r, O
   _manual->setCastShadows(true);
 
   _node->attachObject(_manual);
-  _manual->setMaterialName(0, _data->texture());
+  _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture()));
 }
 
 void SceneGraphSoftPlyNode::update()

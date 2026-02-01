@@ -30,6 +30,7 @@ class Directories
 
     bool getPly(string *result, string filename);
     bool getController(string *result, string filename);
+    void addLibraryPath(const string& path);
 
     bool checkXsdPath(string xsdPath);
     bool checkLibrariesPath(string path, string library = "");
@@ -87,7 +88,7 @@ class Directories
     // Variables
     // **************************************************************************
     std::vector<string> _xsdPathCandidates;
-    std::vector<string> _libPathCandidates;
+    static std::vector<string> _libPathCandidates;  // Static so all instances share the same paths
     std::vector<string> _plyPathCandidates;
     std::vector<string> _configFilePathCandidate;
     string         _captureFramesDirectory;

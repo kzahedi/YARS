@@ -1,4 +1,5 @@
 #include "SceneGraphPlyNode.h"
+#include "MaterialManager.h"
 
 #include <yars/util/PlyLoader.h>
 
@@ -22,7 +23,7 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     Ogre::Entity *entity = sm->createEntity(oss.str(), (*m)->name());
     _entities.push_back(entity);
 
-    if((*m)->texture().size() > 0) entity->setMaterialName((*m)->texture());
+    if((*m)->texture().size() > 0) entity->setMaterialName(MaterialManager::instance()->resolveMaterialName((*m)->texture()));
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));
     meshNode->attachObject(entity);
@@ -61,7 +62,7 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
       const_cast<Ogre::VertexData*>((*itShadow).vertexData)->prepareForShadowVolume();
     _node->attachObject(_manual);
     _manual->setCastShadows(true);
-    _manual->setMaterialName(0, _data->texture());
+    _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture()));
   }
   update();
 }

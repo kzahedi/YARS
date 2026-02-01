@@ -36,24 +36,12 @@ void MaterialManager::registerFallbackMaterials() {
     _materialAliases["YARS/Black"] = "RTSS_Black";
     _materialAliases["YARS/ProximitySensor"] = "RTSS_ProximitySensor";
     _materialAliases["YARS/LDRSensor"] = "RTSS_LDRSensor";
-    _materialAliases["Chain/Chain"] = "RTSS_Chain";
-    _materialAliases["Chain/Wheel"] = "RTSS_Wheel";
-    _materialAliases["Chain/DryGround"] = "RTSS_Ground";
+
+    // Only alias materials that don't exist or have no textures
+    // Textured materials (Chain/*, YARS/DryGround, etc.) will use RTSS on-demand
     _materialAliases["Simple/Simple"] = "RTSS_Simple";
     _materialAliases["SimpleLit"] = "RTSS_Gray";
     _materialAliases["SimpleWhite"] = "RTSS_White";
-    
-    // Add common texture-based materials
-    _materialAliases["wood2"] = "RTSS_Wood";
-    _materialAliases["ground"] = "RTSS_Ground";
-    _materialAliases["wall"] = "RTSS_Wall";
-    
-    // Add YARS ground and environment materials
-    _materialAliases["YARS/DryGround"] = "RTSS_Ground";
-    _materialAliases["YARS/DryGroundSmall"] = "RTSS_Ground"; 
-    _materialAliases["YARS/Wall1"] = "RTSS_Wall";
-    _materialAliases["YARS/Wall2"] = "RTSS_Wall";
-    _materialAliases["YARS/Wall3"] = "RTSS_Wall";
     
     // Add YARS trace and effect materials
     _materialAliases["YARS/TraceLine"] = "RTSS_TraceLine";
@@ -293,17 +281,17 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
 }
 
 std::string MaterialManager::resolveMaterialName(const std::string& legacyName) {
-    // Check if it's already a valid material
-    if (materialExists(legacyName)) {
-        return legacyName;
-    }
-    
-    // Look for alias
+    // Check for alias FIRST - legacy materials without shaders need RTSS replacements
     auto it = _materialAliases.find(legacyName);
     if (it != _materialAliases.end()) {
         return it->second;
     }
-    
+
+    // Check if it's already a valid material
+    if (materialExists(legacyName)) {
+        return legacyName;
+    }
+
     // Return fallback material
     std::cout << "MaterialManager: Material '" << legacyName << "' not found, using RTSS_Gray fallback" << std::endl;
     return "RTSS_Gray";

@@ -356,6 +356,8 @@ void YarsConfiguration::__validateLibrariesPath()
       (*e) << "The given libraries path " << librariesPath << " is not valid.";
       YarsErrorHandler::push();
     }
+    // Add the configured path to the static library paths so all Directories instances can find controllers
+    _directories->addLibraryPath(librariesPath);
   }
   // can only be checked for content, as soon as a library is given
 }

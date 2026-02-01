@@ -32,6 +32,10 @@ public:
 
     if (success)
     {
+      // Need to validate the generated technique to compile the shaders
+      _shaderGenerator->validateMaterial(schemeName, originalMaterial->getName(),
+                                         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
       // Find and return the generated technique
       for (auto tech : originalMaterial->getTechniques())
       {

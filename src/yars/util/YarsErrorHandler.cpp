@@ -29,14 +29,14 @@ string YarsErrorHandler::message()
 
 void YarsErrorHandler::push()
 {
-  cerr << _me->str().c_str() << endl;
+  cerr << instance()->str().c_str() << endl;
   exit(-1);
 }
 
 void YarsErrorHandler::push(string message)
 {
-  (*_me) << message;
-  _me->push();
+  (*instance()) << message;
+  instance()->push();
 }
 
 void YarsErrorHandler::push(const char *message, ...)
@@ -58,6 +58,6 @@ void YarsErrorHandler::push(const char *message, ...)
   std::string s(buffer);
   delete[] buffer;
   va_end(ap);
-  (*_me) << s;
-  _me->push();
+  (*instance()) << s;
+  instance()->push();
 }
