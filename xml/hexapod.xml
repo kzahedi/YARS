@@ -559,10 +559,10 @@
 
       <!-- <controller  module="NIL" frequency="10"/> -->
       <controller  module="Hexapod" frequency="10"/>
-      <!-- Alternative: Python controller
+      <!-- Alternative: Python controller (run from build directory)
       <controller  module="Python" frequency="10">
         <parameter name="module" value="hexapod"/>
-        <parameter name="working directory" value="contrib/controller"/>
+        <parameter name="working directory" value="../contrib/controller"/>
       </controller>
       -->
 

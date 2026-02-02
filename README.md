@@ -42,7 +42,30 @@ make -j$(sysctl -n hw.ncpu)
 ### Running
 
 ```bash
+# From build directory
 ./bin/yars ../xml/braitenberg.xml
+
+# From anywhere (specify lib path for controllers)
+./bin/yars --lib /path/to/YARS/build/lib /path/to/YARS/xml/hexapod.xml
+```
+
+### Mouse Controls (FPS-style)
+
+| Action | Control |
+|--------|---------|
+| Look around | Left mouse drag |
+| Strafe (move sideways/up/down) | Middle drag or Shift+Left drag |
+| Move forward/backward | Right mouse drag (vertical) |
+| Move forward/backward | Scroll wheel |
+
+### Command Line Options
+
+```bash
+./bin/yars --help                    # Show all options
+./bin/yars --lib <path>              # Path to controller libraries
+./bin/yars --nogui                   # Run without visualization
+./bin/yars --iterations <n>          # Run for n iterations
+./bin/yars --realtime                # Real-time mode
 ```
 
 ## Documentation
@@ -79,6 +102,29 @@ YARS/
 | Bullet | 3.x | Physics simulation |
 | OGRE | 14.x | 3D rendering |
 | SDL2 | 2.x | Window/input handling |
+
+## Controllers
+
+YARS supports multiple controller types:
+
+- **Built-in controllers**: Braitenberg2a/2b/3a/3b, Hexapod, Sine, SquareWave, ConstantValue
+- **Python controllers**: Requires Python development headers
+- **TCP/IP controllers**: For external controller processes
+- **Named Pipe controllers**: For local IPC
+
+### Python Controller Example
+
+```xml
+<controller module="Python" frequency="10">
+  <parameter name="module" value="hexapod"/>
+  <parameter name="working directory" value="../contrib/controller"/>
+</controller>
+```
+
+## Known Issues
+
+- **macOS**: The message `UNSUPPORTED: gldCopyBufferSubData: NEEDS IMPLEMENTATION` appears but doesn't affect functionality
+- OGRE 14 with GL3Plus requires shader-based rendering (no fixed-function pipeline)
 
 ## Version History
 
