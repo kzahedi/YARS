@@ -314,6 +314,7 @@ void SdlWindow::handleEvent(SDL_Event &event)
       _altPressed = true;
       break;
     case SDLK_LGUI:
+    case SDLK_RGUI:
       _metaPressed = true;
       break;
     default:
@@ -322,20 +323,44 @@ void SdlWindow::handleEvent(SDL_Event &event)
     __processKeyEvent(event.key.keysym.sym, event.key.keysym.mod);
     break;
   case SDL_KEYUP:
-    _shiftPressed = false;
-    _ctrlPressed = false;
-    _altPressed = false;
-    _metaPressed = false;
+    switch (event.key.keysym.sym)
+    {
+    case SDLK_LSHIFT:
+    case SDLK_RSHIFT:
+      _shiftPressed = false;
+      break;
+    case SDLK_RCTRL:
+    case SDLK_LCTRL:
+      _ctrlPressed = false;
+      break;
+    case SDLK_RALT:
+    case SDLK_LALT:
+      _altPressed = false;
+      break;
+    case SDLK_LGUI:
+    case SDLK_RGUI:
+      _metaPressed = false;
+      break;
+    default:
+      break;
+    }
     break;
 
   case SDL_MOUSEMOTION:
     {
-      // Orbit: Left drag (or Alt+Left on Mac)
-      bool doOrbit = _leftMousePressed && !_shiftPressed && !_ctrlPressed;
+      // Use SDL_GetModState() for reliable modifier detection on macOS
+      SDL_Keymod modState = SDL_GetModState();
+      bool shiftHeld = (modState & KMOD_SHIFT) != 0;
+      bool ctrlHeld = (modState & KMOD_CTRL) != 0;
+      bool altHeld = (modState & KMOD_ALT) != 0;    // Option key on Mac
+      bool guiHeld = (modState & KMOD_GUI) != 0;    // Command key on Mac
+
+      // Orbit: Left drag (no modifiers)
+      bool doOrbit = _leftMousePressed && !shiftHeld && !ctrlHeld && !altHeld && !guiHeld;
       // Pan: Middle drag, or Shift+Left, or Cmd+Left on Mac
-      bool doPan = _middleMousePressed || (_leftMousePressed && _shiftPressed) || (_leftMousePressed && _metaPressed);
-      // Zoom: Right drag, or Ctrl+Left, or Alt+Left
-      bool doZoom = _rightMousePressed || (_leftMousePressed && _ctrlPressed) || (_leftMousePressed && _altPressed);
+      bool doPan = _middleMousePressed || (_leftMousePressed && shiftHeld) || (_leftMousePressed && guiHeld);
+      // Zoom: Right drag, or Ctrl+Left, or Option+Left on Mac
+      bool doZoom = _rightMousePressed || (_leftMousePressed && ctrlHeld) || (_leftMousePressed && altHeld);
 
       if (doOrbit && !doPan && !doZoom)
       {
