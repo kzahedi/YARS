@@ -558,10 +558,13 @@
       </sensors>
 
       <!-- <controller  module="NIL" frequency="10"/> -->
+      <controller  module="Hexapod" frequency="10"/>
+      <!-- Alternative: Python controller
       <controller  module="Python" frequency="10">
         <parameter name="module" value="hexapod"/>
-        <parameter name="working directory" value="/Users/zahedi/projects/yars/contrib/controller"/>
+        <parameter name="working directory" value="contrib/controller"/>
       </controller>
+      -->
 
     </robot>
   </robots>
