@@ -39,12 +39,10 @@ SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor
     _points.push_back(P3D(x, y, LENGTH));
   }
 
+  _materialName = MaterialManager::instance()->resolveMaterialName("YARS/LDRSensor");
+
   __cap();
   __body();
-
-  std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/LDRSensor");
-  _manual->setMaterialName(0, materialName);
-  _manual->setMaterialName(1, materialName);
 
   _node->attachObject(_manual);
 }
@@ -59,7 +57,7 @@ void SceneGraphLDRSensor::update()
 
 void SceneGraphLDRSensor::__cap()
 {
-  _manual->begin("cap", Ogre::RenderOperation::OT_TRIANGLE_FAN);
+  _manual->begin(_materialName, Ogre::RenderOperation::OT_TRIANGLE_FAN);
 
   for (int i = (int)_points.size() - 1; i > 1; i--)
   // for(int i = 1; i < (int)_points.size(); i++)
@@ -73,7 +71,7 @@ void SceneGraphLDRSensor::__cap()
 
 void SceneGraphLDRSensor::__body()
 {
-  _manual->begin("body", Ogre::RenderOperation::OT_TRIANGLE_FAN);
+  _manual->begin(_materialName, Ogre::RenderOperation::OT_TRIANGLE_FAN);
   for (const auto& point : _points)
   {
     _manual->position(point.x, point.y, point.z);

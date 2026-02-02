@@ -80,15 +80,17 @@ void MaterialManager::createDefaultMaterials() {
     blackParams.ambient = Ogre::ColourValue(0.05f, 0.05f, 0.05f, 1.0f);
     createRTSSMaterial("RTSS_Black", blackParams);
     
-    // Sensor materials with transparency
+    // Sensor materials with transparency - no lighting (self-illuminated like original)
     MaterialParams proxParams;
     proxParams.diffuse = Ogre::ColourValue(1.0f, 1.0f, 1.0f, 0.5f);
     proxParams.transparent = true;
+    proxParams.useLighting = false;
     createRTSSMaterial("RTSS_ProximitySensor", proxParams);
-    
+
     MaterialParams ldrParams;
     ldrParams.diffuse = Ogre::ColourValue(1.0f, 0.93f, 0.03f, 0.5f);
     ldrParams.transparent = true;
+    ldrParams.useLighting = false;
     createRTSSMaterial("RTSS_LDRSensor", ldrParams);
     
     // Texture-based materials (will try to load textures)
@@ -254,13 +256,19 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
         pass->setDiffuse(1.0f, 1.0f, 1.0f, 1.0f);  // White base color for vertex colors
         pass->setAmbient(1.0f, 1.0f, 1.0f);  // RGB only
         pass->setLightingEnabled(false);  // Vertex color materials typically don't use lighting
+    } else if (!params.useLighting) {
+        // No lighting - use emissive for self-illuminated appearance
+        pass->setDiffuse(params.diffuse);
+        pass->setAmbient(params.diffuse.r, params.diffuse.g, params.diffuse.b);
+        pass->setSelfIllumination(params.diffuse.r, params.diffuse.g, params.diffuse.b);
+        pass->setLightingEnabled(false);
     } else {
         pass->setDiffuse(params.diffuse);
         pass->setAmbient(params.ambient);
-        // Ensure lighting is enabled for RTSS
+        pass->setSelfIllumination(params.emissive);
         pass->setLightingEnabled(true);
     }
-    
+
     pass->setSpecular(params.specular);
     pass->setShininess(params.shininess);
     

@@ -31,14 +31,11 @@ SceneGraphProximitySensor::SceneGraphProximitySensor(DataGenericProximitySensor 
   for (int i = 0; i < 5; i++)
     __setRay(i, _data->distance());
 
+  _materialName = MaterialManager::instance()->resolveMaterialName("YARS/ProximitySensor");
+
   __rays();
   __cap();
   __body();
-
-  std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/ProximitySensor");
-  _manual->setMaterialName(0, materialName);
-  _manual->setMaterialName(1, materialName);
-  _manual->setMaterialName(2, materialName);
 
   _node->attachObject(_manual);
 }
@@ -107,7 +104,7 @@ void SceneGraphProximitySensor::__updateContainers()
 
 void SceneGraphProximitySensor::__cap()
 {
-  _manual->begin("cap", Ogre::RenderOperation::OT_TRIANGLE_FAN);
+  _manual->begin(_materialName, Ogre::RenderOperation::OT_TRIANGLE_FAN);
   _manual->position(_points[0].x, _points[0].y, _points[0].z);
   _manual->position(_points[1].x, _points[1].y, _points[1].z);
   _manual->position(_points[2].x, _points[2].y, _points[2].z);
@@ -120,7 +117,7 @@ void SceneGraphProximitySensor::__cap()
 
 void SceneGraphProximitySensor::__body()
 {
-  _manual->begin("cap", Ogre::RenderOperation::OT_TRIANGLE_FAN);
+  _manual->begin(_materialName, Ogre::RenderOperation::OT_TRIANGLE_FAN);
   _manual->position(0.0, 0.0, 0.0);
   _manual->position(_points[1].x, _points[1].y, _points[1].z);
   _manual->position(_points[2].x, _points[2].y, _points[2].z);
@@ -133,7 +130,7 @@ void SceneGraphProximitySensor::__body()
 
 void SceneGraphProximitySensor::__rays()
 {
-  _manual->begin("rays", Ogre::RenderOperation::OT_LINE_LIST);
+  _manual->begin(_materialName, Ogre::RenderOperation::OT_LINE_LIST);
   for (int i = 0; i < 5; i++)
   {
     _manual->position(0.0, 0.0, 0.0);

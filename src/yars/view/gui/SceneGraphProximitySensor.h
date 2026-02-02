@@ -31,6 +31,7 @@ private:
 
   DataGenericProximitySensor *_data;
   Ogre::ManualObject *_manual;
+  std::string _materialName;
 
   std::vector<::Quaternion> _quaternions;
   std::vector<::P3D> _points;

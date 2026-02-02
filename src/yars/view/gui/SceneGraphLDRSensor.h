@@ -26,6 +26,7 @@ private:
 
   DataGenericLightDependentResistorSensor *_data;
   Ogre::ManualObject *_manual;
+  std::string _materialName;
 
   std::vector<::P3D> _points;
 };

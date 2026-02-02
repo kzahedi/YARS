@@ -13,6 +13,7 @@ struct MaterialParams {
     Ogre::ColourValue diffuse{0.8f, 0.8f, 0.8f, 1.0f};
     Ogre::ColourValue ambient{0.2f, 0.2f, 0.2f, 1.0f};
     Ogre::ColourValue specular{0.9f, 0.9f, 0.9f, 1.0f};
+    Ogre::ColourValue emissive{0.0f, 0.0f, 0.0f, 1.0f};
     float shininess{32.0f};
     std::string diffuseTexture;
     std::string normalTexture;
@@ -20,6 +21,7 @@ struct MaterialParams {
     bool castShadows{true};
     bool receiveShadows{true};
     bool useVertexColors{false};
+    bool useLighting{true};
 };
 
 class MaterialManager {
