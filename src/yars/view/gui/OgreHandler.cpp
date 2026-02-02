@@ -321,16 +321,11 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Shadows require custom GLSL shaders for OGRE 14 GL3Plus
-  // Both caster and receiver materials need proper shaders
-  // This is a non-trivial task - shadows disabled for now
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
-
-  // TODO: Implement full shader-based shadow mapping:
-  // 1. Create GLSL shadow caster vertex/fragment shaders
-  // 2. Create GLSL shadow receiver vertex/fragment shaders
-  // 3. Set up shadow texture render targets
-  // 4. Integrate shadow sampling in RTSS materials
+  // Enable stencil modulative shadows
+  // Requires indexed triangle geometry for edge list generation
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+  _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+  _sceneManager->setShadowFarDistance(100.0f);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
