@@ -285,7 +285,34 @@ void SdlWindow::step()
 
 void SdlWindow::handleEvent(SDL_Event &event)
 {
-  if (event.window.windowID != _windowID)
+  // Check window ID based on event type (different event types store windowID in different fields)
+  Uint32 eventWindowID = 0;
+  switch (event.type)
+  {
+  case SDL_WINDOWEVENT:
+    eventWindowID = event.window.windowID;
+    break;
+  case SDL_KEYDOWN:
+  case SDL_KEYUP:
+    eventWindowID = event.key.windowID;
+    break;
+  case SDL_MOUSEMOTION:
+    eventWindowID = event.motion.windowID;
+    break;
+  case SDL_MOUSEBUTTONDOWN:
+  case SDL_MOUSEBUTTONUP:
+    eventWindowID = event.button.windowID;
+    break;
+  case SDL_MOUSEWHEEL:
+    eventWindowID = event.wheel.windowID;
+    break;
+  default:
+    // For other events (like SDL_QUIT), process them regardless
+    eventWindowID = _windowID;
+    break;
+  }
+
+  if (eventWindowID != _windowID)
     return;
 
   switch (event.type)
