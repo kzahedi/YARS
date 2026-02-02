@@ -361,8 +361,18 @@ void SdlWindow::handleEvent(SDL_Event &event)
   case SDL_MOUSEWHEEL:
     {
       // Scroll wheel zoom
-      double zoomSpeed = _orbitDistance * 0.1;
-      _cameraVelocity[2] += -event.wheel.y * zoomSpeed;
+      // Use preciseY on macOS for trackpad, fall back to y for regular mouse
+      double scrollAmount = 0.0;
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+      // SDL 2.0.18+ has preciseX/preciseY for high-precision scrolling
+      scrollAmount = event.wheel.preciseY;
+#else
+      scrollAmount = static_cast<double>(event.wheel.y);
+#endif
+      // Reduce sensitivity - use smaller multiplier
+      double zoomSpeed = _orbitDistance * 0.02;
+      // Natural scrolling: scroll up = zoom in (negative Z = forward)
+      _cameraVelocity[2] += -scrollAmount * zoomSpeed;
     }
     break;
   case SDL_MOUSEBUTTONUP:
