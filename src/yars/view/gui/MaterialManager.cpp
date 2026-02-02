@@ -142,8 +142,6 @@ void MaterialManager::createDefaultMaterials() {
     flareParams.diffuseTexture = "flare.jpg";
     createRTSSMaterial("RTSS_Flare", flareParams);
     
-    std::cout << "MaterialManager: Created " << _validMaterials.size() << " default materials" << std::endl;
-    
     // Create RTSS techniques for problematic legacy materials
     createRTSSForLegacyMaterials();
 }
@@ -221,8 +219,6 @@ void MaterialManager::createRTSSForLegacyMaterials() {
                         _shaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
                     }
                 }
-            } else {
-                std::cout << "MaterialManager: Legacy material '" << materialName << "' not found" << std::endl;
             }
         } catch (const std::exception& e) {
             std::cout << "MaterialManager: Error processing legacy material '" << materialName << "': " << e.what() << std::endl;
@@ -291,7 +287,6 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
     }
     
     // Material created with DEFAULT scheme - RTSS technique will be generated on-demand during rendering
-    std::cout << "MaterialManager: Created material '" << name << "' with DEFAULT scheme (RTSS on-demand)" << std::endl;
 }
 
 std::string MaterialManager::resolveMaterialName(const std::string& legacyName) {

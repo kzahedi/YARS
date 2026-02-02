@@ -18,8 +18,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Modern CMake: Use compile features and properties instead of manual flags
 # Enable modern warnings and debugging
-set(CMAKE_CXX_FLAGS_DEBUG   "-g -Wall -Wextra")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+# Suppress common warnings in legacy codebase: unused parameters, sign comparisons, deprecated copy
+set(CMAKE_CXX_FLAGS "-Wno-unused-parameter -Wno-sign-compare -Wno-deprecated-copy")
+set(CMAKE_CXX_FLAGS_DEBUG   "-g -Wall -Wextra ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG ${CMAKE_CXX_FLAGS}")
 
 # Position Independent Code (PIC) is handled automatically by modern CMake
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)

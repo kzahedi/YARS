@@ -149,7 +149,7 @@ void SquareWave::init()
     }
   }
 
-  for (int i = 0; i < motors.size(); i++)
+  for (size_t i = 0; i < motors.size(); i++)
   {
     _values[i] = _min[i];
   }

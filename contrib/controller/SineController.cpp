@@ -55,7 +55,7 @@ void SineController::init()
   _phaseShift.resize(motors.size());
   _baseline.resize(motors.size());
 
-  for(int i = 0; i < motors.size(); i++)
+  for(size_t i = 0; i < motors.size(); i++)
   {
     _period[i]     = globalPeriod;
     _amplitude[i]  = globalAmplitude;
@@ -135,7 +135,7 @@ extern "C" RobotController* create()
   return (RobotController*)b;
 }
 
-extern "C" void destroy(RobotController* controller)
+extern "C" void destroy([[maybe_unused]] RobotController* controller)
 {
   //delete controller;
 }
