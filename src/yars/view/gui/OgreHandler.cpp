@@ -321,24 +321,16 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // #ifdef USE_SHADOW_MAPS
-  // _sceneManager->setShadowTexturePixelFormat(Ogre::PF_FLOAT16_R);
-  // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_ADDITIVE);
-  // _sceneManager->setShadowTextureSelfShadow(true);
-  // _sceneManager->setShadowTextureCasterMaterial("ShadowCaster");
-  // _sceneManager->setShadowTextureReceiverMaterial("ShadowReceiver");
-  // #else // USE_SHADOW_MAPS
-  // OGRE 14: Shadows disabled - require custom shadow shaders for OGRE 14
-  // TODO: Implement shader-based shadows (texture shadow mapping)
+  // Shadows require custom GLSL shaders for OGRE 14 GL3Plus
+  // Both caster and receiver materials need proper shaders
+  // This is a non-trivial task - shadows disabled for now
   _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
-  //#endif // USE_SHADOW_MAPS
 
-  // _sceneManager->setShadowTextureSelfShadow(true);
-  // _sceneManager->setShadowTextureCasterMaterial("DepthShadowmap/Caster/Float");
-  // _sceneManager->setShadowTextureReceiverMaterial("Ogre/DepthShadowmap/Caster/Float");
-  // _sceneManager->setShadowTexturePixelFormat(Ogre::PF_FLOAT32_R);
-  // _sceneManager->setShadowCasterRenderBackFaces(false);
-  // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED);
+  // TODO: Implement full shader-based shadow mapping:
+  // 1. Create GLSL shadow caster vertex/fragment shaders
+  // 2. Create GLSL shadow receiver vertex/fragment shaders
+  // 3. Set up shadow texture render targets
+  // 4. Integrate shadow sampling in RTSS materials
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()

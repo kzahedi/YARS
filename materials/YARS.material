@@ -803,3 +803,21 @@ material face3 : face1 {}
 material face4 : face1 {}
 material face5 : face1 {}
 material face6 : face1 {}
+
+// RTSS-based shadow caster for texture shadows
+material YARS/ShadowCaster
+{
+  technique
+  {
+    pass
+    {
+      fog_override true none
+      depth_bias -1 -1
+
+      rtshader_system
+      {
+        lighting_stage gbuffer depth
+      }
+    }
+  }
+}
