@@ -33,9 +33,9 @@ SceneGraphSoftPlyNode::SceneGraphSoftPlyNode(DataPly *ply, Ogre::SceneNode *r, O
   }
 
   _manual->end();
-  _manual->setCastShadows(true);
 
   _node->attachObject(_manual);
+  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
   _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture()));
 }
 

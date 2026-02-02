@@ -65,7 +65,7 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
         const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
     }
     _node->attachObject(_manual);
-    _manual->setCastShadows(true);
+    _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
     _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture()));
   }
   update();

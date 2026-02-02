@@ -25,8 +25,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
   _manual->index(1);         \
   _manual->index(3);         \
   _manual->index(2);         \
-  _manual->setVisible(true); \
-  _manual->setCastShadows(true);
+  _manual->setVisible(true);
 
   _manual->begin("face1", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
   _manual->position(+dim.x, +dim.y, +dim.z);
@@ -141,7 +140,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
   }
 
   _node->attachObject(_manual);
-  _manual->setCastShadows(true);
+  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
 
   update();
 }

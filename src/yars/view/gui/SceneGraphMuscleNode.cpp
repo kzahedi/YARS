@@ -52,6 +52,7 @@ SceneGraphMuscleNode::SceneGraphMuscleNode(DataMuscleActuator *data, Ogre::Scene
   }
 
   _node->attachObject(_manual);
+  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
 
   update();
 }
@@ -135,7 +136,6 @@ void SceneGraphMuscleNode::__body()
   SET_INDICES;
 
   _manual->setVisible(true);
-  _manual->setCastShadows(true);
   _manual->end();
 }
 

@@ -38,6 +38,7 @@ SceneGraphLightSourceNode::SceneGraphLightSourceNode(
     // const_cast<Ogre::VertexData*>((*itShadow).vertexData)->prepareForShadowVolume();
 
   _node->attachObject(_manual);
+  _manual->setCastShadows(false);  // Light sources shouldn't cast shadows
 
   update();
 }
@@ -92,7 +93,6 @@ void SceneGraphLightSourceNode::__topCap()
 
     SET_INDICES;
     _manual->setVisible(true);
-    _manual->setCastShadows(true);
     _manual->end();
   }
      
@@ -142,7 +142,6 @@ void SceneGraphLightSourceNode::__bottomCap()
     }
     SET_INDICES;
     _manual->setVisible(true);
-    _manual->setCastShadows(true);
     _manual->end();
   }
 }

@@ -57,6 +57,7 @@ SceneGraphCylinderNode::SceneGraphCylinderNode(
   }
 
   _node->attachObject(_manual);
+  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
 
   update();
 }
@@ -108,7 +109,6 @@ void SceneGraphCylinderNode::__topCap()
   // _manual->index(indices[1]);
 
   _manual->setVisible(true);
-  _manual->setCastShadows(true);
   _manual->end();
 }
 
@@ -151,7 +151,6 @@ void SceneGraphCylinderNode::__bottomCap()
   // _manual->index(indices[indices.size()]);
 
   _manual->setVisible(true);
-  _manual->setCastShadows(true);
   _manual->end();
 }
 
@@ -188,6 +187,5 @@ void SceneGraphCylinderNode::__body()
   SET_INDICES;
 
   _manual->setVisible(true);
-  _manual->setCastShadows(true);
   _manual->end();
 }
