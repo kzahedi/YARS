@@ -45,7 +45,7 @@ PlyData PlyLoader::__load(string filename)
     YarsErrorHandler::push("Ply loader: '%s' not found.", filename.c_str());
     exit(-1);
   }
-  int nrOfTokens   = 0;
+  [[maybe_unused]] int nrOfTokens = 0;
   int nrOfFaces    = 0;
   int nrOfVertices = 0;
   bool header      = true;

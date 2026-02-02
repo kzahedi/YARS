@@ -1,4 +1,5 @@
 #include "SceneGraphEnvironmentNode.h"
+#include "MaterialManager.h"
 
 #include <yars/view/gui/SceneGraphObjectFactory.h>
 #include <yars/view/gui/SceneGraphLightSourceNode.h>
@@ -23,8 +24,12 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     _entity = _sceneManager->createEntity("GroundEntity", "ground");
     _node->attachObject(_entity);
     _entity->setCastShadows(false);
-    Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(data->texture());
-    _groundTextureUnitState = m->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 );
+    std::string resolvedMaterial = yars::MaterialManager::instance()->resolveMaterialName(data->texture());
+    Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(resolvedMaterial);
+    if (m && m->getNumTechniques() > 0 && m->getTechnique(0)->getNumPasses() > 0 &&
+        m->getTechnique(0)->getPass(0)->getNumTextureUnitStates() > 0) {
+      _groundTextureUnitState = m->getTechnique(0)->getPass(0)->getTextureUnitState(0);
+    }
     _entity->setMaterial(m);
   }
 
@@ -39,7 +44,7 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     Ogre::Entity *entity = sm->createEntity(oss.str(), (*m)->name());
     _entities.push_back(entity);
 
-    if((*m)->texture().size() > 0) entity->setMaterialName((*m)->texture());
+    if((*m)->texture().size() > 0) entity->setMaterialName(yars::MaterialManager::instance()->resolveMaterialName((*m)->texture()));
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));
     meshNode->attachObject(entity);

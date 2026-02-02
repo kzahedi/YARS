@@ -24,7 +24,7 @@ extern "C" RobotController* create() {
   return new Nil;
 }
 
-extern "C" void destroy(RobotController* controller) {
+extern "C" void destroy([[maybe_unused]] RobotController* controller) {
   // delete controller;
 }
 

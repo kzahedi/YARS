@@ -20,6 +20,7 @@ class SceneGraphCylinderNode : public SceneGraphObjectNode
 
     DataCylinder *_data;
     Ogre::ManualObject *_manual;
+    Ogre::Entity *_entity;
     RHDimension _dimension;
 };
 

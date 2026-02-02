@@ -17,6 +17,7 @@ class SceneGraphPlyNode : public SceneGraphObjectNode
     vector<Ogre::SceneNode*> _meshes;
     vector<Ogre::Entity*>    _entities;
     Ogre::ManualObject      *_manual;
+    Ogre::Entity            *_plyEntity;
 };
 
 #endif // __SCENE_GRAPH_PLY_NODE_H__

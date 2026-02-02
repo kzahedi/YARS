@@ -36,7 +36,7 @@ void SquareWave::update()
   if(_osd)
   {
     stringstream oss;
-    for(int i = 0; i < motors.size(); i++) oss << _label[i] << motors[i] << endl;
+    for(size_t i = 0; i < motors.size(); i++) oss << _label[i] << motors[i] << endl;
     clearOsd();
     oss.setf(ios_base::fixed, ios_base::floatfield);
     oss.precision(2);
@@ -76,7 +76,7 @@ void SquareWave::init()
   _values.resize(motors.size());
   _label.resize(motors.size());
 
-  for(int i = 0; i < motors.size(); i++)
+  for(size_t i = 0; i < motors.size(); i++)
   {
     _period[i]     = globalPeriod;
     _phaseShift[i] = globalPhaseShift;
@@ -140,7 +140,7 @@ void SquareWave::init()
   if(_debug)
   {
     cout << "Parametrisation: " << endl;
-    for(int i = 0; i < motors.size(); i++)
+    for(size_t i = 0; i < motors.size(); i++)
     {
       cout << "Period      " << i << ": " << _period[i]     << endl;
       cout << "Phase shift " << i << ": " << _phaseShift[i] << endl;
@@ -170,7 +170,7 @@ extern "C" RobotController* create()
   return (RobotController*)b;
 }
 
-extern "C" void destroy(RobotController* controller)
+extern "C" void destroy([[maybe_unused]] RobotController* controller)
 {
   // printf("***** SquareWave::destroy called\n");
   //delete controller;

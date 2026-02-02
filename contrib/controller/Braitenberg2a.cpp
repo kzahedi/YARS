@@ -49,4 +49,4 @@ extern "C" RobotController* create()
   return (RobotController*)b;
 }
 
-extern "C" void destroy(RobotController* controller) {}
+extern "C" void destroy([[maybe_unused]] RobotController* controller) {}

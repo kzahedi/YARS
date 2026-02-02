@@ -15,6 +15,7 @@ class SceneGraphBoxNode : public SceneGraphObjectNode
 
     DataBox            *_data;
     Ogre::ManualObject *_manual;
+    Ogre::Entity       *_entity;
 };
 
 #endif // __SCENE_GRAPH_BOX_NODE_H__

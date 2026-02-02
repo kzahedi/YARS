@@ -1,4 +1,5 @@
 #include "SceneGraphTraceLineObject.h"
+#include "MaterialManager.h"
 #include <yars/configuration/YarsConfiguration.h>
 
 #include <sstream>
@@ -30,7 +31,7 @@ SceneGraphTraceLineObject::SceneGraphTraceLineObject(
     double w = (_trace->lineWidth() - trace->finalWidth()) / f;
     _trail = sceneManager->createRibbonTrail(oss.str());
     _trail->setVisible(true);
-    _trail->setMaterialName(_trace->texture());
+    _trail->setMaterialName(yars::MaterialManager::instance()->resolveMaterialName(_trace->texture()));
     _trail->setTrailLength(_trace->length());
     _trail->setMaxChainElements(_trace->nrOfElements());
     _trail->setInitialColour(0, Ogre::ColourValue(c.red(), c.green(), c.blue(), c.alpha()));
@@ -47,7 +48,7 @@ SceneGraphTraceLineObject::SceneGraphTraceLineObject(
     oss.str("");
     oss << _trace->target() << " billboard " << index << endl;
     _billboard = sceneManager->createBillboardSet(oss.str());
-    _billboard->setMaterialName(_trace->billboard());
+    _billboard->setMaterialName(yars::MaterialManager::instance()->resolveMaterialName(_trace->billboard()));
     _billboard->setDefaultDimensions(10.0 * _trace->lineWidth(), 10.0 * _trace->lineWidth());
     _billboard->createBillboard(0,0,0);
     _billboard->getBillboard(0)->setColour(Ogre::ColourValue(c.red(),  c.green(),  c.blue(),  c.alpha()));

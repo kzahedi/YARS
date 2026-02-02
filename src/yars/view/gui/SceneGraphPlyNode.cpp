@@ -27,6 +27,7 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));
     meshNode->attachObject(entity);
+    entity->setCastShadows(true);
     P3D position = (*m)->pose().position;
     ::Quaternion q((*m)->pose().orientation);
     meshNode->setPosition(Ogre::Vector3(position.x, position.y, position.z));
@@ -36,7 +37,8 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
 
   if(_data->m_size() == 0)
   {
-    _manual = _sceneManager->createManualObject(_data->name());
+    // Use temporary ManualObject, then convert to Mesh for shadow support
+    _manual = _sceneManager->createManualObject(_data->name() + "_temp");
 
     PlyData pd = PlyLoader::instance()->get(_data->filename());
 
@@ -57,16 +59,22 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     }
     _manual->end();
 
-    // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
-    Ogre::EdgeData* edgeData = _manual->getEdgeList();
-    if (edgeData)
-    {
-      for (auto& edgeGroup : edgeData->edgeGroups)
-        const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
-    }
-    _node->attachObject(_manual);
-    _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
+    // Set material before conversion
     _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture()));
+
+    // Convert ManualObject to Mesh for proper shadow support
+    std::string meshName = _data->name() + "_ply_mesh";
+    Ogre::MeshPtr mesh = _manual->convertToMesh(meshName);
+    mesh->buildEdgeList();
+
+    // Create Entity from the mesh
+    _plyEntity = _sceneManager->createEntity(_data->name(), mesh);
+    _plyEntity->setCastShadows(true);
+    _node->attachObject(_plyEntity);
+
+    // Clean up temporary ManualObject
+    _sceneManager->destroyManualObject(_manual);
+    _manual = nullptr;
   }
   update();
 }

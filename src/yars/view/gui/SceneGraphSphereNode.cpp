@@ -31,7 +31,8 @@ SceneGraphSphereNode::SceneGraphSphereNode(
 {
   _data = data;
   _node = _root->createChildSceneNode();
-  _manual = _sceneManager->createManualObject(_data->name());
+  // Use temporary ManualObject, then convert to Mesh for shadow support
+  _manual = _sceneManager->createManualObject(_data->name() + "_temp");
 
   __topCap();
   __bottomCap();
@@ -43,15 +44,19 @@ SceneGraphSphereNode::SceneGraphSphereNode(
   for (unsigned int i = 0; i < _manual->getNumSections(); i++)
     _manual->setMaterialName(i, materialName);
 
-  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
-  Ogre::EdgeData* edgeData = _manual->getEdgeList();
-  if (edgeData)
-  {
-    for (auto& edgeGroup : edgeData->edgeGroups)
-      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
-  }
+  // Convert ManualObject to Mesh for proper shadow support
+  std::string meshName = _data->name() + "_mesh";
+  Ogre::MeshPtr mesh = _manual->convertToMesh(meshName);
+  mesh->buildEdgeList();
 
-  _node->attachObject(_manual);
+  // Create Entity from the mesh
+  _entity = _sceneManager->createEntity(_data->name(), mesh);
+  _entity->setCastShadows(true);
+  _node->attachObject(_entity);
+
+  // Clean up temporary ManualObject
+  _sceneManager->destroyManualObject(_manual);
+  _manual = nullptr;
 
   update();
 }
@@ -109,7 +114,6 @@ void SceneGraphSphereNode::__topCap()
 
     SET_INDICES;
     _manual->setVisible(true);
-    _manual->setCastShadows(false);
     _manual->end();
   }
 }
@@ -157,7 +161,6 @@ void SceneGraphSphereNode::__bottomCap()
     }
     SET_INDICES;
     _manual->setVisible(true);
-    _manual->setCastShadows(false);
     _manual->end();
   }
 }

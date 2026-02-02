@@ -33,7 +33,8 @@ SceneGraphCapsuleNode::SceneGraphCapsuleNode(
   _dimension = _data->dimension();
 
   _node = _root->createChildSceneNode(_data->name());
-  _manual = _sceneManager->createManualObject(_data->name());
+  // Use temporary ManualObject, then convert to Mesh for shadow support
+  _manual = _sceneManager->createManualObject(_data->name() + "_temp");
 
   __body();
   __topCap();
@@ -46,16 +47,19 @@ SceneGraphCapsuleNode::SceneGraphCapsuleNode(
   for (int i = DEFAULT_CAPPED_CYLINDER_QUALITY / 2 + 1; i < DEFAULT_CAPPED_CYLINDER_QUALITY + 3; i++)
     _manual->setMaterialName(i, MaterialManager::instance()->resolveMaterialName(_data->texture(1)));
 
-  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
-  Ogre::EdgeData* edgeData = _manual->getEdgeList();
-  if (edgeData)
-  {
-    for (auto& edgeGroup : edgeData->edgeGroups)
-      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
-  }
+  // Convert ManualObject to Mesh for proper shadow support
+  std::string meshName = _data->name() + "_mesh";
+  Ogre::MeshPtr mesh = _manual->convertToMesh(meshName);
+  mesh->buildEdgeList();
 
-  _node->attachObject(_manual);
-  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
+  // Create Entity from the mesh
+  _entity = _sceneManager->createEntity(_data->name(), mesh);
+  _entity->setCastShadows(true);
+  _node->attachObject(_entity);
+
+  // Clean up temporary ManualObject
+  _sceneManager->destroyManualObject(_manual);
+  _manual = nullptr;
 
   update();
 }

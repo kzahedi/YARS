@@ -20,7 +20,8 @@ class SceneGraphCapsuleNode : public SceneGraphObjectNode
 
     DataCapsule *_data;
     Ogre::ManualObject *_manual;
-    RHDimension         _dimension;
+    Ogre::Entity *_entity;
+    RHDimension _dimension;
 };
 
 #endif // __SCENE_GRAPH_CAPPED_CYLINDER_NODE_H__

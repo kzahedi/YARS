@@ -1,4 +1,5 @@
 #include "SceneGraphJointAxisVisualisationNode.h"
+#include "MaterialManager.h"
 
 #include <yars/defines/defaults.h>
 #include <yars/configuration/data/Data.h>
@@ -45,9 +46,10 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualX);
   __bottomCap(_manualX);
   __body(_manualX);
-  _manualX->setMaterialName(0, Data::instance()->current()->screens()->xAxisTexture());
-  _manualX->setMaterialName(1, Data::instance()->current()->screens()->xAxisTexture());
-  _manualX->setMaterialName(2, Data::instance()->current()->screens()->xAxisTexture());
+  std::string xMaterial = yars::MaterialManager::instance()->resolveMaterialName(Data::instance()->current()->screens()->xAxisTexture());
+  _manualX->setMaterialName(0, xMaterial);
+  _manualX->setMaterialName(1, xMaterial);
+  _manualX->setMaterialName(2, xMaterial);
   ::Quaternion qX(P3D(0, M_PI_2, 0));
   Ogre::SceneNode *nodeX = _node->createChildSceneNode();
   nodeX->setOrientation(Ogre::Quaternion(qX.w, qX.x, qX.y, qX.z));
@@ -59,9 +61,10 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualY);
   __bottomCap(_manualY);
   __body(_manualY);
-  _manualY->setMaterialName(0, Data::instance()->current()->screens()->yAxisTexture());
-  _manualY->setMaterialName(1, Data::instance()->current()->screens()->yAxisTexture());
-  _manualY->setMaterialName(2, Data::instance()->current()->screens()->yAxisTexture());
+  std::string yMaterial = yars::MaterialManager::instance()->resolveMaterialName(Data::instance()->current()->screens()->yAxisTexture());
+  _manualY->setMaterialName(0, yMaterial);
+  _manualY->setMaterialName(1, yMaterial);
+  _manualY->setMaterialName(2, yMaterial);
   ::Quaternion qY(P3D(-M_PI_2, 0, 0));
   Ogre::SceneNode *nodeY = _node->createChildSceneNode();
   nodeY->setOrientation(Ogre::Quaternion(qY.w, qY.x, qY.y, qY.z));
@@ -73,9 +76,10 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualZ);
   __bottomCap(_manualZ);
   __body(_manualZ);
-  _manualZ->setMaterialName(0, Data::instance()->current()->screens()->zAxisTexture());
-  _manualZ->setMaterialName(1, Data::instance()->current()->screens()->zAxisTexture());
-  _manualZ->setMaterialName(2, Data::instance()->current()->screens()->zAxisTexture());
+  std::string zMaterial = yars::MaterialManager::instance()->resolveMaterialName(Data::instance()->current()->screens()->zAxisTexture());
+  _manualZ->setMaterialName(0, zMaterial);
+  _manualZ->setMaterialName(1, zMaterial);
+  _manualZ->setMaterialName(2, zMaterial);
   ::Quaternion qZ(P3D(0, 0, 0));
   Ogre::SceneNode *nodeZ = _node->createChildSceneNode();
   nodeZ->setOrientation(Ogre::Quaternion(qZ.w, qZ.x, qZ.y, qZ.z));

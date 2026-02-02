@@ -953,7 +953,7 @@ bool SdlWindow::visible()
   return _visible;
 }
 
-void SdlWindow::__handleFingerUp(SDL_Event &event)
+void SdlWindow::__handleFingerUp([[maybe_unused]] SDL_Event &event)
 {
   //Rotation detected
   // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )
@@ -966,7 +966,7 @@ void SdlWindow::__handleFingerUp(SDL_Event &event)
   // }
 }
 
-void SdlWindow::__handleFingerDown(SDL_Event &event)
+void SdlWindow::__handleFingerDown([[maybe_unused]] SDL_Event &event)
 {
   //Rotation detected
   // if( fabs( event.mgesture.dTheta ) > 3.14 / 180.0 )

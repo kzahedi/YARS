@@ -5,6 +5,7 @@
 #include <yars/util/macros.h>
 
 #include <OGRE/Ogre.h>
+#include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 #include <sstream>
 
 using namespace std;
@@ -81,9 +82,9 @@ void NativeOgreWindow::__setupNativeWindow()
     Ogre::ColourValue fadeColour(0.9, 0.9, 0.9);
     _viewport->setBackgroundColour(fadeColour);
 
-    // Use default material scheme (fixed-function pipeline) since RTSS is disabled
-    _viewport->setMaterialScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);
-    std::cout << "Native viewport configured to use default material scheme (fixed-function)" << std::endl;
+    // Use RTSS material scheme for shader-based rendering
+    _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    std::cout << "Native viewport configured to use RTSS material scheme" << std::endl;
 
     _window->setActive(true);
     _viewport->update();

@@ -73,7 +73,9 @@ void ConsoleView::printMessage(int type, const char *message, ...)
 void ConsoleView::printMessage(int type, std::string message, ...)
 {
   va_list ap;
+  va_start(ap, message);
   printMessage(type, message.c_str(), ap);
+  va_end(ap);
 }
 
 void ConsoleView::setDebugLevel(int level)
@@ -118,7 +120,7 @@ void ConsoleView::printTime()
   }
 }
 
-void ConsoleView::printCapturingInformation(int frameIndex)
+void ConsoleView::printCapturingInformation([[maybe_unused]] int frameIndex)
 {
   if(_currentDebugLevel == YARS_FATAL) return;
   unsigned long t = Timer::getTime();

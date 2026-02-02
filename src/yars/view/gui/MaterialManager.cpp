@@ -150,69 +150,75 @@ void MaterialManager::createDefaultMaterials() {
 
 void MaterialManager::createRTSSForLegacyMaterials() {
     if (!_shaderGenerator) {
-        std::cout << "MaterialManager: No shader generator - skipping legacy material RTSS creation" << std::endl;
         return;
     }
-    
-    std::cout << "MaterialManager: Creating RTSS techniques for legacy materials..." << std::endl;
-    
+
     // List of legacy materials that need RTSS techniques
     std::vector<std::string> legacyMaterials = {
         "BaseWhite",
-        "BaseWhiteNoLighting", 
-        "YARS/FlyingLightMaterial"
-    };
-    
-    // Also try some alternative YARS materials to test what actually loads
-    std::vector<std::string> testYARSMaterials = {
+        "BaseWhiteNoLighting",
+        "YARS/FlyingLightMaterial",
+        // YARS color materials - used directly by some scene objects
         "YARS/Gray",
-        "YARS/Red", 
-        "YARS/TraceLine"
+        "YARS/Red",
+        "YARS/Green",
+        "YARS/Blue",
+        "YARS/White",
+        "YARS/Black",
+        "YARS/TraceLine",
+        "YARS/ProximitySensor",
+        "YARS/LDRSensor"
     };
-    
-    std::cout << "MaterialManager: Testing some YARS materials..." << std::endl;
-    
+
     // Check if YARS resource group exists before accessing it
     bool hasYARSResourceGroup = Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("YARS");
-    
-    for (const std::string& testName : testYARSMaterials) {
-        Ogre::MaterialPtr testMat = _ogreMaterialManager->getByName(testName);
-        if (!testMat && hasYARSResourceGroup) {
-            testMat = _ogreMaterialManager->getByName(testName, "YARS");
-        }
-        std::cout << "  Test material '" << testName << "': " << (testMat ? "found" : "not found") << std::endl;
-    }
-    
+
     for (const std::string& materialName : legacyMaterials) {
         try {
             Ogre::MaterialPtr material = _ogreMaterialManager->getByName(materialName);
-            
-            // Also try searching in specific resource groups if not found
+
+            // Also try searching in YARS resource group if not found
             if (!material && materialName.find("YARS/") != std::string::npos && hasYARSResourceGroup) {
                 material = _ogreMaterialManager->getByName(materialName, "YARS");
-                std::cout << "MaterialManager: Searched for '" << materialName << "' in YARS group: " << (material ? "found" : "not found") << std::endl;
             }
-            
+
             if (material) {
-                // Check if it already has an RTSS technique
+                // Check if it already has an RTSS technique with working shaders
                 bool hasRTSSScheme = false;
+                bool rtssHasShaders = false;
                 for (unsigned short i = 0; i < material->getNumTechniques(); ++i) {
-                    if (material->getTechnique(i)->getSchemeName() == Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME) {
+                    Ogre::Technique* tech = material->getTechnique(i);
+                    if (tech->getSchemeName() == Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME) {
                         hasRTSSScheme = true;
+                        if (tech->getNumPasses() > 0 && tech->getPass(0)->hasVertexProgram()) {
+                            rtssHasShaders = true;
+                        }
                         break;
                     }
                 }
-                
-                if (!hasRTSSScheme) {
+
+                if (hasRTSSScheme && rtssHasShaders) {
+                    // Already has working RTSS technique, skip
+                } else {
+                    // Remove existing empty RTSS technique if present
+                    if (hasRTSSScheme && !rtssHasShaders) {
+                        _shaderGenerator->removeAllShaderBasedTechniques(materialName);
+                    }
+
+                    // Get the actual scheme name from the first technique (may be lowercase 'default')
+                    std::string sourceScheme = Ogre::MaterialManager::DEFAULT_SCHEME_NAME;
+                    if (material->getNumTechniques() > 0) {
+                        sourceScheme = material->getTechnique(0)->getSchemeName();
+                    }
+
                     bool success = _shaderGenerator->createShaderBasedTechnique(*material,
-                        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+                        sourceScheme,
                         Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
                         true);
-                    
+
                     if (success) {
-                        std::cout << "MaterialManager: Created RTSS technique for legacy material '" << materialName << "'" << std::endl;
-                    } else {
-                        std::cout << "MaterialManager: WARNING - Failed to create RTSS technique for '" << materialName << "'" << std::endl;
+                        // Force validation to generate shaders
+                        _shaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
                     }
                 }
             } else {

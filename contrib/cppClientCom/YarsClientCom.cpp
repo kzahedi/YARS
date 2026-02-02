@@ -87,7 +87,6 @@ void YarsClientCom::init(string workingDirectory, string xmlFile, string path)
   sst.str("");
 
   string token;
-  int l = 0;
   char buf[1];
   bool lookForPort = false;
   int port = -1;
@@ -617,7 +616,7 @@ void YarsClientCom::printSensorMotorConfiguration()
   int index = 0;
   for(vector<Actuator>::iterator a = _actuators.begin(); a != _actuators.end(); a++)
   {
-    for(int i = 0; i < (*a).dimension; i++)
+    for(unsigned int i = 0; i < (*a).dimension; i++)
     {
       cout << "Actuator " << (index++) << ": " << (*a).name << " dimension " << i << endl;
     }
@@ -627,7 +626,7 @@ void YarsClientCom::printSensorMotorConfiguration()
   cout << "Sensor: " << endl;
   for(vector<Sensor>::iterator s = _sensors.begin(); s != _sensors.end(); s++)
   {
-    for(int i = 0; i < (*s).dimension; i++)
+    for(unsigned int i = 0; i < (*s).dimension; i++)
     {
       cout << "Sensor " << (index++) << ": " << (*s).name << " dimension " << i << endl;
     }

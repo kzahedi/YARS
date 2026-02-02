@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int main(int argc, char** argv)
+int main([[maybe_unused]] int argc, char** argv)
 {
   double l1 = 0;
   double l2 = 0;

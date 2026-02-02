@@ -9,7 +9,9 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
 {
   _data = box;
   _node = _root->createChildSceneNode();
-  _manual = _sceneManager->createManualObject(_data->name());
+
+  // Use a temporary ManualObject to build geometry, then convert to Mesh for shadow support
+  _manual = _sceneManager->createManualObject(_data->name() + "_temp");
 
   WHDDimension d = _data->dimension();
   P3D dim;
@@ -123,24 +125,31 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
   TRIANGLE;
   _manual->end();
 
+  // Set materials on ManualObject sections
   for (int i = 0; i < 6; i++)
   {
-    // Use MaterialManager to resolve material names
     std::string materialName = _data->texture(i);
     materialName = MaterialManager::instance()->resolveMaterialName(materialName);
     _manual->setMaterialName(i, materialName);
   }
 
-  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
-  Ogre::EdgeData* edgeData = _manual->getEdgeList();
-  if (edgeData)
-  {
-    for (auto& edgeGroup : edgeData->edgeGroups)
-      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
-  }
+  // Convert ManualObject to Mesh for proper shadow support
+  std::string meshName = _data->name() + "_mesh";
+  Ogre::MeshPtr mesh = _manual->convertToMesh(meshName);
 
-  _node->attachObject(_manual);
-  _manual->setCastShadows(false);  // TODO: ManualObject shadows crash in OGRE 14
+  // Build edge list for stencil shadows
+  mesh->buildEdgeList();
+
+  // Create Entity from the mesh
+  _entity = _sceneManager->createEntity(_data->name(), mesh);
+  _entity->setCastShadows(true);
+
+  // Attach entity to scene node
+  _node->attachObject(_entity);
+
+  // Clean up the temporary ManualObject
+  _sceneManager->destroyManualObject(_manual);
+  _manual = nullptr;
 
   update();
 }

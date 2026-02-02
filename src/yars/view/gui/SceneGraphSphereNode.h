@@ -17,6 +17,7 @@ class SceneGraphSphereNode : public SceneGraphObjectNode
 
     DataSphere *_data;
     Ogre::ManualObject *_manual;
+    Ogre::Entity *_entity;
 };
 
 #endif // __SCENE_GRAPH_SPHERE_NODE_H__

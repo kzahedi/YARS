@@ -1,4 +1,5 @@
 #include "SceneGraphMeshNode.h"
+#include "MaterialManager.h"
 
 SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogre::SceneManager* sm)
   : SceneGraphObjectNode(r, sm)
@@ -19,7 +20,7 @@ SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogr
 
     entity->getMesh()->buildEdgeList();
 
-    if((*m)->texture().size() > 0) entity->setMaterialName((*m)->texture());
+    if((*m)->texture().size() > 0) entity->setMaterialName(yars::MaterialManager::instance()->resolveMaterialName((*m)->texture()));
 
     meshNode->setScale(Ogre::Vector3((*m)->scale().x, (*m)->scale().y, (*m)->scale().z));
     meshNode->attachObject(entity);
