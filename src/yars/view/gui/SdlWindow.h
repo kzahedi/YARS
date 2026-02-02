@@ -115,6 +115,7 @@ public:
     bool _metaPressed;
     double _orbitDistance;      // Distance from camera to look-at point
     Ogre::Vector3 _orbitCenter; // The point the camera orbits around
+    double _rollAngle;          // Camera roll/tilt angle in radians
     bool _imgCaptureRunning;
     int _imgCaptureFrameIndex;
     int _fps;

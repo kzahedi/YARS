@@ -96,6 +96,7 @@ SdlWindow::SdlWindow(int index)
   _camAngularVelocity = 0.0;
   _orbitDistance = 10.0;  // Default orbit distance
   _orbitCenter = Ogre::Vector3::ZERO;
+  _rollAngle = 0.0;       // No initial roll/tilt
   __setupSDL();
   // __setScene();
 
@@ -264,9 +265,20 @@ void SdlWindow::step()
       if (_orbitDistance < 0.1) _orbitDistance = 0.1;
     }
 
+    // Accumulate roll angle from velocity
+    _rollAngle += _camAngularVelocity.z * FACTOR;
+
     // Update camera position and look at orbit center
     _cameraNode->setPosition(_cpos);
     _cameraNode->lookAt(_orbitCenter, Ogre::Node::TS_WORLD);
+
+    // Apply roll (tilt) after lookAt - rotate around camera's forward axis
+    if (fabs(_rollAngle) > 0.0001)
+    {
+      Ogre::Vector3 camForward = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
+      Ogre::Quaternion rollRot(Ogre::Radian(_rollAngle), camForward);
+      _cameraNode->rotate(rollRot, Ogre::Node::TS_WORLD);
+    }
 
     // Update look-at point
     _clookAt = _orbitCenter;
@@ -355,14 +367,21 @@ void SdlWindow::handleEvent(SDL_Event &event)
       bool altHeld = (modState & KMOD_ALT) != 0;    // Option key on Mac
       bool guiHeld = (modState & KMOD_GUI) != 0;    // Command key on Mac
 
+      // Tilt: Ctrl+Shift+Left, or Option+Cmd+Left on Mac (check first - most specific)
+      bool doTilt = _leftMousePressed && ((shiftHeld && ctrlHeld) || (altHeld && guiHeld));
       // Orbit: Left drag (no modifiers)
       bool doOrbit = _leftMousePressed && !shiftHeld && !ctrlHeld && !altHeld && !guiHeld;
-      // Pan: Middle drag, or Shift+Left, or Cmd+Left on Mac
-      bool doPan = _middleMousePressed || (_leftMousePressed && shiftHeld) || (_leftMousePressed && guiHeld);
-      // Zoom: Right drag, or Ctrl+Left, or Option+Left on Mac
-      bool doZoom = _rightMousePressed || (_leftMousePressed && ctrlHeld) || (_leftMousePressed && altHeld);
+      // Pan: Middle drag, or Shift+Left (no ctrl), or Cmd+Left (no option) on Mac
+      bool doPan = _middleMousePressed || (_leftMousePressed && shiftHeld && !ctrlHeld) || (_leftMousePressed && guiHeld && !altHeld);
+      // Zoom: Right drag, or Ctrl+Left (no shift), or Option+Left (no cmd) on Mac
+      bool doZoom = _rightMousePressed || (_leftMousePressed && ctrlHeld && !shiftHeld) || (_leftMousePressed && altHeld && !guiHeld);
 
-      if (doOrbit && !doPan && !doZoom)
+      if (doTilt)
+      {
+        // Tilt (roll): rotate camera around its view axis
+        _camAngularVelocity.z += event.motion.xrel * 5.0 * FACTOR;
+      }
+      else if (doOrbit && !doPan && !doZoom)
       {
         // Orbit around look-at point
         _camAngularVelocity.x += event.motion.xrel * 5.0 * FACTOR;
