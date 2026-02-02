@@ -75,7 +75,9 @@ SdlWindow::SdlWindow(int index)
   _cameraMan = new CameraMan(_windowConfiguration);
   _data = Data::instance()->current()->screens()->screen(index);
   _camData = Data::instance()->current()->screens()->screen(index)->camera();
-  _mousePressed = false;
+  _leftMousePressed = false;
+  _middleMousePressed = false;
+  _rightMousePressed = false;
   _shiftPressed = false;
   _ctrlPressed = false;
   _altPressed = false;
@@ -92,6 +94,8 @@ SdlWindow::SdlWindow(int index)
   _nextShadowMode = __SHADOWTYPE_TEXTURE_ADDITIVE + 1;
   _cameraVelocity = Ogre::Vector3::ZERO;
   _camAngularVelocity = 0.0;
+  _orbitDistance = 10.0;  // Default orbit distance
+  _orbitCenter = Ogre::Vector3::ZERO;
   __setupSDL();
   // __setScene();
 
@@ -209,17 +213,65 @@ void SdlWindow::step()
   else if (_cameraVelocity.length() > 0.01 ||
            _camAngularVelocity.length() > 0.0001)
   {
-    // OGRE 14: Use camera node for yaw/pitch/move
-    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
-    _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
-
-    _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
-
+    // Get current camera state
     _cpos = _cameraNode->getPosition();
-    _cdir = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
-    _clookAt = _cpos;
-    for (int i = 0; i < 3; i++)
-      _clookAt[i] += _cdir[i];
+
+    // Calculate vector from orbit center to camera
+    Ogre::Vector3 camToCenter = _orbitCenter - _cpos;
+    _orbitDistance = camToCenter.length();
+    if (_orbitDistance < 0.1) _orbitDistance = 0.1;  // Minimum distance
+
+    // Apply orbit rotation (yaw around world Y, pitch around camera's local X)
+    if (_camAngularVelocity.length() > 0.0001)
+    {
+      // Yaw: rotate around world Y axis at orbit center
+      Ogre::Quaternion yawRot(Ogre::Radian(-_camAngularVelocity.x * FACTOR), Ogre::Vector3::UNIT_Y);
+      Ogre::Vector3 offset = _cpos - _orbitCenter;
+      offset = yawRot * offset;
+      _cpos = _orbitCenter + offset;
+
+      // Pitch: rotate around camera's local X axis at orbit center
+      Ogre::Vector3 camRight = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_X;
+      Ogre::Quaternion pitchRot(Ogre::Radian(-_camAngularVelocity.y * FACTOR), camRight);
+      offset = _cpos - _orbitCenter;
+      Ogre::Vector3 newOffset = pitchRot * offset;
+
+      // Clamp pitch to avoid flipping (keep camera above/below orbit center reasonably)
+      Ogre::Vector3 newDir = -newOffset.normalisedCopy();
+      if (fabs(newDir.y) < 0.99)  // Don't allow looking straight up/down
+      {
+        _cpos = _orbitCenter + newOffset;
+      }
+    }
+
+    // Apply pan (move both camera and orbit center in camera's local XY plane)
+    if (fabs(_cameraVelocity.x) > 0.001 || fabs(_cameraVelocity.y) > 0.001)
+    {
+      Ogre::Vector3 camRight = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_X;
+      Ogre::Vector3 camUp = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_Y;
+      Ogre::Vector3 panOffset = camRight * _cameraVelocity.x + camUp * _cameraVelocity.y;
+      _cpos += panOffset;
+      _orbitCenter += panOffset;
+    }
+
+    // Apply zoom (move camera toward/away from orbit center)
+    if (fabs(_cameraVelocity.z) > 0.001)
+    {
+      Ogre::Vector3 camForward = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
+      _cpos += camForward * _cameraVelocity.z;
+      // Update orbit distance
+      _orbitDistance = (_orbitCenter - _cpos).length();
+      if (_orbitDistance < 0.1) _orbitDistance = 0.1;
+    }
+
+    // Update camera position and look at orbit center
+    _cameraNode->setPosition(_cpos);
+    _cameraNode->lookAt(_orbitCenter, Ogre::Node::TS_WORLD);
+
+    // Update look-at point
+    _clookAt = _orbitCenter;
+
+    // Store in YARS data
     OGRE_TO_YARS(_cpos, _ypos);
     OGRE_TO_YARS(_clookAt, _ylookAt);
     _camData->setPosition(_ypos);
@@ -277,29 +329,51 @@ void SdlWindow::handleEvent(SDL_Event &event)
     break;
 
   case SDL_MOUSEMOTION:
-    if (_mousePressed)
     {
-      if (_metaPressed && !_altPressed)
+      // Orbit: Left drag (or Alt+Left on Mac)
+      bool doOrbit = _leftMousePressed && !_shiftPressed && !_ctrlPressed;
+      // Pan: Middle drag, or Shift+Left, or Cmd+Left on Mac
+      bool doPan = _middleMousePressed || (_leftMousePressed && _shiftPressed) || (_leftMousePressed && _metaPressed);
+      // Zoom: Right drag, or Ctrl+Left, or Alt+Left
+      bool doZoom = _rightMousePressed || (_leftMousePressed && _ctrlPressed) || (_leftMousePressed && _altPressed);
+
+      if (doOrbit && !doPan && !doZoom)
       {
-        _cameraVelocity[0] += -event.motion.xrel * FACTOR;
-        _cameraVelocity[2] += -event.motion.yrel * FACTOR;
+        // Orbit around look-at point
+        _camAngularVelocity.x += event.motion.xrel * 5.0 * FACTOR;
+        _camAngularVelocity.y += event.motion.yrel * 5.0 * FACTOR;
       }
-      if (!_metaPressed && _altPressed)
+      else if (doPan)
       {
-        _cameraVelocity[1] += event.motion.yrel * FACTOR;
+        // Pan: move camera and look-at point together (in camera's local XY plane)
+        double panSpeed = _orbitDistance * 0.002;
+        _cameraVelocity[0] += -event.motion.xrel * panSpeed;
+        _cameraVelocity[1] += event.motion.yrel * panSpeed;
       }
-      if (!_metaPressed && !_altPressed)
+      else if (doZoom)
       {
-        _camAngularVelocity.x += event.motion.xrel * 10.0 * FACTOR;
-        _camAngularVelocity.y += event.motion.yrel * 10.0 * FACTOR;
+        // Zoom: move camera toward/away from look-at point
+        double zoomSpeed = _orbitDistance * 0.005;
+        _cameraVelocity[2] += event.motion.yrel * zoomSpeed;
       }
     }
     break;
+  case SDL_MOUSEWHEEL:
+    {
+      // Scroll wheel zoom
+      double zoomSpeed = _orbitDistance * 0.1;
+      _cameraVelocity[2] += -event.wheel.y * zoomSpeed;
+    }
+    break;
   case SDL_MOUSEBUTTONUP:
-    _mousePressed = false;
+    if (event.button.button == SDL_BUTTON_LEFT) _leftMousePressed = false;
+    else if (event.button.button == SDL_BUTTON_MIDDLE) _middleMousePressed = false;
+    else if (event.button.button == SDL_BUTTON_RIGHT) _rightMousePressed = false;
     break;
   case SDL_MOUSEBUTTONDOWN:
-    _mousePressed = true;
+    if (event.button.button == SDL_BUTTON_LEFT) _leftMousePressed = true;
+    else if (event.button.button == SDL_BUTTON_MIDDLE) _middleMousePressed = true;
+    else if (event.button.button == SDL_BUTTON_RIGHT) _rightMousePressed = true;
     break;
   case SDL_WINDOWEVENT:
     switch (event.window.event)
@@ -473,6 +547,11 @@ void SdlWindow::__setupSDL()
   _cameraNode->attachObject(_camera);
   _cameraNode->setPosition(pos[0], pos[1], pos[2]);
   _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
+
+  // Initialize orbit navigation parameters
+  _orbitCenter = Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]);
+  _cpos = Ogre::Vector3(pos[0], pos[1], pos[2]);
+  _orbitDistance = (_orbitCenter - _cpos).length();
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);

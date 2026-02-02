@@ -106,11 +106,15 @@ public:
     int _followableIndex;
     WindowConfiguration *_windowConfiguration;
     CameraMan *_cameraMan;
-    bool _mousePressed;
+    bool _leftMousePressed;
+    bool _middleMousePressed;
+    bool _rightMousePressed;
     bool _shiftPressed;
     bool _ctrlPressed;
     bool _altPressed;
     bool _metaPressed;
+    double _orbitDistance;      // Distance from camera to look-at point
+    Ogre::Vector3 _orbitCenter; // The point the camera orbits around
     bool _imgCaptureRunning;
     int _imgCaptureFrameIndex;
     int _fps;
