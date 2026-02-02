@@ -48,9 +48,13 @@ SceneGraphCylinderNode::SceneGraphCylinderNode(
   _manual->setMaterialName(1, MaterialManager::instance()->resolveMaterialName(_data->texture(1)));
   _manual->setMaterialName(2, MaterialManager::instance()->resolveMaterialName(_data->texture(2)));
 
-  Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
-  for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)
-    const_cast<Ogre::VertexData *>((*itShadow).vertexData)->prepareForShadowVolume();
+  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
+  Ogre::EdgeData* edgeData = _manual->getEdgeList();
+  if (edgeData)
+  {
+    for (auto& edgeGroup : edgeData->edgeGroups)
+      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
+  }
 
   _node->attachObject(_manual);
 

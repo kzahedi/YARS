@@ -321,11 +321,10 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Enable stencil modulative shadows
-  // Requires indexed triangle geometry for edge list generation
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
-  _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-  _sceneManager->setShadowFarDistance(100.0f);
+  // Shadows disabled for now - stencil shadows crash with ManualObject in OGRE 14
+  // The crash occurs in ManualObject::getShadowVolumeRenderableList when mParentNode is null
+  // TODO: Investigate proper ManualObject shadow setup or switch to texture shadows
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()

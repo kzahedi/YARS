@@ -43,9 +43,13 @@ SceneGraphMuscleNode::SceneGraphMuscleNode(DataMuscleActuator *data, Ogre::Scene
 
   _manual->setMaterialName(0, MaterialManager::instance()->resolveMaterialName(_data->texture(0)));
 
-  Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
-  for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)
-    const_cast<Ogre::VertexData *>((*itShadow).vertexData)->prepareForShadowVolume();
+  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
+  Ogre::EdgeData* edgeData = _manual->getEdgeList();
+  if (edgeData)
+  {
+    for (auto& edgeGroup : edgeData->edgeGroups)
+      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
+  }
 
   _node->attachObject(_manual);
 
@@ -77,9 +81,13 @@ void SceneGraphMuscleNode::update()
   material->load();
   material->compile();
 
-  Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
-  for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)
-    const_cast<Ogre::VertexData *>((*itShadow).vertexData)->prepareForShadowVolume();
+  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
+  Ogre::EdgeData* edgeData = _manual->getEdgeList();
+  if (edgeData)
+  {
+    for (auto& edgeGroup : edgeData->edgeGroups)
+      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
+  }
 
   P3D p = _data->getMusclePosition();
   ::Quaternion q = _data->getMuscleQuaternion();

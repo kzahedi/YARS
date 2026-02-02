@@ -132,9 +132,13 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
     _manual->setMaterialName(i, materialName);
   }
 
-  Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
-  for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)
-    const_cast<Ogre::VertexData *>((*itShadow).vertexData)->prepareForShadowVolume();
+  // Prepare edge list for stencil shadow volumes (built lazily by OGRE)
+  Ogre::EdgeData* edgeData = _manual->getEdgeList();
+  if (edgeData)
+  {
+    for (auto& edgeGroup : edgeData->edgeGroups)
+      const_cast<Ogre::VertexData*>(edgeGroup.vertexData)->prepareForShadowVolume();
+  }
 
   _node->attachObject(_manual);
   _manual->setCastShadows(true);
