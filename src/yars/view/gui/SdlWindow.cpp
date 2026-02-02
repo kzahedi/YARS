@@ -211,77 +211,64 @@ void SdlWindow::step()
     _cameraNode->setPosition(_cpos[0], _cpos[1], _cpos[2]);
     _cameraNode->lookAt(Ogre::Vector3(_clookAt[0], _clookAt[1], _clookAt[2]), Ogre::Node::TS_WORLD);
   }
-  else if (_cameraVelocity.length() > 0.01 ||
+  else if (_cameraVelocity.length() > 0.001 ||
            _camAngularVelocity.length() > 0.0001)
   {
-    // Get current camera state
+    // FPS-style camera: rotate in place, move in local coordinates
     _cpos = _cameraNode->getPosition();
+    Ogre::Quaternion orientation = _cameraNode->getOrientation();
 
-    // Calculate vector from orbit center to camera
-    Ogre::Vector3 camToCenter = _orbitCenter - _cpos;
-    _orbitDistance = camToCenter.length();
-    if (_orbitDistance < 0.1) _orbitDistance = 0.1;  // Minimum distance
-
-    // Apply orbit rotation (yaw around world Y, pitch around camera's local X)
-    if (_camAngularVelocity.length() > 0.0001)
+    // Apply yaw (rotate around world Y axis) - look left/right
+    if (fabs(_camAngularVelocity.x) > 0.0001)
     {
-      // Yaw: rotate around world Y axis at orbit center
-      Ogre::Quaternion yawRot(Ogre::Radian(-_camAngularVelocity.x * FACTOR), Ogre::Vector3::UNIT_Y);
-      Ogre::Vector3 offset = _cpos - _orbitCenter;
-      offset = yawRot * offset;
-      _cpos = _orbitCenter + offset;
+      Ogre::Quaternion yawRot(Ogre::Radian(-_camAngularVelocity.x), Ogre::Vector3::UNIT_Y);
+      orientation = yawRot * orientation;
+    }
 
-      // Pitch: rotate around camera's local X axis at orbit center
-      Ogre::Vector3 camRight = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_X;
-      Ogre::Quaternion pitchRot(Ogre::Radian(-_camAngularVelocity.y * FACTOR), camRight);
-      offset = _cpos - _orbitCenter;
-      Ogre::Vector3 newOffset = pitchRot * offset;
+    // Apply pitch (rotate around local X axis) - look up/down
+    if (fabs(_camAngularVelocity.y) > 0.0001)
+    {
+      // Get current pitch to clamp it
+      Ogre::Vector3 forward = orientation * Ogre::Vector3::NEGATIVE_UNIT_Z;
+      float currentPitch = asin(forward.y);
+      float newPitch = currentPitch - _camAngularVelocity.y;
 
-      // Clamp pitch to avoid flipping (keep camera above/below orbit center reasonably)
-      Ogre::Vector3 newDir = -newOffset.normalisedCopy();
-      if (fabs(newDir.y) < 0.99)  // Don't allow looking straight up/down
+      // Clamp pitch to avoid gimbal lock (max ~85 degrees up/down)
+      const float maxPitch = 1.48f; // ~85 degrees in radians
+      if (newPitch > -maxPitch && newPitch < maxPitch)
       {
-        _cpos = _orbitCenter + newOffset;
+        Ogre::Vector3 right = orientation * Ogre::Vector3::UNIT_X;
+        Ogre::Quaternion pitchRot(Ogre::Radian(-_camAngularVelocity.y), right);
+        orientation = pitchRot * orientation;
       }
     }
 
-    // Apply pan (move both camera and orbit center in camera's local XY plane)
+    // Apply the new orientation
+    _cameraNode->setOrientation(orientation);
+
+    // Get camera axes for movement
+    Ogre::Vector3 camRight = orientation * Ogre::Vector3::UNIT_X;
+    Ogre::Vector3 camUp = orientation * Ogre::Vector3::UNIT_Y;
+    Ogre::Vector3 camForward = orientation * Ogre::Vector3::NEGATIVE_UNIT_Z;
+
+    // Apply strafe (move in local XY plane)
     if (fabs(_cameraVelocity.x) > 0.001 || fabs(_cameraVelocity.y) > 0.001)
     {
-      Ogre::Vector3 camRight = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_X;
-      Ogre::Vector3 camUp = _cameraNode->getOrientation() * Ogre::Vector3::UNIT_Y;
-      Ogre::Vector3 panOffset = camRight * _cameraVelocity.x + camUp * _cameraVelocity.y;
-      _cpos += panOffset;
-      _orbitCenter += panOffset;
+      _cpos += camRight * _cameraVelocity.x;
+      _cpos += camUp * _cameraVelocity.y;
     }
 
-    // Apply zoom (move camera toward/away from orbit center)
+    // Apply forward/backward movement
     if (fabs(_cameraVelocity.z) > 0.001)
     {
-      Ogre::Vector3 camForward = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
       _cpos += camForward * _cameraVelocity.z;
-      // Update orbit distance
-      _orbitDistance = (_orbitCenter - _cpos).length();
-      if (_orbitDistance < 0.1) _orbitDistance = 0.1;
     }
 
-    // Accumulate roll angle from velocity
-    _rollAngle += _camAngularVelocity.z * FACTOR;
-
-    // Update camera position and look at orbit center
+    // Update camera position
     _cameraNode->setPosition(_cpos);
-    _cameraNode->lookAt(_orbitCenter, Ogre::Node::TS_WORLD);
 
-    // Apply roll (tilt) after lookAt - rotate around camera's forward axis
-    if (fabs(_rollAngle) > 0.0001)
-    {
-      Ogre::Vector3 camForward = _cameraNode->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_Z;
-      Ogre::Quaternion rollRot(Ogre::Radian(_rollAngle), camForward);
-      _cameraNode->rotate(rollRot, Ogre::Node::TS_WORLD);
-    }
-
-    // Update look-at point
-    _clookAt = _orbitCenter;
+    // Update look-at point (fixed distance in front of camera)
+    _clookAt = _cpos + camForward * 10.0;
 
     // Store in YARS data
     OGRE_TO_YARS(_cpos, _ypos);
@@ -360,45 +347,37 @@ void SdlWindow::handleEvent(SDL_Event &event)
 
   case SDL_MOUSEMOTION:
     {
+      // FPS-style mouse controls
       // Use SDL_GetModState() for reliable modifier detection on macOS
       SDL_Keymod modState = SDL_GetModState();
       bool shiftHeld = (modState & KMOD_SHIFT) != 0;
-      bool ctrlHeld = (modState & KMOD_CTRL) != 0;
-      bool altHeld = (modState & KMOD_ALT) != 0;    // Option key on Mac
-      bool guiHeld = (modState & KMOD_GUI) != 0;    // Command key on Mac
 
-      // Tilt: Ctrl+Shift+Left, or Option+Cmd+Left on Mac (check first - most specific)
-      bool doTilt = _leftMousePressed && ((shiftHeld && ctrlHeld) || (altHeld && guiHeld));
-      // Orbit: Left drag (no modifiers)
-      bool doOrbit = _leftMousePressed && !shiftHeld && !ctrlHeld && !altHeld && !guiHeld;
-      // Pan: Middle drag, or Shift+Left (no ctrl), or Cmd+Left (no option) on Mac
-      bool doPan = _middleMousePressed || (_leftMousePressed && shiftHeld && !ctrlHeld) || (_leftMousePressed && guiHeld && !altHeld);
-      // Zoom: Right drag, or Ctrl+Left (no shift), or Option+Left (no cmd) on Mac
-      bool doZoom = _rightMousePressed || (_leftMousePressed && ctrlHeld && !shiftHeld) || (_leftMousePressed && altHeld && !guiHeld);
+      // Left drag: Look around (yaw/pitch)
+      bool doLook = _leftMousePressed && !shiftHeld;
+      // Middle drag, Shift+Left, or Cmd+Left: Strafe (move sideways/up/down)
+      bool doStrafe = _middleMousePressed || (_leftMousePressed && shiftHeld);
+      // Right drag: Move forward/backward
+      bool doMove = _rightMousePressed;
 
-      if (doTilt)
+      double sensitivity = 0.3;
+      double moveSpeed = 0.5;
+
+      if (doLook)
       {
-        // Tilt (roll): rotate camera around its view axis
-        _camAngularVelocity.z += event.motion.xrel * 5.0 * FACTOR;
+        // Look around: yaw (horizontal) and pitch (vertical)
+        _camAngularVelocity.x += event.motion.xrel * sensitivity * FACTOR;
+        _camAngularVelocity.y += event.motion.yrel * sensitivity * FACTOR;
       }
-      else if (doOrbit && !doPan && !doZoom)
+      if (doStrafe)
       {
-        // Orbit around look-at point
-        _camAngularVelocity.x += event.motion.xrel * 5.0 * FACTOR;
-        _camAngularVelocity.y += event.motion.yrel * 5.0 * FACTOR;
+        // Strafe: move in camera's local XY plane
+        _cameraVelocity[0] += -event.motion.xrel * moveSpeed * FACTOR;
+        _cameraVelocity[1] += event.motion.yrel * moveSpeed * FACTOR;
       }
-      else if (doPan)
+      if (doMove)
       {
-        // Pan: move camera and look-at point together (in camera's local XY plane)
-        double panSpeed = _orbitDistance * 0.002;
-        _cameraVelocity[0] += -event.motion.xrel * panSpeed;
-        _cameraVelocity[1] += event.motion.yrel * panSpeed;
-      }
-      else if (doZoom)
-      {
-        // Zoom: move camera toward/away from look-at point
-        double zoomSpeed = _orbitDistance * 0.005;
-        _cameraVelocity[2] += event.motion.yrel * zoomSpeed;
+        // Move forward/backward based on vertical mouse movement
+        _cameraVelocity[2] += -event.motion.yrel * moveSpeed * FACTOR;
       }
     }
     break;
@@ -413,10 +392,10 @@ void SdlWindow::handleEvent(SDL_Event &event)
 #else
       scrollAmount = static_cast<double>(event.wheel.y);
 #endif
-      // Reduce sensitivity - use smaller multiplier
-      double zoomSpeed = _orbitDistance * 0.02;
-      // Natural scrolling: scroll up = zoom in (negative Z = forward)
-      _cameraVelocity[2] += -scrollAmount * zoomSpeed;
+      // FPS-style: scroll wheel moves forward/backward
+      double moveSpeed = 2.0;
+      // Scroll up = move forward (positive Z velocity moves forward)
+      _cameraVelocity[2] += scrollAmount * moveSpeed;
     }
     break;
   case SDL_MOUSEBUTTONUP:
