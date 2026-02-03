@@ -26,7 +26,7 @@ YARS is a physics-based robot simulation platform built with C++17, featuring re
 
 **macOS:**
 ```bash
-brew install cmake boost xerces-c bullet sdl2
+brew install cmake xerces-c bullet sdl2 cli11
 ```
 
 ### Building
@@ -107,7 +107,7 @@ YARS/
 | Library | Version | Purpose |
 |---------|---------|---------|
 | CMake | 3.16+ | Build system |
-| Boost | 1.70+ | Core utilities |
+| CLI11 | 2.x | Command-line parsing |
 | Xerces-C | 3.x | XML parsing |
 | Bullet | 3.x | Physics simulation |
 | OGRE | 14.x | 3D rendering |
