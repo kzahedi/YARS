@@ -26,6 +26,7 @@ using namespace _SDL_;
 
 #include <math.h>
 #include <string>
+#include <unistd.h>
 
 #define FACTOR 0.01
 

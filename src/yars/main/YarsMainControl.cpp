@@ -1,6 +1,8 @@
 #include <yars/main/YarsMainControl.h>
 #include <yars/util/Random.h>
 
+#include <unistd.h>
+
 #ifdef USE_VISUALISATION
 #include <yars/view/gui/KeyHandler.h>
 #endif

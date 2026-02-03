@@ -7,14 +7,14 @@
 #include <yars/types/Colour.h>
 #include <yars/defines/types.h>
 
-#include <boost/circular_buffer.hpp>
+#include <yars/util/CircularBuffer.h>
 
 # define DATA_TRACE_PROJECT_XY 123456
 # define DATA_TRACE_PROJECT_YZ 123457
 # define DATA_TRACE_PROJECT_XZ 123458
 
 /** super class for DataTraceLine and DataTracePoint */
-class DataTrace : public boost::circular_buffer<P3D>
+class DataTrace : public CircularBuffer<P3D>
 {
   public:
     DataTrace();

@@ -7,6 +7,7 @@
 
 #include <OGRE/Ogre.h>
 #include <algorithm>
+#include <unistd.h>
 
 YarsViewModel::YarsViewModel()
 {

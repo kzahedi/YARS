@@ -3,15 +3,13 @@
 
 #include <yars/logging/Logger.h>
 #include <yars/configuration/data/DataLoggingGnuplot.h>
-
-#include <boost/circular_buffer.hpp>
+#include <yars/util/CircularBuffer.h>
 
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 
 using namespace std;
-using namespace boost;
 
 class GnuplotLogger : public Logger
 {
@@ -36,7 +34,7 @@ class GnuplotLogger : public Logger
     bool                _pairwise;
     string              _plotString;
 
-    std::vector<circular_buffer<string> > _buffer;
+    std::vector<CircularBuffer<string> > _buffer;
 };
 
 #endif // __GNUPLOT_LOGGER_H__
