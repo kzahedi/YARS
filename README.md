@@ -66,6 +66,16 @@ make -j$(sysctl -n hw.ncpu)
 ./bin/yars --nogui                   # Run without visualization
 ./bin/yars --iterations <n>          # Run for n iterations
 ./bin/yars --realtime                # Real-time mode
+./bin/yars --follow <mode>           # Camera follows robot (0=Orbit, 1=Tripod, 2=Offset, 3=CenterOrbit)
+./bin/yars --osd                     # Show on-screen display (stats/info)
+```
+
+### Video Capture
+
+Requires FFmpeg. Enable with `cmake -DYARS_USE_CAPTURE_VIDEO=ON`.
+
+```bash
+./bin/yars --capture --captureFrameRate 30 --captureDirectory ./videos ../xml/braitenberg.xml
 ```
 
 ## Documentation
@@ -102,6 +112,7 @@ YARS/
 | Bullet | 3.x | Physics simulation |
 | OGRE | 14.x | 3D rendering |
 | SDL2 | 2.x | Window/input handling |
+| FFmpeg | 4.x+ | Video capture (optional) |
 
 ## Controllers
 
