@@ -210,9 +210,80 @@ Install the CMake Tools extension and open the YARS folder.
 
 The project uses standard C++ formatting. Consider using clang-format with the provided style.
 
-## Linux Build (Planned)
+## Linux Build
 
-Linux support is planned but not yet fully implemented. The build system is prepared but OGRE visualization is currently disabled on Linux.
+### 1. Install Dependencies
+
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install cmake g++ libxerces-c-dev libbullet-dev libsdl2-dev \
+                 libgl1-mesa-dev libx11-dev libxt-dev libfreetype6-dev \
+                 libfreeimage-dev zlib1g-dev
+```
+
+For tests:
+```bash
+sudo apt install catch2
+```
+
+For CLI11 (if not available via apt):
+```bash
+# CLI11 is header-only, can be installed manually
+git clone https://github.com/CLIUtils/CLI11.git
+cd CLI11 && mkdir build && cd build
+cmake .. -DCLI11_BUILD_TESTS=OFF -DCLI11_BUILD_EXAMPLES=OFF
+sudo make install
+```
+
+### 2. Build OGRE 14 (Submodule)
+
+```bash
+cd ext/ogre
+mkdir build && cd build
+cmake .. \
+    -DOGRE_BUILD_COMPONENT_BITES=ON \
+    -DOGRE_BUILD_SAMPLES=OFF \
+    -DOGRE_BUILD_TOOLS=OFF \
+    -DOGRE_INSTALL_DOCS=OFF \
+    -DOGRE_BUILD_PLUGIN_STBI=ON \
+    -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
+    -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
+    -DOGRE_BUILD_RENDERSYSTEM_GLES2=OFF \
+    -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+cd ../../..
+```
+
+### 3. Build YARS
+
+```bash
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+```
+
+### 4. Set Library Path
+
+```bash
+export LD_LIBRARY_PATH=$PWD/../ext/ogre/build/lib:$LD_LIBRARY_PATH
+./bin/yars ../xml/braitenberg.xml
+```
+
+### Linux Troubleshooting
+
+**X11 display errors:**
+```bash
+export DISPLAY=:0
+```
+
+**Missing GL headers:**
+```bash
+sudo apt install libgl1-mesa-dev libglu1-mesa-dev
+```
+
+**OGRE plugin loading failures:**
+Ensure `plugins.cfg` points to the correct plugin paths in `ext/ogre/build/lib/OGRE/`.
 
 ## Installation
 

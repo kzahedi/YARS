@@ -91,9 +91,49 @@ IF(YARS_USE_VISUALISATION)
 
     message(STATUS "Using local OGRE build from: ${OGRE_FRAMEWORK_DIR}")
 
+  elseif(UNIX)
+    # Linux: OGRE builds as shared libraries
+    set(OGRE_LIB_DIR "${OGRE_BUILD_DIR}/lib")
+
+    # Verify OGRE was built
+    if(NOT EXISTS "${OGRE_LIB_DIR}/libOgreMain.so")
+      message(FATAL_ERROR "OGRE not built. Please run: cd ext/ogre/build && cmake .. && make")
+    endif()
+
+    # Include directories
+    set(OGRE_INCLUDE_DIRS
+      "${OGRE_BUILD_DIR}/include"
+      "${OGRE_BUILD_DIR}/include/OGRE"
+      "${OGRE_SOURCE_DIR}/OgreMain/include"
+      "${OGRE_SOURCE_DIR}/Components/Overlay/include"
+      "${OGRE_SOURCE_DIR}/Components/RTShaderSystem/include"
+      "${OGRE_SOURCE_DIR}/Components/Bites/include"
+    )
+
+    # Libraries (shared objects)
+    set(OGRE_LIBRARIES
+      "${OGRE_LIB_DIR}/libOgreMain.so"
+      "${OGRE_LIB_DIR}/libOgreOverlay.so"
+      "${OGRE_LIB_DIR}/libOgreRTShaderSystem.so"
+      "${OGRE_LIB_DIR}/libOgreBites.so"
+      GL
+      X11
+      Xt
+      pthread
+    )
+
+    # Plugin libraries
+    set(OGRE_PLUGIN_DIR "${OGRE_LIB_DIR}/OGRE")
+
+    link_directories(${OGRE_LIB_DIR})
+    link_directories(${OGRE_PLUGIN_DIR})
+
+    set(OGRE_FOUND TRUE)
+    set(OGRE_Overlay_LIBRARIES "${OGRE_LIB_DIR}/libOgreOverlay.so")
+
+    message(STATUS "Using local OGRE build from: ${OGRE_LIB_DIR}")
   else()
-    # Linux: Not implemented yet
-    message(FATAL_ERROR "Linux OGRE integration not yet implemented")
+    message(FATAL_ERROR "Unsupported platform for OGRE visualization")
   endif()
 
   include_directories(${OGRE_INCLUDE_DIRS})
