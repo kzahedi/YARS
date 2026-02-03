@@ -15,11 +15,12 @@ This guide provides detailed instructions for building YARS on supported platfor
 | Dependency | Minimum Version | Notes |
 |------------|-----------------|-------|
 | CMake | 3.16 | Build system generator |
-| Boost | 1.70 | program_options, filesystem, thread |
+| CLI11 | 2.3 | Command-line parsing (header-only) |
 | Xerces-C | 3.2 | XML parsing |
 | Bullet Physics | 3.0 | Physics simulation |
 | OGRE | 14.0 | 3D rendering (built as submodule) |
 | SDL2 | 2.0 | Window and input handling |
+| Catch2 | 3.0 | Unit testing framework (optional) |
 
 ### Optional Dependencies
 
@@ -36,12 +37,12 @@ This guide provides detailed instructions for building YARS on supported platfor
 Using Homebrew:
 
 ```bash
-brew install cmake boost xerces-c bullet sdl2
+brew install cmake cli11 xerces-c bullet sdl2
 ```
 
-Optional:
+Optional (for tests and extras):
 ```bash
-brew install ffmpeg qt@5 doxygen
+brew install catch2 ffmpeg qt@5 doxygen
 ```
 
 ### 2. Clone Repository
@@ -99,7 +100,8 @@ Configure build options with `-D<OPTION>=<VALUE>`:
 |--------|---------|-------------|
 | `YARS_USE_VISUALISATION` | ON | Enable 3D visualization |
 | `YARS_USE_CAPTURE_VIDEO` | OFF | Enable FFmpeg video recording |
-| `YARS_TESTCASES` | OFF | Build test suite |
+| `YARS_BUILD_TESTS` | OFF | Build Catch2 unit and integration tests |
+| `YARS_TESTCASES` | OFF | Build legacy test suite |
 | `YARS_USE_SOFT_BODIES` | OFF | Enable soft body physics |
 | `YARS_BUILD_CPP_CLIENT` | OFF | Build C++ client libraries |
 | `YARS_BUILD_JAVA_CLIENT` | OFF | Build Java bindings |
@@ -107,7 +109,7 @@ Configure build options with `-D<OPTION>=<VALUE>`:
 
 Example with options:
 ```bash
-cmake .. -DYARS_USE_CAPTURE_VIDEO=ON -DYARS_TESTCASES=ON
+cmake .. -DYARS_USE_CAPTURE_VIDEO=ON -DYARS_BUILD_TESTS=ON
 ```
 
 ## Build Configurations
@@ -125,6 +127,26 @@ make -j$(sysctl -n hw.ncpu)
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 make -j$(sysctl -n hw.ncpu)
 ```
+
+## Running Tests
+
+Build and run the Catch2 test suite:
+
+```bash
+cmake .. -DYARS_BUILD_TESTS=ON
+make -j$(sysctl -n hw.ncpu)
+ctest --output-on-failure
+```
+
+Or run tests directly:
+```bash
+./bin/yars_unit_tests
+./bin/yars_integration_tests
+```
+
+Test coverage includes:
+- **Unit tests**: P3D, Quaternion, Matrix, CircularBuffer, StringTokeniser, Colour
+- **Integration tests**: Configuration loading, simulation execution
 
 ## Generated Configuration Files
 
@@ -150,11 +172,11 @@ ls ext/ogre/build/lib/*.framework
 
 Should show: `Ogre.framework`, `OgreOverlay.framework`, `OgreRTShaderSystem.framework`
 
-### Missing Boost Components
+### CLI11 Not Found
 
-Install all required Boost libraries:
+Install CLI11 via Homebrew:
 ```bash
-brew install boost
+brew install cli11
 ```
 
 ### SDL2 Linking Issues

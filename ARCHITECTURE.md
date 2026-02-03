@@ -226,7 +226,7 @@ src/yars/
 ├── main/               # Application control
 ├── physics/            # Bullet integration
 ├── types/              # Math types, matrices
-├── util/               # Utilities
+├── util/               # Utilities (CircularBuffer, StringTokeniser, etc.)
 └── view/
     ├── console/        # Text-mode view
     └── gui/            # OGRE visualization
@@ -289,3 +289,44 @@ Thread safety considerations:
 - Rendering rate tied to vsync or uncapped
 - Large scenes benefit from spatial partitioning
 - Shader compilation cached by RTSS
+- **Hot path**: Physics raycast for sensors (~69% of CPU time)
+- See `PROFILING.md` for detailed performance analysis
+
+## Testing
+
+YARS uses [Catch2](https://github.com/catchorg/Catch2) for unit and integration testing.
+
+**Test Structure:**
+```
+tests/
+├── unit/                    # Fast, isolated unit tests
+│   ├── test_p3d.cpp
+│   ├── test_quaternion.cpp
+│   ├── test_matrix.cpp
+│   ├── test_circular_buffer.cpp
+│   ├── test_string_tokeniser.cpp
+│   └── test_colour.cpp
+└── integration/             # Tests requiring full subsystems
+    ├── test_configuration.cpp
+    └── test_simulation.cpp
+```
+
+**Running Tests:**
+```bash
+cmake .. -DYARS_BUILD_TESTS=ON
+make
+ctest --output-on-failure
+```
+
+## Dependencies
+
+| Library | Purpose | Notes |
+|---------|---------|-------|
+| **Bullet Physics 3** | Rigid body dynamics | System library |
+| **OGRE 14** | 3D rendering | Git submodule, macOS frameworks |
+| **SDL2** | Window/input | System library |
+| **Xerces-C** | XML parsing | System library |
+| **CLI11** | Command-line parsing | Header-only, replaced Boost.ProgramOptions |
+| **Catch2 3** | Unit testing | Optional, system library |
+
+Note: YARS uses C++17 standard library features (`<filesystem>`, `<optional>`) instead of Boost equivalents.
