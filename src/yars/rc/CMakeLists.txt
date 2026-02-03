@@ -35,4 +35,4 @@ set(YARS_ROBOT_CONTROLLER_FILES "${CMAKE_SOURCE_DIR}/src/yars/configuration/data
 
 
 add_library(YarsRobotController STATIC ${YARS_ROBOT_CONTROLLER_FILES} ${XERCESC_LIBRARY_FILE})
-target_link_libraries(YarsRobotController YarsUtil ${Boost_LIBRARIES})
+target_link_libraries(YarsRobotController YarsUtil)

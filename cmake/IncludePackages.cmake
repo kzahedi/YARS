@@ -5,18 +5,14 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Handle modern Boost (1.70+) which uses BoostConfig.cmake
-# system and thread are header-only in modern Boost
-if(APPLE)
-  set(Boost_USE_STATIC_LIBS ON)
-endif(APPLE)
+# CLI11 for command-line parsing (replaces boost::program_options)
+find_package(CLI11 CONFIG REQUIRED)
 
-# Boost components needed - only program_options now
-# (filesystem and thread replaced with C++17 std::filesystem and std::thread)
-find_package(Boost REQUIRED COMPONENTS program_options)
-IF(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-ENDIF(Boost_FOUND)
+# Note: Boost is no longer required
+# - boost::program_options replaced with CLI11
+# - boost::filesystem replaced with std::filesystem (C++17)
+# - boost::thread replaced with std::thread (C++17)
+# - boost::circular_buffer replaced with custom CircularBuffer
 
 find_package(XercesC)
 IF(XERCESC_FOUND)
@@ -120,9 +116,7 @@ if(YARS_TESTCASES)
 endif(YARS_TESTCASES)
 
 
-if(NOT Boost_FOUND)
-  set(stop TRUE)
-endif(NOT Boost_FOUND)
+# Boost no longer required - replaced with C++17 and CLI11
 
 if(NOT XERCESC_FOUND)
   set(stop TRUE)

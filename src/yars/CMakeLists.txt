@@ -10,8 +10,7 @@ add_subdirectory(logging)
 add_subdirectory(rc)
 
 target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE})
-target_link_libraries(${YARS_TARGET} ${Boost_LIBRARIES})
-target_link_libraries(${YARS_TARGET} Boost::program_options)
+target_link_libraries(${YARS_TARGET} CLI11::CLI11)
 
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)

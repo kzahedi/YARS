@@ -40,7 +40,7 @@ target_link_libraries(YarsControllerNamedPipe
   YarsRobotController
   YarsConfiguration
   YarsUtil
-  ${Boost_LIBRARIES})
+  )
 
 OPTION(YARS_USE_PYTHON "Compile PYTHON Controller" OFF)
 if(YARS_USE_PYTHON)
@@ -55,7 +55,7 @@ target_link_libraries(YarsControllerTCPIP
   YarsUtil
   YarsConfiguration
   YarsRobotController
-  ${Boost_LIBRARIES})
+  )
 
 OPTION(YARS_USE_MATLAB_CONTROLLER "Compile MATLAB Controller" OFF)
 if(YARS_USE_MATLAB_CONTROLLER)
@@ -84,7 +84,7 @@ if(YARS_USE_NMODE_CONTROLLER)
     YarsRobotController
     YarsConfiguration
     YarsUtil
-    ${Boost_LIBRARIES})
+    )
 endif(YARS_USE_NMODE_CONTROLLER)
 
 OPTION(YARS_USE_CRBM_CONTROLLER "Compile CRBM Controller" OFF)
@@ -96,7 +96,7 @@ if(YARS_USE_CRBM_CONTROLLER)
     YarsConfiguration
     YarsUtil
     Entropy++
-    ${Boost_LIBRARIES})
+    )
 endif(YARS_USE_CRBM_CONTROLLER)
 
 OPTION(YARS_USE_GO "Compile GO Controller" OFF)
