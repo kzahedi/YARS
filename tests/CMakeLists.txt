@@ -11,6 +11,9 @@ add_executable(yars_unit_tests
   unit/test_p3d.cpp
   unit/test_quaternion.cpp
   unit/test_matrix.cpp
+  unit/test_circular_buffer.cpp
+  unit/test_string_tokeniser.cpp
+  unit/test_colour.cpp
 )
 
 target_include_directories(yars_unit_tests PRIVATE
