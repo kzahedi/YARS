@@ -9,6 +9,9 @@
 #include <yars/util/OSD.h>
 
 #include <OGRE/Ogre.h>
+#include <OGRE/OgreFont.h>
+#include <OGRE/OgreFontManager.h>
+#include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 
 #ifndef __APPLE__
 namespace _SDL_
@@ -593,6 +596,31 @@ void SdlWindow::setupOSD()
                              "^0YARS, Zahedi", x, y, 15, 10,
                              Ogre::ColourValue(75.0 / 255.0, 117.0 / 255.0, 148.0 / 255.0, 1.0f),
                              "Legend", "24");
+
+  // Fix font materials: RTSS generates a bad technique (lighting=on, no texture)
+  // for font materials. Remove it so the overlay falls back to the base technique
+  // (lighting=off, alpha_blend, with font texture) which renders correctly.
+  const std::string rtssScheme = Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME;
+  for (const std::string &fname : {"Time", "Robot", "Legend"}) {
+    auto font = Ogre::FontManager::getSingleton().getByName(fname, "General");
+    if (!font) continue;
+    font->load();
+    auto mat = font->getMaterial();
+    if (!mat) continue;
+    // Remove any bad RTSS technique
+    for (unsigned short t = mat->getNumTechniques(); t-- > 0;) {
+      if (mat->getTechnique(t)->getSchemeName() == rtssScheme)
+        mat->removeTechnique(t);
+    }
+    // Ensure base technique pass has correct settings
+    if (mat->getNumTechniques() > 0 && mat->getTechnique(0)->getNumPasses() > 0) {
+      auto *pass = mat->getTechnique(0)->getPass(0);
+      pass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+      pass->setDepthCheckEnabled(false);
+      pass->setDepthWriteEnabled(false);
+      pass->setLightingEnabled(false);
+    }
+  }
 }
 
 void SdlWindow::reset()

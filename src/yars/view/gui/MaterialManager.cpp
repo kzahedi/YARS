@@ -164,7 +164,9 @@ void MaterialManager::createRTSSForLegacyMaterials() {
         return;
     }
 
-    // Create RTSS techniques for ALL loaded materials that lack one
+    // Create RTSS techniques for ALL loaded materials that lack one,
+    // and copy blend/depth settings from the base technique so that
+    // alpha-blended materials (e.g. font overlays) stay transparent.
     auto _createRTSS = [&](Ogre::MaterialPtr material) {
         if (!material) return;
         for (unsigned short i = 0; i < material->getNumTechniques(); ++i) {
@@ -177,10 +179,30 @@ void MaterialManager::createRTSSForLegacyMaterials() {
             Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
             Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
             true);
-        if (ok)
-            _shaderGenerator->validateMaterial(
-                Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
-                material->getName(), material->getGroup());
+        if (!ok) return;
+        _shaderGenerator->validateMaterial(
+            Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
+            material->getName(), material->getGroup());
+
+        // Copy blend/depth settings from base technique (index 0) to RTSS
+        // technique. Base tech scheme is "" not "Default", use index 0.
+        Ogre::Technique *baseTech = material->getTechnique(0);
+        Ogre::Technique *rtssTech = material->getTechnique(
+            Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+        if (baseTech && rtssTech && baseTech != rtssTech) {
+            for (unsigned short p = 0;
+                 p < rtssTech->getNumPasses() && p < baseTech->getNumPasses(); ++p) {
+                Ogre::Pass *rp = rtssTech->getPass(p);
+                Ogre::Pass *bp = baseTech->getPass(p);
+                if (bp->getSourceBlendFactor() != Ogre::SBF_ONE ||
+                    bp->getDestBlendFactor()   != Ogre::SBF_ZERO) {
+                    rp->setSceneBlending(bp->getSourceBlendFactor(),
+                                         bp->getDestBlendFactor());
+                }
+                rp->setDepthCheckEnabled(bp->getDepthCheckEnabled());
+                rp->setDepthWriteEnabled(bp->getDepthWriteEnabled());
+            }
+        }
     };
 
     // Cover built-in Ogre materials
@@ -192,6 +214,12 @@ void MaterialManager::createRTSSForLegacyMaterials() {
     while (it.hasMoreElements()) {
         Ogre::ResourcePtr res = it.getNext();
         Ogre::MaterialPtr mat = std::static_pointer_cast<Ogre::Material>(res);
+        // Debug: print materials with alpha blending to find font materials
+        if (mat && mat->getNumTechniques() > 0 && mat->getTechnique(0)->getNumPasses() > 0) {
+            auto* p = mat->getTechnique(0)->getPass(0);
+            if (p->getSourceBlendFactor() != Ogre::SBF_ONE || p->getDestBlendFactor() != Ogre::SBF_ZERO)
+                std::cout << "[MM] alpha-blend material: '" << mat->getName() << "' src=" << p->getSourceBlendFactor() << " dst=" << p->getDestBlendFactor() << std::endl;
+        }
         _createRTSS(mat);
     }
 

@@ -118,15 +118,43 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString &text)
 
 void ColoredTextAreaOverlayElement::updateColours(void)
 {
-  // Simplified - private member access removed
-  // Color functionality disabled for compatibility with modern OGRE
-  // Colors are now handled through the basic overlay system
+  // The base class updateColours() is private so we can't call it directly.
+  // Replicate its behaviour: fill the COLOUR_BINDING vertex buffer (binding 1)
+  // with the top/bottom colours set via setColour() / setMainColour().
+  RenderOperation rop;
+  getRenderOperation(rop);
+  if (!rop.vertexData) return;
+
+  auto &vbb = rop.vertexData->vertexBufferBinding;
+  if (!vbb->isBufferBound(COLOUR_BINDING))
+    return;
+
+  HardwareVertexBufferSharedPtr vbuf = vbb->getBuffer(COLOUR_BINDING);
+  if (!vbuf || vbuf->getSizeInBytes() == 0)
+    return;
+
+  // Number of character quads allocated in the VBO (4 vertices each)
+  size_t numChars = vbuf->getSizeInBytes() / (4 * sizeof(RGBA));
+
+  const ColourValue &colTop    = getColourTop();
+  const ColourValue &colBottom = getColourBottom();
+  RGBA top    = colTop.getAsBYTE();
+  RGBA bottom = colBottom.getAsBYTE();
+
+  RGBA *pDest = static_cast<RGBA *>(vbuf->lock(HardwareBuffer::HBL_DISCARD));
+  for (size_t i = 0; i < numChars; ++i)
+  {
+    *pDest++ = top;
+    *pDest++ = top;
+    *pDest++ = bottom;
+    *pDest++ = bottom;
+  }
+  vbuf->unlock();
 }
 
 void ColoredTextAreaOverlayElement::setMainColour(ColourValue c)
 {
   _color = c;
-  // Use public API to set color
   setColour(c);
 }
 

@@ -71,27 +71,17 @@ OgreHandler::OgreHandler()
   // Use GL3Plus renderer with OpenGL 3.0 compatibility profile
   const Ogre::RenderSystemList &renderers = _root->getAvailableRenderers();
   Ogre::RenderSystem *renderSystem = renderers.front();
-  std::cout << "Available renderer: " << renderSystem->getName() << std::endl;
-  std::cout << "Using renderer for OpenGL 3.0 compatibility mode" << std::endl;
   _root->setRenderSystem(renderSystem);
 
   // Check environment before attempting OpenGL context creation
   const char *display = getenv("DISPLAY");
   bool hasDisplay = (display != nullptr && strlen(display) > 0);
 
-  if (!hasDisplay)
-  {
-    std::cout << "No DISPLAY environment variable detected." << std::endl;
-  }
-
-  std::cout << "Attempting to initialize OpenGL 3.3 core renderer with custom shaders..." << std::endl;
-
   try
   {
     // Renderer already set above - don't override it
     _root->initialise(false);
     _sceneManager = _root->createSceneManager("DefaultSceneManager");
-    std::cout << "OpenGL 3.3 core renderer initialized successfully!" << std::endl;
   }
   catch (const Ogre::RenderingAPIException &e)
   {
@@ -160,12 +150,39 @@ public:
     // Validate will compile the generated programs.
     mShaderGenerator->validateMaterial(schemeName, originalMaterial->getName());
 
-    // Return the generated technique.
+    // Find the generated RTSS technique and copy blend/depth settings from
+    // the base technique (index 0). RTSS doesn't copy scene_blend, so font
+    // materials lose alpha_blend and character quads render as opaque blocks.
+    // Base technique uses scheme "" (empty), not "Default", so use index 0.
+    Ogre::Technique *baseTech = (originalMaterial->getNumTechniques() > 0)
+                                    ? originalMaterial->getTechnique(0)
+                                    : nullptr;
+
     for (unsigned short i = 0; i < originalMaterial->getNumTechniques(); ++i)
     {
       Ogre::Technique *tech = originalMaterial->getTechnique(i);
       if (tech->getSchemeName() == schemeName)
+      {
+        if (baseTech && tech != baseTech)
+        {
+          for (unsigned short p = 0; p < tech->getNumPasses() && p < baseTech->getNumPasses(); ++p)
+          {
+            Ogre::Pass *rtssPass = tech->getPass(p);
+            Ogre::Pass *basePass = baseTech->getPass(p);
+            // Copy alpha blending (critical for font/overlay transparency)
+            if (basePass->getSourceBlendFactor() != Ogre::SBF_ONE ||
+                basePass->getDestBlendFactor() != Ogre::SBF_ZERO)
+            {
+              rtssPass->setSceneBlending(basePass->getSourceBlendFactor(),
+                                         basePass->getDestBlendFactor());
+            }
+            // Copy depth settings (fonts use depth_check off, depth_write off)
+            rtssPass->setDepthCheckEnabled(basePass->getDepthCheckEnabled());
+            rtssPass->setDepthWriteEnabled(basePass->getDepthWriteEnabled());
+          }
+        }
         return tech;
+      }
     }
     return nullptr;
   }
