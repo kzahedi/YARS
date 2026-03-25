@@ -63,7 +63,7 @@ ConfigurationContainer::ConfigurationContainer()
   _cameraOrientation.y        = 0;
   _cameraOrientation.z        = 0;
 
-  _framesDirectory            = DEFAULT_FRAMES_DIRECTORY;
+  _framesDirectory            = "";
   _logDirectory               = DEFAULT_LOG_DIRECTORY;
   _defaultSimulatorFrequency  = DEFAULT_SIMULATION_FREQUENCY;
   _defaultControllerFrequency = DEFAULT_CONTROLLER_FREQUENCY;

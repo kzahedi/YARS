@@ -325,16 +325,11 @@ void YarsConfiguration::__generateVideoPath()
 
 void YarsConfiguration::__generateFramesPath()
 {
-  string framesDirectory;
-  framesDirectory = getFramesDirectory();
+  string framesDirectory = getFramesDirectory();
   if (framesDirectory.length() == 0)
-  {
-    framesDirectory = DEFAULT_FRAMES_DIRECTORY;
-  }
+    return; // --frames not given; leave directory empty so capture stays off
   if (framesDirectory == DEFAULT_FRAMES_DIRECTORY)
-  {
     _directories->getUniqueDirectoryName(&framesDirectory);
-  }
   setFramesDirectory(framesDirectory);
 }
 

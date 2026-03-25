@@ -87,11 +87,8 @@ SdlWindow::SdlWindow(int index)
   string framesDir = __YARS_GET_FRAMES_DIRECTORY;
   _imgCaptureRunning = (framesDir.length() > 0);
   _imgCaptureFrameIndex = 0;
-  if (_imgCaptureRunning) {
-    std::cout << "Auto-enabled frame capture to: " << framesDir << std::endl;
-    // Ensure the output directory exists
+  if (_imgCaptureRunning)
     std::filesystem::create_directories(framesDir);
-  }
   _followableIndex = 0;
   _closed = false;
   _fps = 0;
@@ -898,9 +895,8 @@ void SdlWindow::__captureImageFrame()
   // Capture directly from the main render window (already rendered by OgreHandler::step)
   try {
     _window->writeContentsToFile(oss.str());
-    std::cout << "FRAME CAPTURE: Successfully wrote frame " << _imgCaptureFrameIndex << std::endl;
   } catch (const std::exception& e) {
-    std::cout << "FRAME CAPTURE ERROR: " << e.what() << std::endl;
+    std::cerr << "FRAME CAPTURE ERROR: " << e.what() << std::endl;
   }
 }
 
