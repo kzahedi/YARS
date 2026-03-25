@@ -27,7 +27,7 @@ void YarsLoggingControl::notify(ObservableMessage *message)
     _model->step();
     break;
   case __M_QUIT:
-    delete _model;
+    // Model lifetime is owned by YarsMainControl; do not delete here.
     break;
   }
 }
@@ -68,5 +68,5 @@ void YarsLoggingControl::reset()
 
 void YarsLoggingControl::quit()
 {
-  delete _model;
+  // Model lifetime is owned by YarsMainControl; do not delete here.
 }

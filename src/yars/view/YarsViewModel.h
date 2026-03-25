@@ -36,9 +36,9 @@ class YarsViewModel
     std::vector<SdlWindow*> _newWindows;
     int                     _drawFequency;
     int                     _visualiseCalled;
-    bool                    _run;
-    bool                    _sync;
-    bool                    _syncedStep;
+    volatile bool           _run;
+    volatile bool           _sync;
+    volatile bool           _syncedStep;
     bool                    _toggleVideo;
     OgreHandler            *_ogreHandler;
     SDL_Event               _event;

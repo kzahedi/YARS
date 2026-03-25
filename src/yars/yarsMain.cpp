@@ -28,11 +28,11 @@ int mainFunction(int argc, char **argv)
     auto yvc = std::make_unique<YarsViewControl>();
     auto yvm = std::make_unique<YarsViewModel>();
     yvc->setModel(yvm.get());
-    // TODO: Observer pattern not fully implemented - yvm->addObserver(ymc.get());
-#ifndef SUPPRESS_ALL_OUTPUT
-    // TODO: Observer pattern not fully implemented - yvm->addObserver(cv);
-#endif // SUPPRESS_ALL_OUTPUT
-    // TODO: Observer pattern not fully implemented - ymc->addObserver(yvc.get());
+
+    // Wire physics step notification to GUI sync (replaces observer pattern)
+    ymc->setStepCallback([&yvc]() { yvc->onNextStep(); });
+    // Wire physics quit notification to GUI (signals GUI run() loop to exit)
+    ymc->setQuitCallback([&yvc]() { yvc->onQuit(); });
 
     std::thread pThread(
         &YarsMainControl::run, // pointer to member function to execute in thread

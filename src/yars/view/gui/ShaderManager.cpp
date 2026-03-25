@@ -101,73 +101,45 @@ void ShaderManager::_setupDefaultShaderLibrary() {
         std::cout << "ShaderManager: No shader generator available for default library setup" << std::endl;
         return;
     }
-    
+
     std::cout << "ShaderManager: Setting up default shader library with sub-render states..." << std::endl;
-    
-    // Create default render state for RTSS scheme
+
+    // Use the single-argument overload to get the GLOBAL scheme render state.
+    // The 4-argument overload is for per-material render states; passing an empty
+    // material name always returns nullptr and silently skips all configuration.
     auto* renderState = _shaderGenerator->getRenderState(
-        Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
-        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 0);
-    
+        Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+
     if (renderState) {
-        std::cout << "ShaderManager: Got render state for default scheme" << std::endl;
-        // Reset to clear any previous state
-        renderState->reset();
-        
-        // Add basic vertex transformation
-        auto transformSubRenderState = _shaderGenerator->createSubRenderState("FFP_Transform");
-        if (transformSubRenderState) {
-            renderState->addTemplateSubRenderState(transformSubRenderState);
-            std::cout << "ShaderManager: Added FFP_Transform sub-render state" << std::endl;
-        } else {
-            std::cout << "ShaderManager: WARNING - Failed to create FFP_Transform sub-render state" << std::endl;
-        }
-        
-        // Add texture sampling  
-        auto textureSubRenderState = _shaderGenerator->createSubRenderState("FFP_Texturing");
-        if (textureSubRenderState) {
-            renderState->addTemplateSubRenderState(textureSubRenderState);
-            std::cout << "ShaderManager: Added FFP_Texturing sub-render state" << std::endl;
-        } else {
-            std::cout << "ShaderManager: WARNING - Failed to create FFP_Texturing sub-render state" << std::endl;
-        }
-        
-        // Add per-pixel lighting calculations (try different names)
-        auto lightingSubRenderState = _shaderGenerator->createSubRenderState("FFP_Lighting");
+        std::cout << "ShaderManager: Got global render state for default scheme" << std::endl;
+
+        // Per-pixel lighting: the RTSS automatically includes FFP_Transform and
+        // FFP_Texturing; we only need to override the lighting to per-pixel.
+        auto lightingSubRenderState = _shaderGenerator->createSubRenderState("SGX_PerPixelLighting");
         if (lightingSubRenderState) {
             renderState->addTemplateSubRenderState(lightingSubRenderState);
-            std::cout << "ShaderManager: Added FFP_Lighting sub-render state" << std::endl;
+            std::cout << "ShaderManager: Added SGX_PerPixelLighting sub-render state" << std::endl;
         } else {
-            std::cout << "ShaderManager: WARNING - Failed to create FFP_Lighting sub-render state" << std::endl;
+            std::cout << "ShaderManager: WARNING - SGX_PerPixelLighting not found; falling back to FFP_Lighting" << std::endl;
+            auto ffpLighting = _shaderGenerator->createSubRenderState("FFP_Lighting");
+            if (ffpLighting) {
+                renderState->addTemplateSubRenderState(ffpLighting);
+                std::cout << "ShaderManager: Added FFP_Lighting sub-render state" << std::endl;
+            }
         }
     } else {
-        std::cout << "ShaderManager: WARNING - Could not get render state for default scheme" << std::endl;
+        std::cout << "ShaderManager: WARNING - Could not get global render state for default scheme" << std::endl;
     }
-    
+
     std::cout << "ShaderManager: Default shader library configured with lighting and texturing" << std::endl;
 }
 
 void ShaderManager::_configureLightingSystem() {
     if (!_shaderGenerator || !_sceneManager) return;
-    
+
     // Set ambient light for the scene
     _sceneManager->setAmbientLight(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
-    
-    // Configure lighting model for materials
-    auto* renderState = _shaderGenerator->getRenderState(
-        Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
-        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 0);
-    
-    // Ensure per-pixel lighting is enabled
-    if (renderState) {
-        auto lightingSubRenderState = _shaderGenerator->createSubRenderState("PerPixelLighting");
-        if (lightingSubRenderState) {
-            renderState->addTemplateSubRenderState(lightingSubRenderState);
-        }
-    }
-    
+
     std::cout << "ShaderManager: Lighting system configured" << std::endl;
 }
 

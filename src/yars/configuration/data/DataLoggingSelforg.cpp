@@ -53,11 +53,13 @@ void DataLoggingSelforg::add(DataParseElement *element)
 
     if(_useMatrixviz || _useGuilogger)
     {
+#ifndef __APPLE__
       if(getenv("DISPLAY") == NULL)
       {
         YarsErrorHandler::push("Can't open display");
         exit(-1);
       }
+#endif
     }
     if(_useMatrixviz)
     {

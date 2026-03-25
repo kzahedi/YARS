@@ -313,7 +313,7 @@
         </position>
       </sensors>
 
-      <controller  module="Braitenberg" frequency="10">
+      <controller  module="Braitenberg2b" frequency="10">
         <parameter name="debug" value="true"/>
       </controller>
     </robot>

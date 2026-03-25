@@ -560,7 +560,7 @@
       <!-- <controller  module="NIL" frequency="10"/> -->
       <controller  module="Python" frequency="10">
         <parameter name="module" value="hexapod"/>
-        <parameter name="working directory" value="/Users/zahedi/projects/yars/contrib/controller"/>
+        <parameter name="working directory" value="/Volumes/Eregion/projects/yars/contrib/controller"/>
       </controller>
 
     </robot>

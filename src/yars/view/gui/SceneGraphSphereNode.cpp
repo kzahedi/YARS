@@ -41,7 +41,7 @@ SceneGraphSphereNode::SceneGraphSphereNode(
   materialName = MaterialManager::instance()->resolveMaterialName(materialName);
 
   for (unsigned int i = 0; i < _manual->getNumSections(); i++)
-    _manual->setMaterialName(i, materialName);
+    _manual->setMaterialName(i, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 
   Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
   for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)

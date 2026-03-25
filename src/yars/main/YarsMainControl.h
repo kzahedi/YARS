@@ -3,6 +3,7 @@
 
 #include <yars/util/Observable.h>
 #include <yars/util/Observer.h>
+#include <functional>
 
 #include <yars/main/RuntimeControl.h>
 #include <yars/main/SignalHandler.h>
@@ -60,10 +61,18 @@ public:
      */
   void run();
 
+  /** \brief Register a callback called after each physics step (for GUI sync). */
+  void setStepCallback(std::function<void()> callback) { _stepCallback = callback; }
+
+  /** \brief Register a callback called when physics finishes (signals GUI to quit). */
+  void setQuitCallback(std::function<void()> callback) { _quitCallback = callback; }
+
 private:
   void __closeApplication();
 
   bool _keepOnRunning;
+  std::function<void()> _stepCallback;
+  std::function<void()> _quitCallback;
   ConsoleView *_cv;
   RuntimeControl *_rtc;
   SignalHandler *_sig;

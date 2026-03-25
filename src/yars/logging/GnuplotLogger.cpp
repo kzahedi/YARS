@@ -3,6 +3,7 @@
 #include <yars/util/Timer.h>
 #include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
+#include <yars/util/FileSystemOperations.h>
 
 #ifdef _MSC_VER
 #  define popen _popen
@@ -14,6 +15,7 @@ GnuplotLogger::GnuplotLogger(DataLoggingGnuplot *data, int index)
   _data      = data;
   _delay = data->delay();
   _fileIndex = index;
+  _gnuplotFD = NULL;
   _oss.str("");
   _oss << "gnuplot-tmp-" << _fileIndex << ".txt";
   _firstCall = true;
@@ -28,6 +30,11 @@ GnuplotLogger::GnuplotLogger(DataLoggingGnuplot *data, int index)
 
 void GnuplotLogger::init()
 {
+  if (!FileSystemOperations::doesExecutableExist("gnuplot"))
+  {
+    std::cerr << "Warning: gnuplot not found — gnuplot logging disabled." << std::endl;
+    return;
+  }
   _gnuplotFD = popen("gnuplot","w");
   if(_gnuplotFD == NULL) YarsErrorHandler::push("Cannot open gnuplot executable");
   for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
@@ -47,6 +54,7 @@ void GnuplotLogger::init()
 
 void GnuplotLogger::update()
 {
+  if (_gnuplotFD == NULL) return;  // gnuplot not available
   std::vector<string> values;
   _oss.str("");
   for(std::vector<LoggingModule*>::iterator l = _modules.begin(); l != _modules.end(); l++)
@@ -128,6 +136,10 @@ void GnuplotLogger::update()
 
 void GnuplotLogger::close()
 {
-  fclose(_gnuplotFD);
+  if (_gnuplotFD != NULL)
+  {
+    pclose(_gnuplotFD);
+    _gnuplotFD = NULL;
+  }
   //remove(_dataFilename.c_str());
 }

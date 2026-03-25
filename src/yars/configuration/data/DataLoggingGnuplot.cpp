@@ -57,15 +57,17 @@ void DataLoggingGnuplot::add(DataParseElement *element)
   if(element->opening(YARS_STRING_TARGET))
   {
 
+#ifndef __APPLE__
     if(getenv("DISPLAY") == NULL)
     {
       YarsErrorHandler::push("Can't open display");
       exit(-1);
     }
+#endif
     if (!FileSystemOperations::doesExecutableExist("gnuplot"))
     {
-      YarsErrorHandler::push("Can't find gnuplot in your PATH");
-      exit(-1);
+      std::cerr << "Warning: gnuplot not found in PATH - gnuplot logging disabled." << std::endl;
+      return;
     }
 
     string target;

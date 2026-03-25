@@ -9,10 +9,12 @@
 #include <RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
 #include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #include <RTShaderSystem/OgreRTShaderSystem.h>
+#include <OgreSTBICodec.h>
 #else
 #include <OGRE/RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
 #include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
+#include <OGRE/Codec_STBI/OgreSTBICodec.h>
 #endif
 // #include <OGRE/OgreStaticPluginLoader.h>
 
@@ -44,6 +46,7 @@ private:
   SceneGraph *_sceneGraph;
   Ogre::GL3PlusPlugin *_GLPlugin;
   Ogre::ParticleFXPlugin *_particlePlugin;
+  Ogre::STBIPlugin *_stbiPlugin;
   Ogre::RTShader::ShaderGenerator *_shaderGenerator;
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
   // TextOverlay        *_textOverlay;

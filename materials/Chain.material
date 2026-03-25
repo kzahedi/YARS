@@ -1,43 +1,7 @@
-// Basic shader programs for OpenGL 3.3 core compatibility
-vertex_program basic_color_vp glsl
-{
-  source shaders/basic_color.vert
-}
-
-fragment_program basic_color_fp glsl
-{
-  source shaders/basic_color.frag
-}
-
-// Simple shader programs for Chain materials
-vertex_program chain_simple_color_vp glsl
-{
-  source shaders/simple_color.vert
-}
-
-fragment_program chain_simple_color_fp glsl
-{
-  source shaders/simple_color.frag
-}
-
 material Chain/Wheel
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture wheel.jpg
-        rotate 90
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -54,20 +18,6 @@ material Chain/DryGround
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture ground.jpg
-        scale 0.15 0.15
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -84,20 +34,6 @@ material Chain/Circuit/Body/Green
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture CBT.jpg
-        scale 0.5 2
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -116,18 +52,8 @@ material Chain/Circuit/Top/Green
   {
     pass
     {
-      vertex_program_ref chain_simple_color_vp
-      fragment_program_ref chain_simple_color_fp
-
-      vertex_program_ref_params
-      {
-        param_named_auto worldViewProjMatrix worldviewproj_matrix
-      }
-
-      fragment_program_ref_params
-      {
-        param_named color float4 0.0 0.8 0.0 1.0
-      }
+      ambient 0.0 0.8 0.0 1.0
+      diffuse 0.0 0.8 0.0 1.0
     }
   }
 }
@@ -136,20 +62,6 @@ material Chain/Circuit/Body/Blue
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture CBT_blue.jpg
-        scale 0.5 2
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -166,20 +78,6 @@ material Chain/Circuit/Top/Blue
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        anim_texture CBTR1_blue.jpg CBT_blue.jpg CBTR2_blue.jpg CBTR2_blue.jpg CBTR2_blue.jpg CBT_blue.jpg CBTR1_blue.jpg CBT_blue.jpg CBT_blue.jpg CBTR3_blue.jpg CBT_blue.jpg CBTR3_blue.jpg CBT_blue.jpg CBT_blue.jpg CBTR4_blue.jpg CBT_blue.jpg CBTR1_blue.jpg CBTR1_blue.jpg CBTR1_blue.jpg CBT_blue.jpg CBTR2_blue.jpg CBT_blue.jpg CBTR1_blue.jpg CBTR1_blue.jpg CBTR1_blue.jpg CBT_blue.jpg CBT_blue.jpg CBTR3_blue.jpg CBT_blue.jpg CBT_blue.jpg CBT_blue.jpg CBT_blue.jpg 10.0
-        scale 1.976 1
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -196,20 +94,6 @@ material Chain/Circuit/Body/Orange
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture CBT_orange.jpg
-        scale 0.5 2
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -226,20 +110,6 @@ material Chain/Circuit/Top/Orange
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        anim_texture CBTR1_orange.jpg CBT_orange.jpg CBTR2_orange.jpg CBTR2_orange.jpg CBTR2_orange.jpg CBT_orange.jpg CBTR1_orange.jpg CBT_orange.jpg CBT_orange.jpg CBTR3_orange.jpg CBT_orange.jpg CBTR3_orange.jpg CBT_orange.jpg CBT_orange.jpg CBTR4_orange.jpg CBT_orange.jpg CBTR1_orange.jpg CBTR1_orange.jpg CBTR1_orange.jpg CBT_orange.jpg CBTR2_orange.jpg CBT_orange.jpg CBTR1_orange.jpg CBTR1_orange.jpg CBTR1_orange.jpg CBT_orange.jpg CBT_orange.jpg CBTR3_orange.jpg CBT_orange.jpg CBT_orange.jpg CBT_orange.jpg CBT_orange.jpg 10.0
-        scale 1.976 1
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -256,20 +126,6 @@ material Chain/Circuit/Body/Purple
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture CBT_purple.jpg
-        scale 0.5 2
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -286,20 +142,6 @@ material Chain/Circuit/Top/Purple
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        anim_texture CBTR1_purple.jpg CBT_purple.jpg CBTR2_purple.jpg CBTR2_purple.jpg CBTR2_purple.jpg CBT_purple.jpg CBTR1_purple.jpg CBT_purple.jpg CBT_purple.jpg CBTR3_purple.jpg CBT_purple.jpg CBTR3_purple.jpg CBT_purple.jpg CBT_purple.jpg CBTR4_purple.jpg CBT_purple.jpg CBTR1_purple.jpg CBTR1_purple.jpg CBTR1_purple.jpg CBT_purple.jpg CBTR2_purple.jpg CBT_purple.jpg CBTR1_purple.jpg CBTR1_purple.jpg CBTR1_purple.jpg CBT_purple.jpg CBT_purple.jpg CBTR3_purple.jpg CBT_purple.jpg CBT_purple.jpg CBT_purple.jpg CBT_purple.jpg 10.0
-        scale 1.976 1
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -316,20 +158,6 @@ material Chain/Circuit/Body/Yellow
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        texture CBT_yellow.jpg
-        scale 0.5 2
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -346,20 +174,6 @@ material Chain/Circuit/Top/Yellow
 {
   technique
   {
-    scheme default
-    pass
-    {
-      texture_unit
-      {
-        anim_texture CBTR1_yellow.jpg CBT_yellow.jpg CBTR2_yellow.jpg CBTR2_yellow.jpg CBTR2_yellow.jpg CBT_yellow.jpg CBTR1_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg CBTR3_yellow.jpg CBT_yellow.jpg CBTR3_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg CBTR4_yellow.jpg CBT_yellow.jpg CBTR1_yellow.jpg CBTR1_yellow.jpg CBTR1_yellow.jpg CBT_yellow.jpg CBTR2_yellow.jpg CBT_yellow.jpg CBTR1_yellow.jpg CBTR1_yellow.jpg CBTR1_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg CBTR3_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg CBT_yellow.jpg 10.0
-        scale 1.976 1
-        filtering trilinear
-      }
-    }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       texture_unit
@@ -371,5 +185,3 @@ material Chain/Circuit/Top/Yellow
     }
   }
 }
-
-

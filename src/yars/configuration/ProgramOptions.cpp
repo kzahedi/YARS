@@ -371,12 +371,14 @@ void ProgramOptions::__parseProgramOptionsParameters()
   if(_vm.count(__PO_OPTION_RANDOM_SEED))                       __setRandomSeed();
   if(_vm.count(__PO_OPTION_FOLLOW))                            __follow();
 
+  // PNG frame capture directory works independently of video capture
+  if(_vm.count(__PO_OPTION_FRAMES_DIRECTORY))                  __captureFramesDirectory();
+
 #if USE_CAPTURE_VIDEO
   if(_vm.count(__PO_OPTION_VIDEO_CODEC))                       __videoCodec();
   if(_vm.count(__PO_OPTION_CAPTURE_FRAME_RATE))                __captureFrameRate();
   if(_vm.count(__PO_OPTION_CAPTURE_NAME))                      __captureName();
   if(_vm.count(__PO_OPTION_CAPTURE_DIRECTORY))                 __captureDirectory();
-  if(_vm.count(__PO_OPTION_FRAMES_DIRECTORY))                  __captureFramesDirectory();
   if(_vm.count(__PO_OPTION_CAPTURE))                           __capture();
 #endif // USE_CAPTURE_VIDEO
 

@@ -35,7 +35,7 @@ SceneGraphSoftPlyNode::SceneGraphSoftPlyNode(DataPly *ply, Ogre::SceneNode *r, O
   _manual->setCastShadows(true);
 
   _node->attachObject(_manual);
-  _manual->setMaterialName(0, _data->texture());
+  _manual->setMaterialName(0, _data->texture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 }
 
 void SceneGraphSoftPlyNode::update()

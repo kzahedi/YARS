@@ -36,9 +36,9 @@ SceneGraphProximitySensor::SceneGraphProximitySensor(DataGenericProximitySensor 
   __body();
 
   std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/ProximitySensor");
-  _manual->setMaterialName(0, materialName);
-  _manual->setMaterialName(1, materialName);
-  _manual->setMaterialName(2, materialName);
+  _manual->setMaterialName(0, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manual->setMaterialName(1, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manual->setMaterialName(2, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 
   _node->attachObject(_manual);
 }

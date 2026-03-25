@@ -66,7 +66,7 @@ DataScreen::DataScreen(DataNode *parent)
   _autoFollow = true;
   _camera = new DataCamera(this);
 
-  _fontTimeName = ""; // Disabled for testing
+  _fontTimeName = "Time";
   _fontTimeSize = 24;
   _fontTimeColour = Colour(46.0f / 255.0f, 72.0f / 255.0f, 92.0f / 255.0f, 1.f);
   _fontTimeWidth = 200;

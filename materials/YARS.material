@@ -38,18 +38,6 @@ material YARS/Gray
 {
   technique
   {
-    scheme default
-    pass
-    {
-      diffuse 0.75 0.75 0.75
-      ambient 0.5 0.5 0.5
-      specular 0.8 0.8 0.8 25.0
-      emissive 0.0 0.0 0.0
-     }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       diffuse 0.75 0.75 0.75
@@ -78,18 +66,6 @@ material YARS/Red
 {
   technique
   {
-    scheme default
-    pass
-    {
-      diffuse 1.0 0.0 0.0
-      ambient 0.5 0.5 0.5
-      specular 0.8 0.8 0.8 25.0
-      emissive 0.1 0.0 0.0
-     }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       diffuse 1.0 0.0 0.0
@@ -118,18 +94,6 @@ material YARS/Blue
 {
   technique
   {
-    scheme default
-    pass
-    {
-      diffuse 0.0 0.0 1.0
-      ambient 0.5 0.5 0.5
-      specular 0.8 0.8 0.8 25.0
-      emissive 0.0 0.0 0.1
-     }
-  }
-  technique
-  {
-    scheme ShaderGeneratorDefaultScheme
     pass
     {
       diffuse 0.0 0.0 1.0

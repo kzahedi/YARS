@@ -61,7 +61,7 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
       const_cast<Ogre::VertexData*>((*itShadow).vertexData)->prepareForShadowVolume();
     _node->attachObject(_manual);
     _manual->setCastShadows(true);
-    _manual->setMaterialName(0, _data->texture());
+    _manual->setMaterialName(0, _data->texture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
   }
   update();
 }

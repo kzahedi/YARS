@@ -119,11 +119,13 @@ void SelforgLogger::close()
   if(_matrixvizFD != NULL)
   {
     fprintf(_matrixvizFD,"#QUIT\n");
-    fclose(_matrixvizFD);
+    pclose(_matrixvizFD);
+    _matrixvizFD = NULL;
   }
   if(_guiloggerFD != NULL)
   {
     fprintf(_guiloggerFD,"#QUIT\n");
-    fclose(_guiloggerFD);
+    pclose(_guiloggerFD);
+    _guiloggerFD = NULL;
   }
 }

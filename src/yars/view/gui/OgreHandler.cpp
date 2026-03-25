@@ -14,6 +14,8 @@
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 
+
+
 namespace yars {
 
 OgreHandler *OgreHandler::_me = nullptr;
@@ -29,6 +31,7 @@ OgreHandler::OgreHandler()
 {
   Ogre::LogManager *lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
+  lm->getDefaultLog()->setLogDetail(Ogre::LL_LOW); // log errors only
 
 #ifdef __APPLE__
   // For macOS: Don't load plugins.cfg since we're using static plugins
@@ -45,6 +48,9 @@ OgreHandler::OgreHandler()
 
     _particlePlugin = new Ogre::ParticleFXPlugin();
     _particlePlugin->install();
+
+    _stbiPlugin = new Ogre::STBIPlugin();
+    _stbiPlugin->install();
 
   }
   catch (const std::exception &e)
@@ -182,18 +188,23 @@ void OgreHandler::setupSceneManager()
 
   Ogre::ResourceGroupManager &rgm = Ogre::ResourceGroupManager::getSingleton();
 
-  // Register YARS resources (meshes, materials) and OGRE sample resources
-  rgm.addResourceLocation(".", "FileSystem", "General"); // Current directory contains materials
-  rgm.addResourceLocation("../../meshes", "FileSystem", "General");
-  rgm.addResourceLocation("../ext/ogre/source/Media/Main", "FileSystem", "General");
+  // Register YARS resources (meshes, materials, fonts)
+  // All paths are relative to the project root (CWD when running ./build/bin/yars)
+  rgm.addResourceLocation(".", "FileSystem", "General");
+  rgm.addResourceLocation("fonts", "FileSystem", "General");
+  rgm.addResourceLocation("meshes", "FileSystem", "General");
 
-  // RT Shader System core library (program + material scripts)
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib", "FileSystem", "RTShaderLib");
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib/materials", "FileSystem", "RTShaderLib");
-  rgm.addResourceLocation("../ext/ogre/source/Media/RTShaderLib/GLSL", "FileSystem", "RTShaderLib");
+  // Register RTShaderLib for RTSS shader compilation (OgreInternal group)
+  // These GLSL files are required by RTSS to generate shaders for GL3+ core profile
+  rgm.addResourceLocation("ext/ogre/RTShaderLib", "FileSystem", "OgreInternal");
+  rgm.initialiseResourceGroup("OgreInternal");
 
-  // Initialise groups *before* we attempt to generate shaders.
-  rgm.initialiseResourceGroup("RTShaderLib");
+  // Register YARS materials (textures, .material scripts) BEFORE MaterialManager
+  // is first instantiated so RTSS_Ground etc. can resolve ground.jpg/wheel.jpg
+  rgm.addResourceLocation("materials", "FileSystem", "YARS");
+  rgm.initialiseResourceGroup("YARS");
+
+  // Initialise groups
   rgm.initialiseResourceGroup("General");
 
   // ----------------------------------------------------------------------
@@ -252,26 +263,12 @@ void OgreHandler::setupSceneManager()
     std::cout << "SUCCESS: SimpleWhite material found!" << std::endl;
   }
 
-  // Try to load some basic YARS materials safely
-  std::cout << "Loading basic YARS materials..." << std::endl;
-  try
-  {
-    // Only load safe, basic materials that shouldn't cause issues
-    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../materials", "FileSystem", "YARS");
-    Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("YARS");
-    std::cout << "Successfully loaded YARS materials directory" << std::endl;
-    
-    // Create RTSS techniques for YARS materials now that they are loaded
-    try {
-        MaterialManager::instance()->createRTSSForLegacyMaterials();
-        std::cout << "Created RTSS techniques for YARS materials" << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << "Warning: Failed to create RTSS techniques for YARS materials: " << e.what() << std::endl;
-    }
-  }
-  catch (const std::exception &e)
-  {
-    std::cout << "Could not load YARS materials: " << e.what() << std::endl;
+  // Create RTSS techniques for YARS materials (already loaded above)
+  try {
+    MaterialManager::instance()->createRTSSForLegacyMaterials();
+    std::cout << "Created RTSS techniques for YARS materials" << std::endl;
+  } catch (const std::exception& e) {
+    std::cout << "Warning: Failed to create RTSS techniques for YARS materials: " << e.what() << std::endl;
   }
 
   // Temporarily disable sky dome to test RTSS functionality
@@ -337,14 +334,11 @@ void OgreHandler::reset()
 
 void OgreHandler::step()
 {
-  // cout << "OgreHandler 0" << endl;
-  _sceneGraph->update();
-  // cout << "OgreHandler 1" << endl;
-
   try
   {
+    _sceneGraph->update();
     _root->renderOneFrame();
-    // cout << "OgreHandler 2" << endl;
+
   }
   catch (const Ogre::InvalidStateException &e)
   {
@@ -353,6 +347,17 @@ void OgreHandler::step()
     {
       std::cout << "RENDERING FAILED: " << e.what() << std::endl;
       std::cout << "This is expected due to RTSS shader issues. GUI window remains functional." << std::endl;
+      errorShown = true;
+    }
+    // Continue simulation - window stays open
+  }
+  catch (const Ogre::Exception &e)
+  {
+    static bool errorShown = false;
+    if (!errorShown)
+    {
+      std::cout << "RENDERING ERROR (Ogre): " << e.what() << std::endl;
+      std::cout << "This is expected due to material/shader compatibility issues" << std::endl;
       errorShown = true;
     }
     // Continue simulation - window stays open

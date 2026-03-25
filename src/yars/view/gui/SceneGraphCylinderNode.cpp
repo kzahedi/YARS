@@ -1,4 +1,5 @@
 #include "SceneGraphCylinderNode.h"
+#include "MaterialManager.h"
 
 #include <yars/defines/defaults.h>
 #include <OGRE/Ogre.h>
@@ -43,9 +44,10 @@ SceneGraphCylinderNode::SceneGraphCylinderNode(
   __bottomCap();
   __body();
 
-  _manual->setMaterialName(0, _data->texture(0));
-  _manual->setMaterialName(1, _data->texture(1));
-  _manual->setMaterialName(2, _data->texture(2));
+  auto* mm = MaterialManager::instance();
+  _manual->setMaterialName(0, mm->resolveMaterialName(_data->texture(0)), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manual->setMaterialName(1, mm->resolveMaterialName(_data->texture(1)), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manual->setMaterialName(2, mm->resolveMaterialName(_data->texture(2)), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 
   Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;
   for (itShadow = _manual->getEdgeList()->edgeGroups.begin(), itEndShadow = _manual->getEdgeList()->edgeGroups.end(); itShadow != itEndShadow; itShadow++)

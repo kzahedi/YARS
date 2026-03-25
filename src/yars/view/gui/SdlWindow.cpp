@@ -1,5 +1,6 @@
 #include "SdlWindow.h"
 
+#include <filesystem>
 #include <yars/configuration/data/Data.h>
 #include <yars/configuration/YarsConfiguration.h>
 #include <yars/view/gui/KeyHandler.h>
@@ -85,6 +86,8 @@ SdlWindow::SdlWindow(int index)
   _imgCaptureFrameIndex = 0;
   if (_imgCaptureRunning) {
     std::cout << "Auto-enabled frame capture to: " << framesDir << std::endl;
+    // Ensure the output directory exists
+    std::filesystem::create_directories(framesDir);
   }
   _followableIndex = 0;
   _closed = false;
@@ -215,14 +218,11 @@ void SdlWindow::step()
   _cameraVelocity *= 0.9;
   _camAngularVelocity *= 0.9;
 
-  // Force window update and buffer swap to display rendered content
-  if (_window && _window->isActive())
-  {
-    _window->update();
-    _window->swapBuffers();
-  }
+  // Capture BEFORE swap so writeContentsToFile reads the rendered backbuffer
+  if (_imgCaptureRunning && _visible)
+    __captureImageFrame();
 
-  // Also swap SDL buffers
+  // Swap SDL buffers
   SDL_GL_SwapWindow(_sdlWindow);
 }
 
@@ -365,7 +365,7 @@ void SdlWindow::__setupSDL()
   }
   else
   {
-    _sdlWindow = SDL_CreateWindow("🔴 YARS 3D Simulation - Should be VISIBLE! 🔴",
+    _sdlWindow = SDL_CreateWindow("YARS 3D Simulation",
                                   SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED,
                                   _windowConfiguration->geometry.width(),
@@ -398,6 +398,10 @@ void SdlWindow::__setupSDL()
     SDL_SetWindowPosition(_sdlWindow, 100, 100);
     SDL_UpdateWindowSurface(_sdlWindow);
     printf("Window positioned at (100,100) and surface updated\n");
+
+    // Mark window as visible immediately — SDL_WINDOWEVENT_SHOWN may never fire
+    // (e.g. on macOS the event queue may not deliver it before rendering starts)
+    _visible = true;
   }
 
   // Create OpenGL context for all platforms
@@ -509,9 +513,9 @@ void SdlWindow::__setupSDL()
   // _sceneManager->setFog(Ogre::FOG_EXP2, fadeColour, 0.001, 500.0, 1000.0);
   _viewport->setBackgroundColour(fadeColour);
 
-  // Use RTSS material scheme for shader-based materials
+  // Use RTSS scheme so SGTechniqueResolverListener generates shaders for GL3+ core profile
   _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-  std::cout << "Viewport configured to use RTSS material scheme (shader-based)" << std::endl;
+  std::cout << "Viewport configured to use RTSS material scheme" << std::endl;
 
   _windowID = SDL_GetWindowID(_sdlWindow);
 
@@ -535,8 +539,17 @@ void SdlWindow::setupOSD()
   stringstream oss;
   oss << "text overlay " << _index;
   if (_index == 0)
-    // TEMPORARILY DISABLED: TextOverlay creation for testing
-    _textOverlay = nullptr; // new TextOverlay(oss.str());
+  {
+    try
+    {
+      _textOverlay = new TextOverlay(oss.str());
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "OSD: Failed to create TextOverlay: " << e.what() << std::endl;
+      _textOverlay = nullptr;
+    }
+  }
   oss.str("");
   oss << _data->osdTimeFontSize();
   fontsize = oss.str();
@@ -841,23 +854,22 @@ void SdlWindow::__initRenderFrame()
     vp->setClearEveryFrame(true);
     vp->setBackgroundColour(Ogre::ColourValue::Black);
     vp->setOverlaysEnabled(true);
+    // Must use RTSS scheme to get shader-generated techniques (GL3+ core profile)
+    vp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
   }
 }
 
 void SdlWindow::__captureImageFrame()
 {
-  __initRenderFrame();
   ConsoleView::printCapturingInformation(_imgCaptureFrameIndex);
   _imgCaptureFrameIndex++;
   stringstream oss;
   string framesDir = __YARS_GET_FRAMES_DIRECTORY;
   oss << framesDir << "/frame_" << setfill('0') << setw(8)
       << _imgCaptureFrameIndex << ".png";
-  std::cout << "FRAME CAPTURE: Attempting to write to: " << oss.str() << std::endl;
-  _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
-  _pRenderTex->update();
+  // Capture directly from the main render window (already rendered by OgreHandler::step)
   try {
-    _pRenderTex->writeContentsToFile(oss.str());
+    _window->writeContentsToFile(oss.str());
     std::cout << "FRAME CAPTURE: Successfully wrote frame " << _imgCaptureFrameIndex << std::endl;
   } catch (const std::exception& e) {
     std::cout << "FRAME CAPTURE ERROR: " << e.what() << std::endl;
@@ -866,7 +878,6 @@ void SdlWindow::__captureImageFrame()
 
 void SdlWindow::captureVideo()
 {
-  std::cout << "DEBUG: captureVideo() called, _imgCaptureRunning=" << _imgCaptureRunning << std::endl;
 #ifdef USE_CAPTURE_VIDEO
   if (_captureRunning)
     __captureMovieFrame();
@@ -881,11 +892,6 @@ bool SdlWindow::captureRunning()
   return _captureRunning;
 }
 #endif // USE_CAPTURE_VIDEO
-
-bool SdlWindow::imgCaptureRunning()
-{
-  return _imgCaptureRunning;
-}
 
 void SdlWindow::__osd()
 {

@@ -129,7 +129,7 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
     // Use MaterialManager to resolve material names
     std::string materialName = _data->texture(i);
     materialName = MaterialManager::instance()->resolveMaterialName(materialName);
-    _manual->setMaterialName(i, materialName);
+    _manual->setMaterialName(i, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
   }
 
   Ogre::EdgeData::EdgeGroupList::iterator itShadow, itEndShadow;

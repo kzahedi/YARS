@@ -6,6 +6,7 @@
 #include <yars/util/Timer.h>
 
 #include <OGRE/Ogre.h>
+#include <unistd.h>
 
 namespace yars {
 
@@ -47,7 +48,7 @@ YarsViewModel::YarsViewModel()
       FOREACH(SdlWindow *, i, _windowManager)
       if ((*i) != NULL)
         (*i)->setupOSD();
-      if (__YARS_GET_USE_CAPTURE_CL)
+      if (__YARS_GET_USE_CAPTURE_CL || __YARS_GET_FRAMES_DIRECTORY.length() > 0)
         toggleCaptureVideo();
     }
     catch (const Ogre::RenderingAPIException &e)
@@ -109,6 +110,7 @@ void YarsViewModel::visualiseScene()
   FOREACH(SdlWindow *, i, _windowManager)
   if ((*i) != NULL)
     (*i)->step();
+
   while (SDL_PollEvent(&_event))
   {
     FOREACH(SdlWindow *, i, _windowManager)
@@ -202,11 +204,20 @@ void YarsViewModel::run()
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
       }
+      else
+      {
+        usleep(500); // yield CPU while waiting for next physics step
+      }
     }
     else
     {
       visualiseScene();
     }
+
+    // Note: GUI does NOT auto-exit based on step count.
+    // Physics thread calls _quitCallback() → quit() → _run=false after
+    // completing its last synced step, preventing a race condition where
+    // the GUI exits before physics finishes the final synched() handshake.
 
     for (std::vector<SdlWindow *>::iterator i = _newWindows.begin(); i != _newWindows.end(); i++)
     {

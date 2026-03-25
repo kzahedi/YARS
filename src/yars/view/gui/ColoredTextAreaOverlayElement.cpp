@@ -112,10 +112,8 @@ void ColoredTextAreaOverlayElement::setCaption(const DisplayString &text)
       noColor = false;
     }
   }
-  if (noColor)
-    // mColoursChanged = true; // Removed - private member
-    // Set the caption using the base class, but strip the color codes from it first
-    TextAreaOverlayElement::setCaption(StripColors(text));
+  // Always set the caption on the base class (strips color codes)
+  TextAreaOverlayElement::setCaption(StripColors(text));
 }
 
 void ColoredTextAreaOverlayElement::updateColours(void)

@@ -43,8 +43,8 @@ SceneGraphLDRSensor::SceneGraphLDRSensor(DataGenericLightDependentResistorSensor
   __body();
 
   std::string materialName = MaterialManager::instance()->resolveMaterialName("YARS/LDRSensor");
-  _manual->setMaterialName(0, materialName);
-  _manual->setMaterialName(1, materialName);
+  _manual->setMaterialName(0, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manual->setMaterialName(1, materialName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 
   _node->attachObject(_manual);
 }

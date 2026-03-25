@@ -115,7 +115,7 @@ void YarsMainControl::run()
       // Step all components directly
       _ypc->step();
       _ylc->step();
-      if (_rtc) 
+      if (_rtc)
       {
         _rtc->step();
         if (_rtc->shouldQuit())
@@ -123,19 +123,16 @@ void YarsMainControl::run()
           _keepOnRunning = false;
         }
       }
+      // Notify GUI of completed step (for synchronized capture/rendering)
+      if (_stepCallback)
+        _stepCallback();
     }
   }
 
 #ifdef USE_VISUALISATION
-  if (__YARS_GET_USE_VISUALISATION)
-  {
-    if (!__YARS_GET_SYNC_GUI)
-    {
-      // GUI sync handling - no longer uses observer pattern
-      usleep(500);
-    }
-    // GUI quit handling - no longer uses observer pattern
-  }
+  // Signal GUI to quit immediately after physics loop exits (before cleanup)
+  if (__YARS_GET_USE_VISUALISATION && _quitCallback)
+    _quitCallback();
 #endif // USE_VISUALISATION
 
   // Quit all components directly
@@ -160,6 +157,7 @@ void YarsMainControl::__closeApplication()
     Data::close();
     exit(0);
   }
+  // GUI quit was already signaled before component cleanup (see above)
 }
 
 void YarsMainControl::notify(ObservableMessage *message)

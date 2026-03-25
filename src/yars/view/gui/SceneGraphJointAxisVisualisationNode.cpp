@@ -45,9 +45,9 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualX);
   __bottomCap(_manualX);
   __body(_manualX);
-  _manualX->setMaterialName(0, Data::instance()->current()->screens()->xAxisTexture());
-  _manualX->setMaterialName(1, Data::instance()->current()->screens()->xAxisTexture());
-  _manualX->setMaterialName(2, Data::instance()->current()->screens()->xAxisTexture());
+  _manualX->setMaterialName(0, Data::instance()->current()->screens()->xAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualX->setMaterialName(1, Data::instance()->current()->screens()->xAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualX->setMaterialName(2, Data::instance()->current()->screens()->xAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
   ::Quaternion qX(P3D(0, M_PI_2, 0));
   Ogre::SceneNode *nodeX = _node->createChildSceneNode();
   nodeX->setOrientation(Ogre::Quaternion(qX.w, qX.x, qX.y, qX.z));
@@ -59,9 +59,9 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualY);
   __bottomCap(_manualY);
   __body(_manualY);
-  _manualY->setMaterialName(0, Data::instance()->current()->screens()->yAxisTexture());
-  _manualY->setMaterialName(1, Data::instance()->current()->screens()->yAxisTexture());
-  _manualY->setMaterialName(2, Data::instance()->current()->screens()->yAxisTexture());
+  _manualY->setMaterialName(0, Data::instance()->current()->screens()->yAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualY->setMaterialName(1, Data::instance()->current()->screens()->yAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualY->setMaterialName(2, Data::instance()->current()->screens()->yAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
   ::Quaternion qY(P3D(-M_PI_2, 0, 0));
   Ogre::SceneNode *nodeY = _node->createChildSceneNode();
   nodeY->setOrientation(Ogre::Quaternion(qY.w, qY.x, qY.y, qY.z));
@@ -73,9 +73,9 @@ SceneGraphJointAxisVisualisationNode::SceneGraphJointAxisVisualisationNode(
   __topCap(_manualZ);
   __bottomCap(_manualZ);
   __body(_manualZ);
-  _manualZ->setMaterialName(0, Data::instance()->current()->screens()->zAxisTexture());
-  _manualZ->setMaterialName(1, Data::instance()->current()->screens()->zAxisTexture());
-  _manualZ->setMaterialName(2, Data::instance()->current()->screens()->zAxisTexture());
+  _manualZ->setMaterialName(0, Data::instance()->current()->screens()->zAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualZ->setMaterialName(1, Data::instance()->current()->screens()->zAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+  _manualZ->setMaterialName(2, Data::instance()->current()->screens()->zAxisTexture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
   ::Quaternion qZ(P3D(0, 0, 0));
   Ogre::SceneNode *nodeZ = _node->createChildSceneNode();
   nodeZ->setOrientation(Ogre::Quaternion(qZ.w, qZ.x, qZ.y, qZ.z));

@@ -1,4 +1,4 @@
-Time
+font Time
 {
     type       truetype
     source     FreeSansBold.otf
@@ -6,7 +6,7 @@ Time
     resolution 96
 }
 
-Robot
+font Robot
 {
     type       truetype
     source     FreeSansBold.otf
@@ -14,7 +14,7 @@ Robot
     resolution 96
 }
 
-Legend
+font Legend
 {
     type       truetype
     source     FreeSansBold.otf
@@ -22,7 +22,7 @@ Legend
     resolution 96
 }
 
-MyFont
+font MyFont
 {
     type       truetype
     source     arial.ttf

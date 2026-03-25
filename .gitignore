@@ -8,3 +8,4 @@ build
 *.vim
 *.pyc
 .history
+frame*

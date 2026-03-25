@@ -54,7 +54,7 @@ void YarsPhysicsControl::notify(ObservableMessage *message)
       // pthread_mutex_unlock(&_updateMutex);
       break;
     case __M_QUIT:
-      delete _model;
+      // Model lifetime is owned by YarsMainControl; do not delete here.
       break;
   }
 }
@@ -90,5 +90,5 @@ void YarsPhysicsControl::reset()
 
 void YarsPhysicsControl::quit()
 {
-  delete _model;
+  // Model lifetime is owned by YarsMainControl; do not delete here.
 }
