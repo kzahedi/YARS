@@ -31,28 +31,19 @@ bool ShaderManager::initializeRTSS(Ogre::SceneManager* sceneManager) {
             return false;
         }
         
-        // CRITICAL: Register core sub-render state factories for shader generation
-        std::cout << "ShaderManager: Checking RTSS sub-render state factories..." << std::endl;
-        
+        // Register core sub-render state factories for shader generation
         // Check if FFPTransform factory already exists before adding
         if (!_shaderGenerator->getSubRenderStateFactory("FFP_Transform")) {
             _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTransformFactory());
-            std::cout << "ShaderManager: Added FFPTransformFactory" << std::endl;
-        } else {
-            std::cout << "ShaderManager: FFPTransformFactory already exists" << std::endl;
         }
-        
+
         // Check if FFPTexturing factory already exists before adding
         if (!_shaderGenerator->getSubRenderStateFactory("FFP_Texturing")) {
             _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTexturingFactory());
-            std::cout << "ShaderManager: Added FFPTexturingFactory" << std::endl;
-        } else {
-            std::cout << "ShaderManager: FFPTexturingFactory already exists" << std::endl;
         }
-        
+
         // Set target shader language
         _shaderGenerator->setTargetLanguage("glsl");
-        std::cout << "ShaderManager: RTSS factories registered and target language set to GLSL" << std::endl;
         
         // Configure shader cache
         configureShaderCache(_shaderCachePath);
@@ -75,7 +66,6 @@ bool ShaderManager::initializeRTSS(Ogre::SceneManager* sceneManager) {
         }
         
         _initialized = true;
-        std::cout << "ShaderManager: RTSS initialized successfully with lighting and shadows" << std::endl;
         return true;
         
     } catch (const std::exception& e) {
@@ -92,17 +82,13 @@ void ShaderManager::configureShaderCache(const std::string& cachePath) {
     
     if (_shaderGenerator) {
         _shaderGenerator->setShaderCachePath(cachePath);
-        std::cout << "ShaderManager: Shader cache configured at: " << cachePath << std::endl;
     }
 }
 
 void ShaderManager::_setupDefaultShaderLibrary() {
     if (!_shaderGenerator) {
-        std::cout << "ShaderManager: No shader generator available for default library setup" << std::endl;
         return;
     }
-
-    std::cout << "ShaderManager: Setting up default shader library with sub-render states..." << std::endl;
 
     // Use the single-argument overload to get the GLOBAL scheme render state.
     // The 4-argument overload is for per-material render states; passing an empty
@@ -111,27 +97,18 @@ void ShaderManager::_setupDefaultShaderLibrary() {
         Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
     if (renderState) {
-        std::cout << "ShaderManager: Got global render state for default scheme" << std::endl;
-
         // Per-pixel lighting: the RTSS automatically includes FFP_Transform and
         // FFP_Texturing; we only need to override the lighting to per-pixel.
         auto lightingSubRenderState = _shaderGenerator->createSubRenderState("SGX_PerPixelLighting");
         if (lightingSubRenderState) {
             renderState->addTemplateSubRenderState(lightingSubRenderState);
-            std::cout << "ShaderManager: Added SGX_PerPixelLighting sub-render state" << std::endl;
         } else {
-            std::cout << "ShaderManager: WARNING - SGX_PerPixelLighting not found; falling back to FFP_Lighting" << std::endl;
             auto ffpLighting = _shaderGenerator->createSubRenderState("FFP_Lighting");
             if (ffpLighting) {
                 renderState->addTemplateSubRenderState(ffpLighting);
-                std::cout << "ShaderManager: Added FFP_Lighting sub-render state" << std::endl;
             }
         }
-    } else {
-        std::cout << "ShaderManager: WARNING - Could not get global render state for default scheme" << std::endl;
     }
-
-    std::cout << "ShaderManager: Default shader library configured with lighting and texturing" << std::endl;
 }
 
 void ShaderManager::_configureLightingSystem() {
@@ -139,8 +116,6 @@ void ShaderManager::_configureLightingSystem() {
 
     // Set ambient light for the scene
     _sceneManager->setAmbientLight(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
-
-    std::cout << "ShaderManager: Lighting system configured" << std::endl;
 }
 
 void ShaderManager::_createDefaultLights(Ogre::SceneManager* sceneManager) {
@@ -166,11 +141,9 @@ void ShaderManager::_createDefaultLights(Ogre::SceneManager* sceneManager) {
         fillLight->setDiffuseColour(Ogre::ColourValue(0.4f, 0.4f, 0.5f));
         fillLight->setSpecularColour(Ogre::ColourValue(0.2f, 0.2f, 0.3f));
         fillLight->setCastShadows(false);
-        
-        std::cout << "ShaderManager: Created default scene lighting (directional + fill)" << std::endl;
-        
+
     } catch (const std::exception& e) {
-        std::cout << "ShaderManager: Warning - could not create default lights: " << e.what() << std::endl;
+        std::cerr << "ShaderManager: Warning - could not create default lights: " << e.what() << std::endl;
     }
 }
 
@@ -185,11 +158,9 @@ void ShaderManager::configureShadowMapping() {
         // Set shadow camera setup
         _sceneManager->setShadowCameraSetup(Ogre::ShadowCameraSetupPtr(
             new Ogre::DefaultShadowCameraSetup()));
-        
-        std::cout << "ShaderManager: Shadow mapping configured (1024x1024 additive)" << std::endl;
-        
+
     } catch (const std::exception& e) {
-        std::cout << "ShaderManager: Warning - shadow mapping setup failed: " << e.what() << std::endl;
+        std::cerr << "ShaderManager: Warning - shadow mapping setup failed: " << e.what() << std::endl;
     }
 }
 
@@ -201,7 +172,6 @@ void ShaderManager::enableShadows(bool enable) {
         } else {
             _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
         }
-        std::cout << "ShaderManager: Shadows " << (enable ? "enabled" : "disabled") << std::endl;
     }
 }
 
@@ -220,11 +190,9 @@ void ShaderManager::addDirectionalLight(const Ogre::Vector3& direction, const Og
         light->setDiffuseColour(color);
         light->setSpecularColour(color * 0.8f);
         light->setCastShadows(_shadowsEnabled);
-        
-        std::cout << "ShaderManager: Added directional light '" << lightName << "'" << std::endl;
-        
+
     } catch (const std::exception& e) {
-        std::cout << "ShaderManager: Failed to add directional light: " << e.what() << std::endl;
+        std::cerr << "ShaderManager: Failed to add directional light: " << e.what() << std::endl;
     }
 }
 
@@ -232,7 +200,6 @@ void ShaderManager::addAmbientLight(const Ogre::ColourValue& color) {
     if (!_sceneManager) return;
     
     _sceneManager->setAmbientLight(color);
-    std::cout << "ShaderManager: Set ambient light color" << std::endl;
 }
 
 bool ShaderManager::validateMaterialShaders(const std::string& materialName) {
@@ -253,35 +220,22 @@ bool ShaderManager::validateMaterialShaders(const std::string& materialName) {
 
 void ShaderManager::regenerateAllShaders() {
     if (!_initialized || !_shaderGenerator) {
-        std::cout << "ShaderManager: Cannot regenerate - not initialized" << std::endl;
         return;
     }
-    
+
     try {
         // Note: invalidateAllSchemes() not available in this Ogre version
-        std::cout << "ShaderManager: Shader regeneration requested (manual reload may be needed)" << std::endl;
     } catch (const std::exception& e) {
-        std::cout << "ShaderManager: Failed to regenerate shaders: " << e.what() << std::endl;
+        std::cerr << "ShaderManager: Failed to regenerate shaders: " << e.what() << std::endl;
     }
 }
 
 void ShaderManager::validateShaderGeneration() {
-    if (!_initialized) {
-        std::cout << "ShaderManager: Not initialized, skipping validation" << std::endl;
-        return;
-    }
-    
-    std::cout << "ShaderManager: Shader system validation complete" << std::endl;
-    std::cout << "  - RTSS: " << (_shaderGenerator ? "Active" : "Inactive") << std::endl;
-    std::cout << "  - Lighting: Configured" << std::endl;
-    std::cout << "  - Shadows: " << (_shadowsEnabled ? "Enabled" : "Disabled") << std::endl;
-    std::cout << "  - Shader Cache: " << _shaderCachePath << std::endl;
 }
 
 bool ShaderManager::loadCustomShaderTemplates() {
     // This method could be used to load custom shader templates from files
     // For now, we rely on the built-in RTSS sub-render states
-    std::cout << "ShaderManager: Custom shader templates not implemented - using RTSS built-ins" << std::endl;
     return true;
 }
 

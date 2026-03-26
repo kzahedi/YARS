@@ -49,16 +49,9 @@ SceneGraph::SceneGraph(Ogre::SceneNode *root, Ogre::SceneManager *sm)
   ::Quaternion q(P3D(-M_PI_2, 0.0, 0.0));
   _root->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
 
-  std::cout << "SceneGraph: Creating robot nodes..." << std::endl;
   __createRobotsNodes();
-
-  std::cout << "SceneGraph: Creating environment node..." << std::endl;
   __createEnvironmentNode();
-
-  std::cout << "SceneGraph: Creating traces..." << std::endl;
   __createTraces();
-
-  std::cout << "SceneGraph: Construction completed successfully!" << std::endl;
 
   // SHOW_XYZ;
 

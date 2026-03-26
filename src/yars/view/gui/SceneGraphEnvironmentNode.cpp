@@ -28,12 +28,10 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     // Use MaterialManager to resolve material names properly
     std::string materialName = data->texture();
     materialName = MaterialManager::instance()->resolveMaterialName(materialName);
-    std::cout << "Ground using material: '" << materialName << "' (original: '" << data->texture() << "')" << std::endl;
 
     Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(materialName);
     if (m.isNull())
     {
-      std::cout << "Material '" << materialName << "' not found, skipping ground material" << std::endl;
       // Don't create entity if material is not available to avoid crashes
       return;
     }

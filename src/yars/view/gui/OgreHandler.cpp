@@ -201,8 +201,6 @@ void OgreHandler::setupSceneManager()
   //    all shader-lib materials and program scripts are available).
   // ----------------------------------------------------------------------
 
-  std::cout << "Loading basic resources for rendering" << std::endl;
-
   Ogre::ResourceGroupManager &rgm = Ogre::ResourceGroupManager::getSingleton();
 
   // Register YARS resources (meshes, materials, fonts)
@@ -229,8 +227,6 @@ void OgreHandler::setupSceneManager()
   //    generation listener.
   // ----------------------------------------------------------------------
 
-  std::cout << "Runtime Shader System: Initialising..." << std::endl;
-
   if (Ogre::RTShader::ShaderGenerator::initialize())
   {
     // Use ShaderManager for comprehensive RTSS setup
@@ -247,7 +243,6 @@ void OgreHandler::setupSceneManager()
       // Initialize MaterialManager after ShaderManager setup
       try {
           MaterialManager::instance()->validateAllMaterials();
-          std::cout << "MaterialManager initialized successfully" << std::endl;
       } catch (const std::exception& e) {
           std::cerr << "Failed to initialize MaterialManager: " << e.what() << std::endl;
       }
@@ -255,12 +250,10 @@ void OgreHandler::setupSceneManager()
       // Validate shader generation
       ShaderManager::instance()->validateShaderGeneration();
 
-      std::cout << "RTSS initialized successfully for material compatibility" << std::endl;
     }
   }
   else
   {
-    std::cout << "RTSS initialization failed - using fixed-function materials" << std::endl;
     _shaderGenerator = nullptr;
   }
 
@@ -268,24 +261,11 @@ void OgreHandler::setupSceneManager()
   // 3) Diagnostics
   // ----------------------------------------------------------------------
 
-  // Check if our custom materials loaded
-  std::cout << "Checking for SimpleWhite material..." << std::endl;
-  Ogre::MaterialPtr testMat = Ogre::MaterialManager::getSingleton().getByName("SimpleWhite");
-  if (!testMat)
-  {
-    std::cout << "ERROR: SimpleWhite material not found!" << std::endl;
-  }
-  else
-  {
-    std::cout << "SUCCESS: SimpleWhite material found!" << std::endl;
-  }
-
   // Create RTSS techniques for YARS materials (already loaded above)
   try {
     MaterialManager::instance()->createRTSSForLegacyMaterials();
-    std::cout << "Created RTSS techniques for YARS materials" << std::endl;
   } catch (const std::exception& e) {
-    std::cout << "Warning: Failed to create RTSS techniques for YARS materials: " << e.what() << std::endl;
+    std::cerr << "Warning: Failed to create RTSS techniques for YARS materials: " << e.what() << std::endl;
   }
 
   // Temporarily disable sky dome to test RTSS functionality
@@ -303,28 +283,18 @@ void OgreHandler::setupSceneManager()
   lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
   node->attachObject(lightSun);
 
-  // Re-enable SceneGraph for basic rendering
-  std::cout << "Creating SceneGraph for basic rendering" << std::endl;
   _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
   _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
 
-  // Debug: Print some basic scene statistics
-  std::cout << "=== SCENE DEBUG INFO ===" << std::endl;
-  std::cout << "Root node children count: " << _sceneManager->getRootSceneNode()->numChildren() << std::endl;
-  std::cout << "Scene graph construction completed" << std::endl;
-
-  // Force an immediate render to test if rendering works
+  // Force an immediate scene graph update
   try
   {
     _sceneManager->_updateSceneGraph(nullptr);
-    std::cout << "Manual scene graph update completed" << std::endl;
   }
   catch (const std::exception &e)
   {
-    std::cout << "Manual render failed: " << e.what() << std::endl;
+    std::cerr << "Scene graph update failed: " << e.what() << std::endl;
   }
-
-  std::cout << "========================" << std::endl;
 
   // _textOverlay  = new TextOverlay("Legend Text Overlay");
   // Ogre::Real x = 10;
@@ -336,7 +306,6 @@ void OgreHandler::setupSceneManager()
 
   // Disable shadows to avoid rendering pipeline issues
   _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
-  std::cout << "Shadow system disabled for stability" << std::endl;
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
@@ -362,8 +331,7 @@ void OgreHandler::step()
     static bool errorShown = false;
     if (!errorShown)
     {
-      std::cout << "RENDERING FAILED: " << e.what() << std::endl;
-      std::cout << "This is expected due to RTSS shader issues. GUI window remains functional." << std::endl;
+      std::cerr << "RENDERING FAILED: " << e.what() << std::endl;
       errorShown = true;
     }
     // Continue simulation - window stays open
@@ -373,8 +341,7 @@ void OgreHandler::step()
     static bool errorShown = false;
     if (!errorShown)
     {
-      std::cout << "RENDERING ERROR (Ogre): " << e.what() << std::endl;
-      std::cout << "This is expected due to material/shader compatibility issues" << std::endl;
+      std::cerr << "RENDERING ERROR (Ogre): " << e.what() << std::endl;
       errorShown = true;
     }
     // Continue simulation - window stays open
@@ -384,8 +351,7 @@ void OgreHandler::step()
     static bool errorShown = false;
     if (!errorShown)
     {
-      std::cout << "RENDERING ERROR: " << e.what() << std::endl;
-      std::cout << "This is expected due to material compatibility issues" << std::endl;
+      std::cerr << "RENDERING ERROR: " << e.what() << std::endl;
       errorShown = true;
     }
     // Continue simulation - window stays open

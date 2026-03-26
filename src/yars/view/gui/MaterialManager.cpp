@@ -152,15 +152,12 @@ void MaterialManager::createDefaultMaterials() {
     flareParams.diffuseTexture = "flare.jpg";
     createRTSSMaterial("RTSS_Flare", flareParams);
     
-    std::cout << "MaterialManager: Created " << _validMaterials.size() << " default materials" << std::endl;
-    
     // Create RTSS techniques for problematic legacy materials
     createRTSSForLegacyMaterials();
 }
 
 void MaterialManager::createRTSSForLegacyMaterials() {
     if (!_shaderGenerator) {
-        std::cout << "MaterialManager: No shader generator - skipping legacy material RTSS creation" << std::endl;
         return;
     }
 
@@ -214,16 +211,8 @@ void MaterialManager::createRTSSForLegacyMaterials() {
     while (it.hasMoreElements()) {
         Ogre::ResourcePtr res = it.getNext();
         Ogre::MaterialPtr mat = std::static_pointer_cast<Ogre::Material>(res);
-        // Debug: print materials with alpha blending to find font materials
-        if (mat && mat->getNumTechniques() > 0 && mat->getTechnique(0)->getNumPasses() > 0) {
-            auto* p = mat->getTechnique(0)->getPass(0);
-            if (p->getSourceBlendFactor() != Ogre::SBF_ONE || p->getDestBlendFactor() != Ogre::SBF_ZERO)
-                std::cout << "[MM] alpha-blend material: '" << mat->getName() << "' src=" << p->getSourceBlendFactor() << " dst=" << p->getDestBlendFactor() << std::endl;
-        }
         _createRTSS(mat);
     }
-
-    std::cout << "MaterialManager: RTSS techniques created for all loaded materials" << std::endl;
 }
 
 bool MaterialManager::createRTSSMaterial(const std::string& name, const MaterialParams& params) {
@@ -279,12 +268,9 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
     if (!params.diffuseTexture.empty()) {
         Ogre::TextureUnitState* texUnit = pass->createTextureUnitState(params.diffuseTexture);
         if (!texUnit) {
-            std::cout << "MaterialManager: Warning - texture '" << params.diffuseTexture << "' not found for material '" << name << "'" << std::endl;
         }
     }
     
-    // Material created with DEFAULT scheme - RTSS technique will be generated on-demand during rendering
-    std::cout << "MaterialManager: Created material '" << name << "' with DEFAULT scheme (RTSS on-demand)" << std::endl;
 }
 
 std::string MaterialManager::resolveMaterialName(const std::string& legacyName) {
@@ -300,7 +286,6 @@ std::string MaterialManager::resolveMaterialName(const std::string& legacyName) 
     }
     
     // Return fallback material
-    std::cout << "MaterialManager: Material '" << legacyName << "' not found, using RTSS_Gray fallback" << std::endl;
     return "RTSS_Gray";
 }
 
@@ -315,21 +300,8 @@ bool MaterialManager::materialExists(const std::string& name) {
 }
 
 void MaterialManager::validateAllMaterials() {
-    int validCount = 0;
-    int invalidCount = 0;
-    
-    for (const std::string& materialName : _validMaterials) {
-        if (materialExists(materialName)) {
-            validCount++;
-        } else {
-            invalidCount++;
-            std::cout << "MaterialManager: Invalid material: " << materialName << std::endl;
-        }
-    }
-    
     // CRITICAL: Force RTSS to finalize all shader generation after all materials are created
     if (_shaderGenerator) {
-        std::cout << "MaterialManager: Finalizing RTSS shader generation..." << std::endl;
         try {
             // Force the RTSS to finalize all pending shader compilations
             _shaderGenerator->flushShaderCache();
@@ -364,19 +336,16 @@ void MaterialManager::validateAllMaterials() {
                 }
             }
             
-            std::cout << "MaterialManager: RTSS finalization completed successfully" << std::endl;
         } catch (const std::exception& e) {
-            std::cout << "MaterialManager: RTSS finalization error: " << e.what() << std::endl;
+            std::cerr << "MaterialManager: RTSS finalization error: " << e.what() << std::endl;
         }
     }
     
-    std::cout << "MaterialManager: Validation complete - " << validCount << " valid, " << invalidCount << " invalid materials" << std::endl;
 }
 
 void MaterialManager::convertLegacyMaterials() {
     // This method could be used to convert existing .material files to RTSS format
     // For now, we rely on the alias system
-    std::cout << "MaterialManager: Legacy material conversion not implemented - using alias system" << std::endl;
 }
 
 } // namespace yars

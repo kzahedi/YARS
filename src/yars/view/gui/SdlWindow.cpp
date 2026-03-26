@@ -303,15 +303,12 @@ void SdlWindow::handleEvent(SDL_Event &event)
     {
     case SDL_WINDOWEVENT_SHOWN:
       _visible = true;
-      std::cout << "Window shown event received - window is now visible!" << std::endl;
       break;
     case SDL_WINDOWEVENT_CLOSE:
       _closed = true;
-      std::cout << "Window close event received" << std::endl;
       KeyHandler::notifyObservers(_m_closeWindow);
       break;
     case SDL_WINDOWEVENT_RESIZED:
-      std::cout << "Window resized to: " << event.window.data1 << "x" << event.window.data2 << std::endl;
       _window->resize(event.window.data1, event.window.data2);
       _window->windowMovedOrResized();
       const Ogre::Real aspectRatio = Ogre::Real(_viewport->getActualWidth()) / Ogre::Real(_viewport->getActualHeight());
@@ -380,10 +377,6 @@ void SdlWindow::__setupSDL()
   }
   else
   {
-    printf("SDL Window created successfully: %dx%d\n",
-           _windowConfiguration->geometry.width(),
-           _windowConfiguration->geometry.height());
-
     // Make window visible and bring to front on macOS
     SDL_ShowWindow(_sdlWindow);
     SDL_RaiseWindow(_sdlWindow);
@@ -391,13 +384,11 @@ void SdlWindow::__setupSDL()
 #ifdef __APPLE__
     // macOS-specific: Request focus and make window key
     SDL_SetWindowInputFocus(_sdlWindow);
-    printf("Applied macOS-specific window activation\n");
 #endif
 
     // Force window to specific position and update
     SDL_SetWindowPosition(_sdlWindow, 100, 100);
     SDL_UpdateWindowSurface(_sdlWindow);
-    printf("Window positioned at (100,100) and surface updated\n");
 
     // Mark window as visible immediately — SDL_WINDOWEVENT_SHOWN may never fire
     // (e.g. on macOS the event queue may not deliver it before rendering starts)
@@ -410,10 +401,6 @@ void SdlWindow::__setupSDL()
   {
     printf("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
     return;
-  }
-  else
-  {
-    printf("OpenGL context created successfully\n");
   }
 
   // SDL_WarpMouse(800/2, 600/2);
@@ -497,14 +484,6 @@ void SdlWindow::__setupSDL()
   _cameraNode->setPosition(pos[0], pos[1], pos[2]);
   _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
 
-  // Debug camera positioning
-  std::cout << "=== CAMERA DEBUG INFO ===" << std::endl;
-  std::cout << "Camera position: (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ")" << std::endl;
-  std::cout << "Camera lookAt: (" << lookAt[0] << ", " << lookAt[1] << ", " << lookAt[2] << ")" << std::endl;
-  std::cout << "Camera near clip: " << _camera->getNearClipDistance() << std::endl;
-  std::cout << "Camera far clip: " << _camera->getFarClipDistance() << std::endl;
-  std::cout << "==========================" << std::endl;
-
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
 
@@ -515,7 +494,6 @@ void SdlWindow::__setupSDL()
 
   // Use RTSS scheme so SGTechniqueResolverListener generates shaders for GL3+ core profile
   _viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-  std::cout << "Viewport configured to use RTSS material scheme" << std::endl;
 
   _windowID = SDL_GetWindowID(_sdlWindow);
 
