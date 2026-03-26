@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<!-- Adapted from experiments/ant/xml/ant_basic.xml (old RoSiML format)
+     Rewritten in rosiml 0.8.41 with capsule legs and no controller.
+     Ant has 6 legs (front/centre/back × left/right), 2 segments each.
+     Initial position: z=0.3 (robot resting height above ground) -->
+
+<rosiml version="0.8.41">
+
+  <simulator frequency="100">
+    <solver iterations="10"/>
+  </simulator>
+
+  <screens>
+    <screen name="main" show="true" follow="true" capture="false">
+      <resolution name="720p"/>
+      <camera>
+        <position x="3.00" y="-2.00" z="2.5"/>
+        <lookAt   x="0.0"  y="0.0"  z="0.55"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="25" colour="FFFF00"/>
+        <robot font="Robot" size="25" colour="FFFFFF"/>
+      </osd>
+    </screen>
+    <sky name="YARS/CloudySky"/>
+    <cameras>
+      <orbit speed="-0.3">
+        <lookAtX p="0.25" i="0.001" d="0.002"/>
+        <lookAtY p="0.25" i="0.001" d="0.002"/>
+        <lookAtZ p="0.0"  i="0.0"   d="0.000"/>
+        <fromX   p="0.50" i="0.0001" d="0.0002"/>
+        <fromY   p="0.50" i="0.0001" d="0.0002"/>
+        <fromZ   p="0.00" i="0.0"    d="0.0"/>
+      </orbit>
+    </cameras>
+    <followables>
+      <followable name="body"/>
+    </followables>
+  </screens>
+
+  <environment name="env">
+    <ground>
+      <visualisation>
+        <texture name="YARS/DryGround"/>
+      </visualisation>
+    </ground>
+  </environment>
+
+  <robots>
+    <robot name="ant">
+      <body selfCollide="false">
+
+        <!-- Torso (box): width=1.25 x depth=0.3 x height=0.1, centred at z=0.55 -->
+        <box name="body">
+          <dimension height="0.1" width="1.25" depth="0.3"/>
+          <pose x="0.0" y="0.0" z="0.55"/>
+          <visualisation>
+            <first  name="YARS/Blue"/>
+            <second name="YARS/Blue"/>
+            <third  name="YARS/Blue"/>
+            <fourth name="YARS/Blue"/>
+            <fifth  name="YARS/Blue"/>
+            <sixth  name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="0.1"/>
+          </physics>
+        </box>
+
+        <!-- Left front leg: femur at (0.25, -0.5, 0.4), tibia at (0.40, -0.5, 0.3) -->
+        <capsule name="left front femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="0.25" y="-0.5" z="0.65" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="left front tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="0.40" y="-0.5" z="0.40" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+        <!-- Right front leg: femur at (-0.25, -0.5, 0.4), tibia at (-0.40, -0.5, 0.3) -->
+        <capsule name="right front femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="-0.25" y="-0.5" z="0.65" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="right front tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="-0.40" y="-0.5" z="0.40" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+        <!-- Left centre leg: femur at (0.25, 0.0, 0.4), tibia at (0.40, 0.0, 0.3) -->
+        <capsule name="left centre femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="0.25" y="0.0" z="0.65" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="left centre tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="0.40" y="0.0" z="0.40" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+        <!-- Right centre leg: femur at (-0.25, 0.0, 0.4), tibia at (-0.40, 0.0, 0.3) -->
+        <capsule name="right centre femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="-0.25" y="0.0" z="0.65" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="right centre tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="-0.40" y="0.0" z="0.40" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+        <!-- Left back leg: femur at (0.25, 0.5, 0.4), tibia at (0.40, 0.5, 0.3) -->
+        <capsule name="left back femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="0.25" y="0.5" z="0.65" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="left back tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="0.40" y="0.5" z="0.40" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+        <!-- Right back leg: femur at (-0.25, 0.5, 0.4), tibia at (-0.40, 0.5, 0.3) -->
+        <capsule name="right back femur">
+          <dimension radius="0.05" height="0.224"/>
+          <pose x="-0.25" y="0.5" z="0.65" beta="26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.1"/>
+          </physics>
+        </capsule>
+        <capsule name="right back tibia">
+          <dimension radius="0.05" height="0.45"/>
+          <pose x="-0.40" y="0.5" z="0.40" beta="-26.6"/>
+          <visualisation>
+            <texture name="YARS/Blue"/>
+          </visualisation>
+          <physics>
+            <mass kg="0.1"/>
+            <friction value="0.5"/>
+          </physics>
+        </capsule>
+
+      </body>
+
+      <actuators>
+
+        <!-- Hip joints: femur ↔ torso, rotate around Z-axis (±60°) -->
+        <!-- Joint anchor at approximate torso attachment point -->
+        <hinge name="left front hip" type="angular" mode="passive">
+          <source      name="left front femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="0.1" y="-0.5" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right front hip" type="angular" mode="passive">
+          <source      name="right front femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="-0.1" y="-0.5" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="left centre hip" type="angular" mode="passive">
+          <source      name="left centre femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="0.1" y="0.0" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right centre hip" type="angular" mode="passive">
+          <source      name="right centre femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="-0.1" y="0.0" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="left back hip" type="angular" mode="passive">
+          <source      name="left back femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="0.1" y="0.5" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right back hip" type="angular" mode="passive">
+          <source      name="right back femur"/>
+          <destination name="body"/>
+          <force       max="0.5"/>
+          <velocity    max="0.75"/>
+          <pose        x="-0.1" y="0.5" z="0.55"/>
+          <deflection  min="-25.0" max="25.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+
+        <!-- Knee joints: tibia ↔ femur, rotate around Y-axis (±15°) -->
+        <hinge name="left front knee" type="angular" mode="passive">
+          <source      name="left front tibia"/>
+          <destination name="left front femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="0.325" y="-0.5" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right front knee" type="angular" mode="passive">
+          <source      name="right front tibia"/>
+          <destination name="right front femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="-0.325" y="-0.5" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="left centre knee" type="angular" mode="passive">
+          <source      name="left centre tibia"/>
+          <destination name="left centre femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="0.325" y="0.0" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right centre knee" type="angular" mode="passive">
+          <source      name="right centre tibia"/>
+          <destination name="right centre femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="-0.325" y="0.0" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="left back knee" type="angular" mode="passive">
+          <source      name="left back tibia"/>
+          <destination name="left back femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="0.325" y="0.5" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+        <hinge name="right back knee" type="angular" mode="passive">
+          <source      name="right back tibia"/>
+          <destination name="right back femur"/>
+          <force       max="3.5"/>
+          <velocity    max="0.5"/>
+          <pose        x="-0.325" y="0.5" z="0.55"/>
+          <deflection  min="-15.0" max="15.0"/>
+          <mapping     min="-1" max="1"/>
+          <regular     softness="1.0" damping="4.0" restitution="0.0"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.0" i="0.0" d="0.0" size="1"/>
+        </hinge>
+
+      </actuators>
+
+    </robot>
+  </robots>
+
+</rosiml>
