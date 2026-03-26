@@ -52,8 +52,12 @@ material Chain/Circuit/Top/Green
   {
     pass
     {
-      ambient 0.0 0.8 0.0 1.0
-      diffuse 0.0 0.8 0.0 1.0
+      texture_unit
+      {
+        anim_texture CBTR1.jpg CBT.jpg CBTR2.jpg CBTR2.jpg CBTR2.jpg CBT.jpg CBTR1.jpg CBT.jpg CBT.jpg CBTR3.jpg CBT.jpg CBTR3.jpg CBT.jpg CBT.jpg CBTR4.jpg CBT.jpg CBTR1.jpg CBTR1.jpg CBTR1.jpg CBT.jpg CBTR2.jpg CBT.jpg CBTR1.jpg CBTR1.jpg CBTR1.jpg CBT.jpg CBT.jpg CBTR3.jpg CBT.jpg CBT.jpg CBT.jpg CBT.jpg 10.0
+        scale 1.976 1
+        filtering trilinear
+      }
     }
   }
 }
