@@ -108,7 +108,9 @@ void VideoCapture::addFrame(uint8_t *data) {
   }
 
   if (!swsCtx) {
-    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_RGB32, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
+    // Ogre's PF_R8G8B8A8 on little-endian ARM macOS stores the 32-bit value
+    // 0xRRGGBBAA in memory as bytes [A, B, G, R] = AV_PIX_FMT_ABGR in ffmpeg.
+    swsCtx = sws_getContext(cctx->width, cctx->height, AV_PIX_FMT_ABGR, cctx->width, cctx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, 0, 0, 0);
   }
 
   int inLinesize[1] = { 4 * cctx->width };
@@ -123,35 +125,38 @@ void VideoCapture::addFrame(uint8_t *data) {
     exit(-1);
   }
 
-  AVPacket pkt;
-  av_init_packet(&pkt);
-  pkt.data = NULL;
-  pkt.size = 0;
-
-  if (avcodec_receive_packet(cctx, &pkt) == 0) {
-    pkt.flags |= AV_PKT_FLAG_KEY;
-    av_interleaved_write_frame(ofctx, &pkt);
-    av_packet_unref(&pkt);
+  AVPacket *pkt = av_packet_alloc();
+  if (!pkt) {
+    cout << "Failed to allocate packet" << endl;
+    exit(-1);
   }
+
+  if (avcodec_receive_packet(cctx, pkt) == 0) {
+    pkt->flags |= AV_PKT_FLAG_KEY;
+    av_interleaved_write_frame(ofctx, pkt);
+  }
+  av_packet_free(&pkt);
 }
 
 void VideoCapture::finish() {
   //DELAYED FRAMES
-  AVPacket pkt;
-  av_init_packet(&pkt);
-  pkt.data = NULL;
-  pkt.size = 0;
+  AVPacket *pkt = av_packet_alloc();
+  if (!pkt) {
+    cout << "Failed to allocate packet" << endl;
+    exit(-1);
+  }
 
   for (;;) {
     avcodec_send_frame(cctx, NULL);
-    if (avcodec_receive_packet(cctx, &pkt) == 0) {
-      av_interleaved_write_frame(ofctx, &pkt);
-      av_packet_unref(&pkt);
+    if (avcodec_receive_packet(cctx, pkt) == 0) {
+      av_interleaved_write_frame(ofctx, pkt);
+      av_packet_unref(pkt);
     }
     else {
       break;
     }
   }
+  av_packet_free(&pkt);
 
   av_write_trailer(ofctx);
   if (!(oformat->flags & AVFMT_NOFILE)) {
@@ -190,18 +195,25 @@ void VideoCapture::__free() {
 void VideoCapture::__remux() {
   AVFormatContext *ifmt_ctx = NULL, *ofmt_ctx = NULL;
   int err;
+  char errbuf[AV_ERROR_MAX_STRING_SIZE];
 
   if ((err = avformat_open_input(&ifmt_ctx, VIDEO_TMP_FILE, 0, 0)) < 0) {
-    cout << "Failed to open input file for remuxing" << endl;
+    av_strerror(err, errbuf, sizeof(errbuf));
+    cout << "Failed to open input file for remuxing: " << errbuf << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
   if ((err = avformat_find_stream_info(ifmt_ctx, 0)) < 0) {
-    cout << "Failed to retrieve input stream information" << endl;
+    av_strerror(err, errbuf, sizeof(errbuf));
+    cout << "Failed to retrieve input stream information: " << errbuf << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
-  if ((err = avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, filename.c_str()))) {
-    cout << "Failed to allocate output context" << endl;
+  if ((err = avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, filename.c_str())) < 0) {
+    av_strerror(err, errbuf, sizeof(errbuf));
+    cout << "Failed to allocate output context: " << errbuf << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
 
   AVStream *inVideoStream = ifmt_ctx->streams[0];
@@ -209,6 +221,7 @@ void VideoCapture::__remux() {
   if (!outVideoStream) {
     cout << "Failed to allocate output video stream" << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
   outVideoStream->time_base = (AVRational){ 1, fps };
   avcodec_parameters_copy(outVideoStream->codecpar, inVideoStream->codecpar);
@@ -216,38 +229,49 @@ void VideoCapture::__remux() {
 
   if (!(ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
     if ((err = avio_open(&ofmt_ctx->pb, filename.c_str(), AVIO_FLAG_WRITE)) < 0) {
-      cout << "Failed to open output file" << endl;
+      av_strerror(err, errbuf, sizeof(errbuf));
+      cout << "Failed to open output file '" << filename << "': " << errbuf << endl;
       __end(ifmt_ctx, ofmt_ctx);
+      return;
     }
   }
 
   if ((err = avformat_write_header(ofmt_ctx, 0)) < 0) {
-    cout << "Failed to write header to output file" << endl;
+    av_strerror(err, errbuf, sizeof(errbuf));
+    cout << "Failed to write header to output file: " << errbuf << endl;
     __end(ifmt_ctx, ofmt_ctx);
+    return;
   }
 
-  AVPacket videoPkt;
+  AVPacket *videoPkt = av_packet_alloc();
   int ts = 0;
-  while (true) {
-    if ((err = av_read_frame(ifmt_ctx, &videoPkt)) < 0) {
+  while (videoPkt && true) {
+    if ((err = av_read_frame(ifmt_ctx, videoPkt)) < 0) {
       break;
     }
-    videoPkt.stream_index = outVideoStream->index;
-    videoPkt.pts = ts;
-    videoPkt.dts = ts;
-    videoPkt.duration = av_rescale_q(videoPkt.duration, inVideoStream->time_base, outVideoStream->time_base);
-    ts += videoPkt.duration;
-    videoPkt.pos = -1;
+    videoPkt->stream_index = outVideoStream->index;
+    videoPkt->pts = ts;
+    videoPkt->dts = ts;
+    videoPkt->duration = av_rescale_q(videoPkt->duration, inVideoStream->time_base, outVideoStream->time_base);
+    ts += videoPkt->duration;
+    videoPkt->pos = -1;
 
-    if ((err = av_interleaved_write_frame(ofmt_ctx, &videoPkt)) < 0) {
+    if ((err = av_interleaved_write_frame(ofmt_ctx, videoPkt)) < 0) {
       cout << "Failed to mux packet" << endl;
-      av_packet_unref(&videoPkt);
+      av_packet_unref(videoPkt);
       break;
     }
-    av_packet_unref(&videoPkt);
+    av_packet_unref(videoPkt);
   }
+  av_packet_free(&videoPkt);
 
   av_write_trailer(ofmt_ctx);
+
+  if (!(ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
+    avio_closep(&ofmt_ctx->pb);
+  }
+  avformat_free_context(ofmt_ctx);
+  avformat_close_input(&ifmt_ctx);
 }
 
 void VideoCapture::__end(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx)

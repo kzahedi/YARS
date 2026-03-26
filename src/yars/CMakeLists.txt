@@ -28,8 +28,11 @@ if(APPLE)
 endif(APPLE)
 
 if(YARS_USE_CAPTURE_VIDEO)
-  target_link_libraries(${YARS_TARGET} avformat avcodec avutil avfilter avresample postproc
-    swscale avdevice swresample)
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(FFMPEG REQUIRED libavformat libavcodec libavutil libavfilter libswscale libavdevice libswresample)
+  target_include_directories(${YARS_TARGET} PRIVATE ${FFMPEG_INCLUDE_DIRS})
+  target_link_directories(${YARS_TARGET} PRIVATE ${FFMPEG_LIBRARY_DIRS})
+  target_link_libraries(${YARS_TARGET} ${FFMPEG_LIBRARIES})
 endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
@@ -85,5 +88,10 @@ if(NOT APPLE AND YARS_USE_VISUALISATION)
     ${OGRE_Plugin_ParticleFX_LIBRARIES}
     )
 endif(NOT APPLE AND YARS_USE_VISUALISATION)
+
+option(YARS_USE_VULKAN "Build Vulkan renderer and tests" OFF)
+if(YARS_USE_VULKAN)
+  add_subdirectory(view/vulkan)
+endif(YARS_USE_VULKAN)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)

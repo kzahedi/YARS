@@ -143,6 +143,13 @@ void YarsMainControl::run()
   __closeApplication();
 }
 
+#ifdef USE_CAPTURE_VIDEO
+void YarsMainControl::setToggleCaptureCallback(std::function<void()> callback)
+{
+  if (_rtc) _rtc->setToggleCaptureCallback(callback);
+}
+#endif
+
 void YarsMainControl::__closeApplication()
 {
   // In headless mode (no GUI) we can safely clean up the global Data

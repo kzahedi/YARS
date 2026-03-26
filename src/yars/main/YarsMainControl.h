@@ -67,6 +67,11 @@ public:
   /** \brief Register a callback called when physics finishes (signals GUI to quit). */
   void setQuitCallback(std::function<void()> callback) { _quitCallback = callback; }
 
+#ifdef USE_CAPTURE_VIDEO
+  /** \brief Register a callback to auto-toggle video capture when recording starts/stops. */
+  void setToggleCaptureCallback(std::function<void()> callback);
+#endif
+
 private:
   void __closeApplication();
 

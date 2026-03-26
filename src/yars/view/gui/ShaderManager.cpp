@@ -13,8 +13,8 @@ ShaderManager* ShaderManager::instance() {
     return _instance;
 }
 
-ShaderManager::ShaderManager() 
-    : _shaderGenerator(nullptr), _initialized(false), _shadowsEnabled(true), _sceneManager(nullptr) {
+ShaderManager::ShaderManager()
+    : _shaderGenerator(nullptr), _initialized(false), _shadowsEnabled(false), _sceneManager(nullptr) {
     _shaderCachePath = "./shader_cache";
 }
 

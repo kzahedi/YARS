@@ -232,7 +232,10 @@ void YarsViewModel::run()
   // Cleanup SDL resources on main thread after main loop exits
   Y_DEBUG("YarsViewModel::run() main loop exited, cleaning up SDL resources on main thread")
   FOREACH(SdlWindow *, i, _windowManager)
-  (*i)->close();
+  {
+    (*i)->quit(); // finalize video capture before destroying window
+    (*i)->close();
+  }
   _windowManager.clear();
   Y_DEBUG("YarsViewModel::run() SDL cleanup completed")
 }

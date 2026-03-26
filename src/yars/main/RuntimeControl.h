@@ -5,6 +5,7 @@
 #include <yars/util/Observer.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Timer.h>
+#include <functional>
 
 namespace yars {
 
@@ -33,6 +34,11 @@ class RuntimeControl
     void reset();
     void quit();
     bool shouldQuit();
+
+#ifdef USE_CAPTURE_VIDEO
+    /** \brief Register callback to toggle video capture when recording starts/stops. */
+    void setToggleCaptureCallback(std::function<void()> cb) { _toggleCaptureCallback = cb; }
+#endif
     
   private:
     Data  *_data;
@@ -40,6 +46,9 @@ class RuntimeControl
     DataRecording *_recording;
     bool           _captureRunning;
     bool           _shouldQuit;
+#ifdef USE_CAPTURE_VIDEO
+    std::function<void()> _toggleCaptureCallback;
+#endif
 
 };
 

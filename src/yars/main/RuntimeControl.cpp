@@ -38,11 +38,10 @@ void RuntimeControl::notify(ObservableMessage *m)
   case __M_NEXT_STEP:
 
 #ifdef USE_CAPTURE_VIDEO
-    if (_captureRunning == true && _recording->record() == false)
-      notifyObservers(_m_autoToggleCaptureVideo);
-    if (_captureRunning == false && _recording->record() == true)
-      notifyObservers(_m_autoToggleCaptureVideo);
-    _captureRunning = _recording->record();
+    if (_captureRunning != _recording->record()) {
+      if (_toggleCaptureCallback) _toggleCaptureCallback();
+      _captureRunning = _recording->record();
+    }
 #endif // USE_CAPTURE_VIDEO
 
     if (__YARS_GET_USE_PRINT_TIME_INFORMATION)
@@ -95,11 +94,10 @@ void RuntimeControl::init()
 void RuntimeControl::step()
 {
 #ifdef USE_CAPTURE_VIDEO
-  if (_captureRunning == true && _recording->record() == false)
-    ; // TODO: Handle video capture toggle
-  if (_captureRunning == false && _recording->record() == true)
-    ; // TODO: Handle video capture toggle
-  _captureRunning = _recording->record();
+  if (_captureRunning != _recording->record()) {
+    if (_toggleCaptureCallback) _toggleCaptureCallback();
+    _captureRunning = _recording->record();
+  }
 #endif // USE_CAPTURE_VIDEO
 
   if (__YARS_GET_USE_PRINT_TIME_INFORMATION)

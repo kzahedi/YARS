@@ -12,7 +12,6 @@ using namespace std;
 
 extern "C" {
 #include <libavcodec/avcodec.h>
-#include <libavcodec/avfft.h>
 #include <libavdevice/avdevice.h>
 #include <libavfilter/avfilter.h>
 #include <libavfilter/buffersink.h>
@@ -65,11 +64,11 @@ class VideoCapture {
     void __remux();
     void __end(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx);
 
-    AVOutputFormat  *oformat;
+    const AVOutputFormat  *oformat;
     AVFormatContext *ofctx;
     AVStream        *videoStream;
     AVFrame         *videoFrame;
-    AVCodec         *codec;
+    const AVCodec   *codec;
     AVCodecContext  *cctx;
     SwsContext      *swsCtx;
     int             frameCounter;

@@ -30,6 +30,7 @@ using namespace _SDL_;
 #include <math.h>
 #include <string>
 
+
 #define FACTOR 0.01
 
 #define __NO_KEY 0
@@ -793,13 +794,14 @@ void SdlWindow::__initMovie()
   }
   _videoCapture = new VideoCapture();
   _videoCapture->init(width, height, __YARS_GET_CAPTURE_FRAME_RATE, 400, filename);
-
-  __initRenderFrame();
 }
 
 void SdlWindow::__closeMovie()
 {
-  Ogre::TextureManager::getSingleton().remove("StreamTex");
+  stringstream oss;
+  oss << "render texture " << _index;
+  if (Ogre::TextureManager::getSingleton().resourceExists(oss.str()))
+    Ogre::TextureManager::getSingleton().remove(oss.str());
   _captureRunning = false;
   _videoCapture->finish();
   delete _videoCapture;
@@ -817,18 +819,19 @@ void SdlWindow::__captureMovieFrame()
     __closeMovie();
     __initMovie();
   }
-  int ret, got_output;
-  uint width = _viewport->getActualWidth();
+  uint width  = _viewport->getActualWidth();
   uint height = _viewport->getActualHeight();
 
   ConsoleView::printCapturingInformation(_frameIndex);
 
-  _pRenderTex = _renderTexture->getBuffer()->getRenderTarget();
-  _pRenderTex->update();
-  Ogre::HardwarePixelBufferSharedPtr buffer = _renderTexture->getBuffer();
-  uint8_t *pData = (uint8_t *)buffer->lock(0, width * height * 4, Ogre::HardwareBuffer::HBL_READ_ONLY);
+  // Capture directly from the main render window.
+  // PF_R8G8B8A8 on little-endian ARM macOS stores bytes as [A, B, G, R]
+  // (Ogre packs 0xRRGGBBAA little-endian). Tell ffmpeg AV_PIX_FMT_ABGR.
+  std::vector<uint8_t> buf(width * height * 4);
+  Ogre::PixelBox pixelBox(width, height, 1, Ogre::PF_R8G8B8A8, buf.data());
+  _window->copyContentsToMemory(Ogre::Box(0, 0, width, height), pixelBox, Ogre::RenderTarget::FB_AUTO);
 
-  _videoCapture->addFrame(pData);
+  _videoCapture->addFrame(buf.data());
 
   _frameIndex++;
 }

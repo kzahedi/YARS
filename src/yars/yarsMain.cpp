@@ -33,6 +33,10 @@ int mainFunction(int argc, char **argv)
     ymc->setStepCallback([&yvc]() { yvc->onNextStep(); });
     // Wire physics quit notification to GUI (signals GUI run() loop to exit)
     ymc->setQuitCallback([&yvc]() { yvc->onQuit(); });
+#ifdef USE_CAPTURE_VIDEO
+    // Wire auto-toggle video capture when recording starts/stops
+    ymc->setToggleCaptureCallback([&yvc]() { yvc->onToggleCaptureVideo(); });
+#endif
 
     std::thread pThread(
         &YarsMainControl::run, // pointer to member function to execute in thread

@@ -43,6 +43,8 @@ set(GUI_SOURCES SdlWindow.cpp
 
 if(YARS_USE_CAPTURE_VIDEO)
   set(GUI_SOURCES ${GUI_SOURCES} VideoCapture.cpp)
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(FFMPEG REQUIRED libavformat libavcodec libavutil libavfilter libswscale libavdevice libswresample)
 endif(YARS_USE_CAPTURE_VIDEO)
 
 set(GUI_SOURCES ${GUI_SOURCES} SceneGraphMeshNode.cpp SceneGraphPlyNode.cpp)
@@ -52,5 +54,9 @@ if(APPLE)
 else(APPLE)
   add_library(YarsGUI ${LIBRARY_TYPE} ${GUI_SOURCES})
 endif(APPLE)
+
+if(YARS_USE_CAPTURE_VIDEO)
+  target_include_directories(YarsGUI PRIVATE ${FFMPEG_INCLUDE_DIRS})
+endif(YARS_USE_CAPTURE_VIDEO)
 
 
