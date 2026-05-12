@@ -1,0 +1,1498 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:complexType name="pose_definition">
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+    <xs:attribute name="z" type="xs:decimal" use="optional"/>
+    <xs:attribute name="alpha" type="xs:decimal" use="optional"/>
+    <xs:attribute name="beta" type="xs:decimal" use="optional"/>
+    <xs:attribute name="gamma" type="xs:decimal" use="optional"/>
+    <xs:attribute name="type" type="radOrDeg_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="pid_definition">
+    <xs:attribute name="p" type="xs:decimal" use="optional"/>
+    <xs:attribute name="i" type="xs:decimal" use="optional"/>
+    <xs:attribute name="d" type="xs:decimal" use="optional"/>
+    <xs:attribute name="size" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="min_max_definition">
+    <xs:attribute name="min" type="xs:decimal" use="required"/>
+    <xs:attribute name="max" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="xyz_definition">
+    <xs:attribute name="x" type="xs:decimal" use="required"/>
+    <xs:attribute name="y" type="xs:decimal" use="required"/>
+    <xs:attribute name="z" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="xyzg_definition">
+    <xs:attribute name="x" type="xs:decimal" use="required"/>
+    <xs:attribute name="y" type="xs:decimal" use="required"/>
+    <xs:attribute name="z" type="xs:decimal" use="required"/>
+    <xs:attribute name="global" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="width_height_depth_definition">
+    <xs:attribute name="width" type="xs:decimal" use="required"/>
+    <xs:attribute name="height" type="xs:decimal" use="required"/>
+    <xs:attribute name="depth" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="name_definition">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="simulator_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="solver">
+        <xs:complexType>
+          <xs:attribute name="iterations" type="positive_non_zero_integer_definition" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="control">
+        <xs:complexType>
+          <xs:attribute name="iterations" type="xs:integer" use="optional"/>
+          <xs:attribute name="reset" type="xs:integer" use="optional"/>
+          <xs:attribute name="seed" type="xs:integer" use="optional"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="frequency" type="positive_non_zero_integer_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="macros_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="macro" type="macro_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="macro_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="box" type="object_box_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ply" type="object_ply_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="composite" type="object_composite_definition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="robots_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="robot" type="robot_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="robot_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="body" type="body_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="actuators" type="actuators_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="sensors" type="sensors_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="controller" type="controller_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="body_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="box" type="object_box_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ply" type="object_ply_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="composite" type="object_composite_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="macro" type="object_macro_definition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="selfCollide" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_composite_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="geometry" type="composite_geom_geom_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_box_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="dimension">
+        <xs:complexType>
+          <xs:attribute name="width" type="xs:decimal" use="required"/>
+          <xs:attribute name="height" type="xs:decimal" use="required"/>
+          <xs:attribute name="depth" type="xs:decimal" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="box_visualisation_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_sphere_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="dimension" type="radius_dimension_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="sphere_visualisation_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="radius_dimension_definition">
+    <xs:attribute name="radius" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_cylinder_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="dimension" type="radius_height_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="capsule_visualisation_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="radius_height_definition">
+    <xs:attribute name="radius" type="xs:decimal" use="required"/>
+    <xs:attribute name="height" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_capsule_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="dimension" type="radius_height_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="capsule_visualisation_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="physics_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="mass" type="mass_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="centreOfMass" type="centreOfMass_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="friction" type="friction_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="rollingFriction" type="rollingFriction_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="linearDamping" type="linearDamping_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="angularDamping" type="angularDamping_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="restitution" type="restitution_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="friction_definition">
+    <xs:attribute name="value" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="centreOfMass_definition">
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+    <xs:attribute name="z" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="linearDamping_definition">
+    <xs:attribute name="value" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="mass_definition">
+    <xs:attribute name="kg" type="positive_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="angularDamping_definition">
+    <xs:attribute name="value" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="rollingFriction_definition">
+    <xs:attribute name="value" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="restitution_definition">
+    <xs:attribute name="value" type="xs:decimal" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_ply_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="visualisation" type="ply_visualisation_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="physics" type="physics_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="convex" type="true_false_definition" use="optional"/>
+    <xs:attribute name="soft" type="true_false_definition" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+    <xs:attribute name="filename" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="soft_body_parameter_definition">
+    <xs:attribute name="velocities_correction_factor" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="damping_coefficient" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="drag_coefficient" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="lift_coefficient" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="pressure_coefficient" type="xs:decimal" use="optional"/>
+    <xs:attribute name="volume_conversation_coefficient" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="dynamic_friction_coefficient" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="pose_matching_coefficient" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="rigid_contacts_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="kinetic_contacts_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_contacts_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="anchors_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_rigid_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_kinetic_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_soft_hardness" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_rigid_impulse_split" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_k_impulse_split" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="soft_vs_soft_impulse_split" type="unit_interval_definition" use="optional"/>
+    <xs:attribute name="maximum_volume_ratio_for_pose" type="xs:decimal" use="optional"/>
+    <xs:attribute name="time_scale" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="velocities_solver_iterations" type="positive_integer_definition" use="optional"/>
+    <xs:attribute name="positions_solver_iterations" type="positive_integer_definition" use="optional"/>
+    <xs:attribute name="drift_solver_iterations" type="positive_integer_definition" use="optional"/>
+    <xs:attribute name="cluster_solver_iterations" type="positive_integer_definition" use="optional"/>
+    <xs:attribute name="matching" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="damping" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="linear_stiffness" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="angular_stiffness" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="volume_stiffness" type="positive_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="proximity_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="distance" type="meter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="openingAngles" type="openingAngles_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="openingAngles_definition">
+    <xs:attribute name="x" type="xs:decimal" use="required"/>
+    <xs:attribute name="y" type="xs:decimal" use="required"/>
+    <xs:attribute name="type" type="radOrDeg_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="meter_definition">
+    <xs:attribute name="meter" type="positive_non_zero_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="camera_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="openingAngles" type="xy_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="internalEnergy_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="orientation_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="coordinates" type="coordinates_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="type" type="radOrDeg_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ldr_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="colour" type="colour_rgb_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="opening" type="positive_non_zero_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="colour_rgb_definition">
+    <xs:attribute name="value" type="colour_hex_rgb_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="sharpDM2Y3A003K0F_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="sharpGP2D12_37_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="feedback_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="velocity_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="deflection_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="signal_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="binaryContact_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="domain" type="min_max_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="position_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="coordinates" type="coordinates_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="generic_sensor_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="x" type="generic_actuator_sensor_axis_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="y" type="generic_actuator_sensor_axis_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="z" type="generic_actuator_sensor_axis_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="generic_actuator_sensor_axis_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="generic_actuator_domain_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="velocity" type="generic_actuator_domain_definition"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="type_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="generic_actuator_domain_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ov_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="coordinates" type="coordinates_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="global" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="oav_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="coordinates" type="coordinates_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="global" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="coordinates_definition">
+    <xs:attribute name="x" type="true_false_definition" use="required"/>
+    <xs:attribute name="y" type="true_false_definition" use="required"/>
+    <xs:attribute name="z" type="true_false_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="muscle_sensor_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="object" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="domain" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="noise_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="module" type="noise_type_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="filter_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="module" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="hinge_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="destination" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="force" type="actuator_force_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="velocity" type="actuator_velocity_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_with_global_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="regular" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="limit" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="orthogonal" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pid" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="actuator_type_angular_velocity_force_definition" use="required"/>
+    <xs:attribute name="friction" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="mode" type="actuator_mode_active_passive_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="slider_velocity_definition">
+    <xs:attribute name="max" type="positive_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="slider_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="destination" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="force" type="force_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="velocity" type="slider_velocity_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_with_global_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="regular">
+        <xs:complexType>
+          <xs:attribute name="softness" type="positive_decimal_definition" use="optional"/>
+          <xs:attribute name="damping" type="positive_decimal_definition" use="optional"/>
+          <xs:attribute name="restitution" type="positive_decimal_definition" use="optional"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="limit" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="orthogonal" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pid" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="type" type="actuator_type_positional_velocity_force_definition" use="required"/>
+    <xs:attribute name="friction" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="mode" type="actuator_mode_active_passive_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="fixed_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="destination" type="name_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="axis_rotational_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="force" type="actuator_force_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="velocity" type="actuator_velocity_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="limit" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="spring" type="spring_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pid" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="actuator_type_angular_velocity_force_definition" use="required"/>
+    <xs:attribute name="friction" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="mode" type="actuator_mode_active_passive_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="axis_translational_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="force" type="actuator_force_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="velocity" type="actuator_velocity_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="spring" type="spring_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pid" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="actuator_type_positional_velocity_force_definition" use="required"/>
+    <xs:attribute name="friction" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="mode" type="actuator_mode_active_passive_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="generic__definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="destination" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_with_global_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="rotational" type="rotational_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="translational" type="translational_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="spring" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="pose_with_global_definition">
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+    <xs:attribute name="z" type="xs:decimal" use="optional"/>
+    <xs:attribute name="alpha" type="xs:decimal" use="optional"/>
+    <xs:attribute name="beta" type="xs:decimal" use="optional"/>
+    <xs:attribute name="gamma" type="xs:decimal" use="optional"/>
+    <xs:attribute name="type" type="radOrDeg_definition" use="optional"/>
+    <xs:attribute name="global" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="rotational_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="x" type="axis_rotational_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="y" type="axis_rotational_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="z" type="axis_rotational_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="translational_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="limit" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="x" type="axis_translational_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="y" type="axis_translational_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="z" type="axis_translational_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="spring_definition">
+    <xs:attribute name="damping" type="positive_decimal_definition" use="required"/>
+    <xs:attribute name="stiffness" type="positive_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="actuator_force_definition">
+    <xs:attribute name="max" type="positive_decimal_definition" use="required"/>
+    <xs:attribute name="scaling" type="positive_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="actuator_velocity_definition">
+    <xs:attribute name="max" type="positive_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="muscle_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="source" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="destination" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="srcAnchor" type="anchor_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="dstAnchor" type="anchor_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="force" type="force_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="velocity" type="muscle_velocity_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="deflection" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="mapping" type="min_max_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="noise" type="noise_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="filter" type="filter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="lengthComponent" type="length_component_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="velocityComponent" type="velocity_component_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="regular" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="limit" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="orthogonal" type="actuator_parameter_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="muscle_visualisation_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="friction" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="visualise" type="true_false_definition" use="optional"/>
+    <xs:attribute name="erp" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="cfm" type="positive_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="muscle_visualisation_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="top" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="bottom" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="body" type="name_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="anchor_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="box" type="object_box_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ply" type="object_ply_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="coordinateSystem" type="local_global_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="force_definition">
+    <xs:attribute name="max" type="positive_decimal_definition" use="required"/>
+    <xs:attribute name="scaling" type="unit_interval_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="muscle_velocity_definition">
+    <xs:attribute name="max" type="positive_decimal_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="actuator_parameter_definition">
+    <xs:attribute name="softness" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="damping" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="restitution" type="positive_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="length_component_definition">
+    <xs:attribute name="optimalLength" type="xs:decimal" use="required"/>
+    <xs:attribute name="w" type="xs:decimal" use="required"/>
+    <xs:attribute name="c" type="xs:decimal" use="required"/>
+    <xs:attribute name="use" type="true_false_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="velocity_component_definition">
+    <xs:attribute name="maxVelocity" type="xs:decimal" use="required"/>
+    <xs:attribute name="N" type="xs:decimal" use="required"/>
+    <xs:attribute name="K" type="xs:decimal" use="required"/>
+    <xs:attribute name="use" type="true_false_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="controller_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="module" type="xs:string" use="required"/>
+    <xs:attribute name="frequency" type="positive_non_zero_integer_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="parameter_definition">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="environment_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="gravitation" type="xyz_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ground" type="ground_definition"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="box" type="object_box_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ply" type="object_ply_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="composite" type="object_composite_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="macro" type="object_macro_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pointLightSource" type="pointLightSource_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="ambientLight" type="ambientLight_definition"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="visualisation_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="texture" type="name_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="mesh" type="mesh_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="xy_definition">
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="pointLightSource_definition">
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="x" type="xs:decimal" use="required"/>
+    <xs:attribute name="y" type="xs:decimal" use="required"/>
+    <xs:attribute name="z" type="xs:decimal" use="required"/>
+    <xs:attribute name="colour" type="colour_hex_rgb_definition" use="required"/>
+    <xs:attribute name="brightness" type="unit_interval_definition" use="required"/>
+    <xs:attribute name="draw" type="true_false_definition" use="optional"/>
+    <xs:attribute name="size" type="positive_non_zero_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ambientLight_definition">
+    <xs:attribute name="colour" type="colour_hex_rgb_definition" use="required"/>
+    <xs:attribute name="brightness" type="unit_interval_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_macro_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="pose" type="pose_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="macro_instance_target_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="ref" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="mesh_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="texture" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="scale" type="scale_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pose" type="pose_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="scale_definition">
+    <xs:attribute name="x" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="y" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="z" type="positive_non_zero_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="screens_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="screen" type="screen_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="default" type="screen_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="sky" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="cameras" type="camera_config_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="followables" type="followables_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="recording" type="recording_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualise" type="visualise_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="visualise_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="joints" type="joints_visualisation_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="joints_visualisation_definition">
+    <xs:attribute name="height" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="radius" type="positive_decimal_definition" use="optional"/>
+    <xs:attribute name="x" type="xs:string" use="optional"/>
+    <xs:attribute name="y" type="xs:string" use="optional"/>
+    <xs:attribute name="z" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="screen_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="1" minOccurs="1">
+        <xs:element maxOccurs="1" minOccurs="0" name="resolution" type="resolution_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="size" type="width_height_definition"/>
+      </xs:choice>
+      <xs:element maxOccurs="1" minOccurs="0" name="position" type="xy_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="camera" type="camera_screen_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="osd" type="osd_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="show" type="true_false_definition" use="optional"/>
+    <xs:attribute name="capture" type="true_false_definition" use="optional"/>
+    <xs:attribute name="follow" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="resolution_definition">
+    <xs:attribute name="name" type="resolution_list_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="width_height_definition">
+    <xs:attribute name="width" type="xs:integer" use="required"/>
+    <xs:attribute name="height" type="xs:integer" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="osd_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="time" type="osd_font_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="robot" type="osd_font_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="osd_font_definition">
+    <xs:attribute name="font" type="xs:string" use="optional"/>
+    <xs:attribute name="size" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="colour" type="colour_hex_rgba_definition" use="optional"/>
+    <xs:attribute name="width" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="height" type="positive_non_zero_integer_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="camera_screen_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="position" type="xyz_definition"/>
+      <xs:element maxOccurs="1" minOccurs="1" name="lookAt" type="xyz_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="followables_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="followable" type="followable_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="followable_definition">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="camera_config_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="orbit" type="orbit_cam_config_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="centre" type="centre_cam_config_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="offset" type="offset_cam_config_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="orbit_cam_config_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtX" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtY" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtZ" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromX" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromY" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromZ" type="pid_definition"/>
+    </xs:sequence>
+    <xs:attribute name="speed" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="centre_cam_config_definition">
+    <xs:attribute name="speed" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="offset_cam_config_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtX" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtY" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="lookAtZ" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromX" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromY" type="pid_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fromZ" type="pid_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recording_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="interval" type="interval_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="interval_definition">
+    <xs:attribute name="start" type="positive_integer_definition" use="required"/>
+    <xs:attribute name="end" type="positive_integer_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="signals_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="keyboard" type="keyboard_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="periodic" type="periodic_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="triggered" type="triggered_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="keyboard_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="module" type="xs:string" use="required"/>
+    <xs:attribute name="key" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="periodic_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="module" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="triggered_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="parameter" type="parameter_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="module" type="xs:string" use="required"/>
+    <xs:attribute name="source" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="logging_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="object" type="object_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="sensor" type="sensor_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="actuator" type="actuator_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="controller" type="controller_logging_definition"/>
+      </xs:choice>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="console" type="console_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="file" type="file_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="gnuplot" type="gnuplot_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="selforg" type="selforg_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="blender" type="blender_logging_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="csv" type="csv_logging_definition"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="selforg_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="guilogger" type="guilogger_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="matrixviz" type="matrixviz_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="target_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="filename" type="xs:string" use="optional"/>
+    <xs:attribute name="guilogger" type="true_false_definition" use="optional"/>
+    <xs:attribute name="matrixviz" type="true_false_definition" use="optional"/>
+    <xs:attribute name="file" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="guilogger_definition">
+    <xs:attribute name="stepsize" type="positive_non_zero_integer_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="matrixviz_definition">
+    <xs:attribute name="stepsize" type="positive_non_zero_integer_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="console_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="target_definition"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="file_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="target_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="start" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="stop" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="date" type="true_false_definition" use="optional"/>
+    <xs:attribute name="debug" type="true_false_definition" use="optional"/>
+    <xs:attribute name="usetimestep" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="csv_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="target_definition"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="start" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="stop" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="date" type="true_false_definition" use="optional"/>
+    <xs:attribute name="debug" type="true_false_definition" use="optional"/>
+    <xs:attribute name="usetimestep" type="true_false_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="gnuplot_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="target" type="target_definition"/>
+    </xs:sequence>
+    <xs:attribute name="size" type="positive_non_zero_integer_definition" use="required"/>
+    <xs:attribute name="delay" type="positive_non_zero_integer_definition" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="pairwise" type="true_false_definition" use="optional"/>
+    <xs:attribute name="term" type="gnuplot_term_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="target_definition">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="blender_logging_definition">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="cfg" type="xs:string" use="optional"/>
+    <xs:attribute name="framerate" type="positive_non_zero_integer_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="use" type="object_use_definition"/>
+    </xs:sequence>
+    <xs:attribute name="target" type="xs:string" use="required"/>
+    <xs:attribute name="precision" type="positive_non_zero_integer_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="object_use_definition">
+    <xs:attribute name="value" type="value_definition" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="sensor_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="external" type="empty_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="internal" type="empty_definition"/>
+    </xs:sequence>
+    <xs:attribute name="precision" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="target" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="empty_definition"/>
+
+  <xs:complexType name="actuator_logging_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element maxOccurs="1" minOccurs="0" name="internal" type="empty"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="external" type="empty"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="desired" type="empty"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="appliedForce" type="empty"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="appliedVelocity" type="empty"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="precision" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="target" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="empty"/>
+
+  <xs:complexType name="controller_logging_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="use" type="controller_use_definition"/>
+    </xs:sequence>
+    <xs:attribute name="precision" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="target" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="controller_use_definition">
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="traces_definition">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="trace" type="trace_line_definition"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="point" type="trace_point_definition"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="trace_line_definition">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="init" type="init_traceline_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="final" type="final_traceline_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="offset" type="offset_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="texture" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="particles" type="name_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="billboard" type="name_definition"/>
+    </xs:sequence>
+    <xs:attribute name="target" type="xs:string" use="required"/>
+    <xs:attribute name="length" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="max" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="time" type="positive_non_zero_decimal_definition" use="optional"/>
+    <xs:attribute name="line" type="true_false_definition" use="optional"/>
+    <xs:attribute name="particles" type="true_false_definition" use="optional"/>
+    <xs:attribute name="billboard" type="true_false_definition" use="optional"/>
+    <xs:attribute name="project" type="planes_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="init_traceline_definition">
+    <xs:attribute name="colour" type="colour_hex_rgba_definition" use="optional"/>
+    <xs:attribute name="size" type="positive_non_zero_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="final_traceline_definition">
+    <xs:attribute name="colour" type="colour_hex_rgba_definition" use="optional"/>
+    <xs:attribute name="size" type="positive_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="offset_definition">
+    <xs:attribute name="local" type="true_false_definition" use="optional"/>
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+    <xs:attribute name="z" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="trace_point_definition">
+    <xs:attribute name="target" type="xs:string" use="required"/>
+    <xs:attribute name="colour" type="colour_hex_rgba_definition" use="required"/>
+    <xs:attribute name="size" type="xs:decimal" use="required"/>
+    <xs:attribute name="step" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="max" type="positive_non_zero_integer_definition" use="optional"/>
+    <xs:attribute name="fade" type="true_false_definition" use="optional"/>
+    <xs:attribute name="local" type="true_false_definition" use="optional"/>
+    <xs:attribute name="x" type="xs:decimal" use="optional"/>
+    <xs:attribute name="y" type="xs:decimal" use="optional"/>
+    <xs:attribute name="z" type="xs:decimal" use="optional"/>
+  </xs:complexType>
+
+  <xs:simpleType name="radOrDeg_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="rad"/>
+      <xs:enumeration value="deg"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="count_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="behaviour"/>
+      <xs:enumeration value="simulator"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="type_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="angular"/>
+      <xs:enumeration value="linear"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="noise_type_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="gauss"/>
+      <xs:enumeration value="white"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="actuator_type_angular_velocity_force_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="velocity"/>
+      <xs:enumeration value="angular"/>
+      <xs:enumeration value="force"/>
+      <xs:enumeration value="force and velocity"/>
+      <xs:enumeration value="force and angle"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="actuator_type_positional_velocity_force_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="velocity"/>
+      <xs:enumeration value="positional"/>
+      <xs:enumeration value="force"/>
+      <xs:enumeration value="force and velocity"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="local_global_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="local"/>
+      <xs:enumeration value="global"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="actuator_mode_active_passive_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="active"/>
+      <xs:enumeration value="passive"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="resolution_list_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="sd"/>
+      <xs:enumeration value="xga"/>
+      <xs:enumeration value="720p"/>
+      <xs:enumeration value="1080p"/>
+      <xs:enumeration value="vga"/>
+      <xs:enumeration value="svga"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="true_false_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="gnuplot_term_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="x11"/>
+      <xs:enumeration value="aqua"/>
+      <xs:enumeration value="wxt"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="value_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="x"/>
+      <xs:enumeration value="y"/>
+      <xs:enumeration value="z"/>
+      <xs:enumeration value="alpha"/>
+      <xs:enumeration value="beta"/>
+      <xs:enumeration value="gamma"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="planes_definition">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="xz"/>
+      <xs:enumeration value="yz"/>
+      <xs:enumeration value="xy"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="composite_geom_geom_definition">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element maxOccurs="1" minOccurs="0" name="box" type="object_box_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ply" type="object_ply_definition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="object_definition">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="box" type="object_box_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="sphere" type="object_sphere_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ply" type="object_ply_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="cylinder" type="object_cylinder_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="capsule" type="object_capsule_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="macro" type="object_macro_definition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="box_visualisation_definition">
+    <xs:choice maxOccurs="1" minOccurs="1">
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="texture" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="first" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="second" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="third" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="fourth" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="fifth" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="sixth" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="mesh" type="mesh_definition"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="sphere_visualisation_definition">
+    <xs:choice maxOccurs="1" minOccurs="1">
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="texture" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="mesh" type="mesh_definition"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="capsule_visualisation_definition">
+    <xs:choice maxOccurs="1" minOccurs="1">
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="texture" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="top" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="bottom" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="body" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="mesh" type="mesh_definition"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="ply_visualisation_definition">
+    <xs:choice maxOccurs="1" minOccurs="1">
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="texture" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="mesh" type="mesh_definition"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="sensors_definition">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="proximity" type="proximity_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="camera" type="camera_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ambientLight" type="ambientLight_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="internalEnergy" type="internalEnergy_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="orientation" type="orientation_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="position" type="position_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ldr" type="ldr_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="sharpDM2Y3A003K0F" type="sharpDM2Y3A003K0F_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="sharpGP2D12_37" type="sharpGP2D12_37_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="feedback" type="feedback_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="velocity" type="velocity_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="deflection" type="deflection_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="signal" type="signal_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="binaryContact" type="binaryContact_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="generic" type="generic_sensor_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ov" type="ov_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="oav" type="oav_definition"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="muscle" type="muscle_sensor_definition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="actuators_definition">
+    <xs:choice maxOccurs="unbounded" minOccurs="1">
+      <xs:element maxOccurs="1" minOccurs="0" name="hinge" type="hinge_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="slider" type="slider_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="fixed" type="fixed_definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="generic" type="generic__definition"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="muscle" type="muscle_definition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="ground_definition">
+    <xs:choice>
+      <xs:element maxOccurs="1" minOccurs="0" name="visualisation" type="visualisation_definition"/>
+    </xs:choice>
+    <xs:attribute name="fixed" type="true_false_definition" use="optional"/>
+    <xs:attribute name="fog" type="true_false_definition" use="optional"/>
+    <xs:attribute name="fogIntensity" type="positive_non_zero_decimal_definition" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="macro_instance_target_definition">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="first" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="second" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="third" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="fourth" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="fifth" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="sixth" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="top" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="bottom" type="name_definition"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="body" type="name_definition"/>
+      </xs:sequence>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="1" name="texture" type="name_definition"/>
+      </xs:sequence>
+    </xs:choice>
+    <xs:attribute name="object" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="unit_interval_definition">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="positive_integer_definition">
+    <xs:restriction base="xs:integer">
+      <xs:pattern value="[0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="positive_non_zero_decimal_definition">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="([0-9]*.?[0-9]*[1-9]+[0-9]*|[1-9][0-9]*.?[0-9]*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="positive_decimal_definition">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value="[0-9]*.?[0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="version_definition">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]+.[0-9]+.[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="colour_hex_rgb_definition">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Fa-f0-9]{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="positive_non_zero_integer_definition">
+    <xs:restriction base="xs:integer">
+      <xs:pattern value="[1-9][0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="colour_hex_rgba_definition">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Fa-f0-9]{6}([A-Fa-f0-9]{2}){0,1}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="rosiml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="1" minOccurs="0" name="comment" type="xs:string"/>
+        <xs:element maxOccurs="1" minOccurs="1" name="simulator" type="simulator_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="screens" type="screens_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="macros" type="macros_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="environment" type="environment_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="robots" type="robots_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="traces" type="traces_definition"/>
+        <xs:element maxOccurs="1" minOccurs="0" name="logging" type="logging_definition"/>
+      </xs:sequence>
+      <xs:attribute name="version" type="version_definition" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+
