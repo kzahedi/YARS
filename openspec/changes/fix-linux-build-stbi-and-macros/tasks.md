@@ -7,9 +7,9 @@
 
 ## 2. YARS_INSTALL_PATH macro
 
-- [ ] 2.1 Replace `cmake/SetDefinitions.cmake:2` with `add_compile_definitions(YARS_INSTALL_PATH="${CMAKE_INSTALL_PREFIX}")`
-- [ ] 2.2 Grep for any other `add_definitions(-D…='"…"')` shell-quoted patterns in `cmake/` and convert them to `add_compile_definitions` form
-- [ ] 2.3 Verify macOS build still compiles and runs (no behaviour change expected)
+- [x] 2.1 Replace `cmake/SetDefinitions.cmake:2` with `add_compile_definitions(YARS_INSTALL_PATH="${CMAKE_INSTALL_PREFIX}")`
+- [x] 2.2 Grep for any other `add_definitions(-D…='"…"')` shell-quoted patterns in `cmake/` and convert them to `add_compile_definitions` form (none found beyond 2.1)
+- [x] 2.3 Verify macOS build still compiles and runs (no behaviour change expected)
 
 ## 3. CI Verification
 

@@ -1,5 +1,4 @@
-## TODO make optional
-add_definitions(-DYARS_INSTALL_PATH='"${CMAKE_INSTALL_PREFIX}"')
+add_compile_definitions(YARS_INSTALL_PATH="${CMAKE_INSTALL_PREFIX}")
 
 if(YARS_EXAMPLES)
   add_definitions(-DWITH_EXAMPLES)
