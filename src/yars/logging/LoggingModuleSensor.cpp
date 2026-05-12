@@ -53,11 +53,13 @@ void LoggingModuleSensor::__useExternal(int index)
     _variables.push_back(oss.str());
   }
 
-  char* c = new char[1];
-  c[0] = (char)index;
-  string s(c);
+  // Build a 1-byte token containing the dimension index. `index < 0` is the
+  // dim-==-1 sentinel meaning "log dimension 0"; the downstream decoder reads
+  // (int)argument[0] directly, so the sentinel must be rewritten to 0 here.
+  // See openspec/changes/fix-velocity-sensor-bounds.
+  const char token = (index >= 0) ? static_cast<char>(index) : '\0';
+  string s(1, token);
   addMethod(&LoggingModule::getSensorExternalValues, s);
-  delete[] c;
 }
 
 void LoggingModuleSensor::__useInternal(int index)
@@ -75,9 +77,7 @@ void LoggingModuleSensor::__useInternal(int index)
     _variables.push_back(oss.str());
   }
 
-  char* c = new char[1];
-  c[0] = (char)index;
-  string s(c);
-  addMethod(&LoggingModule::getSensorInternalValues, c);
-  delete[] c;
+  const char token = (index >= 0) ? static_cast<char>(index) : '\0';
+  string s(1, token);
+  addMethod(&LoggingModule::getSensorInternalValues, s);
 }

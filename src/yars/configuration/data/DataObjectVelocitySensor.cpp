@@ -150,6 +150,7 @@ DataObjectVelocitySensor* DataObjectVelocitySensor::_copy()
 
 double DataObjectVelocitySensor::internalValue(int index)
 {
+  if (index < 0 || index >= _dimension) return 0.0;
   YM_LOCK;
   double r = _value[index];
   YM_UNLOCK;
@@ -158,6 +159,7 @@ double DataObjectVelocitySensor::internalValue(int index)
 
 double DataObjectVelocitySensor::externalValue(int index)
 {
+  if (index < 0 || index >= _dimension) return 0.0;
   YM_LOCK;
   double r = _value[index];
   YM_UNLOCK;
