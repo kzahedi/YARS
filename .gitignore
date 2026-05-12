@@ -3,6 +3,15 @@ tags
 .vimprj/settings.vim
 .DS_Store
 build
+build-asan/
+lib/
+_deps/
+shader_cache/
+ogre.log
+/braitenberg
+braitenberg-*.csv
+docs/videos/
+.claude/worktrees/
 .vscode
 *.vim
 *.vim
