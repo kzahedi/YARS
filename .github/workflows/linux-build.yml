@@ -1,0 +1,217 @@
+name: Linux Build & Headless Audit
+
+on:
+  push:
+    branches: [master, "fix/**", "feat/**", "chore/**"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  LIBGL_ALWAYS_SOFTWARE: "1"
+  CMAKE_BUILD_PARALLEL_LEVEL: "4"
+  OGRE_INSTALL_PREFIX: ${{ github.workspace }}/ext/ogre/install
+
+jobs:
+  build-and-audit:
+    name: ubuntu-22.04 / GL3Plus llvmpipe
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install apt dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake git pkg-config ninja-build \
+            libboost-program-options-dev \
+            libbullet-dev libsdl2-dev libxerces-c-dev \
+            libfreeimage-dev libfreetype6-dev libzzip-dev zlib1g-dev \
+            libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
+            libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
+            xvfb mesa-utils mesa-utils-extra \
+            ffmpeg libavcodec-dev libavformat-dev libswscale-dev libswresample-dev \
+            catch2
+          dpkg -l | awk '/^ii/ {print $2"\t"$3}' > apt-versions.txt
+
+      - name: Report renderer (sanity)
+        run: |
+          xvfb-run -a -s "-screen 0 1280x720x24" glxinfo -B || true
+          echo "LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE}"
+
+      - name: Cache Ogre 14 build
+        id: ogre-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.OGRE_INSTALL_PREFIX }}
+          key: ogre14-ubuntu22-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v1
+
+      - name: Build Ogre 14 from submodule
+        if: steps.ogre-cache.outputs.cache-hit != 'true'
+        run: |
+          cmake -S ext/ogre-source -B ext/ogre/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=${OGRE_INSTALL_PREFIX} \
+            -DOGRE_BUILD_COMPONENT_BITES=ON \
+            -DOGRE_BUILD_COMPONENT_OVERLAY=ON \
+            -DOGRE_BUILD_COMPONENT_RTSHADERSYSTEM=ON \
+            -DOGRE_BUILD_SAMPLES=OFF \
+            -DOGRE_BUILD_TOOLS=OFF \
+            -DOGRE_BUILD_PLUGIN_STBI=ON \
+            -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
+            -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
+            -DOGRE_BUILD_DEPENDENCIES=OFF
+          cmake --build ext/ogre/build -j 4
+          cmake --install ext/ogre/build
+
+      - name: Configure YARS
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee cmake-configure.log
+
+      - name: Build YARS
+        run: |
+          cmake --build build -j 4 2>&1 | tee build.log
+
+      - name: Smoke test (--nogui, 100 iterations)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          ./build/bin/yars --iterations 100 --nogui --xml xml/braitenberg_nocontroller.xml
+
+      - name: Locate contrib controller libraries
+        id: contrib
+        run: |
+          # Linux builds libYarsController*.so under build/lib (or similar)
+          CONTRIB_DIR=$(find build -type d -name lib -print -quit)
+          if [ -z "$CONTRIB_DIR" ] || ! ls "$CONTRIB_DIR"/libYarsController* >/dev/null 2>&1; then
+            CONTRIB_DIR=$(dirname "$(find build -name 'libYarsControllerBraitenberg2b*' -print -quit)")
+          fi
+          echo "contrib-dir=$CONTRIB_DIR" >> "$GITHUB_OUTPUT"
+          echo "Located contrib libs in: $CONTRIB_DIR"
+          ls "$CONTRIB_DIR" | grep -i yarscontroller || true
+
+      - name: Headless audit corpus (standalone configs, 500 iterations)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          set +e
+          mkdir -p linux-audit-logs
+          FAILED=0
+          STANDALONE=(
+            xml/braitenberg_nocontroller.xml
+            xml/braitenberg_noise.xml
+            xml/falling_objects.xml
+            xml/test_capture.xml
+          )
+          for cfg in "${STANDALONE[@]}"; do
+            name=$(basename "$cfg" .xml)
+            log="linux-audit-logs/${name}.log"
+            ./build/bin/yars --iterations 500 --nogui --xml "$cfg" > "$log" 2>&1
+            rc=$?
+            echo "${cfg}: exit=${rc}" | tee -a linux-audit-logs/summary.txt
+            [ $rc -ne 0 ] && FAILED=1
+          done
+          exit $FAILED
+
+      - name: Headless audit corpus (controller-based configs, 500 iterations)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          set +e
+          CONTRIB_DIR="${{ steps.contrib.outputs.contrib-dir }}"
+          mkdir -p linux-audit-logs
+          FAILED=0
+          # Map of XML config -> required controller lib name (no prefix/suffix)
+          declare -A CFG2LIB=(
+            ["xml/braitenberg.xml"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_logging.xml"]="YarsControllerBraitenberg3b"
+            ["xml/braitenberg_light_source.xml"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_trace_projection.xml"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_zoo.xml"]="YarsControllerBraitenberg2a"
+            ["xml/muscle.xml"]="YarsControllerSquareWave"
+            ["xml/joints/generic_angular.xml"]="YarsControllerSine"
+            ["xml/joints/generic_force.xml"]="YarsControllerSine"
+          )
+          for cfg in "${!CFG2LIB[@]}"; do
+            libname="${CFG2LIB[$cfg]}"
+            libfile="${CONTRIB_DIR}/lib${libname}.so"
+            name=$(basename "$cfg" .xml)
+            log="linux-audit-logs/${name}.log"
+            if [ ! -f "$libfile" ]; then
+              echo "${cfg}: SKIP (lib ${libfile} not found)" | tee -a linux-audit-logs/summary.txt
+              FAILED=1
+              continue
+            fi
+            ./build/bin/yars --iterations 500 --nogui --xml "$cfg" --lib "$libfile" > "$log" 2>&1
+            rc=$?
+            echo "${cfg}: exit=${rc}" | tee -a linux-audit-logs/summary.txt
+            [ $rc -ne 0 ] && FAILED=1
+          done
+          exit $FAILED
+
+      - name: Reference CSV regression check (braitenberg_logging.xml)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          CONTRIB_DIR="${{ steps.contrib.outputs.contrib-dir }}"
+          rm -f braitenberg-*.csv
+          ./build/bin/yars --nogui --xml xml/braitenberg_logging.xml \
+            --lib "${CONTRIB_DIR}/libYarsControllerBraitenberg3b.so"
+          ACTUAL=$(ls -t braitenberg-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No braitenberg-*.csv produced"
+            exit 1
+          fi
+          mv "$ACTUAL" build/braitenberg_logging_actual.csv
+          if diff -u xml/reference_logfile.csv build/braitenberg_logging_actual.csv > csv-diff.log; then
+            echo "CSV byte-identical to reference."
+          else
+            echo "::warning::CSV differs from xml/reference_logfile.csv — see csv-diff.log artifact"
+            # Do not fail the job on diff for the first run; capture for triage
+            head -50 csv-diff.log
+          fi
+
+      - name: FFmpeg video capture (xvfb + llvmpipe)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          set +e
+          if [ ! -f xml/test_capture.xml ]; then
+            echo "::warning::xml/test_capture.xml not present, skipping capture step"
+            exit 0
+          fi
+          xvfb-run -a -s "-screen 0 1920x1080x24" \
+            ./build/bin/yars --iterations 1800 --xml xml/test_capture.xml \
+            > linux-audit-logs/video-capture.log 2>&1
+          rc=$?
+          MP4=$(ls -t *.mp4 2>/dev/null | head -1)
+          if [ -n "$MP4" ]; then
+            mv "$MP4" build/yars-capture.mp4
+            ffprobe -v error -show_format -show_streams build/yars-capture.mp4 \
+              > build/yars-capture-ffprobe.txt 2>&1
+            head -40 build/yars-capture-ffprobe.txt
+          else
+            echo "::warning::no .mp4 produced (rc=$rc); check video-capture.log"
+          fi
+
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-audit-artifacts
+          path: |
+            apt-versions.txt
+            cmake-configure.log
+            build.log
+            csv-diff.log
+            linux-audit-logs/**
+            build/braitenberg_logging_actual.csv
+            build/yars-capture.mp4
+            build/yars-capture-ffprobe.txt
+          if-no-files-found: warn
+          retention-days: 14
