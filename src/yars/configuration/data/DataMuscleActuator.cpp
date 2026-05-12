@@ -93,6 +93,8 @@ DataMuscleActuator::DataMuscleActuator(DataNode *parent)
   _cfm = 0.0;
   _parsingSourceAnchor = false;
   _parsingDestinationAnchor = false;
+  _srcOffsetInWorldCoordinates = false;
+  _dstOffsetInWorldCoordinates = false;
 
   _internalValue = 0.0;
   _externalValue = 0.0;
