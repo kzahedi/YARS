@@ -68,5 +68,9 @@ void YarsLoggingControl::reset()
 
 void YarsLoggingControl::quit()
 {
+  // Flush all CSV / file loggers before __closeApplication runs exit(0),
+  // which would otherwise skip the std::ofstream destructors and lose the
+  // last few buffered rows. See openspec/changes/fix-logging-handler-shutdown-flush.
+  if (_model != nullptr) _model->flush();
   // Model lifetime is owned by YarsMainControl; do not delete here.
 }

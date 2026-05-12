@@ -18,11 +18,17 @@ class YarsLoggingModel
     void init();
     void step();
 
+    // Flushes and closes all CSV / file loggers. Idempotent. Must be called
+    // before exit(0) runs in headless mode (see openspec/changes/
+    // fix-logging-handler-shutdown-flush).
+    void flush();
+
   private:
     void            __cleanup();
     void            __initLogTraces();
     DataTraces     *_traces;
     LoggingHandler *_loggingHandler;
+    bool            _closed = false;
 };
 
 #endif // __YARS_LOGGING_MODEL_H__

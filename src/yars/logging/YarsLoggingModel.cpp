@@ -177,9 +177,16 @@ void YarsLoggingModel::step()
     
 }
 
+void YarsLoggingModel::flush()
+{
+  if(_closed) return;
+  if(_loggingHandler != NULL) _loggingHandler->close();
+  _closed = true;
+}
+
 void YarsLoggingModel::__cleanup()
 {
-  if(_loggingHandler != NULL) _loggingHandler->close();
+  flush();
   if(_traces         != NULL) delete _traces;
   //if(_loggingHandler != NULL) delete _loggingHandler;
 }
