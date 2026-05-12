@@ -57,13 +57,18 @@ bool YarsXSDSaxParser::read(string filename)
   const XMLByte*bytes=reinterpret_cast<const XMLByte*>(xsd.c_str());
   MemBufInputSource mis (bytes, xsd.size (), "/schema.xsd");
 
-  void* id=(void*)("file:///schema.xsd");
+  // fgXercesSchemaExternalNoNameSpaceSchemaLocation expects an XMLCh* (UTF-16),
+  // not a narrow char*. Transcode the literal and release after loadGrammar so
+  // Xerces stops walking past the end of the string-pool entry (see
+  // openspec/changes/fix-xercesxsd-buffer-overflow).
+  XMLCh* schemaLocation = XMLString::transcode("file:///schema.xsd");
   parser->setProperty (
       XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-      id);
+      schemaLocation);
 
   parser->loadGrammar(mis, Grammar::SchemaGrammarType, true);
   parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+  XMLString::release(&schemaLocation);
 
   parser->setContentHandler(handler);
   parser->setErrorHandler(handler);
