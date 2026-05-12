@@ -62,18 +62,13 @@ void DataLoggingSensor::createXsd(XsdSpecification *spec)
   loggingSensorDefinition->add(NA(YARS_STRING_TARGET, YARS_STRING_XSD_STRING, true));
   spec->add(loggingSensorDefinition);
 
-  XsdChoice *options = new XsdChoice(YARS_NO_NAME, 1, 1);
-  loggingSensorDefinition->add(options);
-
-  XsdSequence *optionA = new XsdSequence(YARS_INTERNAL_EXTERNAL_OPTION);
-  optionA->add(XE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  optionA->add(XE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  options->add(optionA);
-
-  XsdSequence *optionB = new XsdSequence(YARS_EXTERNAL_INTERNAL_OPTION);
-  optionB->add(XE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  optionB->add(XE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
-  options->add(optionB);
+  // Single deterministic sequence (external? internal?). The previous
+  // <choice>{<sequence A>,<sequence B>} construct was non-deterministic and
+  // xmllint refused to compile the resulting schema. The narrowing to one
+  // canonical order — external first — matches every <sensor> usage in the
+  // bundled corpus. See openspec/changes/fix-xsd-generator-determinism.
+  loggingSensorDefinition->add(XE(YARS_STRING_EXTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
+  loggingSensorDefinition->add(XE(YARS_STRING_INTERNAL, YARS_STRING_EMPTY_DEFINITION, 0,1));
 
   XsdSequence *emptyDefinition = new XsdSequence(YARS_STRING_EMPTY_DEFINITION);
   spec->add(emptyDefinition);
