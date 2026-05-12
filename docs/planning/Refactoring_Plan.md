@@ -209,6 +209,13 @@ class Robot {
 - [ ] All simulations run correctly
 - [ ] No double-free crashes
 
+> **Audit status (2026-05-12):** see
+> [`memory-safety-audit-status.md`](./memory-safety-audit-status.md). 17 standalone configs
+> were exercised under ASan + UBSan in `build-asan/`. No double-free, no use-after-free,
+> no leaks (LSan deferred to Linux CI). Four pre-existing defects were uncovered and
+> routed to follow-up fix proposals; the smart-pointer migration itself produced a clean
+> baseline.
+
 ---
 
 ## Phase 3: Configuration System Refactoring
@@ -286,6 +293,13 @@ Create a Python tool that parses the XSD schema and generates C++ classes.
 - [ ] All XML configs parse correctly
 - [ ] XSD generation produces valid schemas
 - [ ] No regression in simulation behavior
+
+> **Audit status (2026-05-12):** see
+> [`xml-xsd-validation-status.md`](./xml-xsd-validation-status.md). 27/27 corpus configs
+> validate against the regenerated XSD (after one hand-edit to fix a generator-emitted
+> non-deterministic content model); 18/18 standalone configs parse cleanly via the new
+> `make test_xml_parse` driver; the braitenberg behavior-regression diff is bit-identical
+> on the rows that land. Three follow-up fix proposals were identified.
 
 ---
 
