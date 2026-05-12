@@ -1,0 +1,6 @@
+Non-critical XML version mismatch
+Showing differences from your XML’s version 0.8.40 to the current version 0.8.41:
+     0.8.41 -- optional -- traces can now also be projected to xy,yz,xz plane
+added generic force joint is active: 1
+Maximum number of physics iterations (500) reached.
+EXIT=0

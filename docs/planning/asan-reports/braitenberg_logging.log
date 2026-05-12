@@ -1,0 +1,7 @@
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 301
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 302
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 303
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 304
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 305
+ERROR: Error: element 'internal' is not allowed for content model '(internal?,external?)' at line: 306
+EXIT=255

@@ -1,0 +1,12 @@
+# Valgrind suppressions for YARS.
+#
+# Format: standard Valgrind suppression entries, one per `{}` block. See
+# https://valgrind.org/docs/manual/manual-core.html#manual-core.suppress
+#
+# Activate via:
+#   valgrind --suppressions=suppressions/valgrind.supp ./bin/yars ...
+#
+# Current state (2026-05-12): empty. The valgrind subset has not been executed
+# yet — arm64 macOS has no upstream valgrind port. Pending the Linux CI runner
+# from `add-linux-port-verification`, this file will collect Ogre/Bullet/Xerces
+# noise so the YARS-attributable signal stays visible.

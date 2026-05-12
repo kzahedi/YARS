@@ -1,0 +1,19 @@
+# AddressSanitizer / UndefinedBehaviorSanitizer suppressions for YARS.
+#
+# Format: `<sanitizer>:<symbol-substring>` — see clang docs at
+# https://clang.llvm.org/docs/AddressSanitizer.html#suppressing-reports-in-external-libraries
+#
+# Activate via:
+#   export ASAN_OPTIONS="suppressions=$(pwd)/suppressions/asan.supp"
+#
+# Current state (2026-05-12): empty — the audit run on
+# branch `feat/linux-ci-verification` found no third-party (Ogre/Bullet/Xerces)
+# false positives that warranted a suppression. The four YARS-attributable
+# findings are tracked as follow-up fix proposals; see
+# docs/planning/memory-safety-audit-status.md.
+#
+# When adding a suppression, include:
+#   * date added
+#   * the sanitizer event (file:line + summary)
+#   * why it is a false positive or third-party issue
+#   * the upstream tracking link (if any)

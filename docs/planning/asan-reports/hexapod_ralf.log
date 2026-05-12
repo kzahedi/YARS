@@ -1,0 +1,28 @@
+added front left Fe-Ma is active: 1
+added front right Fe-Ma is active: 1
+added centre left Fe-Ma is active: 1
+added centre right Fe-Ma is active: 1
+added rear left Fe-Ma is active: 1
+added rear right Fe-Ma is active: 1
+added front left Fe-Ti is active: 1
+added front right Fe-Ti is active: 1
+added centre left Fe-Ti is active: 1
+added centre right Fe-Ti is active: 1
+added rear left Fe-Ti is active: 1
+added rear right Fe-Ti is active: 1
+added front left Ti-Ta is active: 1
+added front right Ti-Ta is active: 1
+added centre left Ti-Ta is active: 1
+added centre right Ti-Ta is active: 1
+added rear left Ti-Ta is active: 1
+added rear right Ti-Ta is active: 1
+added main - rear is active: 1
+added main - head is active: 1
+opening logs/ralf.hexapod.csv
+writing cfg file logs/ralf.hexapod.cfg
+opening logs/sensors.txt
+opening logs/main_body_velocities.txt
+opening logs/main_body_position.txt
+opening logs/actuators.txt
+Maximum number of physics iterations (500) reached.
+EXIT=0

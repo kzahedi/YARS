@@ -57,6 +57,10 @@ OPTION(YARS_USE_SHADOW_MAPS
   "Use shadow maps."
   OFF)
 
+OPTION(YARS_ENABLE_SANITIZERS
+  "Build with AddressSanitizer + UndefinedBehaviorSanitizer (Linux ASan includes LeakSanitizer)."
+  OFF)
+
 set(YARS_SET_LOCALE_ENGLISH ON)
 
 MARK_AS_ADVANCED(

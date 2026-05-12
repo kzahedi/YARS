@@ -36,4 +36,22 @@ endif()
 # Modern CMake: Use generator expressions for conditional compilation
 # This replaces the old manual flag setting approach
 
+# Sanitizer support for memory-safety audit (see openspec/changes/add-memory-safety-audit).
+# AddressSanitizer + UndefinedBehaviorSanitizer on macOS/Linux. LeakSanitizer is bundled with
+# ASan on Linux; on macOS leak detection is limited (Apple's libsanitizer does not ship lsan),
+# so we drop the explicit `leak` from the flag list on Apple to avoid linker errors.
+if(YARS_ENABLE_SANITIZERS)
+  if(APPLE)
+    set(_yars_san_flags "-fsanitize=address,undefined -fno-omit-frame-pointer")
+  else()
+    set(_yars_san_flags "-fsanitize=address,undefined,leak -fno-omit-frame-pointer")
+  endif()
+  set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} ${_yars_san_flags}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_yars_san_flags}")
+  set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} ${_yars_san_flags}")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${_yars_san_flags}")
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${_yars_san_flags}")
+  message(STATUS "YARS_ENABLE_SANITIZERS=ON: applying ${_yars_san_flags}")
+endif()
+
 
