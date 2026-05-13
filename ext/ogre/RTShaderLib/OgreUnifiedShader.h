@@ -37,13 +37,13 @@
 #define textureCube(s,c)     texture(s,c)
 #define texture2DProj(s,c)   textureProj(s,c)
 
-#ifdef USE_OGRE_FROM_FUTURE
-// -------------------------------------------------------------------------
-// Modern GLSL (1.30+ / OpenGL 3.3+ core profile)
-// -------------------------------------------------------------------------
-
-// IN(type var, semantic_or_location)  -- declare input attribute/varying
-// OUT(type var, location)             -- declare output varying/frag-output
+// YARS targets OpenGL 3.3+ core profile on both macOS (Ogre 13.x) and Linux
+// (Ogre 14.x). GL3+ core profile rejects 'attribute'/'varying'; both stacks
+// require 'in'/'out' qualifiers. The legacy branch below is preserved for
+// reference but never taken — version detection inside Ogre's GLSL
+// preprocessor was unreliable across the two Ogre versions, so we just
+// commit to the modern syntax unconditionally.
+#if 1 // Modern GLSL (1.30+ / OpenGL 3.3+ core profile) — always
 #  define IN(a, b)   in a;
 #  define OUT(a, b)  out a;
 
@@ -59,6 +59,7 @@
 #else
 // -------------------------------------------------------------------------
 // Legacy GLSL 1.10 / 1.20 (attribute/varying syntax, gl_FragColor built-in)
+// Preserved for reference; unreachable.
 // -------------------------------------------------------------------------
 #  define IN(a, b)   attribute a;
 #  define OUT(a, b)  varying a;
