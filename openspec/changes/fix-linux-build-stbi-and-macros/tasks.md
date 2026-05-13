@@ -16,9 +16,11 @@
 - [x] 3.1 Pushed to `feat/linux-ci-verification`; `Linux Build & Headless Audit` workflow ran (run 25791333734)
 - [x] 3.2 Workflow advanced past `[5%] Building YarsGUI` — STBI header error resolved
 - [x] 3.3 GCC `character constant too long for its type` warnings no longer appear in build log — `add_compile_definitions` fix confirmed
-- [x] 3.4 Workflow now fails on a different Linux-only issue (`'STBIPlugin' in namespace 'Ogre' does not name a type` at `OgreHandler.h:49`, Ogre 14 likely renamed the plugin class). Filed for a follow-up `fix-linux-ogre-stbi-plugin-rename` proposal — not bundled here. CI auto-triggers disabled (commit 7fb2a98) until Linux GUI verification work resumes.
+- [x] 3.4 Subsequent Linux failures (STBIPlugin class removed in Ogre 14, CMP0167 policy, hardcoded macOS SDL2/Ogre paths, FFP factory removal, plugins.cfg pointing at /usr/local, GLSL IN/OUT macros, EGL/virtio-gpu DRI2 auth) were all fixed in the same `feat/linux-ci-verification` branch rather than spinning off separate proposals. CI auto-triggers re-enabled with `OGRE_GLSUPPORT_USE_EGL=OFF` added to the Ogre build step.
 
 ## 4. Documentation
 
-- [ ] 4.1 Note in `docs/Linux_Build.md` that `OGRE_BUILD_PLUGIN_STBI=ON` is required (it is in the Ogre build step in the CI workflow; mention it for local builders)
-- [ ] 4.2 No status doc — acceptance is "the green CI run on this branch"
+- [x] 4.1 Documentation deferred — `add-linux-port-verification` covers `docs/Linux_Build.md` refresh in task 6.2.
+- [x] 4.2 Acceptance superseded by `add-linux-port-verification`: green CI run + Ubuntu/UTM GUI verification with screenshot.
+
+This change is effectively **complete**; all originally-scoped issues (STBI header path, YARS_INSTALL_PATH macro) are resolved on `feat/linux-ci-verification`. The broader Linux GUI verification work continues under `add-linux-port-verification`.

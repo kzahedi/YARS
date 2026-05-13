@@ -1,12 +1,10 @@
 name: Linux Build & Headless Audit
 
 on:
-  # Auto-triggers disabled until Linux GUI verification is complete.
-  # Re-enable by restoring the `push:` and `pull_request:` blocks below.
-  # push:
-  #   branches: [master, "fix/**", "feat/**", "chore/**"]
-  # pull_request:
-  #   branches: [master]
+  push:
+    branches: [master, "fix/**", "feat/**", "chore/**"]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 env:
@@ -51,7 +49,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.OGRE_INSTALL_PREFIX }}
-          key: ogre14-ubuntu22-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v1
+          key: ogre14-ubuntu22-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v2
 
       - name: Build Ogre 14 from submodule
         if: steps.ogre-cache.outputs.cache-hit != 'true'
@@ -67,6 +65,7 @@ jobs:
             -DOGRE_BUILD_PLUGIN_STBI=ON \
             -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
             -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
+            -DOGRE_GLSUPPORT_USE_EGL=OFF \
             -DOGRE_BUILD_DEPENDENCIES=OFF
           cmake --build ext/ogre/build -j 4
           cmake --install ext/ogre/build

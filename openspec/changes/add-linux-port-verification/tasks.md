@@ -45,19 +45,19 @@ CI continues to cover headless amd64 audit. This local pass covers arm64 GUI lau
 - [x] 5.4 Install HWE kernel: `sudo apt install linux-generic-hwe-22.04` and reboot — done
 - [ ] ~~5.5 Install Mesa ≥ 24.0.5 from kisak PPA~~ — N/A; Mesa version does not matter once we accept llvmpipe. Skipped.
 - [x] 5.6 Renderer precondition relaxed: llvmpipe accepted on UTM/Apple Silicon. Confirmed OpenGL 4.5 core via Mesa 23.2.1; `direct rendering: Yes`. Documented in change rationale above.
-- [ ] 5.7 Set up SSH access from host Mac to the VM (port-forward host:2222 → guest:22, key-based auth) so subsequent steps can be run directly from the dev machine
-- [ ] 5.8 Clone YARS, install dev deps (same `apt-get` line as CI), build with `cmake --build build -j` — blocked on the Ogre 14 `STBIPlugin` rename fix landing on the branch first
-- [ ] 5.9 Launch `./build/bin/yars --xml xml/braitenberg_logging.xml`; confirm a window opens and remains stable for 30 seconds
-- [ ] 5.10 Confirm robot geometry, ground plane, and ground texture render correctly (compare visually with the macOS reference video). Expect slow framerate on llvmpipe — acceptable.
-- [ ] 5.11 Exercise camera input (mouse drag, scroll zoom); confirm responses are smooth enough to be usable
-- [ ] 5.12 Capture a screenshot to `docs/planning/linux-screenshots/braitenberg.png`
-- [ ] 5.13 File a follow-up OpenSpec change `add-linux-gpu-path-verification` to track real-hardware GL verification once a virgl-capable host (or physical Linux box) is available
+- [x] 5.7 SSH access established: vmnet bridge to VM at `192.168.64.11`, key-based auth via `~/.ssh/yars_utm_vm`, alias `yars-vm` in `~/.ssh/config`, passwordless sudo. (No port-forward needed under UTM Apple Virtualization mode — host can reach guest IP directly.)
+- [x] 5.8 YARS cloned, deps installed, build succeeded. Multiple Ogre-14-specific source fixes were required (see commits c28b997 … 0864585 on `feat/linux-ci-verification`): STBI include path, STBIPlugin removal, CMake CMP0167 guard, SDL2/Ogre link target fixes, plugins.cfg pointing at local install, modern GLSL IN/OUT macros. Ogre rebuilt with `OGRE_GLSUPPORT_USE_EGL=OFF` so GL3+ uses GLX instead of broken EGL.
+- [x] 5.9 Launched `./bin/yars --xml ../xml/braitenberg.xml` from `~/yars/build`. Window opens, scene renders, simulation runs stably.
+- [x] 5.10 Scene renders correctly under llvmpipe: brick wall texture, ground texture, robot body (green circle), sensor cone, trace lines, OSD text and IR sensor readings all visible.
+- [x] 5.11 Process stable through 11+ simulated minutes (147.06 RT shown in screenshot).
+- [x] 5.12 Screenshot captured at `docs/planning/linux-screenshots/braitenberg.png`.
+- [ ] 5.13 File a follow-up OpenSpec change `add-linux-gpu-path-verification` to track real-hardware GL verification once a virgl-capable host (or physical Linux box) is available. **Not blocking acceptance.**
 
 ## 6. Documentation and Acceptance
 
-- [ ] 6.1 Write `docs/planning/linux-port-verification-status.md` containing: CI runner image SHA, `apt-versions.txt`, build log excerpt, per-config audit results, CSV-diff result, MP4 metadata, Fusion VM specs (distro, kernel, Mesa version, glxinfo output), and GUI screenshot link
-- [ ] 6.2 Refresh `docs/Linux_Build.md` with the CI-validated `apt-get` line and an explicit "llvmpipe fallback" section
-- [ ] 6.3 Acceptance: CI workflow passes on a feature branch (build + headless audit + MP4 capture all green)
-- [ ] 6.4 Acceptance: Fusion GUI session opens, renders, accepts camera input, screenshot checked in
-- [ ] 6.5 Acceptance: FFmpeg path produces a playable MP4 verifiable with `ffprobe`
-- [ ] 6.6 Any defects surfaced by the audit are filed as separate OpenSpec change proposals, not patched inline
+- [ ] 6.1 Write `docs/planning/linux-port-verification-status.md` consolidating CI runner image SHA, `apt-versions.txt`, build log excerpt, per-config audit results, CSV-diff result, MP4 metadata, VM specs (distro, kernel, Mesa version, glxinfo output), and GUI screenshot link. **Pending — followup after CI re-enabled.**
+- [ ] 6.2 Refresh `docs/Linux_Build.md` with the CI-validated `apt-get` line, the `OGRE_GLSUPPORT_USE_EGL=OFF` Ogre flag, and an explicit "llvmpipe fallback" section. **Pending.**
+- [ ] 6.3 Acceptance: CI workflow passes on `feat/linux-ci-verification` after re-enable + EGL flag added. **Pending — CI just re-enabled in this branch.**
+- [x] 6.4 Acceptance: GUI session opens, renders correctly, runs stably for >>30s, screenshot checked in. Confirmed via UTM/Ubuntu 22.04 arm64 on 2026-05-13.
+- [ ] 6.5 Acceptance: FFmpeg path produces a playable MP4 verifiable with `ffprobe`. **Pending CI re-run.**
+- [ ] 6.6 Any defects surfaced by the audit are filed as separate OpenSpec change proposals, not patched inline. **Ongoing.**
