@@ -84,6 +84,7 @@ if(NOT APPLE AND YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET}
     ${OGRE_ROOT}/lib/libOgreMain.so
     ${OGRE_ROOT}/lib/libOgreOverlay.so
+    ${OGRE_ROOT}/lib/libOgreRTShaderSystem.so
     ${OGRE_RenderSystem_GL_LIBRARIES}
     ${OGRE_Plugin_ParticleFX_LIBRARIES}
     )
