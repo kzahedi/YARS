@@ -31,7 +31,14 @@ foreach(var ${tmp})
 endforeach(var)
 
 if(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
-  set(OGRE_PLUGINS_DIR "/usr/local/lib/OGRE/")
+  # Prefer the locally-built Ogre install (set by IncludePackages.cmake) over
+  # the legacy /usr/local default, which assumes a system-wide Ogre install
+  # that does not exist on most platforms.
+  if(DEFINED OGRE_ROOT AND EXISTS "${OGRE_ROOT}/lib/OGRE")
+    set(OGRE_PLUGINS_DIR "${OGRE_ROOT}/lib/OGRE/")
+  else()
+    set(OGRE_PLUGINS_DIR "/usr/local/lib/OGRE/")
+  endif()
 endif(OGRE_PLUGINS_DIR MATCHES "Ogre-Plugins-Dir-NOTDEFINED")
 
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/plugins.cfg.in   ${PROJECT_BINARY_DIR}/plugins.cfg)
