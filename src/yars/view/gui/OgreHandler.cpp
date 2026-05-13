@@ -61,6 +61,7 @@ OgreHandler::OgreHandler()
 #else  // __APPLE__
   _root->loadPlugin("Plugin_ParticleFX");
   _root->loadPlugin("RenderSystem_GL3Plus");
+  Ogre::STBIImageCodec::startup();
 #endif // __APPLE__
 
   if (_root->getAvailableRenderers().size() == 0)

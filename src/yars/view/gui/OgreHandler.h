@@ -46,7 +46,9 @@ private:
   SceneGraph *_sceneGraph;
   Ogre::GL3PlusPlugin *_GLPlugin;
   Ogre::ParticleFXPlugin *_particlePlugin;
+#if __APPLE__
   Ogre::STBIPlugin *_stbiPlugin;
+#endif
   Ogre::RTShader::ShaderGenerator *_shaderGenerator;
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
   // TextOverlay        *_textOverlay;
