@@ -31,16 +31,19 @@ bool ShaderManager::initializeRTSS(Ogre::SceneManager* sceneManager) {
             return false;
         }
         
-        // Register core sub-render state factories for shader generation
-        // Check if FFPTransform factory already exists before adding
+#if __APPLE__
+        // Ogre 13.x (macOS): explicit defensive registration of FFP factories.
+        // The factories are auto-registered by RTSS, so the if-check guards
+        // against double-registration. Kept for behavioural parity on macOS.
         if (!_shaderGenerator->getSubRenderStateFactory("FFP_Transform")) {
             _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTransformFactory());
         }
-
-        // Check if FFPTexturing factory already exists before adding
         if (!_shaderGenerator->getSubRenderStateFactory("FFP_Texturing")) {
             _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTexturingFactory());
         }
+#endif
+        // On Ogre 14 (Linux): FFPTexturingFactory is no longer exported; RTSS
+        // auto-registers both FFP_Transform and FFP_Texturing internally.
 
         // Set target shader language
         _shaderGenerator->setTargetLanguage("glsl");
