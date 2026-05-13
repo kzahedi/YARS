@@ -105,18 +105,22 @@ jobs:
           FAILED=0
           STANDALONE=(
             xml/braitenberg_nocontroller.xml
-            xml/braitenberg_noise.xml
             xml/falling_objects.xml
             xml/test_capture.xml
           )
+          # cd into build/ so YARS resolves controller .so files via cwd/lib.
+          # --lib arg is only validated by YARS, not added to the candidate
+          # search path, so the cwd/lib fallback is the working pattern.
+          cd build
           for cfg in "${STANDALONE[@]}"; do
             name=$(basename "$cfg" .xml)
-            log="linux-audit-logs/${name}.log"
-            ./build/bin/yars --iterations 500 --nogui --xml "$cfg" > "$log" 2>&1
+            log="../linux-audit-logs/${name}.log"
+            ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
             rc=$?
-            echo "${cfg}: exit=${rc}" | tee -a linux-audit-logs/summary.txt
+            echo "${cfg}: exit=${rc}" | tee -a ../linux-audit-logs/summary.txt
             [ $rc -ne 0 ] && FAILED=1
           done
+          cd ..
           exit $FAILED
 
       - name: Headless audit corpus (controller-based configs, 500 iterations)
@@ -130,6 +134,7 @@ jobs:
           # Map of XML config -> required controller lib name (no prefix/suffix)
           declare -A CFG2LIB=(
             ["xml/braitenberg.xml"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_noise.xml"]="YarsControllerBraitenberg2b"
             ["xml/braitenberg_logging.xml"]="YarsControllerBraitenberg3b"
             ["xml/braitenberg_light_source.xml"]="YarsControllerBraitenberg2b"
             ["xml/braitenberg_trace_projection.xml"]="YarsControllerBraitenberg2b"
@@ -138,37 +143,43 @@ jobs:
             ["xml/joints/generic_angular.xml"]="YarsControllerSine"
             ["xml/joints/generic_force.xml"]="YarsControllerSine"
           )
+          # cd into build/ so YARS resolves controller .so files via cwd/lib.
+          # --lib arg is only validated by YARS, not added to the candidate
+          # search path, so the cwd/lib fallback is the working pattern.
+          cd build
           for cfg in "${!CFG2LIB[@]}"; do
             libname="${CFG2LIB[$cfg]}"
-            libfile="${CONTRIB_DIR}/lib${libname}.so"
+            libfile="lib/lib${libname}.so"
             name=$(basename "$cfg" .xml)
-            log="linux-audit-logs/${name}.log"
+            log="../linux-audit-logs/${name}.log"
             if [ ! -f "$libfile" ]; then
-              echo "${cfg}: SKIP (lib ${libfile} not found)" | tee -a linux-audit-logs/summary.txt
+              echo "${cfg}: SKIP (lib ${libfile} not found)" | tee -a ../linux-audit-logs/summary.txt
               FAILED=1
               continue
             fi
-            ./build/bin/yars --iterations 500 --nogui --xml "$cfg" --lib "$libfile" > "$log" 2>&1
+            ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
             rc=$?
-            echo "${cfg}: exit=${rc}" | tee -a linux-audit-logs/summary.txt
+            echo "${cfg}: exit=${rc}" | tee -a ../linux-audit-logs/summary.txt
             [ $rc -ne 0 ] && FAILED=1
           done
+          cd ..
           exit $FAILED
 
       - name: Reference CSV regression check (braitenberg_logging.xml)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
         run: |
-          CONTRIB_DIR="${{ steps.contrib.outputs.contrib-dir }}"
+          # cd into build/ so YARS resolves controller via cwd/lib.
+          cd build
           rm -f braitenberg-*.csv
-          ./build/bin/yars --nogui --xml xml/braitenberg_logging.xml \
-            --lib "${CONTRIB_DIR}/libYarsControllerBraitenberg3b.so"
+          ./bin/yars --nogui --xml ../xml/braitenberg_logging.xml
           ACTUAL=$(ls -t braitenberg-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No braitenberg-*.csv produced"
             exit 1
           fi
-          mv "$ACTUAL" build/braitenberg_logging_actual.csv
+          mv "$ACTUAL" braitenberg_logging_actual.csv
+          cd ..
           if diff -u xml/reference_logfile.csv build/braitenberg_logging_actual.csv > csv-diff.log; then
             echo "CSV byte-identical to reference."
           else
