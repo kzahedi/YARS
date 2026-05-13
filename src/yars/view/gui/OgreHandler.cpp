@@ -31,7 +31,7 @@ OgreHandler::OgreHandler()
 {
   Ogre::LogManager *lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  lm->getDefaultLog()->setLogDetail(Ogre::LL_BOREME); // DIAG: max verbosity
+  lm->getDefaultLog()->setLogDetail(Ogre::LL_LOW); // log errors only
 
 #ifdef __APPLE__
   // For macOS: Don't load plugins.cfg since we're using static plugins
@@ -227,13 +227,6 @@ void OgreHandler::setupSceneManager()
   // 2) Runtime Shader System initialisation and automatic technique
   //    generation listener.
   // ----------------------------------------------------------------------
-
-  // DIAG: print detected GL shading language version (temporary)
-  if (Ogre::Root::getSingleton().getRenderSystem()) {
-    std::cerr << "[DIAG] mNativeShadingLanguageVersion = "
-              << Ogre::Root::getSingleton().getRenderSystem()->getNativeShadingLanguageVersion()
-              << std::endl;
-  }
 
   if (Ogre::RTShader::ShaderGenerator::initialize())
   {
