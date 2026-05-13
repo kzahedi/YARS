@@ -13,10 +13,10 @@
 
 ## 3. CI Verification
 
-- [ ] 3.1 Push to a feature branch; `Linux Build & Headless Audit` workflow runs
-- [ ] 3.2 Confirm the workflow advances past `[5%] Building YarsGUI` without the STBI header error
-- [ ] 3.3 Confirm the GCC warning `character constant too long for its type` no longer appears in the build log
-- [ ] 3.4 If the workflow advances and then fails on a different Linux-only issue: stop, open a new follow-up `fix-linux-*` proposal for that issue, do not bundle into this change
+- [x] 3.1 Pushed to `feat/linux-ci-verification`; `Linux Build & Headless Audit` workflow ran (run 25791333734)
+- [x] 3.2 Workflow advanced past `[5%] Building YarsGUI` — STBI header error resolved
+- [x] 3.3 GCC `character constant too long for its type` warnings no longer appear in build log — `add_compile_definitions` fix confirmed
+- [x] 3.4 Workflow now fails on a different Linux-only issue (`'STBIPlugin' in namespace 'Ogre' does not name a type` at `OgreHandler.h:49`, Ogre 14 likely renamed the plugin class). Filed for a follow-up `fix-linux-ogre-stbi-plugin-rename` proposal — not bundled here. CI auto-triggers disabled (commit 7fb2a98) until Linux GUI verification work resumes.
 
 ## 4. Documentation
 
