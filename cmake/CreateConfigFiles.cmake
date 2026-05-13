@@ -45,7 +45,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/cfg/plugins.cfg.in   ${PROJECT_BINARY_DIR
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/ogre.cfg.in      ${PROJECT_BINARY_DIR}/ogre.cfg)
 configure_file(${CMAKE_SOURCE_DIR}/src/cfg/resources.cfg.in ${PROJECT_BINARY_DIR}/resources.cfg)
 
-set(VERSION    "0.7.8")
+set(VERSION    "${PROJECT_VERSION}")
 set(INC_PREFIX "${CMAKE_INSTALL_PREFIX}/include/yars")
 set(LIB_PREFIX "${CMAKE_INSTALL_PREFIX}/lib")
 set(BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin")
