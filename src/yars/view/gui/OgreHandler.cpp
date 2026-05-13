@@ -59,9 +59,9 @@ OgreHandler::OgreHandler()
     throw;
   }
 #else  // __APPLE__
-  _root->loadPlugin("Plugin_ParticleFX");
-  _root->loadPlugin("RenderSystem_GL3Plus");
-  _root->loadPlugin("Codec_STBI");
+  // Plugins are loaded from build/plugins.cfg (see cmake/CreateConfigFiles.cmake
+  // and src/cfg/plugins.cfg.in). Explicit loadPlugin() here would double-load
+  // and collide on codec registration.
 #endif // __APPLE__
 
   if (_root->getAvailableRenderers().size() == 0)
