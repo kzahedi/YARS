@@ -1,9 +1,9 @@
 ## 1. STBI codec include
 
-- [ ] 1.1 Confirm with Ogre 14 source that `OGRE_BUILD_PLUGIN_STBI=ON` installs a top-level `OgreSTBICodec.h` (check `ext/ogre/install/include/OGRE/` after a fresh install run); document the actual installed path
-- [ ] 1.2 If the top-level header is installed: change `OgreHandler.h:17` from `#include <OGRE/Codec_STBI/OgreSTBICodec.h>` to `#include <OgreSTBICodec.h>` (option (c))
-- [ ] 1.3 If not: fall back to option (a) — add `ext/ogre-source/PlugIns/STBICodec/include` to the GUI target's include path
-- [ ] 1.4 Audit other Ogre plugin includes in `OgreHandler.h` (`OgreGL3PlusPlugin.h`, `OgreParticleFXPlugin.h`) and simplify any that use the same `OGRE/Plugins/.../X.h` pattern when a flatter form works
+- [x] 1.1 Confirmed actual installed path from CI run 25736692735: `ext/ogre/install/include/OGRE/Plugins/STBICodec/OgreSTBICodec.h` (no top-level `OgreSTBICodec.h` on Linux; on macOS it ships in `Codec_STBIStatic.framework/Headers/`)
+- [x] 1.2 N/A — top-level header is not installed on Linux; option (c) does not apply
+- [x] 1.3 Changed `OgreHandler.h:17` to `#include <OGRE/Plugins/STBICodec/OgreSTBICodec.h>` (matches the actual install layout; consistent with neighbouring `OGRE/Plugins/ParticleFX/...` include)
+- [x] 1.4 `OgreGL3PlusPlugin.h` and `OgreParticleFXPlugin.h` already use the `OGRE/Plugins/.../X.h` / `OGRE/RenderSystems/.../X.h` pattern correctly — no change needed
 
 ## 2. YARS_INSTALL_PATH macro
 

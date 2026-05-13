@@ -14,7 +14,7 @@
 #include <OGRE/RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
 #include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
-#include <OGRE/Codec_STBI/OgreSTBICodec.h>
+#include <OGRE/Plugins/STBICodec/OgreSTBICodec.h>
 #endif
 // #include <OGRE/OgreStaticPluginLoader.h>
 
