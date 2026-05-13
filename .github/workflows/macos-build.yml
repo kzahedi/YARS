@@ -37,13 +37,16 @@ jobs:
       - name: Install brew dependencies
         run: |
           brew update
+          # Note: zziplib is no longer in Homebrew core (formula was removed).
+          # Ogre detects ZZip as optional; without it, the OGRE zip codec is
+          # skipped — fine for the smoke test, which doesn't use zip archives.
           brew install \
             cmake pkg-config ninja \
             sdl2 bullet xerces-c boost \
-            freeimage freetype zziplib \
+            freeimage freetype \
             ffmpeg catch2
           # Report versions for the build log
-          brew list --versions sdl2 bullet xerces-c boost freeimage freetype zziplib ffmpeg
+          brew list --versions sdl2 bullet xerces-c boost freeimage freetype ffmpeg
 
       - name: Cache Ogre 13.6.4 build
         id: ogre-cache

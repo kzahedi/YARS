@@ -115,7 +115,9 @@ jobs:
           for cfg in "${STANDALONE[@]}"; do
             name=$(basename "$cfg" .xml)
             log="../linux-audit-logs/${name}.log"
-            ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
+            # 60s per-config wall-clock cap so any hang fails fast rather
+            # than burning the whole 90-min job budget.
+            timeout 60s ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
             rc=$?
             echo "${cfg}: exit=${rc}" | tee -a ../linux-audit-logs/summary.txt
             [ $rc -ne 0 ] && FAILED=1
@@ -157,9 +159,16 @@ jobs:
               FAILED=1
               continue
             fi
-            ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
+            # 60s per-config wall-clock cap so any hang fails fast rather
+            # than burning the whole 90-min job budget.
+            timeout 60s ./bin/yars --iterations 500 --nogui --xml "../$cfg" > "$log" 2>&1
             rc=$?
-            echo "${cfg}: exit=${rc}" | tee -a ../linux-audit-logs/summary.txt
+            # rc=124 is timeout's standard "killed at TIMEOUT" code
+            if [ $rc -eq 124 ]; then
+              echo "${cfg}: TIMEOUT (60s)" | tee -a ../linux-audit-logs/summary.txt
+            else
+              echo "${cfg}: exit=${rc}" | tee -a ../linux-audit-logs/summary.txt
+            fi
             [ $rc -ne 0 ] && FAILED=1
           done
           cd ..
