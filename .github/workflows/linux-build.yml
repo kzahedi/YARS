@@ -1,10 +1,12 @@
 name: Linux Build & Headless Audit
 
 on:
-  push:
-    branches: [master, "fix/**", "feat/**", "chore/**"]
-  pull_request:
-    branches: [master]
+  # Auto-triggers disabled until Linux GUI verification is complete.
+  # Re-enable by restoring the `push:` and `pull_request:` blocks below.
+  # push:
+  #   branches: [master, "fix/**", "feat/**", "chore/**"]
+  # pull_request:
+  #   branches: [master]
   workflow_dispatch:
 
 env:
