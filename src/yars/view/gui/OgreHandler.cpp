@@ -228,6 +228,13 @@ void OgreHandler::setupSceneManager()
   //    generation listener.
   // ----------------------------------------------------------------------
 
+  // DIAG: print detected GL shading language version (temporary)
+  if (Ogre::Root::getSingleton().getRenderSystem()) {
+    std::cerr << "[DIAG] mNativeShadingLanguageVersion = "
+              << Ogre::Root::getSingleton().getRenderSystem()->getNativeShadingLanguageVersion()
+              << std::endl;
+  }
+
   if (Ogre::RTShader::ShaderGenerator::initialize())
   {
     // Use ShaderManager for comprehensive RTSS setup
