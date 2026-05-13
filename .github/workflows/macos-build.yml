@@ -1,0 +1,104 @@
+name: macOS Build & Smoke Test
+
+on:
+  push:
+    branches: [master, "fix/**", "feat/**", "chore/**"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: "4"
+  OGRE_INSTALL_PREFIX: ${{ github.workspace }}/ext/ogre/install
+  # Pin macOS to Ogre 13.6.4 — the version the macOS code paths target.
+  # Migrating the Apple branches to Ogre 14 is tracked separately
+  # (see openspec change 'migrate-macos-to-ogre-14').
+  OGRE_MACOS_TAG: "v13.6.4"
+
+jobs:
+  build-and-smoke:
+    name: macos-14 / GL3Plus static (Ogre 13.6.4)
+    runs-on: macos-14
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Pin Ogre submodule to ${{ env.OGRE_MACOS_TAG }} (macOS-only)
+        run: |
+          cd ext/ogre-source
+          git fetch --tags --depth=1 origin ${OGRE_MACOS_TAG}
+          git checkout ${OGRE_MACOS_TAG}
+          echo "Ogre source now at: $(git describe --tags --always)"
+
+      - name: Install brew dependencies
+        run: |
+          brew update
+          brew install \
+            cmake pkg-config ninja \
+            sdl2 bullet xerces-c boost \
+            freeimage freetype zziplib \
+            ffmpeg catch2
+          # Report versions for the build log
+          brew list --versions sdl2 bullet xerces-c boost freeimage freetype zziplib ffmpeg
+
+      - name: Cache Ogre 13.6.4 build
+        id: ogre-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.OGRE_INSTALL_PREFIX }}
+          key: ogre13-macos14-${{ env.OGRE_MACOS_TAG }}-static-v1
+
+      - name: Build Ogre 13.6.4 from submodule (static)
+        if: steps.ogre-cache.outputs.cache-hit != 'true'
+        run: |
+          cmake -S ext/ogre-source -B ext/ogre/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=${OGRE_INSTALL_PREFIX} \
+            -DOGRE_STATIC=ON \
+            -DOGRE_BUILD_COMPONENT_BITES=ON \
+            -DOGRE_BUILD_COMPONENT_OVERLAY=ON \
+            -DOGRE_BUILD_COMPONENT_RTSHADERSYSTEM=ON \
+            -DOGRE_BUILD_SAMPLES=OFF \
+            -DOGRE_BUILD_TOOLS=OFF \
+            -DOGRE_BUILD_PLUGIN_STBI=ON \
+            -DOGRE_BUILD_PLUGIN_FREEIMAGE=ON \
+            -DOGRE_BUILD_PLUGIN_PFX=ON \
+            -DOGRE_BUILD_PLUGIN_OCTREE=ON \
+            -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
+            -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
+            -DOGRE_BUILD_RENDERSYSTEM_METAL=OFF \
+            -DOGRE_BUILD_DEPENDENCIES=OFF
+          cmake --build ext/ogre/build -j 4
+          cmake --install ext/ogre/build
+
+      - name: Configure YARS
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee cmake-configure.log
+
+      - name: Build YARS
+        run: |
+          cmake --build build -j 4 2>&1 | tee build.log
+
+      - name: Smoke test (--nogui, 100 iterations)
+        run: |
+          cd build
+          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg_nocontroller.xml
+
+      - name: Smoke test with controller (--nogui, 100 iterations)
+        run: |
+          cd build
+          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg.xml
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build-logs
+          path: |
+            cmake-configure.log
+            build.log
+          if-no-files-found: ignore
