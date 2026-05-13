@@ -82,8 +82,8 @@ endif(YARS_USE_VISUALISATION)
 
 if(NOT APPLE AND YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET}
-    /usr/lib/x86_64-linux-gnu/libOgreMain.so
-    /usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+    ${OGRE_ROOT}/lib/libOgreMain.so
+    ${OGRE_ROOT}/lib/libOgreOverlay.so
     ${OGRE_RenderSystem_GL_LIBRARIES}
     ${OGRE_Plugin_ParticleFX_LIBRARIES}
     )
