@@ -75,7 +75,7 @@ if(YARS_USE_VISUALISATION)
 
     endif(UNIX AND NOT APPLE)
 
-  target_link_libraries(${YARS_TARGET} /opt/homebrew/lib/libSDL2.dylib)
+  target_link_libraries(${YARS_TARGET} SDL2::SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)
