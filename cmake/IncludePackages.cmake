@@ -5,8 +5,10 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Handle modern Boost CMake policy
-cmake_policy(SET CMP0167 NEW)
+# Handle modern Boost CMake policy (introduced in CMake 3.30)
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
 
 # Modern Boost handling
 if(APPLE)
