@@ -31,7 +31,7 @@ OgreHandler::OgreHandler()
 {
   Ogre::LogManager *lm = new Ogre::LogManager();
   lm->createLog("ogre.log", true, false, false); // create silent logging
-  lm->getDefaultLog()->setLogDetail(Ogre::LL_LOW); // log errors only
+  lm->getDefaultLog()->setLogDetail(Ogre::LL_BOREME); // DIAG: max verbosity
 
 #ifdef __APPLE__
   // For macOS: Don't load plugins.cfg since we're using static plugins
