@@ -4,18 +4,11 @@
 
 #include <yars/view/console/ConsoleView.h>
 
-LoggingHandler::LoggingHandler()
-{
-
-}
-LoggingHandler::~LoggingHandler()
-{
-  for (auto *m : _modules) delete m;
-}
+LoggingHandler::LoggingHandler() = default;
 
 void LoggingHandler::addModule(LoggingModule *module)
 {
-  _modules.push_back(module);
+  _modules.emplace_back(module);
 }
 
 void LoggingHandler::addLogger(Logger *logger)
@@ -23,11 +16,11 @@ void LoggingHandler::addLogger(Logger *logger)
   for (const auto &s : *logger)
   {
     bool found = false;
-    for (auto *m : _modules)
+    for (auto &m : _modules)
     {
       if (s == m->name())
       {
-        logger->addModule(m);
+        logger->addModule(m.get());
         found = true;
       }
     }
@@ -38,29 +31,28 @@ void LoggingHandler::addLogger(Logger *logger)
       Y_WARN(oss.str());
     }
   }
-  _logger.push_back(logger);
+  _logger.emplace_back(logger);
 }
 
 void LoggingHandler::init()
 {
-  for (auto *l : _logger) l->init();
+  for (auto &l : _logger) l->init();
 }
 
 void LoggingHandler::update()
 {
-  for (auto *l : _modules) l->update();
-  for (auto *l : _logger)  l->update();
+  for (auto &m : _modules) m->update();
+  for (auto &l : _logger)  l->update();
 }
 
 void LoggingHandler::close()
 {
-  for (auto *l : _logger)  l->close();
-  for (auto *l : _modules) delete l;
-  for (auto *l : _logger)  delete l;
+  for (auto &l : _logger) l->close();
+  // unique_ptr handles destruction; no manual delete needed.
 }
 
 void LoggingHandler::reset()
 {
-  for (auto *l : _logger) l->close();
-  for (auto *l : _logger) l->init();
+  for (auto &l : _logger) l->close();
+  for (auto &l : _logger) l->init();
 }
