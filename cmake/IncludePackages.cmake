@@ -78,16 +78,14 @@ IF(YARS_USE_VISUALISATION)
   # OgreRTShaderSystem. Falls back to manual include paths if config
   # isn't installed (e.g. partial installs).
   find_package(OGRE CONFIG QUIET COMPONENTS Overlay RTShaderSystem)
-  if(OGRE_FOUND)
-    # The imported targets handle includes + link directories themselves.
-    # Add the OGRE/ prefix path for source files that #include <OGRE/...>.
-    include_directories(${OGRE_ROOT}/include)
-  else()
-    # Fallback: assume the install layout matches the Linux dynamic-lib
-    # pattern and link by absolute path. Plugin loading via plugins.cfg
-    # still works because Ogre::Root reads PluginFolder from the cfg.
-    include_directories(${OGRE_ROOT}/include)
-    include_directories(${OGRE_ROOT}/include/OGRE)
+  # Always add both include roots: YARS source uses <OGRE/...> form, and
+  # Ogre's internal headers do bare-name #include "OgreRenderable.h" et al.
+  # Imported targets give us link info but not enough transitive includes.
+  include_directories(${OGRE_ROOT}/include)
+  include_directories(${OGRE_ROOT}/include/OGRE)
+  if(NOT OGRE_FOUND)
+    # Manual-path fallback for environments where the exported config
+    # isn't installed.
     set(OGRE_FOUND TRUE)
   endif()
 
