@@ -27,7 +27,7 @@ The codebase has been significantly modernized:
 | Language | C++17 | ✅ Modernized |
 | Build System | CMake 3.16+ | ✅ Modernized |
 | Physics | Bullet Physics 3.x | ✅ Working |
-| Graphics | Ogre3D 13.6.4 | ✅ Integrated |
+| Graphics | Ogre3D 14.x | ✅ Integrated (Linux + macOS, dynamic link) |
 | Windowing | SDL2 | ✅ Working |
 | Configuration | XML (Xerces-C++) | ⚠️ Legacy (future: JSON) |
 | Threading | std::thread | ✅ Modernized |
@@ -45,11 +45,13 @@ The codebase has been significantly modernized:
 ## Critical Knowledge
 
 ### Ogre3D Integration (Successfully Completed)
-The project uses Ogre3D 13.6.4 as a git submodule with static linking:
-- **Location**: `ext/ogre-source` (git submodule)
-- **Build**: Integrated into CMake as subdirectory with minimal configuration
-- **Linking**: Static libraries prevent external dependency issues
-- **Status**: ✅ Fully functional with OpenGL 3.3 core renderer
+The project uses Ogre3D 14.x as a git submodule:
+- **Location**: `ext/ogre-source` (git submodule, pinned at the master HEAD it was at the time of the Linux port; see commit hash there)
+- **Build**: Built locally per platform; install layout is `ext/ogre/install/`. Linux produces dylibs under `lib/`; macOS produces frameworks under `lib/macosx/Release/`.
+- **Linking**: Dynamic. `cmake/IncludePackages.cmake` uses Ogre's exported `find_package(OGRE CONFIG)` to get imported targets (`OgreMain`, `OgreOverlay`, `OgreRTShaderSystem`), with a Linux-style manual-path fallback.
+- **Plugins**: Loaded at runtime via `plugins.cfg` (generated from `src/cfg/plugins.cfg.in`). `Ogre::Root("plugins.cfg", "ogre.cfg", "")` reads it and `dlopen`s each plugin from `PluginFolder`. No static-plugin install code path remains.
+- **GL Context**: Built with `-DOGRE_GLSUPPORT_USE_EGL=OFF` on both platforms. GLX on Linux, NSOpenGLContext on macOS. EGL is broken on virtio-gpu without virgl (UTM, headless CI under xvfb).
+- **Status**: ✅ Fully functional with OpenGL 3.3+ core renderer; RTSS emits GLSL 1.50 core syntax (`in`/`out`).
 
 ### Observer Pattern (Removal In Progress)
 The legacy Observer pattern is being systematically removed:
