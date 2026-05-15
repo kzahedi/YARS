@@ -69,22 +69,21 @@ void SceneGraph::__createRobotsNodes()
 
   for (auto *i : *robots)
   {
-    SceneGraphRobotNode *robot = new SceneGraphRobotNode(i, _root, _sceneManager);
-    _robots.push_back(robot);
+    _robots.emplace_back(std::make_unique<SceneGraphRobotNode>(i, _root, _sceneManager));
   }
 }
 
 void SceneGraph::__createEnvironmentNode()
 {
   DataEnvironment *environment = Data::instance()->current()->environment();
-  _environment = new SceneGraphEnvironmentNode(environment, _root, _sceneManager);
+  _environment = std::make_unique<SceneGraphEnvironmentNode>(environment, _root, _sceneManager);
 }
 
 void SceneGraph::update()
 {
   _environment->update();
-  for (auto *m : _robots)     m->update();
-  for (auto *t : _traceLines) t->update();
+  for (auto &m : _robots)     m->update();
+  for (auto &t : _traceLines) t->update();
 }
 
 void SceneGraph::__createTraces()
@@ -96,23 +95,14 @@ void SceneGraph::__createTraces()
   int index = 0;
   for (auto l = traces->l_begin(); l != traces->l_end(); ++l)
   {
-    SceneGraphTraceLineObject *traceLine = new SceneGraphTraceLineObject(*l, _root, _sceneManager, index);
-    _traceLines.push_back(traceLine);
+    _traceLines.emplace_back(std::make_unique<SceneGraphTraceLineObject>(*l, _root, _sceneManager, index));
     index++;
   }
-
-  // for(std::vector<DataTracePoint*>::iterator p = traces->p_begin(); p != traces->p_end(); p++)
-  // {
-  // SceneGraphTracePointObject *tracePoint = new SceneGraphTracePointObject((*l));
-  // _n_scene->addChild(tracePoint->node());
-  // _svp->editMFExcludeNodes()->push_back(tracePoint->node()); // trace lines should not throw shadows
-  // _tracePoints.push_back(tracePoint);
-  // }
 }
 
 void SceneGraph::reset()
 {
-  for (auto *m : _robots)     m->reset();
-  for (auto *t : _traceLines) t->reset();
+  for (auto &m : _robots)     m->reset();
+  for (auto &t : _traceLines) t->reset();
   _environment->reset();
 }
