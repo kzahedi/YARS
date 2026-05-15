@@ -43,12 +43,13 @@ class Directories
 
     void setFullPath(string *dir);
 
-    /// Prepend a user-supplied path to the controller-library search list.
-    /// Adds both `<path>` and `<path>/lib` so the call site doesn't have to
-    /// know which form the user gave. Called after CLI parsing completes,
-    /// not from the constructor, to avoid an init cycle through
-    /// YarsConfiguration::instance().
-    void addLibraryPath(const string &path);
+    /// Register a user-supplied library path (e.g. from --lib <path>).
+    /// Stored in a static and consumed by __setupLibsDirectories() on
+    /// every new Directories instance, so callers don't need to push the
+    /// path themselves. Must be called before any Directories instance
+    /// that needs to resolve a controller is constructed; ProgramOptions
+    /// is the canonical caller.
+    static void setUserLibraryPath(const string &path);
 
     // **************************************************************************
     // Debugging
@@ -96,6 +97,10 @@ class Directories
     std::vector<string> _xsdPathCandidates;
     std::vector<string> _libPathCandidates;
     std::vector<string> _plyPathCandidates;
+
+    /// Set once from ProgramOptions when --lib is parsed; read by every
+    /// new Directories instance via __setupLibsDirectories().
+    static string _userLibraryPath;
     std::vector<string> _configFilePathCandidate;
     string         _captureFramesDirectory;
     bool           _xsdFound;

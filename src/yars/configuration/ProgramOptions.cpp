@@ -2,6 +2,7 @@
 
 #include <yars/view/console/ConsoleView.h>
 #include <yars/util/YarsErrorHandler.h>
+#include <yars/util/Directories.h>
 
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
@@ -737,6 +738,10 @@ void ProgramOptions::__textures()
 void ProgramOptions::__lib()
 {
   _cc->setLibraries(_configuration->lib);
+  // Also register with the static Directories registry so every new
+  // Directories instance — including those constructed via XML parsing —
+  // searches the user-supplied path before the hardcoded defaults.
+  Directories::setUserLibraryPath(_configuration->lib);
 }
 
 void ProgramOptions::__xml()

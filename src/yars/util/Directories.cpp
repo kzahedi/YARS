@@ -402,25 +402,32 @@ void Directories::toString(string prefix, string *returnString)
  * \li . (current path)
  * \li ~/.yars/lib
  */
+// Static storage for the --lib <path> CLI value. Populated by
+// ProgramOptions::__lib() before any controller-resolution happens.
+string Directories::_userLibraryPath;
+
+void Directories::setUserLibraryPath(const string &path)
+{
+  _userLibraryPath = path;
+}
+
 void Directories::__setupLibsDirectories()
 {
   string home(getenv("HOME"));
+
+  // Highest priority: user-specified --lib <path>. Accept both `<path>`
+  // (a lib dir itself) and `<path>/lib` (parent dir with a lib subdir,
+  // matching the help text "Path to <path>/lib").
+  if (!_userLibraryPath.empty())
+  {
+    _libPathCandidates.push_back(_userLibraryPath + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
+    _libPathCandidates.push_back(_userLibraryPath);
+  }
+
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR);
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
   _libPathCandidates.push_back(home + YARS_DIR_DELIMITER + YARS_DIR_LOCAL_YARS_DIR + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
   _libPathCandidates.push_back("/usr/local/lib");
-}
-
-void Directories::addLibraryPath(const string &path)
-{
-  if (path.empty())
-    return;
-  // Highest priority: prepend so user-specified paths beat the defaults.
-  // Accept both `<path>` (a lib dir itself) and `<path>/lib` (parent dir
-  // with a lib subdir, matching the help text "Path to <path>/lib").
-  _libPathCandidates.insert(_libPathCandidates.begin(), path);
-  _libPathCandidates.insert(_libPathCandidates.begin(),
-                            path + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
 }
 
 void Directories::__setupPlyDirectories()
