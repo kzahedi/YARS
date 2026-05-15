@@ -109,7 +109,7 @@ void BulletPhysics::__initWorld()
       robotCollideWith = 0xffffff;
     for (auto o = m->o_begin(); o != m->o_end(); ++o)
     {
-      if (*o != NULL)
+      if (*o != nullptr)
       {
         if ((*o)->rigidBody() != NULL)
         {

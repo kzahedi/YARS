@@ -29,7 +29,7 @@ Object* Sensor::__findObject(string name)
   {
     if ((*i)->data()->name() == name)
     {
-      return *i;
+      return i->get();
     }
     for (auto *o : *(*i))
     {
@@ -39,19 +39,19 @@ Object* Sensor::__findObject(string name)
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 Actuator* Sensor::__findAcutaor(string name)
 {
-  for(std::vector<Actuator*>::iterator i = _robot->a_begin(); i != _robot->a_end(); i++)
+  for (auto i = _robot->a_begin(); i != _robot->a_end(); ++i)
   {
-    if((*i)->data()->name() == name)
+    if ((*i)->data()->name() == name)
     {
-      return *i;
+      return i->get();
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void Sensor::__findTarget()

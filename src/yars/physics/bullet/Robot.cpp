@@ -9,7 +9,9 @@
 Robot::Robot(DataRobot *robot)
 {
   _data = robot;
-  _controller = NULL;
+  _controllerLib = nullptr;
+  _create_controller = nullptr;
+  _controllerFrequency = 1;
   _reset = false;
   _quit = false;
   _seed = -1;
@@ -25,16 +27,15 @@ Robot::Robot(DataRobot *robot)
 
 Robot::~Robot()
 {
-  for (auto *i : _actuators) delete i;
-  for (auto *i : _sensors)   delete i;
-  _actuators.clear();
-  _sensors.clear();
-  if (_controller != NULL)
+  // unique_ptr handles _objects, _actuators, _sensors automatically.
+  // Controller needs an explicit close() before destruction, then the
+  // dynamic library can be unloaded once the controller is destroyed.
+  if (_controller)
   {
     _controller->close();
-    delete _controller;
+    _controller.reset();
   }
-  if (_controllerLib != NULL)
+  if (_controllerLib != nullptr)
   {
     dlclose(_controllerLib);
   }
@@ -44,7 +45,7 @@ void Robot::__createBody()
 {
   for (auto i = _data->o_begin(); i != _data->o_end(); ++i)
   {
-    _objects.push_back(ObjectFactory::create(*i));
+    _objects.emplace_back(ObjectFactory::create(*i));
   }
 }
 
@@ -53,8 +54,8 @@ void Robot::__createActuators()
   for (auto i = _data->a_begin(); i != _data->a_end(); ++i)
   {
     Actuator *a = ActuatorFactory::create(*i, this);
-    _actuators.push_back(a);
     cout << "added " << a->data()->name() << " is active: " << a->data()->isActive(0) << endl;
+    _actuators.emplace_back(a);
   }
 }
 
@@ -63,33 +64,33 @@ void Robot::__createSensors()
   for (auto i = _data->s_begin(); i != _data->s_end(); ++i)
   {
     Sensor *s = SensorFactory::create(*i, this);
-    _sensors.push_back(s);
+    _sensors.emplace_back(s);
   }
 }
 
 void Robot::prePhysicsUpdate()
 {
   _data->updateActuatorValues();
-  for (auto *a : _actuators) a->prePhysicsUpdate();
-  for (auto *s : _sensors)   s->prePhysicsUpdate();
+  for (auto &a : _actuators) a->prePhysicsUpdate();
+  for (auto &s : _sensors)   s->prePhysicsUpdate();
 }
 
 void Robot::postPhysicsUpdate()
 {
-  for (auto *o : _objects) o->postPhysicsUpdate();
+  for (auto &o : _objects) o->postPhysicsUpdate();
 
-  for (auto *o : _objects)
+  for (auto &o : _objects)
     for (auto *oo : *o)
       oo->postPhysicsUpdate();
 
-  for (auto *a : _actuators) a->postPhysicsUpdate();
-  for (auto *s : _sensors)   s->postPhysicsUpdate();
+  for (auto &a : _actuators) a->postPhysicsUpdate();
+  for (auto &s : _sensors)   s->postPhysicsUpdate();
   _data->updateSensorValues();
 }
 
 void Robot::controllerUpdate()
 {
-  if (_controller != NULL)
+  if (_controller)
   {
     if (__YARS_GET_STEP % _controllerFrequency == 0)
     {
@@ -130,39 +131,39 @@ void Robot::__createController()
     return;
   }
 
-  _controller = _create_controller();
+  _controller.reset(_create_controller());
 
   __setupController();
 
   _controller->init();
 }
 
-std::vector<Object *>::iterator Robot::o_begin()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_begin()
 {
   return _objects.begin();
 }
 
-std::vector<Object *>::iterator Robot::o_end()
+std::vector<std::unique_ptr<Object>>::iterator Robot::o_end()
 {
   return _objects.end();
 }
 
-std::vector<Actuator *>::iterator Robot::a_begin()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_begin()
 {
   return _actuators.begin();
 }
 
-std::vector<Actuator *>::iterator Robot::a_end()
+std::vector<std::unique_ptr<Actuator>>::iterator Robot::a_end()
 {
   return _actuators.end();
 }
 
-std::vector<Sensor *>::iterator Robot::s_begin()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_begin()
 {
   return _sensors.begin();
 }
 
-std::vector<Sensor *>::iterator Robot::s_end()
+std::vector<std::unique_ptr<Sensor>>::iterator Robot::s_end()
 {
   return _sensors.end();
 }
@@ -184,12 +185,12 @@ int Robot::seed()
 
 void Robot::reset()
 {
-  for (auto *o : _objects)   o->reset();
-  for (auto *a : _actuators) a->reset();
-  for (auto *s : _sensors)   s->reset();
+  for (auto &o : _objects)   o->reset();
+  for (auto &a : _actuators) a->reset();
+  for (auto &s : _sensors)   s->reset();
   _seed = -1;
 
-  if (_controller != NULL)
+  if (_controller)
   {
     _controller->reset();
     __setupController();

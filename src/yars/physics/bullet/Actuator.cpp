@@ -29,11 +29,11 @@ Actuator::Actuator(string name, string source, string destination, Robot *robot)
 
 Object *Actuator::__find(string name)
 {
-  for (std::vector<Object *>::iterator o = _robot->o_begin(); o != _robot->o_end(); o++)
+  for (auto o = _robot->o_begin(); o != _robot->o_end(); ++o)
   {
     if ((*o)->type() == DATA_OBJECT_COMPOSITE)
     {
-      for (std::vector<Object *>::iterator co = (*o)->begin(); co != (*o)->end(); co++)
+      for (auto co = (*o)->begin(); co != (*o)->end(); ++co)
       {
         if ((*co)->data()->name() == name)
           return (*co);
@@ -42,7 +42,7 @@ Object *Actuator::__find(string name)
     else
     {
       if ((*o)->data()->name() == name)
-        return (*o);
+        return o->get();
     }
   }
   if (name != "")

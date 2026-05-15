@@ -11,6 +11,7 @@ class Sensor;
 #include <yars/rc/RobotController.hpp>
 
 #include <vector>
+#include <memory>
 #include <dlfcn.h>
 
 using namespace std;
@@ -30,12 +31,12 @@ class Robot
     bool isQuit();
     int  seed();
 
-    std::vector<Object*>::iterator   o_begin();
-    std::vector<Object*>::iterator   o_end();
-    std::vector<Actuator*>::iterator a_begin();
-    std::vector<Actuator*>::iterator a_end();
-    std::vector<Sensor*>::iterator   s_begin();
-    std::vector<Sensor*>::iterator   s_end();
+    std::vector<std::unique_ptr<Object>>::iterator   o_begin();
+    std::vector<std::unique_ptr<Object>>::iterator   o_end();
+    std::vector<std::unique_ptr<Actuator>>::iterator a_begin();
+    std::vector<std::unique_ptr<Actuator>>::iterator a_end();
+    std::vector<std::unique_ptr<Sensor>>::iterator   s_begin();
+    std::vector<std::unique_ptr<Sensor>>::iterator   s_end();
 
     unsigned int collisionMask();
     unsigned int collideWith();
@@ -55,10 +56,10 @@ class Robot
     bool                   _quit;
 
     DataRobot*             _data;
-    std::vector<Object*>   _objects;
-    std::vector<Actuator*> _actuators;
-    std::vector<Sensor*>   _sensors;
-    RobotController*       _controller;
+    std::vector<std::unique_ptr<Object>>   _objects;
+    std::vector<std::unique_ptr<Actuator>> _actuators;
+    std::vector<std::unique_ptr<Sensor>>   _sensors;
+    std::unique_ptr<RobotController>       _controller;
     void*                  _controllerLib;
     create_c*              _create_controller;
     std::vector<string>    _dummyContainer;
