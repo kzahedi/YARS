@@ -5,7 +5,6 @@
 #include <yars/configuration/data/DataSensor.h>
 #include <yars/configuration/data/DataSensors.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <vector>
 #include <string>

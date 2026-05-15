@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLoggingController.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
 
 #include <sstream>
@@ -68,8 +67,8 @@ DataLoggingController* DataLoggingController::copy()
 {
   DataLoggingController *copy = new DataLoggingController(NULL);
   copy->_target = _target;
-  for(std::vector<string>::iterator v = begin(); v != end(); v++) copy->push_back(*v);
-  FOREACH(int, v, _order) copy->_order.push_back(*v);
+  for (const auto &v : *this)   copy->push_back(v);
+  for (int v : _order)          copy->_order.push_back(v);
   copy->_precision = _precision;
   return copy;
 }

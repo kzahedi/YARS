@@ -1,7 +1,6 @@
 #include "GenericLDRSensor.h"
 #include "CollisionCallback.h"
 
-#include <yars/util/stl_macros.h>
 #include <yars/physics/bullet/World.h>
 
 #include <math.h>

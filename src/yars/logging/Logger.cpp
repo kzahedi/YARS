@@ -1,6 +1,5 @@
 #include <yars/logging/Logger.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <iostream>
 

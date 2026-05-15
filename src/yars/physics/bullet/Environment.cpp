@@ -14,14 +14,14 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-  for(std::vector<Object*>::iterator i = begin(); i != end(); i++) delete *i;
-  if(_groundShape != NULL) delete _groundShape;
+  for (auto *i : *this) delete i;
+  if (_groundShape != NULL) delete _groundShape;
   clear();
 }
 
 void Environment::__create()
 {
-  for(DataObjects::iterator i = _data->o_begin(); i != _data->o_end(); i++)
+  for (auto i = _data->o_begin(); i != _data->o_end(); ++i)
   {
     push_back(ObjectFactory::create(*i));
   }
@@ -29,17 +29,16 @@ void Environment::__create()
 
 void Environment::reset()
 {
-  for(std::vector<Object*>::iterator o = begin(); o != end(); o++) (*o)->reset();
+  for (auto *o : *this) o->reset();
 }
 
 void Environment::prePhysicsUpdate()
 {
-  //FOREACH(Object*, o, (*this)) (*o)->prePhysicsUpdate();
 }
 
 void Environment::postPhysicsUpdate()
 {
-  FOREACH(Object*, o, (*this)) (*o)->postPhysicsUpdate();
+  for (auto *o : *this) o->postPhysicsUpdate();
 }
 
 

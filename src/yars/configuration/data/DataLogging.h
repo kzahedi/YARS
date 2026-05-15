@@ -20,7 +20,6 @@
 #include <yars/configuration/data/DataActuators.h>
 #include <yars/configuration/data/DataControllers.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <vector>
 

@@ -91,8 +91,8 @@ void VulkanSceneGraph::createRobotNodes() {
 
     std::cout << "VulkanSceneGraph: Creating robot nodes..." << std::endl;
 
-    FOREACHP(DataRobot*, robot, robots) {
-        VulkanRobotNode* robotNode = new VulkanRobotNode(*robot, _context);
+    for (auto *robot : *robots) {
+        VulkanRobotNode* robotNode = new VulkanRobotNode(robot, _context);
         _robots.push_back(robotNode);
     }
 

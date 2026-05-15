@@ -1,7 +1,6 @@
 #include <yars/logging/GnuplotLogger.h>
 
 #include <yars/util/Timer.h>
-#include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/FileSystemOperations.h>
 

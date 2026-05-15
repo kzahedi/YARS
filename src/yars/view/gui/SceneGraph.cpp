@@ -67,9 +67,9 @@ void SceneGraph::__createRobotsNodes()
 {
   DataRobots *robots = Data::instance()->current()->robots();
 
-  FOREACHP(DataRobot *, i, robots)
+  for (auto *i : *robots)
   {
-    SceneGraphRobotNode *robot = new SceneGraphRobotNode(*i, _root, _sceneManager);
+    SceneGraphRobotNode *robot = new SceneGraphRobotNode(i, _root, _sceneManager);
     _robots.push_back(robot);
   }
 }
@@ -82,13 +82,9 @@ void SceneGraph::__createEnvironmentNode()
 
 void SceneGraph::update()
 {
-  // cout << "SceneGraph::update 0" << endl;
   _environment->update();
-  // cout << "SceneGraph::update 1" << endl;
-  FOREACH(SceneGraphRobotNode *, m, _robots)(*m)->update();
-  // cout << "SceneGraph::update 2" << endl;
-  FOREACH(SceneGraphTraceLineObject *, t, _traceLines)(*t)->update();
-  // cout << "SceneGraph::update 3" << endl;
+  for (auto *m : _robots)     m->update();
+  for (auto *t : _traceLines) t->update();
 }
 
 void SceneGraph::__createTraces()
@@ -98,9 +94,9 @@ void SceneGraph::__createTraces()
     return;
 
   int index = 0;
-  for (std::vector<DataTraceLine *>::iterator l = traces->l_begin(); l != traces->l_end(); l++)
+  for (auto l = traces->l_begin(); l != traces->l_end(); ++l)
   {
-    SceneGraphTraceLineObject *traceLine = new SceneGraphTraceLineObject((*l), _root, _sceneManager, index);
+    SceneGraphTraceLineObject *traceLine = new SceneGraphTraceLineObject(*l, _root, _sceneManager, index);
     _traceLines.push_back(traceLine);
     index++;
   }
@@ -116,7 +112,7 @@ void SceneGraph::__createTraces()
 
 void SceneGraph::reset()
 {
-  FOREACH(SceneGraphRobotNode *, m, _robots)(*m)->reset();
-  FOREACH(SceneGraphTraceLineObject *, t, _traceLines)(*t)->reset();
+  for (auto *m : _robots)     m->reset();
+  for (auto *t : _traceLines) t->reset();
   _environment->reset();
 }

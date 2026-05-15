@@ -5,7 +5,6 @@
 #include <yars/configuration/data/DataActuator.h>
 #include <yars/configuration/data/DataActuators.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <vector>
 #include <string>

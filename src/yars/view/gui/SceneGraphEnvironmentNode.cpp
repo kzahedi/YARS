@@ -65,7 +65,7 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
   }
 
   int index = 0;
-  for (vector<DataMeshVisualisation *>::iterator m = _data->m_begin(); m != _data->m_end(); m++)
+  for (auto m = _data->m_begin(); m != _data->m_end(); ++m)
   {
     Ogre::SceneNode *meshNode = _node->createChildSceneNode();
     _meshNodes.push_back(meshNode);
@@ -87,33 +87,30 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
     index++;
   }
 
-  for (DataObjects::iterator g = _data->g_begin(); g != _data->g_end(); g++)
+  for (auto g = _data->g_begin(); g != _data->g_end(); ++g)
   {
     SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
-    if (objectNode != NULL)
+    if (objectNode != nullptr)
       _objects.push_back(objectNode);
   }
 
-  for (DataPointLightSources::iterator l = _data->l_begin(); l != _data->l_end(); l++)
+  for (auto l = _data->l_begin(); l != _data->l_end(); ++l)
   {
     SceneGraphLightSourceNode *lightNode = new SceneGraphLightSourceNode(*l, root, sm);
-    if (lightNode != NULL)
+    if (lightNode != nullptr)
       _lightSources.push_back(lightNode);
   }
 }
 
 SceneGraphEnvironmentNode::~SceneGraphEnvironmentNode()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  delete *o;
+  for (auto *o : _objects) delete o;
   _objects.clear();
 }
 
 void SceneGraphEnvironmentNode::update()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != NULL)
-    (*o)->update();
+  for (auto *o : _objects) if (o) o->update();
   P3D p;
   __YARS_GET_CAMERA_POSITION(&p);
   // _node->setPosition(Ogre::Vector3(p.x, p.y, 0.0));

@@ -1,7 +1,6 @@
 #include <yars/configuration/xsd/graphviz/graph/XsdSequenceGraphNode.h>
 #include <yars/configuration/data/Data.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <iostream>
 
@@ -25,7 +24,7 @@ string XsdSequenceGraphNode::customLabel(string label)
   stringstream s_label;
   stringstream s_optional;
   stringstream s_type;
-  FOREACHF(XsdAttribute*, a, _spec, ->a_begin(), ->a_end())
+  for (auto a = _spec->a_begin(); a != _spec->a_end(); ++a)
   {
     s_label << "<td bgcolor=\"" << ATTRIBUTE_BGCOLOR << "\">"<< (*a)->name() << "</td>";
     if((*a)->required())
@@ -42,7 +41,7 @@ string XsdSequenceGraphNode::customLabel(string label)
     }
     else
     {
-      XsdGraphNode *node      = __findNode((*a)->type());
+      XsdGraphNode *node = __findNode((*a)->type());
 
       if(node != NULL)
       {

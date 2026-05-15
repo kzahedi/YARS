@@ -91,25 +91,25 @@ void BulletPhysics::__initWorld()
   int worldMask = 1;
   int worldCollideWith = 0xffffff;
 
-  FOREACH(Object *, o, (*_environment))
+  for (auto *o : *_environment)
   {
-    if ((*o)->rigidBody() != NULL)
+    if (o->rigidBody() != NULL)
     {
-      _world->addRigidBody((*o)->rigidBody(), worldMask, worldCollideWith);
+      _world->addRigidBody(o->rigidBody(), worldMask, worldCollideWith);
     }
   }
 
   int index = 2;
-  FOREACH(Robot *, m, (*_robots))
+  for (auto *m : *_robots)
   {
     index++;
     int robotMask = (1 << index);
     int robotCollideWith = ~robotMask;
-    if ((*m)->selfCollide())
+    if (m->selfCollide())
       robotCollideWith = 0xffffff;
-    FOREACHF(Object *, o, (*m), ->o_begin(), ->o_end())
+    for (auto o = m->o_begin(); o != m->o_end(); ++o)
     {
-      if ((*o) != NULL)
+      if (*o != NULL)
       {
         if ((*o)->rigidBody() != NULL)
         {
@@ -124,7 +124,7 @@ void BulletPhysics::__initWorld()
       }
     }
 
-    FOREACHF(Actuator *, a, (*m), ->a_begin(), ->a_end())
+    for (auto a = m->a_begin(); a != m->a_end(); ++a)
     {
       if ((*a)->constraint() != NULL)
       {
@@ -133,8 +133,7 @@ void BulletPhysics::__initWorld()
       }
       if ((*a)->c_size() > 0)
       {
-        for (vector<btTypedConstraint *>::iterator i = (*a)->c_begin();
-             i != (*a)->c_end(); i++)
+        for (auto i = (*a)->c_begin(); i != (*a)->c_end(); ++i)
         {
           _world->addConstraint(*i, false);
         }

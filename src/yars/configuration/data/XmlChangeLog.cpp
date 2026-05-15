@@ -1,6 +1,5 @@
 #include <yars/configuration/data/XmlChangeLog.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <sstream>
 
@@ -20,7 +19,7 @@ void XmlChangeLog::close()
 {
   if (_me != NULL)
   {
-    FOREACHP(XmlChangeLogEntry*, x, _me) delete *x;
+    for (auto *x : *_me) delete x;
     delete _me;
   }
 }
@@ -67,26 +66,26 @@ string XmlChangeLog::changes(Version version)
   if(_me == NULL) _me = new XmlChangeLog();
   stringstream oss;
   int size = 0;
-  FOREACHP(XmlChangeLogEntry*, x, _me)
+  for (auto *x : *_me)
   {
     oss.str("");
     oss.precision(1);
-    oss.setf(ios::fixed,ios::floatfield);
-    oss << (*x)->version();
-    if((int)oss.str().length() > size) size = oss.str().length();
+    oss.setf(ios::fixed, ios::floatfield);
+    oss << x->version();
+    if ((int)oss.str().length() > size) size = oss.str().length();
   }
   oss.str("");
-  FOREACHP(XmlChangeLogEntry*, x, _me)
+  for (auto *x : *_me)
   {
-    if((*x)->version() > version)
+    if (x->version() > version)
     {
       oss.width(size);
-      oss                      << (*x)->version();
+      oss << x->version();
       oss.width(0);
       oss << " -- ";
-      if ((*x)->crucial()) oss << "crucial ";
-      else                 oss << "optional";
-      oss                      << " -- " << (*x)->description() << endl;
+      if (x->crucial()) oss << "crucial ";
+      else              oss << "optional";
+      oss << " -- " << x->description() << endl;
     }
   }
   return oss.str();

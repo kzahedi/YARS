@@ -10,13 +10,13 @@
 SceneGraphRobotNode::SceneGraphRobotNode(
     DataRobot *robot, Ogre::SceneNode *root, Ogre::SceneManager *sm)
 {
-  for (DataObjects::iterator g = robot->g_begin(); g != robot->g_end(); g++)
+  for (auto g = robot->g_begin(); g != robot->g_end(); ++g)
   {
     SceneGraphObjectNode *objectNode = SceneGraphObjectFactory::create(*g, root, sm);
-    if (objectNode != NULL)
+    if (objectNode != nullptr)
     {
       _objects.push_back(objectNode);
-      for (std::vector<DataSensor *>::iterator s = (*g)->s_begin(); s != (*g)->s_end(); s++)
+      for (auto s = (*g)->s_begin(); s != (*g)->s_end(); ++s)
       {
         switch ((*s)->type())
         {
@@ -32,7 +32,7 @@ SceneGraphRobotNode::SceneGraphRobotNode(
   }
 
   // visualise muscles
-  for (std::vector<DataActuator *>::iterator a = robot->a_begin(); a != robot->a_end(); a++)
+  for (auto a = robot->a_begin(); a != robot->a_end(); ++a)
   {
     if ((*a)->type() == DATA_ACTUATOR_MUSCLE)
     {
@@ -47,7 +47,7 @@ SceneGraphRobotNode::SceneGraphRobotNode(
 
   if (Data::instance()->current()->screens()->visualiseJoints())
   {
-    for (std::vector<DataActuator *>::iterator a = robot->a_begin(); a != robot->a_end(); a++)
+    for (auto a = robot->a_begin(); a != robot->a_end(); ++a)
     {
       if ((*a)->type() != DATA_ACTUATOR_FIXED)
       {
@@ -79,26 +79,14 @@ SceneGraphRobotNode::~SceneGraphRobotNode()
 
 void SceneGraphRobotNode::update()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != NULL)
-    (*o)->update();
-  FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != NULL)
-    (*o)->update();
-  FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != NULL)
-    (*o)->update();
+  for (auto *o : _objects)   if (o) o->update();
+  for (auto *o : _sensors)   if (o) o->update();
+  for (auto *o : _actuators) if (o) o->update();
 }
 
 void SceneGraphRobotNode::reset()
 {
-  FOREACH(SceneGraphObjectNode *, o, _objects)
-  if (*o != NULL)
-    (*o)->reset();
-  FOREACH(SceneGraphObjectNode *, o, _sensors)
-  if (*o != NULL)
-    (*o)->reset();
-  FOREACH(SceneGraphObjectNode *, o, _actuators)
-  if (*o != NULL)
-    (*o)->reset();
+  for (auto *o : _objects)   if (o) o->reset();
+  for (auto *o : _sensors)   if (o) o->reset();
+  for (auto *o : _actuators) if (o) o->reset();
 }

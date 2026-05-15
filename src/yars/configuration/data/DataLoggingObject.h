@@ -4,7 +4,6 @@
 #include <yars/configuration/data/DataNode.h>
 #include <yars/configuration/data/DataObject.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <vector>
 #include <string>

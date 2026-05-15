@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLoggingObject.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <yars/util/YarsErrorHandler.h>
 

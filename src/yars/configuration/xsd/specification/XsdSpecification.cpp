@@ -1,6 +1,5 @@
 #include <yars/configuration/xsd/specification/XsdSpecification.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <sstream>
 
@@ -137,12 +136,11 @@ XsdSpecification::XsdSpecification()
 
 XsdSpecification::~XsdSpecification()
 {
-  FOREACH(XsdSequence*,          s, _sequences)    if(*s != NULL) delete (*s);
-  FOREACH(XsdEnumeration*,       e, _enumerations) if(*e != NULL) delete (*e);
-  FOREACH(XsdChoice*,            c, _choices)      if(*c != NULL) delete (*c);
-  FOREACH(XsdInterval*,          i, _intervals)    if(*i != NULL) delete (*i);
-  FOREACH(XsdRegularExpression*, r, _regExps)      if(*r != NULL) delete (*r);
-  // FOREACH(XsdNode*,              n, _nodes)        if(*n != NULL) delete (*n);
+  for (auto *s : _sequences)    if (s) delete s;
+  for (auto *e : _enumerations) if (e) delete e;
+  for (auto *c : _choices)      if (c) delete c;
+  for (auto *i : _intervals)    if (i) delete i;
+  for (auto *r : _regExps)      if (r) delete r;
 
   _sequences.clear();
   _enumerations.clear();
@@ -150,7 +148,6 @@ XsdSpecification::~XsdSpecification()
   _intervals.clear();
   _regExps.clear();
   _nodes.clear();
-
 }
 
 

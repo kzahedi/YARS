@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataLogging.h>
 
-#include <yars/util/stl_macros.h>
 #include <yars/util/YarsErrorHandler.h>
 
 #include <sstream>
@@ -168,70 +167,29 @@ void DataLogging::createXsd(XsdSpecification *spec)
 DataLogging* DataLogging::copy()
 {
   DataLogging *copy = new DataLogging(NULL);
-  FOREACH(DataLoggingObject*, lo, _objects)
-  {
-    DataLoggingObject *o = (*lo)->copy();
-    copy->_objects.push_back(o);
-  }
-  FOREACH(DataLoggingSensor*, lo, _sensors)
-  {
-    DataLoggingSensor *s = (*lo)->copy();
-    copy->_sensors.push_back(s);
-  }
-  FOREACH(DataLoggingActuator*, la, _actuators)
-  {
-    DataLoggingActuator *a = (*la)->copy();
-    copy->_actuators.push_back(a);
-  }
-  FOREACH(DataLoggingController*, lc, _controllers)
-  {
-    DataLoggingController *c = (*lc)->copy();
-    copy->_controllers.push_back(c);
-  }
-  FOREACH(DataLoggingConsole*, lc, _consolelogger)
-  {
-    DataLoggingConsole *c = (*lc)->copy();
-    copy->_consolelogger.push_back(c);
-  }
-  FOREACH(DataLoggingFile*, lf, _filelogger)
-  {
-    DataLoggingFile *f = (*lf)->copy();
-    copy->_filelogger.push_back(f);
-  }
-  FOREACH(DataLoggingCSV*, lc, _csvlogger)
-  {
-    DataLoggingCSV *c = (*lc)->copy();
-    copy->_csvlogger.push_back(c);
-  }
-  FOREACH(DataLoggingBlender*, lf, _blenderlogger)
-  {
-    DataLoggingBlender *f = (*lf)->copy();
-    copy->_blenderlogger.push_back(f);
-  }
-  FOREACH(DataLoggingGnuplot*, lg, _gnuplotlogger)
-  {
-    DataLoggingGnuplot *g = (*lg)->copy();
-    copy->_gnuplotlogger.push_back(g);
-  }
-  FOREACH(DataLoggingSelforg*, lg, _selforglogger)
-  {
-    DataLoggingSelforg *g = (*lg)->copy();
-    copy->_selforglogger.push_back(g);
-  }
-
+  for (auto *lo : _objects)        copy->_objects.push_back(lo->copy());
+  for (auto *lo : _sensors)        copy->_sensors.push_back(lo->copy());
+  for (auto *la : _actuators)      copy->_actuators.push_back(la->copy());
+  for (auto *lc : _controllers)    copy->_controllers.push_back(lc->copy());
+  for (auto *lc : _consolelogger)  copy->_consolelogger.push_back(lc->copy());
+  for (auto *lf : _filelogger)     copy->_filelogger.push_back(lf->copy());
+  for (auto *lc : _csvlogger)      copy->_csvlogger.push_back(lc->copy());
+  for (auto *lf : _blenderlogger)  copy->_blenderlogger.push_back(lf->copy());
+  for (auto *lg : _gnuplotlogger)  copy->_gnuplotlogger.push_back(lg->copy());
+  for (auto *lg : _selforglogger)  copy->_selforglogger.push_back(lg->copy());
   return copy;
 }
 
 
 void DataLogging::checkGeoms(DataObjects *geoms)
 {
-  for(DataObjects::iterator o = geoms->begin(); o != geoms->end(); o++)
+  for (auto *o : *geoms)
   {
-    FOREACH(DataLoggingObject*, lo, _objects)
+    for (auto *lo : _objects)
     {
-      if((*o)->name() == (*lo)->target())
+      if (o->name() == lo->target())
       {
-        (*lo)->set(*o);
+        lo->set(o);
         break;
       }
     }
@@ -240,13 +198,13 @@ void DataLogging::checkGeoms(DataObjects *geoms)
 
 void DataLogging::checkSensors(DataSensors *sensors)
 {
-  for(DataSensors::iterator s = sensors->begin(); s != sensors->end(); s++)
+  for (auto *s : *sensors)
   {
-    FOREACH(DataLoggingSensor*, ls, _sensors)
+    for (auto *ls : _sensors)
     {
-      if((*s)->name() == (*ls)->target())
+      if (s->name() == ls->target())
       {
-        (*ls)->set(*s);
+        ls->set(s);
         break;
       }
     }
@@ -255,13 +213,13 @@ void DataLogging::checkSensors(DataSensors *sensors)
 
 void DataLogging::checkActuators(DataActuators *actuators)
 {
-  for(DataActuators::iterator a = actuators->begin(); a != actuators->end(); a++)
+  for (auto *a : *actuators)
   {
-    FOREACH(DataLoggingActuator*, la, _actuators)
+    for (auto *la : _actuators)
     {
-      if((*a)->name() == (*la)->target())
+      if (a->name() == la->target())
       {
-        (*la)->set(*a);
+        la->set(a);
         break;
       }
     }
@@ -270,54 +228,53 @@ void DataLogging::checkActuators(DataActuators *actuators)
 
 void DataLogging::checkControllers(DataControllers *controllers)
 {
-  for(DataControllers::iterator c = controllers->begin(); c != controllers->end(); c++)
+  for (auto *c : *controllers)
   {
-    FOREACH(DataLoggingController*, lc, _controllers)
+    for (auto *lc : _controllers)
     {
-      if((*c)->name() == (*lc)->target())
+      if (c->name() == lc->target())
       {
-        (*lc)->set(*c);
+        lc->set(c);
         break;
       }
     }
   }
-
 }
 
 void DataLogging::finish()
 {
   bool missing = false;
   stringstream oss;
-  FOREACH(DataLoggingObject*, o, _objects)
+  for (auto *o : _objects)
   {
-    missing |= ( (*o)->object() == NULL );
-    if((*o)->object() == NULL)
+    missing |= (o->object() == NULL);
+    if (o->object() == NULL)
     {
-      oss << "Object logger \"" << (*o)->target() << "\" refers to non-existing object." << endl;
+      oss << "Object logger \"" << o->target() << "\" refers to non-existing object." << endl;
     }
   }
-  FOREACH(DataLoggingSensor*, s, _sensors)
+  for (auto *s : _sensors)
   {
-    missing |= ( (*s)->sensor() == NULL );
-    if((*s)->sensor() == NULL)
+    missing |= (s->sensor() == NULL);
+    if (s->sensor() == NULL)
     {
-      oss << "Sensor logger \"" << (*s)->target() << "\" refers to non-existing sensor." << endl;
+      oss << "Sensor logger \"" << s->target() << "\" refers to non-existing sensor." << endl;
     }
   }
-  FOREACH(DataLoggingActuator*, s, _actuators)
+  for (auto *s : _actuators)
   {
-    missing |= ( (*s)->actuator() == NULL );
-    if((*s)->actuator() == NULL)
+    missing |= (s->actuator() == NULL);
+    if (s->actuator() == NULL)
     {
-      oss << "Actuator logger \"" << (*s)->target() << "\" refers to non-existing actuator." << endl;
+      oss << "Actuator logger \"" << s->target() << "\" refers to non-existing actuator." << endl;
     }
   }
-  FOREACH(DataLoggingController*, s, _controllers)
+  for (auto *s : _controllers)
   {
-    missing |= ( (*s)->controller() == NULL );
-    if((*s)->controller() == NULL)
+    missing |= (s->controller() == NULL);
+    if (s->controller() == NULL)
     {
-      oss << "Controller logger \"" << (*s)->target() << "\" refers to non-existing controller." << endl;
+      oss << "Controller logger \"" << s->target() << "\" refers to non-existing controller." << endl;
     }
   }
 

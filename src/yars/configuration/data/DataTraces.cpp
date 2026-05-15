@@ -1,6 +1,5 @@
 #include <yars/configuration/data/DataTraces.h>
 
-#include <yars/util/stl_macros.h>
 
 # define YARS_STRING_TRACE (char*)"trace"
 # define YARS_STRING_POINT (char*)"point"
@@ -96,6 +95,6 @@ DataTraces* DataTraces::copy()
 
 void DataTraces::resetTo(DataTraces* other)
 {
-  FOREACH(DataTraceLine*,  l, _lines)  (*l)->clear();
-  FOREACH(DataTracePoint*, p, _points) (*p)->clear();
+  for (auto *l : _lines)  l->clear();
+  for (auto *p : _points) p->clear();
 }

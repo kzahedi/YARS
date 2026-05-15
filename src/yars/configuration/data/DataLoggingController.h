@@ -5,7 +5,6 @@
 #include <yars/configuration/data/DataController.h>
 #include <yars/configuration/data/DataControllers.h>
 
-#include <yars/util/stl_macros.h>
 
 #include <vector>
 #include <string>
