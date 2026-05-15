@@ -12,6 +12,12 @@ ogre.log
 braitenberg-*.csv
 docs/videos/
 .claude/worktrees/
+
+# Ogre 14 install — built per-platform from ext/ogre-source/ on every
+# developer machine and CI runner. Layout differs between Linux (.so files
+# under lib/) and macOS (frameworks under lib/macosx/Release/), so a single
+# tracked copy would poison cross-platform builds via find_package(OGRE).
+ext/ogre/install/
 .vscode
 *.vim
 *.vim
