@@ -124,11 +124,11 @@ void DataController::addLoggable(string name, std::vector<double> *vector)
 
 bool DataController::getLoggable(string name, double &real)
 {
-  for(map<string, double*>::iterator i = _reals.begin(); i != _reals.end(); i++)
+  for (const auto &[key, ptr] : _reals)
   {
-    if(i->first == name)
+    if (key == name)
     {
-      real = *(i->second);
+      real = *ptr;
       return true;
     }
   }
@@ -137,11 +137,11 @@ bool DataController::getLoggable(string name, double &real)
 
 bool DataController::getLoggable(string name, int &integer)
 {
-  for(map<string, int*>::iterator i = _ints.begin(); i != _ints.end(); i++)
+  for (const auto &[key, ptr] : _ints)
   {
-    if(i->first == name)
+    if (key == name)
     {
-      integer = *(i->second);
+      integer = *ptr;
       return true;
     }
   }
@@ -150,11 +150,11 @@ bool DataController::getLoggable(string name, int &integer)
 
 bool DataController::getLoggable(string name, ::Matrix &matrix)
 {
-  for(map<string, Matrix*>::iterator m = _matrices.begin(); m != _matrices.end(); m++)
+  for (const auto &[key, ptr] : _matrices)
   {
-    if(m->first == name)
+    if (key == name)
     {
-      matrix = *(m->second);
+      matrix = *ptr;
       return true;
     }
   }
@@ -163,11 +163,11 @@ bool DataController::getLoggable(string name, ::Matrix &matrix)
 
 bool DataController::getLoggable(string name, std::vector<double> &vec)
 {
-  for(map<string, std::vector<double>* >::iterator i = _vectors.begin(); i != _vectors.end(); i++)
+  for (const auto &[key, ptr] : _vectors)
   {
-    if(i->first == name)
+    if (key == name)
     {
-      vec = *(i->second);
+      vec = *ptr;
       return true;
     }
   }
@@ -211,11 +211,11 @@ void DataController::addLine(string s)
 
 DataActuator* DataController::actuator(string name)
 {
-  for(DataActuators::iterator a = _actuators.begin(); a != _actuators.end(); a++)
+  for (auto *a : _actuators)
   {
-    if((*a)->name() == name) return (*a);
+    if (a->name() == name) return a;
   }
-  return NULL;
+  return nullptr;
 }
 
 void DataController::addActuator(DataActuator *actuator)
