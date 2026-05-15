@@ -14,22 +14,21 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-  for (auto *i : *this) delete i;
+  // unique_ptr handles cleanup of Object* entries automatically.
   if (_groundShape != NULL) delete _groundShape;
-  clear();
 }
 
 void Environment::__create()
 {
   for (auto i = _data->o_begin(); i != _data->o_end(); ++i)
   {
-    push_back(ObjectFactory::create(*i));
+    push_back(std::unique_ptr<Object>(ObjectFactory::create(*i)));
   }
 }
 
 void Environment::reset()
 {
-  for (auto *o : *this) o->reset();
+  for (auto &o : *this) o->reset();
 }
 
 void Environment::prePhysicsUpdate()
@@ -38,7 +37,7 @@ void Environment::prePhysicsUpdate()
 
 void Environment::postPhysicsUpdate()
 {
-  for (auto *o : *this) o->postPhysicsUpdate();
+  for (auto &o : *this) o->postPhysicsUpdate();
 }
 
 
@@ -62,9 +61,9 @@ void Environment::__init()
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
     groundRigidBody->setCollisionFlags(groundRigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-    Object *ground = new Object(NULL);
+    auto ground = std::make_unique<Object>(nullptr);
     ground->setRigidBody(groundRigidBody);
-    push_back(ground);
+    push_back(std::move(ground));
   }
 
 

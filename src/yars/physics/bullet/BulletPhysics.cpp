@@ -91,7 +91,7 @@ void BulletPhysics::__initWorld()
   int worldMask = 1;
   int worldCollideWith = 0xffffff;
 
-  for (auto *o : *_environment)
+  for (auto &o : *_environment)
   {
     if (o->rigidBody() != NULL)
     {
