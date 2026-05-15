@@ -38,5 +38,5 @@
 
 ## 7. Documentation
 
-- [ ] 7.1 Update `CLAUDE.md` macOS section once macOS CI is green and local verification (section 5) confirms the workflow. **Deferred.**
-- [ ] 7.2 Write `docs/macOS_Build.md` parallel to `docs/Linux_Build.md`. **Deferred.**
+- [x] 7.1 Updated `CLAUDE.md` Ogre integration section: now reads Ogre 14.x dynamic linking with plugins.cfg, `OGRE_GLSUPPORT_USE_EGL=OFF`, `find_package(OGRE CONFIG)`, GLSL 1.50 RTSS target (commit de42dfa)
+- [x] 7.2 Wrote `docs/macOS_Build.md` parallel to `docs/Linux_Build.md`. Covers Homebrew deps, Ogre 14 build with the framework-install layout note, `find_package(OGRE CONFIG)` rationale, `OGRE_BUILD_PLUGIN_DOT_SCENE=OFF`, Metal renderer choice, and a "refreshing a stale Ogre install" section for upgrading from 13.6.4
