@@ -68,17 +68,28 @@ IF(YARS_USE_VISUALISATION)
   # Find ZLIB for OGRE
   find_package(ZLIB REQUIRED)
 
-  # Use local OGRE installation with modern CMake config
+  # Use local OGRE installation with modern CMake config.
   set(OGRE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/ext/ogre/install)
   set(CMAKE_PREFIX_PATH ${OGRE_ROOT}/CMake ${CMAKE_PREFIX_PATH})
-  # find_package(OGRE REQUIRED CONFIG)
 
-  # Add OGRE include directories (both parent and OGRE subdirectory)
-  include_directories(${OGRE_ROOT}/include)
-  include_directories(${OGRE_ROOT}/include/OGRE)
-
-  # Set OGRE_FOUND to true for compatibility with existing checks
-  set(OGRE_FOUND TRUE)
+  # Try Ogre's exported CMake config first; it transparently handles the
+  # platform-specific install layout (.so on Linux, .dylib/.framework on
+  # macOS) and exports imported targets like OgreMain, OgreOverlay,
+  # OgreRTShaderSystem. Falls back to manual include paths if config
+  # isn't installed (e.g. partial installs).
+  find_package(OGRE CONFIG QUIET COMPONENTS Overlay RTShaderSystem)
+  if(OGRE_FOUND)
+    # The imported targets handle includes + link directories themselves.
+    # Add the OGRE/ prefix path for source files that #include <OGRE/...>.
+    include_directories(${OGRE_ROOT}/include)
+  else()
+    # Fallback: assume the install layout matches the Linux dynamic-lib
+    # pattern and link by absolute path. Plugin loading via plugins.cfg
+    # still works because Ogre::Root reads PluginFolder from the cfg.
+    include_directories(${OGRE_ROOT}/include)
+    include_directories(${OGRE_ROOT}/include/OGRE)
+    set(OGRE_FOUND TRUE)
+  endif()
 
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)

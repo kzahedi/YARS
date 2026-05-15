@@ -40,16 +40,19 @@ if(YARS_USE_VISUALISATION)
   add_subdirectory(view)
   add_subdirectory(view/gui)
 
-  # Ogre 14 dynamic library link. Same layout on Linux (.so) and macOS
-  # (.dylib) via CMAKE_SHARED_LIBRARY_SUFFIX. ${OGRE_ROOT} is set in
-  # cmake/IncludePackages.cmake. Plugins (RenderSystem_GL3Plus,
-  # Plugin_ParticleFX, Codec_STBI) are dlopen'd at runtime via
-  # plugins.cfg, not linked at build time.
-  target_link_libraries(${YARS_TARGET}
-    ${OGRE_ROOT}/lib/libOgreMain${CMAKE_SHARED_LIBRARY_SUFFIX}
-    ${OGRE_ROOT}/lib/libOgreOverlay${CMAKE_SHARED_LIBRARY_SUFFIX}
-    ${OGRE_ROOT}/lib/libOgreRTShaderSystem${CMAKE_SHARED_LIBRARY_SUFFIX}
-    z)
+  # Ogre 14 link. Prefer the imported targets exported by Ogre's CMake
+  # config (`find_package(OGRE CONFIG)` in cmake/IncludePackages.cmake) so
+  # the framework-vs-dylib layout on macOS is handled transparently.
+  # If Ogre's config wasn't found, fall back to the Linux dynamic-lib path.
+  if(TARGET OgreMain)
+    target_link_libraries(${YARS_TARGET} OgreMain OgreOverlay OgreRTShaderSystem z)
+  else()
+    target_link_libraries(${YARS_TARGET}
+      ${OGRE_ROOT}/lib/libOgreMain${CMAKE_SHARED_LIBRARY_SUFFIX}
+      ${OGRE_ROOT}/lib/libOgreOverlay${CMAKE_SHARED_LIBRARY_SUFFIX}
+      ${OGRE_ROOT}/lib/libOgreRTShaderSystem${CMAKE_SHARED_LIBRARY_SUFFIX}
+      z)
+  endif()
 
   if(APPLE)
     # macOS-specific platform frameworks (windowing, GL, I/O kit) — SDL2
