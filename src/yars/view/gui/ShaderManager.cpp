@@ -31,31 +31,18 @@ bool ShaderManager::initializeRTSS(Ogre::SceneManager* sceneManager) {
             return false;
         }
         
-#if __APPLE__
-        // Ogre 13.x (macOS): explicit defensive registration of FFP factories.
-        // The factories are auto-registered by RTSS, so the if-check guards
-        // against double-registration. Kept for behavioural parity on macOS.
-        if (!_shaderGenerator->getSubRenderStateFactory("FFP_Transform")) {
-            _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTransformFactory());
-        }
-        if (!_shaderGenerator->getSubRenderStateFactory("FFP_Texturing")) {
-            _shaderGenerator->addSubRenderStateFactory(new Ogre::RTShader::FFPTexturingFactory());
-        }
-#endif
-        // On Ogre 14 (Linux): FFPTexturingFactory is no longer exported; RTSS
-        // auto-registers both FFP_Transform and FFP_Texturing internally.
+        // Ogre 14's RTSS auto-registers FFP_Transform and FFP_Texturing
+        // internally. Earlier code explicitly registered them via
+        // FFPTransformFactory / FFPTexturingFactory; both are now removed
+        // from the public API (FFPTexturingFactory entirely;
+        // OgreShaderFFPTransform.h is private in src/).
 
-        // Set target shader language
+        // Set target shader language + force GLSL 150 profile so RTSS emits
+        // GL3+ core syntax ('in' / 'out' qualifiers) rather than the legacy
+        // GLSL 1.20 'attribute' keyword that GL3+ core profile rejects.
         _shaderGenerator->setTargetLanguage("glsl");
-#if !defined(__APPLE__)
-        // Force GLSL 150 profile so RTSS emits GL3+ core syntax ('in' / 'out'
-        // attribute qualifiers) rather than the legacy GLSL 1.20 'attribute'
-        // keyword that GL3+ core profile rejects. macOS keeps Ogre's default
-        // detection path because the macOS framework build already targets
-        // the right profile.
         _shaderGenerator->setShaderProfiles(Ogre::GPT_VERTEX_PROGRAM, "glsl150");
         _shaderGenerator->setShaderProfiles(Ogre::GPT_FRAGMENT_PROGRAM, "glsl150");
-#endif
         
         // Configure shader cache
         configureShaderCache(_shaderCachePath);

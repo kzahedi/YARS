@@ -33,36 +33,11 @@ OgreHandler::OgreHandler()
   lm->createLog("ogre.log", true, false, false); // create silent logging
   lm->getDefaultLog()->setLogDetail(Ogre::LL_LOW); // log errors only
 
-#ifdef __APPLE__
-  // For macOS: Don't load plugins.cfg since we're using static plugins
-  _root = new Ogre::Root("", "", ""); // no plugin config file for static linking
-#else                                 // __APPLE__
-  _root = new Ogre::Root("plugins.cfg", "ogre.cfg", ""); // no log file created here (see 1 line above)
-#endif                                // __APPLE__
-
-#ifdef __APPLE__
-  try
-  {
-    _GLPlugin = new Ogre::GL3PlusPlugin();
-    _GLPlugin->install();
-
-    _particlePlugin = new Ogre::ParticleFXPlugin();
-    _particlePlugin->install();
-
-    _stbiPlugin = new Ogre::STBIPlugin();
-    _stbiPlugin->install();
-
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Failed to initialize OGRE plugins: " << e.what() << std::endl;
-    throw;
-  }
-#else  // __APPLE__
   // Plugins are loaded from build/plugins.cfg (see cmake/CreateConfigFiles.cmake
-  // and src/cfg/plugins.cfg.in). Explicit loadPlugin() here would double-load
-  // and collide on codec registration.
-#endif // __APPLE__
+  // and src/cfg/plugins.cfg.in). Ogre::Root reads the file and dlopens each
+  // listed plugin from PluginFolder=${OGRE_ROOT}/lib/OGRE. Same path on Linux
+  // (.so) and macOS (.dylib).
+  _root = new Ogre::Root("plugins.cfg", "ogre.cfg", "");
 
   if (_root->getAvailableRenderers().size() == 0)
   {

@@ -37,58 +37,35 @@ endif(YARS_USE_CAPTURE_VIDEO)
 
 if(YARS_USE_VISUALISATION)
 
-  # Add codec framework headers for image loading support
-  if(APPLE)
-    set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
-    include_directories(${OGRE_ROOT}/lib/Codec_STBIStatic.framework/Headers)
-    include_directories(${OGRE_ROOT}/lib/Codec_FreeImageStatic.framework/Headers)
-  endif(APPLE)
-
   add_subdirectory(view)
   add_subdirectory(view/gui)
 
+  # Ogre 14 dynamic library link. Same layout on Linux (.so) and macOS
+  # (.dylib) via CMAKE_SHARED_LIBRARY_SUFFIX. ${OGRE_ROOT} is set in
+  # cmake/IncludePackages.cmake. Plugins (RenderSystem_GL3Plus,
+  # Plugin_ParticleFX, Codec_STBI) are dlopen'd at runtime via
+  # plugins.cfg, not linked at build time.
+  target_link_libraries(${YARS_TARGET}
+    ${OGRE_ROOT}/lib/libOgreMain${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${OGRE_ROOT}/lib/libOgreOverlay${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${OGRE_ROOT}/lib/libOgreRTShaderSystem${CMAKE_SHARED_LIBRARY_SUFFIX}
+    z)
+
   if(APPLE)
-    # Use explicit OGRE library paths for static linking
-    set(OGRE_ROOT ${CMAKE_SOURCE_DIR}/ext/ogre/install)
-    target_link_libraries(${YARS_TARGET}
-      /opt/homebrew/lib/libfreetype.dylib
-      ${OGRE_ROOT}/lib/libOgreMainStatic.a
-      ${OGRE_ROOT}/lib/libOgreOverlayStatic.a
-      ${OGRE_ROOT}/lib/libOgreRTShaderSystemStatic.a
-      ${OGRE_ROOT}/lib/libOgreGLSupportStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libRenderSystem_GL3PlusStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libPlugin_ParticleFXStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libPlugin_OctreeSceneManagerStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libCodec_STBIStatic.a
-      ${OGRE_ROOT}/lib/OGRE/libCodec_FreeImageStatic.a
-      /opt/homebrew/lib/libfreeimage.dylib
-      z)
-
-     SET_TARGET_PROPERTIES(${YARS_TARGET} PROPERTIES LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
-      # "-framework OgreOverlay -framework RenderSystem_GL -framework Plugin_ParticleFX -framework OgreMain -framework Cocoa")
-  endif(APPLE)
-
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(${YARS_TARGET}
-      X11 GL z Xt zzip freetype
-  ${OGRE_LIBRARIES} ${OGRE_Overlay_LIBRARIES})
-
-    endif(UNIX AND NOT APPLE)
+    # macOS-specific platform frameworks (windowing, GL, I/O kit) — SDL2
+    # initialises Cocoa indirectly but Ogre's GL3+ context creation also
+    # needs CoreVideo and IOKit.
+    set_target_properties(${YARS_TARGET} PROPERTIES
+      LINK_FLAGS "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
+  else()
+    # X11 / GL / freetype etc. via the standard distro packages.
+    target_link_libraries(${YARS_TARGET} X11 GL Xt zzip freetype)
+  endif()
 
   target_link_libraries(${YARS_TARGET} SDL2::SDL2)
   target_link_libraries(${YARS_TARGET} YarsView)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)
-
-if(NOT APPLE AND YARS_USE_VISUALISATION)
-  target_link_libraries(${YARS_TARGET}
-    ${OGRE_ROOT}/lib/libOgreMain.so
-    ${OGRE_ROOT}/lib/libOgreOverlay.so
-    ${OGRE_ROOT}/lib/libOgreRTShaderSystem.so
-    ${OGRE_RenderSystem_GL_LIBRARIES}
-    ${OGRE_Plugin_ParticleFX_LIBRARIES}
-    )
-endif(NOT APPLE AND YARS_USE_VISUALISATION)
 
 option(YARS_USE_VULKAN "Build Vulkan renderer and tests" OFF)
 if(YARS_USE_VULKAN)

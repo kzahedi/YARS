@@ -9,13 +9,8 @@
 #include <yars/util/OSD.h>
 
 #include <OGRE/Ogre.h>
-#if __APPLE__
-#include <OGRE/OgreFont.h>
-#include <OGRE/OgreFontManager.h>
-#else
 #include <OGRE/Overlay/OgreFont.h>
 #include <OGRE/Overlay/OgreFontManager.h>
-#endif
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 
 #ifndef __APPLE__

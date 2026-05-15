@@ -3,13 +3,6 @@
 
 #include <OGRE/Ogre.h>
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
-#if __APPLE__
-// FFP factory headers are only used on macOS (Ogre 13.x exports them as public).
-// In Ogre 14 (Linux) OgreShaderFFPTransform.h is private (src/), and the
-// FFPTexturingFactory was removed from the public API entirely.
-#include <OGRE/RTShaderSystem/OgreShaderFFPTransform.h>
-#include <OGRE/RTShaderSystem/OgreShaderFFPTexturing.h>
-#endif
 #include <string>
 
 namespace yars {

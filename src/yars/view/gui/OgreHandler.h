@@ -5,18 +5,10 @@
 #include <yars/view/gui/TextOverlay.h>
 
 #include <OGRE/Ogre.h>
-#if __APPLE__
-#include <RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
-#include <Plugins/ParticleFX/OgreParticleFXPlugin.h>
-#include <RTShaderSystem/OgreRTShaderSystem.h>
-#include <OgreSTBICodec.h>
-#else
 #include <OGRE/RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>
 #include <OGRE/Plugins/ParticleFX/OgreParticleFXPlugin.h>
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 #include <OGRE/Plugins/STBICodec/OgreSTBICodec.h>
-#endif
-// #include <OGRE/OgreStaticPluginLoader.h>
 
 namespace yars {
 
@@ -44,11 +36,6 @@ private:
   Ogre::SceneManager *_sceneManager;
   Ogre::SceneNode *_rootNode;
   SceneGraph *_sceneGraph;
-  Ogre::GL3PlusPlugin *_GLPlugin;
-  Ogre::ParticleFXPlugin *_particlePlugin;
-#if __APPLE__
-  Ogre::STBIPlugin *_stbiPlugin;
-#endif
   Ogre::RTShader::ShaderGenerator *_shaderGenerator;
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
   // TextOverlay        *_textOverlay;

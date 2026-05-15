@@ -10,14 +10,10 @@ on:
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: "4"
   OGRE_INSTALL_PREFIX: ${{ github.workspace }}/ext/ogre/install
-  # Pin macOS to Ogre 13.6.4 — the version the macOS code paths target.
-  # Migrating the Apple branches to Ogre 14 is tracked separately
-  # (see openspec change 'migrate-macos-to-ogre-14').
-  OGRE_MACOS_TAG: "v13.6.4"
 
 jobs:
   build-and-smoke:
-    name: macos-14 / GL3Plus static (Ogre 13.6.4)
+    name: macos-14 / GL3Plus (Ogre 14)
     runs-on: macos-14
     timeout-minutes: 60
 
@@ -26,13 +22,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Pin Ogre submodule to ${{ env.OGRE_MACOS_TAG }} (macOS-only)
-        run: |
-          cd ext/ogre-source
-          git fetch --tags --depth=1 origin ${OGRE_MACOS_TAG}
-          git checkout ${OGRE_MACOS_TAG}
-          echo "Ogre source now at: $(git describe --tags --always)"
 
       - name: Install brew dependencies
         run: |
@@ -48,33 +37,31 @@ jobs:
           # Report versions for the build log
           brew list --versions sdl2 bullet xerces-c boost freeimage freetype ffmpeg
 
-      - name: Cache Ogre 13.6.4 build
+      - name: Cache Ogre 14 build
         id: ogre-cache
         uses: actions/cache@v4
         with:
           path: ${{ env.OGRE_INSTALL_PREFIX }}
-          key: ogre13-macos14-${{ env.OGRE_MACOS_TAG }}-static-v1
+          key: ogre14-macos14-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v1
 
-      - name: Build Ogre 13.6.4 from submodule (static)
+      - name: Build Ogre 14 from submodule (dynamic)
         if: steps.ogre-cache.outputs.cache-hit != 'true'
         run: |
           cmake -S ext/ogre-source -B ext/ogre/build \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=${OGRE_INSTALL_PREFIX} \
-            -DOGRE_STATIC=ON \
             -DOGRE_BUILD_COMPONENT_BITES=ON \
             -DOGRE_BUILD_COMPONENT_OVERLAY=ON \
             -DOGRE_BUILD_COMPONENT_RTSHADERSYSTEM=ON \
             -DOGRE_BUILD_SAMPLES=OFF \
             -DOGRE_BUILD_TOOLS=OFF \
             -DOGRE_BUILD_PLUGIN_STBI=ON \
-            -DOGRE_BUILD_PLUGIN_FREEIMAGE=ON \
-            -DOGRE_BUILD_PLUGIN_PFX=ON \
-            -DOGRE_BUILD_PLUGIN_OCTREE=ON \
             -DOGRE_BUILD_PLUGIN_DOT_SCENE=OFF \
             -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
             -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
             -DOGRE_BUILD_RENDERSYSTEM_METAL=OFF \
+            -DOGRE_INSTALL_PDB=OFF \
+            -DOGRE_INSTALL_SAMPLES=OFF \
             -DOGRE_BUILD_DEPENDENCIES=OFF
           cmake --build ext/ogre/build -j 4
           cmake --install ext/ogre/build
