@@ -2,7 +2,7 @@
 
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/FileSystemOperations.h>
-#include <yars/configuration/container/ConfigurationContainer.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 #define YARS_STRING_TARGET                    (char*)"target"
 #define YARS_STRING_MODULE                    (char*)"module"
