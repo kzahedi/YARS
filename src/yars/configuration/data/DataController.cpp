@@ -38,6 +38,10 @@ void DataController::add(DataParseElement *element)
   {
     string n = _name;
     Directories *dir = new Directories();
+    // Add the --lib <path> argument (if any) to the search list so the
+    // user's chosen controller directory is searched before the
+    // hardcoded defaults.
+    dir->addLibraryPath(__YARS_GET_GLOBAL_LIBRARIES);
     if(!dir->getController(&n, _name))
     {
       YarsErrorHandler::push("Controller '%s' not found", _name.c_str());

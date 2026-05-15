@@ -43,6 +43,13 @@ class Directories
 
     void setFullPath(string *dir);
 
+    /// Prepend a user-supplied path to the controller-library search list.
+    /// Adds both `<path>` and `<path>/lib` so the call site doesn't have to
+    /// know which form the user gave. Called after CLI parsing completes,
+    /// not from the constructor, to avoid an init cycle through
+    /// YarsConfiguration::instance().
+    void addLibraryPath(const string &path);
+
     // **************************************************************************
     // Debugging
     // **************************************************************************
