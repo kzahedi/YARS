@@ -6,39 +6,34 @@ Robots::Robots()
 {
   _reset = false;
   _quit  = false;
+  _seed  = -1;
   DataRobots *robots = __YARS_GET_ROBOTS;
   if (robots == NULL) return;
 
-  for (auto *i : *robots) push_back(new Robot(i));
-}
-
-Robots::~Robots()
-{
-  for (auto *i : *this) delete i;
-  clear();
+  for (auto *i : *robots) push_back(std::make_unique<Robot>(i));
 }
 
 void Robots::prePhysicsUpdate()
 {
   _reset = false;
   _quit  = false;
-  for (auto *i : *this) i->prePhysicsUpdate();
+  for (auto &robot : *this) robot->prePhysicsUpdate();
 }
 
 void Robots::postPhysicsUpdate()
 {
-  for (auto *i : *this)
+  for (auto &robot : *this)
   {
-    i->postPhysicsUpdate();
-    _reset |= i->isReset();
-    _quit  |= i->isQuit();
-    if (_seed == -1) _seed = i->seed();
+    robot->postPhysicsUpdate();
+    _reset |= robot->isReset();
+    _quit  |= robot->isQuit();
+    if (_seed == -1) _seed = robot->seed();
   }
 }
 
 void Robots::controllerUpdate()
 {
-  for (auto *i : *this) i->controllerUpdate();
+  for (auto &robot : *this) robot->controllerUpdate();
 }
 
 bool Robots::isReset()
@@ -57,7 +52,7 @@ void Robots::reset()
   {
     // HIER RANDOM SEED SETZEN
   }
-  for (auto *m : *this) m->reset();
+  for (auto &robot : *this) robot->reset();
   _seed = -1;
 }
 

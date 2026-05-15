@@ -100,7 +100,7 @@ void BulletPhysics::__initWorld()
   }
 
   int index = 2;
-  for (auto *m : *_robots)
+  for (auto &m : *_robots)
   {
     index++;
     int robotMask = (1 << index);

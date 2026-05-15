@@ -4,14 +4,15 @@
 #include "Robot.h"
 
 #include <vector>
+#include <memory>
 
 using namespace std;
 
-class Robots : public std::vector<Robot*>
+class Robots : public std::vector<std::unique_ptr<Robot>>
 {
   public:
     Robots();
-    ~Robots();
+    ~Robots() = default;
 
     void prePhysicsUpdate();
     void postPhysicsUpdate();
