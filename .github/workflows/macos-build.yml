@@ -81,10 +81,12 @@ jobs:
 
       - name: Configure YARS
         run: |
+          set -o pipefail
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee cmake-configure.log
 
       - name: Build YARS
         run: |
+          set -o pipefail
           cmake --build build -j 4 2>&1 | tee build.log
 
       - name: Smoke test (--nogui, 100 iterations)

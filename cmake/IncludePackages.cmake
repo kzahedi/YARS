@@ -52,12 +52,17 @@ IF(YARS_USE_VISUALISATION)
 
   include_directories(${SDL2_INCLUDE_DIRS})
 
-  # Create SDL2::SDL2 target that OGRE expects
+  # Create SDL2::SDL2 target that OGRE expects.
+  # On macOS, brew installs SDL2 under /opt/homebrew/lib which is not on
+  # the default linker search path; SDL2_LIBRARY_DIRS (from pkg-config) is
+  # required for the linker to find -lSDL2. On Linux the dir is already
+  # in the default search path but setting it does no harm.
   if(NOT TARGET SDL2::SDL2)
     add_library(SDL2::SDL2 INTERFACE IMPORTED)
     set_target_properties(SDL2::SDL2 PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIRS}"
-      INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}")
+      INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}"
+      INTERFACE_LINK_DIRECTORIES "${SDL2_LIBRARY_DIRS}")
   endif()
 
   # Find ZLIB for OGRE

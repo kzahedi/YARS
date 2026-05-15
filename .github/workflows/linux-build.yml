@@ -72,10 +72,12 @@ jobs:
 
       - name: Configure YARS
         run: |
+          set -o pipefail
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee cmake-configure.log
 
       - name: Build YARS
         run: |
+          set -o pipefail
           cmake --build build -j 4 2>&1 | tee build.log
 
       - name: Smoke test (--nogui, 100 iterations)
@@ -185,7 +187,9 @@ jobs:
           # cd into build/ so YARS resolves controller via cwd/lib.
           cd build
           rm -f braitenberg-*.csv
-          ./bin/yars --nogui --xml ../xml/braitenberg_logging.xml
+          # Bound the run; the XML has no built-in stop condition so an
+          # unbounded invocation runs until the 90-min job timeout.
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
           ACTUAL=$(ls -t braitenberg-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No braitenberg-*.csv produced"
