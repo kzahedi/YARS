@@ -2,6 +2,7 @@
 
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/FileSystemOperations.h>
+#include <yars/configuration/container/ConfigurationContainer.h>
 
 
 #define YARS_STRING_TARGET                    (char*)"target"
@@ -56,6 +57,14 @@ void DataLoggingGnuplot::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_TARGET))
   {
+    // In headless mode (--nogui) skip display-bound gnuplot setup entirely.
+    // The logger requires a live X display + gnuplot process to plot to;
+    // without --gui that infrastructure isn't running, so erroring out on
+    // DISPLAY is a false positive for batch / CI / headless audit runs.
+    if (!__YARS_GET_USE_VISUALISATION)
+    {
+      return;
+    }
 
 #ifndef __APPLE__
     if(getenv("DISPLAY") == NULL)

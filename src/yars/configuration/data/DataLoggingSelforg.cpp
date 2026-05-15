@@ -2,6 +2,7 @@
 
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/FileSystemOperations.h>
+#include <yars/configuration/container/ConfigurationContainer.h>
 
 #define YARS_STRING_TARGET                    (char*)"target"
 #define YARS_STRING_MODULE                    (char*)"module"
@@ -53,13 +54,21 @@ void DataLoggingSelforg::add(DataParseElement *element)
 
     if(_useMatrixviz || _useGuilogger)
     {
-#ifndef __APPLE__
-      if(getenv("DISPLAY") == NULL)
+      // In headless mode (--nogui) skip the display check; matrixviz /
+      // guilogger require a live X display + helper processes, neither of
+      // which run when YARS is launched headless. Erroring out on DISPLAY
+      // would otherwise turn batch / CI / headless audit runs into hard
+      // failures for any XML that opted into selforg logging.
+      if (__YARS_GET_USE_VISUALISATION)
       {
-        YarsErrorHandler::push("Can't open display");
-        exit(-1);
-      }
+#ifndef __APPLE__
+        if(getenv("DISPLAY") == NULL)
+        {
+          YarsErrorHandler::push("Can't open display");
+          exit(-1);
+        }
 #endif
+      }
     }
     if(_useMatrixviz)
     {
