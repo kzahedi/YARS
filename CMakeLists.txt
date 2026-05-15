@@ -19,6 +19,15 @@ endif(COMMAND cmake_policy)
 
 set(LIBRARY_TYPE STATIC)
 
+# Default to an optimized build. A bare `cmake ..` in a fresh build dir
+# would otherwise leave CMAKE_BUILD_TYPE empty and produce an unoptimized
+# binary with no -O flags — the simulator ran ~40% slower until we
+# noticed. Multi-config generators (Xcode, Visual Studio) ignore this.
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Build type (Release, Debug, RelWithDebInfo, MinSizeRel)" FORCE)
+endif()
+
 # Version information automatically set by project() command above
 # These are now available as: PROJECT_VERSION, PROJECT_VERSION_MAJOR, etc.
 
