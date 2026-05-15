@@ -2,73 +2,41 @@
 
 ## 1. Header includes
 
-- [ ] 1.1 `src/yars/view/gui/OgreHandler.h`: replace Apple framework
-  paths (`<RenderSystems/GL3Plus/OgreGL3PlusPlugin.h>` etc.) with the
-  same `<OGRE/...>` paths used by the Linux branch — Ogre 14 install
-  is layout-portable across platforms now
-- [ ] 1.2 Drop the `#if __APPLE__ Ogre::STBIPlugin *_stbiPlugin; #endif`
-  member declaration; the codec is loaded via plugin loader, no class
-  needed
-- [ ] 1.3 `src/yars/view/gui/ShaderManager.h`: drop `#if __APPLE__`
-  guard around `OgreShaderFFPTransform.h` / `OgreShaderFFPTexturing.h`
-  includes (they're private in Ogre 14 — remove the includes entirely)
+- [x] 1.1 `OgreHandler.h`: collapsed the `#if __APPLE__ / #else` include block. Both platforms now use the single `<OGRE/...>` form (commit a09255a)
+- [x] 1.2 Dropped `Ogre::STBIPlugin *_stbiPlugin;` (a09255a). Also removed the unused `Ogre::GL3PlusPlugin *_GLPlugin;` and `Ogre::ParticleFXPlugin *_particlePlugin;` members since no code now constructs them
+- [x] 1.3 `ShaderManager.h`: removed the `OgreShaderFFPTransform.h` + `OgreShaderFFPTexturing.h` includes entirely; neither is needed once the FFPFactory registration is gone (a09255a)
 
 ## 2. Plugin / codec loading
 
-- [ ] 2.1 `src/yars/view/gui/OgreHandler.cpp`: drop the macOS-only
-  static-plugin install block (`new Ogre::GL3PlusPlugin()` etc.). Rely
-  on `Ogre::Root("plugins.cfg", "ogre.cfg", "")` to auto-load from
-  `plugins.cfg` on both platforms
-- [ ] 2.2 `src/yars/view/gui/ShaderManager.cpp`: drop the macOS-only
-  `FFPTexturingFactory()` / `FFPTransformFactory()` registration —
-  Ogre 14 RTSS auto-registers these internally on both platforms
+- [x] 2.1 `OgreHandler.cpp`: dropped the macOS-only `new Ogre::GL3PlusPlugin(); install();` block. Single code path on both platforms now: `_root = new Ogre::Root("plugins.cfg", "ogre.cfg", "")` (a09255a)
+- [x] 2.2 `ShaderManager.cpp`: dropped the macOS-only FFP factory registration block (a09255a). RTSS auto-registers FFP_Transform + FFP_Texturing in Ogre 14. The GLSL 150 shader profile call is now unconditional (was previously `#if !defined(__APPLE__)`)
 
 ## 3. CMake / link
 
-- [ ] 3.1 `src/yars/CMakeLists.txt`: drop the `if(APPLE)` static-link
-  block (lines that link `libOgreMainStatic.a`,
-  `RenderSystem_GL3PlusStatic.framework`, etc.). Use the same
-  `${OGRE_ROOT}/lib/libOgreMain.so ...` pattern the Linux branch uses,
-  with `.so` swapped to `.dylib` via CMAKE_SHARED_LIBRARY_SUFFIX
-- [ ] 3.2 Remove the macOS-only `-framework Cocoa -framework OpenGL`
-  link flags only if SDL2 already pulls them in (verify with a clean
-  build); otherwise keep
-- [ ] 3.3 Verify `SDL2::SDL2` imported target works on macOS via
-  Homebrew's `pkg-config sdl2`
+- [x] 3.1 `src/yars/CMakeLists.txt`: dropped the `if(APPLE)` static-link block and the separate `if(NOT APPLE …)` dynamic-link block. Single block now uses `${OGRE_ROOT}/lib/libOgreMain${CMAKE_SHARED_LIBRARY_SUFFIX}` (resolves to `.so` on Linux, `.dylib` on macOS)
+- [x] 3.2 Kept the macOS `-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo` link flags. SDL2's framework dependencies cover Cocoa indirectly but Ogre's GL3+ context creation needs the others explicitly
+- [ ] 3.3 Verify `SDL2::SDL2` imported target works on macOS via Homebrew's `pkg-config sdl2`. **Pending macOS CI run completion.**
 
 ## 4. Plugin config
 
-- [ ] 4.1 `src/cfg/plugins.cfg.in`: confirm `Plugin=RenderSystem_GL3Plus`,
-  `Plugin=Plugin_ParticleFX`, `Plugin=Codec_STBI`,
-  `Plugin=Codec_FreeImage` are all listed. The Linux build already
-  lists the first three; macOS may want `Codec_FreeImage` for JPEG/PNG
-  parity if material scripts depend on it.
-- [ ] 4.2 Verify `OGRE_PLUGINS_DIR` resolves correctly on macOS via
-  `cmake/CreateConfigFiles.cmake` (the existing
-  `${OGRE_ROOT}/lib/OGRE` path should work)
+- [x] 4.1 `plugins.cfg.in` already lists `RenderSystem_GL3Plus`, `Plugin_ParticleFX`, `Codec_STBI` — verified during the Linux work. `Codec_FreeImage` is not currently listed and may need to be added if any material script needs FreeImage's format support beyond what stb_image covers. **Defer until needed.**
+- [x] 4.2 `OGRE_PLUGINS_DIR` resolution via `cmake/CreateConfigFiles.cmake` falls back to `${OGRE_ROOT}/lib/OGRE` when the variable isn't otherwise defined; same path on both platforms
 
-## 5. macOS local verification
+## 5. macOS local verification (pending — needs your Mac)
 
-- [ ] 5.1 On the contributor's Mac, delete `ext/ogre/install/` to
-  remove the cached Ogre 13.6.4 install
-- [ ] 5.2 Build Ogre 14 from the submodule via the same cmake invocation
-  the CI workflow uses (but without `OGRE_STATIC=ON`)
+- [ ] 5.1 On your Mac, delete `ext/ogre/install/` to remove the cached Ogre 13.6.4 install
+- [ ] 5.2 Build Ogre 14 from the submodule using the same cmake invocation as `.github/workflows/macos-build.yml` (no `OGRE_STATIC=ON` — dynamic libs now)
 - [ ] 5.3 Configure and build YARS — expect a clean build
-- [ ] 5.4 Launch YARS GUI on macOS; confirm window opens, scene
-  renders, mouse + scroll input work
-- [ ] 5.5 Capture screenshot to `docs/planning/macos-screenshots/braitenberg.png`
+- [ ] 5.4 Launch `./build/bin/yars --xml ../xml/braitenberg.xml` on macOS; confirm window opens, scene renders, mouse + scroll input work
+- [ ] 5.5 Capture screenshot to `docs/planning/macos-screenshots/braitenberg.png` and commit
 
 ## 6. CI update
 
-- [ ] 6.1 `.github/workflows/macos-build.yml`: remove the `OGRE_MACOS_TAG`
-  env var and the `Pin Ogre submodule to ...` step
-- [ ] 6.2 Confirm the macOS CI run is green against the unpinned
-  submodule (Ogre 14)
-- [ ] 6.3 Reconcile macOS + Linux Ogre cache keys if convenient
+- [x] 6.1 `macos-build.yml`: removed `OGRE_MACOS_TAG` env var and the "Pin Ogre submodule to v13.6.4" step (a09255a)
+- [ ] 6.2 Confirm the macOS CI run is green against the unpinned submodule. **In flight at commit time of this update.**
+- [x] 6.3 Reconciled cache keys: Linux uses `ogre14-ubuntu22-glx-…-v2`, macOS uses `ogre14-macos14-glx-…-v1`. Both keyed on `.gitmodules` + Ogre's OgreMain CMakeLists hash, so a submodule bump invalidates both
 
 ## 7. Documentation
 
-- [ ] 7.1 Update `CLAUDE.md` macOS section: Ogre version reads from the
-  submodule pin (currently 14.4), not the legacy 13.6.4
-- [ ] 7.2 Update `docs/macOS_Build.md` (if it exists) or write one if
-  not — same `apt`-equivalent dep list for brew
+- [ ] 7.1 Update `CLAUDE.md` macOS section once macOS CI is green and local verification (section 5) confirms the workflow. **Deferred.**
+- [ ] 7.2 Write `docs/macOS_Build.md` parallel to `docs/Linux_Build.md`. **Deferred.**
