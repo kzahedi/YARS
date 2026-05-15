@@ -91,7 +91,7 @@ void YarsMainControl::run()
     // GUI sync handling - no longer uses observer pattern
   }
 
-  while (_keepOnRunning)
+  while (_keepOnRunning && !__YARS_GET_EXIT)
   {
     if (!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
     {

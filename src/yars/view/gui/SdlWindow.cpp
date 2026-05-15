@@ -241,11 +241,17 @@ void SdlWindow::handleEvent(SDL_Event &event)
     cout << "multi gesture" << endl;
     break;
   case SDL_QUIT:
+    // Window close button: ask the main loop to terminate.
+    __YARS_SET_EXIT(true);
+    _closed = true;
     break;
   case SDL_KEYDOWN:
     switch (event.key.keysym.sym)
     {
     case SDLK_ESCAPE:
+      // Escape: quit the simulation (same as the window close button).
+      __YARS_SET_EXIT(true);
+      _closed = true;
       break;
     case SDLK_LSHIFT:
     case SDLK_RSHIFT:
@@ -625,10 +631,13 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
 
   switch (KeyHandler::instance()->handleKeyEvent(alt, cmd, shift, chr))
   {
-  // case YarsKeyFunction::Quit:
-  // close();
-  // notifyObservers(_m_quit_called);
-  // break;
+  case YarsKeyFunction::Quit:
+    // Ctrl-X: quit the simulation. The KeyHandler::exitSimulation() function
+    // was already invoked by handleKeyEvent via the shortcut function pointer
+    // and set __YARS_SET_EXIT(true); we also close this window so the GUI
+    // tears down cleanly on the next event-pump tick.
+    _closed = true;
+    break;
   case YarsKeyFunction::PrintViewPoint:
     ConsoleView::printViewpoint(_windowConfiguration->cameraPosition, _windowConfiguration->cameraLookAt);
     break;

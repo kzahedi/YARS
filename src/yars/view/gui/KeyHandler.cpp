@@ -115,11 +115,13 @@ void KeyHandler::activateSingleStep()
 
 void KeyHandler::exitSimulation()
 {
-  // TODO: hack, quitting should also work without syncing
-  if (!__YARS_GET_SYNC_GUI)
-  {
-    toggleSyncedGui(); // so that we can quit nicely
-  }
+  // Set the global exit flag; YarsMainControl::run() polls it on every
+  // iteration. The previous code only notified observers, but the
+  // observer chain to YarsMainControl was disconnected during the
+  // Observer-pattern teardown, so the notification was a no-op.
+  __YARS_SET_EXIT(true);
+
+  // Legacy: kept for any GUI code still subscribed via the old chain.
   _o->notifyObservers(_m_quit_called);
 }
 
