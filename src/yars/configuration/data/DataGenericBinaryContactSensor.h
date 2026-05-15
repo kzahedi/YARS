@@ -57,7 +57,7 @@ class DataGenericBinaryContactSensor : public DataSensor
   private:
 
     double _value;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
     Domain _domain;
 
 };

@@ -77,7 +77,7 @@ class DataGenericDeflectionSensor : public DataSensor
     Domain   _internalDomain;
     Domain   _externalDomain;
     Noise   *_n;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
     bool  _useRad;
 };
 

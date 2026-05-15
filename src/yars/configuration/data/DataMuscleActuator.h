@@ -210,7 +210,7 @@ private:
   Pose _dstOffset;
   bool _dstOffsetInWorldCoordinates;
   bool _visualise;
-  pthread_mutex_t _mutex;
+  pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
   DataObject *_srcObject;
   DataObject *_dstObject;
   DataActuator *_srcConnector;

@@ -66,7 +66,7 @@ class DataGenericOrientationSensor : public DataSensor
     bool _useDegree;
 
     double* _value;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_GENERIC_ORIENTATION_SENSOR_H__

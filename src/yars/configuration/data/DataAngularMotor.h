@@ -89,7 +89,7 @@ class DataAngularMotor : public DataActuator
     double       _currentAngularVelocity;
     bool        _poseInWorldCoordinates;
 
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_ANGULAR_MOTOR_H__

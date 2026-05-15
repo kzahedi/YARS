@@ -63,7 +63,7 @@ class DataGenericPositionSensor : public DataSensor
     int       _dimension;
 
     double* _value;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_GENERIC_POSITION_SENSOR_H__

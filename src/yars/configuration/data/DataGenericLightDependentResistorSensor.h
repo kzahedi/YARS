@@ -94,7 +94,7 @@ class DataGenericLightDependentResistorSensor : public DataSensor
     Mapping         _internalExternalMapping;
     Domain          _internalDomain;
     Domain          _externalDomain;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
     Noise*          _n;
 
 };

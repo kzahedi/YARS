@@ -164,7 +164,7 @@ class DataGenericActuatorSensor : public DataSensor
     string              _currentType;
     vector<string>      _logName;
 
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_GENERIC_ACTUATOR_SENSOR_H__

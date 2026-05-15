@@ -75,7 +75,7 @@ class DataActuator : public DataNode
   private:
     int _type;
 
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_ACTUATOR_H__

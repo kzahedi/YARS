@@ -166,7 +166,7 @@ class DataSliderActuator : public DataActuator
     double           _appliedForce;
     double           _appliedVelocity;
     double           _friction;
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 
 };
 

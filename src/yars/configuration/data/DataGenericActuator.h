@@ -301,7 +301,7 @@ class DataGenericActuator : public DataActuator
     vector<double>  _appliedVelocity;
     bool            _poseInWorldCoordinates;
 
-    pthread_mutex_t _mutex;
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 #endif // __DATA_GENERIC_ACTUATOR_H__
