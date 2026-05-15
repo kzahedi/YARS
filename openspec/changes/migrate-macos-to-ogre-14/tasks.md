@@ -24,11 +24,11 @@
 
 ## 5. macOS local verification (pending — needs your Mac)
 
-- [ ] 5.1 On your Mac, delete `ext/ogre/install/` to remove the cached Ogre 13.6.4 install
-- [ ] 5.2 Build Ogre 14 from the submodule using the same cmake invocation as `.github/workflows/macos-build.yml` (no `OGRE_STATIC=ON` — dynamic libs now)
-- [ ] 5.3 Configure and build YARS — expect a clean build
-- [ ] 5.4 Launch `./build/bin/yars --xml ../xml/braitenberg.xml` on macOS; confirm window opens, scene renders, mouse + scroll input work
-- [ ] 5.5 Capture screenshot to `docs/planning/macos-screenshots/braitenberg.png` and commit
+- [x] 5.1 Deleted `ext/ogre/install/` (Ogre 13.6 static frameworks) on 2026-05-15
+- [x] 5.2 Built Ogre 14 from the submodule with the same flags as `macos-build.yml`. One extra flag needed beyond Linux: `-DOGRE_BUILD_PLUGIN_ASSIMP=OFF` (the Assimp plugin's link depends on `pugixml` which isn't a Homebrew dep). Added to CI workflow + `docs/macOS_Build.md`.
+- [x] 5.3 Configure + build of YARS itself succeeded after one cmake patch: Ogre's `OGREConfig.cmake` hard-codes `OGRE_PLUGIN_DIR = ${OGRE_ROOT}/lib/OGRE` but macOS Ogre 14 installs plugins as frameworks under `lib/macosx/Release/`. `cmake/IncludePackages.cmake` now creates a `lib/OGRE -> macosx/Release` symlink under `${OGRE_ROOT}/lib/` on Apple before `find_package(OGRE)` runs; `plugins.cfg` also resolves through that symlink at runtime.
+- [x] 5.4 GUI launched and verified: window opens, scene renders correctly (textures, robot, sensors, OSD), mouse drag rotates camera, scroll-zoom works, simulation stable. Close-button + Escape quit cleanly. **`Ctrl-X` does not quit on macOS** — this is by design: the existing `#ifdef __APPLE__` in `SdlWindow::__processKeyEvent` maps the shortcut's `cmd` modifier to `KMOD_GUI` (Cmd key) per macOS convention, so the `<C-x>` Quit binding becomes Cmd-X on Mac. User confirmed Cmd-X works and chose to keep the Mac-idiomatic mapping unchanged.
+- [x] 5.5 Screenshot captured to `docs/planning/macos-screenshots/braitenberg.png`
 
 ## 6. CI update
 

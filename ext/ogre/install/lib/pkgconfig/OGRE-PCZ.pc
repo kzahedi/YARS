@@ -1,0 +1,11 @@
+prefix=/Volumes/Eregion/projects/yars/ext/ogre/install
+exec_prefix=${prefix}
+plugindir=${prefix}/lib/OGRE
+includedir=${prefix}/include
+
+Name: OGRE-PCZ
+Description: Portal-Connected Zone Scene Manager for OGRE
+Version: 14.4.1
+Requires: OGRE = 14.4.1
+Libs: -L${plugindir} -lPlugin_PCZSceneManager -lPlugin_OctreeZone
+Cflags: -I${includedir}/OGRE/Plugins/PCZSceneManager -I${includedir}/OGRE/Plugins/OctreeZone -pthread

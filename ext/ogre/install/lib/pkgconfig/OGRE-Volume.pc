@@ -1,0 +1,11 @@
+prefix=/Volumes/Eregion/projects/yars/ext/ogre/install
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: OGRE-Volume
+Description: Voxel based terrain component for OGRE
+Version: 14.4.1
+Requires: OGRE = 14.4.1
+Libs: -L${libdir} -lOgreVolume
+Cflags: -I${includedir}/OGRE/Volume -pthread

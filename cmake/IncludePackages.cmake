@@ -72,6 +72,19 @@ IF(YARS_USE_VISUALISATION)
   set(OGRE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/ext/ogre/install)
   set(CMAKE_PREFIX_PATH ${OGRE_ROOT}/CMake ${CMAKE_PREFIX_PATH})
 
+  # macOS-only: Ogre 14 dynamic install puts plugins/frameworks under
+  # lib/macosx/Release/, but Ogre's exported OGREConfig.cmake hard-codes
+  # OGRE_PLUGIN_DIR = ${OGRE_ROOT}/lib/OGRE (Linux layout) and aborts
+  # find_package() if that path doesn't exist. Create a symlink so the
+  # find_package check passes; plugins.cfg's PluginFolder=${OGRE_ROOT}/lib/OGRE/
+  # also resolves through the same symlink at runtime.
+  if(APPLE AND NOT EXISTS "${OGRE_ROOT}/lib/OGRE")
+    if(EXISTS "${OGRE_ROOT}/lib/macosx/Release")
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} -E create_symlink macosx/Release "${OGRE_ROOT}/lib/OGRE")
+    endif()
+  endif()
+
   # Try Ogre's exported CMake config first; it transparently handles the
   # platform-specific install layout (.so on Linux, .dylib/.framework on
   # macOS) and exports imported targets like OgreMain, OgreOverlay,
