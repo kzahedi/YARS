@@ -327,35 +327,32 @@ void OgreHandler::step()
     _root->renderOneFrame();
 
   }
-  catch (const Ogre::InvalidStateException &e)
-  {
-    static bool errorShown = false;
-    if (!errorShown)
-    {
-      std::cerr << "RENDERING FAILED: " << e.what() << std::endl;
-      errorShown = true;
-    }
-    // Continue simulation - window stays open
-  }
   catch (const Ogre::Exception &e)
   {
-    static bool errorShown = false;
-    if (!errorShown)
+    // Transient first-frame exceptions (e.g. an RTSS-generated technique not
+    // yet swapped in for a material) occasionally fire before rendering
+    // stabilises; the simulation keeps running fine. Log to ogre.log once
+    // instead of spamming stderr — a real persistent failure shows up
+    // there with full context.
+    static bool reported = false;
+    if (!reported)
     {
-      std::cerr << "RENDERING ERROR (Ogre): " << e.what() << std::endl;
-      errorShown = true;
+      Ogre::LogManager::getSingleton().logMessage(
+          "OgreHandler::step caught and swallowed: " + Ogre::String(e.what()),
+          Ogre::LML_WARNING);
+      reported = true;
     }
-    // Continue simulation - window stays open
   }
   catch (const std::exception &e)
   {
-    static bool errorShown = false;
-    if (!errorShown)
+    static bool reported = false;
+    if (!reported)
     {
-      std::cerr << "RENDERING ERROR: " << e.what() << std::endl;
-      errorShown = true;
+      Ogre::LogManager::getSingleton().logMessage(
+          "OgreHandler::step caught and swallowed: " + Ogre::String(e.what()),
+          Ogre::LML_WARNING);
+      reported = true;
     }
-    // Continue simulation - window stays open
   }
 }
 

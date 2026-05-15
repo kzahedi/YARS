@@ -18,3 +18,13 @@ docs/videos/
 *.pyc
 .history
 frame*
+
+# CMake-generated artifacts that occasionally land at the repo root
+# when cmake is invoked from the source tree by mistake. They belong
+# in build/ only.
+/CPackConfig.cmake
+/CPackSourceConfig.cmake
+/cmake_uninstall.cmake
+/ogre.cfg
+/plugins.cfg
+/resources.cfg
