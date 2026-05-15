@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(yars
-  VERSION 0.8.4
+  VERSION 0.8.5
   DESCRIPTION "YARS - Yet Another Robot Simulator"
   LANGUAGES CXX)
 if(COMMAND cmake_policy)
