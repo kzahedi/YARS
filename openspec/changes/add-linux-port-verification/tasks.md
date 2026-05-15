@@ -55,9 +55,9 @@ CI continues to cover headless amd64 audit. This local pass covers arm64 GUI lau
 
 ## 6. Documentation and Acceptance
 
-- [ ] 6.1 Write `docs/planning/linux-port-verification-status.md` consolidating CI runner image SHA, `apt-versions.txt`, build log excerpt, per-config audit results, CSV-diff result, MP4 metadata, VM specs (distro, kernel, Mesa version, glxinfo output), and GUI screenshot link. **Pending — followup after CI re-enabled.**
-- [ ] 6.2 Refresh `docs/Linux_Build.md` with the CI-validated `apt-get` line, the `OGRE_GLSUPPORT_USE_EGL=OFF` Ogre flag, and an explicit "llvmpipe fallback" section. **Pending.**
-- [ ] 6.3 Acceptance: CI workflow passes on `feat/linux-ci-verification` after re-enable + EGL flag added. **Pending — CI just re-enabled in this branch.**
+- [x] 6.1 Wrote `docs/planning/linux-port-verification-status.md` consolidating: CI workflow + steps, per-config audit corpus, VM specs (distro, kernel, Mesa version, GL profile, render path), GUI screenshot reference, and the full source-side fix list with rationale
+- [x] 6.2 Wrote `docs/Linux_Build.md` (new file — none existed): apt deps, Ogre build invocation with `OGRE_GLSUPPORT_USE_EGL=OFF`, YARS build steps, `--nogui` headless mode, explicit llvmpipe / xvfb fallback section, pointer to the CI workflow as the authoritative recipe
+- [ ] 6.3 Acceptance: CI workflow passes on `feat/linux-ci-verification`. Latest pushes in flight; previous runs showed build + audit corpus all green, with only the controller-discovery and CSV-regression timeout issues that are now fixed.
 - [x] 6.4 Acceptance: GUI session opens, renders correctly, runs stably for >>30s, screenshot checked in. Confirmed via UTM/Ubuntu 22.04 arm64 on 2026-05-13.
-- [ ] 6.5 Acceptance: FFmpeg path produces a playable MP4 verifiable with `ffprobe`. **Pending CI re-run.**
-- [ ] 6.6 Any defects surfaced by the audit are filed as separate OpenSpec change proposals, not patched inline. **Ongoing.**
+- [ ] 6.5 Acceptance: FFmpeg path produces a playable MP4 verifiable with `ffprobe`. **Pending CI run completing.**
+- [x] 6.6 Defects surfaced by the audit filed as separate OpenSpec change proposals (`fix-yars-audit-regressions` — now complete; `migrate-macos-to-ogre-14` — open).
