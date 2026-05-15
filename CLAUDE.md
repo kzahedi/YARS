@@ -53,14 +53,21 @@ The project uses Ogre3D 14.x as a git submodule:
 - **GL Context**: Built with `-DOGRE_GLSUPPORT_USE_EGL=OFF` on both platforms. GLX on Linux, NSOpenGLContext on macOS. EGL is broken on virtio-gpu without virgl (UTM, headless CI under xvfb).
 - **Status**: ✅ Fully functional with OpenGL 3.3+ core renderer; RTSS emits GLSL 1.50 core syntax (`in`/`out`).
 
-### Observer Pattern (Removal In Progress)
-The legacy Observer pattern is being systematically removed:
-- **Status**: Core components (YarsMainControl, RuntimeControl) modernized
-- **Remaining**: ~141 references still need updating
-- **Approach**: Direct method calls replacing message-based communication
-- **Critical Files**: 
-  - `src/yars/util/Observable.h` - Base observable class (to be removed)
-  - `src/yars/util/Observer.h` - Observer interface (to be removed)
+### Observer Pattern (Fully Removed)
+The legacy Observer pattern has been replaced with direct method calls:
+- **Status**: ✅ Complete. `src/yars/util/Observer.h`, `Observable.h`, and
+  `ObservableMessage.h` are deleted from the tree.
+- **Direct calls now drive the simulation lifecycle**:
+  - `YarsMainControl::run()` calls `_ypc->step()`, `_ylc->step()`,
+    `_rtc->step()` directly each loop iteration
+  - Quit signalling uses `__YARS_SET_EXIT(true)` polled by the loop
+    (from `KeyHandler::exitSimulation`, `SignalHandler::sighandler`,
+    `YarsPhysicsModel` when bullet signals quit, and `SdlWindow`
+    on close/Escape)
+  - Reset signalling uses `__YARS_SET_RESET_SIMULATION` similarly
+- **What's gone**: `notifyObservers` calls, `addObserver` wrappers,
+  the `_o`/`_observable` static members, the `notify()` Observer-API
+  method on every component, and the `__M_*` message-type constants.
 
 ### Configuration System
 Currently uses XML with Xerces-C++:
