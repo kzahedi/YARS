@@ -14,6 +14,8 @@
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
 
+#include <memory>
+
 #ifdef USE_VISUALISATION
 #include <yars/view/gui/CameraFactory.h>
 #endif // USE_VISUALISATION
@@ -152,8 +154,7 @@ void YarsConfiguration::__processExportCommand()
 
   if (_programOptions->exportCommand == __PO_OPTION_EXPORT_XSD)
   {
-    YarsXSDGenerator *xsd = new YarsXSDGenerator();
-    // cout << (*xsd) << endl;
+    auto xsd = std::make_unique<YarsXSDGenerator>();
     ofstream myfile;
     stringstream filename;
     filename << "rosiml.xsd";
@@ -161,7 +162,6 @@ void YarsConfiguration::__processExportCommand()
     myfile << (*xsd) << endl;
     myfile.close();
     cout << "rosiml.xsd written to current directory." << endl;
-    delete xsd;
   }
 }
 
@@ -212,21 +212,19 @@ void YarsConfiguration::__readXmlFiles()
   Data::instance()->clear();
   string xml = getXml();
 
-  YarsXSDSaxParser *parser = new YarsXSDSaxParser();
+  auto parser = std::make_unique<YarsXSDSaxParser>();
   // TODO parser should add new xml files to current data-structure (might already be the case?)
   parser->read(xml);
   if (parser->errors() > 0)
   {
-    for (std::vector<string>::iterator i = parser->w_begin(); i != parser->w_end(); i++)
+    for (auto i = parser->w_begin(); i != parser->w_end(); ++i)
       cout << "WARNING: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->e_begin(); i != parser->e_end(); i++)
+    for (auto i = parser->e_begin(); i != parser->e_end(); ++i)
       cout << "ERROR: " << *i << endl;
-    for (std::vector<string>::iterator i = parser->f_begin(); i != parser->f_end(); i++)
+    for (auto i = parser->f_begin(); i != parser->f_end(); ++i)
       cout << "FATAL: " << *i << endl;
-    delete parser;
     exit(-1);
   }
-  delete parser;
 
   if (useRandomSeed())
     Data::instance()->last()->simulator()->setRandomSeed(getRandomSeed());
@@ -243,12 +241,12 @@ void YarsConfiguration::__setCurrent(int index)
 
 void YarsConfiguration::__processProgramOptions()
 {
-  ProgramOptions *po = new ProgramOptions(
+  auto po = std::make_unique<ProgramOptions>(
       _argc, _argv,
       (ConfigurationContainer *)this,
       _keyboardShortcuts,
       _programOptions);
-  delete po;
+  (void)po;
 }
 
 void YarsConfiguration::__validateDirectoriesAndNames()
