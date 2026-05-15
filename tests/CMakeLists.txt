@@ -19,6 +19,8 @@ add_executable(
   types/test_p3d.cpp
   types/test_pose.cpp
   regression/test_braitenberg.cpp
+  unit/test_circular_buffer.cpp
+  integration/test_simulation.cpp
 )
 
 # Link Google Test and minimal YARS libraries
@@ -34,6 +36,13 @@ target_link_libraries(
 target_include_directories(yars_tests PRIVATE
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_SOURCE_DIR}/src/yars
+)
+
+# Bake source root into integration tests so they resolve project paths
+# without walking up from cwd (build/xml is a symlink to xml/, which makes
+# heuristic walks return the build dir as "project root").
+target_compile_definitions(yars_tests PRIVATE
+  YARS_PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )
 
 # Add test discovery
