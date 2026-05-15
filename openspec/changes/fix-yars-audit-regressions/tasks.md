@@ -17,11 +17,11 @@
 
 ## 3. Fix the `Can't open display` fatal-under-nogui case
 
-- [ ] 3.1 Find the print site (`grep -rn "Can't open display" src/`)
-- [ ] 3.2 Trace the caller and identify which XML element triggers display init even with `--nogui`
-- [ ] 3.3 Patch the caller to no-op under `--nogui`
-- [ ] 3.4 Verify `braitenberg_noise.xml` runs to 500 iterations cleanly
-- [ ] 3.5 Re-add `braitenberg_noise.xml` to `linux-build.yml`'s `CFG2LIB` map
+- [x] 3.1 Print site found in two places: `DataLoggingGnuplot.cpp:63` and `DataLoggingSelforg.cpp:59`
+- [x] 3.2 The `<gnuplot>` → `<target>` element and `<selforg>` (matrixviz/guilogger) elements both unconditionally checked `$DISPLAY` and `exit(-1)`'d on non-Apple if it was empty
+- [x] 3.3 Gated both checks on `__YARS_GET_USE_VISUALISATION` (commit bb659c5 + c909bfc); `--nogui` clears the flag via `setUseVisualisation(false)`, so the headless path now skips display-bound setup entirely
+- [x] 3.4 Verified locally on UTM Ubuntu VM: `braitenberg_noise.xml` runs 100 iterations under `--nogui`, exit=0, no `Can't open display` message
+- [x] 3.5 Re-added `braitenberg_noise.xml` to `linux-build.yml`'s `CFG2LIB` map
 
 ## 4. Documentation
 

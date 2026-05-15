@@ -61,7 +61,6 @@ void DataLoggingGnuplot::add(DataParseElement *element)
     // The logger requires a live X display + gnuplot process to plot to;
     // without --gui that infrastructure isn't running, so erroring out on
     // DISPLAY is a false positive for batch / CI / headless audit runs.
-    std::cerr << "[GNUPLOT-DIAG] useVisualisation=" << __YARS_GET_USE_VISUALISATION << std::endl;
     if (!__YARS_GET_USE_VISUALISATION)
     {
       return;
