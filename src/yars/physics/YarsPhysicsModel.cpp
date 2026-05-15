@@ -1,5 +1,6 @@
 #include <yars/physics/YarsPhysicsModel.h>
 #include <yars/view/console/ConsoleView.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 YarsPhysicsModel::YarsPhysicsModel()
 {
@@ -29,12 +30,20 @@ void YarsPhysicsModel::performOneSimulationStep()
   _physics->step();
   if (_physics->isReset())
   {
+    // Physics layer signalled a reset request. The old Observer chain
+    // would notify YarsMainControl which called reset(); that chain is
+    // gone, so reset directly. Bracketing with pause prevents the
+    // physics from stepping while the reset is in progress.
     __YARS_SET_USE_PAUSE(true);
-    notifyObservers(_m_reset);
+    __YARS_SET_RESET_SIMULATION;
     __YARS_SET_USE_PAUSE(false);
   }
   if (_physics->isQuit())
-    notifyObservers(_m_quit_called);
+  {
+    // Physics layer signalled a quit request. Set the global exit flag
+    // that YarsMainControl::run()'s loop polls.
+    __YARS_SET_EXIT(true);
+  }
 }
 
 void YarsPhysicsModel::performMultipleSimulationSteps(int numberOfSteps)

@@ -1,11 +1,10 @@
 #ifndef __YARS_PHYSICS_MODEL_H__
 #define __YARS_PHYSICS_MODEL_H__
 
-#include <yars/util/Observable.h>
 #include <yars/physics/PhysicsInterface.h>
 #include <yars/physics/bullet/BulletPhysics.h>
 
-class YarsPhysicsModel : public Observable
+class YarsPhysicsModel
 {
   public:
     YarsPhysicsModel();

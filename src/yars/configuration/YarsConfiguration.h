@@ -1,7 +1,6 @@
 #ifndef __YARS_CONFIGURATION_CONTROL_H__
 #define __YARS_CONFIGURATION_CONTROL_H__
 
-#include <yars/util/Observable.h>
 #include <yars/configuration/container/ConfigurationContainer.h>
 #include <yars/configuration/container/KeyboardShortcuts.h>
 #include <yars/configuration/container/ProgramOptionsConfiguration.h>
@@ -73,8 +72,7 @@ namespace yars {
 /* \brief Catches ObservableMessage and translates them to function calls of
  * YarsConfigurationModel.
  */
-class YarsConfiguration : public Observable,
-                          public ConfigurationContainer
+class YarsConfiguration : public ConfigurationContainer
 {
 public:
   static YarsConfiguration *instance();
