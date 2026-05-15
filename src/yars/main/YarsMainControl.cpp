@@ -167,33 +167,13 @@ void YarsMainControl::__closeApplication()
   // GUI quit was already signaled before component cleanup (see above)
 }
 
-void YarsMainControl::notify(ObservableMessage *message)
-{
-  // only catch and send messages here.
-  // work as a router and broadcaster
-  switch (message->type())
-  {
-  case __M_ERROR:
-    Y_FATAL("Error occured");
-    cout << YarsErrorHandler::instance()->message() << endl;
-    // TODO: close stuff before exiting
-    __closeApplication();
-    break;
-  case __M_QUIT_CALLED:
-    _keepOnRunning = false;
-    break;
-  case __M_RESET:
-    YarsConfiguration::instance()->reset();
-    // Reset handling - no longer uses observer pattern
-    break;
-  case __M_AUTO_TOGGLE_CAPTURE_VIDEO:
-    // Video capture handling - no longer uses observer pattern
-    break;
-  case __M_SIGNAL_HANDLER_ACTIVATED:
-    // Signal handling - no longer uses observer pattern
-    _keepOnRunning = false;
-    break;
-  }
-}
+// notify() was the Observer-pattern entry point and is dead now —
+// nothing subscribed YarsMainControl as an observer of anything.
+// Equivalent behaviour now lives in:
+//   __M_ERROR              -> YarsErrorHandler::push() exits directly
+//   __M_QUIT_CALLED        -> KeyHandler::exitSimulation sets __YARS_SET_EXIT
+//   __M_RESET              -> YarsPhysicsModel sets __YARS_SET_RESET_SIMULATION
+//   __M_SIGNAL_HANDLER_*   -> SignalHandler::sighandler sets __YARS_SET_EXIT
+// The run() loop polls both flags every iteration.
 
 } // namespace yars

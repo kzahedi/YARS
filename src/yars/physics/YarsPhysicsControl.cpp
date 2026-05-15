@@ -22,42 +22,8 @@ void YarsPhysicsControl::setModel(YarsPhysicsModel *model)
 
 
 
-void YarsPhysicsControl::notify(ObservableMessage *message)
-{
-  Y_DEBUG("YarsPhysicsControl: caught message with type %d and text \"%s\"", message->type(), message->string().c_str());
-  switch(message->type())
-  {
-    case __M_INIT:
-      _model->initialisePhysics();
-      break;
-    case __M_NEXT_STEP:
-      if(!__YARS_GET_USE_PAUSE || (__YARS_GET_USE_PAUSE && __YARS_GET_USE_SINGLE_STEP))
-      {
-        // pthread_mutex_lock(&_updateMutex);
-        _model->performOneSimulationStep();
-        __YARS_SET_USE_SINGLE_STEP(false); // wait for next 'S' in case of pause
-        // pthread_mutex_unlock(&_updateMutex);
-      }
-      else
-      {
-#ifndef _MSC_VER
-        usleep(100);
-#else // _MSC_VER
-        cout << "Pause not supported in windows version" << endl;
-#endif // _MSC_VER
-      }
-      break;
-    case __M_RESET:
-      Y_DEBUG("YarsPhysicsControl: processing reset");
-      // pthread_mutex_lock(&_updateMutex);
-      _model->reset();
-      // pthread_mutex_unlock(&_updateMutex);
-      break;
-    case __M_QUIT:
-      // Model lifetime is owned by YarsMainControl; do not delete here.
-      break;
-  }
-}
+// notify() was the Observer entry point and is gone — YarsMainControl::run()
+// now calls init() / step() / reset() / quit() directly.
 
 // Direct control methods
 void YarsPhysicsControl::init()

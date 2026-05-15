@@ -1,7 +1,6 @@
 #ifndef __YARS_LOGGING_CONTROL_H__
 #define __YARS_LOGGING_CONTROL_H__
 
-#include <yars/util/Observer.h>
 #include <yars/logging/YarsLoggingModel.h>
 
 class YarsLoggingControl
@@ -10,9 +9,8 @@ class YarsLoggingControl
     YarsLoggingControl();
     virtual ~YarsLoggingControl() { };
 
-    void notify(ObservableMessage *message); // Keep for compatibility
     void setModel(YarsLoggingModel *model);
-    
+
     // Direct control methods
     void init();
     void step();

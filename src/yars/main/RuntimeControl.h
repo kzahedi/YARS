@@ -1,8 +1,6 @@
 #ifndef __RUNTIME_CONTROL_H__
 #define __RUNTIME_CONTROL_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/Observer.h>
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Timer.h>
 #include <functional>
@@ -21,14 +19,6 @@ class RuntimeControl
     RuntimeControl();
     ~RuntimeControl();
 
-    /** \brief Implements the runtime control.
-     *
-     * \param[in]  __M_NEXT_STEP
-     * \param[out] __M_RESET
-     * \param[out] __M_QUIT_CALLED
-     */
-    void notify(ObservableMessage *message);
-    
     void init();
     void step();
     void reset();

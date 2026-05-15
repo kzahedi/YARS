@@ -1,8 +1,6 @@
 #ifndef __YARS_MAIN_CONTROL_H__
 #define __YARS_MAIN_CONTROL_H__
 
-#include <yars/util/Observable.h>
-#include <yars/util/Observer.h>
 #include <functional>
 
 #include <yars/main/RuntimeControl.h>
@@ -22,43 +20,17 @@ namespace yars {
 
 /** \brief This class does the main control.
  *
- * It connects the observers and
- * observables, and initiates the run.
+ * Owns the simulation lifecycle: configuration init, physics setup,
+ * logging setup, and the run loop.
  */
 class YarsMainControl
 {
 public:
-  /** \brief Standard constructor.
-     *
-     * Takes argc and argv.
-     *
-     * \param[in] argc, from main(int argc, char **argv)
-     * \param[in] argv, from main(int argc, char **argv)
-     */
   YarsMainControl(int argc, char **argv);
-  /** \brief Desctructor.
-     *
-     * Closes cleans up
-     *
-     */
   ~YarsMainControl();
 
-  /** \brief Called from Observables.
-     *
-     * \param[in] __M_QUIT_CALLED
-     * \param[in] __M_RESET
-     */
-  void notify(ObservableMessage *message);
-  /** \brief Starts the main-loop.
-     *
-     * \param[out] __M_TOGGLE_CAMERA_FOLLOW_MODE
-     * \param[out] __M_TOGGLE_SYNCED_GUI
-     * \param[out] __M_TOGGLE_CAPTURE_VIDEO
-     * \param[out] __M_INIT
-     * \param[out] __M_NEXT_STEP
-     * \param[out] __M_QUIT_CALLED
-     * \param[out] __M_QUIT
-     */
+  /** \brief Starts the main-loop. Returns when __YARS_GET_EXIT becomes true
+     *  or when the iteration cap (RuntimeControl::shouldQuit) is reached. */
   void run();
 
   /** \brief Register a callback called after each physics step (for GUI sync). */

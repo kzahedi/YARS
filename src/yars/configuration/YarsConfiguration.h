@@ -69,8 +69,9 @@
 
 namespace yars {
 
-/* \brief Catches ObservableMessage and translates them to function calls of
- * YarsConfigurationModel.
+/** \brief Singleton holding global YARS configuration state.
+ *
+ * Inherits the actual getter/setter surface from ConfigurationContainer.
  */
 class YarsConfiguration : public ConfigurationContainer
 {
