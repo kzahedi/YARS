@@ -313,7 +313,6 @@ void SdlWindow::handleEvent(SDL_Event &event)
       break;
     case SDL_WINDOWEVENT_CLOSE:
       _closed = true;
-      KeyHandler::notifyObservers(_m_closeWindow);
       break;
     case SDL_WINDOWEVENT_RESIZED:
       _window->resize(event.window.data1, event.window.data2);
@@ -758,7 +757,6 @@ void SdlWindow::__toggleFollowing()
 void SdlWindow::__toggleWriteFrames()
 {
   _imgCaptureRunning = !_imgCaptureRunning;
-  KeyHandler::notifyObservers(_m_toggleSyncedGui);
   if (_imgCaptureRunning)
     __YARS_OPEN_FRAMES_DIRECTORY;
 }
@@ -767,7 +765,6 @@ void SdlWindow::__toggleWriteFrames()
 void SdlWindow::__toggleCaptureMovie()
 {
   _captureRunning = !_captureRunning;
-  KeyHandler::notifyObservers(_m_toggleSyncedGui);
   if (_captureRunning)
   {
     __initMovie();

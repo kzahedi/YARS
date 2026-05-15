@@ -2,7 +2,6 @@
 #define __KEY_HANDLER_H__
 
 #include <yars/configuration/container/KeyboardShortcuts.h>
-#include <yars/util/Observable.h>
 
 #include <vector>
 #include <map>
@@ -20,17 +19,13 @@ struct KeyEventData
 
 typedef std::map<int, KeyEventData> KeyEventContainer;
 
-class KeyHandler : public Observable
+class KeyHandler
 {
   public:
 
     static KeyHandler*  instance();
     static void         registerKeyboardShortcuts();
     static int          handleKeyEvent(bool alt, bool ctrl, bool shift, char c);
-
-    static void         addObserver(Observer* o);
-    static void         removeObserver(Observer* o);
-    static void         notifyObservers(ObservableMessage *message);
 
     // events
     static void         printKeyCommands();
@@ -51,7 +46,6 @@ class KeyHandler : public Observable
     static void         openNewWindow();
     static void         toggleCaptureVideo();
     static void         toggleCaptureFrames();
-    // static void         closeWindow();
 
   protected:
     KeyHandler();
@@ -63,7 +57,6 @@ class KeyHandler : public Observable
     static KeyHandler        *_me;
 
     static std::vector<int>   _registeredKeyEventCodes;
-    static Observable        *_o;
     static KeyboardShortcuts *_keyboardShortcuts;
 };
 #endif // __KEY_HANDLER_H__

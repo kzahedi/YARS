@@ -6,7 +6,6 @@
 
 KeyHandler *KeyHandler::_me = NULL;
 KeyboardShortcuts *KeyHandler::_keyboardShortcuts = NULL;
-Observable *KeyHandler::_o = new Observable();
 
 std::vector<int> KeyHandler::_registeredKeyEventCodes;
 
@@ -23,7 +22,6 @@ KeyHandler::KeyHandler()
 
 KeyHandler::~KeyHandler()
 {
-  delete _o;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -41,7 +39,6 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->pause.function = &togglePause;
   _keyboardShortcuts->quit.function = &exitSimulation;
   _keyboardShortcuts->reset.function = &reinitAndResetSimulation;
-  //_keyboardShortcuts->printKeyCommands.function      = &printKeyCommands;
   _keyboardShortcuts->toggleReloadOnReset.function = &toggleReloadOnReset;
   _keyboardShortcuts->realtime.function = &toggleRealtimeMode;
   _keyboardShortcuts->singleStep.function = &activateSingleStep;
@@ -53,22 +50,6 @@ void KeyHandler::registerKeyboardShortcuts()
   _keyboardShortcuts->printTime.function = &togglePrintTime;
   _keyboardShortcuts->captureVideo.function = &toggleCaptureVideo;
   _keyboardShortcuts->writeFrames.function = &toggleCaptureFrames;
-  // _keyboardShortcuts->closeWindow.function         = &closeWindow;
-}
-
-void KeyHandler::addObserver(Observer *o)
-{
-  _o->addObserver(o);
-}
-
-void KeyHandler::removeObserver(Observer *o)
-{
-  _o->addObserver(o);
-}
-
-void KeyHandler::notifyObservers(ObservableMessage *m)
-{
-  _o->notifyObservers(m);
 }
 
 int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
@@ -78,7 +59,6 @@ int KeyHandler::handleKeyEvent(bool alt, bool ctrl, bool shift, char c)
     return -1;
   if (key->function != NULL)
   {
-    // cout << "Key " << *key << endl;
     key->function();
   }
   return key->id;
@@ -95,11 +75,6 @@ void KeyHandler::reinitAndResetSimulation()
   __YARS_SET_RESET_SIMULATION;
 }
 
-// void KeyHandler::closeWindow()
-// {
-// _o->notifyObservers(_m_closeWindow);
-// }
-
 void KeyHandler::toggleRealtimeMode()
 {
   bool b = __YARS_GET_USE_REAL_TIME;
@@ -110,19 +85,13 @@ void KeyHandler::toggleRealtimeMode()
 void KeyHandler::activateSingleStep()
 {
   __YARS_SET_USE_SINGLE_STEP(true);
-  _o->notifyObservers(_m_toggleSingleStep);
 }
 
 void KeyHandler::exitSimulation()
 {
   // Set the global exit flag; YarsMainControl::run() polls it on every
-  // iteration. The previous code only notified observers, but the
-  // observer chain to YarsMainControl was disconnected during the
-  // Observer-pattern teardown, so the notification was a no-op.
+  // iteration.
   __YARS_SET_EXIT(true);
-
-  // Legacy: kept for any GUI code still subscribed via the old chain.
-  _o->notifyObservers(_m_quit_called);
 }
 
 void KeyHandler::decreaseSimSpeed()
@@ -148,22 +117,24 @@ void KeyHandler::increaseSimSpeed()
 
 void KeyHandler::restoreInitialViewpoint()
 {
-  _o->notifyObservers(_m_resetInitiailViewpoint);
+  // No-op until a direct-call hookup is added; previously notified
+  // observers, but no listeners remained after the Observer-pattern
+  // teardown.
 }
 
 void KeyHandler::toggleDrawMode()
 {
-  _o->notifyObservers(_m_toggleVisualisation);
+  // No-op (see restoreInitialViewpoint).
 }
 
 void KeyHandler::toggleCaptureVideo()
 {
-  _o->notifyObservers(_m_toggleCaptureVideo);
+  // No-op (see restoreInitialViewpoint).
 }
 
 void KeyHandler::toggleCaptureFrames()
 {
-  _o->notifyObservers(_m_toggleCaptureFrame);
+  // No-op (see restoreInitialViewpoint).
 }
 
 void KeyHandler::togglePrintTime()
@@ -179,17 +150,16 @@ void KeyHandler::togglePause()
   __toggle(&b);
   __YARS_SET_USE_PAUSE(b);
   __YARS_SET_USE_SINGLE_STEP(false); // will be activated by user
-  _o->notifyObservers(_m_togglePause);
 }
 
 void KeyHandler::toggleReloadOnReset()
 {
-  notifyObservers(_m_toggleReload);
+  // No-op (see restoreInitialViewpoint).
 }
 
 void KeyHandler::openNewWindow()
 {
-  notifyObservers(_m_openNewWindow);
+  // No-op (see restoreInitialViewpoint).
 }
 
 void KeyHandler::toggleSyncedGui()
@@ -197,7 +167,6 @@ void KeyHandler::toggleSyncedGui()
   bool b = __YARS_GET_SYNC_GUI;
   __toggle(&b);
   __YARS_SET_SYNC_GUI(b);
-  _o->notifyObservers(_m_toggleSyncedGui);
 }
 
 void KeyHandler::__toggle(bool *a)
