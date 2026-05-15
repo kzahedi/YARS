@@ -127,10 +127,10 @@ add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})
 
 # Modern CMake: Use imported targets and cleaner dependency management
 # Note: XercesC may not provide modern imported targets, fallback to old approach
-target_link_libraries(YarsConfiguration 
+target_link_libraries(YarsConfiguration
   PRIVATE
     ${XERCESC_LIBRARY_FILE}
-    Boost::program_options
+    CLI11::CLI11
     YarsUtil
 )
 

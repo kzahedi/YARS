@@ -5,21 +5,8 @@ include(CMakeDetermineCXXCompiler)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Handle modern Boost CMake policy (introduced in CMake 3.30)
-if(POLICY CMP0167)
-  cmake_policy(SET CMP0167 NEW)
-endif()
-
-# Modern Boost handling
-if(APPLE)
-  set(Boost_USE_STATIC_LIBS ON)
-endif(APPLE)
-find_package(Boost REQUIRED COMPONENTS program_options)
-# Modern CMake: Use imported targets instead of include directories
-# For header-only libraries like circular_buffer, we still need include directories
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-endif()
+# CLI11 for command-line parsing (replaces boost::program_options)
+find_package(CLI11 CONFIG REQUIRED)
 
 find_package(XercesC REQUIRED)
 # Modern CMake: Use imported targets instead of manual includes
@@ -118,10 +105,6 @@ if(YARS_TESTCASES)
   ENDIF(UNITTEST++_FOUND)
 endif(YARS_TESTCASES)
 
-
-if(NOT Boost_FOUND)
-  set(stop TRUE)
-endif(NOT Boost_FOUND)
 
 if(NOT XERCESC_FOUND)
   set(stop TRUE)

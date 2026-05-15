@@ -5,14 +5,11 @@
 #include <yars/configuration/container/ConfigurationContainer.h>
 #include <yars/configuration/container/KeyboardShortcuts.h>
 
+#include <CLI/CLI.hpp>
+
 #include <string>
 #include <vector>
 #include <iostream>
-
-#include <boost/program_options.hpp>
-
-using namespace std;
-using namespace boost::program_options;
 
 class ProgramOptions
 {
@@ -25,7 +22,6 @@ class ProgramOptions
   private:
 
     // functions to handle command line arguments
-    void __help();
     void __version();
     void __license();
 
@@ -61,25 +57,55 @@ class ProgramOptions
     void __useCR();
     void __geometry();
     void __setRandomSeed();
-    int  __getX(string s);
-    int  __getY(string s);
-    int  __getW(string s);
-    int  __getH(string s);
+    int  __getX(std::string s);
+    int  __getY(std::string s);
+    int  __getW(std::string s);
+    int  __getH(std::string s);
 
     // end
     void __parseProgramOptionsParameters();
     void __exit(int returnValue);
-    string __writeBool(bool b);
+    std::string __writeBool(bool b);
 
     ConfigurationContainer   *_cc;
 
-    variables_map _vm;
-    options_description _visible;
-    options_description _config_file_options;
-    parsed_options _parsed;
+    CLI::App _app;
     KeyboardShortcuts *_keyboardShortcuts;
     ProgramOptionsConfiguration *_configuration;
+
+    // Flags to track which options were provided
+    bool _helpRequested = false;
+    bool _versionRequested = false;
+    bool _licenseRequested = false;
+    bool _debugSet = false;
+    bool _silentSet = false;
+    bool _simFreqSet = false;
+    bool _ctrlFreqSet = false;
+    bool _randomSeedSet = false;
+    bool _followSet = false;
+    bool _videoCaptureSet = false;
+    bool _captureFrameRateSet = false;
+    bool _captureNameSet = false;
+    bool _captureDirSet = false;
+    bool _framesDirSet = false;
+    bool _captureSet = false;
+    bool _pauseSet = false;
+    bool _realtimeSet = false;
+    bool _textureSet = false;
+    bool _guiSet = false;
+    bool _controllerSet = false;
+    bool _traceSet = false;
+    bool _printTimeSet = false;
+    bool _osdSet = false;
+    bool _geometrySet = false;
+    bool _printRobotConfigSet = false;
+    bool _texturesPathSet = false;
+    bool _libPathSet = false;
+    bool _xmlSet = false;
+    bool _printConfigSet = false;
+    bool _printKeyboardSet = false;
+    bool _loggingSet = false;
+    bool _useCRSet = false;
 };
 
 #endif // __YARS_PROGRAM_OPTIONS_PARSER_H__
-

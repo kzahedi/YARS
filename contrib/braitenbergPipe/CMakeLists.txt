@@ -4,5 +4,5 @@ target_link_libraries(braitenberg-pipe YarsUtil
                                        YarsNamedPipeCom
                                        YarsRobotController
                                        YarsConfiguration
-                                       ${Boost_LIBRARIES})
+)
 

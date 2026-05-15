@@ -1,6 +1,8 @@
 #include "SdlWindow.h"
 
 #include <filesystem>
+#include <unistd.h>
+
 #include <yars/configuration/data/Data.h>
 #include <yars/configuration/YarsConfiguration.h>
 #include <yars/view/gui/KeyHandler.h>

@@ -2,6 +2,8 @@
 #include <yars/view/gui/KeyHandler.h>
 #include <yars/util/Random.h>
 
+#include <unistd.h>
+
 // #ifdef SUPPRESS_ALL_OUTPUT
 #define PRINT_START_UP_MESSAGE(a) ;
 // #else

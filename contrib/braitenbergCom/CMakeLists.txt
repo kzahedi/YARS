@@ -5,5 +5,5 @@ target_link_libraries(braitenberg-tcpip YarsClientCom
                                   YarsConfiguration
                                   YarsUtil
                                   pthread
-                                  ${Boost_LIBRARIES})
+)
 
