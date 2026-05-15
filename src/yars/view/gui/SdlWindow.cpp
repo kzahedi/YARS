@@ -680,7 +680,6 @@ void SdlWindow::__processKeyEvent(char chr, int mod)
     break;
   case YarsKeyFunction::CloseWindow:
     _closed = true;
-    KeyHandler::notifyObservers(_m_closeWindow);
     break;
     // case YarsKeyFunction::ToggleTraces:
     // _windowConfiguration->useTraces = !_windowConfiguration->useTraces;
