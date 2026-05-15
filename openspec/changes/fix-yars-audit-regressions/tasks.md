@@ -2,18 +2,18 @@
 
 ## 1. Reproduce and triage the pthread_mutex assertion
 
-- [ ] 1.1 In the Linux UTM VM, run `./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg_light_source.xml` and confirm the assertion fires
-- [ ] 1.2 Same for `braitenberg_zoo.xml`
-- [ ] 1.3 Add a temporary `#include <pthread.h>` + `pthread_mutexattr_settype(..., PTHREAD_MUTEX_ERRORCHECK)` patch in `DataController.cpp` to convert the assert into an `errno` return; rerun to see the error code (`EDEADLK` vs `EINVAL` vs `EPERM` localises the bug class)
-- [ ] 1.4 If reproducible: run under `valgrind --tool=helgrind` to dump the offending lock site
-- [ ] 1.5 Identify which mutex (in which file) is being locked incorrectly
+- [x] 1.1 Reproduced 100% deterministically on Ubuntu 22.04 arm64 (UTM): `pthread_mutex_lock.c:94 Assertion 'mutex->__data.__owner == 0' failed`
+- [x] 1.2 Same assertion on `braitenberg_zoo.xml`
+- [x] 1.3 Skipped the ERRORCHECK route — gdb backtrace was sufficient and cheaper
+- [x] 1.4 Helgrind didn't reproduce (slowdown masked the race), but gdb backtrace pinpointed `DataGenericLightDependentResistorSensor::getInternalDomain → YM_LOCK → pthread_mutex_lock(&_mutex)`
+- [x] 1.5 Mutex: `_mutex` declared in 17 Data* class headers (Actuator, AngularMotor, Generic*, Hinge*, Slider*, Muscle*, Object*Sensor, etc.) but never initialised via `pthread_mutex_init` or `PTHREAD_MUTEX_INITIALIZER`. The garbage in the uninitialised memory occasionally looked enough like an unlocked mutex that `lll_mutex_lock` succeeded — but the `__owner` field was non-zero, triggering the post-lock assertion.
 
 ## 2. Fix the pthread_mutex bug
 
-- [ ] 2.1 Apply the minimal correct fix (likely: change attr to `RECURSIVE` if a single thread re-locks legitimately, or fix the locking call site if double-lock is the actual bug)
-- [ ] 2.2 Verify on both `braitenberg_light_source.xml` and `braitenberg_zoo.xml`
-- [ ] 2.3 Spot-check that `braitenberg.xml` and `braitenberg_logging.xml` (which were green) still pass after the fix
-- [ ] 2.4 Re-add both configs to `linux-build.yml`'s `CFG2LIB` map
+- [x] 2.1 Applied C++11 in-class default-member-init with `PTHREAD_MUTEX_INITIALIZER` to all 17 affected headers (commit e1c9e6e). One-line edit per file, no constructor surgery needed; equivalent to `pthread_mutex_init(&m, NULL)` at construction time.
+- [x] 2.2 Verified both configs run 500 iterations cleanly: `braitenberg_light_source.xml` exit=0, `braitenberg_zoo.xml` exit=0
+- [x] 2.3 Spot-checked the previously-green configs (`braitenberg`, `braitenberg_logging`, `braitenberg_trace_projection`, `braitenberg_noise`, `muscle`) — all still exit 0 at 500 iterations
+- [x] 2.4 Re-added both configs to `linux-build.yml`'s `CFG2LIB` map
 
 ## 3. Fix the `Can't open display` fatal-under-nogui case
 
@@ -25,5 +25,11 @@
 
 ## 4. Documentation
 
-- [ ] 4.1 Remove the `# Three configs are temporarily excluded` comment block from `linux-build.yml` once all three are back in the audit
-- [ ] 4.2 Note the underlying bug class in `CLAUDE.md`'s "Known Working Features" → "Future" section if it matters for contributors
+- [x] 4.1 Removed the temporary-exclusion comment block from `linux-build.yml` — all three configs back in the audit corpus
+- [ ] 4.2 Note the underlying bug class in `CLAUDE.md`'s "Known Working Features" → "Future" section if it matters for contributors. **Pending** — low priority; the fix is now in the codebase and the audit will catch regressions.
+
+---
+
+This change is **complete**. All three originally-excluded configs run cleanly under `--nogui` for 500 iterations. Two real YARS bugs fixed:
+1. Headless DISPLAY no longer fatal under `--nogui` (DataLoggingGnuplot + DataLoggingSelforg)
+2. Uninitialised `_mutex` member in 17 Data* classes (PTHREAD_MUTEX_INITIALIZER in-class init)

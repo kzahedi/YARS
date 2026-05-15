@@ -136,19 +136,13 @@ jobs:
           mkdir -p linux-audit-logs
           FAILED=0
           # Map of XML config -> required controller lib name (no prefix/suffix)
-          # Two configs are temporarily excluded — pthread_mutex_lock assertion
-          # under --nogui (a real YARS concurrency bug):
-          #   - braitenberg_light_source.xml
-          #   - braitenberg_zoo.xml
-          # Tracked in openspec change `fix-yars-audit-regressions`.
-          # braitenberg_noise.xml is back in the corpus: its earlier exit=255
-          # came from DataLoggingGnuplot/Selforg treating missing $DISPLAY as
-          # fatal even under --nogui, fixed in commit bb659c5.
           declare -A CFG2LIB=(
             ["xml/braitenberg.xml"]="YarsControllerBraitenberg2b"
             ["xml/braitenberg_noise.xml"]="YarsControllerBraitenberg2b"
             ["xml/braitenberg_logging.xml"]="YarsControllerBraitenberg3b"
+            ["xml/braitenberg_light_source.xml"]="YarsControllerBraitenberg2b"
             ["xml/braitenberg_trace_projection.xml"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_zoo.xml"]="YarsControllerBraitenberg2a"
             ["xml/muscle.xml"]="YarsControllerSquareWave"
             ["xml/joints/generic_angular.xml"]="YarsControllerSine"
             ["xml/joints/generic_force.xml"]="YarsControllerSine"
