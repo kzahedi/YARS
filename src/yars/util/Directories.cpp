@@ -3,6 +3,7 @@
 #include <yars/util/StringTokeniser.h>
 #include <yars/util/Timer.h>
 #include <yars/util/FileSystemOperations.h>
+#include <yars/configuration/YarsConfiguration.h>
 
 #define YARS_DIR_ROSIML_NAME "RoSiML.xsd"
 #define YARS_CONFIG_FILE_NAME ".yarsrc"
@@ -405,6 +406,19 @@ void Directories::toString(string prefix, string *returnString)
 void Directories::__setupLibsDirectories()
 {
   string home(getenv("HOME"));
+
+  // User-specified --lib <path> takes priority. The help text says
+  // "Path to <path>/lib"; in practice users pass either the parent
+  // directory (containing a lib/ subdir) or the lib/ directory itself.
+  // Accept both — push the lib/-appended variant first, then the bare
+  // path as a fallback.
+  string userLib = __YARS_GET_GLOBAL_LIBRARIES;
+  if (!userLib.empty())
+  {
+    _libPathCandidates.push_back(userLib + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
+    _libPathCandidates.push_back(userLib);
+  }
+
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR);
   _libPathCandidates.push_back(YARS_DIR_CURRENT_DIR + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
   _libPathCandidates.push_back(home + YARS_DIR_DELIMITER + YARS_DIR_LOCAL_YARS_DIR + YARS_DIR_DELIMITER + YARS_DIR_LIB_DIR);
