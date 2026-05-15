@@ -7,6 +7,7 @@
 
 #include <OGRE/Ogre.h>
 #include <unistd.h>
+#include <algorithm>
 
 namespace yars {
 
@@ -45,7 +46,7 @@ YarsViewModel::YarsViewModel()
       _ogreHandler = OgreHandler::instance();
       initialiseView();
       _ogreHandler->setupSceneManager();
-      for (auto *i : _windowManager) if (i) i->setupOSD();
+      for (auto &i : _windowManager) if (i) i->setupOSD();
       if (__YARS_GET_USE_CAPTURE_CL || __YARS_GET_FRAMES_DIRECTORY.length() > 0)
         toggleCaptureVideo();
     }
@@ -77,11 +78,6 @@ YarsViewModel::YarsViewModel()
   }
 }
 
-YarsViewModel::~YarsViewModel()
-{
-  Y_DEBUG("YarsViewModel destructor called.");
-}
-
 void YarsViewModel::initialiseView()
 {
   DataRobotSimulationDescription *data = __YARS_CURRENT_DATA;
@@ -105,11 +101,11 @@ void YarsViewModel::visualiseScene()
 
   _ogreHandler->step();
 
-  for (auto *i : _windowManager) if (i) i->step();
+  for (auto &i : _windowManager) if (i) i->step();
 
   while (SDL_PollEvent(&_event))
   {
-    for (auto *i : _windowManager) if (i) i->handleEvent(_event);
+    for (auto &i : _windowManager) if (i) i->handleEvent(_event);
   }
 }
 
@@ -117,7 +113,7 @@ void YarsViewModel::reset()
 {
   if (_ogreHandler != NULL)
     _ogreHandler->reset();
-  for (auto *i : _windowManager) i->reset();
+  for (auto &i : _windowManager) i->reset();
 }
 
 void YarsViewModel::quit()
@@ -130,9 +126,7 @@ void YarsViewModel::quit()
 
 void YarsViewModel::__createWindow()
 {
-  SdlWindow *wm = new SdlWindow(_windowManager.size());
-  // TODO: Observer pattern not implemented - wm->addObserver(this);
-  _windowManager.push_back(wm);
+  _windowManager.emplace_back(std::make_unique<SdlWindow>(_windowManager.size()));
 }
 
 void YarsViewModel::createNewWindow()
@@ -140,8 +134,7 @@ void YarsViewModel::createNewWindow()
   if (_ogreHandler == NULL)
     return; // Can't create windows without GUI
 
-  SdlWindow *wm = new SdlWindow(_windowManager.size() + _newWindows.size());
-  // TODO: Observer pattern not implemented - wm->addObserver(this);
+  auto wm = std::make_unique<SdlWindow>(_windowManager.size() + _newWindows.size());
 #ifdef USE_CAPTURE_VIDEO
   if (wm->captureRunning())
   {
@@ -152,7 +145,7 @@ void YarsViewModel::createNewWindow()
   wm->wait();
   _ogreHandler->step();
   wm->step();
-  _newWindows.push_back(wm);
+  _newWindows.push_back(std::move(wm));
   _timeStamp = Timer::getTime();
   _first++;
 }
@@ -162,21 +155,18 @@ void YarsViewModel::createNewWindow()
 
 void YarsViewModel::cleanupWindows()
 {
-  vector<SdlWindow *> toBeDeleted;
-  for (auto *i : _windowManager)
+  // Erase-remove: close each window that reports closed(), then drop
+  // it from the manager — unique_ptr destructor runs as part of erase.
+  for (auto &i : _windowManager)
   {
-    if (i->closed()) toBeDeleted.push_back(i);
+    if (i && i->closed()) i->close();
   }
-
-  // toBeDeleted holds raw pointers to elements still owned by _windowManager;
-  // erase from _windowManager via std::find for each, since erasing through
-  // a foreign iterator is undefined behaviour.
-  for (auto *i : toBeDeleted)
-  {
-    i->close();
-    auto it = std::find(_windowManager.begin(), _windowManager.end(), i);
-    if (it != _windowManager.end()) _windowManager.erase(it);
-  }
+  _windowManager.erase(
+      std::remove_if(_windowManager.begin(), _windowManager.end(),
+                     [](const std::unique_ptr<SdlWindow> &w) {
+                       return !w || w->closed();
+                     }),
+      _windowManager.end());
 }
 
 void YarsViewModel::run()
@@ -191,7 +181,7 @@ void YarsViewModel::run()
 #ifdef USE_CAPTURE_VIDEO
         if (_toggleVideo == true)
         {
-          for (auto *i : _windowManager) i->captureVideo();
+          for (auto &i : _windowManager) i->captureVideo();
         }
 #endif // USE_CAPTURE_VIDEO
         _syncedStep = false;
@@ -211,19 +201,22 @@ void YarsViewModel::run()
     // completing its last synced step, preventing a race condition where
     // the GUI exits before physics finishes the final synched() handshake.
 
-    for (auto *i : _newWindows)
+    // Move any newly-created windows over to the main manager. After
+    // the move, _newWindows entries are null; clear them in one shot.
+    for (auto &i : _newWindows)
     {
-      if (!i->added())
+      if (i)
       {
-        _windowManager.push_back(i);
         i->setAdded();
+        _windowManager.push_back(std::move(i));
       }
     }
+    _newWindows.clear();
   }
 
   // Cleanup SDL resources on main thread after main loop exits
   Y_DEBUG("YarsViewModel::run() main loop exited, cleaning up SDL resources on main thread")
-  for (auto *i : _windowManager)
+  for (auto &i : _windowManager)
   {
     i->quit(); // finalize video capture before destroying window
     i->close();
@@ -243,7 +236,7 @@ void YarsViewModel::synched()
 
 void YarsViewModel::toggleShadows()
 {
-  for (auto *i : _windowManager) i->toggleShadows();
+  for (auto &i : _windowManager) i->toggleShadows();
 }
 
 void YarsViewModel::toggleCaptureVideo()
@@ -254,12 +247,12 @@ void YarsViewModel::toggleCaptureVideo()
 #if USE_CAPTURE_VIDEO
   if (_toggleVideo == true)
   {
-    for (auto *i : _windowManager) i->startCaptureVideo();
+    for (auto &i : _windowManager) i->startCaptureVideo();
   }
   else
   {
     cout << "stopped video recording" << endl;
-    for (auto *i : _windowManager) i->stopCaptureVideo();
+    for (auto &i : _windowManager) i->stopCaptureVideo();
   }
 #endif // USE_CAPTURE_VIDEO
 }

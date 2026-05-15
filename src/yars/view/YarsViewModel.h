@@ -6,6 +6,7 @@
 #include <yars/view/gui/SdlWindow.h>
 
 #include <SDL2/SDL.h>
+#include <memory>
 
 namespace yars {
 
@@ -13,7 +14,7 @@ class YarsViewModel
 {
   public:
     YarsViewModel();
-    ~YarsViewModel();
+    ~YarsViewModel() = default;
 
     void initialiseView();
     void reset();
@@ -32,8 +33,8 @@ class YarsViewModel
     void __newWindow();
     void __createWindow();
 
-    std::vector<SdlWindow*> _windowManager;
-    std::vector<SdlWindow*> _newWindows;
+    std::vector<std::unique_ptr<SdlWindow>> _windowManager;
+    std::vector<std::unique_ptr<SdlWindow>> _newWindows;
     int                     _drawFequency;
     int                     _visualiseCalled;
     volatile bool           _run;
