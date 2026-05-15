@@ -26,7 +26,7 @@
 ## 4. Documentation
 
 - [x] 4.1 Removed the temporary-exclusion comment block from `linux-build.yml` — all three configs back in the audit corpus
-- [ ] 4.2 Note the underlying bug class in `CLAUDE.md`'s "Known Working Features" → "Future" section if it matters for contributors. **Pending** — low priority; the fix is now in the codebase and the audit will catch regressions.
+- [x] 4.2 Not done; intentionally skipped. The fix is in the code (17 `pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;` in-class inits) and the CI audit corpus catches any regression by running every controller-based XML for 500 iterations on every push. A CLAUDE.md note would duplicate that signal without adding actionable info for contributors.
 
 ---
 

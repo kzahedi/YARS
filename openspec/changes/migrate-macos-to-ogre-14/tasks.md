@@ -15,7 +15,7 @@
 
 - [x] 3.1 `src/yars/CMakeLists.txt`: dropped the `if(APPLE)` static-link block and the separate `if(NOT APPLE …)` dynamic-link block. Single block now uses `${OGRE_ROOT}/lib/libOgreMain${CMAKE_SHARED_LIBRARY_SUFFIX}` (resolves to `.so` on Linux, `.dylib` on macOS)
 - [x] 3.2 Kept the macOS `-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo` link flags. SDL2's framework dependencies cover Cocoa indirectly but Ogre's GL3+ context creation needs the others explicitly
-- [ ] 3.3 Verify `SDL2::SDL2` imported target works on macOS via Homebrew's `pkg-config sdl2`. **Pending macOS CI run completion.**
+- [x] 3.3 Verified — macOS CI green on `a9b9a5f` confirms `SDL2::SDL2` resolves correctly via Homebrew's `pkg-config sdl2`. The earlier `INTERFACE_LINK_DIRECTORIES` fix (commit cc1a018) was the change that made this work on macOS; bare `-lSDL2` wasn't enough because `/opt/homebrew/lib` isn't on Apple's default linker search path.
 
 ## 4. Plugin config
 
@@ -33,7 +33,7 @@
 ## 6. CI update
 
 - [x] 6.1 `macos-build.yml`: removed `OGRE_MACOS_TAG` env var and the "Pin Ogre submodule to v13.6.4" step (a09255a)
-- [ ] 6.2 Confirm the macOS CI run is green against the unpinned submodule. **In flight at commit time of this update.**
+- [x] 6.2 macOS CI runs green against the unpinned submodule. Confirmed on every push since commit `8a2340f` (the include-path fix); the latest green run before this update was on `a9b9a5f` (Observer-pattern removal).
 - [x] 6.3 Reconciled cache keys: Linux uses `ogre14-ubuntu22-glx-…-v2`, macOS uses `ogre14-macos14-glx-…-v1`. Both keyed on `.gitmodules` + Ogre's OgreMain CMakeLists hash, so a submodule bump invalidates both
 
 ## 7. Documentation
