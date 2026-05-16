@@ -31,11 +31,11 @@ jobs:
           # skipped — fine for the smoke test, which doesn't use zip archives.
           brew install \
             cmake pkg-config ninja \
-            sdl2 bullet xerces-c boost \
+            sdl2 bullet xerces-c cli11 \
             freeimage freetype \
-            ffmpeg catch2
+            ffmpeg
           # Report versions for the build log
-          brew list --versions sdl2 bullet xerces-c boost freeimage freetype ffmpeg
+          brew list --versions sdl2 bullet xerces-c cli11 freeimage freetype ffmpeg
 
       - name: Cache Ogre 14 build
         id: ogre-cache

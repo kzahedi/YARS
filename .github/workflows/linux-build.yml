@@ -29,14 +29,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential cmake git pkg-config ninja-build \
-            libboost-program-options-dev \
+            libcli11-dev \
             libbullet-dev libsdl2-dev libxerces-c-dev \
             libfreeimage-dev libfreetype6-dev libzzip-dev zlib1g-dev \
             libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
             libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
             xvfb mesa-utils mesa-utils-extra \
-            ffmpeg libavcodec-dev libavformat-dev libswscale-dev libswresample-dev \
-            catch2
+            ffmpeg libavcodec-dev libavformat-dev libswscale-dev libswresample-dev
           dpkg -l | awk '/^ii/ {print $2"\t"$3}' > apt-versions.txt
 
       - name: Report renderer (sanity)
