@@ -29,7 +29,7 @@ Version& Version::operator=(const Version &v)
   return *this;
 }
 
-bool Version::operator<(const Version &v)
+bool Version::operator<(const Version &v) const
 {
   if(major > v.major) return false;
   if(major < v.major) return true;
@@ -45,7 +45,7 @@ bool Version::operator<(const Version &v)
   return false; // if v == *this -> false
 }
 
-bool Version::operator>(const Version &v)
+bool Version::operator>(const Version &v) const
 {
   if(major > v.major) return true;
   if(major < v.major) return false;
@@ -61,7 +61,7 @@ bool Version::operator>(const Version &v)
   return false; // if v == *this -> false
 }
 
-bool Version::operator==(const Version &v)
+bool Version::operator==(const Version &v) const
 {
   return (v.major == major) && (v.minor == minor) && (v.patch == patch);
 }

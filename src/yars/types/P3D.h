@@ -272,9 +272,9 @@ class P3D
 
     double length();
 
-    bool operator==(const P3D a);
+    bool operator==(const P3D a) const;
 
-    bool operator!=(const P3D a);
+    bool operator!=(const P3D a) const;
 
     double dist(P3D p);
 

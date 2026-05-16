@@ -299,7 +299,7 @@ class __Point2D
       return sqrt(x * x + y * y);
     }
 
-    bool operator==(const __Point2D<T> a)
+    bool operator==(const __Point2D<T> a) const
     {
       return (x == a.x) && (y == a.y);
     }

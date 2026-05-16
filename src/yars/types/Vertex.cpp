@@ -45,7 +45,7 @@ Vertex::Vertex(const Vertex &v)
 }
 
 
-bool Vertex::operator==(const Vertex &v)
+bool Vertex::operator==(const Vertex &v) const
 {
   return
     (fabs(x  - v.x)  < 0.00000001) &&

@@ -327,7 +327,7 @@ class __WHDDimension
       return sqrt(width * width + height * height + depth * depth);
     }
 
-    bool operator==(const __WHDDimension<T> a)
+    bool operator==(const __WHDDimension<T> a) const
     {
       return (width == a.width) && (height == a.height) && (depth == a.depth);
     }

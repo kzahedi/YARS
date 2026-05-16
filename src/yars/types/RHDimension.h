@@ -300,7 +300,7 @@ class __RHDimension
       return sqrt(height * height + radius * radius);
     }
 
-    bool operator==(const __RHDimension<T> a)
+    bool operator==(const __RHDimension<T> a) const
     {
       return (height == a.height) && (radius == a.radius);
     }

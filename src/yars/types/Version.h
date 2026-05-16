@@ -14,9 +14,9 @@ class Version
     int minor;
     int patch;
 
-    bool operator<(const Version &v);
-    bool operator>(const Version &v);
-    bool operator==(const Version &v);
+    bool operator<(const Version &v) const;
+    bool operator>(const Version &v) const;
+    bool operator==(const Version &v) const;
     Version & operator=(const Version &b);
 
     friend std::ostream& operator<<(std::ostream& str, const Version& v)

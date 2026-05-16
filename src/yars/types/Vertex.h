@@ -21,7 +21,7 @@ class Vertex
     Vertex();
 
     Vertex & operator=(const Vertex &v);
-    bool     operator==(const Vertex &v);
+    bool     operator==(const Vertex &v) const;
     Vertex(const Vertex &v);
 
     friend std::ostream& operator<<(std::ostream& str, const Vertex& v)
