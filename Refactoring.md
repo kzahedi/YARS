@@ -280,7 +280,7 @@ make clean && cmake .. && make -j4 2>&1 | tee build.log
 
 # Validate functionality
 ./bin/yars --iterations 1000 --xml xml/braitenberg_logging.xml
-diff braitenberg-*.csv reference_logfile.csv
+diff braitenberg-*.csv ../xml/reference_logfile.csv
 ```
 
 ### Quality Assurance

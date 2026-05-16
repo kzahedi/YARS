@@ -523,7 +523,7 @@ After each phase:
 4. **Logging Validation**
    ```bash
    ./bin/yars --iterations 1000 --xml ../xml/braitenberg_logging.xml
-   diff braitenberg-*.csv ../reference_logfile.csv
+   diff braitenberg-*.csv ../xml/reference_logfile.csv
    ```
 
 5. **Memory Check** (after Phase 2)

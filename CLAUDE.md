@@ -105,7 +105,7 @@ make -j4
 ./bin/yars --iterations 1000 --xml xml/braitenberg_logging.xml
 
 # Compare with reference logfile
-diff braitenberg-*.csv reference_logfile.csv
+diff braitenberg-*.csv ../xml/reference_logfile.csv
 
 # Performance test  
 time ./bin/yars --iterations 10000 --xml xml/falling_objects.xml
