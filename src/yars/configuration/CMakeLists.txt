@@ -135,4 +135,4 @@ target_link_libraries(YarsConfiguration
 )
 
 # Ensure proper C++ standard for this target
-target_compile_features(YarsConfiguration PRIVATE cxx_std_20)
+target_compile_features(YarsConfiguration PRIVATE cxx_std_17)

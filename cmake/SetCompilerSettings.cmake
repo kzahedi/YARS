@@ -11,11 +11,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
-# Modern CMake: Set C++ standard globally.
-# Moved to C++20 in v0.8.9 after a worktree evaluation showed the codebase
-# builds clean (one ambiguous-reversed-operator warning fixed in a
-# separate commit) and sensor output stays bit-identical.
-set(CMAKE_CXX_STANDARD 20)
+# Modern CMake: Set C++ standard globally
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 

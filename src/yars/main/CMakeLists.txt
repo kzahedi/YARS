@@ -10,4 +10,4 @@ add_library(YarsMain ${LIBRARY_TYPE} ${SRC})
 target_include_directories(YarsMain PRIVATE ${BULLET_INCLUDE_DIRS})
 
 # Ensure proper C++ standard for this target
-target_compile_features(YarsMain PRIVATE cxx_std_20)
+target_compile_features(YarsMain PRIVATE cxx_std_17)
