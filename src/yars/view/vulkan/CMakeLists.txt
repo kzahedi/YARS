@@ -44,7 +44,7 @@ target_link_libraries(YarsVulkan PUBLIC
     glm::glm
 )
 
-target_compile_features(YarsVulkan PUBLIC cxx_std_17)
+target_compile_features(YarsVulkan PUBLIC cxx_std_20)
 
 # Compile shaders
 add_subdirectory(shaders)
