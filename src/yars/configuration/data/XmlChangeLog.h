@@ -18,6 +18,10 @@ class XmlChangeLog : public std::vector<XmlChangeLogEntry*>
   public:
     ~XmlChangeLog();
 
+    // Populate the singleton with the in-source change history. Idempotent —
+    // safe to call from multiple entry points (CLI --version, XML parsing).
+    static void initialize();
+
     static void add(Version version, string description, bool crucial = false);
     static void add(int major, int minor, int patch, string description, bool crucial = false);
     static Version version();

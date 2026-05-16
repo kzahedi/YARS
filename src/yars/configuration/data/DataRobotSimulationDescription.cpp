@@ -13,8 +13,12 @@
 DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)
   : DataNode(NULL)
 {
-
-#include <yars/defines/version.h> // do not move from here
+  // version.h's change-log entries used to be #included as a bare
+  // statement list right here, which meant they only got registered
+  // once an XML file was being parsed — `yars --version` therefore
+  // printed 0.0.0. The registrations live in XmlChangeLog::initialize()
+  // now and are idempotent.
+  XmlChangeLog::initialize();
 
   _simulator   = NULL;
   _screens     = NULL;

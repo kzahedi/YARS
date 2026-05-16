@@ -28,8 +28,10 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
       "Build type (Release, Debug, RelWithDebInfo, MinSizeRel)" FORCE)
 endif()
 
-# Version information automatically set by project() command above
-# These are now available as: PROJECT_VERSION, PROJECT_VERSION_MAJOR, etc.
+# Version information automatically set by project() command above.
+# Propagate to C++ so `yars --version` can print the binary version
+# alongside the XML schema version that XmlChangeLog tracks.
+add_compile_definitions(YARS_VERSION_STRING="${PROJECT_VERSION}")
 
 INCLUDE(cmake/SetOptions.cmake)
 INCLUDE(cmake/IncludePackages.cmake) # must be called first

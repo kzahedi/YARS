@@ -227,7 +227,8 @@ void ProgramOptions::__exit(int returnValue)
 void ProgramOptions::__version()
 {
 #ifndef _MSC_VER
-  cout << "yars version "     << XmlChangeLog::version() << endl;
+  cout << "yars " << YARS_VERSION_STRING
+       << " (XML schema " << XmlChangeLog::version() << ")" << endl;
 #else
   cout << "--version currently not supported on windows" << endl;
 #endif

@@ -5,10 +5,23 @@
 
 XmlChangeLog* XmlChangeLog::_me = NULL;
 
-
-
 XmlChangeLog::XmlChangeLog()
 { }
+
+void XmlChangeLog::initialize()
+{
+  // The change-log entries live in yars/defines/version.h as a bare
+  // sequence of XmlChangeLog::add(...) statements. The file is meant to
+  // be #included at function scope; using a static guard makes the call
+  // idempotent so we can invoke initialize() from both the CLI path
+  // (so `yars --version` reports a real version) and from XML parsing
+  // (preserves the original DataRobotSimulationDescription contract)
+  // without piling up duplicate entries.
+  static bool _populated = false;
+  if (_populated) return;
+  _populated = true;
+#include <yars/defines/version.h>
+}
 
 XmlChangeLog::~XmlChangeLog()
 {

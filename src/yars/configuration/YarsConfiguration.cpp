@@ -10,6 +10,7 @@
 #include <yars/configuration/xsd/parser/YarsXSDSaxParser.h>
 #include <yars/configuration/xsd/graphviz/XsdGraphvizExporter.h>
 #include <yars/configuration/xsd/generator/YarsXSDGenerator.h>
+#include <yars/configuration/data/XmlChangeLog.h>
 
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
@@ -56,6 +57,11 @@ void YarsConfiguration::init(int argc, char **argv)
   bool exitYars = false;
   _argc = argc;
   _argv = argv;
+
+  // Populate the XML change-log before ProgramOptions runs so that
+  // `yars --version` (which calls __version() -> XmlChangeLog::version()
+  // before any XML is parsed) reports the real version instead of 0.0.0.
+  XmlChangeLog::initialize();
 
   // read command line parameter and configure file
   __processProgramOptions();
