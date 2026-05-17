@@ -58,4 +58,4 @@ target_link_libraries(YarsPhysics
 target_include_directories(YarsPhysics PRIVATE ${BULLET_INCLUDE_DIRS})
 
 # Ensure proper C++ standard for this target
-target_compile_features(YarsPhysics PRIVATE cxx_std_17)
+target_compile_features(YarsPhysics PRIVATE cxx_std_20)

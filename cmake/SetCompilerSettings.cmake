@@ -11,8 +11,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
-# Modern CMake: Set C++ standard globally
-set(CMAKE_CXX_STANDARD 17)
+# Modern CMake: Set C++ standard globally.
+# Moved to C++20 in v0.8.9 after the template-constructor sweep across
+# P2D/Domain/RHDimension/WHDDimension that gcc requires under strict
+# C++20 (clang accepts the `__Foo<T>(...)` form as a permissive
+# extension; gcc does not). See open-points doc for context.
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
