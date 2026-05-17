@@ -26,7 +26,6 @@ class YarsViewModel
     void toggleShadows();
     void toggleCaptureVideo();
     void createNewWindow();
-    void cleanupWindows();
 
   private:
     void __initialiseFollowable();

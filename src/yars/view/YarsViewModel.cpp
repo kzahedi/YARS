@@ -7,7 +7,6 @@
 
 #include <OGRE/Ogre.h>
 #include <unistd.h>
-#include <algorithm>
 
 namespace yars {
 
@@ -152,22 +151,6 @@ void YarsViewModel::createNewWindow()
 
 // Observer pattern methods replaced with direct method calls
 // quit() method already handles window cleanup
-
-void YarsViewModel::cleanupWindows()
-{
-  // Erase-remove: close each window that reports closed(), then drop
-  // it from the manager — unique_ptr destructor runs as part of erase.
-  for (auto &i : _windowManager)
-  {
-    if (i && i->closed()) i->close();
-  }
-  _windowManager.erase(
-      std::remove_if(_windowManager.begin(), _windowManager.end(),
-                     [](const std::unique_ptr<SdlWindow> &w) {
-                       return !w || w->closed();
-                     }),
-      _windowManager.end());
-}
 
 void YarsViewModel::run()
 {
