@@ -34,7 +34,7 @@ class __RHDimension
      *
      * Sets  height, radius to 0.0
      */
-    __RHDimension<T>()
+    __RHDimension()
     {
       height = 0;
       radius = 0;
@@ -51,7 +51,7 @@ class __RHDimension
      * cannot be checked.
      * \param[in] T* pointer, pointer to the array of length 3
      */
-    __RHDimension<T>(const T* p)
+    __RHDimension(const T* p)
     {
       height = p[1];
       radius = p[2];
@@ -67,7 +67,7 @@ class __RHDimension
      * \param[in] T _height, height-value
      * \param[in] T _radius, radius-value
      */
-    __RHDimension<T>( const T _height, const T _radius)
+    __RHDimension( const T _height, const T _radius)
     {
       height = _height;
       radius = _radius;
@@ -83,7 +83,7 @@ class __RHDimension
      *
      * \param[in] __RHDimension<T> *p
      */
-    __RHDimension<T>(const __RHDimension<T> *p)
+    __RHDimension(const __RHDimension<T> *p)
     {
       height = p->height;
       radius = p->radius;

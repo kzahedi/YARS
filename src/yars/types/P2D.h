@@ -33,7 +33,7 @@ class __Point2D
      *
      * Sets x, y to 0.0
      */
-    __Point2D<T>()
+    __Point2D()
     {
       x = 0;
       y = 0;
@@ -50,7 +50,7 @@ class __Point2D
      * cannot be checked.
      * \param[in] T* pointer, pointer to the array of length 3
      */
-    __Point2D<T>(const T* p)
+    __Point2D(const T* p)
     {
       x = p[0];
       y = p[1];
@@ -66,7 +66,7 @@ class __Point2D
      * \param[in] T _x, x-value
      * \param[in] T _y, y-value
      */
-    __Point2D<T>(const T _x, const T _y)
+    __Point2D(const T _x, const T _y)
     {
       x = _x;
       y = _y;
@@ -82,7 +82,7 @@ class __Point2D
      *
      * \param[in] __Point2D<T> *p
      */
-    __Point2D<T>(const __Point2D<T> *p)
+    __Point2D(const __Point2D<T> *p)
     {
       x = p->x;
       y = p->y;

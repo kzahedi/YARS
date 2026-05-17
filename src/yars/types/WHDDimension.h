@@ -37,7 +37,7 @@ class __WHDDimension
      *
      * Sets width, height, depth to 0.0
      */
-    __WHDDimension<T>()
+    __WHDDimension()
     {
       width = 0;
       height = 0;
@@ -56,7 +56,7 @@ class __WHDDimension
      * cannot be checked.
      * \param[in] T* pointer, pointer to the array of length 3
      */
-    __WHDDimension<T>(const T* p)
+    __WHDDimension(const T* p)
     {
       width = p[0];
       height = p[1];
@@ -75,7 +75,7 @@ class __WHDDimension
      * \param[in] T _height, height-value
      * \param[in] T _depth, depth-value
      */
-    __WHDDimension<T>(const T _width, const T _height, const T _depth)
+    __WHDDimension(const T _width, const T _height, const T _depth)
     {
       width = _width;
       height = _height;
@@ -93,7 +93,7 @@ class __WHDDimension
      *
      * \param[in] __WHDDimension<T> *p
      */
-    __WHDDimension<T>(const __WHDDimension<T> *p)
+    __WHDDimension(const __WHDDimension<T> *p)
     {
       width = p->width;
       height = p->height;

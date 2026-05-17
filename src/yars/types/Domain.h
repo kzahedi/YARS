@@ -32,7 +32,7 @@ class __Domain
      *
      * Sets the minimal and maximal value to zero.
      **/
-    __Domain<T>()
+    __Domain()
     {
       min = 0;
       max = 0;
@@ -44,7 +44,7 @@ class __Domain
      * value to the second.
      * \param[in] pointer to T array
      **/
-    __Domain<T>(const T* p)
+    __Domain(const T* p)
     {
       min = p[0];
       max = p[1];
@@ -57,7 +57,7 @@ class __Domain
      * \param[in] T _min
      * \param[in] T _max
      **/
-    __Domain<T>(const T _min, const T _max)
+    __Domain(const T _min, const T _max)
     {
       min = _min;
       max = _max;
@@ -68,7 +68,7 @@ class __Domain
      *
      * Copies the values of the given __Domain<T>
      **/
-    __Domain<T>(const __Domain<T> *p)
+    __Domain(const __Domain<T> *p)
     {
       min = p->min;
       max = p->max;
@@ -78,7 +78,7 @@ class __Domain
      *
      * Copies the values of the given __Domain<T>
      **/
-    __Domain<T>(const __Domain<T> &d)
+    __Domain(const __Domain<T> &d)
     {
       min = d.min;
       max = d.max;
