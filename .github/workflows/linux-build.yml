@@ -235,8 +235,12 @@ jobs:
           # frames. Result: every run since the audit went green was
           # silently capture-less.
           cd build
+          # --capture is required to actually start the FFmpeg encoder;
+          # the XML's `capture="true"` is only for per-screen activation
+          # and not enough on its own. Without --capture, YarsViewModel
+          # never calls toggleCaptureVideo() and no .mp4 gets written.
           xvfb-run -a -s "-screen 0 1920x1080x24" \
-            ./bin/yars --iterations 1800 --xml ../xml/test_capture.xml \
+            ./bin/yars --iterations 1800 --capture --xml ../xml/test_capture.xml \
             > ../linux-audit-logs/video-capture.log 2>&1
           MP4=$(ls -t *.mp4 2>/dev/null | head -1)
           if [ -z "$MP4" ]; then
