@@ -73,7 +73,12 @@ jobs:
       - name: Configure YARS
         run: |
           set -o pipefail
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee cmake-configure.log
+          # YARS_USE_CAPTURE_VIDEO=ON enables the -DUSE_CAPTURE_VIDEO
+          # compile definition; without it, the toggleCaptureVideo()
+          # body that starts the FFmpeg encoder is preprocessed out
+          # and --capture is a no-op. The audit pipeline requires
+          # capture to be live, so flip the default ON here.
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DYARS_USE_CAPTURE_VIDEO=ON 2>&1 | tee cmake-configure.log
 
       - name: Build YARS
         run: |
