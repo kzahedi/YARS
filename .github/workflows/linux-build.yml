@@ -35,7 +35,7 @@ jobs:
             libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
             libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
             xvfb mesa-utils mesa-utils-extra \
-            ffmpeg libavcodec-dev libavformat-dev libswscale-dev libswresample-dev
+            ffmpeg libavcodec-dev libavformat-dev libavutil-dev libavfilter-dev libavdevice-dev libswscale-dev libswresample-dev
           dpkg -l | awk '/^ii/ {print $2"\t"$3}' > apt-versions.txt
 
       - name: Report renderer (sanity)
