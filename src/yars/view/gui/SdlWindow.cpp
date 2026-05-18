@@ -191,7 +191,17 @@ void SdlWindow::step()
     YARS_TO_OGRE(_camData->position(), _cpos);
     YARS_TO_OGRE(_camData->lookAt(), _clookAt);
     _cameraNode->setPosition(_cpos[0], _cpos[1], _cpos[2]);
-    _cameraNode->lookAt(Ogre::Vector3(_clookAt[0], _clookAt[1], _clookAt[2]), Ogre::Node::TS_WORLD);
+    // Use the FPS-camera path here too. Plain Ogre::SceneNode::lookAt
+    // with the default world-up Y is undefined when the target sits
+    // directly below the camera — which is exactly the braitenberg.xml
+    // top-down case once follow mode picks up the robot. The result is
+    // an arbitrary roll (the upside-down view the user reported).
+    // __syncCameraEulerFromLookAt + __applyCameraOrientation clamps
+    // pitch a hair off the singularity so the orientation is always
+    // well-defined.
+    __syncCameraEulerFromLookAt(Ogre::Vector3(_cpos[0], _cpos[1], _cpos[2]),
+                                Ogre::Vector3(_clookAt[0], _clookAt[1], _clookAt[2]));
+    __applyCameraOrientation();
   }
   else if (_cameraVelocity.length() > 0.01 ||
            _camAngularVelocity.length() > 0.0001)
