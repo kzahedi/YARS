@@ -244,16 +244,22 @@ jobs:
           # the XML's `capture="true"` is only for per-screen activation
           # and not enough on its own. Without --capture, YarsViewModel
           # never calls toggleCaptureVideo() and no .mp4 gets written.
+          #
+          # Defaults put the output at "video/yars.mp4" (relative to
+          # cwd); pin --captureDirectory . and --captureName so the
+          # file lands directly in build/ where this step looks for it.
           xvfb-run -a -s "-screen 0 1920x1080x24" \
-            ./bin/yars --iterations 1800 --capture --xml ../xml/test_capture.xml \
+            ./bin/yars --iterations 1800 \
+              --capture \
+              --captureDirectory . \
+              --captureName yars-capture.mp4 \
+              --xml ../xml/test_capture.xml \
             > ../linux-audit-logs/video-capture.log 2>&1
-          MP4=$(ls -t *.mp4 2>/dev/null | head -1)
-          if [ -z "$MP4" ]; then
-            echo "::error::no .mp4 produced — check linux-audit-logs/video-capture.log"
-            tail -30 ../linux-audit-logs/video-capture.log
+          if [ ! -f yars-capture.mp4 ]; then
+            echo "::error::yars-capture.mp4 was not produced — see linux-audit-logs/video-capture.log"
+            tail -40 ../linux-audit-logs/video-capture.log
             exit 1
           fi
-          mv "$MP4" yars-capture.mp4
           ffprobe -v error -show_format -show_streams yars-capture.mp4 \
             > yars-capture-ffprobe.txt 2>&1
           head -40 yars-capture-ffprobe.txt
