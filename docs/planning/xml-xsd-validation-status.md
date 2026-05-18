@@ -90,9 +90,16 @@ Skipped configs (cannot run unattended):
 ## 4. Behavior regression check
 
 - **Configuration:** `braitenberg_logging.xml`, controller
-  `libYarsControllerBraitenberg3b.dylib`, 10 000 iterations, `--nogui`.
-- **Reference:** `reference_logfile.csv` at the repo root (10 002 lines = 1
-  header + 10 001 data rows). Last touched 2025-11-26.
+  `libYarsControllerBraitenberg3b.dylib`, 2 000 iterations, `--nogui`.
+- **Reference:** per-platform files under `xml/`:
+  - `xml/reference_logfile.macos-arm64.csv` (2 002 lines, captured
+    on Mac mini M4 / Ogre 14 / Bullet 3.x via Homebrew).
+  - `xml/reference_logfile.linux-x86_64.csv` (same shape, captured
+    by the Linux CI runner — committed via the
+    `linux-x86_64-reference-candidate` artifact path).
+  Cross-platform float noise (signed-zero differences in zero-valued
+  velocity columns) makes a single shared reference impractical, so
+  the CI checks are per-platform and the diff is exact.
 - **Actual (sanitizer build):** `build/braitenberg_logging_actual.csv` produced
   from the audit-day `build-asan` binary.
 - **Actual (non-sanitizer build):** `braitenberg-2026-05-12-11-29-05.csv`

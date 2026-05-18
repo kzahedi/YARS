@@ -44,7 +44,7 @@ fi
 timeout 60s ./bin/yars --iterations 1000 --xml ../xml/braitenberg_logging.xml
 
 # Compare logfiles
-diff braitenberg-*.csv ../xml/reference_logfile.csv
+diff braitenberg-*.csv ../xml/reference_logfile.macos-arm64.csv
 ```
 
 ## Success Criteria

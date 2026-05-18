@@ -193,13 +193,28 @@ jobs:
           fi
           mv "$ACTUAL" braitenberg_logging_actual.csv
           cd ..
-          if diff -u xml/reference_logfile.csv build/braitenberg_logging_actual.csv > csv-diff.log; then
-            echo "CSV byte-identical to reference."
+          REF=xml/reference_logfile.linux-x86_64.csv
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No Linux x86_64 reference committed yet. Uploading the produced CSV as artifact 'linux-x86_64-reference-candidate' so it can be committed to $REF."
+            cp build/braitenberg_logging_actual.csv linux-x86_64-reference-candidate.csv
           else
-            echo "::warning::CSV differs from xml/reference_logfile.csv — see csv-diff.log artifact"
-            # Do not fail the job on diff for the first run; capture for triage
-            head -50 csv-diff.log
+            if diff -u "$REF" build/braitenberg_logging_actual.csv > csv-diff.log; then
+              echo "CSV byte-identical to $REF."
+            else
+              echo "::error::CSV differs from $REF — see csv-diff.log artifact."
+              head -50 csv-diff.log
+              exit 1
+            fi
           fi
+
+      - name: Upload Linux x86_64 reference candidate (only when ref missing)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-x86_64-reference-candidate
+          path: linux-x86_64-reference-candidate.csv
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: FFmpeg video capture (xvfb + llvmpipe)
         env:

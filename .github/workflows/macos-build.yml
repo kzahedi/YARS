@@ -88,6 +88,28 @@ jobs:
           cd build
           ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg.xml
 
+      - name: Reference CSV regression check (braitenberg_logging.xml)
+        run: |
+          cd build
+          rm -f braitenberg-*.csv
+          # 120s is generous; macOS arm64 hits this run in ~5s.
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
+          ACTUAL=$(ls -t braitenberg-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No braitenberg-*.csv produced"
+            exit 1
+          fi
+          mv "$ACTUAL" braitenberg_logging_actual.csv
+          cd ..
+          REF=xml/reference_logfile.macos-arm64.csv
+          if diff -u "$REF" build/braitenberg_logging_actual.csv > csv-diff.log; then
+            echo "CSV byte-identical to $REF."
+          else
+            echo "::error::CSV differs from $REF — see csv-diff.log artifact."
+            head -50 csv-diff.log
+            exit 1
+          fi
+
       - name: Upload build logs
         if: always()
         uses: actions/upload-artifact@v7
@@ -96,4 +118,6 @@ jobs:
           path: |
             cmake-configure.log
             build.log
+            csv-diff.log
+            build/braitenberg_logging_actual.csv
           if-no-files-found: ignore

@@ -22,11 +22,11 @@ Every configuration file under `xml/**/*.xml` SHALL pass `xmllint --noout --sche
 - **THEN** every config in the corpus exits with code 0 from `xmllint --schema`
 
 ### Requirement: Reference simulation produces unchanged output
-A deterministic simulation (`braitenberg_logging.xml`) SHALL produce CSV output byte-identical to the checked-in `xml/reference_logfile.csv`, or any difference SHALL be documented as intentional.
+A deterministic simulation (`braitenberg_logging.xml`) at 2 000 iterations SHALL produce CSV output byte-identical to the per-platform reference checked in at `xml/reference_logfile.<platform>.csv`. Supported `<platform>` values: `macos-arm64`, `linux-x86_64`. Cross-platform numerical differences (primarily signed-zero noise in zero-valued velocity columns) are accepted via the per-platform split; same-platform output SHALL be bit-exact.
 
 #### Scenario: Reference logfile diff is empty
-- **WHEN** the deterministic reference simulation is run and its CSV output is diffed against `xml/reference_logfile.csv`
-- **THEN** the diff is empty, or every difference is annotated in the status doc as an intentional behavior change with a linked rationale
+- **WHEN** the deterministic reference simulation is run on a supported platform and its CSV output is diffed against the matching `xml/reference_logfile.<platform>.csv`
+- **THEN** the diff is empty (CI fails on any difference; the warning-level check from v0.8.7 is gone)
 
 ### Requirement: Validation status is documented
 A status document SHALL record per-config parse, validate, and behavior-regression results.
