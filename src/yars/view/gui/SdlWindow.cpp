@@ -200,7 +200,15 @@ void SdlWindow::step()
     // << _cameraVelocity[1] << " "
     // << _cameraVelocity[2] << endl;
 
-    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR));
+    // Yaw around the world up axis (not the camera-local Y), so that
+    // mouse drag never accumulates roll. The horizon stays horizontal
+    // regardless of how the user drags; the world doesn't end up
+    // tilted after a series of motions. For a top-down view this also
+    // makes horizontal drag feel like rotating a 2D map.
+    //
+    // Pitch stays in camera-local space — that's the natural "tilt the
+    // view forward/back" behaviour.
+    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR), Ogre::Node::TS_WORLD);
     _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
 
     _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
