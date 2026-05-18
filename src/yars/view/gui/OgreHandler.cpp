@@ -318,22 +318,16 @@ void OgreHandler::setupSceneManager()
   // material so RTSS knows how to emit the depth-only vertex shader,
   // or (b) switching to a non-RTSS technique (fixed-function
   // shadows are gone in GL3+ core).
-  // 2026-05-18 second attempt: texture-modulative with the stock
-  // Ogre/TextureShadowCaster material (shipped in
-  // ${OGRE_ROOT}/Media/Main/Shadow.material, on the OgreInternal
-  // resource group). The first attempt earlier today flipped the
-  // technique on without setting the caster material explicitly —
-  // RTSS generated something for the default unnamed caster and
-  // produced empty frames. Try the stock material first; if the
-  // captured output is still empty, this gets reverted again.
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-  _sceneManager->setShadowTextureCasterMaterial(
-      Ogre::MaterialManager::getSingleton().getByName(
-          "Ogre/TextureShadowCaster", "OgreInternal"));
-  _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-  _sceneManager->setShadowFarDistance(50.0f);
-  _sceneManager->setShadowTextureSize(1024);
-  _sceneManager->setShadowTextureCount(1);
+  // 2026-05-18 third attempt: SHADOWTYPE_TEXTURE_MODULATIVE +
+  // Ogre/TextureShadowCaster produced a non-empty mp4 (849 KB) but
+  // the visible output is broken — ground texture missing, scene
+  // replaced by a sky-blue field with a sawtooth border that looks
+  // like shadow-map content composited as the main pass. Reverting
+  // again. Captured artefacts in commits a10c1b1 (the broken
+  // attempt). The plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal
+  // resource group, null-checked edge-list loops — stays so the
+  // next attempt doesn't have to rediscover it.
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
