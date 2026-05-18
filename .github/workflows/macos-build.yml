@@ -102,13 +102,27 @@ jobs:
           mv "$ACTUAL" braitenberg_logging_actual.csv
           cd ..
           REF=xml/reference_logfile.macos-arm64.csv
-          if diff -u "$REF" build/braitenberg_logging_actual.csv > csv-diff.log; then
-            echo "CSV byte-identical to $REF."
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No macOS arm64 reference committed yet. Uploading the produced CSV as artifact 'macos-arm64-reference-candidate' so it can be committed to $REF."
+            cp build/braitenberg_logging_actual.csv macos-arm64-reference-candidate.csv
           else
-            echo "::error::CSV differs from $REF — see csv-diff.log artifact."
-            head -50 csv-diff.log
-            exit 1
+            if diff -u "$REF" build/braitenberg_logging_actual.csv > csv-diff.log; then
+              echo "CSV byte-identical to $REF."
+            else
+              echo "::error::CSV differs from $REF — see csv-diff.log artifact."
+              head -50 csv-diff.log
+              exit 1
+            fi
           fi
+
+      - name: Upload macOS arm64 reference candidate (only when ref missing)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-arm64-reference-candidate
+          path: macos-arm64-reference-candidate.csv
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload build logs
         if: always()
