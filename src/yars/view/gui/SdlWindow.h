@@ -140,6 +140,11 @@ private:
     // straight up or down with an undefined right vector.
     Ogre::Radian _camYaw;
     Ogre::Radian _camPitch;
+    // Captured at __setScene() so the "restore initial viewpoint"
+    // keyboard shortcut can snap the camera back to the XML-defined
+    // starting state regardless of how far the user dragged.
+    Ogre::Vector3 _initialCameraPosition;
+    Ogre::Vector3 _initialCameraLookAt;
     Uint32 _windowID;
     SDL_Window *_sdlWindow;
     bool _visible;

@@ -115,11 +115,16 @@ void KeyHandler::increaseSimSpeed()
   __YARS_SET_REAL_TIME_FACTOR(__YARS_GET_REAL_TIME_FACTOR * 0.5);
 }
 
+namespace { std::function<void()> g_restoreViewpointCallback; }
+
+void KeyHandler::setRestoreViewpointCallback(std::function<void()> fn)
+{
+  g_restoreViewpointCallback = std::move(fn);
+}
+
 void KeyHandler::restoreInitialViewpoint()
 {
-  // No-op until a direct-call hookup is added; previously notified
-  // observers, but no listeners remained after the Observer-pattern
-  // teardown.
+  if (g_restoreViewpointCallback) g_restoreViewpointCallback();
 }
 
 void KeyHandler::toggleDrawMode()

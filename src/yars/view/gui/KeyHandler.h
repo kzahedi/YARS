@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <map>
+#include <functional>
 
 #define YARS_KEY_CODE_OFFSET_SHIFT 1000
 #define YARS_KEY_CODE_OFFSET_CTRL  2000
@@ -26,6 +27,13 @@ class KeyHandler
     static KeyHandler*  instance();
     static void         registerKeyboardShortcuts();
     static int          handleKeyEvent(bool alt, bool ctrl, bool shift, char c);
+
+    // Lets SdlWindow (or whoever owns the camera) register a function that
+    // snaps the camera back to its XML-defined starting position+lookAt.
+    // Replaces the Observer hookup that was removed earlier in the
+    // refactor. With multiple windows the last registrant wins — fine for
+    // now since the keyboard event is single-target anyway.
+    static void         setRestoreViewpointCallback(std::function<void()> fn);
 
     // events
     static void         printKeyCommands();

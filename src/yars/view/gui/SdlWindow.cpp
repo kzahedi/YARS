@@ -508,9 +508,28 @@ void SdlWindow::__setupSDL()
   // camera state from the XML's <camera> block so the first mouse drag
   // operates on the right yaw/pitch baseline.
   _cameraNode->setPosition(pos[0], pos[1], pos[2]);
-  __syncCameraEulerFromLookAt(Ogre::Vector3(pos[0], pos[1], pos[2]),
-                              Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]));
+  _initialCameraPosition = Ogre::Vector3(pos[0], pos[1], pos[2]);
+  _initialCameraLookAt   = Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]);
+  __syncCameraEulerFromLookAt(_initialCameraPosition, _initialCameraLookAt);
   __applyCameraOrientation();
+
+  // Hook the "restore initial viewpoint" keyboard shortcut to a lambda
+  // that snaps this window's camera back to the XML state. With multiple
+  // windows the last registrant wins — fine in practice; the key event
+  // is single-target anyway.
+  KeyHandler::setRestoreViewpointCallback([this]() {
+    _cameraNode->setPosition(_initialCameraPosition);
+    __syncCameraEulerFromLookAt(_initialCameraPosition, _initialCameraLookAt);
+    __applyCameraOrientation();
+    _cameraVelocity     = Ogre::Vector3::ZERO;
+    _camAngularVelocity = P3D(0, 0, 0);
+    if (_windowConfiguration->useFollow)
+    {
+      // Drop out of follow so the user actually sees the reset state;
+      // otherwise the next frame's follow-mode update overrides it.
+      __toggleFollowing();
+    }
+  });
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
