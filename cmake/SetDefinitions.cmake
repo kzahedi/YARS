@@ -1,4 +1,7 @@
 add_compile_definitions(YARS_INSTALL_PATH="${CMAKE_INSTALL_PREFIX}")
+# Absolute repo root, used by OgreHandler::initialiseResources to locate
+# ext/ogre/install/Media (Ogre's shadow textures) regardless of cwd.
+add_compile_definitions(YARS_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
 if(YARS_EXAMPLES)
   add_definitions(-DWITH_EXAMPLES)

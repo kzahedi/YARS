@@ -185,14 +185,19 @@ void OgreHandler::setupSceneManager()
   rgm.addResourceLocation("fonts", "FileSystem", "General");
   rgm.addResourceLocation("meshes", "FileSystem", "General");
 
-  // Register RTShaderLib for RTSS shader compilation (OgreInternal group)
-  // These GLSL files are required by RTSS to generate shaders for GL3+ core profile
-  rgm.addResourceLocation("ext/ogre/RTShaderLib", "FileSystem", "OgreInternal");
+  // Register RTShaderLib for RTSS shader compilation (OgreInternal group).
+  // These GLSL files are required by RTSS to generate shaders for GL3+ core profile.
+  // Use absolute paths via YARS_SOURCE_DIR so the lookup doesn't depend on
+  // cwd — Linux CI on a cache-restored Ogre install was missing the build-dir
+  // symlink that the relative path relied on.
+  rgm.addResourceLocation(std::string(YARS_SOURCE_DIR) + "/ext/ogre/RTShaderLib",
+                          "FileSystem", "OgreInternal");
   // Ogre's own Media/Main directory ships the shadow-system assets
   // (spot_shadow_fade.dds in particular). SHADOWTYPE_TEXTURE_MODULATIVE
   // looks for these in the OgreInternal resource group; without this
   // location, scene-setup throws FileNotFoundException.
-  rgm.addResourceLocation("ext/ogre/install/Media/Main", "FileSystem", "OgreInternal");
+  rgm.addResourceLocation(std::string(YARS_SOURCE_DIR) + "/ext/ogre/install/Media/Main",
+                          "FileSystem", "OgreInternal");
   rgm.initialiseResourceGroup("OgreInternal");
 
   // Register YARS materials (textures, .material scripts) BEFORE MaterialManager
