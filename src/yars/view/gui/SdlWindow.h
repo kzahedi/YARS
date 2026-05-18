@@ -62,6 +62,14 @@ private:
     void __handleFingerUp(SDL_Event &event);
     void __handleFingerDown(SDL_Event &event);
 
+    // Set _camYaw / _camPitch from a desired view direction (pos -> lookAt).
+    // Called when the XML's <camera> block is first applied so the FPS state
+    // matches the requested initial orientation.
+    void __syncCameraEulerFromLookAt(const Ogre::Vector3 &pos, const Ogre::Vector3 &lookAt);
+    // Write the camera orientation from current _camYaw / _camPitch.
+    // Clamps pitch to avoid the up-axis singularity.
+    void __applyCameraOrientation();
+
 #ifdef USE_CAPTURE_VIDEO
     void __toggleCaptureMovie();
     void __closeMovie();
@@ -125,6 +133,13 @@ private:
     P3D _ylookAt;
     P3D _camVelocity;
     P3D _camAngularVelocity;
+    // FPS-style camera state: yaw (around world up), pitch (around camera-local
+    // right after yaw). Rebuilding orientation from these every frame avoids
+    // accumulated roll from quaternion drift / degenerate poles. Pitch is
+    // clamped to (-π/2 + ε, π/2 - ε) so we never end up looking exactly
+    // straight up or down with an undefined right vector.
+    Ogre::Radian _camYaw;
+    Ogre::Radian _camPitch;
     Uint32 _windowID;
     SDL_Window *_sdlWindow;
     bool _visible;

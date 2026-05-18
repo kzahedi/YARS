@@ -200,16 +200,13 @@ void SdlWindow::step()
     // << _cameraVelocity[1] << " "
     // << _cameraVelocity[2] << endl;
 
-    // Yaw around the world up axis (not the camera-local Y), so that
-    // mouse drag never accumulates roll. The horizon stays horizontal
-    // regardless of how the user drags; the world doesn't end up
-    // tilted after a series of motions. For a top-down view this also
-    // makes horizontal drag feel like rotating a 2D map.
-    //
-    // Pitch stays in camera-local space — that's the natural "tilt the
-    // view forward/back" behaviour.
-    _cameraNode->yaw(Ogre::Radian(_camAngularVelocity.x * FACTOR), Ogre::Node::TS_WORLD);
-    _cameraNode->pitch(Ogre::Radian(_camAngularVelocity.y * FACTOR));
+    // FPS-style camera: track yaw and pitch as scalars and rebuild the
+    // orientation each frame. This guarantees the horizon stays horizontal
+    // (no roll accumulation) and handles the top-down singularity cleanly
+    // by clamping pitch. See __applyCameraOrientation() for the build.
+    _camYaw  -= Ogre::Radian(_camAngularVelocity.x * FACTOR);
+    _camPitch -= Ogre::Radian(_camAngularVelocity.y * FACTOR);
+    __applyCameraOrientation();
 
     _cameraNode->translate(_cameraVelocity, Ogre::Node::TS_LOCAL);
 
@@ -496,9 +493,14 @@ void SdlWindow::__setupSDL()
   _cameraNode = _sceneManager->getRootSceneNode()->createChildSceneNode(oss.str());
   _cameraNode->attachObject(_camera);
 
-  // Set initial position and orientation using scene node
+  // Set initial position and orientation using scene node. Going through
+  // __syncCameraEulerFromLookAt + __applyCameraOrientation seeds the FPS
+  // camera state from the XML's <camera> block so the first mouse drag
+  // operates on the right yaw/pitch baseline.
   _cameraNode->setPosition(pos[0], pos[1], pos[2]);
-  _cameraNode->lookAt(Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]), Ogre::Node::TS_WORLD);
+  __syncCameraEulerFromLookAt(Ogre::Vector3(pos[0], pos[1], pos[2]),
+                              Ogre::Vector3(lookAt[0], lookAt[1], lookAt[2]));
+  __applyCameraOrientation();
 
   const Ogre::Real aspectRatio = Ogre::Real(_windowConfiguration->geometry.width()) / Ogre::Real(_windowConfiguration->geometry.height());
   _camera->setAspectRatio(aspectRatio);
@@ -515,6 +517,43 @@ void SdlWindow::__setupSDL()
 
   SDL_RecordGesture(-1);
   _window->setActive(true);
+}
+
+void SdlWindow::__syncCameraEulerFromLookAt(const Ogre::Vector3 &pos, const Ogre::Vector3 &lookAt)
+{
+  // Both vectors are already in Ogre world space (Y-up). Decompose the
+  // view direction into yaw (around world Y) and pitch (around camera-local
+  // X after yaw). Camera's default forward is -Z; after yaw qY and pitch qP
+  // the forward vector is (-cos φ sin θ, sin φ, -cos φ cos θ), so:
+  //   pitch = asin(forward.y)
+  //   yaw   = atan2(-forward.x, -forward.z)
+  Ogre::Vector3 viewDir = (lookAt - pos);
+  if (viewDir.squaredLength() < 1e-12f)
+  {
+    _camYaw = Ogre::Radian(0.0f);
+    _camPitch = Ogre::Radian(0.0f);
+    return;
+  }
+  viewDir.normalise();
+  _camPitch = Ogre::Radian(std::asin(viewDir.y));
+  _camYaw   = Ogre::Radian(std::atan2(-viewDir.x, -viewDir.z));
+}
+
+void SdlWindow::__applyCameraOrientation()
+{
+  // Clamp pitch so the camera never looks exactly straight up or down —
+  // at the singularity the right vector is undefined and yaw breaks.
+  // Leaves enough margin that a top-down XML start (pitch ≈ -π/2) gets
+  // nudged just inside the safe region.
+  const float maxPitch = Ogre::Math::HALF_PI - 0.01f;
+  float p = _camPitch.valueRadians();
+  if (p > maxPitch)  p = maxPitch;
+  if (p < -maxPitch) p = -maxPitch;
+  _camPitch = Ogre::Radian(p);
+
+  Ogre::Quaternion qYaw(_camYaw, Ogre::Vector3::UNIT_Y);
+  Ogre::Quaternion qPitch(_camPitch, Ogre::Vector3::UNIT_X);
+  _cameraNode->setOrientation(qYaw * qPitch);
   _viewport->update();
   _window->setActive(true);
   _window->setVisible(true);
