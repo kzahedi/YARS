@@ -192,11 +192,14 @@ void OgreHandler::setupSceneManager()
   // symlink that the relative path relied on.
   rgm.addResourceLocation(std::string(YARS_SOURCE_DIR) + "/ext/ogre/RTShaderLib",
                           "FileSystem", "OgreInternal");
-  // Ogre's own Media/Main directory ships the shadow-system assets
+  // Ogre's installed Media/Main ships the shadow-system assets
   // (spot_shadow_fade.dds in particular). SHADOWTYPE_TEXTURE_MODULATIVE
   // looks for these in the OgreInternal resource group; without this
   // location, scene-setup throws FileNotFoundException.
-  rgm.addResourceLocation(std::string(YARS_SOURCE_DIR) + "/ext/ogre/install/Media/Main",
+  // YARS_OGRE_MEDIA_DIR is resolved at configure time by
+  // cmake/IncludePackages.cmake (macOS installs to ${prefix}/Media,
+  // Linux to ${prefix}/share/OGRE-<ver>/Media).
+  rgm.addResourceLocation(std::string(YARS_OGRE_MEDIA_DIR) + "/Main",
                           "FileSystem", "OgreInternal");
   rgm.initialiseResourceGroup("OgreInternal");
 

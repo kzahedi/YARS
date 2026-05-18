@@ -89,6 +89,32 @@ IF(YARS_USE_VISUALISATION)
     set(OGRE_FOUND TRUE)
   endif()
 
+  # Locate Ogre's installed Media directory (ships spot_shadow_fade.dds
+  # etc.). The path is platform-dependent: macOS installs to
+  # ${prefix}/Media/Main, Linux to ${prefix}/share/OGRE-<SOVERSION>/Media/Main.
+  # Probe both so OgreHandler can reference it via the YARS_OGRE_MEDIA_DIR
+  # compile-time define.
+  set(_yars_ogre_media_candidates
+    "${OGRE_ROOT}/Media"
+    "${OGRE_ROOT}/share/OGRE-14.4/Media"
+    "${OGRE_ROOT}/share/OGRE-14.3/Media"
+    "${OGRE_ROOT}/share/OGRE/Media")
+  set(YARS_OGRE_MEDIA_DIR "")
+  foreach(_yars_candidate ${_yars_ogre_media_candidates})
+    if(EXISTS "${_yars_candidate}/Main/spot_shadow_fade.dds")
+      set(YARS_OGRE_MEDIA_DIR "${_yars_candidate}")
+      break()
+    endif()
+  endforeach()
+  if(YARS_OGRE_MEDIA_DIR)
+    message(STATUS "Ogre Media located at ${YARS_OGRE_MEDIA_DIR}")
+    add_compile_definitions(YARS_OGRE_MEDIA_DIR="${YARS_OGRE_MEDIA_DIR}")
+  else()
+    message(WARNING "Ogre Media directory not found under ${OGRE_ROOT}; "
+                    "shadows requiring spot_shadow_fade.dds will fail to load")
+    add_compile_definitions(YARS_OGRE_MEDIA_DIR="${OGRE_ROOT}/Media")
+  endif()
+
   if(UNIX AND NOT APPLE)
     add_definitions(-pthread)
     if(CMAKE_BUILD_TYPE MATCHES Release)
