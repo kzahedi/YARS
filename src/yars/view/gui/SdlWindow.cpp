@@ -517,6 +517,10 @@ void SdlWindow::__setupSDL()
 
   SDL_RecordGesture(-1);
   _window->setActive(true);
+  _viewport->update();
+  _window->setActive(true);
+  _window->setVisible(true);
+  // glutSwapBuffers();
 }
 
 void SdlWindow::__syncCameraEulerFromLookAt(const Ogre::Vector3 &pos, const Ogre::Vector3 &lookAt)
@@ -554,10 +558,6 @@ void SdlWindow::__applyCameraOrientation()
   Ogre::Quaternion qYaw(_camYaw, Ogre::Vector3::UNIT_Y);
   Ogre::Quaternion qPitch(_camPitch, Ogre::Vector3::UNIT_X);
   _cameraNode->setOrientation(qYaw * qPitch);
-  _viewport->update();
-  _window->setActive(true);
-  _window->setVisible(true);
-  // glutSwapBuffers();
 }
 
 void SdlWindow::setupOSD()
