@@ -64,7 +64,16 @@ class VideoCapture {
     void __remux();
     void __end(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx);
 
+    // av_guess_format and avformat_alloc_output_context2 changed from
+    // taking AVOutputFormat* to const AVOutputFormat* in FFmpeg 5.0
+    // (libavformat 59). Ubuntu 22.04 ships FFmpeg 4.4 / libavformat 58;
+    // recent macOS Homebrew ships FFmpeg 6 / libavformat 60+. Track the
+    // ABI here so the same header compiles on both.
+#if LIBAVFORMAT_VERSION_MAJOR >= 59
     const AVOutputFormat  *oformat;
+#else
+    AVOutputFormat        *oformat;
+#endif
     AVFormatContext *ofctx;
     AVStream        *videoStream;
     AVFrame         *videoFrame;
