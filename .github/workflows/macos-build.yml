@@ -32,17 +32,17 @@ jobs:
           brew install \
             cmake pkg-config ninja \
             sdl2 bullet xerces-c cli11 \
-            freeimage freetype \
+            freetype \
             ffmpeg
           # Report versions for the build log
-          brew list --versions sdl2 bullet xerces-c cli11 freeimage freetype ffmpeg
+          brew list --versions sdl2 bullet xerces-c cli11 freetype ffmpeg
 
       - name: Cache Ogre 14 build
         id: ogre-cache
         uses: actions/cache@v5
         with:
           path: ${{ env.OGRE_INSTALL_PREFIX }}
-          key: ogre14-macos14-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v1
+          key: ogre14-macos14-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v2-nofi
 
       - name: Build Ogre 14 from submodule (dynamic)
         if: steps.ogre-cache.outputs.cache-hit != 'true'
@@ -56,6 +56,7 @@ jobs:
             -DOGRE_BUILD_SAMPLES=OFF \
             -DOGRE_BUILD_TOOLS=OFF \
             -DOGRE_BUILD_PLUGIN_STBI=ON \
+            -DOGRE_BUILD_PLUGIN_FREEIMAGE=OFF \
             -DOGRE_BUILD_PLUGIN_DOT_SCENE=OFF \
             -DOGRE_BUILD_PLUGIN_ASSIMP=OFF \
             -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \

@@ -31,7 +31,7 @@ jobs:
             build-essential cmake git pkg-config ninja-build \
             libcli11-dev \
             libbullet-dev libsdl2-dev libxerces-c-dev \
-            libfreeimage-dev libfreetype6-dev libzzip-dev zlib1g-dev \
+            libfreetype6-dev libzzip-dev zlib1g-dev \
             libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
             libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
             xvfb mesa-utils mesa-utils-extra \
@@ -48,7 +48,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.OGRE_INSTALL_PREFIX }}
-          key: ogre14-ubuntu22-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v2
+          key: ogre14-ubuntu22-glx-${{ hashFiles('.gitmodules') }}-${{ hashFiles('ext/ogre-source/OgreMain/CMakeLists.txt') }}-v3-nofi
 
       - name: Build Ogre 14 from submodule
         if: steps.ogre-cache.outputs.cache-hit != 'true'
@@ -62,6 +62,7 @@ jobs:
             -DOGRE_BUILD_SAMPLES=OFF \
             -DOGRE_BUILD_TOOLS=OFF \
             -DOGRE_BUILD_PLUGIN_STBI=ON \
+            -DOGRE_BUILD_PLUGIN_FREEIMAGE=OFF \
             -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=ON \
             -DOGRE_BUILD_RENDERSYSTEM_GL=OFF \
             -DOGRE_GLSUPPORT_USE_EGL=OFF \
