@@ -293,22 +293,32 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Texture-modulative shadows. The older code (and the archive's
-  // pre-disable version) used SHADOWTYPE_STENCIL_MODULATIVE, but
-  // Ogre 14's stencil path crashes on ManualObject in
-  // getShadowVolumeRenderableList when mParentNode is null (the
-  // archive disabled shadows entirely in commit 9024f19 with a TODO
-  // to try the texture path).
+  // Shadows are off pending a working technique.
   //
-  // Texture shadows don't need edge lists from ManualObject and
-  // work with arbitrary geometry. We get softer shadows at the
-  // cost of a depth-pass per light, which is fine for our handful
-  // of objects.
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-  _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-  _sceneManager->setShadowFarDistance(50.0f);
-  _sceneManager->setShadowTextureSize(1024);
-  _sceneManager->setShadowTextureCount(1);
+  // SHADOWTYPE_STENCIL_MODULATIVE: archive (2026-02-02, commit
+  // 9024f19 in master-archive-2026-05-15) hit
+  // `ManualObject::getShadowVolumeRenderableList` segfaults with
+  // mParentNode == nullptr. Author left a TODO to try texture
+  // shadows.
+  //
+  // SHADOWTYPE_TEXTURE_MODULATIVE: tried 2026-05-18. Setup
+  // succeeds once the resource-group plumbing for
+  // spot_shadow_fade.dds is in place (this commit keeps that
+  // plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal addResourceLocation,
+  // edge-list null checks — for the next attempt). But the rendered
+  // frames come out empty: every frame is I-frame at QP 0 with
+  // 100% skip, suggesting the shadow-render's depth pass is
+  // masking the colour buffer or RTSS isn't generating a working
+  // ambient pass for shadow casters. Verified on both Linux/llvmpipe
+  // (CI run 26021475339, 5 KB mp4) and macOS arm64 (real GPU,
+  // 2.7 KB mp4). So it's a YARS-RTSS-shadow interaction, not a
+  // llvmpipe limitation.
+  //
+  // Re-enabling needs either: (a) writing a custom shadow caster
+  // material so RTSS knows how to emit the depth-only vertex shader,
+  // or (b) switching to a non-RTSS technique (fixed-function
+  // shadows are gone in GL3+ core).
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
