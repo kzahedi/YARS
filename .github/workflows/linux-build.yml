@@ -255,18 +255,19 @@ jobs:
               --captureName yars-capture.mp4 \
               --xml ../xml/test_capture.xml \
             > ../linux-audit-logs/video-capture.log 2>&1
-          if [ ! -f yars-capture.mp4 ]; then
-            echo "::error::yars-capture.mp4 was not produced — see linux-audit-logs/video-capture.log"
+          # YARS writes per-segment captures named <base>-NNNN.mp4 (see
+          # WindowConfiguration::getNextCaptureName). For our 1800-iter
+          # run there's exactly one segment, but the suffix is still
+          # appended. Match the pattern, not the literal name.
+          MP4=$(ls -1 yars-capture-*.mp4 2>/dev/null | head -1)
+          if [ -z "$MP4" ]; then
+            echo "::error::no yars-capture-*.mp4 was produced — see linux-audit-logs/video-capture.log"
             echo "--- files in cwd ($(pwd)):"
-            ls -la *.mp4 *.h264 yars-capture* 2>/dev/null || true
-            echo "--- video/ subdir:"
-            ls -la video/ 2>/dev/null || echo "(no video/ dir)"
-            echo "--- /tmp/tmp.h264:"
-            ls -la /tmp/tmp.h264 2>/dev/null || echo "(absent)"
-            echo "--- tail of capture log:"
+            ls -la *.mp4 *.h264 2>/dev/null || true
             tail -50 ../linux-audit-logs/video-capture.log
             exit 1
           fi
+          mv "$MP4" yars-capture.mp4
           ffprobe -v error -show_format -show_streams yars-capture.mp4 \
             > yars-capture-ffprobe.txt 2>&1
           head -40 yars-capture-ffprobe.txt
