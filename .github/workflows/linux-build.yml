@@ -220,24 +220,34 @@ jobs:
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
         run: |
-          set +e
+          set -e
           if [ ! -f xml/test_capture.xml ]; then
             echo "::warning::xml/test_capture.xml not present, skipping capture step"
             exit 0
           fi
+          # Ogre::Root("plugins.cfg", "ogre.cfg", "") uses cwd-relative
+          # paths. plugins.cfg is generated at ${PROJECT_BINARY_DIR}/plugins.cfg
+          # (i.e. build/plugins.cfg) by cmake/CreateConfigFiles.cmake. The
+          # audit corpus steps cd into build/ before invoking yars; this step
+          # used to run from the repo root, so plugins.cfg lookup failed
+          # silently, Ogre got an empty render-system list, OgreHandler
+          # threw, GUI init fell back to headless mode and produced no
+          # frames. Result: every run since the audit went green was
+          # silently capture-less.
+          cd build
           xvfb-run -a -s "-screen 0 1920x1080x24" \
-            ./build/bin/yars --iterations 1800 --xml xml/test_capture.xml \
-            > linux-audit-logs/video-capture.log 2>&1
-          rc=$?
+            ./bin/yars --iterations 1800 --xml ../xml/test_capture.xml \
+            > ../linux-audit-logs/video-capture.log 2>&1
           MP4=$(ls -t *.mp4 2>/dev/null | head -1)
-          if [ -n "$MP4" ]; then
-            mv "$MP4" build/yars-capture.mp4
-            ffprobe -v error -show_format -show_streams build/yars-capture.mp4 \
-              > build/yars-capture-ffprobe.txt 2>&1
-            head -40 build/yars-capture-ffprobe.txt
-          else
-            echo "::warning::no .mp4 produced (rc=$rc); check video-capture.log"
+          if [ -z "$MP4" ]; then
+            echo "::error::no .mp4 produced — check linux-audit-logs/video-capture.log"
+            tail -30 ../linux-audit-logs/video-capture.log
+            exit 1
           fi
+          mv "$MP4" yars-capture.mp4
+          ffprobe -v error -show_format -show_streams yars-capture.mp4 \
+            > yars-capture-ffprobe.txt 2>&1
+          head -40 yars-capture-ffprobe.txt
 
       - name: Upload audit artifacts
         if: always()
