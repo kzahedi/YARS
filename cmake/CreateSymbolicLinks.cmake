@@ -11,4 +11,8 @@ if(UNIX)
   # RTShaderLib required for RTSS GLSL shader compilation
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/ext/ogre)
   execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/ext/ogre/RTShaderLib ${CMAKE_BINARY_DIR}/ext/ogre/RTShaderLib)
+  # Ogre's Media/Main holds internal shadow textures (spot_shadow_fade.dds)
+  # that SHADOWTYPE_TEXTURE_MODULATIVE requires from the OgreInternal group.
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/ext/ogre/install/Media)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/ext/ogre/install/Media/Main ${CMAKE_BINARY_DIR}/ext/ogre/install/Media/Main)
 endif(UNIX)

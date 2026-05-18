@@ -22,6 +22,13 @@ if(OGRE_RESOURCES_DIRECTORIES MATCHES "Ogre-Resources-Dirs-NOTDEFINED")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/particles")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/shaders")
   LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${CMAKE_SOURCE_DIR}/shaders/programs")
+  # Ogre's own Media directory ships with internal shadow textures
+  # (spot_shadow_fade.dds, etc.) and the RTShader library. Required
+  # for SHADOWTYPE_TEXTURE_MODULATIVE to find its fade texture; also
+  # makes RTSS shader sources available without copying them into the
+  # repo.
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${OGRE_ROOT}/Media/Main")
+  LIST(APPEND OGRE_RESOURCES_DIRECTORIES "FileSystem=${OGRE_ROOT}/Media/RTShaderLib")
 endif(OGRE_RESOURCES_DIRECTORIES MATCHES "Ogre-Resources-Dirs-NOTDEFINED")
 
 set(tmp ${OGRE_RESOURCES_DIRECTORIES})

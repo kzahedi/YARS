@@ -188,6 +188,11 @@ void OgreHandler::setupSceneManager()
   // Register RTShaderLib for RTSS shader compilation (OgreInternal group)
   // These GLSL files are required by RTSS to generate shaders for GL3+ core profile
   rgm.addResourceLocation("ext/ogre/RTShaderLib", "FileSystem", "OgreInternal");
+  // Ogre's own Media/Main directory ships the shadow-system assets
+  // (spot_shadow_fade.dds in particular). SHADOWTYPE_TEXTURE_MODULATIVE
+  // looks for these in the OgreInternal resource group; without this
+  // location, scene-setup throws FileNotFoundException.
+  rgm.addResourceLocation("ext/ogre/install/Media/Main", "FileSystem", "OgreInternal");
   rgm.initialiseResourceGroup("OgreInternal");
 
   // Register YARS materials (textures, .material scripts) BEFORE MaterialManager
@@ -280,8 +285,22 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Disable shadows to avoid rendering pipeline issues
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  // Texture-modulative shadows. The older code (and the archive's
+  // pre-disable version) used SHADOWTYPE_STENCIL_MODULATIVE, but
+  // Ogre 14's stencil path crashes on ManualObject in
+  // getShadowVolumeRenderableList when mParentNode is null (the
+  // archive disabled shadows entirely in commit 9024f19 with a TODO
+  // to try the texture path).
+  //
+  // Texture shadows don't need edge lists from ManualObject and
+  // work with arbitrary geometry. We get softer shadows at the
+  // cost of a depth-pass per light, which is fine for our handful
+  // of objects.
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
+  _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+  _sceneManager->setShadowFarDistance(50.0f);
+  _sceneManager->setShadowTextureSize(1024);
+  _sceneManager->setShadowTextureCount(1);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
