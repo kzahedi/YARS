@@ -257,7 +257,14 @@ jobs:
             > ../linux-audit-logs/video-capture.log 2>&1
           if [ ! -f yars-capture.mp4 ]; then
             echo "::error::yars-capture.mp4 was not produced — see linux-audit-logs/video-capture.log"
-            tail -40 ../linux-audit-logs/video-capture.log
+            echo "--- files in cwd ($(pwd)):"
+            ls -la *.mp4 *.h264 yars-capture* 2>/dev/null || true
+            echo "--- video/ subdir:"
+            ls -la video/ 2>/dev/null || echo "(no video/ dir)"
+            echo "--- /tmp/tmp.h264:"
+            ls -la /tmp/tmp.h264 2>/dev/null || echo "(absent)"
+            echo "--- tail of capture log:"
+            tail -50 ../linux-audit-logs/video-capture.log
             exit 1
           fi
           ffprobe -v error -show_format -show_streams yars-capture.mp4 \
