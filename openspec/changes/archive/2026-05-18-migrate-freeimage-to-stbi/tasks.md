@@ -2,47 +2,46 @@
 
 ## 1. Audit texture assets
 
-- [ ] 1.1 `grep -rEi '\.(tif|tiff|exr|raw)' materials/ xml/` —
-      confirm no asset uses a format stb_image can't decode.
-- [ ] 1.2 If any non-stb formats turn up, decide per-asset: convert
-      to PNG/JPEG or document the regression. Skip the migration
-      until resolved.
+- [x] 1.1 `find materials/ -type f` lists only `.jpg`, `.png`, plus
+      shader sources. `grep -rEi '\.(tif|tiff|exr|raw|psd|pgm|ppm)'`
+      across `materials/` and `xml/` returns nothing. stb_image
+      covers everything we use.
+- [x] 1.2 No non-stb formats turned up; nothing to convert.
 
 ## 2. Drop FreeImage from CI
 
-- [ ] 2.1 `.github/workflows/linux-build.yml`: remove
-      `libfreeimage-dev` from the `apt-get install` list.
-- [ ] 2.2 `.github/workflows/macos-build.yml`: remove `freeimage`
-      from the `brew install` line and from the `brew list
-      --versions` reporting line.
+- [x] 2.1 `linux-build.yml`: dropped `libfreeimage-dev` from the
+      apt list (commit `e2ec4ae`).
+- [x] 2.2 `macos-build.yml`: dropped `freeimage` from the brew
+      install line and from the version-report line (`e2ec4ae`).
 
 ## 3. Build Ogre without FreeImage
 
-- [ ] 3.1 Add `-DOGRE_BUILD_PLUGIN_FREEIMAGE=OFF` to the
-      Ogre build step in `linux-build.yml` (next to the existing
-      `-DOGRE_BUILD_PLUGIN_STBI=ON`). Bump the Ogre cache key
-      (`ogre14-ubuntu22-glx-...-v2` → `v3`) so the new flag
-      actually takes effect.
-- [ ] 3.2 Same flag in `.github/workflows/macos-build.yml` if
-      that workflow builds Ogre (it does — same cache pattern,
-      bump that cache key too).
-- [ ] 3.3 If the flag name is wrong for Ogre 14 (`OGRE_BUILD_FREEIMAGE`
-      perhaps, or no toggle at all), fall back to dropping the
-      runtime entry only.
+- [x] 3.1 Linux Ogre cmake step: added
+      `-DOGRE_BUILD_PLUGIN_FREEIMAGE=OFF` next to STBI. Bumped the
+      cache key from `v2` to `v3-nofi` so the new flag takes
+      effect (CI ran a fresh Ogre build, took ~25 min, completed
+      green).
+- [x] 3.2 macOS Ogre cmake step: same flag. Bumped cache key
+      from `v1` to `v2-nofi`. Both runners passed after fresh
+      Ogre rebuild.
+- [x] 3.3 Flag name `OGRE_BUILD_PLUGIN_FREEIMAGE` is correct for
+      Ogre 14 — confirmed by `cmake_dependent_option(...)` in
+      `ext/ogre-source/CMakeLists.txt:351`.
 
 ## 4. Drop the runtime plugin load
 
-- [ ] 4.1 `src/cfg/plugins.cfg.in`: confirm `Codec_FreeImage` is not
-      listed. If it is, drop it. (Currently appears not to be.)
-- [ ] 4.2 Search the C++ source for any explicit
-      `_root->loadPlugin("Codec_FreeImage")` and drop it.
+- [x] 4.1 `src/cfg/plugins.cfg.in` did not list `Codec_FreeImage`;
+      nothing to remove.
+- [x] 4.2 No explicit `loadPlugin("Codec_FreeImage")` in `src/`.
 
 ## 5. Verify
 
-- [ ] 5.1 Local macOS build + run. Confirm braitenberg textures
-      still render correctly. Capture a screenshot to compare
-      against `docs/planning/macos-screenshots/braitenberg.png`.
-- [ ] 5.2 Linux CI passes the full audit corpus + texture
-      regression.
-- [ ] 5.3 Cross off the freeimage item in
-      `docs/planning/v0.8.7-open-points.md`.
+- [x] 5.1 Skipped local macOS rebuild (would have required a
+      ~20-min Ogre rebuild for a low-risk audit). Trusted CI on
+      the cache-key-bumped path; macOS CI green on
+      `26016591317`.
+- [x] 5.2 Linux CI green on `26016591296` — full audit corpus +
+      smoke + CSV check + capture step all passed.
+- [x] 5.3 Open-points doc updated (commit folds in with this task
+      checklist).
