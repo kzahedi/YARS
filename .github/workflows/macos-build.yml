@@ -92,8 +92,10 @@ jobs:
         run: |
           cd build
           rm -f braitenberg-*.csv
-          # 120s is generous; macOS arm64 hits this run in ~5s.
-          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
+          # macOS arm64 hits 2000 iters in ~5s. No external timeout
+          # wrapper because BSD doesn't ship GNU `timeout`; the
+          # --iterations flag is the stop condition.
+          ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
           ACTUAL=$(ls -t braitenberg-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No braitenberg-*.csv produced"
