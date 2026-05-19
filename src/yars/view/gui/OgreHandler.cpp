@@ -327,7 +327,34 @@ void OgreHandler::setupSceneManager()
   // attempt). The plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal
   // resource group, null-checked edge-list loops — stays so the
   // next attempt doesn't have to rediscover it.
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  try {
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
+    _sceneManager->setShadowTextureSize(1024);
+    _sceneManager->setShadowTextureCount(1);
+    _sceneManager->setShadowFarDistance(50.0f);
+    _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+    auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
+    if (casterMat) {
+      casterMat->load();
+      _sceneManager->setShadowTextureCasterMaterial(casterMat);
+    } else {
+      std::cerr << "Warning: YARS/TextureShadowCaster not loaded; shadow casters "
+                   "will fall back to Ogre's fixed-function default and produce a "
+                   "broken render on GL3+ core." << std::endl;
+    }
+    auto receiverMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowReceiver");
+    if (receiverMat) {
+      receiverMat->load();
+      _sceneManager->setShadowTextureReceiverMaterial(receiverMat);
+    } else {
+      std::cerr << "Warning: YARS/TextureShadowReceiver not loaded; modulating "
+                   "pass will fall back to Ogre's fixed-function default and skip "
+                   "shadow rendering entirely on GL3+ core." << std::endl;
+    }
+  } catch (const std::exception &e) {
+    std::cerr << "Shadow setup failed: " << e.what() << std::endl;
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  }
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()

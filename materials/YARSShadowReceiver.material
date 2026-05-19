@@ -1,0 +1,46 @@
+vertex_program YARS/ShadowReceiverVP glsl
+{
+  source shadow_receiver.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+    param_named_auto texViewProjMatrix texture_viewproj_matrix
+  }
+}
+
+fragment_program YARS/ShadowReceiverFP glsl
+{
+  source shadow_receiver.frag
+  default_params
+  {
+    param_named shadowMap int 0
+  }
+}
+
+material YARS/TextureShadowReceiver
+{
+  receive_shadows off
+  technique
+  {
+    // Tag with the RTSS scheme so the SGTechniqueResolverListener doesn't
+    // lazily create a duplicate that would override our explicit GLSL.
+    scheme ShaderGeneratorDefaultScheme
+    pass
+    {
+      lighting off
+      scene_blend modulate
+      depth_write off
+
+      vertex_program_ref YARS/ShadowReceiverVP {}
+      fragment_program_ref YARS/ShadowReceiverFP {}
+
+      texture_unit
+      {
+        // The shadow texture is bound automatically.
+        tex_address_mode border
+        tex_border_colour 1 1 1 1
+        filtering linear linear none
+      }
+    }
+  }
+}
