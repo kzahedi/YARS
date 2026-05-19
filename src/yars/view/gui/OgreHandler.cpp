@@ -340,11 +340,12 @@ void OgreHandler::setupSceneManager()
     // boundary. 200 covers any single-room YARS arena comfortably.
     _sceneManager->setShadowFarDistance(200.0f);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-    // Render back faces of casters into the shadow texture — eliminates
-    // self-shadow acne on convex casters and removes the ~1 px "peel"
-    // between the wall base and its shadow that's visible at lower
-    // shadow-camera depth biases.
-    _sceneManager->setShadowCasterRenderBackFaces(true);
+    // Render front faces of casters into the shadow texture. With
+    // back-face rendering, walls/cylinders/boxes see their own back
+    // face's silhouette in the shadow texture and self-shadow on the
+    // outward face. Front-face rendering keeps the shadow projection
+    // tight to the lit silhouette.
+    _sceneManager->setShadowCasterRenderBackFaces(false);
     // Tighten the shadow camera frustum around what's actually visible.
     // The default DefaultShadowCameraSetup covers a frustum the size of
     // shadowFarDistance from the directional light's POV, which wastes
