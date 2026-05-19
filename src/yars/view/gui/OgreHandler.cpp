@@ -13,6 +13,7 @@
 #endif
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
+#include <OGRE/OgreShadowCameraSetupFocused.h>
 
 
 
@@ -329,10 +330,31 @@ void OgreHandler::setupSceneManager()
   // next attempt doesn't have to rediscover it.
   try {
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-    _sceneManager->setShadowTextureSize(1024);
+    // 4096 gives crisp shadow edges at the typical YARS scene scale; the
+    // memory cost is ~64 MB for a single R8G8B8 shadow texture which is
+    // trivial on a modern GPU.
+    _sceneManager->setShadowTextureSize(4096);
     _sceneManager->setShadowTextureCount(1);
-    _sceneManager->setShadowFarDistance(50.0f);
+    // shadowFarDistance must be larger than the scene extents in any
+    // direction or wall/object shadows get clipped at the frustum
+    // boundary. 200 covers any single-room YARS arena comfortably.
+    _sceneManager->setShadowFarDistance(200.0f);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+    // Render back faces of casters into the shadow texture — eliminates
+    // self-shadow acne on convex casters and removes the ~1 px "peel"
+    // between the wall base and its shadow that's visible at lower
+    // shadow-camera depth biases.
+    _sceneManager->setShadowCasterRenderBackFaces(true);
+    // Tighten the shadow camera frustum around what's actually visible.
+    // The default DefaultShadowCameraSetup covers a frustum the size of
+    // shadowFarDistance from the directional light's POV, which wastes
+    // most of the shadow texture on empty world space outside the YARS
+    // arena — visible as stair-stepped aliasing along the diagonal of
+    // every wall shadow. FocusedShadowCameraSetup fits the frustum
+    // to the camera's view, so all 4096^2 pixels cover roughly just
+    // the visible scene.
+    _sceneManager->setShadowCameraSetup(
+        Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
     auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
     if (casterMat) {
       casterMat->load();
