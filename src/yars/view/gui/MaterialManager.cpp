@@ -206,9 +206,9 @@ void MaterialManager::createRTSSForLegacyMaterials() {
         // which don't produce a working depth-only variant (see shadows v3
         // failure, commit a10c1b1). Skip the caster material itself.
         if (rtssTech && material->getName() != "YARS/TextureShadowCaster") {
-          if (rtssTech->getShadowCasterMaterial().get() == nullptr) {
-            rtssTech->setShadowCasterMaterial("YARS/TextureShadowCaster");
-          }
+            if (rtssTech->getShadowCasterMaterial().get() == nullptr) {
+                rtssTech->setShadowCasterMaterial("YARS/TextureShadowCaster");
+            }
         }
     };
 
@@ -286,7 +286,7 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
     // GLSL programs so it bypasses RTSS. Skip if this material itself is the
     // caster (avoid recursion) or castShadows was disabled by the caller.
     if (params.castShadows && name != "YARS/TextureShadowCaster") {
-      technique->setShadowCasterMaterial("YARS/TextureShadowCaster");
+        technique->setShadowCasterMaterial("YARS/TextureShadowCaster");
     }
 }
 
