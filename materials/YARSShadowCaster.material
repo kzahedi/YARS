@@ -1,0 +1,26 @@
+vertex_program YARS/ShadowCasterVP glsl
+{
+  source shadow_caster.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+  }
+}
+
+fragment_program YARS/ShadowCasterFP glsl
+{
+  source shadow_caster.frag
+}
+
+material YARS/TextureShadowCaster
+{
+  receive_shadows off
+  technique
+  {
+    pass
+    {
+      vertex_program_ref YARS/ShadowCasterVP {}
+      fragment_program_ref YARS/ShadowCasterFP {}
+    }
+  }
+}
