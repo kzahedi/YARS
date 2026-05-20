@@ -13,6 +13,7 @@
 #endif
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
+#include <OGRE/OgreShadowCameraSetupFocused.h>
 
 
 
@@ -327,6 +328,13 @@ void OgreHandler::setupSceneManager()
   // attempt). The plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal
   // resource group, null-checked edge-list loops — stays so the
   // next attempt doesn't have to rediscover it.
+  // Shadows are disabled pending fix for the receiver UV placement bug —
+  // see docs/planning/shadows_state.md for the full investigation log.
+  // The caster + receiver wiring (YARS/TextureShadowCaster,
+  // YARS/TextureShadowReceiver, RTSS scheme tagging,
+  // SceneManager::setShadowTextureCasterMaterial /
+  // setShadowTextureReceiverMaterial) is preserved in the material files
+  // and ready to re-enable once the placement bug is solved.
   _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
 }
 

@@ -200,6 +200,16 @@ void MaterialManager::createRTSSForLegacyMaterials() {
                 rp->setDepthWriteEnabled(bp->getDepthWriteEnabled());
             }
         }
+
+        // Set the YARS-owned GLSL shadow caster on every RTSS-generated technique.
+        // Without this, the caster pass falls back to RTSS-generated shaders
+        // which don't produce a working depth-only variant (see shadows v3
+        // failure, commit a10c1b1). Skip the caster material itself.
+        if (rtssTech && material->getName() != "YARS/TextureShadowCaster") {
+            if (rtssTech->getShadowCasterMaterial().get() == nullptr) {
+                rtssTech->setShadowCasterMaterial("YARS/TextureShadowCaster");
+            }
+        }
     };
 
     // Cover built-in Ogre materials
@@ -270,7 +280,14 @@ void MaterialManager::_createBasicRTSSMaterial(const std::string& name, const Ma
         if (!texUnit) {
         }
     }
-    
+
+    // Wire shadow caster: when SHADOWTYPE_TEXTURE_MODULATIVE is active,
+    // Ogre substitutes this material in the caster pass. Caster has explicit
+    // GLSL programs so it bypasses RTSS. Skip if this material itself is the
+    // caster (avoid recursion) or castShadows was disabled by the caller.
+    if (params.castShadows && name != "YARS/TextureShadowCaster") {
+        technique->setShadowCasterMaterial("YARS/TextureShadowCaster");
+    }
 }
 
 std::string MaterialManager::resolveMaterialName(const std::string& legacyName) {

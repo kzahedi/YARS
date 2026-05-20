@@ -1,0 +1,29 @@
+vertex_program YARS/ShadowCasterVP glsl
+{
+  source shadow_caster.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+  }
+}
+
+fragment_program YARS/ShadowCasterFP glsl
+{
+  source shadow_caster.frag
+}
+
+material YARS/TextureShadowCaster
+{
+  receive_shadows off
+  technique
+  {
+    // Tag with the RTSS scheme so the SGTechniqueResolverListener doesn't
+    // lazily create a duplicate that would override our explicit GLSL.
+    scheme ShaderGeneratorDefaultScheme
+    pass
+    {
+      vertex_program_ref YARS/ShadowCasterVP {}
+      fragment_program_ref YARS/ShadowCasterFP {}
+    }
+  }
+}
