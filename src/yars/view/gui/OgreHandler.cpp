@@ -18,6 +18,93 @@
 
 namespace yars {
 
+// Fixed-light-direction shadow camera setup for YARS.
+//
+// The default Ogre shadow camera setups (Default, Focused) compute the
+// shadow frustum based on the *eye camera's* position and direction, which
+// makes shadows drift as the user moves the camera — clearly visible as
+// shadows "sliding" across the floor when orbiting the scene.
+//
+// YarsFixedShadowCameraSetup ignores the eye camera entirely:
+//  - Light direction is HARDCODED to (-1, -1, -1) (Ogre world space).
+//  - Shadow camera is positioned at +50 units in the opposite light
+//    direction, looking toward world origin.
+//  - Orthographic frustum of 24×24 covers the typical YARS arena
+//    (±4m walls) plus margin for dynamic objects.
+//
+// This produces stable, world-anchored shadows that don't move with the
+// camera and reliably align with caster geometry.
+class YarsFixedShadowCameraSetup : public Ogre::ShadowCameraSetup
+{
+public:
+  void getShadowCamera(const Ogre::SceneManager *sm, const Ogre::Camera *cam,
+                       const Ogre::Viewport *vp, const Ogre::Light *light,
+                       Ogre::Camera *texCam, size_t iteration) const override
+  {
+    if (light->getType() != Ogre::Light::LT_DIRECTIONAL)
+    {
+      texCam->setCustomViewMatrix(false);
+      texCam->setCustomProjectionMatrix(false);
+      return;
+    }
+
+    // Hardcoded light direction. Light rays travel in this direction;
+    // source is at -lightDir from origin.
+    const Ogre::Vector3 lightDir =
+        Ogre::Vector3(-1.0f, -1.0f, -1.0f).normalisedCopy();
+
+    // Place the shadow camera at -lightDir * distance, looking toward origin.
+    const Ogre::Real cameraDistance = 50.0f;
+    const Ogre::Vector3 camPos = -lightDir * cameraDistance;
+
+    // Build the view matrix by hand. Ogre uses a right-handed coordinate
+    // system where the camera looks down its -Z axis.
+    //
+    // Camera basis in world space:
+    //   forward (world dir camera looks)     = lightDir
+    //   localZ (camera's local +Z)           = -forward = -lightDir
+    //   localX (camera's local +X / right)   = up_world × localZ, normalised
+    //   localY (camera's local +Y / up)      = localZ × localX
+    Ogre::Vector3 worldUp = Ogre::Vector3::UNIT_Y;
+    if (Ogre::Math::Abs(worldUp.dotProduct(lightDir)) >= 0.999f)
+    {
+      worldUp = Ogre::Vector3::UNIT_Z;
+    }
+    Ogre::Vector3 localZ = -lightDir;
+    Ogre::Vector3 localX = worldUp.crossProduct(localZ);
+    localX.normalise();
+    Ogre::Vector3 localY = localZ.crossProduct(localX);
+    localY.normalise();
+
+    // View matrix: rows are camera basis vectors; translation = -R * camPos.
+    Ogre::Affine3 view;
+    view[0][0] = localX.x; view[0][1] = localX.y; view[0][2] = localX.z;
+    view[1][0] = localY.x; view[1][1] = localY.y; view[1][2] = localY.z;
+    view[2][0] = localZ.x; view[2][1] = localZ.y; view[2][2] = localZ.z;
+    view[0][3] = -localX.dotProduct(camPos);
+    view[1][3] = -localY.dotProduct(camPos);
+    view[2][3] = -localZ.dotProduct(camPos);
+
+    // Orthographic projection: 24×24 frustum, depth 1..200.
+    const Ogre::Real halfWidth = 12.0f;
+    const Ogre::Real halfHeight = 12.0f;
+    const Ogre::Real n = 1.0f;
+    const Ogre::Real f = 200.0f;
+    Ogre::Matrix4 proj = Ogre::Matrix4::ZERO;
+    proj[0][0] = 1.0f / halfWidth;
+    proj[1][1] = 1.0f / halfHeight;
+    proj[2][2] = -2.0f / (f - n);
+    proj[2][3] = -(f + n) / (f - n);
+    proj[3][3] = 1.0f;
+
+    texCam->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
+    texCam->setNearClipDistance(n);
+    texCam->setFarClipDistance(f);
+    texCam->setCustomViewMatrix(true, view);
+    texCam->setCustomProjectionMatrix(true, proj);
+  }
+};
+
 OgreHandler *OgreHandler::_me = nullptr;
 
 OgreHandler *OgreHandler::instance()
@@ -334,9 +421,9 @@ void OgreHandler::__setupShadows()
     // shadow projection tight to the lit silhouette.
     _sceneManager->setShadowCasterRenderBackFaces(false);
 
-    // FocusedShadowCameraSetup auto-fits the shadow frustum to the
-    // intersection of the eye-camera frustum and shadow-caster geometry.
-    // For YARS this gives reasonable coverage of the visible arena.
+    // FocusedShadowCameraSetup with the 30×30 ground mesh focuses
+    // tightly on the visible arena, making wall silhouettes prominent
+    // in the shadow texture and giving correct UV mapping for receivers.
     _sceneManager->setShadowCameraSetup(
         Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
 

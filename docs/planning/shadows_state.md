@@ -1,38 +1,52 @@
-# Shadows — state of investigation (2026-05-20)
+# Shadows — state of investigation (2026-05-20, updated)
 
-**Current state:** shadows are **re-enabled** with a working but
-empirical UV transformation. The receiver fragment shader applies
-`uv = uv.yx` (XY swap) to align the projected UV with where the
-caster pass actually writes silhouettes in the shadow texture.
+**Current state:** shadows are **re-enabled** and visible. The setup
+uses `FocusedShadowCameraSetup` + a 50×50 ground mesh (was 500×500)
++ an empirical `uv = uv.yx` swap in the receiver fragment shader.
 
-**Empirical findings (2026-05-20):**
-1. The caster pass works correctly — silhouettes (diamond from walls,
-   dot from robot) are clearly visible when the shadow texture is
-   sampled in screen-space.
-2. The canonical `texture_worldviewproj_matrix * vertex` math produces
-   UVs in [0,1] but rotated 90° from where the caster wrote the
-   silhouettes. The receiver samples the white interior of the diamond
-   instead of the caster-marked regions.
-3. Applying `uv = uv.yx` in the receiver fragment shader fixes the
-   alignment — robot shadows now visible on the floor below dynamic
-   objects.
+**Why these choices:**
 
-**Why empirical (not analytical):** despite an extensive runtime
-diagnostic suite (UV gradient visualisation, screen-space shadow
-texture sampling, projected-UV sampling), the root cause of the
-90° rotation in `texture_worldviewproj_matrix` could not be traced
-to a specific Ogre 14 implementation detail. The fix produces
-correct visible results; the underlying Ogre RTSS / shadow camera
-interaction would warrant a deeper dive.
+1. **Ground mesh shrunk from 500×500 to 50×50** — the original 500×500
+   ground caused `FocusedShadowCameraSetup` to span a massive area,
+   making the 8×8 arena's wall silhouettes microscopic in the shadow
+   texture (~1% of texture extent). With 50×50, the focused camera
+   produces a shadow texture where the arena walls form a prominent
+   diamond filling most of the texture.
+
+2. **YX swap in the receiver shader** — even with the correctly-sized
+   ground, the receiver's `texture_worldviewproj_matrix` produces UVs
+   rotated 90° from where the caster pass writes silhouettes. Applying
+   `uv = uv.yx` aligns them. The root cause was not traced to a
+   specific Ogre 14 implementation detail despite extensive
+   diagnostics, but the fix produces correct results.
+
+3. **`FocusedShadowCameraSetup`** — auto-fits the shadow frustum to
+   the intersection of eye-camera frustum and shadow-caster geometry.
+   With the small ground, this gives stable, well-focused shadows
+   for both top-down (braitenberg.xml) and side-view (falling_objects.xml)
+   cameras.
+
+**Visible results (2026-05-20):**
+- braitenberg.xml: robot casts a clear shadow on the floor directly
+  below it.
+- falling_objects.xml: balls cast clear shadows on the floor in the
+  light-direction.
+- No artifacts/misprojected silhouettes from earlier attempts.
 
 **Caveats:**
-- Wall shadows are very subtle because YARS arena walls are only
-  0.5m tall (the shadow strip on the floor is ~0.5m wide at 45°
-  light angle, hard to distinguish from wall texture).
-- Robot/dynamic-object shadows are clearly visible.
-- The shadow placement is approximately correct (shadow near the
-  caster) but may not perfectly match a physically correct
-  light-projection ray.
+- Wall shadows are still subtle because YARS arena walls are only
+  0.5m tall (shadow strip ~0.5m wide at 45° light angle).
+- The YX swap is empirical; the underlying Ogre 14 quirk warrants
+  a deeper dive if anyone wants to clean this up.
+- The 50×50 ground may show the horizon at extreme camera angles
+  (falling_objects.xml's low side-view shows it; this is mostly
+  cosmetic).
+
+**Files involved:**
+- `src/yars/view/gui/OgreHandler.cpp::__setupShadows()` — full setup
+- `src/yars/view/gui/SceneGraphEnvironmentNode.cpp` — ground mesh 50×50
+- `materials/YARSShadowCaster.material` / `shadow_caster.{vert,frag}`
+- `materials/YARSShadowReceiver.material` / `shadow_receiver.{vert,frag}`
 
 ## Historical (2026-05-19): the original buggy state
 

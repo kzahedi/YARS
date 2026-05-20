@@ -18,9 +18,15 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
   if (_data->groundGiven())
   {
     Ogre::Plane plane(Ogre::Vector3::UNIT_Z, 0);
+    // 50×50 ground mesh (was 500×500). The smaller size lets the
+    // shadow camera setup focus tightly on the visible arena, making
+    // wall silhouettes prominent in the shadow texture instead of
+    // microscopic dots. 50m is large enough to hide the horizon in
+    // typical YARS camera angles. Texture tile count scales down
+    // proportionally (40→4) to keep visual density similar.
     Ogre::MeshManager::getSingleton().createPlane("ground",
                                                   Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-                                                  500, 500, 50, 50, true, 1, 40, 40, Ogre::Vector3::UNIT_Y);
+                                                  50, 50, 25, 25, true, 1, 4, 4, Ogre::Vector3::UNIT_Y);
     _entity = _sceneManager->createEntity("GroundEntity", "ground");
     _node->attachObject(_entity);
     _entity->setCastShadows(false);
@@ -114,8 +120,8 @@ void SceneGraphEnvironmentNode::update()
   _x = p.x;
   _y = p.y;
 
-  _sx = _dx / 500.0;
-  _sy = _dy / 500.0;
+  _sx = _dx / 50.0;
+  _sy = _dy / 50.0;
 
   // cout << p.x << " " << p.y << endl;
 
