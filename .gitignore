@@ -12,6 +12,7 @@ ogre.log
 braitenberg-*.csv
 docs/videos/
 .claude/worktrees/
+handover.md
 
 # Ogre 14 install — built per-platform from ext/ogre-source/ on every
 # developer machine and CI runner. Layout differs between Linux (.so files

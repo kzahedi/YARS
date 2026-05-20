@@ -328,56 +328,14 @@ void OgreHandler::setupSceneManager()
   // attempt). The plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal
   // resource group, null-checked edge-list loops — stays so the
   // next attempt doesn't have to rediscover it.
-  try {
-    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-    // 4096 gives crisp shadow edges at the typical YARS scene scale; the
-    // memory cost is ~64 MB for a single R8G8B8 shadow texture which is
-    // trivial on a modern GPU.
-    _sceneManager->setShadowTextureSize(4096);
-    _sceneManager->setShadowTextureCount(1);
-    // shadowFarDistance must be larger than the scene extents in any
-    // direction or wall/object shadows get clipped at the frustum
-    // boundary. 200 covers any single-room YARS arena comfortably.
-    _sceneManager->setShadowFarDistance(200.0f);
-    _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-    // Render front faces of casters into the shadow texture. With
-    // back-face rendering, walls/cylinders/boxes see their own back
-    // face's silhouette in the shadow texture and self-shadow on the
-    // outward face. Front-face rendering keeps the shadow projection
-    // tight to the lit silhouette.
-    _sceneManager->setShadowCasterRenderBackFaces(false);
-    // Tighten the shadow camera frustum around what's actually visible.
-    // The default DefaultShadowCameraSetup covers a frustum the size of
-    // shadowFarDistance from the directional light's POV, which wastes
-    // most of the shadow texture on empty world space outside the YARS
-    // arena — visible as stair-stepped aliasing along the diagonal of
-    // every wall shadow. FocusedShadowCameraSetup fits the frustum
-    // to the camera's view, so all 4096^2 pixels cover roughly just
-    // the visible scene.
-    _sceneManager->setShadowCameraSetup(
-        Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
-    auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
-    if (casterMat) {
-      casterMat->load();
-      _sceneManager->setShadowTextureCasterMaterial(casterMat);
-    } else {
-      std::cerr << "Warning: YARS/TextureShadowCaster not loaded; shadow casters "
-                   "will fall back to Ogre's fixed-function default and produce a "
-                   "broken render on GL3+ core." << std::endl;
-    }
-    auto receiverMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowReceiver");
-    if (receiverMat) {
-      receiverMat->load();
-      _sceneManager->setShadowTextureReceiverMaterial(receiverMat);
-    } else {
-      std::cerr << "Warning: YARS/TextureShadowReceiver not loaded; modulating "
-                   "pass will fall back to Ogre's fixed-function default and skip "
-                   "shadow rendering entirely on GL3+ core." << std::endl;
-    }
-  } catch (const std::exception &e) {
-    std::cerr << "Shadow setup failed: " << e.what() << std::endl;
-    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
-  }
+  // Shadows are disabled pending fix for the receiver UV placement bug —
+  // see docs/planning/shadows_state.md for the full investigation log.
+  // The caster + receiver wiring (YARS/TextureShadowCaster,
+  // YARS/TextureShadowReceiver, RTSS scheme tagging,
+  // SceneManager::setShadowTextureCasterMaterial /
+  // setShadowTextureReceiverMaterial) is preserved in the material files
+  // and ready to re-enable once the placement bug is solved.
+  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()
