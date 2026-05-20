@@ -29,6 +29,7 @@ public:
 
 private:
   OgreHandler();
+  void __setupShadows();
 
   static OgreHandler *_me;
 

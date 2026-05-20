@@ -16,7 +16,6 @@
 #include <OGRE/OgreShadowCameraSetupFocused.h>
 
 
-
 namespace yars {
 
 OgreHandler *OgreHandler::_me = nullptr;
@@ -268,6 +267,12 @@ void OgreHandler::setupSceneManager()
   Ogre::SceneNode *node = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
   Ogre::Light *lightSun = _sceneManager->createLight("sun");
   lightSun->setType(Ogre::Light::LT_DIRECTIONAL);
+  // Shadow far distance on the LIGHT controls DefaultShadowCameraSetup's
+  // ortho frustum size (shadowDist*2). Without this the light defaults to
+  // 0 which Ogre approximates as eyeCam.nearClip*300 — varies wildly
+  // between scenes and produces huge frustums. Pin to 15m for predictable
+  // 30×30 coverage of the 8×8 YARS arena.
+  lightSun->setShadowFarDistance(15.0f);
   node->setDirection(Ogre::Vector3(-1, -1, -1));
   lightSun->setDiffuseColour(1.2, 1.2, 1.0);  // Warm directional light
   lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
@@ -294,48 +299,86 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  // Shadows are off pending a working technique.
-  //
-  // SHADOWTYPE_STENCIL_MODULATIVE: archive (2026-02-02, commit
-  // 9024f19 in master-archive-2026-05-15) hit
-  // `ManualObject::getShadowVolumeRenderableList` segfaults with
-  // mParentNode == nullptr. Author left a TODO to try texture
-  // shadows.
-  //
-  // SHADOWTYPE_TEXTURE_MODULATIVE: tried 2026-05-18. Setup
-  // succeeds once the resource-group plumbing for
-  // spot_shadow_fade.dds is in place (this commit keeps that
-  // plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal addResourceLocation,
-  // edge-list null checks — for the next attempt). But the rendered
-  // frames come out empty: every frame is I-frame at QP 0 with
-  // 100% skip, suggesting the shadow-render's depth pass is
-  // masking the colour buffer or RTSS isn't generating a working
-  // ambient pass for shadow casters. Verified on both Linux/llvmpipe
-  // (CI run 26021475339, 5 KB mp4) and macOS arm64 (real GPU,
-  // 2.7 KB mp4). So it's a YARS-RTSS-shadow interaction, not a
-  // llvmpipe limitation.
-  //
-  // Re-enabling needs either: (a) writing a custom shadow caster
-  // material so RTSS knows how to emit the depth-only vertex shader,
-  // or (b) switching to a non-RTSS technique (fixed-function
-  // shadows are gone in GL3+ core).
-  // 2026-05-18 third attempt: SHADOWTYPE_TEXTURE_MODULATIVE +
-  // Ogre/TextureShadowCaster produced a non-empty mp4 (849 KB) but
-  // the visible output is broken — ground texture missing, scene
-  // replaced by a sky-blue field with a sawtooth border that looks
-  // like shadow-map content composited as the main pass. Reverting
-  // again. Captured artefacts in commits a10c1b1 (the broken
-  // attempt). The plumbing — YARS_OGRE_MEDIA_DIR, OgreInternal
-  // resource group, null-checked edge-list loops — stays so the
-  // next attempt doesn't have to rediscover it.
-  // Shadows are disabled pending fix for the receiver UV placement bug —
-  // see docs/planning/shadows_state.md for the full investigation log.
-  // The caster + receiver wiring (YARS/TextureShadowCaster,
-  // YARS/TextureShadowReceiver, RTSS scheme tagging,
-  // SceneManager::setShadowTextureCasterMaterial /
-  // setShadowTextureReceiverMaterial) is preserved in the material files
-  // and ready to re-enable once the placement bug is solved.
-  _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  __setupShadows();
+}
+
+void OgreHandler::__setupShadows()
+{
+  // Texture-based modulative shadows. GL3+ core can't use stencil shadows
+  // (fixed-function gone) and SHADOWTYPE_STENCIL_MODULATIVE crashes on
+  // ManualObject. Texture-modulative works once the caster/receiver
+  // materials have explicit GLSL shaders (Ogre's fixed-function fallbacks
+  // also fail on GL3+ core).
+  try
+  {
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
+
+    // 2048² gives crisp shadow edges at YARS scene scale; ~16MB memory
+    // cost which is trivial on a modern GPU. 4096² was overkill.
+    _sceneManager->setShadowTextureSize(2048);
+    _sceneManager->setShadowTextureCount(1);
+
+    // shadowFarDistance must cover the visible arena. The default
+    // DefaultShadowCameraSetup for a directional light creates an
+    // orthographic frustum of (shadowFarDistance*2) wide. For an 8×8m
+    // arena, 15m gives a 30×30 frustum centered on the camera target
+    // — wall silhouettes occupy ~13% of the shadow texture in each
+    // axis, which translates to crisp visible shadows.
+    _sceneManager->setShadowFarDistance(15.0f);
+
+    _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+
+    // Front-face caster rendering: with back-face rendering, boxes/walls
+    // see their own back-face silhouette in the shadow texture and
+    // self-shadow on their outward-facing side. Front-face keeps the
+    // shadow projection tight to the lit silhouette.
+    _sceneManager->setShadowCasterRenderBackFaces(false);
+
+    // FocusedShadowCameraSetup auto-fits the shadow frustum to the
+    // intersection of the eye-camera frustum and shadow-caster geometry.
+    // For YARS this gives reasonable coverage of the visible arena.
+    _sceneManager->setShadowCameraSetup(
+        Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
+
+    // Both caster and receiver materials must be set explicitly. Per-
+    // technique setShadowCasterMaterial is not enough; Ogre 14 falls back
+    // to the global fixed-function default for textures that don't pass
+    // through their own technique. On GL3+ core that default produces
+    // broken renders (missing vertex shader on caster) or skips the
+    // modulative pass entirely (receiver).
+    auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
+    if (casterMat)
+    {
+      casterMat->load();
+      _sceneManager->setShadowTextureCasterMaterial(casterMat);
+    }
+    else
+    {
+      std::cerr << "Warning: YARS/TextureShadowCaster not loaded; "
+                   "shadow casters will fall back to Ogre's fixed-function "
+                   "default and produce a broken render on GL3+ core."
+                << std::endl;
+    }
+
+    auto receiverMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowReceiver");
+    if (receiverMat)
+    {
+      receiverMat->load();
+      _sceneManager->setShadowTextureReceiverMaterial(receiverMat);
+    }
+    else
+    {
+      std::cerr << "Warning: YARS/TextureShadowReceiver not loaded; "
+                   "modulating pass will fall back to Ogre's fixed-function "
+                   "default and skip shadow rendering entirely on GL3+ core."
+                << std::endl;
+    }
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Shadow setup failed: " << e.what() << std::endl;
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+  }
 }
 
 Ogre::SceneManager *OgreHandler::getSceneManager()

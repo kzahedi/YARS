@@ -4,7 +4,8 @@ vertex_program YARS/ShadowReceiverVP glsl
   default_params
   {
     param_named_auto worldViewProjMatrix worldviewproj_matrix
-    param_named_auto texViewProjMatrix texture_viewproj_matrix
+    // Canonical RTSS shadow projection — includes the world matrix.
+    param_named_auto texWorldViewProjMatrix texture_worldviewproj_matrix
   }
 }
 

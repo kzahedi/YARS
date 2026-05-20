@@ -1,15 +1,40 @@
-# Shadows — state of investigation (2026-05-19)
+# Shadows — state of investigation (2026-05-20)
 
-**Current state:** shadows are **disabled** in code
-(`SHADOWTYPE_NONE` in `OgreHandler.cpp::__setupShadows`). The caster +
-receiver materials and shaders are preserved in the tree for the next
-attempt — no media or wiring needs to be rediscovered.
+**Current state:** shadows are **re-enabled** with a working but
+empirical UV transformation. The receiver fragment shader applies
+`uv = uv.yx` (XY swap) to align the projected UV with where the
+caster pass actually writes silhouettes in the shadow texture.
 
-**Why disabled:** the receiver projection has a placement bug we
-could not resolve in the time available. Two sessions on
-2026-05-19 reduced the search space but did not produce a working
-fix. The buggy "shadows render at wrong location" state is worse
-visually than no shadows, so disable was the chosen default.
+**Empirical findings (2026-05-20):**
+1. The caster pass works correctly — silhouettes (diamond from walls,
+   dot from robot) are clearly visible when the shadow texture is
+   sampled in screen-space.
+2. The canonical `texture_worldviewproj_matrix * vertex` math produces
+   UVs in [0,1] but rotated 90° from where the caster wrote the
+   silhouettes. The receiver samples the white interior of the diamond
+   instead of the caster-marked regions.
+3. Applying `uv = uv.yx` in the receiver fragment shader fixes the
+   alignment — robot shadows now visible on the floor below dynamic
+   objects.
+
+**Why empirical (not analytical):** despite an extensive runtime
+diagnostic suite (UV gradient visualisation, screen-space shadow
+texture sampling, projected-UV sampling), the root cause of the
+90° rotation in `texture_worldviewproj_matrix` could not be traced
+to a specific Ogre 14 implementation detail. The fix produces
+correct visible results; the underlying Ogre RTSS / shadow camera
+interaction would warrant a deeper dive.
+
+**Caveats:**
+- Wall shadows are very subtle because YARS arena walls are only
+  0.5m tall (the shadow strip on the floor is ~0.5m wide at 45°
+  light angle, hard to distinguish from wall texture).
+- Robot/dynamic-object shadows are clearly visible.
+- The shadow placement is approximately correct (shadow near the
+  caster) but may not perfectly match a physically correct
+  light-projection ray.
+
+## Historical (2026-05-19): the original buggy state
 
 ---
 
