@@ -89,31 +89,15 @@ ShadowMapper::ShadowMapper(Ogre::SceneManager *sm, float arenaSize)
         Ogre::PF_R8,
         Ogre::TU_RENDERTARGET);
 
-    // 1b) Bind the RTT to the GroundShadowed material's shadow
-    // texture_unit. The material script intentionally leaves the
-    // shadow texture_unit's texture name unset (see comment above).
-    {
-        Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
-            .getByName("YARS/GroundShadowed", "YARS");
-        if (mat)
-        {
-            mat->load();
-            if (mat->getNumTechniques() > 0)
-            {
-                Ogre::Technique *tech = mat->getTechnique(0);
-                if (tech && tech->getNumPasses() > 0)
-                {
-                    Ogre::Pass *pass = tech->getPass(0);
-                    // Unit 1 is the shadow RTT (Unit 0 is the ground
-                    // diffuse texture).
-                    if (pass && pass->getNumTextureUnitStates() > 1)
-                    {
-                        pass->getTextureUnitState(1)->setTextureName(RTT_NAME);
-                    }
-                }
-            }
-        }
-    }
+    // 1b) Defer GroundShadowed material binding to bindToGroundMaterial(),
+    // which OgreHandler must call after rgm.initialiseResourceGroup("YARS")
+    // has parsed the material script. Trying to bind here returns a null
+    // MaterialPtr because the YARS resource group hasn't been initialised
+    // yet (this constructor runs BEFORE group init, on purpose, so the
+    // RTT texture exists by the time the material script references it).
+    // Without that deferred call, unit 1 stays unbound — the floor then
+    // samples whatever stale texture is in sampler unit 1, producing
+    // checkered nonsense instead of shadows.
 
     Ogre::RenderTarget *rt = _rtt->getBuffer()->getRenderTarget();
     rt->setAutoUpdated(false); // we drive it manually each frame
@@ -146,6 +130,26 @@ ShadowMapper::ShadowMapper(Ogre::SceneManager *sm, float arenaSize)
     std::cerr << "ShadowMapper: initialised RTT " << RTT_NAME
               << " (1024^2 R8), ortho " << _arenaSize * 2.0f
               << " x " << _arenaSize * 2.0f << std::endl;
+}
+
+void ShadowMapper::bindToGroundMaterial()
+{
+    Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
+        .getByName("YARS/GroundShadowed", "YARS");
+    if (!mat) {
+        std::cerr << "ShadowMapper::bindToGroundMaterial: material "
+                     "YARS/GroundShadowed not found — shadows will not "
+                     "render correctly." << std::endl;
+        return;
+    }
+    mat->load();
+    if (mat->getNumTechniques() == 0) return;
+    Ogre::Technique *tech = mat->getTechnique(0);
+    if (!tech || tech->getNumPasses() == 0) return;
+    Ogre::Pass *pass = tech->getPass(0);
+    if (!pass || pass->getNumTextureUnitStates() <= 1) return;
+    // Unit 1 is the shadow RTT (Unit 0 is the ground diffuse texture).
+    pass->getTextureUnitState(1)->setTextureName(RTT_NAME);
 }
 
 ShadowMapper::~ShadowMapper()

@@ -316,6 +316,15 @@ void OgreHandler::setupSceneManager()
 
   rgm.initialiseResourceGroup("YARS");
 
+  // Bind the RTT to YARS/GroundShadowed AFTER the group is initialised
+  // (the material is parsed during initialiseResourceGroup). Doing this
+  // inside the ShadowMapper constructor — which runs BEFORE group init,
+  // because the manual RTT must exist when the material script
+  // references it — leaves the binding silently no-op since the
+  // material doesn't yet exist. Result: floor samples random texture
+  // in unit 1 and shows checkered nonsense.
+  _shadowMapper->bindToGroundMaterial();
+
   // Initialise groups
   rgm.initialiseResourceGroup("General");
 

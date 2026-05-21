@@ -51,6 +51,12 @@ public:
     /// Force a shadow re-render this frame. Call from OgreHandler::step.
     void update();
 
+    /// Bind the RTT to the YARS/GroundShadowed material's shadow texture
+    /// unit. Must be called AFTER the YARS resource group is initialised
+    /// (so the material has been parsed). The constructor runs before
+    /// group init, so the binding has to be deferred to here.
+    void bindToGroundMaterial();
+
     /// Name of the RTT texture (so ground material can reference it).
     static const char *RTT_NAME;
     /// Name of the shadow-cast material scheme.
