@@ -360,6 +360,13 @@ void OgreHandler::setupSceneManager()
       // Custom top-down RTT shadow pipeline (shadows v5). Replaces Ogre's
       // built-in shadow framework which is broken on GL3+ core (see
       // docs/planning/shadows_attempts_log.md).
+      //
+      // COUPLING: the 6.0f arena half-extent here MUST match the
+      // ARENA_HALF constant in materials/yars_ground_shadowed.vert
+      // (where the receiver shader maps worldXZ -> shadow UV). If you
+      // change one, change the other. A future refactor could expose
+      // this as a static constexpr on ShadowMapper and a uniform on the
+      // shader; for now the two numbers are kept in lockstep by hand.
       _shadowMapper = std::make_unique<ShadowMapper>(_sceneManager, 6.0f /* arena half-extent */);
 
       // Ensure the RTSS scheme is the active one for all viewports by default.

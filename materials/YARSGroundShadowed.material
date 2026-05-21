@@ -1,0 +1,54 @@
+vertex_program YARS/GroundShadowedVP glsl
+{
+  source yars_ground_shadowed.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+    param_named_auto worldMatrix         world_matrix
+  }
+}
+
+fragment_program YARS/GroundShadowedFP glsl
+{
+  source yars_ground_shadowed.frag
+  default_params
+  {
+    param_named diffuseMap int 0
+    param_named shadowMap  int 1
+  }
+}
+
+material YARS/GroundShadowed
+{
+  // This material has its own GLSL shaders. Mark it with the RTSS
+  // default scheme so the SGTechniqueResolverListener doesn't lazily
+  // create a duplicate technique that would override our shaders.
+  receive_shadows off
+  technique
+  {
+    scheme ShaderGeneratorDefaultScheme
+    pass
+    {
+      lighting off
+      vertex_program_ref YARS/GroundShadowedVP {}
+      fragment_program_ref YARS/GroundShadowedFP {}
+
+      // Unit 0: ground diffuse texture.
+      texture_unit
+      {
+        texture ground.jpg
+        scale 0.1 0.1
+        filtering trilinear
+      }
+
+      // Unit 1: shadow RTT.
+      texture_unit
+      {
+        texture YarsShadowRTT
+        tex_address_mode border
+        tex_border_colour 1 1 1 1
+        filtering linear linear none
+      }
+    }
+  }
+}

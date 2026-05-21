@@ -33,7 +33,22 @@ SceneGraphEnvironmentNode::SceneGraphEnvironmentNode(
 
     // Use MaterialManager to resolve material names properly
     std::string materialName = data->texture();
-    materialName = MaterialManager::instance()->resolveMaterialName(materialName);
+
+    // Custom shadow pipeline (shadows v5): if the XML asked for the
+    // default ground material, swap to the shadow-receiving variant
+    // that samples the YarsShadowRTT and modulates the floor brightness.
+    // See ShadowMapper and materials/YARSGroundShadowed.material. Done
+    // BEFORE resolveMaterialName so the RTSS alias mapping (which would
+    // normally rewrite YARS/DryGroundSmall -> RTSS_Ground) doesn't strip
+    // our shadow-aware swap.
+    if (materialName == "YARS/DryGroundSmall")
+    {
+      materialName = "YARS/GroundShadowed";
+    }
+    else
+    {
+      materialName = MaterialManager::instance()->resolveMaterialName(materialName);
+    }
 
     Ogre::MaterialPtr m = Ogre::MaterialManager::getSingleton().getByName(materialName);
     if (m.isNull())
