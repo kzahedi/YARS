@@ -201,10 +201,11 @@ void MaterialManager::createRTSSForLegacyMaterials() {
             }
         }
 
-        // Set the YARS-owned GLSL shadow caster on every RTSS-generated technique.
-        // Without this, the caster pass falls back to RTSS-generated shaders
-        // which don't produce a working depth-only variant (see shadows v3
-        // failure, commit a10c1b1). Skip the caster material itself.
+        // Set the YARS-owned GLSL shadow caster on every RTSS-generated
+        // technique. Without this, the caster pass falls back to the
+        // fixed-function Ogre/TextureShadowCaster which fails to link
+        // on GL3+ core ("technique has no Vertex Shader"). Skip the
+        // caster material itself.
         if (rtssTech && material->getName() != "YARS/TextureShadowCaster") {
             if (rtssTech->getShadowCasterMaterial().get() == nullptr) {
                 rtssTech->setShadowCasterMaterial("YARS/TextureShadowCaster");

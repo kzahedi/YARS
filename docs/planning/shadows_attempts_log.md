@@ -241,6 +241,95 @@ demonstrate it works — but the path from "Ogre 14 GL3+ core" to
 its own multi-day investigation. Documented here so a future
 session can pick it up with the patched Ogre source already in place.
 
+## 2026-05-21 PM session — INTEGRATED + RTSS template + plane diagnostic
+
+Switched to `SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED` with RTSS
+auto-generating receiver shaders via `SRS_SHADOW_MAPPING` added as a
+template sub-render-state on the SHADERGEN scheme. Also wired in
+`SRS_PER_PIXEL_LIGHTING` (without it, the RTSS-generated shader for
+textured materials reduces to `texel * baseColour` and the shadow
+factor is dead code — see `cbb8f3e5316c21721c0590ace2116236_FS.glsl`
+in the shader cache for the working pipeline).
+
+### Wiring discoveries
+- **Light count gate.** `IntegratedPSSM3::preAddToRenderState` bails
+  out with `return false` when `renderState->getLightCount() == 0`.
+  YARS creates its directional sun light AFTER `validateAllMaterials`,
+  so without an explicit `schemRS->setLightCount(1)` before material
+  validation the shadow_mapping SRS never attaches and receivers come
+  out as no-op fixed-function passes that throw
+  `RenderSystem does not support FixedFunction`.
+- **Lighting attributes gate.** RTSS treats a `pass` with no explicit
+  `ambient`/`diffuse`/`specular`/`emissive` as "no lighting" and
+  skips per-pixel lighting code. Materials like `YARS/DryGroundSmall`
+  (just a `texture_unit` block) end up with `evaluateLight` never
+  called, so the lShadowFactor it would have consumed is unused. Fix
+  is to add explicit `ambient 1 1 1 1 / diffuse 1 1 1 1` lines —
+  matches FFP defaults but flips the RTSS heuristic.
+- **Init order.** `__setupShadows()` has to run *before*
+  `MaterialManager::validateAllMaterials()` because IntegratedPSSM3
+  reads `getShadowTextureCount()` at technique-generation time;
+  setting the shadow technique later means materials generate
+  shadow-less shaders.
+
+All three are fixed in the current OgreHandler. Final wiring:
+template SRS at RTSS-init time, light count seeded to 1, shadows
+set up immediately after, then materials validated.
+
+### Shadow texture dump (definitive)
+Added a `_sceneManager->getShadowTexture(0)->convertToImage(...).save()`
+diagnostic in `step()` (now reverted). Output at
+`/tmp/yars-shadow-texture.png` shows:
+- A clean **black diamond outline** for the four walls (with
+  `FocusedShadowCameraSetup`) or a **black square border** at the
+  texture edges (with `PlaneOptimalShadowCameraSetup` — walls
+  pushed onto the very edge of the texture).
+- A **small black dot** for the robot, in the upper-right quadrant.
+- Pure white interior.
+
+Conclusion: **the caster pass is perfect.** Whatever bug is left is
+purely on the receiver side.
+
+### UV visualization (definitive)
+Hand-edited the cached fragment shader for the ground material to
+output `vec4(lShadowFactor[0], dbg_uv.x, dbg_uv.y, 1.0)` and
+captured a frame. Result:
+- **Red** (shadow factor) is uniformly ~1.0 across the entire
+  visible ground — no part of the receiver samples a black pixel in
+  the shadow texture. Including the ground point directly below the
+  robot, where its own dot should give a hit.
+- **Green** (u) varies smoothly ~0.2 → 0.9 left-to-right.
+- **Blue** (v) varies smoothly ~0.2 → 0.9 (top-to-bottom or vice
+  versa).
+
+So: the UVs are well-formed, smooth, in-range, but they land on
+white pixels even when they "should" land on the robot's dot. The
+caster and receiver projections of the same world point produce
+different texture-space positions. Same root-cause class as the
+custom-receiver path failures.
+
+### What this rules out
+- Custom receiver shader bugs — RTSS-generated path has the same
+  symptom.
+- Shadow texture binding / sampler issues — shadow_map1 is bound,
+  visible in the shader; `inverse_texture_size1` resolves; PCF
+  loop runs.
+- Empty / black-only shadow texture — texture is correct.
+- Lighting math swallowing the factor — per-pixel lighting *is*
+  generated; `evaluateLight(...)` *does* take `lShadowFactor[0]`.
+- Camera-setup specific — both Focused and PlaneOptimal exhibit
+  the same factor-stays-at-1.0 behavior.
+
+### Strong implication
+The `texture_worldviewproj_matrix` auto-param computed by Ogre 14's
+`AutoParamDataSource` is structurally inconsistent with what the
+caster pass uses to write the texture, regardless of camera setup.
+The empirical YX swap from earlier got "close" by accident on
+`FocusedShadowCameraSetup`; the actual error appears to be in how
+the projection part of the matrix is composed (clipspace-to-image
+bias vs. render-target Y-flip cancellation, possibly something
+broken in the version of Ogre we vendor).
+
 ## What hasn't been tried (priorities for next session)
 
 1. **Online research on Ogre 14 + texture shadow + UV alignment issues.**

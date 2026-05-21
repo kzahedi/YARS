@@ -13,7 +13,10 @@
 #endif
 
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
+#include <OGRE/RTShaderSystem/OgreShaderSubRenderState.h>
 #include <OGRE/OgreShadowCameraSetupFocused.h>
+#include <OGRE/OgreShadowCameraSetupPlaneOptimal.h>
+#include <OGRE/OgreMovablePlane.h>
 
 
 namespace yars {
@@ -308,10 +311,50 @@ void OgreHandler::setupSceneManager()
     // Use ShaderManager for comprehensive RTSS setup
     if (ShaderManager::instance()->initializeRTSS(_sceneManager)) {
       _shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-      
+
       // Install our listener so missing techniques are generated on demand.
       _materialListener = new SGTechniqueResolverListener(_shaderGenerator);
       Ogre::MaterialManager::getSingleton().addListener(_materialListener);
+
+      // Add SRS_SHADOW_MAPPING to the RTSS template render state BEFORE
+      // any materials get their RTSS techniques generated below. The
+      // template is applied to newly-generated techniques only, so it
+      // must be set up before validateAllMaterials and
+      // createRTSSForLegacyMaterials run. This wires every RTSS-managed
+      // material as a shadow receiver under
+      // SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED.
+      //
+      // Bootstrap LightCount to 1 on the RTSS render state.
+      // IntegratedPSSM3::preAddToRenderState (the SRS_SHADOW_MAPPING
+      // backend) bails out when getLightCount() == 0 and our directional
+      // sun light is created further down in setupSceneManager, AFTER
+      // material validation. setLightCountAutoUpdate stays true so adding
+      // more lights still triggers regeneration; auto-update never
+      // decreases the count, so seeding it with 1 is safe.
+      {
+        Ogre::RTShader::RenderState *schemRS =
+            _shaderGenerator->getRenderState(Ogre::MSN_SHADERGEN);
+        schemRS->setLightCount(1);
+        // SRS_PER_PIXEL_LIGHTING is required for shadows to be visible:
+        // SGX_ShadowPCF4 stores its result in lShadowFactor[i], but only
+        // evaluateLight (per-pixel lighting) consumes that factor. Without
+        // it, RTSS-generated shaders for textured materials end up doing
+        // gl_FragColor = texel * baseColour with no lighting term — the
+        // shadow factor is dead code and the floor stays at full
+        // brightness regardless of the shadow texture content.
+        schemRS->addTemplateSubRenderState(
+            _shaderGenerator->createSubRenderState(Ogre::RTShader::SRS_PER_PIXEL_LIGHTING));
+        schemRS->addTemplateSubRenderState(
+            _shaderGenerator->createSubRenderState(Ogre::RTShader::SRS_SHADOW_MAPPING));
+      }
+
+      // Configure the SceneManager's shadow technique BEFORE materials get
+      // their RTSS techniques. IntegratedPSSM3 (the SRS_SHADOW_MAPPING
+      // backend) reads getShadowTextureCount() at technique-generation
+      // time; if shadows are still SHADOWTYPE_NONE it produces a
+      // degenerate shader and the receiver materials end up without a
+      // vertex shader at all on GL3+ core.
+      __setupShadows();
 
       // Ensure the RTSS scheme is the active one for all viewports by default.
       Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
@@ -386,69 +429,77 @@ void OgreHandler::setupSceneManager()
   // Ogre::ColourValue(75.0/255.0, 117.0/255.0, 148.0/255.0,1.0f),
   // "Legend", "20");
 
-  __setupShadows();
+  // Note: __setupShadows() is invoked earlier — right after RTSS init,
+  // before any materials get their RTSS techniques generated. Calling it
+  // a second time here would re-set the technique unnecessarily.
 }
 
 void OgreHandler::__setupShadows()
 {
-  // STENCIL shadows ATTEMPTED (2026-05-21) and reverted.
+  // SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED — RTSS-generated receivers.
   //
-  // The pre-2019 YARS code used SHADOWTYPE_STENCIL_ADDITIVE which has
-  // none of the UV-mapping problems of texture shadows — it works in
-  // screen space using the stencil buffer.
+  // Previous attempts at SHADOWTYPE_TEXTURE_MODULATIVE with a custom
+  // YARS/TextureShadowReceiver material + hand-written GLSL fell over
+  // on a UV mismatch between caster and receiver passes that we
+  // never tracked down (see docs/planning/shadows_state.md). The
+  // integrated approach delegates per-material shadow lookups to
+  // RTSS via the SRS_SHADOW_MAPPING sub-render-state, which uses the
+  // canonical ACT_TEXTURE_WORLDVIEWPROJ_MATRIX_ARRAY auto-param in
+  // a generated shader that lives inside each material's own pass.
+  // No separate modulating pass; no UV math we have to maintain.
   //
-  // The shadow-volume infrastructure in YARS is intact:
-  // every ManualObject-based scene node (Box, Cylinder, Capsule, Mesh,
-  // Muscle, Ply) already calls prepareForShadowVolume() on its vertex
-  // data and setCastShadows(true). The ground and sensors correctly
-  // call setCastShadows(false).
+  // Custom YARS/TextureShadowCaster is still required: the default
+  // Ogre/TextureShadowCaster is fixed-function and fails to link on
+  // GL3+ core ("technique has no Vertex Shader").
   //
-  // Two blockers prevent stencil shadows from working on Ogre 14 GL3+ core:
-  //   1. ManualObject::getShadowVolumeRenderableList crashes when
-  //      mParentNode is null. PATCHED locally in
-  //      ext/ogre-source/OgreMain/src/OgreManualObject.cpp (Entity gets
-  //      this guard for free via implicit setVisible(false) on detach).
-  //   2. Ogre's built-in stencil shadow volume extrude shaders
-  //      (Ogre/ShadowExtrudeDirLight, Ogre/ShadowBlendVP) use the
-  //      OgreUnifiedShader.h preprocessor macros (MAIN_PARAMETERS,
-  //      MAIN_DECLARATION, OGRE_UNIFORMS). On GL3+ core these fail to
-  //      compile because the GLSL preprocessor doesn't expand the
-  //      macros — the #include is being skipped. Would need to debug
-  //      Ogre's shader preprocessor setup or write our own GLSL
-  //      stencil-volume shaders.
-  //
-  // Going back to texture-modulative as the working baseline; the
-  // stencil attempt is preserved in git history.
+  // YarsFixedShadowCameraSetup pins the shadow camera to the world
+  // origin (looking down -lightDir from +50 units) so shadows are
+  // anchored to geometry, not to the eye camera.
   try
   {
-    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-    _sceneManager->setShadowTextureSize(2048);
-    _sceneManager->setShadowTextureCount(1);
-    _sceneManager->setShadowFarDistance(15.0f);
-    _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-    _sceneManager->setShadowCasterRenderBackFaces(false);
-    _sceneManager->setShadowCameraSetup(
-        Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
-    auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
-    if (casterMat)
-    {
-      casterMat->load();
-      _sceneManager->setShadowTextureCasterMaterial(casterMat);
-    }
-
-    auto receiverMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowReceiver");
-    if (receiverMat)
-    {
-      receiverMat->load();
-      _sceneManager->setShadowTextureReceiverMaterial(receiverMat);
-    }
-    else
-    {
-      std::cerr << "Warning: YARS/TextureShadowReceiver not loaded; "
-                   "modulating pass will fall back to Ogre's fixed-function "
-                   "default and skip shadow rendering entirely on GL3+ core."
-                << std::endl;
-    }
+    // SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED — RTSS-generated
+    // receivers via SRS_SHADOW_MAPPING (wired in setupSceneManager).
+    //
+    // We tried ADDITIVE_INTEGRATED + PF_DEPTH16 (the depth-shadow path
+    // used by Ogre's Character/Terrain samples) — every receiver
+    // material failed to compile because Ogre's GLSL preprocessor
+    // doesn't expand the SAMPLER2DSHADOW macro on GL3+ core. Same
+    // class of blocker as the OGRE_UNIFORMS / MAIN_PARAMETERS issue
+    // that stops stencil shadows from working here. Reverted.
+    //
+    // Result of the colour-shadow path: caster pass writes the
+    // shadow texture correctly (verified by dumping it to PNG), and
+    // RTSS-generated receiver shaders DO compute lShadowFactor and
+    // feed it into evaluateLight — BUT lShadowFactor is uniformly
+    // ~1.0 across the visible ground regardless of caster geometry.
+    // Visualizing the receiver UV directly (hand-edited shader)
+    // showed smooth UVs in [0,1] that simply don't land where the
+    // caster wrote silhouettes. This is the same Ogre-14
+    // texture_worldviewproj_matrix bug documented in
+    // docs/planning/shadows_attempts_log.md, now also reproduced with
+    // RTSS-generated receiver code.
+    //
+    // Until that auto-param bug is fixed (or worked around), shadows
+    // are visually invisible. Disabling the technique outright so the
+    // scene renders with no shadow overhead while a real fix is
+    // researched. Re-enable by switching back to
+    // SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED and uncommenting the
+    // setup block below — the RTSS template wiring earlier in
+    // setupSceneManager is already in place.
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+    // _sceneManager->setShadowTextureSize(2048);
+    // _sceneManager->setShadowTextureCount(1);
+    // _sceneManager->setShadowFarDistance(15.0f);
+    // _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+    // _sceneManager->setShadowCasterRenderBackFaces(false);
+    // _sceneManager->setShadowCameraSetup(
+    //     Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
+    // auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
+    // if (casterMat)
+    // {
+    //   casterMat->load();
+    //   _sceneManager->setShadowTextureCasterMaterial(casterMat);
+    // }
   }
   catch (const std::exception &e)
   {

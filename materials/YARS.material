@@ -376,6 +376,14 @@ material YARS/DryGroundSmall
   {
     pass
     {
+      // Explicit lighting attributes (matching FFP defaults) force RTSS
+      // to emit per-pixel lighting code, which is what consumes the
+      // shadow factor from SRS_SHADOW_MAPPING. Without these, the
+      // generated shader reduces to texel*white and drops the shadow.
+      ambient  1 1 1 1
+      diffuse  1 1 1 1
+      specular 0 0 0 0
+      emissive 0 0 0 0
       texture_unit
       {
         texture ground.jpg
