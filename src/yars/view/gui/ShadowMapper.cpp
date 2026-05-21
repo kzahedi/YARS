@@ -62,14 +62,58 @@ ShadowMapper::ShadowMapper(Ogre::SceneManager *sm, float arenaSize)
     }
 
     // 1) Create the RTT.
+    //
+    // Resource group "YARS" (not the default General group): the
+    // YARSGroundShadowed.material lives in the YARS group and Ogre's
+    // material parser resolves textures against the same group during
+    // initialiseResourceGroup. With the RTT in the General group, the
+    // parser tries to file-load YarsShadowRTT from the YARS archive
+    // and emits a misleading "Cannot locate resource YarsShadowRTT in
+    // resource group YARS" line in ogre.log even though Ogre
+    // re-resolves the texture by name later and shadows still render.
+    //
+    // The companion change in materials/YARSGroundShadowed.material
+    // removes the `texture YarsShadowRTT` line from the shadow
+    // texture_unit; the texture is bound programmatically below (and
+    // re-bound whenever the material is reloaded, via the manual
+    // setTextureName call) so the material script no longer tries to
+    // declare a texture that has different parameters from the manual
+    // one — which would trigger an "overriding previous declarations"
+    // script-compiler warning.
     _rtt = Ogre::TextureManager::getSingleton().createManual(
         RTT_NAME,
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        "YARS",
         Ogre::TEX_TYPE_2D,
         1024, 1024,
         0, // no mipmaps
         Ogre::PF_R8,
         Ogre::TU_RENDERTARGET);
+
+    // 1b) Bind the RTT to the GroundShadowed material's shadow
+    // texture_unit. The material script intentionally leaves the
+    // shadow texture_unit's texture name unset (see comment above).
+    {
+        Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
+            .getByName("YARS/GroundShadowed", "YARS");
+        if (mat)
+        {
+            mat->load();
+            if (mat->getNumTechniques() > 0)
+            {
+                Ogre::Technique *tech = mat->getTechnique(0);
+                if (tech && tech->getNumPasses() > 0)
+                {
+                    Ogre::Pass *pass = tech->getPass(0);
+                    // Unit 1 is the shadow RTT (Unit 0 is the ground
+                    // diffuse texture).
+                    if (pass && pass->getNumTextureUnitStates() > 1)
+                    {
+                        pass->getTextureUnitState(1)->setTextureName(RTT_NAME);
+                    }
+                }
+            }
+        }
+    }
 
     Ogre::RenderTarget *rt = _rtt->getBuffer()->getRenderTarget();
     rt->setAutoUpdated(false); // we drive it manually each frame

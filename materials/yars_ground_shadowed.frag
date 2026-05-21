@@ -2,13 +2,12 @@
 
 uniform sampler2D diffuseMap;     // ground.jpg
 uniform sampler2D shadowMap;      // YarsShadowRTT (R8: 0=caster, 255=clear)
+uniform float shadowStrength;     // 0=full shadow, 1=no shadow (default 0.4)
 
 in vec2 texUV;
 in vec2 shadowUV;
 
 out vec4 FragColor;
-
-const float SHADOW_STRENGTH = 0.4; // 0=full shadow, 1=no shadow
 
 void main() {
     vec3 diffuse = texture(diffuseMap, texUV).rgb;
@@ -21,6 +20,6 @@ void main() {
     }
 
     // occluder == 1.0 -> no shadow; 0.0 -> full shadow.
-    float modulation = mix(SHADOW_STRENGTH, 1.0, occluder);
+    float modulation = mix(shadowStrength, 1.0, occluder);
     FragColor = vec4(diffuse * modulation, 1.0);
 }

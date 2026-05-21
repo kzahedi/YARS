@@ -13,8 +13,9 @@ fragment_program YARS/GroundShadowedFP glsl
   source yars_ground_shadowed.frag
   default_params
   {
-    param_named diffuseMap int 0
-    param_named shadowMap  int 1
+    param_named diffuseMap     int   0
+    param_named shadowMap      int   1
+    param_named shadowStrength float 0.4
   }
 }
 
@@ -42,9 +43,19 @@ material YARS/GroundShadowed
       }
 
       // Unit 1: shadow RTT.
+      //
+      // The texture itself is bound programmatically by
+      // ShadowMapper::ShadowMapper after creating the manual RTT in
+      // the YARS resource group. Declaring `texture YarsShadowRTT`
+      // here would make Ogre's script compiler try to declare a
+      // file-loaded texture with default params at parse time,
+      // conflicting with the manual PF_R8 / TU_RENDERTARGET texture
+      // and triggering an "overriding previous declarations of
+      // texture 'YarsShadowRTT' with different parameters" warning
+      // in ogre.log. Leaving the name unset here keeps the script
+      // compiler quiet.
       texture_unit
       {
-        texture YarsShadowRTT
         tex_address_mode border
         tex_border_colour 1 1 1 1
         filtering linear linear none

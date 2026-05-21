@@ -297,6 +297,23 @@ void OgreHandler::setupSceneManager()
   // Register YARS materials (textures, .material scripts) BEFORE MaterialManager
   // is first instantiated so RTSS_Ground etc. can resolve ground.jpg/wheel.jpg
   rgm.addResourceLocation("materials", "FileSystem", "YARS");
+
+  // ShadowMapper must be constructed BEFORE the YARS resource group
+  // initialises, because YARSGroundShadowed.material references the
+  // YarsShadowRTT texture by name and Ogre validates resources at
+  // initialise-group time. Without this ordering ogre.log emits a
+  // misleading "Cannot locate resource YarsShadowRTT" warning even
+  // though Ogre re-resolves the texture at draw time and shadows
+  // still render — the warning masks any future real failure mode.
+  //
+  // COUPLING: the 6.0f arena half-extent here MUST match the
+  // ARENA_HALF constant in materials/yars_ground_shadowed.vert
+  // (where the receiver shader maps worldXZ -> shadow UV). If you
+  // change one, change the other. A future refactor could expose
+  // this as a static constexpr on ShadowMapper and a uniform on the
+  // shader; for now the two numbers are kept in lockstep by hand.
+  _shadowMapper = std::make_unique<ShadowMapper>(_sceneManager, 6.0f /* arena half-extent */);
+
   rgm.initialiseResourceGroup("YARS");
 
   // Initialise groups
@@ -357,17 +374,12 @@ void OgreHandler::setupSceneManager()
       // vertex shader at all on GL3+ core.
       __setupShadows();
 
-      // Custom top-down RTT shadow pipeline (shadows v5). Replaces Ogre's
-      // built-in shadow framework which is broken on GL3+ core (see
-      // docs/planning/shadows_attempts_log.md).
-      //
-      // COUPLING: the 6.0f arena half-extent here MUST match the
-      // ARENA_HALF constant in materials/yars_ground_shadowed.vert
-      // (where the receiver shader maps worldXZ -> shadow UV). If you
-      // change one, change the other. A future refactor could expose
-      // this as a static constexpr on ShadowMapper and a uniform on the
-      // shader; for now the two numbers are kept in lockstep by hand.
-      _shadowMapper = std::make_unique<ShadowMapper>(_sceneManager, 6.0f /* arena half-extent */);
+      // ShadowMapper (the custom top-down RTT shadow pipeline that
+      // replaces Ogre's built-in framework, broken on GL3+ core — see
+      // docs/planning/shadows_attempts_log.md) is constructed earlier,
+      // before initialiseResourceGroup("YARS"), so the YarsShadowRTT
+      // texture exists by the time YARSGroundShadowed.material is
+      // parsed.
 
       // Ensure the RTSS scheme is the active one for all viewports by default.
       Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
