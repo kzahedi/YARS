@@ -25,6 +25,8 @@ public:
   Ogre::SceneManager *getSceneManager();
   Ogre::Root *root();
 
+  PlanarShadowProjector *getPlanarShadowProjector() { return _planarShadows.get(); }
+
   void setupSceneManager();
   void setupResources();
 

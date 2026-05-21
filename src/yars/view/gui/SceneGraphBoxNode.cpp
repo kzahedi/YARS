@@ -1,5 +1,7 @@
 #include "SceneGraphBoxNode.h"
 #include "MaterialManager.h"
+#include "OgreHandler.h"
+#include "PlanarShadowProjector.h"
 
 #include <OGRE/Ogre.h>
 #include <OgreEdgeListBuilder.h>
@@ -142,6 +144,13 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
 
   _node->attachObject(_manual);
   _manual->setCastShadows(true);
+
+  // Register with the planar shadow projector so a translucent shadow
+  // proxy is spawned and updated in lockstep with this box.
+  if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+  {
+    psp->registerCaster(_node, _manual, "Box_" + _data->name());
+  }
 
   update();
 }

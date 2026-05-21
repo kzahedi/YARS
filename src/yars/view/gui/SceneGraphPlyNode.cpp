@@ -1,4 +1,6 @@
 #include "SceneGraphPlyNode.h"
+#include "OgreHandler.h"
+#include "PlanarShadowProjector.h"
 
 #include <yars/util/PlyLoader.h>
 
@@ -30,6 +32,14 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     ::Quaternion q((*m)->pose().orientation);
     meshNode->setPosition(Ogre::Vector3(position.x, position.y, position.z));
     meshNode->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
+
+    // Register with the planar shadow projector so a translucent shadow
+    // proxy is spawned and updated in lockstep with this PLY mesh.
+    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+    {
+      psp->registerCaster(meshNode, (*m)->name());
+    }
+
     index++;
   }
 
@@ -64,6 +74,12 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     _node->attachObject(_manual);
     _manual->setCastShadows(true);
     _manual->setMaterialName(0, _data->texture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+
+    // Register the PLY ManualObject with the planar shadow projector.
+    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+    {
+      psp->registerCaster(_node, _manual, "Ply_" + _data->name());
+    }
   }
   update();
 }

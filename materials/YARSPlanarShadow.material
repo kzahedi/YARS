@@ -1,24 +1,44 @@
 // Planar projected shadow material. Used by PlanarShadowProjector
 // to render shadow-proxy entities as solid translucent black on top
 // of the floor.
+//
+// Uses explicit GLSL programs (planar_shadow.vert / planar_shadow.frag)
+// instead of fixed-function lighting. On GL3+ core, RTSS would
+// otherwise replace any fixed-function technique with a generated
+// shader that ignores `lighting off` + `emissive` and produces a
+// white quad. The explicit shader emits vec4(0,0,0,0.5) directly.
+
+vertex_program YARS/PlanarShadowVP glsl
+{
+  source planar_shadow.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+  }
+}
+
+fragment_program YARS/PlanarShadowFP glsl
+{
+  source planar_shadow.frag
+}
 
 material YARS/PlanarShadow
 {
   technique
   {
+    // Tag with the RTSS scheme so the SGTechniqueResolverListener doesn't
+    // lazily create a duplicate that would override our explicit GLSL.
+    scheme ShaderGeneratorDefaultScheme
     pass
     {
-      lighting off
-      ambient  0 0 0 0.5
-      diffuse  0 0 0 0.5
-      specular 0 0 0 0
-      emissive 0 0 0 0
+      vertex_program_ref YARS/PlanarShadowVP {}
+      fragment_program_ref YARS/PlanarShadowFP {}
+
       scene_blend alpha_blend
       depth_check on
       depth_write off
       // Render slightly above the floor to avoid z-fighting.
       depth_bias -1 -1
-      // No texture units.
     }
   }
 }

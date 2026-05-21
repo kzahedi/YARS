@@ -413,7 +413,12 @@ void OgreHandler::setupSceneManager()
   // Planar projected shadows: render every shadow-casting entity a
   // second time, flattened onto the floor plane along the light
   // direction. Replaces the previous custom RTT pipeline.
-  const Ogre::Plane floor(Ogre::Vector3::UNIT_Y, 0.0f);
+  //
+  // YARS uses Z-up world coordinates (see SceneGraphEnvironmentNode:
+  // the ground plane is Plane(UNIT_Z, 0)). The PlanarShadowProjector
+  // must use the matching floor normal and a Z-up light direction so
+  // shadows project onto the z=0 plane.
+  const Ogre::Plane floor(Ogre::Vector3::UNIT_Z, 0.0f);
   const Ogre::Vector3 lightDir(-1.0f, -1.0f, -1.0f);
   _planarShadows = std::make_unique<PlanarShadowProjector>(
       _sceneManager, floor, lightDir);

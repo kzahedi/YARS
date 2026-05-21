@@ -1,5 +1,7 @@
 #include "SceneGraphCylinderNode.h"
 #include "MaterialManager.h"
+#include "OgreHandler.h"
+#include "PlanarShadowProjector.h"
 
 #include <yars/defines/defaults.h>
 #include <OGRE/Ogre.h>
@@ -56,6 +58,13 @@ SceneGraphCylinderNode::SceneGraphCylinderNode(
   }
 
   _node->attachObject(_manual);
+
+  // Register with the planar shadow projector so a translucent shadow
+  // proxy is spawned and updated in lockstep with this cylinder.
+  if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+  {
+    psp->registerCaster(_node, _manual, "Cylinder_" + _data->name());
+  }
 
   update();
 }
