@@ -414,11 +414,16 @@ void OgreHandler::setupSceneManager()
   // second time, flattened onto the floor plane along the light
   // direction. Replaces the previous custom RTT pipeline.
   //
-  // YARS uses Z-up world coordinates (see SceneGraphEnvironmentNode:
-  // the ground plane is Plane(UNIT_Z, 0)). The PlanarShadowProjector
-  // must use the matching floor normal and a Z-up light direction so
-  // shadows project onto the z=0 plane.
-  const Ogre::Plane floor(Ogre::Vector3::UNIT_Z, 0.0f);
+  // Frame convention: the YARS scene graph applies a -90 deg X
+  // rotation at the root that converts YARS-local Z-up coordinates
+  // into Ogre Y-up RENDERING coordinates. casterNode->_getFullTransform()
+  // returns the WORLD transform (post-rotation Y-up). Shadow proxies
+  // attach to the SceneManager's root (unrotated, also Y-up). So all
+  // the math here lives in Ogre Y-up world space: the floor's world
+  // normal is +Y and the directional sun light is (-1,-1,-1) in Y-up.
+  // (SceneGraphEnvironmentNode uses Plane(UNIT_Z, 0) but that's in
+  // the floor mesh's LOCAL frame, before the scene-root rotation.)
+  const Ogre::Plane floor(Ogre::Vector3::UNIT_Y, 0.0f);
   const Ogre::Vector3 lightDir(-1.0f, -1.0f, -1.0f);
   _planarShadows = std::make_unique<PlanarShadowProjector>(
       _sceneManager, floor, lightDir);
