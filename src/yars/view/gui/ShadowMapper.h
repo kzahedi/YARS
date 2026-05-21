@@ -6,6 +6,12 @@
 #include <OGRE/OgreTexture.h>
 #include <OGRE/OgreMaterialManager.h>
 
+#include <vector>
+
+namespace Ogre {
+class MovableObject;
+}
+
 namespace yars {
 
 /**
@@ -62,6 +68,11 @@ private:
     Ogre::SceneNode *_shadowCamNode;
     Ogre::Viewport *_shadowVp;
     Ogre::String _previousScheme; // restored in postRenderTargetUpdate
+
+    // MovableObjects whose visibility we temporarily disabled for the
+    // shadow pass (those with getCastShadows()==false, e.g. the ground).
+    // Restored in postRenderTargetUpdate.
+    std::vector<Ogre::MovableObject *> _hiddenForCast;
 };
 
 } // namespace yars
