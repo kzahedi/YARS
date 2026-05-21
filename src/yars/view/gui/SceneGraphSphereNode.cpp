@@ -108,10 +108,9 @@ void SceneGraphSphereNode::__topCap()
     SET_INDICES;
     _manual->setVisible(true);
     // Spheres are real-world objects and must cast shadows (same as
-    // boxes, cylinders, capsules). Previously false here, which made
-    // falling_objects.xml render with no shadow under any ball — the
-    // ShadowMapper hides every !getCastShadows() object before the
-    // silhouette pass, so the balls never reached the RTT.
+    // boxes, cylinders, capsules). Any shadow system that filters by
+    // getCastShadows() needs this flag set, otherwise balls render
+    // without shadows in scenes like falling_objects.xml.
     _manual->setCastShadows(true);
     _manual->end();
   }
@@ -161,10 +160,9 @@ void SceneGraphSphereNode::__bottomCap()
     SET_INDICES;
     _manual->setVisible(true);
     // Spheres are real-world objects and must cast shadows (same as
-    // boxes, cylinders, capsules). Previously false here, which made
-    // falling_objects.xml render with no shadow under any ball — the
-    // ShadowMapper hides every !getCastShadows() object before the
-    // silhouette pass, so the balls never reached the RTT.
+    // boxes, cylinders, capsules). Any shadow system that filters by
+    // getCastShadows() needs this flag set, otherwise balls render
+    // without shadows in scenes like falling_objects.xml.
     _manual->setCastShadows(true);
     _manual->end();
   }
