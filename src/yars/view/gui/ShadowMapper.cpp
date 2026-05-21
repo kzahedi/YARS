@@ -132,13 +132,24 @@ namespace {
 
 /// Defensive cleanup + one-shot log when the RTT render throws. Called
 /// from both the Ogre::Exception and std::exception catch arms so the
-/// "log once total" property holds across exception types.
+/// "log once total" property holds across exception types. Restores both
+/// the active material scheme and the visibility of any objects that
+/// preRenderTargetUpdate temporarily hid — if the throw happens after
+/// preRenderTargetUpdate but before Ogre fires postRenderTargetUpdate,
+/// those objects would otherwise stay invisible forever (the next
+/// frame's preRenderTargetUpdate clears _hiddenForCast, dropping the
+/// references).
 void handleRenderException(const char *what,
-                           const Ogre::String &previousScheme)
+                           const Ogre::String &previousScheme,
+                           std::vector<Ogre::MovableObject *> &hiddenForCast)
 {
     if (!previousScheme.empty()) {
         Ogre::MaterialManager::getSingleton().setActiveScheme(previousScheme);
     }
+    for (Ogre::MovableObject *mo : hiddenForCast) {
+        if (mo) mo->setVisible(true);
+    }
+    hiddenForCast.clear();
     static bool reported = false;
     if (!reported) {
         Ogre::LogManager::getSingleton().logMessage(
@@ -166,9 +177,9 @@ void ShadowMapper::update()
     try {
         _rtt->getBuffer()->getRenderTarget()->update();
     } catch (const Ogre::Exception &e) {
-        handleRenderException(e.what(), _previousScheme);
+        handleRenderException(e.what(), _previousScheme, _hiddenForCast);
     } catch (const std::exception &e) {
-        handleRenderException(e.what(), _previousScheme);
+        handleRenderException(e.what(), _previousScheme, _hiddenForCast);
     }
 }
 
