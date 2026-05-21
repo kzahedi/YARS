@@ -1,3 +1,84 @@
+# Shadows — state (2026-05-21 PM, v5 custom RTT pipeline)
+
+**Status:** working. Robot and dynamic objects (e.g. falling balls) cast
+visible shadows on the floor in `braitenberg.xml` and `falling_objects.xml`.
+Shadows are world-anchored — they stay put as the eye camera moves and
+follow caster geometry, not the camera.
+
+**Architecture:** custom render-to-texture pipeline that bypasses
+Ogre 14's broken `texture_worldviewproj_matrix` auto-param entirely.
+
+1. **Caster pass.** Each frame, `ShadowMapper::update()` triggers a
+   render of the scene into a 1024² R8 RTT (`YarsShadowRTT`) from an
+   orthographic top-down camera positioned at `(0, +50, 0)` in Ogre
+   world space, looking straight down, ortho window 12×12.
+2. **Material substitution.** A `ShadowCastSchemeListener`
+   (`MaterialManager::Listener`) intercepts material queries in the
+   scheme `"yars-shadow-cast"` and returns `YARS/CustomShadowCast`'s
+   technique — a single black opaque pass. This way every
+   shadow-casting entity renders as a black silhouette during the
+   RTT pass without manual annotation on every `.material` file.
+3. **Visibility filter.** Movables with `setCastShadows(false)`
+   (the ground plane, sensor visualisations) are temporarily hidden
+   during the RTT pass via the `_hiddenForCast` list inside
+   `preRenderTargetUpdate`, then restored in `postRenderTargetUpdate`
+   (or, if the render throws, by `handleRenderException` in
+   `update()`).
+4. **Receiver pass.** The ground material is `YARS/GroundShadowed`,
+   whose vertex shader computes the shadow UV from the vertex's
+   world-XZ position: `shadowUV = worldXZ / 12.0 + 0.5`. The
+   fragment shader samples `YarsShadowRTT` at that UV and multiplies
+   the diffuse colour by `mix(shadowStrength, 1.0, occluder)` (with
+   `shadowStrength = 0.4` by default — tunable via the `param_named`
+   in the material script). UVs that fall outside `[0,1]` sample
+   the texture unit's border colour `(1,1,1,1)` = no shadow.
+
+**Why this works:** the UV transform is entirely in our shader code
+based on each vertex's known world-space XZ position. We don't
+depend on Ogre's `texture_worldviewproj_matrix` auto-param, which
+empirical testing showed produces UVs that don't correspond to where
+the caster pass actually writes silhouettes on this platform (macOS
+arm64 GL3+ core, Ogre 14 + current master).
+
+**Limitations:**
+- Top-down orthographic shadow camera, not aligned to the light
+  direction `(-1, -1, -1)`. For the YARS arena (small, flat, short
+  walls) this looks correct visually. For tall casters with
+  oblique light, shadows would not extrude along the light
+  direction. Acceptable for v1.
+- Floor-only receiver. Walls don't show shadows from the robot or
+  other objects. Could be extended in the future by giving each
+  wall a shadow-receiving material variant that samples the RTT
+  with a wall-specific UV transform.
+- Hardcoded arena half-extent (6 m in Ogre world units, =
+  `ShadowMapper(arenaSize=6.0f)` in C++ and `ARENA_HALF = 6.0` in
+  the receiver vertex shader). If/when YARS XML configs ever use
+  different arena sizes, this needs to come from XML.
+- Coupling between the C++ `6.0f` and the GLSL `6.0` is documented
+  in cross-referenced comments on both sides but not enforced
+  programmatically. Future work: expose as a `param_named` uniform
+  passed from `ShadowMapper`.
+
+**Files:**
+- `src/yars/view/gui/ShadowMapper.{h,cpp}` — RTT + camera + listener
+- `src/yars/view/gui/OgreHandler.cpp` — instantiates ShadowMapper
+- `src/yars/view/gui/SceneGraphEnvironmentNode.cpp` — swaps default
+  ground material to the shadow-receiving variant
+- `materials/YARSCustomShadowCast.material` + `.vert`/`.frag` —
+  black silhouette material (caster)
+- `materials/YARSGroundShadowed.material` + `.vert`/`.frag` —
+  diffuse × shadow modulation (receiver)
+
+**Implementation history:** see `shadows_attempts_log.md` for the
+full investigation (multiple sessions of trying to make Ogre's
+built-in `SHADOWTYPE_TEXTURE_*` paths work before settling on the
+custom pipeline) and `shadows_v5_plan.md` for the research+decision
+that led here.
+
+---
+
+## Historical (pre-v5)
+
 # Shadows — state of investigation (2026-05-20, updated)
 
 **Current state:** shadows are **re-enabled** and visible. The setup

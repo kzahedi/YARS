@@ -378,3 +378,22 @@ remains.
    a duplicate technique for shadow receiver.
 6. **Try without the SceneGraph -90° X rotation** — temporarily render
    in YARS native Z-up to test if the rotation interacts with shadow math.
+
+---
+
+## RESOLVED (2026-05-21 PM)
+
+The texture_worldviewproj_matrix UV mismatch is **not fixed** — it's
+**bypassed**. We built a custom top-down RTT shadow pipeline
+(`src/yars/view/gui/ShadowMapper.{h,cpp}` + materials in
+`materials/YARSGroundShadowed.*` and `materials/YARSCustomShadowCast.*`)
+that does not depend on Ogre's auto-param.
+
+See `docs/planning/shadows_state.md` for the architecture and
+`docs/superpowers/plans/2026-05-21-shadows-v5.md` for the
+plan+research that led there.
+
+End-state commits (most recent first):
+- `07d363d` fix(gui): pre-create ShadowMapper RTT; SHADOW_STRENGTH uniform
+- `2eb6989` feat(gui): ground shadow receiver — shadows working
+- (subsequent: doc closeout)
