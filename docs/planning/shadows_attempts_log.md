@@ -330,6 +330,34 @@ the projection part of the matrix is composed (clipspace-to-image
 bias vs. render-target Y-flip cancellation, possibly something
 broken in the version of Ogre we vendor).
 
+## 2026-05-21 PM diagnostic — RTT flip flag
+
+`mActiveRenderTarget->requiresTextureFlipping()` on the shadow RTT on
+macOS arm64 + GL3+ core (Ogre master post-rebase): **true**.
+
+Observed via one-shot stderr print in `OgreHandler::step()` immediately
+after `_root->renderOneFrame()` with `SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED`
+temporarily re-enabled. Full line:
+
+```
+SHADOW-RTT-FLIP: requiresTextureFlipping=true w=2048 h=2048 name=Ogre/ShadowTexture0
+```
+
+This matches the expected `true` for GL FBOs (per
+`OgreGLRenderTexture.h:131`). The Y-flip cancellation in
+`AutoParamDataSource::getTextureViewProjMatrix` (which bakes in a -0.5 on
+Y via `CLIPSPACE2DTOIMAGESPACE` to cancel the per-render-target Y-flip
+applied during the caster pass) DOES have something to cancel — the bug
+is therefore NOT a missing-flip silently breaking the bias cancellation.
+The bug is elsewhere in the matrix composition (the caster pass writes
+to a UV-space that the receiver pass samples from with a different
+projection). Confirms hypothesis section already in this log: the
+projection/bias composition itself is wrong, not a platform-specific
+flip flag mismatch.
+
+Diagnostic and shadow re-enable both reverted; only this docs note
+remains.
+
 ## What hasn't been tried (priorities for next session)
 
 1. **Online research on Ogre 14 + texture shadow + UV alignment issues.**
