@@ -2,6 +2,7 @@
 #define YARS_VIEW_GUI_SHADOW_MAPPER_H
 
 #include <OGRE/OgreCamera.h>
+#include <OGRE/OgreMatrix4.h>
 #include <OGRE/OgreRenderTargetListener.h>
 #include <OGRE/OgreTexture.h>
 #include <OGRE/OgreMaterialManager.h>
@@ -15,24 +16,27 @@ class MovableObject;
 namespace yars {
 
 /**
- * Custom top-down render-to-texture shadow pipeline.
+ * Custom light-direction-aligned render-to-texture shadow pipeline.
  *
  * Ogre 14's built-in texture_worldviewproj_matrix auto-param is broken
  * on GL3+ core (see docs/planning/shadows_attempts_log.md), so we
  * sidestep Ogre's shadow framework entirely:
  *
- *   1. Create a dedicated 1024x1024 R8 RTT (`shadow_rt`) above the
- *      arena, with an orthographic camera looking straight down.
+ *   1. Create a dedicated 1024x1024 R8 RTT (`shadow_rt`) positioned
+ *      along the light direction with an orthographic camera looking
+ *      in the direction the light travels (-1,-1,-1 in Ogre world).
  *   2. Each frame: render the scene into the RTT with every entity
  *      painted black (silhouette pass).
  *   3. The ground material (`YARS/GroundShadowed`) samples this RTT
- *      using `uv = (worldXZ - arenaMin) / arenaSize` — UV math is in
- *      our shader, not in Ogre's auto-param.
+ *      using a shadow view+proj matrix uniform pushed every frame
+ *      from C++ — the receiver shader projects each ground vertex
+ *      into shadow texture space rather than relying on Ogre's broken
+ *      texture-space auto-params.
  *
- * The light direction is approximated by a top-down ortho. For the
- * YARS scene (8x8 arena, ~0.5m wall height, single directional light)
- * this is visually close enough; walls cast small shadow strips on
- * the floor exactly where they would under the directional light.
+ * Because the shadow camera is aligned with the actual light vector,
+ * silhouettes project along that vector and shadows extend away from
+ * casters in the light's travel direction — not directly under them
+ * as the previous top-down ortho variant did.
  */
 class ShadowMapper : public Ogre::RenderTargetListener
 {
@@ -49,6 +53,8 @@ public:
     ~ShadowMapper() override;
 
     /// Force a shadow re-render this frame. Call from OgreHandler::step.
+    /// Also pushes the current shadow view-projection-bias matrix to
+    /// the receiver material as a named vertex-shader constant.
     void update();
 
     /// Bind the RTT to the YARS/GroundShadowed material's shadow texture
@@ -56,6 +62,12 @@ public:
     /// (so the material has been parsed). The constructor runs before
     /// group init, so the binding has to be deferred to here.
     void bindToGroundMaterial();
+
+    /// Compute the bias * proj * view matrix product for the shadow
+    /// camera, so a world-space vertex multiplied through it lands in
+    /// texture-space [0,1] (after perspective divide, which for an
+    /// ortho projection is a no-op).
+    Ogre::Matrix4 getShadowViewProjMatrix() const;
 
     /// Name of the RTT texture (so ground material can reference it).
     static const char *RTT_NAME;

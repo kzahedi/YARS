@@ -2,18 +2,19 @@
 
 uniform mat4 worldViewProjMatrix;
 uniform mat4 worldMatrix;
+// Pushed per-frame from C++ (ShadowMapper::update). Combines the
+// shadow camera's view + projection + clip-to-texture bias, so a
+// world-space vertex multiplied through it yields texture-space UV
+// after a perspective divide (which for our ortho shadow camera is
+// a no-op — w == 1). This sidesteps Ogre 14's broken
+// `texture_worldviewproj_matrix` auto-param on GL3+ core.
+uniform mat4 shadowViewProjMatrix;
 
 in vec4 vertex;
 in vec4 uv0;
 
-out vec2 texUV;       // diffuse texture (ground.jpg) UV
-out vec2 shadowUV;    // shadow RTT UV — world-XZ-derived
-
-// Arena half-extent in Ogre world units. MUST match
-// ShadowMapper(arenaSize=6.0f) constructor argument in
-// src/yars/view/gui/OgreHandler.cpp (search for "arena half-extent").
-// If you change this here, change it there too.
-const float ARENA_HALF = 6.0;
+out vec2 texUV;          // diffuse texture (ground.jpg) UV
+out vec4 shadowClipPos;  // shadow-space clip-position; .xy/.w is the UV
 
 void main() {
     gl_Position = worldViewProjMatrix * vertex;
@@ -21,9 +22,9 @@ void main() {
     // Diffuse UV from the mesh's existing UV0.
     texUV = uv0.xy;
 
-    // Shadow UV from the vertex's world-space XZ position. The shadow
-    // camera is top-down ortho covering [-ARENA_HALF, +ARENA_HALF] in
-    // both X and Z, so worldXZ in [-ARENA_HALF, +ARENA_HALF] -> uv in [0, 1].
+    // Project the world-space vertex through the shadow camera's
+    // view+proj+bias product. The fragment shader does the perspective
+    // divide.
     vec4 worldPos = worldMatrix * vertex;
-    shadowUV = (worldPos.xz / (ARENA_HALF * 2.0)) + vec2(0.5, 0.5);
+    shadowClipPos = shadowViewProjMatrix * worldPos;
 }

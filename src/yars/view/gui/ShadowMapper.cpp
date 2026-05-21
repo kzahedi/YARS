@@ -1,9 +1,14 @@
 #include "ShadowMapper.h"
 
+#include <OGRE/OgreGpuProgramParams.h>
 #include <OGRE/OgreHardwarePixelBuffer.h>
+#include <OGRE/OgreMatrix3.h>
+#include <OGRE/OgreQuaternion.h>
 #include <OGRE/OgreLogManager.h>
 #include <OGRE/OgreMaterial.h>
+#include <OGRE/OgreMaterialManager.h>
 #include <OGRE/OgreMovableObject.h>
+#include <OGRE/OgrePass.h>
 #include <OGRE/OgreRenderTexture.h>
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
@@ -11,6 +16,7 @@
 #include <OGRE/OgreTextureManager.h>
 #include <OGRE/OgreViewport.h>
 
+#include <cmath>
 #include <iostream>
 
 namespace yars {
@@ -102,18 +108,65 @@ ShadowMapper::ShadowMapper(Ogre::SceneManager *sm, float arenaSize)
     Ogre::RenderTarget *rt = _rtt->getBuffer()->getRenderTarget();
     rt->setAutoUpdated(false); // we drive it manually each frame
 
-    // 2) Create the top-down orthographic camera.
+    // 2) Create the light-direction-aligned orthographic camera.
+    //
+    // Light rays travel in lightDirection = (-1,-1,-1) (normalised). The
+    // shadow camera is positioned at -lightDirection * cameraDistance
+    // (i.e. on the side the light source comes from) and looks along
+    // lightDirection (in the direction the light travels), so that
+    // silhouettes project onto receivers along the actual light vector.
+    //
+    // We build the camera basis explicitly via a quaternion so the
+    // result is deterministic — Ogre's lookAt with an implicit up
+    // vector can pick a different basis depending on degeneracies.
     _shadowCam = _sm->createCamera("YarsShadowCam");
     _shadowCam->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
-    // Ortho window covers [-arenaSize, +arenaSize] in both X and Z
-    // when viewed from above (Ogre world).
-    _shadowCam->setOrthoWindow(_arenaSize * 2.0f, _arenaSize * 2.0f);
-    _shadowCam->setNearClipDistance(0.5f);
-    _shadowCam->setFarClipDistance(100.0f);
-    // Camera looks straight down (-Y in Ogre world).
+    // Ortho window: the projected footprint of the 8x8 arena at a 45°
+    // light angle is larger than the arena itself. 16x16 covers the
+    // arena plus margin for taller dynamic geometry; increase if
+    // shadows clip at the edges.
+    _shadowCam->setOrthoWindow(16.0f, 16.0f);
+    // Near clip 1.0 — the camera is ~50 units from origin, so 0.5 is
+    // unnecessarily tight (and can produce z-fighting in the depth
+    // tests done by the silhouette pass).
+    _shadowCam->setNearClipDistance(1.0f);
+    _shadowCam->setFarClipDistance(200.0f);
+
+    const Ogre::Real cameraDistance = 50.0f;
+    Ogre::Vector3 lightDirection(-1.0f, -1.0f, -1.0f);
+    lightDirection.normalise();
+    const Ogre::Vector3 camPos = -lightDirection * cameraDistance;
+
     _shadowCamNode = _sm->getRootSceneNode()->createChildSceneNode("YarsShadowCamNode");
-    _shadowCamNode->setPosition(0.0f, 50.0f, 0.0f);
-    _shadowCamNode->lookAt(Ogre::Vector3::ZERO, Ogre::Node::TS_WORLD);
+    _shadowCamNode->setPosition(camPos);
+
+    // Build the camera basis explicitly via a quaternion so the result
+    // is deterministic. Ogre cameras look along their local -Z axis;
+    // local +Y is up, local +X is right. We want:
+    //   local -Z (forward in world) = lightDirection
+    //   local +Y (up in world)      = orthogonal to forward, derived
+    //                                 from a world up vector
+    //
+    // Deterministic basis: pick world +Y as up. If the light direction
+    // is (nearly) parallel to +Y, fall back to +Z to avoid a degenerate
+    // cross product. For (-1,-1,-1) the dot with +Y is ~-0.577 so the
+    // primary branch applies.
+    Ogre::Vector3 worldUp = Ogre::Vector3::UNIT_Y;
+    if (std::abs(worldUp.dotProduct(lightDirection)) > 0.95f) {
+        worldUp = Ogre::Vector3::UNIT_Z;
+    }
+    const Ogre::Vector3 zAxis = -lightDirection;          // local +Z
+    Ogre::Vector3 xAxis = worldUp.crossProduct(zAxis);    // local +X = up x z
+    xAxis.normalise();
+    const Ogre::Vector3 yAxis = zAxis.crossProduct(xAxis); // local +Y = z x x
+
+    Ogre::Matrix3 rot;
+    rot.SetColumn(0, xAxis);
+    rot.SetColumn(1, yAxis);
+    rot.SetColumn(2, zAxis);
+    Ogre::Quaternion orientation(rot);
+    _shadowCamNode->setOrientation(orientation);
+
     _shadowCamNode->attachObject(_shadowCam);
 
     // 3) Attach a viewport that clears to white (1,1,1 = "no shadow").
@@ -128,8 +181,31 @@ ShadowMapper::ShadowMapper(Ogre::SceneManager *sm, float arenaSize)
     rt->addListener(this);
 
     std::cerr << "ShadowMapper: initialised RTT " << RTT_NAME
-              << " (1024^2 R8), ortho " << _arenaSize * 2.0f
-              << " x " << _arenaSize * 2.0f << std::endl;
+              << " (1024^2 R8), ortho 16x16, cam pos ("
+              << camPos.x << ", " << camPos.y << ", " << camPos.z
+              << "), light dir (" << lightDirection.x << ", "
+              << lightDirection.y << ", " << lightDirection.z << ")"
+              << std::endl;
+}
+
+Ogre::Matrix4 ShadowMapper::getShadowViewProjMatrix() const
+{
+    // Bias matrix maps clip-space [-1,+1] to texture-space [0,1].
+    // The convention matches what the GLSL fragment shader expects after
+    // perspective divide: shadowClipPos.xy / shadowClipPos.w in [0,1].
+    static const Ogre::Matrix4 BIAS(
+        0.5f, 0.0f, 0.0f, 0.5f,
+        0.0f, 0.5f, 0.0f, 0.5f,
+        0.0f, 0.0f, 0.5f, 0.5f,
+        0.0f, 0.0f, 0.0f, 1.0f);
+    if (!_shadowCam) return Ogre::Matrix4::IDENTITY;
+    // getProjectionMatrixWithRSDepth returns the projection matrix with
+    // the render system's actual depth-range applied (GL: [-1,+1] z;
+    // others may use [0,1]). Combined with the bias above, the result
+    // lands in [0,1] for shaders regardless of API.
+    return BIAS
+           * _shadowCam->getProjectionMatrixWithRSDepth()
+           * _shadowCam->getViewMatrix();
 }
 
 void ShadowMapper::bindToGroundMaterial()
@@ -228,6 +304,30 @@ void ShadowMapper::update()
         handleRenderException(e.what(), _previousScheme, _hiddenForCast);
     } catch (const std::exception &e) {
         handleRenderException(e.what(), _previousScheme, _hiddenForCast);
+    }
+
+    // Push the current shadow view-projection-bias matrix to the
+    // receiver shader as a named constant. The matrix is set per-frame
+    // (rather than via a material-script `param_named_auto`) because
+    // Ogre 14 has no built-in auto-param for an arbitrary off-screen
+    // camera's view+proj product, and the documented
+    // `texture_worldviewproj_matrix` auto-param is broken on GL3+ core
+    // (see docs/planning/shadows_attempts_log.md).
+    Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
+        .getByName("YARS/GroundShadowed", "YARS");
+    if (mat && mat->getNumTechniques() > 0) {
+        Ogre::Technique *tech = mat->getTechnique(0);
+        if (tech && tech->getNumPasses() > 0) {
+            Ogre::Pass *pass = tech->getPass(0);
+            if (pass && pass->hasVertexProgram()) {
+                Ogre::GpuProgramParametersSharedPtr params =
+                    pass->getVertexProgramParameters();
+                if (params) {
+                    params->setNamedConstant("shadowViewProjMatrix",
+                                             getShadowViewProjMatrix());
+                }
+            }
+        }
     }
 }
 

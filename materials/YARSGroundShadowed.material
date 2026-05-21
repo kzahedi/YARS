@@ -5,6 +5,12 @@ vertex_program YARS/GroundShadowedVP glsl
   {
     param_named_auto worldViewProjMatrix worldviewproj_matrix
     param_named_auto worldMatrix         world_matrix
+    // shadowViewProjMatrix has no Ogre auto-param equivalent — it is
+    // pushed per-frame from C++ in ShadowMapper::update() via
+    // setNamedConstant. Provide an identity default so the shader has
+    // a well-defined value if the first draw happens before the first
+    // ShadowMapper::update (unlikely, but harmless).
+    param_named shadowViewProjMatrix float4x4 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   }
 }
 
