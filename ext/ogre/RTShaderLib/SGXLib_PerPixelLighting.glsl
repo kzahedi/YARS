@@ -36,86 +36,14 @@ THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
 #include "RTSLib_Lighting.glsl"
-
-//-----------------------------------------------------------------------------
-// Simple per-pixel directional diffuse lighting (Ogre RTSS legacy functions).
-// These are called by RTSS-generated fragment shaders for directional lights.
-//-----------------------------------------------------------------------------
-void SGX_Light_Directional_Diffuse(
-    in vec3  vNormal,       // view-space surface normal (may be unnormalized)
-    in vec3  vLightDir,     // light direction in view space (points toward the light source)
-    in vec3  vDiffuse,      // pre-multiplied light diffuse colour
-    inout vec3 vOutColour)  // accumulated output colour
-{
-    float NdotL = max(dot(normalize(vNormal), normalize(-vLightDir)), 0.0);
-    vOutColour += vDiffuse * NdotL;
-}
-
-void SGX_Light_Directional_DiffuseSpecular(
-    in vec3  vNormal,
-    in vec3  vViewDir,
-    in vec3  vLightDir,
-    in vec3  vDiffuse,
-    in vec3  vSpecular,
-    in float fSpecularPower,
-    inout vec3 vOutDiffuse,
-    inout vec3 vOutSpecular)
-{
-    vec3 N = normalize(vNormal);
-    vec3 L = normalize(-vLightDir);
-    float NdotL = max(dot(N, L), 0.0);
-    vOutDiffuse += vDiffuse * NdotL;
-    if (NdotL > 0.0) {
-        vec3 H = normalize(L + normalize(-vViewDir));
-        float NdotH = max(dot(N, H), 0.0);
-        vOutSpecular += vSpecular * pow(NdotH, fSpecularPower);
-    }
-}
-
-void SGX_Light_Point_Diffuse(
-    in vec3  vNormal,
-    in vec3  vViewPos,
-    in vec3  vLightPos,
-    in vec4  vAttParams,
-    in vec3  vDiffuse,
-    inout vec3 vOutColour)
-{
-    vec3 vLightVec = vLightPos - vViewPos;
-    float fDist = length(vLightVec);
-    if (fDist > vAttParams.x) return;
-    vec3 L = normalize(vLightVec);
-    float NdotL = max(dot(normalize(vNormal), L), 0.0);
-    float fAtten = getDistanceAttenuation(vAttParams.yzw, fDist);
-    vOutColour += vDiffuse * NdotL * fAtten;
-}
-
-void SGX_Light_Point_DiffuseSpecular(
-    in vec3  vNormal,
-    in vec3  vViewPos,
-    in vec3  vLightPos,
-    in vec4  vAttParams,
-    in vec3  vDiffuse,
-    in vec3  vSpecular,
-    in float fSpecularPower,
-    inout vec3 vOutDiffuse,
-    inout vec3 vOutSpecular)
-{
-    vec3 vLightVec = vLightPos - vViewPos;
-    float fDist = length(vLightVec);
-    if (fDist > vAttParams.x) return;
-    vec3 L = normalize(vLightVec);
-    vec3 N = normalize(vNormal);
-    float NdotL = max(dot(N, L), 0.0);
-    float fAtten = getDistanceAttenuation(vAttParams.yzw, fDist);
-    vOutDiffuse += vDiffuse * NdotL * fAtten;
-    if (NdotL > 0.0) {
-        vec3 H = normalize(L + normalize(-vViewPos));
-        float NdotH = max(dot(N, H), 0.0);
-        vOutSpecular += vSpecular * pow(NdotH, fSpecularPower) * fAtten;
-    }
-}
 #ifdef HAVE_AREA_LIGHTS
 #include "RTSLib_LTC.glsl"
+#endif
+
+#ifdef USE_LINEAR_COLOURS
+#define FFP_SATURATE(x) x
+#else
+#define FFP_SATURATE(x) saturate(x)
 #endif
 
 #ifdef OGRE_HLSL
@@ -138,7 +66,7 @@ void SGX_Flip_Backface_Normal(in bool frontFacing, in float targetFlipped, inout
 
 void evaluateLight(
 				in vec3 vNormal,
-				in vec3 vViewPos,
+				in f32vec3 vViewPos,
 				in vec4 vLightPos,
 				in vec4 vAttParams,
 				in vec4 vLightDirView,
@@ -195,10 +123,10 @@ void evaluateLight(
 
 		// linear to gamma
 		dcol = pow(dcol, vec3_splat(1.0/2.2));
-		vOutDiffuse.rgb = saturate(vOutDiffuse.rgb + dcol);
+		vOutDiffuse.rgb = FFP_SATURATE(vOutDiffuse.rgb + dcol);
 #ifdef USE_SPECULAR
 		scol = pow(scol, vec3_splat(1.0/2.2));
-		vOutSpecular.rgb = saturate(vOutSpecular.rgb + scol);
+		vOutSpecular.rgb = FFP_SATURATE(vOutSpecular.rgb + scol);
 #endif
 		return;
 	}
@@ -206,14 +134,19 @@ void evaluateLight(
 
     if (vLightPos.w != 0.0)
     {
-        vLightView -= vViewPos; // to light
-        fLightD     = length(vLightView);
+		f32vec3 tmp = vLightPos.xyz - vViewPos;
+        fLightD     = length(tmp);
 
         if(fLightD > vAttParams.x)
             return;
-    }
 
-	vLightView		   = normalize(vLightView);
+		vLightView = tmp / fLightD; // normalize
+    }
+	else
+	{
+		vLightView = normalize(vLightView);
+	}
+
 	vec3 vNormalView = normalize(vNormal);
 	float nDotL		   = saturate(dot(vNormalView, vLightView));
 	
@@ -232,12 +165,12 @@ void evaluateLight(
     }
 
 	vOutDiffuse  += vDiffuseColour.rgb * nDotL * fAtten;
-	vOutDiffuse = saturate(vOutDiffuse);
+	vOutDiffuse = FFP_SATURATE(vOutDiffuse);
 
 #ifdef USE_SPECULAR
-	vec3 vView       = -normalize(vViewPos);
-	vec3 vHalfWay    = normalize(vView + vLightView);
-	float nDotH        = saturate(dot(vNormalView, vHalfWay));
+	f32vec3 vView       = -normalize(vViewPos);
+	f32vec3 vHalfWay    = normalize(vView + vLightView);
+	float32_t nDotH  = saturate(dot(vNormalView, vHalfWay));
 #ifdef TVC_SPECULAR
 	vSpecularColour *= vInVertexColour;
 #endif
@@ -245,6 +178,6 @@ void evaluateLight(
 	vSpecularColour *= (fSpecularPower + 8.0)/(8.0 * M_PI);
 #endif
 	vOutSpecular += vSpecularColour.rgb * pow(nDotH, fSpecularPower) * fAtten;
-	vOutSpecular = saturate(vOutSpecular);
+	vOutSpecular = FFP_SATURATE(vOutSpecular);
 #endif
 }

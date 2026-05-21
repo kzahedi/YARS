@@ -92,24 +92,6 @@ void FFP_Transform(in mat4 m,
 }
 
 //-----------------------------------------------------------------------------
-// Transform a vector by a 3x3 matrix (used for normal matrix transforms)
-void FFP_Transform(in mat3 m,
-				   in vec3 v,
-				   out vec3 vOut)
-{
-	vOut = m * v;
-}
-
-//-----------------------------------------------------------------------------
-// Transform vec4 by mat4, output vec4 (used for position transforms in some paths)
-void FFP_Transform(in mat4 m,
-				   in vec4 v,
-				   out vec4 vOut)
-{
-	vOut = m * v;
-}
-
-//-----------------------------------------------------------------------------
 void FFP_DerivePointSize(in vec4 params,
                          in float d,
                          out float sz)

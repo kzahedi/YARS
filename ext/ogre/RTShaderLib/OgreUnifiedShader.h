@@ -19,6 +19,13 @@
 #define vec3_splat(v)  vec3(v)
 #define vec4_splat(v)  vec4(v)
 
+// Explicit-width float aliases used by upstream Ogre's RTSS-generated
+// shaders (added post-v14.4.1). GLSL core profile uses plain float/vecN.
+#define float32_t float
+#define f32vec2   vec2
+#define f32vec3   vec3
+#define f32vec4   vec4
+
 // -------------------------------------------------------------------------
 // Texture sampler declaration macros
 // In GLSL core profile, samplers are declared as plain uniforms.
