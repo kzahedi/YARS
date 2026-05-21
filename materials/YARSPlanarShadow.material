@@ -1,0 +1,24 @@
+// Planar projected shadow material. Used by PlanarShadowProjector
+// to render shadow-proxy entities as solid translucent black on top
+// of the floor.
+
+material YARS/PlanarShadow
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      ambient  0 0 0 0.5
+      diffuse  0 0 0 0.5
+      specular 0 0 0 0
+      emissive 0 0 0 0
+      scene_blend alpha_blend
+      depth_check on
+      depth_write off
+      // Render slightly above the floor to avoid z-fighting.
+      depth_bias -1 -1
+      // No texture units.
+    }
+  }
+}

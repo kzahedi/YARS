@@ -1,5 +1,6 @@
 #include "OgreHandler.h"
 #include "MaterialManager.h"
+#include "PlanarShadowProjector.h"
 #include "ShaderManager.h"
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Directories.h>
@@ -409,6 +410,14 @@ void OgreHandler::setupSceneManager()
   lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
   node->attachObject(lightSun);
 
+  // Planar projected shadows: render every shadow-casting entity a
+  // second time, flattened onto the floor plane along the light
+  // direction. Replaces the previous custom RTT pipeline.
+  const Ogre::Plane floor(Ogre::Vector3::UNIT_Y, 0.0f);
+  const Ogre::Vector3 lightDir(-1.0f, -1.0f, -1.0f);
+  _planarShadows = std::make_unique<PlanarShadowProjector>(
+      _sceneManager, floor, lightDir);
+
   _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
   _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
 
@@ -524,6 +533,7 @@ void OgreHandler::step()
   try
   {
     _sceneGraph->update();
+    if (_planarShadows) _planarShadows->update();
     _root->renderOneFrame();
 
   }
