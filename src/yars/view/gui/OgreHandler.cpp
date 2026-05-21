@@ -1,6 +1,7 @@
 #include "OgreHandler.h"
 #include "MaterialManager.h"
 #include "ShaderManager.h"
+#include "ShadowMapper.h"
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Directories.h>
 #include <filesystem>
@@ -356,6 +357,11 @@ void OgreHandler::setupSceneManager()
       // vertex shader at all on GL3+ core.
       __setupShadows();
 
+      // Custom top-down RTT shadow pipeline (shadows v5). Replaces Ogre's
+      // built-in shadow framework which is broken on GL3+ core (see
+      // docs/planning/shadows_attempts_log.md).
+      _shadowMapper = std::make_unique<ShadowMapper>(_sceneManager, 6.0f /* arena half-extent */);
+
       // Ensure the RTSS scheme is the active one for all viewports by default.
       Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
@@ -523,6 +529,7 @@ void OgreHandler::step()
   try
   {
     _sceneGraph->update();
+    if (_shadowMapper) _shadowMapper->update();
     _root->renderOneFrame();
 
   }

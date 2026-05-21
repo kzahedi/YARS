@@ -10,7 +10,11 @@
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 #include <OGRE/Plugins/STBICodec/OgreSTBICodec.h>
 
+#include <memory>
+
 namespace yars {
+
+class ShadowMapper;
 
 class OgreHandler
 {
@@ -39,6 +43,7 @@ private:
   SceneGraph *_sceneGraph;
   Ogre::RTShader::ShaderGenerator *_shaderGenerator;
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
+  std::unique_ptr<ShadowMapper> _shadowMapper;
   // TextOverlay        *_textOverlay;
 };
 
