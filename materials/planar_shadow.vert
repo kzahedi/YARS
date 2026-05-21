@@ -35,6 +35,15 @@ void main()
     // The shadow matrix is projective (w != 1 in general). Do the
     // perspective divide explicitly.
     projWorldPos /= projWorldPos.w;
+    // Lift the projection 5cm above the floor to defeat z-fighting
+    // against the ground mesh (also at world Y=0). On macOS arm64
+    // GL3+ the material's depth_bias alone wasn't enough, and even
+    // 5mm/1cm lifts failed at oblique camera angles where the depth
+    // resolution per pixel is coarser. 5cm is still visually
+    // imperceptible (no daylight visible between shadow and floor
+    // unless you're looking at a near-horizontal grazing angle) but
+    // reliably wins the depth test from every YARS camera angle.
+    projWorldPos.y += 0.05;
     // World space -> clip space
     gl_Position = viewProjMatrix * projWorldPos;
 }

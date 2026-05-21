@@ -7,5 +7,8 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = vec4(0.0, 0.0, 0.0, 0.5);
+    // alpha=0.7 gives a clearly visible shadow on light-coloured
+    // floors (YARS' default sand/dirt texture is bright enough that
+    // 0.5 looked nearly identical to a dirt patch).
+    FragColor = vec4(0.0, 0.0, 0.0, 0.7);
 }

@@ -15,6 +15,7 @@
 #include <OGRE/OgreStringConverter.h>
 #include <OGRE/OgreTechnique.h>
 
+#include <fstream>
 #include <iostream>
 
 namespace yars {
@@ -164,6 +165,43 @@ bool PlanarShadowProjector::registerCaster(Ogre::SceneNode *casterNode,
 
 void PlanarShadowProjector::update()
 {
+    // One-shot diagnostic log: dump caster positions + expected shadow
+    // positions for every proxy on frame 50. Verifies the C++ math
+    // matches what should be visible on the floor. Written to
+    // /tmp/yars-shadow-positions.log so the user can sanity-check.
+    static int frameCount = 0;
+    static bool logged = false;
+    ++frameCount;
+    if (frameCount == 50 && !logged && !_proxies.empty()) {
+        logged = true;
+        std::ofstream out("/tmp/yars-shadow-positions.log");
+        if (out) {
+            out << "# PlanarShadowProjector positions (frame 50)\n";
+            out << "# Plane n=" << _floor.normal << " d=" << _floor.d
+                << " light=" << _lightDir << "\n";
+            out << "# format: caster_world (x,y,z) -> shadow (x,y,z)\n";
+            for (size_t i = 0; i < _proxies.size(); ++i) {
+                const auto &p = _proxies[i];
+                if (!p.casterNode) continue;
+                Ogre::Vector3 cpos = p.casterNode->_getDerivedPosition();
+                // Apply the same shadow matrix the GPU uses, so the log
+                // shows where the shader will draw the shadow.
+                Ogre::Vector4 v(cpos.x, cpos.y, cpos.z, 1.0f);
+                Ogre::Vector4 s = _shadowMatrix * v;
+                s /= s.w;
+                out << "proxy[" << i << "] caster=("
+                    << cpos.x << ", " << cpos.y << ", " << cpos.z
+                    << ") -> shadow=("
+                    << s.x << ", " << s.y << ", " << s.z << ")\n";
+            }
+            out.close();
+            std::cerr << "PlanarShadowProjector: wrote "
+                      << _proxies.size()
+                      << " caster->shadow mappings to "
+                         "/tmp/yars-shadow-positions.log" << std::endl;
+        }
+    }
+
     for (auto &p : _proxies) {
         if (!p.casterNode || !p.proxyMaterial) continue;
 
