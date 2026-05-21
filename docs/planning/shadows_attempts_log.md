@@ -178,6 +178,69 @@ by RTSS, and the duplicate uses different auto-params.
 We added `scheme ShaderGeneratorDefaultScheme` to YARS/TextureShadowReceiver
 to prevent this, but maybe it's not effective.
 
+## Pre-2019 stencil shadow approach (investigated 2026-05-21)
+
+### What pre-2019 YARS did
+The initial commit (`7a029e5`, before 2017) used:
+```cpp
+_sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+```
+
+This is the classic stencil-shadow-volume approach: extrude silhouettes
+from the light's perspective, draw them into the stencil buffer, then
+mask an additive lighting pass. **No texture, no UV math, no projection
+inconsistency** — shadows are pixel-perfect by construction.
+
+### YARS' stencil-shadow infrastructure is still intact
+Every ManualObject-based scene node (`SceneGraphBoxNode`,
+`SceneGraphCylinderNode`, `SceneGraphCapsuleNode`, `SceneGraphMeshNode`,
+`SceneGraphMuscleNode`, `SceneGraphPlyNode`, `SceneGraphSoftPlyNode`)
+already calls `prepareForShadowVolume()` on its vertex data and
+`setCastShadows(true)`. The ground entity and overlays/sensors
+correctly call `setCastShadows(false)`. The 2016 fix (commit `dd5e9b9`)
+that calls `buildEdgeList()` on imported meshes is also still present.
+
+### Blockers on Ogre 14 + GL3+ core
+Trying to revive stencil shadows hit two issues:
+
+1. **`ManualObject::getShadowVolumeRenderableList` crash.** When the
+   ManualObject's `mParentNode` is null (e.g. during scene reset),
+   line 566 of `OgreManualObject.cpp` dereferences it without a
+   guard. `Entity` gets this protection for free via implicit
+   `setVisible(false)` on detach.
+   **PATCHED locally** in `ext/ogre-source/OgreMain/src/OgreManualObject.cpp`
+   with a null guard before the `mParentNode->_getFullTransform()` call.
+
+2. **Ogre's built-in stencil-volume extrude shaders fail to compile
+   on GL3+ core.** `Ogre/ShadowExtrudeDirLight`,
+   `Ogre/ShadowExtrudePointLight`, `Ogre/ShadowBlendVP`, etc. all
+   `#include <OgreUnifiedShader.h>` which provides the
+   `MAIN_PARAMETERS` / `MAIN_DECLARATION` / `OGRE_UNIFORMS` macros.
+   The GLSL preprocessor isn't expanding these — the include is being
+   skipped — so compilation fails with `'MAIN_PARAMETERS' : syntax
+   error` and Ogre falls back to fixed-function which doesn't exist
+   on core profile. Result: scene renders as solid blue (clear colour).
+
+### What would be needed to ship stencil shadows
+- Fix Ogre's GLSL preprocessor invocation for the stencil-shadow
+  shader scripts. The same preprocessor works for RTSS-generated
+  shaders (those compile and link fine), so the difference is
+  somewhere in how the shadow-volume programs are declared in
+  `ShadowVolumeExtude.program` or how Ogre loads them.
+- Alternatively, write our own GLSL stencil-volume extrude shaders
+  that don't depend on `OgreUnifiedShader.h`.
+- Address the `Chain/Circuit/Top/Green` material warning (separate
+  issue but blocks rendering when any of those materials are used
+  in a shadowed pass).
+
+### Conclusion
+The pre-2019 stencil approach is the *right* answer conceptually —
+no UV math, world-anchored by definition, classic Ogre samples
+demonstrate it works — but the path from "Ogre 14 GL3+ core" to
+"stencil shadows compile and render" is non-trivial and would be
+its own multi-day investigation. Documented here so a future
+session can pick it up with the patched Ogre source already in place.
+
 ## What hasn't been tried (priorities for next session)
 
 1. **Online research on Ogre 14 + texture shadow + UV alignment issues.**

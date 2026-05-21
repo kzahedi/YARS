@@ -391,60 +391,49 @@ void OgreHandler::setupSceneManager()
 
 void OgreHandler::__setupShadows()
 {
-  // Texture-based modulative shadows. GL3+ core can't use stencil shadows
-  // (fixed-function gone) and SHADOWTYPE_STENCIL_MODULATIVE crashes on
-  // ManualObject. Texture-modulative works once the caster/receiver
-  // materials have explicit GLSL shaders (Ogre's fixed-function fallbacks
-  // also fail on GL3+ core).
+  // STENCIL shadows ATTEMPTED (2026-05-21) and reverted.
+  //
+  // The pre-2019 YARS code used SHADOWTYPE_STENCIL_ADDITIVE which has
+  // none of the UV-mapping problems of texture shadows — it works in
+  // screen space using the stencil buffer.
+  //
+  // The shadow-volume infrastructure in YARS is intact:
+  // every ManualObject-based scene node (Box, Cylinder, Capsule, Mesh,
+  // Muscle, Ply) already calls prepareForShadowVolume() on its vertex
+  // data and setCastShadows(true). The ground and sensors correctly
+  // call setCastShadows(false).
+  //
+  // Two blockers prevent stencil shadows from working on Ogre 14 GL3+ core:
+  //   1. ManualObject::getShadowVolumeRenderableList crashes when
+  //      mParentNode is null. PATCHED locally in
+  //      ext/ogre-source/OgreMain/src/OgreManualObject.cpp (Entity gets
+  //      this guard for free via implicit setVisible(false) on detach).
+  //   2. Ogre's built-in stencil shadow volume extrude shaders
+  //      (Ogre/ShadowExtrudeDirLight, Ogre/ShadowBlendVP) use the
+  //      OgreUnifiedShader.h preprocessor macros (MAIN_PARAMETERS,
+  //      MAIN_DECLARATION, OGRE_UNIFORMS). On GL3+ core these fail to
+  //      compile because the GLSL preprocessor doesn't expand the
+  //      macros — the #include is being skipped. Would need to debug
+  //      Ogre's shader preprocessor setup or write our own GLSL
+  //      stencil-volume shaders.
+  //
+  // Going back to texture-modulative as the working baseline; the
+  // stencil attempt is preserved in git history.
   try
   {
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-
-    // 2048² gives crisp shadow edges at YARS scene scale; ~16MB memory
-    // cost which is trivial on a modern GPU. 4096² was overkill.
     _sceneManager->setShadowTextureSize(2048);
     _sceneManager->setShadowTextureCount(1);
-
-    // shadowFarDistance must cover the visible arena. The default
-    // DefaultShadowCameraSetup for a directional light creates an
-    // orthographic frustum of (shadowFarDistance*2) wide. For an 8×8m
-    // arena, 15m gives a 30×30 frustum centered on the camera target
-    // — wall silhouettes occupy ~13% of the shadow texture in each
-    // axis, which translates to crisp visible shadows.
     _sceneManager->setShadowFarDistance(15.0f);
-
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-
-    // Front-face caster rendering: with back-face rendering, boxes/walls
-    // see their own back-face silhouette in the shadow texture and
-    // self-shadow on their outward-facing side. Front-face keeps the
-    // shadow projection tight to the lit silhouette.
     _sceneManager->setShadowCasterRenderBackFaces(false);
-
-    // FocusedShadowCameraSetup with the 30×30 ground mesh focuses
-    // tightly on the visible arena, making wall silhouettes prominent
-    // in the shadow texture and giving correct UV mapping for receivers.
     _sceneManager->setShadowCameraSetup(
         Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
-
-    // Both caster and receiver materials must be set explicitly. Per-
-    // technique setShadowCasterMaterial is not enough; Ogre 14 falls back
-    // to the global fixed-function default for textures that don't pass
-    // through their own technique. On GL3+ core that default produces
-    // broken renders (missing vertex shader on caster) or skips the
-    // modulative pass entirely (receiver).
     auto casterMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowCaster");
     if (casterMat)
     {
       casterMat->load();
       _sceneManager->setShadowTextureCasterMaterial(casterMat);
-    }
-    else
-    {
-      std::cerr << "Warning: YARS/TextureShadowCaster not loaded; "
-                   "shadow casters will fall back to Ogre's fixed-function "
-                   "default and produce a broken render on GL3+ core."
-                << std::endl;
     }
 
     auto receiverMat = Ogre::MaterialManager::getSingleton().getByName("YARS/TextureShadowReceiver");
