@@ -1,0 +1,34 @@
+// Material used by the custom RTT shadow pipeline (shadows v5).
+// Applied to every shadow-casting entity during the caster pass via
+// a RenderTargetListener that swaps material schemes.
+
+vertex_program YARS/CustomShadowCastVP glsl
+{
+  source yars_custom_shadow_cast.vert
+  default_params
+  {
+    param_named_auto worldViewProjMatrix worldviewproj_matrix
+  }
+}
+
+fragment_program YARS/CustomShadowCastFP glsl
+{
+  source yars_custom_shadow_cast.frag
+}
+
+material YARS/CustomShadowCast
+{
+  technique
+  {
+    scheme yars-shadow-cast
+    pass
+    {
+      lighting off
+      depth_check on
+      depth_write on
+      // No texture units — we just want a black silhouette.
+      vertex_program_ref YARS/CustomShadowCastVP {}
+      fragment_program_ref YARS/CustomShadowCastFP {}
+    }
+  }
+}
