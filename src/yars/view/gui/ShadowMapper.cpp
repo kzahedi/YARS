@@ -153,8 +153,8 @@ void handleRenderException(const char *what,
     static bool reported = false;
     if (!reported) {
         Ogre::LogManager::getSingleton().logMessage(
-            Ogre::String("ShadowMapper::update swallowed (expected "
-                         "pre-Task-6): ")
+            Ogre::String("ShadowMapper::update swallowed unexpected "
+                         "exception: ")
                 + what,
             Ogre::LML_WARNING);
         reported = true;
@@ -202,7 +202,7 @@ void ShadowMapper::preRenderTargetUpdate(const Ogre::RenderTargetEvent &)
     // whose default Renderable::getCastsShadows() returns false even
     // when their parent MovableObject has setCastShadows(true).
     _hiddenForCast.clear();
-    for (const char *type : {"Entity", "ManualObject"}) {
+    for (const char *type : {"Entity", "ManualObject", "BillboardSet", "ParticleSystem"}) {
         const Ogre::SceneManager::MovableObjectMap &objs =
             _sm->getMovableObjects(type);
         for (const auto &kv : objs) {
