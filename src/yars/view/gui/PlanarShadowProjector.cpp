@@ -2,14 +2,18 @@
 
 #include <OGRE/OgreEntity.h>
 #include <OGRE/OgreException.h>
+#include <OGRE/OgreGpuProgramParams.h>
 #include <OGRE/OgreManualObject.h>
+#include <OGRE/OgreMaterialManager.h>
 #include <OGRE/OgreMesh.h>
 #include <OGRE/OgreMeshManager.h>
+#include <OGRE/OgrePass.h>
 #include <OGRE/OgreQuaternion.h>
 #include <OGRE/OgreResourceGroupManager.h>
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
 #include <OGRE/OgreStringConverter.h>
+#include <OGRE/OgreTechnique.h>
 
 #include <iostream>
 
@@ -75,21 +79,59 @@ bool PlanarShadowProjector::registerCaster(Ogre::SceneNode *casterNode,
     }
 
     try {
-        Ogre::String proxyEntName = "YarsShadowProxy_E_" +
-                                    Ogre::StringConverter::toString(_nextProxyId);
+        const int idx = _nextProxyId++;
+        Ogre::String proxyEntName  = "YarsShadowProxy_E_" +
+                                     Ogre::StringConverter::toString(idx);
         Ogre::String proxyNodeName = "YarsShadowProxy_N_" +
-                                     Ogre::StringConverter::toString(_nextProxyId);
-        ++_nextProxyId;
+                                     Ogre::StringConverter::toString(idx);
+        Ogre::String proxyMatName  = "YARS/PlanarShadow_" +
+                                     Ogre::StringConverter::toString(idx);
+
+        // Clone the base material so this proxy has its own
+        // casterWorldMatrix uniform. If we re-used the singleton
+        // YARS/PlanarShadow, every proxy would end up rendering
+        // with the LAST caster's matrix.
+        Ogre::MaterialPtr baseMat =
+            Ogre::MaterialManager::getSingleton().getByName(
+                "YARS/PlanarShadow");
+        if (!baseMat) {
+            std::cerr << "PlanarShadowProjector::registerCaster: "
+                         "YARS/PlanarShadow material not found"
+                      << std::endl;
+            return false;
+        }
+        baseMat->load();
+        Ogre::MaterialPtr clonedMat = baseMat->clone(proxyMatName);
+        clonedMat->load();
+
+        // Seed planarShadowMatrix once; this uniform is constant per
+        // projector instance, so we don't need to push it every frame.
+        if (Ogre::Technique *tech = clonedMat->getTechnique(0)) {
+            if (Ogre::Pass *pass = tech->getPass(0)) {
+                if (pass->hasVertexProgram()) {
+                    Ogre::GpuProgramParametersSharedPtr vparams =
+                        pass->getVertexProgramParameters();
+                    try {
+                        vparams->setNamedConstant("planarShadowMatrix",
+                                                  _shadowMatrix);
+                    } catch (const Ogre::Exception &) {
+                        // Some drivers/optimizers may strip unused
+                        // uniforms; we'll fall back to setting it
+                        // each frame in update().
+                    }
+                }
+            }
+        }
 
         Ogre::Entity *proxyEnt = _sm->createEntity(proxyEntName, meshName);
-        proxyEnt->setMaterialName("YARS/PlanarShadow");
+        proxyEnt->setMaterialName(proxyMatName);
         proxyEnt->setCastShadows(false); // shadow proxies don't recurse.
 
         Ogre::SceneNode *proxyNode = _sm->getRootSceneNode()
                                         ->createChildSceneNode(proxyNodeName);
         proxyNode->attachObject(proxyEnt);
 
-        _proxies.push_back({casterNode, proxyNode, proxyEnt});
+        _proxies.push_back({casterNode, proxyNode, proxyEnt, clonedMat});
         return true;
     } catch (const Ogre::Exception &e) {
         std::cerr << "PlanarShadowProjector::registerCaster failed: "
@@ -123,33 +165,34 @@ bool PlanarShadowProjector::registerCaster(Ogre::SceneNode *casterNode,
 void PlanarShadowProjector::update()
 {
     for (auto &p : _proxies) {
-        if (!p.casterNode || !p.proxyNode) continue;
-        // proxy.world = shadowMatrix * caster.world
-        // We compose the full Affine3 from the caster's derived transform
-        // and apply the (non-affine) shadow matrix on top, then push the
-        // 4x4 to the proxy node.
-        //
-        // Implementation note: Ogre 14 only exposes
-        // `decomposition(pos, scale, orientation)` on Affine3, not on
-        // Matrix4. We construct the proxy world matrix as a Matrix4
-        // (because the shadow projection itself is not affine in
-        // general), then re-wrap it as an Affine3. For our floor=y+0
-        // light=(-1,-1,-1) configuration the bottom row of the shadow
-        // matrix is `[0,0,0,1]` after normalisation (see derivation in
-        // header / commit), so reinterpretation is exact. The 3x3
-        // linear part is rank-deficient — decomposition yields a
-        // degenerate scale on one axis, which flattens the mesh onto
-        // the floor (that is the desired visual outcome).
-        const Ogre::Affine3 &casterWorld = p.casterNode->_getFullTransform();
-        const Ogre::Matrix4 proxyWorld   = _shadowMatrix * Ogre::Matrix4(casterWorld);
-        const Ogre::Affine3 proxyAffine(proxyWorld);
+        if (!p.casterNode || !p.proxyMaterial) continue;
 
-        Ogre::Vector3 pos, scale;
-        Ogre::Quaternion rot;
-        proxyAffine.decomposition(pos, scale, rot);
-        p.proxyNode->setPosition(pos);
-        p.proxyNode->setOrientation(rot);
-        p.proxyNode->setScale(scale);
+        // The proxy scene node only matters for culling — the shader
+        // computes the actual projected world position. Park the proxy
+        // node at the caster's derived position so it lies within the
+        // camera frustum (otherwise Ogre culls the proxy by its
+        // bounding box, which would still be at the proxy node's
+        // origin if we left it at the world root).
+        const Ogre::Vector3 casterPos = p.casterNode->_getDerivedPosition();
+        p.proxyNode->setPosition(casterPos);
+
+        // Push the caster's current world matrix to the proxy's
+        // vertex program. The shader applies the planar shadow
+        // projection per-vertex and does the perspective divide.
+        const Ogre::Affine3 &cw = p.casterNode->_getFullTransform();
+        const Ogre::Matrix4  casterWorld(cw);
+
+        Ogre::Technique *tech = p.proxyMaterial->getTechnique(0);
+        if (!tech) continue;
+        Ogre::Pass *pass = tech->getPass(0);
+        if (!pass || !pass->hasVertexProgram()) continue;
+        Ogre::GpuProgramParametersSharedPtr vparams =
+            pass->getVertexProgramParameters();
+        try {
+            vparams->setNamedConstant("casterWorldMatrix", casterWorld);
+        } catch (const Ogre::Exception &) {
+            // Uniform optimized out; nothing to do.
+        }
     }
 }
 

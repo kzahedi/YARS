@@ -7,13 +7,23 @@
 // otherwise replace any fixed-function technique with a generated
 // shader that ignores `lighting off` + `emissive` and produces a
 // white quad. The explicit shader emits vec4(0,0,0,0.5) directly.
+//
+// The vertex shader applies the planar shadow projection per-vertex
+// (with explicit perspective divide). casterWorldMatrix and
+// planarShadowMatrix are pushed by PlanarShadowProjector at runtime;
+// the material is cloned per-proxy so each proxy carries its own
+// casterWorldMatrix.
 
 vertex_program YARS/PlanarShadowVP glsl
 {
   source planar_shadow.vert
   default_params
   {
-    param_named_auto worldViewProjMatrix worldviewproj_matrix
+    // viewProjMatrix comes from Ogre's auto-param; the others are
+    // set programmatically by PlanarShadowProjector each frame.
+    param_named_auto viewProjMatrix viewproj_matrix
+    param_named casterWorldMatrix   matrix4x4 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+    param_named planarShadowMatrix  matrix4x4 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   }
 }
 
@@ -37,8 +47,13 @@ material YARS/PlanarShadow
       scene_blend alpha_blend
       depth_check on
       depth_write off
+      // Projected geometry can be back-facing relative to its original
+      // normal; render both sides so the shadow is always visible.
+      cull_hardware none
       // Render slightly above the floor to avoid z-fighting.
-      depth_bias -1 -1
+      // Bias values are large because the projected geometry sits
+      // exactly on the floor plane (y=0), coincident with the floor mesh.
+      depth_bias -5 -5
     }
   }
 }

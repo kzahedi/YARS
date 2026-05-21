@@ -1,6 +1,7 @@
 #ifndef YARS_VIEW_GUI_PLANAR_SHADOW_PROJECTOR_H
 #define YARS_VIEW_GUI_PLANAR_SHADOW_PROJECTOR_H
 
+#include <OGRE/OgreMaterial.h>
 #include <OGRE/OgreMatrix4.h>
 #include <OGRE/OgrePlane.h>
 #include <OGRE/OgreVector3.h>
@@ -90,9 +91,12 @@ public:
 
 private:
     struct Proxy {
-        Ogre::SceneNode *casterNode;
-        Ogre::SceneNode *proxyNode;
-        Ogre::Entity    *proxyEntity;
+        Ogre::SceneNode  *casterNode;
+        Ogre::SceneNode  *proxyNode;
+        Ogre::Entity     *proxyEntity;
+        Ogre::MaterialPtr proxyMaterial; // cloned per-proxy so each proxy
+                                         // carries its own casterWorldMatrix
+                                         // uniform.
     };
 
     Ogre::SceneManager  *_sm;
