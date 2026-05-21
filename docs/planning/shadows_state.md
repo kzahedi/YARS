@@ -1,79 +1,96 @@
-# Shadows — state (2026-05-21 PM, v5 custom RTT pipeline)
+# Shadows — state (2026-05-21 evening, v5.1 planar projected shadows)
 
-**Status:** working. Robot and dynamic objects (e.g. falling balls) cast
-visible shadows on the floor in `braitenberg.xml` and `falling_objects.xml`.
-Shadows are world-anchored — they stay put as the eye camera moves and
-follow caster geometry, not the camera.
+**Status:** working. Every shadow-casting entity in YARS (walls, robot
+parts, balls, boxes, capsules, cylinders, meshes, plies) casts a clean
+hard-edged shadow on the floor, projected exactly along the light
+direction `(-1, -1, -1)`.
 
-**Architecture:** custom render-to-texture pipeline that bypasses
-Ogre 14's broken `texture_worldviewproj_matrix` auto-param entirely.
+**Architecture:** SIGGRAPH 97 planar projected shadows. For each
+caster, a "shadow proxy" entity sharing the caster's mesh is created
+and attached to its own scene node. Each frame, the proxy node's
+world transform is set to `planarShadowMatrix(floor, light) *
+caster.worldTransform`. The proxy renders with a translucent black
+material that draws on top of the floor.
 
-1. **Caster pass.** Each frame, `ShadowMapper::update()` triggers a
-   render of the scene into a 1024² R8 RTT (`YarsShadowRTT`) from an
-   orthographic top-down camera positioned at `(0, +50, 0)` in Ogre
-   world space, looking straight down, ortho window 12×12.
-2. **Material substitution.** A `ShadowCastSchemeListener`
-   (`MaterialManager::Listener`) intercepts material queries in the
-   scheme `"yars-shadow-cast"` and returns `YARS/CustomShadowCast`'s
-   technique — a single black opaque pass. This way every
-   shadow-casting entity renders as a black silhouette during the
-   RTT pass without manual annotation on every `.material` file.
-3. **Visibility filter.** Movables with `setCastShadows(false)`
-   (the ground plane, sensor visualisations) are temporarily hidden
-   during the RTT pass via the `_hiddenForCast` list inside
-   `preRenderTargetUpdate`, then restored in `postRenderTargetUpdate`
-   (or, if the render throws, by `handleRenderException` in
-   `update()`).
-4. **Receiver pass.** The ground material is `YARS/GroundShadowed`,
-   whose vertex shader computes the shadow UV from the vertex's
-   world-XZ position: `shadowUV = worldXZ / 12.0 + 0.5`. The
-   fragment shader samples `YarsShadowRTT` at that UV and multiplies
-   the diffuse colour by `mix(shadowStrength, 1.0, occluder)` (with
-   `shadowStrength = 0.4` by default — tunable via the `param_named`
-   in the material script). UVs that fall outside `[0,1]` sample
-   the texture unit's border colour `(1,1,1,1)` = no shadow.
+1. **`PlanarShadowProjector`** (`src/yars/view/gui/PlanarShadowProjector.{h,cpp}`)
+   owns the list of `(casterNode, proxyNode, proxyEntity)` triples
+   and updates each proxy's world transform per frame from
+   `OgreHandler::step()`.
+2. **`YARS/PlanarShadow`** material (`materials/YARSPlanarShadow.material`)
+   with `materials/planar_shadow.{vert,frag}` — explicit GLSL programs
+   emit `vec4(0, 0, 0, 0.5)` and use `alpha_blend` + `depth_write off`
+   + `depth_bias -1` so proxies render slightly above the floor
+   without occluding casters.
+3. **Scene graph registration.** Each `SceneGraph*Node` class that
+   creates a shadow-casting visible object calls
+   `OgreHandler::instance()->getPlanarShadowProjector()->registerCaster(...)`
+   after the visible Entity / ManualObject is set up. Hooked:
+   `SceneGraphBoxNode`, `SceneGraphSphereNode`, `SceneGraphCapsuleNode`,
+   `SceneGraphCylinderNode`, `SceneGraphMeshNode`, `SceneGraphPlyNode`.
+4. **Frame convention.** YARS scene data is Z-up but the scene root
+   applies a -90° X rotation that converts to Ogre Y-up for
+   rendering. `casterNode->_getFullTransform()` returns the
+   post-rotation Y-up world transform; proxies attach to the
+   SceneManager's unrotated root (also Y-up). So the projector
+   math lives in Ogre Y-up: floor plane `(UNIT_Y, 0)`, light
+   direction `(-1, -1, -1)`.
 
-**Why this works:** the UV transform is entirely in our shader code
-based on each vertex's known world-space XZ position. We don't
-depend on Ogre's `texture_worldviewproj_matrix` auto-param, which
-empirical testing showed produces UVs that don't correspond to where
-the caster pass actually writes silhouettes on this platform (macOS
-arm64 GL3+ core, Ogre 14 + current master).
+**Why this is robust:** unlike texture-based shadow mapping (the
+previous v5 RTT pipeline, deleted in commit `3dd7a77`), the shadow's
+position on the floor is **literally** the geometric projection of
+the caster's mesh along the light direction. No UV math, no
+projection matrices, no FBO Y-flip cancellations to get wrong. The
+math `M[i][j] = (i==j ? n·l : 0) - l[i] * n_extended[j]` exactly
+encodes "where would this point land if a ray went from the light
+through it and hit the floor".
+
+**Skipped (deliberately):**
+- `SceneGraphMuscleNode`, `SceneGraphSoftPlyNode` — geometry
+  changes per frame; the proxy's `convertToMesh()` snapshot taken at
+  registration time wouldn't follow. To support these we'd need to
+  rebuild the proxy mesh per frame or write a custom proxy renderer.
+- `SceneGraphLDRSensor`, `SceneGraphProximitySensor`,
+  `SceneGraphJointAxisVisualisationNode`,
+  `SceneGraphTraceLineObject` — visualisations, not part of the
+  physical scene.
+- `SceneGraphEnvironmentNode` — the floor itself (it's the
+  receiver).
 
 **Limitations:**
-- Top-down orthographic shadow camera, not aligned to the light
-  direction `(-1, -1, -1)`. For the YARS arena (small, flat, short
-  walls) this looks correct visually. For tall casters with
-  oblique light, shadows would not extrude along the light
-  direction. Acceptable for v1.
-- Floor-only receiver. Walls don't show shadows from the robot or
-  other objects. Could be extended in the future by giving each
-  wall a shadow-receiving material variant that samples the RTT
-  with a wall-specific UV transform.
-- Hardcoded arena half-extent (6 m in Ogre world units, =
-  `ShadowMapper(arenaSize=6.0f)` in C++ and `ARENA_HALF = 6.0` in
-  the receiver vertex shader). If/when YARS XML configs ever use
-  different arena sizes, this needs to come from XML.
-- Coupling between the C++ `6.0f` and the GLSL `6.0` is documented
-  in cross-referenced comments on both sides but not enforced
-  programmatically. Future work: expose as a `param_named` uniform
-  passed from `ShadowMapper`.
+- Floor-only receiver. Shadows don't appear on walls. To extend, add
+  one projector per receiving plane (each wall) and register
+  casters with each.
+- Hard-edged. No soft shadows. PCF would require returning to a
+  texture-based approach.
+- Each caster duplicates the mesh's vertex data (the proxy shares
+  the Ogre::Mesh resource, but Ogre's mesh manager keeps both
+  Entities). Modest memory cost for YARS scenes.
 
 **Files:**
-- `src/yars/view/gui/ShadowMapper.{h,cpp}` — RTT + camera + listener
-- `src/yars/view/gui/OgreHandler.cpp` — instantiates ShadowMapper
-- `src/yars/view/gui/SceneGraphEnvironmentNode.cpp` — swaps default
-  ground material to the shadow-receiving variant
-- `materials/YARSCustomShadowCast.material` + `.vert`/`.frag` —
-  black silhouette material (caster)
-- `materials/YARSGroundShadowed.material` + `.vert`/`.frag` —
-  diffuse × shadow modulation (receiver)
+- `src/yars/view/gui/PlanarShadowProjector.{h,cpp}` — projector
+- `src/yars/view/gui/OgreHandler.cpp` — instantiates projector;
+  exposes `getPlanarShadowProjector()`
+- `src/yars/view/gui/SceneGraph*Node.cpp` — register casters
+- `materials/YARSPlanarShadow.material` +
+  `materials/planar_shadow.{vert,frag}` — translucent-black proxy
+  material
 
-**Implementation history:** see `shadows_attempts_log.md` for the
-full investigation (multiple sessions of trying to make Ogre's
-built-in `SHADOWTYPE_TEXTURE_*` paths work before settling on the
-custom pipeline) and `shadows_v5_plan.md` for the research+decision
-that led here.
+**Implementation history:**
+- v1 — v3: attempts to make Ogre's `SHADOWTYPE_TEXTURE_*` /
+  `SHADOWTYPE_STENCIL_*` paths work on GL3+ core, all failed.
+  Documented in `shadows_attempts_log.md`.
+- v4: empirical UV swap in a custom GLSL receiver. Worked for one
+  scene but broke on others. Reverted.
+- v5 RTT pipeline: hand-rolled top-down render-to-texture with our
+  own UV math. Worked architecturally but `texture_worldviewproj_matrix`
+  vs custom UV calculation never produced correctly-placed shadows
+  across both `braitenberg.xml` and `falling_objects.xml`.
+- v5.1 (current): switched to planar projected shadows. Each
+  caster's shadow is the exact geometric projection of its mesh,
+  guaranteed correct by construction.
+
+See `docs/superpowers/plans/2026-05-21-shadows-v5.md` for the full
+research + plan that led to this implementation.
 
 ---
 
