@@ -36,8 +36,21 @@ Concretely, examining the reference:
    light direction (−1, −1, −1). So the shadow lies *next to* the caster
    on the floor, not directly under it.
 
-5. **Floor only.** Shadows appear on the floor mesh and nothing else. They
-   do not appear on the walls. They do not occlude or alter wall faces.
+5. **Cast on every receiving surface, not just the floor.** Examining
+   the hexapod reference carefully, the robot's leg clearly casts a
+   shadow onto the **white obstacle** on the right side of the image —
+   not just on the sandy floor. Shadows in YARS must fall on:
+   - the floor mesh
+   - arena walls / boxes / obstacles
+   - other dynamic objects (one robot leg shadowing another, a ball
+     shadowing the robot beneath it, etc.)
+   They must NOT appear on the casters themselves in a way that creates
+   self-shadowing artifacts.
+
+   **This requirement is the single most important constraint.** It
+   rules out planar-projection shadows (which only work for one
+   receiver plane) as the final approach. The shadow system must
+   handle arbitrary 3D receivers.
 
 6. **No double-darkening in corners.** Where two casters' shadows would
    overlap (e.g. two robot legs close together), the overlap region is
@@ -88,69 +101,91 @@ The current implementation (planar projected shadow proxies with
 
 ## What approach should we use?
 
-The reference image looks like a stencil-shadow-volume rendering: pixel-
-perfect silhouettes, per-pixel shadow testing, no overdraw stacking. That
-matches pre-2019 YARS which used `SHADOWTYPE_STENCIL_ADDITIVE`.
+The reference image clearly shows shadows on the **floor AND on the white
+obstacle**, with pixel-perfect silhouettes and no overdraw stacking. That
+rules out planar-projection (single receiver only) and points squarely at
+stencil shadow volumes or proper shadow mapping.
 
-The current planar-projected-proxy approach fundamentally can't avoid the
-alpha-stacking artifact (#1) without a depth trick (which causes #3), or a
-non-additive blend mode (which Ogre doesn't cleanly expose for this case),
-or a much-more-complex algorithm (silhouette extraction → render only
-silhouette → fill polygon).
+The current planar-projected-proxy approach is **fundamentally
+inadequate** — even if we fix the alpha-stacking / wall-transparency
+artifacts, shadows still only render on the floor. To match the reference,
+shadows must fall on every receiver, which the planar approach cannot do.
 
-**Candidate approaches, ranked by likelihood of matching the goal:**
+**Candidate approaches that CAN handle arbitrary 3D receivers:**
 
-1. **Stencil shadow volumes** (the pre-2019 path). Pixel-perfect by design.
-   Was previously blocked on macOS GL3+ by `OGRE_UNIFORMS` macro expansion
-   in the stencil-volume extrude shaders and by `ManualObject` null-guard
-   crashes. The null-guard is already patched in our vendored Ogre. The
-   macro issue would need a custom GLSL extrude shader. Several days of
-   work but produces the goal look directly.
+1. **Stencil shadow volumes** (the pre-2019 YARS path).
+   - **How it works:** for each caster, extrude its silhouette edges
+     along the light direction into a closed volume; mark every pixel
+     inside that volume in the stencil buffer; render a darken pass
+     over only stencil-marked pixels. Per-pixel exact, works on any
+     receiver geometry.
+   - **Pros:** pixel-perfect; matches the reference exactly; YARS
+     already has the infrastructure intact (`prepareForShadowVolume()`
+     calls in every `SceneGraph*Node`; edge-list building; the
+     `OgreManualObject.cpp` null-guard patch already lives in our
+     vendored Ogre submodule).
+   - **Cons:** previously blocked on macOS GL3+ core by `OGRE_UNIFORMS`
+     macro expansion in Ogre's built-in stencil-volume extrude shaders.
+     Workaround: hand-write our own GLSL extrude shaders that don't
+     depend on Ogre's unified-shader macros.
+   - **Estimated effort:** 2–4 days.
 
-2. **Hand-written silhouette projection.** For each caster mesh, compute
-   the silhouette edges from the light's POV CPU-side, then render only
-   those edges as a flat filled polygon (a 2D shape on the floor). No
-   triangle overlap because the silhouette is one outline. Medium
-   complexity. Produces smooth shadows.
+2. **Shadow mapping (RTT depth shadow).**
+   - **How it works:** render the scene depth from the light's POV
+     into a depth texture; in the receiver shaders, sample that texture
+     to determine whether each pixel is in shadow.
+   - **Pros:** can be soft (PCF / VSM / etc.); works on any receiver.
+   - **Cons:** previous attempts (the v5 RTT pipeline) all failed on
+     Ogre 14's broken `texture_worldviewproj_matrix` auto-param on
+     macOS arm64 GL3+. We partially built a custom-matrix workaround
+     in commit `5bf684e` but couldn't get it placed correctly. Every
+     YARS material would need a shadow-receiving shader variant, which
+     is invasive.
+   - **Estimated effort:** 3–5 days, more if we hit Ogre auto-param
+     issues again.
 
-3. **Render-to-texture shadow map with proper depth comparison.** A
-   1024² shadow map rendered from light POV, sampled per floor pixel.
-   The previous v5 RTT pipeline tried this and failed on Ogre's broken
-   `texture_worldviewproj_matrix` auto-param. Could be revived with a
-   custom matrix uniform (we partially built this in commit `5bf684e`
-   but it was difficult to debug).
+3. **OgreNext / port to a newer Ogre.** OgreNext (2.x/3.x) has a
+   completely different, working shadow system. The cost is porting
+   YARS to OgreNext's HLMS materials and different scene-graph API.
+   - **Estimated effort:** 2–4 weeks.
 
-4. **Pre-rendered shadow textures on each caster + UV-projected onto the
-   floor.** Each caster renders its silhouette into its own small
-   per-caster texture; the floor material samples one decal texture per
-   caster. Complex.
+4. **Switch the renderer entirely** (bgfx / raylib / hand-rolled GL).
+   Same effort scale as option 3.
 
-The user has authorized "heavy" approaches. **Recommended: pursue option 1
-(stencil shadows)** because it directly matches the reference image and
-because the pre-2019 YARS code already had stencil infrastructure intact
-(see `docs/planning/shadows_attempts_log.md` for the previous attempt and
-what blocked it).
+**Strong recommendation: option 1 (stencil shadow volumes with
+hand-written GLSL extrude shaders).** Direct match to the reference look,
+existing infrastructure mostly in place, manageable effort, no scene-
+graph rewrite required.
 
 ## Acceptance criteria
 
-The shadow rendering is "done" when **both** of these hold:
+The shadow rendering is "done" when **all** of these hold:
 
-1. A screenshot of `xml/braitenberg.xml` from the default top-down camera
-   shows: clear wall shadow strips along the arena perimeter (no
-   double-dark corners); the robot casts a visible shadow whose shape
-   roughly matches the robot's silhouette projected along the light
-   direction; the floor texture is visible everywhere except where
-   shadows are; no holes through walls.
+1. **braitenberg.xml** (default top-down camera): the robot casts a
+   visible shadow whose shape matches the robot's silhouette projected
+   along the light direction. Wall shadows fall on the floor near each
+   wall's base. No double-darkening in corners. No holes through walls.
+   Floor texture visible everywhere outside the shadow regions.
 
-2. A screenshot of `xml/falling_objects.xml` from the default side-view
-   camera shows: each ball casts a smooth elliptical shadow on the
-   floor, offset in the light direction; **no hexagonal/wireframe
-   pattern inside the shadow**; shadows do not appear on the walls or
-   on the balls themselves.
+2. **falling_objects.xml** (default side-view camera): each ball casts
+   a smooth elliptical shadow on the floor (offset in the light
+   direction), **no mesh / wireframe pattern inside the shadow**. If a
+   ball is positioned such that its shadow would fall on a wall or on
+   another ball, the shadow appears on that surface too — not just on
+   the floor.
 
-CSV regression (`braitenberg_logging.xml` at 2000 iterations vs
-`reference_logfile.macos-arm64.csv`) must remain 0-diff. `yars_tests`
-must remain 35/35.
+3. **The hexapod test case** (any scene with the wooden hexapod robot
+   and a wall obstacle): each leg of the hexapod casts its own
+   distinct shadow on the floor. When a leg is positioned such that
+   its shadow falls on the white obstacle, the shadow appears on the
+   obstacle's face — matching the reference image.
+
+4. CSV regression (`braitenberg_logging.xml` at 2000 iterations vs
+   `reference_logfile.macos-arm64.csv`): 0-diff.
+
+5. `yars_tests`: 35/35 pass.
+
+6. Build clean, no new warnings.
 
 ## Constraints
 
