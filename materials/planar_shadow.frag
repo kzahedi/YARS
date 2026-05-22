@@ -12,5 +12,5 @@ void main()
     // the floor texture under alpha-blending to darken-but-not-black
     // the floor pixels — closer to how a real ambient-occluded shadow
     // looks on a textured surface.
-    FragColor = vec4(0.25, 0.25, 0.25, 0.55);
+    FragColor = vec4(0.25, 0.25, 0.25, 0.35);
 }
