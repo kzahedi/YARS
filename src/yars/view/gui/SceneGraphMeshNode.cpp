@@ -31,11 +31,14 @@ SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogr
     meshNode->setPosition(Ogre::Vector3(position.x, position.y, position.z));
     meshNode->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
 
-    // Register with the planar shadow projector so a translucent shadow
-    // proxy is spawned and updated in lockstep with this mesh.
-    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+    // Register with the planar shadow projector. Skip static (mass=0)
+    // environment casters — their shadow strips clutter the floor.
+    if (_data->physics()->mass() > 0.0)
     {
-      psp->registerCaster(meshNode, (*m)->name());
+      if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+      {
+        psp->registerCaster(meshNode, (*m)->name());
+      }
     }
 
     index++;

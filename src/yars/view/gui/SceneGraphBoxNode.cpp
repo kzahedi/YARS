@@ -147,9 +147,16 @@ SceneGraphBoxNode::SceneGraphBoxNode(DataBox *box, Ogre::SceneNode *r, Ogre::Sce
 
   // Register with the planar shadow projector so a translucent shadow
   // proxy is spawned and updated in lockstep with this box.
-  if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+  // Skip static (mass=0) environment objects like arena walls — their
+  // shadow strips along the arena perimeter clutter the floor and
+  // look unnatural where adjacent wall shadows overlap in corners.
+  // The interesting shadows are from dynamic objects.
+  if (_data->physics()->mass() > 0.0)
   {
-    psp->registerCaster(_node, _manual, "Box_" + _data->name());
+    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
+    {
+      psp->registerCaster(_node, _manual, "Box_" + _data->name());
+    }
   }
 
   update();
