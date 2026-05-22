@@ -33,14 +33,11 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     meshNode->setPosition(Ogre::Vector3(position.x, position.y, position.z));
     meshNode->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
 
-    // Register with the planar shadow projector. Skip static (mass=0)
-    // environment casters — their shadow strips clutter the floor.
-    if (_data->physics()->mass() > 0.0)
+    // Register with the planar shadow projector so a translucent shadow
+    // proxy is spawned and updated in lockstep with this PLY mesh.
+    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
     {
-      if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
-      {
-        psp->registerCaster(meshNode, (*m)->name());
-      }
+      psp->registerCaster(meshNode, (*m)->name());
     }
 
     index++;
@@ -79,13 +76,9 @@ SceneGraphPlyNode::SceneGraphPlyNode(DataPly *ply, Ogre::SceneNode* r, Ogre::Sce
     _manual->setMaterialName(0, _data->texture(), Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
 
     // Register the PLY ManualObject with the planar shadow projector.
-    // Skip static (mass=0) environment casters.
-    if (_data->physics()->mass() > 0.0)
+    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
     {
-      if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
-      {
-        psp->registerCaster(_node, _manual, "Ply_" + _data->name());
-      }
+      psp->registerCaster(_node, _manual, "Ply_" + _data->name());
     }
   }
   update();

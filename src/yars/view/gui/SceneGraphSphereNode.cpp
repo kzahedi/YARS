@@ -53,14 +53,11 @@ SceneGraphSphereNode::SceneGraphSphereNode(
 
   _node->attachObject(_manual);
 
-  // Register with the planar shadow projector. Skip static (mass=0)
-  // environment casters — their shadow strips clutter the floor.
-  if (_data->physics()->mass() > 0.0)
+  // Register with the planar shadow projector so a translucent shadow
+  // proxy is spawned and updated in lockstep with this sphere.
+  if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
   {
-    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
-    {
-      psp->registerCaster(_node, _manual, "Sphere_" + _data->name());
-    }
+    psp->registerCaster(_node, _manual, "Sphere_" + _data->name());
   }
 
   update();
