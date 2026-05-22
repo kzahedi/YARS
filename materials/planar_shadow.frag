@@ -7,8 +7,10 @@ out vec4 FragColor;
 
 void main()
 {
-    // alpha=0.7 gives a clearly visible shadow on light-coloured
-    // floors (YARS' default sand/dirt texture is bright enough that
-    // 0.5 looked nearly identical to a dirt patch).
-    FragColor = vec4(0.0, 0.0, 0.0, 0.7);
+    // Soft gray overlay (rather than pure black alpha-blended which
+    // produces a muddy dark patch). The mid-gray colour mixes with
+    // the floor texture under alpha-blending to darken-but-not-black
+    // the floor pixels — closer to how a real ambient-occluded shadow
+    // looks on a textured surface.
+    FragColor = vec4(0.25, 0.25, 0.25, 0.55);
 }
