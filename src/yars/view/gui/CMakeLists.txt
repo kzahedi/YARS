@@ -22,6 +22,7 @@ set(GUI_SOURCES SdlWindow.cpp
                 TextOverlay.cpp
                 ColoredTextAreaOverlayElement.cpp
                 OgreHandler.cpp
+                ShadowMapper.cpp
                 MaterialManager.cpp
                 ShaderManager.cpp
                 KeyHandler.cpp

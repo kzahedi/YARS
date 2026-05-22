@@ -4,7 +4,9 @@ vertex_program YARS/ShadowReceiverVP glsl
   default_params
   {
     param_named_auto worldViewProjMatrix worldviewproj_matrix
-    param_named_auto texWorldViewProjMatrix texture_worldviewproj_matrix
+    param_named_auto worldMatrix         world_matrix
+    // shadowViewProjMatrix is set per-frame from C++ by ShadowMapper.
+    param_named shadowViewProjMatrix matrix4x4 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   }
 }
 
@@ -13,33 +15,43 @@ fragment_program YARS/ShadowReceiverFP glsl
   source shadow_receiver.frag
   default_params
   {
-    param_named shadowMap int 0
+    param_named shadowMap         int   0
+    // shadowBias: small offset added to occluder depth before comparing
+    // with the receiver's own depth. Combats z-fighting / shadow acne.
+    param_named shadowBias        float 0.0015
+    // shadowDarkness: modulation factor for shadowed pixels.
+    //   0 → pure black shadow
+    //   1 → no darkening at all
+    // 0.35 matches the pre-2019 stencil-shadow look in hexapod_reference.png
+    // — mid-gray shadows where the floor texture still shows through, but
+    // dark enough to read as "shadow" not "smudge".
+    param_named shadowDarkness    float 0.35
   }
 }
 
-material YARS/TextureShadowReceiver
+material YARS/ShadowReceiver
 {
   receive_shadows off
   technique
   {
-    // Tag with the RTSS scheme so the SGTechniqueResolverListener doesn't
-    // lazily create a duplicate that would override our explicit GLSL.
     scheme ShaderGeneratorDefaultScheme
     pass
     {
-      lighting off
-      scene_blend modulate
-      depth_write off
-
       vertex_program_ref YARS/ShadowReceiverVP {}
       fragment_program_ref YARS/ShadowReceiverFP {}
 
+      // Modulating pass: output multiplies the framebuffer's existing colour.
+      // R=G=B=k makes the receiver darken to k * orig_colour in shadowed
+      // pixels, and unchanged in unshadowed pixels.
+      scene_blend modulate
+      depth_check on
+      depth_write off
+
       texture_unit
       {
-        // The shadow texture is bound automatically.
         tex_address_mode border
         tex_border_colour 1 1 1 1
-        filtering linear linear none
+        filtering none none none
       }
     }
   }

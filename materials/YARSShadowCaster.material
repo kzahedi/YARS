@@ -12,13 +12,10 @@ fragment_program YARS/ShadowCasterFP glsl
   source shadow_caster.frag
 }
 
-material YARS/TextureShadowCaster
+material YARS/ShadowCaster
 {
-  receive_shadows off
   technique
   {
-    // Tag with the RTSS scheme so the SGTechniqueResolverListener doesn't
-    // lazily create a duplicate that would override our explicit GLSL.
     scheme ShaderGeneratorDefaultScheme
     pass
     {
