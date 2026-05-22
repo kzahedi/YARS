@@ -46,23 +46,12 @@ material YARS/PlanarShadow
 
       scene_blend alpha_blend
       depth_check on
-      // depth_write ON so overlapping proxy triangles don't alpha-stack
-      // into a darker patch with a visible mesh-pattern. The first
-      // triangle at each pixel writes depth=0.05 (the shader's Y-lift),
-      // subsequent triangles at the same depth fail the depth_func
-      // less test and are discarded. This kills two artifacts:
-      //  - the hexagonal "wireframe" pattern that appeared inside
-      //    sphere/capsule shadows (caused by hundreds of overlapping
-      //    triangles each alpha-blending darker)
-      //  - the over-dark corners where two adjacent wall shadows
-      //    overlapped (both alpha-blending darkened the same pixels).
-      depth_write on
-      depth_func less
+      depth_write off
       // Projected geometry can be back-facing relative to its original
       // normal; render both sides so the shadow is always visible.
       cull_hardware none
-      // depth_bias still helps the proxy win against the floor mesh
-      // when their depths are extremely close numerically.
+      // Bias values are large because the projected geometry sits
+      // exactly on the floor plane (y=0), coincident with the floor mesh.
       depth_bias -5 -5
     }
   }
