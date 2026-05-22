@@ -10,11 +10,7 @@
 #include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 #include <OGRE/Plugins/STBICodec/OgreSTBICodec.h>
 
-#include <memory>
-
 namespace yars {
-
-class PlanarShadowProjector;
 
 class OgreHandler
 {
@@ -24,8 +20,6 @@ public:
 
   Ogre::SceneManager *getSceneManager();
   Ogre::Root *root();
-
-  PlanarShadowProjector *getPlanarShadowProjector() { return _planarShadows.get(); }
 
   void setupSceneManager();
   void setupResources();
@@ -45,7 +39,6 @@ private:
   SceneGraph *_sceneGraph;
   Ogre::RTShader::ShaderGenerator *_shaderGenerator;
   Ogre::MaterialManager::Listener *_materialListener{nullptr};
-  std::unique_ptr<PlanarShadowProjector> _planarShadows;
   // TextOverlay        *_textOverlay;
 };
 

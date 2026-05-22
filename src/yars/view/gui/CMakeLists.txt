@@ -22,7 +22,6 @@ set(GUI_SOURCES SdlWindow.cpp
                 TextOverlay.cpp
                 ColoredTextAreaOverlayElement.cpp
                 OgreHandler.cpp
-                PlanarShadowProjector.cpp
                 MaterialManager.cpp
                 ShaderManager.cpp
                 KeyHandler.cpp

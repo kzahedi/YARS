@@ -1,6 +1,5 @@
 #include "OgreHandler.h"
 #include "MaterialManager.h"
-#include "PlanarShadowProjector.h"
 #include "ShaderManager.h"
 #include <yars/configuration/data/Data.h>
 #include <yars/util/Directories.h>
@@ -410,24 +409,6 @@ void OgreHandler::setupSceneManager()
   lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
   node->attachObject(lightSun);
 
-  // Planar projected shadows: render every shadow-casting entity a
-  // second time, flattened onto the floor plane along the light
-  // direction. Replaces the previous custom RTT pipeline.
-  //
-  // Frame convention: the YARS scene graph applies a -90 deg X
-  // rotation at the root that converts YARS-local Z-up coordinates
-  // into Ogre Y-up RENDERING coordinates. casterNode->_getFullTransform()
-  // returns the WORLD transform (post-rotation Y-up). Shadow proxies
-  // attach to the SceneManager's root (unrotated, also Y-up). So all
-  // the math here lives in Ogre Y-up world space: the floor's world
-  // normal is +Y and the directional sun light is (-1,-1,-1) in Y-up.
-  // (SceneGraphEnvironmentNode uses Plane(UNIT_Z, 0) but that's in
-  // the floor mesh's LOCAL frame, before the scene-root rotation.)
-  const Ogre::Plane floor(Ogre::Vector3::UNIT_Y, 0.0f);
-  const Ogre::Vector3 lightDir(-1.0f, -1.0f, -1.0f);
-  _planarShadows = std::make_unique<PlanarShadowProjector>(
-      _sceneManager, floor, lightDir);
-
   _rootNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
   _sceneGraph = new SceneGraph(_rootNode, _sceneManager);
 
@@ -543,7 +524,6 @@ void OgreHandler::step()
   try
   {
     _sceneGraph->update();
-    if (_planarShadows) _planarShadows->update();
     _root->renderOneFrame();
 
   }

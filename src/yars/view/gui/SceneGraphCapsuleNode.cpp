@@ -1,6 +1,5 @@
 #include "SceneGraphCapsuleNode.h"
 #include "OgreHandler.h"
-#include "PlanarShadowProjector.h"
 
 #include <yars/defines/defaults.h>
 
@@ -54,13 +53,6 @@ SceneGraphCapsuleNode::SceneGraphCapsuleNode(
   }
 
   _node->attachObject(_manual);
-
-  // Register with the planar shadow projector so a translucent shadow
-  // proxy is spawned and updated in lockstep with this capsule.
-  if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
-  {
-    psp->registerCaster(_node, _manual, "Capsule_" + _data->name());
-  }
 
   update();
 }

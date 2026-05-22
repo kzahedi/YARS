@@ -1,6 +1,5 @@
 #include "SceneGraphMeshNode.h"
 #include "OgreHandler.h"
-#include "PlanarShadowProjector.h"
 
 SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogre::SceneManager* sm)
   : SceneGraphObjectNode(r, sm)
@@ -30,13 +29,6 @@ SceneGraphMeshNode::SceneGraphMeshNode(DataObject *data, Ogre::SceneNode* r, Ogr
     ::Quaternion q(pose.orientation);
     meshNode->setPosition(Ogre::Vector3(position.x, position.y, position.z));
     meshNode->setOrientation(Ogre::Quaternion(q.w, q.x, q.y, q.z));
-
-    // Register with the planar shadow projector so a translucent shadow
-    // proxy is spawned and updated in lockstep with this mesh.
-    if (auto *psp = yars::OgreHandler::instance()->getPlanarShadowProjector())
-    {
-      psp->registerCaster(meshNode, (*m)->name());
-    }
 
     index++;
   }
