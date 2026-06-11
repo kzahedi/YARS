@@ -16,9 +16,6 @@
 #include <OGRE/RTShaderSystem/OgreShaderGenerator.h>
 #include <OGRE/RTShaderSystem/OgreShaderSubRenderState.h>
 #include <OGRE/OgreShadowCameraSetup.h>
-#include <OGRE/OgreShadowCameraSetupFocused.h>
-#include <OGRE/OgreShadowCameraSetupPlaneOptimal.h>
-#include <OGRE/OgreMovablePlane.h>
 
 
 namespace yars {
@@ -94,10 +91,10 @@ public:
     view[2][3] = -localZ.dotProduct(camPos);
 
     // Orthographic projection. Half-extent 30 m covers the hardcoded
-    // 50×50 ground plane's caster-relevant area (see
-    // SceneGraphEnvironmentNode.cpp:27-29) with margin; casters in all
-    // shipped scenes live well inside ±15 m of the origin. At 2048²
-    // that is ~2.9 cm/texel, smoothed by PCF in the receiver.
+    // 50×50 ground plane's caster-relevant area (see the createPlane call
+    // in SceneGraphEnvironmentNode.cpp) with margin; casters in all shipped
+    // scenes live well inside ±15 m of the origin. At 2048² that is ~2.9
+    // cm/texel, smoothed by PCF in the receiver.
     const Ogre::Real halfWidth = 30.0f;
     const Ogre::Real halfHeight = 30.0f;
     const Ogre::Real n = 1.0f;
@@ -470,11 +467,10 @@ void OgreHandler::__setupShadows()
     _sceneManager->setShadowColour(Ogre::ColourValue(0.55f, 0.55f, 0.55f));
 
     // YarsFixedShadowCameraSetup: world-anchored, light-aligned ortho
-    // frustum that ignores the eye camera. Guarantees full-arena
-    // coverage in every scene (FocusedShadowCameraSetup fits the
-    // frustum to the *viewer's* view — sparse-caster scenes like
-    // falling_objects got a tight frustum that missed the floor, and
-    // coverage drifted when orbiting).
+    // frustum that ignores the eye camera. Guarantees full-arena coverage in
+    // every scene. Focused fits the frustum to the viewer's view, so
+    // sparse-caster scenes get a tight frustum that misses the floor and
+    // coverage drifts when orbiting.
     _sceneManager->setShadowCameraSetup(
         Ogre::ShadowCameraSetupPtr(new YarsFixedShadowCameraSetup()));
 
