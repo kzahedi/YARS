@@ -34,8 +34,8 @@ namespace yars {
 //  - Light direction is HARDCODED to (-1, -1, -1) (Ogre world space).
 //  - Shadow camera is positioned at +50 units in the opposite light
 //    direction, looking toward world origin.
-//  - Orthographic frustum of 24×24 covers the typical YARS arena
-//    (±4m walls) plus margin for dynamic objects.
+//  - Orthographic frustum of 60×60 covers the hardcoded 50×50 ground
+//    plane's caster-relevant area plus margin for dynamic objects.
 //
 // This produces stable, world-anchored shadows that don't move with the
 // camera and reliably align with caster geometry.
@@ -82,7 +82,10 @@ public:
     localY.normalise();
 
     // View matrix: rows are camera basis vectors; translation = -R * camPos.
-    Ogre::Affine3 view;
+    // IDENTITY initialisation matters: Affine3's default constructor leaves
+    // the matrix uninitialised, and Ogre multiplies it as a full Matrix4
+    // (reading the bottom row), so garbage there corrupts every transform.
+    Ogre::Affine3 view = Ogre::Affine3::IDENTITY;
     view[0][0] = localX.x; view[0][1] = localX.y; view[0][2] = localX.z;
     view[1][0] = localY.x; view[1][1] = localY.y; view[1][2] = localY.z;
     view[2][0] = localZ.x; view[2][1] = localZ.y; view[2][2] = localZ.z;
@@ -90,9 +93,13 @@ public:
     view[1][3] = -localY.dotProduct(camPos);
     view[2][3] = -localZ.dotProduct(camPos);
 
-    // Orthographic projection: 24×24 frustum, depth 1..200.
-    const Ogre::Real halfWidth = 12.0f;
-    const Ogre::Real halfHeight = 12.0f;
+    // Orthographic projection. Half-extent 30 m covers the hardcoded
+    // 50×50 ground plane's caster-relevant area (see
+    // SceneGraphEnvironmentNode.cpp:27-29) with margin; casters in all
+    // shipped scenes live well inside ±15 m of the origin. At 2048²
+    // that is ~2.9 cm/texel, smoothed by PCF in the receiver.
+    const Ogre::Real halfWidth = 30.0f;
+    const Ogre::Real halfHeight = 30.0f;
     const Ogre::Real n = 1.0f;
     const Ogre::Real f = 200.0f;
     Ogre::Matrix4 proj = Ogre::Matrix4::ZERO;
@@ -400,7 +407,6 @@ void OgreHandler::setupSceneManager()
   Ogre::SceneNode *node = _sceneManager->getRootSceneNode()->createChildSceneNode("lightNode");
   Ogre::Light *lightSun = _sceneManager->createLight("sun");
   lightSun->setType(Ogre::Light::LT_DIRECTIONAL);
-  lightSun->setShadowFarDistance(15.0f);
   node->setDirection(Ogre::Vector3(-1, -1, -1));
   lightSun->setDiffuseColour(1.2, 1.2, 1.0);  // Warm directional light
   lightSun->setSpecularColour(1.0, 1.0, 0.8); // Warm specular highlights
@@ -454,19 +460,23 @@ void OgreHandler::__setupShadows()
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
     _sceneManager->setShadowTextureSize(2048);
     _sceneManager->setShadowTextureCount(1);
-    _sceneManager->setShadowFarDistance(20.0f);
+    // Receiver-pass cull distance from the EYE camera. With the fixed
+    // shadow frustum this no longer shapes the shadow camera — it only
+    // culls the modulating pass — so keep it generous.
+    _sceneManager->setShadowFarDistance(100.0f);
     _sceneManager->setShadowDirLightTextureOffset(0.0f);
     _sceneManager->setShadowTexturePixelFormat(Ogre::PF_R8G8B8);
     _sceneManager->setShadowCasterRenderBackFaces(false);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.55f, 0.55f, 0.55f));
 
-    // FocusedShadowCameraSetup: fits the shadow ortho frustum to visible
-    // casters. Gives best per-object resolution but means the receiver
-    // pass only renders where the frustum projects onto floor/wall
-    // geometry. Scenes with sparse casters (e.g. falling_objects' two
-    // small balls) get a tight frustum that misses most of the floor.
+    // YarsFixedShadowCameraSetup: world-anchored, light-aligned ortho
+    // frustum that ignores the eye camera. Guarantees full-arena
+    // coverage in every scene (FocusedShadowCameraSetup fits the
+    // frustum to the *viewer's* view — sparse-caster scenes like
+    // falling_objects got a tight frustum that missed the floor, and
+    // coverage drifted when orbiting).
     _sceneManager->setShadowCameraSetup(
-        Ogre::ShadowCameraSetupPtr(new Ogre::FocusedShadowCameraSetup()));
+        Ogre::ShadowCameraSetupPtr(new YarsFixedShadowCameraSetup()));
 
     auto casterMat = Ogre::MaterialManager::getSingleton()
         .getByName("YARS/ShadowCaster");
