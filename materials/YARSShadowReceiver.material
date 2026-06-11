@@ -49,6 +49,8 @@ material YARS/ShadowReceiver
 
       texture_unit
       {
+        // border + white: PCF taps outside the shadow frustum read "lit".
+        // shadow_receiver.frag depends on this — do not change to clamp/wrap.
         tex_address_mode border
         tex_border_colour 1 1 1 1
         filtering none none none

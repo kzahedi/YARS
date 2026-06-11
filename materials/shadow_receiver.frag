@@ -50,6 +50,8 @@ void main()
     // 3×3 PCF: average nine binary depth compares one texel apart.
     // Gives the soft penumbra of the pre-2019 reference look
     // (hexapod_reference.png) instead of hard aliased edges.
+    // Border taps (uv near 0/1) return 1.0 (lit) via tex_address_mode border
+    // in YARSShadowReceiver.material — do not change that to clamp or wrap.
     vec2 texel = 1.0 / vec2(textureSize(shadowMap, 0));
     float lit = 0.0;
     for (int dy = -1; dy <= 1; ++dy) {
