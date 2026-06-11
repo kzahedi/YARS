@@ -99,6 +99,7 @@ public:
     const Ogre::Real halfHeight = 30.0f;
     const Ogre::Real n = 1.0f;
     const Ogre::Real f = 200.0f;
+    // NOTE: shadowBias in YARSShadowReceiver.material is calibrated to this 1..200 range.
     Ogre::Matrix4 proj = Ogre::Matrix4::ZERO;
     proj[0][0] = 1.0f / halfWidth;
     proj[1][1] = 1.0f / halfHeight;

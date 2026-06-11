@@ -5,7 +5,8 @@ out vec4 FragColor;
 
 void main()
 {
-    // Encode normalised depth into the R channel; the receiver
-    // samples this and compares with its own shadow-space depth.
-    FragColor = vec4(vDepth, vDepth, vDepth, 1.0);
+    // Encode normalised depth into the R channel of a single-channel
+    // FLOAT32_R texture; the receiver samples this and compares with its
+    // own shadow-space depth. Only R is stored.
+    FragColor = vec4(vDepth, 0.0, 0.0, 1.0);
 }
