@@ -22,12 +22,19 @@ void main()
     // NDC → texture UV [0, 1].
     vec2 uv = ndc.xy * 0.5 + 0.5;
 
-    // FBO Y-flip compensation: Ogre's getProjectionMatrix() returns the
-    // matrix WITH a per-render-target Y-flip applied (because GL FBOs
-    // render with Y=0 at the bottom of the texture, the opposite of
-    // sampler convention). Our ShadowMapper queries getProjectionMatrix()
-    // for the receiver-side matrix, so the caster's silhouette ends up
-    // written at row (1-v) rather than v. Flip V to compensate.
+    // FBO Y-flip compensation: the shadow texture's V axis is inverted
+    // relative to the UV we derive from shadow-camera NDC, so the
+    // receiver must sample at (u, 1-v). Verified empirically 2026-06-11
+    // under the custom projection matrix from YarsFixedShadowCameraSetup
+    // (A/B frame captures of braitenberg + falling_objects): WITH this
+    // flip, the robot's shadow hugs its base and the airborne ball's
+    // shadow lies on the floor below/offset from the ball, consistent
+    // with light (-1,-1,-1); WITHOUT it, those shadows vanish and a
+    // phantom blob appears mirrored across the arena. The convention is
+    // unchanged from the old FocusedShadowCameraSetup path — Ogre's
+    // caster pass renders into a GL FBO with Y=0 at the bottom (the
+    // per-render-target flip applies even with setCustomProjectionMatrix
+    // on the shadow camera).
     uv.y = 1.0 - uv.y;
 
     float currentDepth = ndc.z * 0.5 + 0.5;
