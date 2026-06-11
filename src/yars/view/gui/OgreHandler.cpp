@@ -462,7 +462,11 @@ void OgreHandler::__setupShadows()
     // culls the modulating pass — so keep it generous.
     _sceneManager->setShadowFarDistance(100.0f);
     _sceneManager->setShadowDirLightTextureOffset(0.0f);
-    _sceneManager->setShadowTexturePixelFormat(Ogre::PF_R8G8B8);
+    // 32-bit float depth. PF_R8G8B8 gave only 256 depth levels over
+    // the 1..200 frustum — one quantum (0.0039) was larger than the
+    // shadow bias, so the depth compare was noise-dominated and
+    // subtle shadows (casters high above the floor) vanished.
+    _sceneManager->setShadowTexturePixelFormat(Ogre::PF_FLOAT32_R);
     _sceneManager->setShadowCasterRenderBackFaces(false);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.55f, 0.55f, 0.55f));
 

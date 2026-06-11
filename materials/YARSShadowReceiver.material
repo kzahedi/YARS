@@ -16,9 +16,9 @@ fragment_program YARS/ShadowReceiverFP glsl
   default_params
   {
     param_named shadowMap         int   0
-    // shadowBias: small offset added to occluder depth before comparing
-    // with the receiver's own depth. Combats z-fighting / shadow acne.
-    param_named shadowBias        float 0.0015
+    // shadowBias: depth-compare offset against shadow acne. With
+    // PF_FLOAT32_R and the 1..200 frustum, 0.0002 ≈ 4 cm world space.
+    param_named shadowBias        float 0.0002
     // shadowDarkness: modulation factor for shadowed pixels.
     //   0 → pure black shadow
     //   1 → no darkening at all
