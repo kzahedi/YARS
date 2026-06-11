@@ -47,9 +47,20 @@ void main()
         return;
     }
 
-    float occluderDepth = texture(shadowMap, uv).r;
-    bool inShadow = (currentDepth - shadowBias) > occluderDepth;
+    // 3×3 PCF: average nine binary depth compares one texel apart.
+    // Gives the soft penumbra of the pre-2019 reference look
+    // (hexapod_reference.png) instead of hard aliased edges.
+    vec2 texel = 1.0 / vec2(textureSize(shadowMap, 0));
+    float lit = 0.0;
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            float occluderDepth =
+                texture(shadowMap, uv + vec2(dx, dy) * texel).r;
+            lit += ((currentDepth - shadowBias) > occluderDepth) ? 0.0 : 1.0;
+        }
+    }
+    lit /= 9.0;
 
-    float k = inShadow ? shadowDarkness : 1.0;
+    float k = mix(shadowDarkness, 1.0, lit);
     FragColor = vec4(k, k, k, 1.0);
 }
