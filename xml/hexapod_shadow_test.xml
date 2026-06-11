@@ -6,9 +6,11 @@
      YARS coords; the camera looks along -x. The obstacle stands just
      behind (-x) and beside (+y) the hexapod's head, so the head casts a
      large soft shadow onto the obstacle's camera-facing (+x) face.
-     Requires setShadowTextureSelfShadow(true) in OgreHandler — without
-     it Ogre excludes all shadow casters from the modulative receiver
-     pass and boxes never receive shadows. -->
+     No special C++ flags needed: YARS primitives are ManualObjects,
+     which Ogre never excludes from the modulative receiver pass, so
+     boxes receive shadows out of the box.
+     Usage: cd ./build && timeout 180 ./bin/yars -xml ../xml/hexapod_shadow_test.xml -iterations 120 -framesDirectory frames_t
+     Then inspect a late frame: look for the dark shadow patch on the white obstacle face (right-center of the 1280x720 frame). -->
 
 <rosiml version="0.8.41">
 
