@@ -22,12 +22,19 @@ void main()
     // NDC → texture UV [0, 1].
     vec2 uv = ndc.xy * 0.5 + 0.5;
 
-    // FBO Y-flip compensation: Ogre's getProjectionMatrix() returns the
-    // matrix WITH a per-render-target Y-flip applied (because GL FBOs
-    // render with Y=0 at the bottom of the texture, the opposite of
-    // sampler convention). Our ShadowMapper queries getProjectionMatrix()
-    // for the receiver-side matrix, so the caster's silhouette ends up
-    // written at row (1-v) rather than v. Flip V to compensate.
+    // FBO Y-flip compensation: the shadow texture's V axis is inverted
+    // relative to the UV we derive from shadow-camera NDC, so the
+    // receiver must sample at (u, 1-v). Verified empirically 2026-06-11
+    // under the custom projection matrix from YarsFixedShadowCameraSetup
+    // (A/B frame captures of braitenberg + falling_objects): WITH this
+    // flip, the robot's shadow hugs its base and the airborne ball's
+    // shadow lies on the floor below/offset from the ball, consistent
+    // with light (-1,-1,-1); WITHOUT it, those shadows vanish and a
+    // phantom blob appears mirrored across the arena. The convention is
+    // unchanged from the old FocusedShadowCameraSetup path — Ogre's
+    // caster pass renders into a GL FBO with Y=0 at the bottom (the
+    // per-render-target flip applies even with setCustomProjectionMatrix
+    // on the shadow camera).
     uv.y = 1.0 - uv.y;
 
     float currentDepth = ndc.z * 0.5 + 0.5;
@@ -40,9 +47,22 @@ void main()
         return;
     }
 
-    float occluderDepth = texture(shadowMap, uv).r;
-    bool inShadow = (currentDepth - shadowBias) > occluderDepth;
+    // 3×3 PCF: average nine binary depth compares one texel apart.
+    // Gives the soft penumbra of the pre-2019 reference look
+    // (hexapod_reference.png) instead of hard aliased edges.
+    // Border taps (uv near 0/1) return 1.0 (lit) via tex_address_mode border
+    // in YARSShadowReceiver.material — do not change that to clamp or wrap.
+    vec2 texel = 1.0 / vec2(textureSize(shadowMap, 0));
+    float lit = 0.0;
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            float occluderDepth =
+                texture(shadowMap, uv + vec2(dx, dy) * texel).r;
+            lit += ((currentDepth - shadowBias) > occluderDepth) ? 0.0 : 1.0;
+        }
+    }
+    lit /= 9.0;
 
-    float k = inShadow ? shadowDarkness : 1.0;
+    float k = mix(shadowDarkness, 1.0, lit);
     FragColor = vec4(k, k, k, 1.0);
 }

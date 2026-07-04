@@ -62,9 +62,17 @@ void ShadowMapper::shadowTexturesUpdated(size_t /*numTex*/)
     // World-to-shadow-clip matrix. Use the plain projection matrix
     // (without RS depth adjustment) — our hand-written GLSL targets
     // the standard GL clip-space depth range [-1,1] directly.
+    //
+    // getViewMatrix(true): the texCam's OWN view matrix. Ogre attaches a
+    // separate culling camera to every shadow texCam, and the plain
+    // getViewMatrix() delegates to that cull frustum — which is driven by
+    // a stock DefaultShadowCameraSetup, NOT by the scene manager's shadow
+    // camera setup. The caster pass renders with the texCam's own
+    // (custom) matrices via getViewMatrix(true), so we must read the
+    // same one or the receiver's shadow lookups miss entirely.
     Ogre::Matrix4 shadowViewProj =
         shadowCam->getProjectionMatrix() *
-        shadowCam->getViewMatrix();
+        shadowCam->getViewMatrix(true);
 
     for (unsigned short t = 0; t < _receiverMaterial->getNumTechniques(); ++t) {
         Ogre::Technique *tech = _receiverMaterial->getTechnique(t);

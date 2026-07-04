@@ -1,3 +1,8 @@
 [submodule "ext/ogre-source"]
 	path = ext/ogre-source
-	url = https://github.com/OGRECave/ogre.git
+	# Fork of OGRECave/ogre carrying the YARS detached-ManualObject guard
+	# (commit e99519a on branch yars-patches, one commit atop upstream
+	# v14.5.2-79/922f5b6). Upstream lacks that commit, so CI checkout of
+	# the submodule must fetch from the fork. See
+	# docs/planning/v0.8.7-open-points.md.
+	url = https://github.com/kzahedi/ogre.git
