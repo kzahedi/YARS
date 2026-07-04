@@ -31,8 +31,8 @@ namespace yars {
 //  - Light direction is HARDCODED to (-1, -1, -1) (Ogre world space).
 //  - Shadow camera is positioned at +50 units in the opposite light
 //    direction, looking toward world origin.
-//  - Orthographic frustum of 60×60 covers the hardcoded 50×50 ground
-//    plane's caster-relevant area plus margin for dynamic objects.
+//  - Orthographic frustum of 32×32 covers the caster-relevant area of
+//    all shipped scenes (±15 m) plus margin for dynamic objects.
 //
 // This produces stable, world-anchored shadows that don't move with the
 // camera and reliably align with caster geometry.
@@ -90,13 +90,15 @@ public:
     view[1][3] = -localY.dotProduct(camPos);
     view[2][3] = -localZ.dotProduct(camPos);
 
-    // Orthographic projection. Half-extent 30 m covers the hardcoded
-    // 50×50 ground plane's caster-relevant area (see the createPlane call
-    // in SceneGraphEnvironmentNode.cpp) with margin; casters in all shipped
-    // scenes live well inside ±15 m of the origin. At 2048² that is ~2.9
-    // cm/texel, smoothed by PCF in the receiver.
-    const Ogre::Real halfWidth = 30.0f;
-    const Ogre::Real halfHeight = 30.0f;
+    // Orthographic projection. Half-extent 16 m covers the caster-relevant
+    // area: casters in all shipped scenes live well inside ±15 m of the
+    // origin (the 50×50 ground plane is a receiver only — receivers outside
+    // the frustum sample the border colour and stay lit). At 4096² this is
+    // ~0.78 cm/texel, smoothed by PCF in the receiver. The previous 30 m /
+    // 2048² combination (~2.9 cm/texel) made thin casters (hexapod antennae,
+    // ~1 cm) drop below one texel, producing dashed, stair-stepped shadows.
+    const Ogre::Real halfWidth = 16.0f;
+    const Ogre::Real halfHeight = 16.0f;
     const Ogre::Real n = 1.0f;
     const Ogre::Real f = 200.0f;
     // NOTE: shadowBias in YARSShadowReceiver.material is calibrated to this 1..200 range.
@@ -456,7 +458,7 @@ void OgreHandler::__setupShadows()
   try
   {
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
-    _sceneManager->setShadowTextureSize(2048);
+    _sceneManager->setShadowTextureSize(4096);
     _sceneManager->setShadowTextureCount(1);
     // Receiver-pass cull distance from the EYE camera. With the fixed
     // shadow frustum this no longer shapes the shadow camera — it only

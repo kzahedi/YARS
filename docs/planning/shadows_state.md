@@ -7,7 +7,7 @@ non-floor receivers** via Ogre's `SHADOWTYPE_TEXTURE_MODULATIVE`
 framework with custom GLSL caster + receiver shaders.
 
 **Architecture.** Texture-based shadow mapping. Ogre renders all casters
-to a 2048×2048 `PF_FLOAT32_R` shadow texture from the light's POV (one
+to a 4096×4096 `PF_FLOAT32_R` shadow texture from the light's POV (one
 ortho camera produced by `YarsFixedShadowCameraSetup` aligned to the
 directional light at `(-1,-1,-1)`), then re-renders every receiver in a
 second modulating pass that samples the shadow texture and darkens
@@ -53,10 +53,14 @@ shadowed fragments.
 5. **Shadow camera setup.** `YarsFixedShadowCameraSetup`
    (`OgreHandler.cpp:39`) — world-anchored and light-aligned, ignoring
    the eye camera entirely. It positions an ortho camera along
-   `-lightDir` looking at the origin with a fixed 60×60 frustum
-   (half-extent 30 m, `OgreHandler.cpp:98`). This guarantees full-arena
-   coverage in **every** scene and removes camera-dependent drift. At
-   2048² that is ~2.9 cm/texel, smoothed by PCF. (Replaced
+   `-lightDir` looking at the origin with a fixed 32×32 frustum
+   (half-extent 16 m — casters in all shipped scenes live within ±15 m;
+   the ground plane is receiver-only and may extend past the frustum).
+   This covers every shipped scene's casters and removes
+   camera-dependent drift. At 4096² that is ~0.78 cm/texel, smoothed by
+   PCF. (Tightened 2026-07-04 from 60×60 @ 2048² — ~2.9 cm/texel made
+   thin casters like the hexapod antennae drop below one texel,
+   producing dashed, stair-stepped shadows.) (Replaced
    `FocusedShadowCameraSetup`, which fit the frustum to the *viewer's*
    view — sparse-caster scenes like `falling_objects.xml` got a tight
    frustum that missed most of the floor, and coverage drifted when
@@ -68,8 +72,8 @@ shadowed fragments.
 |-------|-------|--------------|
 | `shadowDarkness` | 0.35 | Modulation factor in `shadow_receiver.frag` |
 | `shadowBias` | 0.0002 | Depth-compare offset vs. acne (~4 cm world over the 1..200 frustum, with float depth) |
-| Shadow texture | 2048², `PF_FLOAT32_R` | Resolution / format (float depth — 8-bit `PF_R8G8B8` gave only 256 levels and lost subtle shadows) |
-| Fixed frustum half-extent | 30 m (60×60) | `YarsFixedShadowCameraSetup`, `OgreHandler.cpp:98` |
+| Shadow texture | 4096², `PF_FLOAT32_R` | Resolution / format (float depth — 8-bit `PF_R8G8B8` gave only 256 levels and lost subtle shadows) |
+| Fixed frustum half-extent | 16 m (32×32) | `YarsFixedShadowCameraSetup`, `OgreHandler.cpp` — casters in all shipped scenes live within ±15 m; the ground plane is receiver-only, so it may extend past the frustum (border taps return lit) |
 | `SceneManager::setShadowFarDistance` | 100m | Eye-camera cull distance for the modulating pass only (no longer shapes the shadow camera) |
 | `setShadowCasterRenderBackFaces` | false | Front-face-only casters (prevents self-shadow on receivers) |
 | PCF kernel | 3×3 (9-tap) | Soft penumbra edges in `shadow_receiver.frag` |
