@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
-<!-- Shadow acceptance scene (shadows v6.1, Task 5):
-     hexapod_mpi.xml plus a static white obstacle box placed so that the
-     hexapod's shadow falls onto the obstacle's face (non-floor receiver,
-     shadow_goal.md criterion 3). Light travels toward (-1, +1, -1) in
-     YARS coords; the camera looks along -x. The obstacle stands just
-     behind (-x) and beside (+y) the hexapod's head, so the head casts a
-     large soft shadow onto the obstacle's camera-facing (+x) face.
-     No special C++ flags needed: YARS primitives are ManualObjects,
-     which Ogre never excludes from the modulative receiver pass, so
-     boxes receive shadows out of the box.
-     Usage: cd ./build && timeout 180 ./bin/yars -xml ../xml/hexapod_shadow_test.xml -iterations 120 -framesDirectory frames_t
-     Then inspect a late frame: look for the dark shadow patch on the white obstacle face (right-center of the 1280x720 frame). -->
+<!--
+  Deterministic hexapod scene for the CI CSV regression gate.
+
+  Derived from hexapod_shadow_test.xml; joints are passive (no
+  controller), so two runs with the same iteration count produce
+  byte-identical CSVs. The <logging> block at the end records
+  main/head/tail x/y/z into hexapod-<datetime>.csv.
+
+  CI usage (see .github/workflows/*):
+    ./bin/yars -iterations 2000 -nogui -xml ../xml/hexapod_logging.xml
+-->
 
 <rosiml version="0.8.41">
 
