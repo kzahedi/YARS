@@ -327,3 +327,43 @@ jobs:
             build/yars-capture-ffprobe.txt
           if-no-files-found: warn
           retention-days: 14
+
+  sanitize:
+    name: ubuntu-22.04 / ASan+UBSan+LSan headless corpus
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install apt dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake git pkg-config ninja-build \
+            libcli11-dev libbullet-dev libsdl2-dev libxerces-c-dev \
+            libfreetype6-dev libzzip-dev zlib1g-dev
+
+      - name: Configure sanitized build
+        run: |
+          cmake -S . -B build-san \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DYARS_USE_VISUALISATION=OFF \
+            -DYARS_BUILD_TESTS=OFF \
+            -DYARS_ENABLE_SANITIZERS=ON
+
+      - name: Build sanitized YARS
+        run: cmake --build build-san -j 4
+
+      - name: Run sanitized corpus
+        run: ./scripts/sanitize-corpus.sh build-san
+
+      - name: Upload sanitizer logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sanitizer-logs
+          path: build-san/san-*.log
+          retention-days: 14
