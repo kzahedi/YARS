@@ -534,14 +534,22 @@ git commit -m "test(xml): CI-generated hexapod reference logfiles (both platform
 
 Push (with approval) and confirm the next run's hexapod steps report "byte-identical".
 
-- [ ] **Step 3: Sanitizer canary.** On a scratch branch off this one, add a deliberate leak to `src/yars/main/main.cpp` that the optimizer cannot elide (GCC dead-allocation-eliminates an unreferenced `new` at -O2):
+- [ ] **Step 3: Sanitizer canary.** On a scratch branch off this one, add a deliberate leak to `src/yars/yarsMain.cpp`. CORRECTED 2026-07-06 after three failed constructions — a valid LSan canary must satisfy BOTH properties:
+  1. **Escape** (or GCC's heap elision at -O2 removes the allocation entirely — a function-local pointer that never escapes compiles to no allocation);
+  2. **Unreachable at exit** (LSan's conservative scan treats any pointer still visible in a live stack frame, register, or global as reachable and correctly does NOT report it — so a `main()`-local or a still-set global hides the leak).
 
 ```cpp
-int *leak_canary = new int[10];
-printf("canary %p\n", (void*)leak_canary);   // observable use prevents elision
+int *g_lsan_canary_sink = nullptr;           // escape target (LSan root)
+static void lsanCanary(int seed) {
+  g_lsan_canary_sink = new int[10];          // escapes via global: no elision
+  g_lsan_canary_sink[0] = seed;
+  std::cout << "lsan-canary " << g_lsan_canary_sink[0] << std::endl;
+  g_lsan_canary_sink = nullptr;              // sever the only root: unreachable
+}
+// call lsanCanary(argc) at the top of main()
 ```
 
-Push (with approval) and confirm the `sanitize` job FAILS with a LeakSanitizer report. Delete the scratch branch afterwards. This proves the gate bites.
+Push (with approval) and confirm the `sanitize` job FAILS with a LeakSanitizer report naming `lsanCanary`. Delete the scratch branch afterwards. This proves the gate bites end-to-end — which matters more than it sounds: the first canary campaign exposed that YARS's SIGABRT handler converted sanitizer aborts into exit(0) (fixed in `42e008f`), a hole no green run could ever reveal.
 
 - [ ] **Step 4: Verify GUI still works locally (project completion bar)**
 
