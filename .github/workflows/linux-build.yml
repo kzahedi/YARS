@@ -2,9 +2,9 @@ name: Linux Build & Headless Audit
 
 on:
   push:
-    branches: [master, "fix/**", "feat/**", "chore/**"]
+    branches: [master, main, "fix/**", "feat/**", "chore/**"]
   pull_request:
-    branches: [master]
+    branches: [master, main]
   workflow_dispatch:
 
 env:
@@ -221,6 +221,43 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Reference CSV regression check (hexapod_logging.xml)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          cd build
+          rm -f hexapod-*.csv
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.xml
+          ACTUAL=$(ls -t hexapod-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No hexapod-*.csv produced"
+            exit 1
+          fi
+          mv "$ACTUAL" hexapod_logging_actual.csv
+          cd ..
+          REF=xml/reference_logfile_hexapod.linux-x86_64.csv
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No Linux hexapod reference committed yet. Uploading candidate artifact."
+            cp build/hexapod_logging_actual.csv linux-x86_64-hexapod-reference-candidate.csv
+          else
+            if diff -u "$REF" build/hexapod_logging_actual.csv > hexapod-csv-diff.log; then
+              echo "Hexapod CSV byte-identical to $REF."
+            else
+              echo "::error::Hexapod CSV differs from $REF — see hexapod-csv-diff.log artifact."
+              head -50 hexapod-csv-diff.log
+              exit 1
+            fi
+          fi
+
+      - name: Upload Linux hexapod reference candidate (only when ref missing)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-x86_64-hexapod-reference-candidate
+          path: linux-x86_64-hexapod-reference-candidate.csv
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: FFmpeg video capture (xvfb + llvmpipe)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
@@ -282,8 +319,10 @@ jobs:
             cmake-configure.log
             build.log
             csv-diff.log
+            hexapod-csv-diff.log
             linux-audit-logs/**
             build/braitenberg_logging_actual.csv
+            build/hexapod_logging_actual.csv
             build/yars-capture.mp4
             build/yars-capture-ffprobe.txt
           if-no-files-found: warn
