@@ -1,15 +1,45 @@
-# LSan suppressions for third-party noise. Add entries ONLY for leaks
-# provably outside YARS code, with a comment naming the library and an
-# upstream reference. This file also carries a second, narrowly scoped
-# category below: annotated pre-existing YARS legacy leaks that are
-# tracked for removal rather than fixed in place.
+# LSan suppressions, two narrowly scoped categories:
+#  1. Third-party leaks provably outside YARS code — each entry names the
+#     library and the reason.
+#  2. Annotated pre-existing YARS legacy startup allocations, tracked for
+#     removal rather than fixed in place.
+# Do NOT add entries without a comment naming the tracking reference.
+# NOTE: these entries were enumerated 2026-07-06 from the full 13-config
+# corpus AFTER fixing the SIGABRT-swallowing bug that had masked all
+# unsuppressed leaks as PASS (see commit "fix(main): don't trap SIGABRT").
+
+# --- Third-party ---------------------------------------------------------
+# Xerces-C internal allocations (~1.5MB/run, no YARS frames). Root cause is
+# likely YARS never calling XMLPlatformUtils::Terminate; both the library
+# and the call site are deleted wholesale by the JSON migration
+# (docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3).
+leak:xercesc_3_2::
 
 # --- Pre-existing YARS legacy startup allocations (leaked-by-design until
 # --- freed-at-exit ownership lands; removal tracked by
-# --- docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3/4).
-# --- Do NOT add new YARS entries without a tracking reference.
+# --- docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3/4
+# --- for the Data*/XSD layer; physics-layer entries are unique_ptr
+# --- candidates recorded in docs/planning/v0.8.7-open-points.md).
 leak:YarsXSDSaxHandler::startElement
 leak:createXsd
 leak:XsdSpecification
-# Physics-side startup allocation, one per composite object (Composite.cpp:25):
+leak:YarsXSDSaxParser::read
+# Physics-layer startup allocations:
 leak:Composite::init
+leak:yars::PID::PID
+# Config data-model constructors (owning raw members freed never/legacy):
+leak:DataCameraConfig::DataCameraConfig
+leak:DataObject::DataObject
+leak:DataGenericProximitySensor::DataGenericProximitySensor
+leak:DataGenericLightDependentResistorSensor::DataGenericLightDependentResistorSensor
+leak:DataHingeActuator::DataHingeActuator
+leak:DataSliderActuator::DataSliderActuator
+leak:DataMuscleActuator::DataMuscleActuator
+leak:DataComposite::DataComposite
+leak:DataScreen::DataScreen
+leak:DataScreens::DataScreens
+leak:DataController::add
+leak:DataController::setModule
+leak:NoiseFactory::create
+# Startup path setup (util layer):
+leak:Directories::__setup
