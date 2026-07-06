@@ -2,9 +2,9 @@ name: Linux Build & Headless Audit
 
 on:
   push:
-    branches: [master, "fix/**", "feat/**", "chore/**"]
+    branches: [master, main, "fix/**", "feat/**", "chore/**"]
   pull_request:
-    branches: [master]
+    branches: [master, main]
   workflow_dispatch:
 
 env:
@@ -17,6 +17,8 @@ jobs:
     name: ubuntu-22.04 / GL3Plus llvmpipe
     runs-on: ubuntu-22.04
     timeout-minutes: 90
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout (with submodules)
@@ -221,6 +223,43 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Reference CSV regression check (hexapod_logging.xml)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          cd build
+          rm -f hexapod-*.csv
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.xml
+          ACTUAL=$(ls -t hexapod-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No hexapod-*.csv produced"
+            exit 1
+          fi
+          mv "$ACTUAL" hexapod_logging_actual.csv
+          cd ..
+          REF=xml/reference_logfile_hexapod.linux-x86_64.csv
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No Linux hexapod reference committed yet. Uploading candidate artifact."
+            cp build/hexapod_logging_actual.csv linux-x86_64-hexapod-reference-candidate.csv
+          else
+            if diff -u "$REF" build/hexapod_logging_actual.csv > hexapod-csv-diff.log; then
+              echo "Hexapod CSV byte-identical to $REF."
+            else
+              echo "::error::Hexapod CSV differs from $REF — see hexapod-csv-diff.log artifact."
+              head -50 hexapod-csv-diff.log
+              exit 1
+            fi
+          fi
+
+      - name: Upload Linux hexapod reference candidate (only when ref missing)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-x86_64-hexapod-reference-candidate
+          path: linux-x86_64-hexapod-reference-candidate.csv
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: FFmpeg video capture (xvfb + llvmpipe)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
@@ -282,9 +321,79 @@ jobs:
             cmake-configure.log
             build.log
             csv-diff.log
+            hexapod-csv-diff.log
             linux-audit-logs/**
             build/braitenberg_logging_actual.csv
+            build/hexapod_logging_actual.csv
             build/yars-capture.mp4
             build/yars-capture-ffprobe.txt
           if-no-files-found: warn
+          retention-days: 14
+
+      - name: Performance trend (warn-only)
+        continue-on-error: true
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+        run: |
+          LINE=$(./scripts/perf-measure.sh build)
+          echo "measured: $LINE"
+          PLATFORM=$(echo "$LINE" | awk '{print $3}')
+          SPS=$(echo "$LINE" | awk '{print $4}')
+          git fetch origin ci-perf-history:ci-perf-history || {
+            echo "::warning::ci-perf-history branch not on origin yet; skipping trend check"; exit 0; }
+          git worktree add ../perf-history ci-perf-history
+          HIST="../perf-history/perf/${PLATFORM}.log"
+          touch "$HIST"
+          ./scripts/perf-trend-check.sh "$HIST" "$SPS"
+          echo "$LINE" >> "$HIST"
+          cd ../perf-history
+          git config user.name "yars-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git add perf/ && git commit -m "perf: ${PLATFORM} $(echo "$LINE" | awk '{print $2, $4}')" || true
+          # Linux and macOS jobs run on the same push and race on this
+          # branch; rebase-retry so neither platform's point is lost.
+          for i in 1 2 3; do
+            git push origin ci-perf-history && break
+            git pull --rebase origin ci-perf-history || true
+            [ "$i" = "3" ] && echo "::warning::perf-history push failed after retries"
+          done
+
+  sanitize:
+    name: ubuntu-22.04 / ASan+UBSan+LSan headless corpus
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install apt dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake git pkg-config ninja-build \
+            libcli11-dev libbullet-dev libsdl2-dev libxerces-c-dev \
+            libfreetype6-dev libzzip-dev zlib1g-dev
+
+      - name: Configure sanitized build
+        run: |
+          cmake -S . -B build-san \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DYARS_USE_VISUALISATION=OFF \
+            -DYARS_BUILD_TESTS=OFF \
+            -DYARS_ENABLE_SANITIZERS=ON
+
+      - name: Build sanitized YARS
+        run: cmake --build build-san -j 4
+
+      - name: Run sanitized corpus
+        run: ./scripts/sanitize-corpus.sh build-san
+
+      - name: Upload sanitizer logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sanitizer-logs
+          path: build-san/san-*.log
           retention-days: 14

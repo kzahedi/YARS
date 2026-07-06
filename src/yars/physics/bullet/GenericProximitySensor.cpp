@@ -13,8 +13,8 @@ GenericProximitySensor::GenericProximitySensor(DataGenericProximitySensor *data,
 
 GenericProximitySensor::~GenericProximitySensor()
 {
-  delete _rayPose;
-  delete _end;
+  delete[] _rayPose;
+  delete[] _end;
 }
 
 void GenericProximitySensor::prePhysicsUpdate()

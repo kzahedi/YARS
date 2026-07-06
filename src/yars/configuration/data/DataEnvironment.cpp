@@ -56,7 +56,7 @@ DataEnvironment::~DataEnvironment()
   {
     delete (*i);
   }
-  delete _gravitation;
+  delete[] _gravitation;
   if(_ambientLight != NULL) delete _ambientLight;
 }
 

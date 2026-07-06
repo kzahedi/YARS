@@ -2,9 +2,9 @@ name: macOS Build & Smoke Test
 
 on:
   push:
-    branches: [master, "fix/**", "feat/**", "chore/**"]
+    branches: [master, main, "fix/**", "feat/**", "chore/**"]
   pull_request:
-    branches: [master]
+    branches: [master, main]
   workflow_dispatch:
 
 env:
@@ -16,6 +16,8 @@ jobs:
     name: macos-14 / GL3Plus (Ogre 14)
     runs-on: macos-14
     timeout-minutes: 60
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout (with submodules)
@@ -126,6 +128,44 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Reference CSV regression check (hexapod_logging.xml)
+        run: |
+          cd build
+          rm -f hexapod-*.csv
+          # macOS arm64 hits 2000 iters in ~5s. No external timeout
+          # wrapper because BSD doesn't ship GNU `timeout`; the
+          # --iterations flag is the stop condition.
+          ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.xml
+          ACTUAL=$(ls -t hexapod-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No hexapod-*.csv produced"
+            exit 1
+          fi
+          mv "$ACTUAL" hexapod_logging_actual.csv
+          cd ..
+          REF=xml/reference_logfile_hexapod.macos-arm64.csv
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No macOS arm64 hexapod reference committed yet. Uploading candidate artifact."
+            cp build/hexapod_logging_actual.csv macos-arm64-hexapod-reference-candidate.csv
+          else
+            if diff -u "$REF" build/hexapod_logging_actual.csv > hexapod-csv-diff.log; then
+              echo "Hexapod CSV byte-identical to $REF."
+            else
+              echo "::error::Hexapod CSV differs from $REF — see hexapod-csv-diff.log artifact."
+              head -50 hexapod-csv-diff.log
+              exit 1
+            fi
+          fi
+
+      - name: Upload macOS hexapod reference candidate (only when ref missing)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-arm64-hexapod-reference-candidate
+          path: macos-arm64-hexapod-reference-candidate.csv
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Upload build logs
         if: always()
         uses: actions/upload-artifact@v7
@@ -135,5 +175,33 @@ jobs:
             cmake-configure.log
             build.log
             csv-diff.log
+            hexapod-csv-diff.log
             build/braitenberg_logging_actual.csv
+            build/hexapod_logging_actual.csv
           if-no-files-found: ignore
+
+      - name: Performance trend (warn-only)
+        continue-on-error: true
+        run: |
+          LINE=$(./scripts/perf-measure.sh build)
+          echo "measured: $LINE"
+          PLATFORM=$(echo "$LINE" | awk '{print $3}')
+          SPS=$(echo "$LINE" | awk '{print $4}')
+          git fetch origin ci-perf-history:ci-perf-history || {
+            echo "::warning::ci-perf-history branch not on origin yet; skipping trend check"; exit 0; }
+          git worktree add ../perf-history ci-perf-history
+          HIST="../perf-history/perf/${PLATFORM}.log"
+          touch "$HIST"
+          ./scripts/perf-trend-check.sh "$HIST" "$SPS"
+          echo "$LINE" >> "$HIST"
+          cd ../perf-history
+          git config user.name "yars-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git add perf/ && git commit -m "perf: ${PLATFORM} $(echo "$LINE" | awk '{print $2, $4}')" || true
+          # Linux and macOS jobs run on the same push and race on this
+          # branch; rebase-retry so neither platform's point is lost.
+          for i in 1 2 3; do
+            git push origin ci-perf-history && break
+            git pull --rebase origin ci-perf-history || true
+            [ "$i" = "3" ] && echo "::warning::perf-history push failed after retries"
+          done
