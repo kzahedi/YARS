@@ -16,6 +16,8 @@ jobs:
     name: macos-14 / GL3Plus (Ogre 14)
     runs-on: macos-14
     timeout-minutes: 60
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout (with submodules)
@@ -177,3 +179,29 @@ jobs:
             build/braitenberg_logging_actual.csv
             build/hexapod_logging_actual.csv
           if-no-files-found: ignore
+
+      - name: Performance trend (warn-only)
+        continue-on-error: true
+        run: |
+          LINE=$(./scripts/perf-measure.sh build)
+          echo "measured: $LINE"
+          PLATFORM=$(echo "$LINE" | awk '{print $3}')
+          SPS=$(echo "$LINE" | awk '{print $4}')
+          git fetch origin ci-perf-history:ci-perf-history || {
+            echo "::warning::ci-perf-history branch not on origin yet; skipping trend check"; exit 0; }
+          git worktree add ../perf-history ci-perf-history
+          HIST="../perf-history/perf/${PLATFORM}.log"
+          touch "$HIST"
+          ./scripts/perf-trend-check.sh "$HIST" "$SPS"
+          echo "$LINE" >> "$HIST"
+          cd ../perf-history
+          git config user.name "yars-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git add perf/ && git commit -m "perf: ${PLATFORM} $(echo "$LINE" | awk '{print $2, $4}')" || true
+          # Linux and macOS jobs run on the same push and race on this
+          # branch; rebase-retry so neither platform's point is lost.
+          for i in 1 2 3; do
+            git push origin ci-perf-history && break
+            git pull --rebase origin ci-perf-history || true
+            [ "$i" = "3" ] && echo "::warning::perf-history push failed after retries"
+          done
