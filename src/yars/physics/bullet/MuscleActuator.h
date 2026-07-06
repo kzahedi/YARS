@@ -4,7 +4,7 @@
 #include <yars/physics/bullet/Actuator.h>
 #include <yars/configuration/YarsConfiguration.h>
 
-#include <bullet/btBulletDynamicsCommon.h>
+#include <btBulletDynamicsCommon.h>
 
 class MuscleActuator : public Actuator
 {
