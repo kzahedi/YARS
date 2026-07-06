@@ -5,7 +5,7 @@
 
 /** \brief This class implements the YARS signal handler.
  *
- * Installs handlers for SIGABRT/SIGTERM/SIGINT. The handler sets the
+ * Installs handlers for SIGTERM/SIGINT (SIGABRT deliberately untrapped: aborts must fail). The handler sets the
  * global exit flag (so YarsMainControl::run() terminates on its next
  * poll) and then exits the process to guarantee we don't hang if the
  * loop is blocked outside the poll site.

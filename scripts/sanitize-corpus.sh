@@ -7,7 +7,11 @@ BUILD_DIR="${1:?usage: sanitize-corpus.sh <build-dir>}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SUPP="$ROOT/scripts/sanitizer-suppressions.txt"
 
-export ASAN_OPTIONS="halt_on_error=1:detect_leaks=1:abort_on_error=1"
+# NO abort_on_error: sanitizer failures must exit via the runtime's own
+# non-zero exit code, not SIGABRT — an abort raised inside the process
+# would historically be converted to exit(0) by YARS's signal handling
+# and read as PASS (root-caused 2026-07-06 via the LSan canary).
+export ASAN_OPTIONS="halt_on_error=1:detect_leaks=1"
 export UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1"
 export LSAN_OPTIONS="suppressions=$SUPP"
 

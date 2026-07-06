@@ -17,7 +17,11 @@ SignalHandler* SignalHandler::instance()
 
 SignalHandler::SignalHandler()
 {
-  signal(SIGABRT, sighandler);
+  // SIGABRT is deliberately NOT trapped: abort() signals a fatal error
+  // (failed assert, sanitizer death) and must terminate with non-zero
+  // status. Trapping it and calling exit(0) converted every abort into
+  // "success" — which silently defeated the CI sanitizer gate
+  // (root-caused 2026-07-06 via the LSan canary).
   signal(SIGTERM, sighandler);
   signal(SIGINT,  sighandler);
 }
@@ -30,7 +34,6 @@ void SignalHandler::sighandler(int signal)
 {
   switch(signal)
   {
-    case SIGABRT:
     case SIGTERM:
     case SIGINT:
       Y_MESSAGE("Signal caught. Will quit yars.");
