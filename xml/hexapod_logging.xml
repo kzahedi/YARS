@@ -1,0 +1,817 @@
+<?xml version="1.0"?>
+<!-- Shadow acceptance scene (shadows v6.1, Task 5):
+     hexapod_mpi.xml plus a static white obstacle box placed so that the
+     hexapod's shadow falls onto the obstacle's face (non-floor receiver,
+     shadow_goal.md criterion 3). Light travels toward (-1, +1, -1) in
+     YARS coords; the camera looks along -x. The obstacle stands just
+     behind (-x) and beside (+y) the hexapod's head, so the head casts a
+     large soft shadow onto the obstacle's camera-facing (+x) face.
+     No special C++ flags needed: YARS primitives are ManualObjects,
+     which Ogre never excludes from the modulative receiver pass, so
+     boxes receive shadows out of the box.
+     Usage: cd ./build && timeout 180 ./bin/yars -xml ../xml/hexapod_shadow_test.xml -iterations 120 -framesDirectory frames_t
+     Then inspect a late frame: look for the dark shadow patch on the white obstacle face (right-center of the 1280x720 frame). -->
+
+<rosiml version="0.8.41">
+
+  <simulator frequency="100">
+    <solver iterations="200"/>
+  </simulator>
+
+  <screens>
+    <screen name="main" show="false" follow="true" capture="false">
+      <resolution name="720p"/>
+      <camera>
+        <position x="7.00" y="0.00" z="3.5"/>
+        <lookAt   x="0.0"  y="0.0"  z="1.5"/>
+      </camera>
+      <osd>
+        <time  font="Time"  size="24" colour="800000"/>
+        <robot font="Robot" size="24" colour="800000"/>
+      </osd>
+    </screen>
+    <sky name="YARS/CloudySky"/>
+    <cameras>
+      <orbit speed="0.0"/>
+    </cameras>
+    <followables>
+      <followable name="main"/>
+    </followables>
+  </screens>
+
+  <environment name="env">
+    <ground>
+      <visualisation>
+        <texture name="YARS/DryGround"/>
+      </visualisation>
+    </ground>
+
+    <box name="obstacle">
+      <dimension height="1.2" width="1.5" depth="0.15"/>
+      <pose x="-0.95" y="2.25" z="0.6" alpha="0" beta="0" gamma="90"/>
+      <visualisation>
+        <first  name="SimpleWhite"/>
+        <second name="SimpleWhite"/>
+        <third  name="SimpleWhite"/>
+        <fourth name="SimpleWhite"/>
+        <fifth  name="SimpleWhite"/>
+        <sixth  name="SimpleWhite"/>
+      </visualisation>
+      <physics>
+        <mass kg="0"/>
+      </physics>
+    </box>
+  </environment>
+
+  <robots>
+    <robot name="hexapod">
+      <body selfCollide="true">
+
+        <!-- Main Body -->
+        <ply name="head" filename="ply/h4/h4head_reduced.ply">
+          <pose x="0.0" y="1.311974" z="0.828109" gamma="-180"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="97.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="main" filename="ply/h4/h4main_reduced.ply">
+          <pose  x="0.0" y="0.0" z="1.194516" gamma="180"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="73.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="tail" filename="ply/h4/h4tail_reduced.ply">
+          <pose  x="0.0" y="-1.611996" z="0.729942" gamma="-180"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="244.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- First left leg -->
+        <ply name="left L1S1" filename="ply/h4/h4leg1seg1_reduced.ply">
+          <pose x="-0.369519" y="0.184943" z="0.777272"
+                alpha="-33.95327" beta="0" gamma="-45.703818"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="9.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L1S2" filename="ply/h4/h4leg1seg2_reduced.ply">
+          <pose x="-0.707165" y="0.372142" z="0.828558"
+                alpha="-33.95327" beta="0.0" gamma="-151.601909"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="6.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L1S3" filename="ply/h4/h4leg1seg3_reduced.ply">
+          <pose x="-1.079545" y="1.060895" z="0.870632"
+                alpha="-96.185224" beta="0.0" gamma="-151.601909"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L1S4" filename="ply/h4/h4leg1seg4.ply">
+          <pose x="-1.466908" y="1.777365" z="0.273804"
+                alpha="54.424669" beta="-180" gamma="28.39813"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- First right leg -->
+        <ply name="right L1S1" filename="ply/h4/h4leg1seg1_reduced.ply">
+          <pose x="0.384198" y="0.118267" z="0.803203" alpha="-39.064833" beta="0.0" gamma="30.623471"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="9.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L1S2" filename="ply/h4/h4leg1seg2_reduced.ply">
+          <pose x="0.648176" y="0.246003" z="0.907809" alpha="-39.064847" beta="0.0" gamma="156.274701"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="6.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L1S3" filename="ply/h4/h4leg1seg3_reduced.ply">
+          <pose x="0.971616" y="0.981933" z="1.045528" alpha="-106.373448" beta="0.0" gamma="156.274646"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L1S4" filename="ply/h4/h4leg1seg4.ply">
+          <pose x="1.281028" y="1.685947" z="0.365667" alpha="-106.373448" beta="0.0" gamma="156.27466"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- Second left leg -->
+        <ply name="left L2S1" filename="ply/h4/h4leg2seg1_reduced.ply">
+          <pose x="-0.2577" y="-0.115553" z="0.724711" alpha="-113.937282" beta="0.0" gamma="135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L2S2" filename="ply/h4/h4leg2seg2_reduced.ply">
+          <pose x="-0.54434" y="-0.410551" z="0.962445" alpha="-31.877268" beta="0.0" gamma="135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="6.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L2S3" filename="ply/h4/h4leg2seg3_reduced.ply">
+          <pose x="-1.07631" y="-0.957955" z="1.211122" alpha="33.760754" beta="0.0" gamma="135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L2S4" filename="ply/h4/h4leg2seg4.ply">
+          <pose x="-1.63247" y="-1.530336" z="0.434763" alpha="34.475137" beta="0.0" gamma="135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- Second right leg -->
+        <ply name="right L2S1" filename="ply/h4/h4leg2seg1_reduced.ply">
+          <pose x="0.2577" y="-0.115553" z="0.724711" alpha="-113.937282" beta="0.0" gamma="-135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L2S2" filename="ply/h4/h4leg2seg2_reduced.ply">
+          <pose x="0.54434" y="-0.410551" z="0.962445" alpha="-31.877268" beta="0.0" gamma="-135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="6.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L2S3" filename="ply/h4/h4leg2seg3_reduced.ply">
+          <pose x="1.07631" y="-0.957955" z="1.211122" alpha="33.760754" beta="0.0" gamma="-135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="3.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L2S4" filename="ply/h4/h4leg2seg4.ply">
+          <pose x="1.63247" y="-1.530336" z="0.434763" alpha="34.475137" beta="0.0" gamma="-135.823052"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- Third left leg -->
+        <ply name="left L3S1" filename="ply/h4/h4leg3seg1_reduced.ply">
+          <pose x="-0.2291" y="-0.630977" z="0.660947" alpha="-74.274441" beta="0.0" gamma="146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="5.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L3S2" filename="ply/h4/h4leg3seg2_reduced.ply">
+          <pose x="-0.52851" y="-1.090006" z="1.031232" alpha="-35.061116" beta="0.0" gamma="146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="9.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L3S3" filename="ply/h4/h4leg3seg3_reduced.ply">
+          <pose x="-1.09468" y="-1.958001" z="1.332172" alpha="46.017221" beta="0.0" gamma="146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="4.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="left L3S4" filename="ply/h4/h4leg3seg4.ply">
+          <pose x="-1.76085" y="-2.979317" z="0.467886" alpha="46.017225" beta="0.0" gamma="146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+        <!-- Third right leg -->
+        <ply name="right L3S1" filename="ply/h4/h4leg3seg1_reduced.ply">
+          <pose x="0.2291" y="-0.630977" z="0.660947" alpha="-74.274441" beta="0.0" gamma="-146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="5.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L3S2" filename="ply/h4/h4leg3seg2_reduced.ply">
+          <pose x="0.52851" y="-1.090006" z="1.031232" alpha="-35.061116" beta="0.0" gamma="-146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="9.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L3S3" filename="ply/h4/h4leg3seg3_reduced.ply">
+          <pose x="1.09468" y="-1.958001" z="1.332172" alpha="46.017221" beta="0.0" gamma="-146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="4.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+        <ply name="right L3S4" filename="ply/h4/h4leg3seg4.ply">
+          <pose x="1.76085" y="-2.979317" z="0.467886" alpha="46.017225" beta="0.0" gamma="-146.885062"/>
+          <visualisation>
+            <texture name="YARS/Gray"/>
+          </visualisation>
+          <physics>
+            <mass kg="1.0"/>
+            <friction value="10"/>
+          </physics>
+        </ply>
+
+      </body>
+
+      <actuators>
+
+        <fixed name="main head">
+          <source      name="main"/>
+          <destination name="head"/>
+        </fixed>
+
+        <fixed name="main tail">
+          <source      name="main"/>
+          <destination name="tail"/>
+        </fixed>
+
+        <!-- First right leg -->
+        <hinge name="right main - L1S1" type="angular" mode="active">
+          <source      name="right L1S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="0.108318" z="0.288676" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L1S1 - L1S2" type="angular" mode="active">
+          <source      name="right L1S2"/>
+          <destination name="right L1S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="0.46333" z="0.011461" gamma="90"/>
+          <deflection  min="-85.0" max="25.0"/>
+          <mapping     min="+1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L1S2 - L1S3" type="angular" mode="active">
+          <source      name="right L1S3"/>
+          <destination name="right L1S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.348007" z="0.242132"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L1S3 - L1S4" type="angular" mode="active">
+          <source      name="right L1S4"/>
+          <destination name="right L1S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.481949" z="0.262414"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+        <!-- First left leg -->
+        <hinge name="left main - L1S1" type="angular" mode="active">
+          <source      name="left L1S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="0.108318" z="0.288676" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L1S1 - L1S2" type="angular" mode="active">
+          <source      name="left L1S2"/>
+          <destination name="left L1S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="0.46333" z="0.011461" gamma="90"/>
+          <deflection  min="-25.0" max="85.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L1S2 - L1S3" type="angular" mode="active">
+          <source      name="left L1S3"/>
+          <destination name="left L1S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.348007" z="0.242132"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L1S3 - L1S4" type="angular" mode="active">
+          <source      name="left L1S4"/>
+          <destination name="left L1S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.481949" z="0.262414"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+        <!-- Second right leg -->
+        <hinge name="right main - L2S1" type="angular" mode="active">
+          <source      name="right L2S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.083263" z="-0.123404" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L2S1 - L2S2" type="angular" mode="active">
+          <source      name="right L2S2"/>
+          <destination name="right L2S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.094742" z="-0.491264" gamma="90"/>
+          <deflection  min="-85.0" max="25.0"/>
+          <mapping     min="-1"  max="+1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L2S2 - L2S3" type="angular" mode="active">
+          <source      name="right L2S3"/>
+          <destination name="right L2S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.165596" z="0.423891"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L2S3 - L2S4" type="angular" mode="active">
+          <source      name="right L2S4"/>
+          <destination name="right L2S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.052062" z="0.556805"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+        <!-- Second left leg -->
+        <hinge name="left main - L2S1" type="angular" mode="active">
+          <source      name="left L2S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.083263" z="-0.123404" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L2S1 - L2S2" type="angular" mode="active">
+          <source      name="left L2S2"/>
+          <destination name="left L2S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.094742" z="-0.491264" gamma="90"/>
+          <deflection  min="-25.0" max="85.0"/>
+          <mapping     min="+1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L2S2 - L2S3" type="angular" mode="active">
+          <source      name="left L2S3"/>
+          <destination name="left L2S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.165596" z="0.423891"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L2S3 - L2S4" type="angular" mode="active">
+          <source      name="left L2S4"/>
+          <destination name="left L2S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.052062" z="0.556805"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+        <!-- Third right leg -->
+        <hinge name="right main - L3S1" type="angular" mode="active">
+          <source      name="right L3S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.157125" z="-0.127871" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L3S1 - L3S2" type="angular" mode="active">
+          <source      name="right L3S2"/>
+          <destination name="right L3S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.040014" z="-0.606707" gamma="90"/>
+          <deflection  min="-85.0" max="25.0"/>
+          <mapping     min="-1"  max="+1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L3S2 - L3S3" type="angular" mode="active">
+          <source      name="right L3S3"/>
+          <destination name="right L3S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.156881" z="0.615627"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="right L3S3 - L3S4" type="angular" mode="active">
+          <source      name="right L3S4"/>
+          <destination name="right L3S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.066215" z="0.764271"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+        <!-- Third left leg -->
+        <hinge name="left main - L3S1" type="angular" mode="active">
+          <source      name="left L3S1"/>
+          <destination name="main"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.157125" z="-0.127871" alpha="90"/>
+          <deflection  min="-45.0" max="45.0"/>
+          <mapping     min="1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L3S1 - L3S2" type="angular" mode="active">
+          <source      name="left L3S2"/>
+          <destination name="left L3S1"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.040014" z="-0.606707" gamma="90"/>
+          <deflection  min="-25.0" max="85.0"/>
+          <mapping     min="+1"  max="-1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L3S2 - L3S3" type="angular" mode="active">
+          <source      name="left L3S3"/>
+          <destination name="left L3S2"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.156881" z="0.615627"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+        <hinge name="left L3S3 - L3S4" type="angular" mode="active">
+          <source      name="left L3S4"/>
+          <destination name="left L3S3"/>
+          <force       max="6000.0"/>
+          <velocity    max="1.0"/>
+          <pose        x="0.0" y="-0.066215" z="0.764271"/>
+          <deflection  min="-45.0" max="25.0"/>
+          <mapping     min="-1"  max="1"/>
+          <limit       softness="1.0" damping="1.0" restitution="0.7"/>
+          <pid         p="0.9" i="0.0" d="0.0" size="10"/>
+        </hinge>
+
+      </actuators>
+
+      <sensors>
+
+        <deflection name="right main - L1S1 sensor">
+          <object  name="right main - L1S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L1S1 - L1S2 sensor">
+          <object  name="right L1S1 - L1S2"/>
+          <domain  min="-85.0" max="25.0"/>
+          <mapping min="+1"  max="-1"/>
+        </deflection>
+        <deflection name="right L1S2 - L1S3 sensor">
+          <object  name="right L1S2 - L1S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L1S3 - L1S4 sensor">
+          <object  name="right L1S3 - L1S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="right L1S4 contact sensor">
+          <object name="right L1S4"/>
+        </binaryContact>
+
+        <deflection name="left main - L1S1 sensor">
+          <object  name="left main - L1S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L1S1 - L1S2 sensor">
+          <object  name="left L1S1 - L1S2"/>
+          <domain  min="-25.0" max="85.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L1S2 - L1S3 sensor">
+          <object  name="left L1S2 - L1S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L1S3 - L1S4 sensor">
+          <object  name="left L1S3 - L1S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="left L1S4 contact sensor">
+          <object name="left L1S4"/>
+        </binaryContact>
+
+        <deflection name="right main - L2S1 sensor">
+          <object  name="right main - L2S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L2S1 - L2S2 sensor">
+          <object  name="right L2S1 - L2S2"/>
+          <domain  min="-85.0" max="25.0"/>
+          <mapping min="+1"  max="-1"/>
+        </deflection>
+        <deflection name="right L2S2 - L2S3 sensor">
+          <object  name="right L2S2 - L2S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L2S3 - L2S4 sensor">
+          <object  name="right L2S3 - L2S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="right L2S4 contact sensor">
+          <object name="right L2S4"/>
+        </binaryContact>
+
+        <deflection name="left main - L2S1 sensor">
+          <object  name="left main - L2S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L2S1 - L2S2 sensor">
+          <object  name="left L2S1 - L2S2"/>
+          <domain  min="-25.0" max="85.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L2S2 - L2S3 sensor">
+          <object  name="left L2S2 - L2S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L2S3 - L2S4 sensor">
+          <object  name="left L2S3 - L2S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="left L2S4 contact sensor">
+          <object name="left L2S4"/>
+        </binaryContact>
+
+        <deflection name="right main - L3S1 sensor">
+          <object  name="right main - L3S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L3S1 - L3S2 sensor">
+          <object  name="right L3S1 - L3S2"/>
+          <domain  min="-85.0" max="25.0"/>
+          <mapping min="+1"  max="-1"/>
+        </deflection>
+        <deflection name="right L3S2 - L3S3 sensor">
+          <object  name="right L3S2 - L3S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="right L3S3 - L3S4 sensor">
+          <object  name="right L3S3 - L3S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="right L3S4 contact sensor">
+          <object name="right L3S4"/>
+        </binaryContact>
+
+        <deflection name="left main - L3S1 sensor">
+          <object  name="left main - L3S1"/>
+          <domain  min="-45.0" max="45.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L3S1 - L3S2 sensor">
+          <object  name="left L3S1 - L3S2"/>
+          <domain  min="-25.0" max="85.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L3S2 - L3S3 sensor">
+          <object  name="left L3S2 - L3S3"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <deflection name="left L3S3 - L3S4 sensor">
+          <object  name="left L3S3 - L3S4"/>
+          <domain  min="-45.0" max="25.0"/>
+          <mapping min="-1"  max="1"/>
+        </deflection>
+        <binaryContact name="left L3S4 contact sensor">
+          <object name="left L3S4"/>
+        </binaryContact>
+
+        <position name="main body position">
+          <object name="main"/>
+          <coordinates x="true" y="true" z="true"/>
+        </position>
+
+      </sensors>
+
+      <!-- no controller: joints are passive, robot falls under gravity -->
+
+    </robot>
+  </robots>
+
+  <logging>
+    <object target="main" precision="3"> <use value="x"/> <use value="y"/> <use value="z"/> </object>
+    <object target="head" precision="3"> <use value="x"/> <use value="y"/> <use value="z"/> </object>
+    <object target="tail" precision="3"> <use value="x"/> <use value="y"/> <use value="z"/> </object>
+    <csv name="hexapod">
+      <target name="main"/> <target name="head"/> <target name="tail"/>
+    </csv>
+  </logging>
+
+</rosiml>
