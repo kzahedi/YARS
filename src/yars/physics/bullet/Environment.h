@@ -26,7 +26,7 @@ class Environment : public std::vector<std::unique_ptr<Object>>
     void __create();
     void __init();
 
-    btCollisionShape *_groundShape;
+    std::unique_ptr<btCollisionShape> _groundShape;
     DataEnvironment  *_data;
 };
 

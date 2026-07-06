@@ -11,6 +11,7 @@ env:
   LIBGL_ALWAYS_SOFTWARE: "1"
   CMAKE_BUILD_PARALLEL_LEVEL: "4"
   OGRE_INSTALL_PREFIX: ${{ github.workspace }}/ext/ogre/install
+  BULLET_INSTALL_PREFIX: ${{ github.workspace }}/ext/bullet/install
 
 jobs:
   build-and-audit:
@@ -32,7 +33,7 @@ jobs:
           sudo apt-get install -y \
             build-essential cmake git pkg-config ninja-build \
             libcli11-dev \
-            libbullet-dev libsdl2-dev libxerces-c-dev \
+            libsdl2-dev libxerces-c-dev \
             libfreetype6-dev libzzip-dev zlib1g-dev \
             libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
             libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
@@ -72,6 +73,39 @@ jobs:
           cmake --build ext/ogre/build -j 4
           cmake --install ext/ogre/build
 
+      - name: Cache Bullet 3.25 build
+        id: bullet-cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.BULLET_INSTALL_PREFIX }}
+          key: bullet325-ubuntu22-${{ hashFiles('.gitmodules') }}-v1
+
+      - name: Build Bullet 3.25 from submodule (source-built SIMD Bullet)
+        if: steps.bullet-cache.outputs.cache-hit != 'true'
+        run: |
+          # Exact benchmark configuration (docs/planning/bullet-simd-benchmark.md,
+          # gate: +11.4% on braitenberg 100k headless steps/s). Deliberately
+          # omits Homebrew/apt's extra options (EGL/multithreading/pybullet) —
+          # those are the likely source of the regression this switch fixes;
+          # do not reintroduce them. Linux uses the default SSE path (no
+          # -DBT_USE_NEON, that's arm64/macOS-only and was never passed there
+          # either since bullet3 auto-enables NEON regardless).
+          cmake -S ext/bullet-source -B ext/bullet/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+            -DCMAKE_INSTALL_PREFIX=${BULLET_INSTALL_PREFIX} \
+            -DBUILD_SHARED_LIBS=ON \
+            -DBUILD_BULLET2_DEMOS=OFF \
+            -DBUILD_UNIT_TESTS=OFF \
+            -DBUILD_CPU_DEMOS=OFF \
+            -DBUILD_OPENGL3_DEMOS=OFF \
+            -DBUILD_EXTRAS=OFF \
+            -DBUILD_PYBULLET=OFF \
+            -DUSE_DOUBLE_PRECISION=OFF \
+            -DCMAKE_CXX_FLAGS="-O3"
+          cmake --build ext/bullet/build -j 4
+          cmake --install ext/bullet/build
+
       - name: Configure YARS
         run: |
           set -o pipefail
@@ -89,7 +123,7 @@ jobs:
 
       - name: Smoke test (--nogui, 100 iterations)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           ./build/bin/yars --iterations 100 --nogui --xml xml/braitenberg_nocontroller.xml
 
@@ -107,7 +141,7 @@ jobs:
 
       - name: Headless audit corpus (standalone configs, 500 iterations)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           set +e
           mkdir -p linux-audit-logs
@@ -136,7 +170,7 @@ jobs:
 
       - name: Headless audit corpus (controller-based configs, 500 iterations)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           set +e
           CONTRIB_DIR="${{ steps.contrib.outputs.contrib-dir }}"
@@ -185,7 +219,7 @@ jobs:
 
       - name: Reference CSV regression check (braitenberg_logging.xml)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           # cd into build/ so YARS resolves controller via cwd/lib.
           cd build
@@ -225,7 +259,7 @@ jobs:
 
       - name: Reference CSV regression check (hexapod_logging.xml)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           cd build
           rm -f hexapod-*.csv
@@ -262,7 +296,7 @@ jobs:
 
       - name: FFmpeg video capture (xvfb + llvmpipe)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           set -e
           if [ ! -f xml/test_capture.xml ]; then
@@ -333,7 +367,7 @@ jobs:
       - name: Performance trend (warn-only)
         continue-on-error: true
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           LINE=$(./scripts/perf-measure.sh build)
           echo "measured: $LINE"

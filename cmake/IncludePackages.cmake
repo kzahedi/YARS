@@ -19,6 +19,13 @@ find_package(PythonLibs 3 REQUIRED)
   ENDIF(PYTHONLIBS_FOUND)
 endif(YARS_USE_PYTHON)
 
+# Prefer the source-built SIMD Bullet (ext/bullet/install) when present;
+# fall back to the system package otherwise. Mirrors the Ogre pattern.
+if(EXISTS "${CMAKE_SOURCE_DIR}/ext/bullet/install")
+  set(BULLET_ROOT "${CMAKE_SOURCE_DIR}/ext/bullet/install")
+  list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/ext/bullet/install")
+endif()
+
 # Modern CMake approach: let CMake find Bullet automatically
 find_package(Bullet REQUIRED)
 if(BULLET_FOUND)

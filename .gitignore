@@ -19,6 +19,12 @@ handover.md
 # under lib/) and macOS (frameworks under lib/macosx/Release/), so a single
 # tracked copy would poison cross-platform builds via find_package(OGRE).
 ext/ogre/install/
+
+# Bullet 3.25 install — built per-platform from ext/bullet-source/ on every
+# developer machine and CI runner (source-built SIMD Bullet, see
+# docs/planning/bullet-simd-benchmark.md).
+ext/bullet/install/
+ext/bullet/build/
 .vscode
 *.vim
 *.vim

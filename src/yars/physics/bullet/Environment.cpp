@@ -8,14 +8,12 @@
 Environment::Environment()
 {
   _data = Data::instance()->current()->environment();
-  _groundShape = NULL;
   __init();
 }
 
 Environment::~Environment()
 {
   // unique_ptr handles cleanup of Object* entries automatically.
-  if (_groundShape != NULL) delete _groundShape;
 }
 
 void Environment::__create()
@@ -46,7 +44,7 @@ void Environment::__init()
 
   if(_data->groundGiven())
   {
-    _groundShape = new btStaticPlaneShape(btVector3(0,0,1),0);
+    _groundShape = std::make_unique<btStaticPlaneShape>(btVector3(0, 0, 1), 0);
 
     // initial pose
     btDefaultMotionState* groundMotionState = new btDefaultMotionState(
@@ -54,7 +52,7 @@ void Environment::__init()
           btVector3(0,0,0)));
 
     btRigidBody::btRigidBodyConstructionInfo
-      groundRigidBodyCI(0, groundMotionState, _groundShape, btVector3(0,0,0));
+      groundRigidBodyCI(0, groundMotionState, _groundShape.get(), btVector3(0,0,0));
     groundRigidBodyCI.m_friction    = 1;
     groundRigidBodyCI.m_restitution = 1;
 
