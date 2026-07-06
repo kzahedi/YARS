@@ -1,3 +1,15 @@
-# LSan suppressions for third-party noise. Intentionally empty — add
-# entries ONLY for leaks provably outside YARS code, with a comment
-# naming the library and an upstream reference.
+# LSan suppressions for third-party noise. Add entries ONLY for leaks
+# provably outside YARS code, with a comment naming the library and an
+# upstream reference. This file also carries a second, narrowly scoped
+# category below: annotated pre-existing YARS legacy leaks that are
+# tracked for removal rather than fixed in place.
+
+# --- Pre-existing YARS legacy startup allocations (leaked-by-design until
+# --- freed-at-exit ownership lands; removal tracked by
+# --- docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3/4).
+# --- Do NOT add new YARS entries without a tracking reference.
+leak:YarsXSDSaxHandler::startElement
+leak:createXsd
+leak:XsdSpecification
+# Physics-side startup allocation, one per composite object (Composite.cpp:25):
+leak:Composite::init
