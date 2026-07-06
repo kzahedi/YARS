@@ -259,7 +259,7 @@ jobs:
 
       - name: Reference CSV regression check (hexapod_logging.xml)
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           cd build
           rm -f hexapod-*.csv
@@ -367,7 +367,7 @@ jobs:
       - name: Performance trend (warn-only)
         continue-on-error: true
         env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           LINE=$(./scripts/perf-measure.sh build)
           echo "measured: $LINE"

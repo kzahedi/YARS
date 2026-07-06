@@ -90,7 +90,7 @@ Now uses modern C++ patterns:
 - **Bullet Physics 3.25**: built from source via the `ext/bullet-source` git
   submodule (https://github.com/bulletphysics/bullet3.git @ tag 3.25), not
   from Homebrew/apt. Measured +11.4% headless-physics throughput over the
-  Homebrew bottle (see `docs/planning/bullet-simd-benchmark.md`) — the win
+  Homebrew bottle (see `docs/planning/bullet-simd-benchmark.md`) — the win likely
   comes from omitting Homebrew's `-DBT_USE_EGL=ON -DBULLET2_MULTITHREADING=ON
   -DBUILD_PYBULLET=ON` extras, not from SIMD/NEON (which bullet3 auto-enables
   on Apple arm64 regardless of who builds it). Build into
