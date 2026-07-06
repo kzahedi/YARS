@@ -6,3 +6,6 @@
 	# the submodule must fetch from the fork. See
 	# docs/planning/v0.8.7-open-points.md.
 	url = https://github.com/kzahedi/ogre.git
+[submodule "ext/bullet-source"]
+	path = ext/bullet-source
+	url = https://github.com/bulletphysics/bullet3.git

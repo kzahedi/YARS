@@ -86,7 +86,27 @@ Now uses modern C++ patterns:
 ### Prerequisites
 - CMake 3.16+
 - C++17 compatible compiler
-- Required libraries: Bullet Physics, SDL2, Xerces-C++, FreeImage, FreeType, ZZip, zlib
+- Required libraries: SDL2, Xerces-C++, FreeImage, FreeType, ZZip, zlib
+- **Bullet Physics 3.25**: built from source via the `ext/bullet-source` git
+  submodule (https://github.com/bulletphysics/bullet3.git @ tag 3.25), not
+  from Homebrew/apt. Measured +11.4% headless-physics throughput over the
+  Homebrew bottle (see `docs/planning/bullet-simd-benchmark.md`) — the win
+  comes from omitting Homebrew's `-DBT_USE_EGL=ON -DBULLET2_MULTITHREADING=ON
+  -DBUILD_PYBULLET=ON` extras, not from SIMD/NEON (which bullet3 auto-enables
+  on Apple arm64 regardless of who builds it). Build into
+  `ext/bullet/install/` per-platform, same pattern as `ext/ogre/install/`:
+  ```bash
+  cmake -S ext/bullet-source -B ext/bullet/build -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DCMAKE_INSTALL_PREFIX=$(pwd)/ext/bullet/install -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_BULLET2_DEMOS=OFF -DBUILD_UNIT_TESTS=OFF \
+    -DBUILD_CPU_DEMOS=OFF -DBUILD_OPENGL3_DEMOS=OFF \
+    -DBUILD_EXTRAS=OFF -DBUILD_PYBULLET=OFF \
+    -DUSE_DOUBLE_PRECISION=OFF -DCMAKE_CXX_FLAGS="-O3"
+  cmake --build ext/bullet/build -j 8 && cmake --install ext/bullet/build
+  ```
+  `cmake/IncludePackages.cmake` prefers `ext/bullet/install` when present and
+  falls back to the system package (`find_package(Bullet)`) otherwise.
 
 ### Build Process
 ```bash

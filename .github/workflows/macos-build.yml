@@ -10,6 +10,7 @@ on:
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: "4"
   OGRE_INSTALL_PREFIX: ${{ github.workspace }}/ext/ogre/install
+  BULLET_INSTALL_PREFIX: ${{ github.workspace }}/ext/bullet/install
 
 jobs:
   build-and-smoke:
@@ -33,11 +34,11 @@ jobs:
           # skipped — fine for the smoke test, which doesn't use zip archives.
           brew install \
             cmake pkg-config ninja \
-            sdl2 bullet xerces-c cli11 \
+            sdl2 xerces-c cli11 \
             freetype \
             ffmpeg
           # Report versions for the build log
-          brew list --versions sdl2 bullet xerces-c cli11 freetype ffmpeg
+          brew list --versions sdl2 xerces-c cli11 freetype ffmpeg
 
       - name: Cache Ogre 14 build
         id: ogre-cache
@@ -69,6 +70,37 @@ jobs:
             -DOGRE_BUILD_DEPENDENCIES=OFF
           cmake --build ext/ogre/build -j 4
           cmake --install ext/ogre/build
+
+      - name: Cache Bullet 3.25 build
+        id: bullet-cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.BULLET_INSTALL_PREFIX }}
+          key: bullet325-macos14-${{ hashFiles('.gitmodules') }}-v1
+
+      - name: Build Bullet 3.25 from submodule (source-built SIMD Bullet)
+        if: steps.bullet-cache.outputs.cache-hit != 'true'
+        run: |
+          # Exact benchmark configuration (docs/planning/bullet-simd-benchmark.md,
+          # gate: +11.4% on braitenberg 100k headless steps/s). Deliberately
+          # omits Homebrew's -DBT_USE_EGL=ON -DBULLET2_MULTITHREADING=ON
+          # -DBUILD_PYBULLET=ON — those extras are the likely source of the
+          # regression this switch fixes; do not reintroduce them.
+          cmake -S ext/bullet-source -B ext/bullet/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+            -DCMAKE_INSTALL_PREFIX=${BULLET_INSTALL_PREFIX} \
+            -DBUILD_SHARED_LIBS=ON \
+            -DBUILD_BULLET2_DEMOS=OFF \
+            -DBUILD_UNIT_TESTS=OFF \
+            -DBUILD_CPU_DEMOS=OFF \
+            -DBUILD_OPENGL3_DEMOS=OFF \
+            -DBUILD_EXTRAS=OFF \
+            -DBUILD_PYBULLET=OFF \
+            -DUSE_DOUBLE_PRECISION=OFF \
+            -DCMAKE_CXX_FLAGS="-O3"
+          cmake --build ext/bullet/build -j 4
+          cmake --install ext/bullet/build
 
       - name: Configure YARS
         run: |
