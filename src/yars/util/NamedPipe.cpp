@@ -19,6 +19,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <vector>
 
 // Just required to put the bytes together again.
 // It is not a real buffer size
@@ -77,7 +78,8 @@ NamedPipe::~NamedPipe()
 ////////////////////////////////////////////////////////////////////////////////
 const NamedPipe& NamedPipe::operator<<(const Buffer &b) const
 {
-  char *buf = new char[b.size() + 1];
+  std::vector<char> bufStorage(b.size() + 1);
+  char *buf = bufStorage.data();
   buf[0] = b.label;
 
   for(unsigned int i = 0; i < b.size(); i++)
@@ -86,8 +88,6 @@ const NamedPipe& NamedPipe::operator<<(const Buffer &b) const
   }
 
   write(_fdOut, buf, b.size()+1);
-
-  delete[] buf;
 
   return *this;
 }
@@ -98,9 +98,9 @@ const NamedPipe& NamedPipe::operator<<(const Buffer &b) const
 const NamedPipe& NamedPipe::operator>>(Buffer &b) const
 {
   b.resize(0);
-  char *buf       = new char [__BUFFER_SIZE];
-  char *type      = new char[1];
-  char *sizeBytes = new char[4];
+  char buf[__BUFFER_SIZE];
+  char type[1];
+  char sizeBytes[4];
   int r           = 0;
   int size        = -1;
   int readBytes   = 0;
@@ -147,10 +147,6 @@ const NamedPipe& NamedPipe::operator>>(Buffer &b) const
       b.push_back(buf[i]);
     }
   }
-
-  delete[] buf;
-  delete[] type;
-  delete[] sizeBytes;
 
   return *this;
 }
