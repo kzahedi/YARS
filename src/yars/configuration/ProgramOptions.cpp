@@ -47,7 +47,6 @@ ProgramOptions::ProgramOptions(int argc, char **argv,
   _app.add_flag("--printConfig", _printConfigSet, __PO_OPTION_PRINT_CONFIGURATION_DESCRIPTION);
   _app.add_flag("--printKeyboardShortcuts", _printKeyboardSet, __PO_OPTION_PRINT_KEYBOARD_SHORTCUTS_DESCRIPTION);
   _app.add_option("--list", _configuration->listCommand, __PO_OPTION_LIST_DESCRIPTION);
-  _app.add_option("--export", _configuration->exportCommand, __PO_OPTION_EXPORT_DESCRIPTION);
   _app.add_option("--log", _configuration->logDirectory, __PO_OPTION_LOGGING_DESCRIPTION);
 
   // Video options

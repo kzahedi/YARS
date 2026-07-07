@@ -132,7 +132,6 @@ private:
   string __writeBool(bool b);
   void __writeConfig();
   void __processListCommand();
-  void __processExportCommand();
   void __printListCommandFollowModes();
   void __printListCommandDebugModes();
   void __processRobotConfiguration();

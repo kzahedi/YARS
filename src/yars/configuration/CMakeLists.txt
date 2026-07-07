@@ -101,18 +101,6 @@ set(CFG_SRC YarsConfiguration.cpp
 
             xsd/generator/YarsXSDGenerator.cpp
             xsd/generator/XSDString.cpp
-            xsd/graphviz/graph/XsdGraph.cpp
-            xsd/graphviz/graph/XsdGraphLink.cpp
-            xsd/graphviz/graph/XsdSequenceGraphNode.cpp
-            xsd/graphviz/graph/XsdChoiceGraphNode.cpp
-            xsd/graphviz/graph/XsdRegularExpressionGraphNode.cpp
-            xsd/graphviz/graph/XsdEnumerationGraphNode.cpp
-            xsd/graphviz/graph/XsdIntervalGraphNode.cpp
-            xsd/graphviz/graph/XsdGraphNodeInstance.cpp
-            xsd/graphviz/graph/XsdElementGraphNode.cpp
-            xsd/graphviz/graph/XsdGraphNode.cpp
-            xsd/graphviz/XsdGraphvizGenerator.cpp
-            xsd/graphviz/XsdGraphvizExporter.cpp
             xsd/parser/YarsXSDSaxParser.cpp
             xsd/parser/YarsXSDSaxHandler.cpp
             xsd/specification/XsdSpecification.cpp

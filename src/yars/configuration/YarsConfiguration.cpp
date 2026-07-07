@@ -8,7 +8,6 @@
 #include <yars/defines/defaults.h>
 
 #include <yars/configuration/xsd/parser/YarsXSDSaxParser.h>
-#include <yars/configuration/xsd/graphviz/XsdGraphvizExporter.h>
 #include <yars/configuration/xsd/generator/YarsXSDGenerator.h>
 #include <yars/configuration/data/XmlChangeLog.h>
 #include <yars/configuration/json/JsonParser.h>
@@ -79,12 +78,6 @@ void YarsConfiguration::init(int argc, char **argv)
     exitYars = true;
   }
 
-  if (_programOptions->exportCommand.length() > 0)
-  {
-    __processExportCommand();
-    exitYars = true;
-  }
-
   if (exitYars)
     exit(0);
 
@@ -145,30 +138,6 @@ void YarsConfiguration::__processListCommand()
     cout << " " << __PO_OPTION_FOLLOW << " : " << __PO_OPTION_FOLLOW_DESCRIPTION << endl;
     cout << " " << __PO_OPTION_DEBUG << "  : " << __PO_OPTION_DEBUG_DESCRIPTION << endl;
     cout << " " << __PO_OPTION_VIDEO_CODEC << " : " << __PO_OPTION_VIDEO_CODEC_DESCRIPTION << endl;
-  }
-}
-
-void YarsConfiguration::__processExportCommand()
-{
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_PDF)
-  {
-    XsdGraphvizExporter::writeDotFile(__PO_OPTION_EXPORT_PDF);
-  }
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_PNG)
-  {
-    XsdGraphvizExporter::writeDotFile(__PO_OPTION_EXPORT_PNG);
-  }
-
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_XSD)
-  {
-    auto xsd = std::make_unique<YarsXSDGenerator>();
-    ofstream myfile;
-    stringstream filename;
-    filename << "rosiml.xsd";
-    myfile.open(filename.str().c_str());
-    myfile << (*xsd) << endl;
-    myfile.close();
-    cout << "rosiml.xsd written to current directory." << endl;
   }
 }
 

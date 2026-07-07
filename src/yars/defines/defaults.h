@@ -31,7 +31,6 @@
 #define DEFAULT_CONFIG_FILE                     ""
 #define DEFAULT_LIB                             "lib"
 #define DEFAULT_LIST_COMMAND                    ""
-#define DEFAULT_EXPORT_COMMAND                  ""
 #define DEFAULT_OUT_CONFIG_FILE                 ""
 #define DEFAULT_TEXTURES                        ""
 #define DEFAULT_DEBUG                           ""

@@ -19,7 +19,6 @@ ProgramOptionsConfiguration::ProgramOptionsConfiguration()
   framesDirectory              = DEFAULT_FRAMES_DIRECTORY;
   lib                          = DEFAULT_LIB;
   listCommand                  = DEFAULT_LIST_COMMAND;
-  exportCommand                = DEFAULT_EXPORT_COMMAND;
   outConfigFile                = DEFAULT_OUT_CONFIG_FILE;
   textures                     = DEFAULT_TEXTURES;
   logDirectory                 = DEFAULT_LOG_DIRECTORY;
