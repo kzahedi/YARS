@@ -20,18 +20,18 @@ GenericProximitySensor::~GenericProximitySensor()
 void GenericProximitySensor::prePhysicsUpdate()
 {
   Pose objectPose = _targetObject->data()->pose();
-  for(int i = 0; i < 5; i++)
+  // All five rays share the same mounted sensor pose; compose once.
+  Pose composed = _rayCoordinates[0].sensorPose;
+  composed << objectPose;
+  const Quaternion r(composed.orientation);
+  const P3D rayTemplate(0, 0, _data->distance());
+  for (int i = 0; i < 5; i++)
   {
-    _rayCoordinates[i].pose = _rayCoordinates[i].sensorPose;
-    _rayCoordinates[i].pose << objectPose;
-
-    P3D ray(0, 0, _data->distance());
+    _rayCoordinates[i].pose = composed;
     Quaternion q = _rayCoordinates[i].q;
-    Quaternion r(_rayCoordinates[i].pose.orientation);
-
     q *= r;
+    P3D ray = rayTemplate;
     ray *= q;
-
     _rayCoordinates[i].end = _rayCoordinates[i].pose.position + ray;
   }
 }

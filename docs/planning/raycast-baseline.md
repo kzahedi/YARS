@@ -108,3 +108,41 @@ committed — build artifact).
 These numbers, on this vendored-Bullet-3.25 build at SHA `e0da028`, are the
 baseline for all subsequent raycast-optimization tasks. Do not compare
 against the pre-Bullet-switch figure of 42.3k steps/s.
+
+## Task 4: Hoist loop-invariant pose composition (GenericProximitySensor)
+
+Hoisted the per-ray `pose << objectPose` composition and `Quaternion r(pose.orientation)`
+construction out of `GenericProximitySensor::prePhysicsUpdate`'s 5-ray loop (all five rays
+share the same mounted `sensorPose`, verified via `__createRays`). Also removed a stray
+mid-file `#include <iostream>` / `using namespace std;` from `Pose.cpp` (dead — nothing in
+the file used unqualified `std::` symbols).
+
+Profile spot-check, same command as the Step 2 baseline
+(`./bin/yars --iterations 400000 --nogui --xml ../xml/braitenberg_zoo.xml`, 5s `sample`):
+
+- Baseline: `yars::Pose::operator<<` appeared in the "Sort by top of stack" table at 43 samples.
+- Post-hoist: `yars::Pose::operator<<` no longer appears anywhere in the "Sort by top of stack"
+  table (that table only lists entries with >= 5 collapsed samples), consistent with the
+  expected ~5x reduction in call count (composition now runs once per sensor update instead
+  of once per ray).
+- All other top hotspots (`btDbvt::rayTestInternal`, `btSubsimplexConvexCast::calcTimeOfImpact`,
+  `btVoronoiSimplexSolver::*`) are unchanged in rank/order, as expected — this task does not
+  touch raycasting itself.
+
+Benchmark, `braitenberg_zoo.xml`, 20,000 iterations, `--nogui`, run from `build/` (3 quiet runs
+after machine settled):
+
+```
+run 1: 1.97s real
+run 2: 1.98s real
+run 3: 1.99s real
+```
+
+- Median real time: **1.98 s** (vs. 2.06 s post-Task-3 reference median — small improvement,
+  as expected given `Pose::operator<<` was a modest (43-sample) contributor, not a dominant one).
+- An initial cold-cache set of 3 runs (3.04s / 2.53s / 2.02s) showed more variance from
+  background system load; the settled set above is the representative measurement.
+
+Regression gates (bit-exact, both empty):
+- `braitenberg_logging.xml`, 2000 iterations vs `reference_logfile.macos-arm64.csv`: empty diff.
+- `hexapod_logging.xml`, 2000 iterations vs `reference_logfile_hexapod.macos-arm64.csv`: empty diff.
