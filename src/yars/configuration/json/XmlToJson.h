@@ -32,9 +32,13 @@ namespace yars
  *      silently reorder interleaved same-tag siblings
  *      (<proximity/><velocity/><proximity/> → both proximities adjacent).
  *      The converter therefore DETECTS non-contiguous same-tag siblings
- *      under any parent and fails loudly (throws std::runtime_error naming
- *      the parent element), rather than silently producing an
- *      order-lossy — and therefore semantically wrong — JSON document.
+ *      under any parent and, for that parent only, represents its children
+ *      as an ordered `"#children": [ {"#tag": "<name>", ...}, ... ]` array
+ *      in document order instead of grouping by tag. Each entry carries its
+ *      original tag name under the reserved key `"#tag"` (emitted first).
+ *      Contiguous same-tag runs elsewhere still use the plain
+ *      grouped-by-tag array form (rule 2) — `#children` is only used where
+ *      it is structurally necessary to preserve order.
  *
  * Uses nlohmann::ordered_json (not nlohmann::json) throughout: insertion
  * order of object keys is load-bearing for rule 4's guarantee that
