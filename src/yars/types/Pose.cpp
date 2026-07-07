@@ -78,9 +78,6 @@ Pose & Pose::operator=(const Pose &b)
   return *this;
 }
 
-#include <iostream>
-using namespace std;
-
 void Pose::operator<<(const Pose &p)
 {
   //Quaternion local(orientation);
