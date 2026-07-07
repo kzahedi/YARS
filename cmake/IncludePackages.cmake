@@ -12,6 +12,10 @@ find_package(XercesC REQUIRED)
 # Modern CMake: Use imported targets instead of manual includes
 # Targets will link with XercesC::XercesC directly
 
+# nlohmann/json (vendored single header, v3.11.3) — used by the JSON
+# config-migration Stage 0 converter (src/yars/configuration/json/).
+include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/ext/json/include")
+
 if(YARS_USE_PYTHON)
 find_package(PythonLibs 3 REQUIRED)
   IF(PYTHONLIBS_FOUND)
