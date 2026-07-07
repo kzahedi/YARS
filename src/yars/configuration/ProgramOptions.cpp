@@ -8,8 +8,10 @@
 #include <yars/defines/keyboard_shortcuts.h>
 
 #include <yars/configuration/data/XmlChangeLog.h>
+#include <yars/configuration/json/XmlToJson.h>
 
 #include <fstream>
+#include <filesystem>
 
 using namespace std;
 
@@ -32,6 +34,7 @@ ProgramOptions::ProgramOptions(int argc, char **argv,
   _app.add_flag("--help,-h", _helpRequested, __PO_OPTION_HELP_DESCRIPTION);
   _app.add_flag("--version", _versionRequested, __PO_OPTION_VERSION_DESCRIPTION);
   _app.add_flag("--license", _licenseRequested, __PO_OPTION_LICENSE_DESCRIPTION);
+  _app.add_option("--convert", _convertPath, __PO_OPTION_CONVERT_DESCRIPTION);
 
   // Debug options
   _app.add_option("--xml,-x", _configuration->xml, __PO_OPTION_XML_DESCRIPTION);
@@ -159,6 +162,7 @@ void ProgramOptions::__parseProgramOptionsParameters()
   }
   if (_versionRequested) __version();
   if (_licenseRequested) __license();
+  if (!_convertPath.empty()) __convert();
 
   // Check for unknown options
   auto remaining = _app.remaining();
@@ -252,6 +256,30 @@ void ProgramOptions::__license()
   cout << "| later version. The license can be found in the file       |" << endl;
   cout << "| COPYING, if not write to the Free Software Foundation.    |" << endl;
   cout << "-------------------------------------------------------------" << endl;
+  __exit(0);
+}
+
+void ProgramOptions::__convert()
+{
+  std::filesystem::path xmlPath(_convertPath);
+  std::filesystem::path jsonPath = xmlPath;
+  jsonPath.replace_extension(".json");
+
+  try {
+    nlohmann::ordered_json j = yars::xmlToJson(_convertPath);
+    std::ofstream out(jsonPath);
+    if (!out) {
+      cerr << "Error: could not open '" << jsonPath.string() << "' for writing." << endl;
+      __exit(1);
+    }
+    out << j.dump(2) << endl;
+    out.close();
+    cout << jsonPath.string() << endl;
+  } catch (const std::exception &e) {
+    cerr << "Error converting '" << _convertPath << "' to JSON: " << e.what() << endl;
+    __exit(1);
+  }
+
   __exit(0);
 }
 
