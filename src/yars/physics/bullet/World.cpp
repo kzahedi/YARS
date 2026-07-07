@@ -138,7 +138,12 @@ bool World::rayTest(const btVector3 &start, const btVector3 &end,
   if (maxFraction < btScalar(1.0))
     rayCallback.m_closestHitFraction = maxFraction;   // Bullet seeds traversal pruning from this
   _me->_world->rayTest(start, end, rayCallback);
-  if (rayCallback.m_collisionObject != nullptr)       // NOT hasHit(): see precision context above
+  // Equivalent to hasHit(): RayResultCallback::hasHit() is literally
+  // m_collisionObject != 0, unaffected by the preset fraction. Beware
+  // when copying this pattern to convex sweeps: ConvexResultCallback's
+  // hasHit() is m_closestHitFraction < 1.0, which a preset fraction
+  // WOULD make spuriously true — there, this explicit check is required.
+  if (rayCallback.m_collisionObject != nullptr)
   {
     hitOut = rayCallback.m_hitPointWorld;
     return true;

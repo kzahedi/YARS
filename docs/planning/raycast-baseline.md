@@ -161,7 +161,7 @@ gates.
 
 **Machine**: Mac Mini, Apple M4, macOS 26.5.1 (Darwin 25.5.0, arm64) — same machine as
 the baseline. **Date**: 2026-07-07. **Git SHA**: `53a0259b123fd7049f1b824dac52aaed7dac546e`
-(branch `feat/raycast-optimization`, clean tree, all five perf commits applied: Task 2
+(branch `feat/raycast-optimization`, clean tree, all four perf commits applied: Task 2
 `377a0d6`, Task 3 `ed582ca`, Task 4 `455a41b`, Task 5 `53a0259`). Build: `./build`,
 Release configuration, rebuilt immediately before measuring. Machine-quiet check
 (`pgrep -fl "clang|cc1plus|cmake --build" | grep -v clangd`) returned empty before each
@@ -308,7 +308,7 @@ is expected/non-critical (XML schema version note, not an error).
 | `braitenberg.xml` (100k iter) | 2.163 s / ~46,232 steps/s | 2.139 s / ~46,751 steps/s | ~1.1% (noise) |
 
 Result: **~9.6% on the zoo benchmark** — just under the ≥10% target set in the plan,
-result-preserving (all regression gates bit-exact) across five commits (Task 2 through
+result-preserving (all regression gates bit-exact) across four commits (Task 2 through
 Task 5). The profile confirms the targeted `Pose::operator<<` hotspot is resolved; the
 remaining cost is dominated by Bullet's own raycast/narrowphase implementation, which
 is out of scope for this result-preserving optimization pass and would need a
