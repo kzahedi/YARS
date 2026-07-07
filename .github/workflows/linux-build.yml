@@ -396,6 +396,8 @@ jobs:
     name: ubuntu-22.04 / ASan+UBSan+LSan headless corpus
     runs-on: ubuntu-22.04
     timeout-minutes: 90
+    env:
+      BULLET_INSTALL_PREFIX: ${{ github.workspace }}/ext/bullet/install
     steps:
       - name: Checkout (with submodules)
         uses: actions/checkout@v6
@@ -407,8 +409,41 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential cmake git pkg-config ninja-build \
-            libcli11-dev libbullet-dev libsdl2-dev libxerces-c-dev \
+            libcli11-dev libsdl2-dev libxerces-c-dev \
             libfreetype6-dev libzzip-dev zlib1g-dev
+
+      - name: Cache Bullet 3.25 build
+        id: bullet-cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.BULLET_INSTALL_PREFIX }}
+          key: bullet325-ubuntu22-${{ hashFiles('.gitmodules') }}-v1
+
+      - name: Build Bullet 3.25 from submodule (source-built SIMD Bullet)
+        if: steps.bullet-cache.outputs.cache-hit != 'true'
+        run: |
+          # Exact benchmark configuration (docs/planning/bullet-simd-benchmark.md,
+          # gate: +11.4% on braitenberg 100k headless steps/s). Deliberately
+          # omits Homebrew/apt's extra options (EGL/multithreading/pybullet) —
+          # those are the likely source of the regression this switch fixes;
+          # do not reintroduce them. Linux uses the default SSE path (no
+          # -DBT_USE_NEON, that's arm64/macOS-only and was never passed there
+          # either since bullet3 auto-enables NEON regardless).
+          cmake -S ext/bullet-source -B ext/bullet/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+            -DCMAKE_INSTALL_PREFIX=${BULLET_INSTALL_PREFIX} \
+            -DBUILD_SHARED_LIBS=ON \
+            -DBUILD_BULLET2_DEMOS=OFF \
+            -DBUILD_UNIT_TESTS=OFF \
+            -DBUILD_CPU_DEMOS=OFF \
+            -DBUILD_OPENGL3_DEMOS=OFF \
+            -DBUILD_EXTRAS=OFF \
+            -DBUILD_PYBULLET=OFF \
+            -DUSE_DOUBLE_PRECISION=OFF \
+            -DCMAKE_CXX_FLAGS="-O3"
+          cmake --build ext/bullet/build -j 4
+          cmake --install ext/bullet/build
 
       - name: Configure sanitized build
         run: |
@@ -422,6 +457,8 @@ jobs:
         run: cmake --build build-san -j 4
 
       - name: Run sanitized corpus
+        env:
+          LD_LIBRARY_PATH: ${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: ./scripts/sanitize-corpus.sh build-san
 
       - name: Upload sanitizer logs on failure
