@@ -33,7 +33,7 @@ jobs:
           sudo apt-get install -y \
             build-essential cmake git pkg-config ninja-build \
             libcli11-dev \
-            libsdl2-dev libxerces-c-dev \
+            libsdl2-dev \
             libfreetype6-dev libzzip-dev zlib1g-dev \
             libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxt-dev \
             libxrandr-dev libxinerama-dev libxi-dev libxcursor-dev \
@@ -257,37 +257,6 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: XML-path guard (until Stage 3)
-        env:
-          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
-        run: |
-          # Keeps the legacy XML parse path exercised in CI until Stage 3
-          # deletes the XML corpus. Runs the same braitenberg_logging config
-          # from .xml and diffs against the same reference used for the
-          # JSON gate above — the two paths must stay bit-identical.
-          cd build
-          rm -f braitenberg-*.csv
-          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
-          ACTUAL=$(ls -t braitenberg-*.csv | head -1)
-          if [ -z "$ACTUAL" ]; then
-            echo "No braitenberg-*.csv produced (XML path)"
-            exit 1
-          fi
-          mv "$ACTUAL" braitenberg_logging_actual_xml.csv
-          cd ..
-          REF=xml/reference_logfile.linux-x86_64.csv
-          if [ ! -f "$REF" ]; then
-            echo "::warning::No Linux x86_64 reference committed yet; skipping XML-path guard diff."
-          else
-            if diff -u "$REF" build/braitenberg_logging_actual_xml.csv > csv-diff-xml.log; then
-              echo "XML-path CSV byte-identical to $REF."
-            else
-              echo "::error::XML-path CSV differs from $REF — see csv-diff-xml.log artifact."
-              head -50 csv-diff-xml.log
-              exit 1
-            fi
-          fi
-
       - name: Reference CSV regression check (hexapod_logging.json)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
@@ -440,7 +409,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential cmake git pkg-config ninja-build \
-            libcli11-dev libsdl2-dev libxerces-c-dev \
+            libcli11-dev libsdl2-dev \
             libfreetype6-dev libzzip-dev zlib1g-dev
 
       - name: Cache Bullet 3.25 build

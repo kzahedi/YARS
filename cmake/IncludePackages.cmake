@@ -8,10 +8,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # CLI11 for command-line parsing (replaces boost::program_options)
 find_package(CLI11 CONFIG REQUIRED)
 
-find_package(XercesC REQUIRED)
-# Modern CMake: Use imported targets instead of manual includes
-# Targets will link with XercesC::XercesC directly
-
 # nlohmann/json (vendored single header, v3.11.3) — used by the JSON
 # config-migration Stage 0 converter (src/yars/configuration/json/).
 include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/ext/json/include")
@@ -142,10 +138,6 @@ if(YARS_TESTCASES)
   ENDIF(UNITTEST++_FOUND)
 endif(YARS_TESTCASES)
 
-
-if(NOT XERCESC_FOUND)
-  set(stop TRUE)
-endif(NOT XERCESC_FOUND)
 
 IF(YARS_USE_VISUALISATION)
   if(NOT SDL2_FOUND)

@@ -8,27 +8,16 @@
 # corpus AFTER fixing the SIGABRT-swallowing bug that had masked all
 # unsuppressed leaks as PASS (see commit "fix(main): don't trap SIGABRT").
 
-# --- Third-party ---------------------------------------------------------
-# Xerces-C internal allocations (~1.5MB/run, no YARS frames). Root cause is
-# likely YARS never calling XMLPlatformUtils::Terminate; both the library
-# and the call site are deleted wholesale by the JSON migration
-# (docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3).
-leak:xercesc_3_2::
-
 # --- Pre-existing YARS legacy startup allocations (leaked-by-design until
 # --- freed-at-exit ownership lands; removal tracked by
-# --- docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 3/4
-# --- for the Data*/XSD layer; physics-layer entries are unique_ptr
-# --- candidates recorded in docs/planning/v0.8.7-open-points.md).
-leak:YarsXSDSaxHandler::startElement
-# Same leak, JSON path: JsonParser deliberately mirrors the SAX handler's
-# opening-element lifetime (bit-exactness contract, Stage 1) — the
-# allocation site is emitElement/parseJsonConfig instead of the handler.
-# Retired together with the parse-layer rework (Stage 3/4).
+# --- docs/superpowers/plans/2026-07-06-json-config-migration.md Stage 4
+# --- for the Data* layer; physics-layer entries are unique_ptr candidates
+# --- recorded in docs/planning/v0.8.7-open-points.md).
+# The Xerces-C third-party entry and the SAX/XSD-generator entries
+# (YarsXSDSaxHandler::startElement, createXsd, XsdSpecification,
+# YarsXSDSaxParser::read) were retired here — the XML/Xerces layer that
+# produced them is deleted wholesale by JSON Stage 3 (this commit).
 leak:parseJsonConfig
-leak:createXsd
-leak:XsdSpecification
-leak:YarsXSDSaxParser::read
 # Physics-layer startup allocations:
 leak:Composite::init
 leak:yars::PID::PID

@@ -12,8 +12,6 @@ add_subdirectory(main)
 add_subdirectory(logging)
 add_subdirectory(rc)
 
-target_link_libraries(${YARS_TARGET} ${XERCESC_LIBRARY_FILE})
-
 target_link_libraries(${YARS_TARGET} m stdc++ pthread dl)
 target_link_libraries(${YARS_TARGET} YarsMain)
 target_link_libraries(${YARS_TARGET} YarsConfiguration)
