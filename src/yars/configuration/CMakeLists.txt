@@ -8,6 +8,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/Data.cpp
             data/DataActuator.cpp
             data/DataActuatorFactory.cpp
+            data/DataBinding.cpp
             data/DataBox.cpp
             data/DataCamera.cpp
             data/DataCameraConfig.cpp
