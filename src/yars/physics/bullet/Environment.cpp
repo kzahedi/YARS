@@ -61,6 +61,7 @@ void Environment::__init()
 
     auto ground = std::make_unique<Object>(nullptr);
     ground->setRigidBody(groundRigidBody);
+    ground->setMotionState(groundMotionState);
     push_back(std::move(ground));
   }
 
