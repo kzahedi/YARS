@@ -3,12 +3,16 @@
 # Runs `yars --convert` over every XML config in the corpus (xml/*.xml and
 # xml/joints/*.xml) and reports PASS/FAIL per file.
 #
-# Some corpus files are expected to legitimately fail conversion, per the
-# XmlToJson converter's loud-failure design (see
-# src/yars/configuration/json/XmlToJson.h): non-whitespace element text
-# content, or non-contiguous same-tag siblings under a parent. Those files
-# are listed in EXPECTED_FAIL below, each with a comment citing the specific
-# element responsible.
+# Only genuine converter bugs are expected to fail conversion now. Prior to
+# Stage 1's #children amendment (see src/yars/configuration/json/XmlToJson.h
+# and docs/planning/json-migration-notes.md), non-contiguous same-tag
+# siblings under a parent (e.g. hexaboard.xml/hexapod_*.xml's interleaved
+# <deflection> sensors, muscle_tcpip.xml's interleaved <domain>/<mapping>)
+# made the converter throw loudly. XmlToJson now represents those parents'
+# children as an ordered "#children" array instead, so all corpus files are
+# expected to convert. EXPECTED_FAIL stays empty; only add an entry after
+# inspecting a NEW failure and confirming it is a genuine unhandled case
+# (e.g. non-whitespace element text content), not a converter regression.
 #
 # Usage: ./scripts/convert-corpus.sh   (run from repo root)
 
@@ -24,27 +28,7 @@ if [[ ! -x "$YARS_BIN" ]]; then
   exit 1
 fi
 
-# Files that are expected to fail --convert. Empty initially; add entries
-# here only after inspecting the failure and confirming it is a genuine
-# interleaved-siblings or text-content case, not a converter bug.
-EXPECTED_FAIL=(
-  # <sensors> mixes deflection/deflection/binaryContact groups repeatedly
-  # (e.g. lines ~513-572): <deflection> siblings are non-contiguous.
-  "xml/hexaboard.xml"
-  # same <sensors> interleaving pattern as hexaboard.xml.
-  "xml/hexapod_logging.xml"
-  # same <sensors> interleaving pattern as hexaboard.xml.
-  "xml/hexapod_mpi.xml"
-  # <actuators> has <generic> blocks (lines ~294-412), then <hinge> blocks
-  # (~414-531), then more <generic> blocks (~533+): <generic> siblings are
-  # non-contiguous.
-  "xml/hexapod_ralf.xml"
-  # same <sensors>/<deflection> interleaving pattern as hexaboard.xml.
-  "xml/hexapod_shadow_test.xml"
-  # <muscle> alternates <domain>/<mapping> pairs repeatedly (lines ~123-136):
-  # <domain> (and <mapping>) siblings are non-contiguous.
-  "xml/muscle_tcpip.xml"
-)
+EXPECTED_FAIL=()
 
 is_expected_fail() {
   local f="$1"

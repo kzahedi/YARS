@@ -75,12 +75,17 @@ nlohmann::ordered_json convertElement(DOMElement *element)
     }
   }
 
-  // Walk children once, in document order, tracking contiguous runs of
-  // same-tag siblings. Detect interleaving up front (rule 4) before
-  // grouping anything into arrays (rule 2). Also reject non-whitespace
-  // text content (rule 3).
-  std::vector<std::string> childOrder;    // tag names, in first-seen order
-  std::string lastTag;                    // tag of the previous element child
+  // Walk children once, in document order, collecting (tag, converted-json)
+  // pairs. Also reject non-whitespace text content (rule 3). Grouping into
+  // either the array-by-tag representation (rule 2) or the ordered
+  // '#children' representation (rule 4 amendment) happens in a second pass
+  // below, once we know whether any same-tag siblings are non-contiguous.
+  struct ChildEntry
+  {
+    std::string tag;
+    nlohmann::ordered_json json;
+  };
+  std::vector<ChildEntry> children;
 
   for (DOMNode *child = element->getFirstChild(); child != nullptr;
        child = child->getNextSibling())
@@ -106,34 +111,55 @@ nlohmann::ordered_json convertElement(DOMElement *element)
 
     DOMElement *childElement = static_cast<DOMElement *>(child);
     std::string tag = transcode(childElement->getTagName());
+    children.push_back({tag, convertElement(childElement)});
+  }
 
-    if (tag != lastTag)
+  // Detect whether any same-tag siblings are non-contiguous (interleaved
+  // with a different tag in between). If so, this parent's children are
+  // represented as an ordered '#children' array instead of grouped-by-tag
+  // arrays, preserving document order exactly (rule 4 amendment).
+  bool interleaved = false;
+  {
+    std::vector<std::string> seenTags;
+    std::string lastTag;
+    for (const ChildEntry &entry : children)
     {
-      // Starting a new run. If this tag already appeared earlier under
-      // this parent, the same-tag siblings are non-contiguous, i.e. some
-      // other tag was interleaved between them. That reorders event
-      // order once grouped into arrays, which is the exact hazard rule 4
-      // protects against.
-      for (const std::string &seenTag : childOrder)
+      if (entry.tag == lastTag)
+        continue;
+      for (const std::string &seenTag : seenTags)
       {
-        if (seenTag == tag)
+        if (seenTag == entry.tag)
         {
-          std::string parentName = transcode(element->getTagName());
-          throw std::runtime_error(
-              "xmlToJson: element <" + parentName + "> has non-contiguous "
-              "(interleaved) <" + tag + "> siblings; grouping children by "
-              "tag would silently reorder them. This configuration needs "
-              "an explicit '#children' ordered representation (not yet "
-              "implemented) — refusing to produce an order-lossy JSON "
-              "document.");
+          interleaved = true;
+          break;
         }
       }
-      childOrder.push_back(tag);
-      lastTag = tag;
+      if (interleaved)
+        break;
+      seenTags.push_back(entry.tag);
+      lastTag = entry.tag;
     }
+  }
 
-    nlohmann::ordered_json childJson = convertElement(childElement);
-    object[tag].push_back(childJson);
+  if (interleaved)
+  {
+    nlohmann::ordered_json orderedChildren = nlohmann::ordered_json::array();
+    for (const ChildEntry &entry : children)
+    {
+      // "#tag" is emitted first so a reader can recover the element name
+      // before seeing any of the element's own attributes/children.
+      nlohmann::ordered_json wrapped = nlohmann::ordered_json::object();
+      wrapped["#tag"] = entry.tag;
+      for (auto it = entry.json.begin(); it != entry.json.end(); ++it)
+        wrapped[it.key()] = it.value();
+      orderedChildren.push_back(wrapped);
+    }
+    object["#children"] = orderedChildren;
+  }
+  else
+  {
+    for (const ChildEntry &entry : children)
+      object[entry.tag].push_back(entry.json);
   }
 
   return object;
