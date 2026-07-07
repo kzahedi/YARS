@@ -380,3 +380,65 @@ File: `src/yars/configuration/YarsConfiguration.cpp`
   soft failures are distinguishable to the caller the same way (`read()`
   returning `false` either way, but only soft failures populate the
   message lists that `YarsConfiguration::__readXmlFiles` prints).
+
+## 8. JSON validation gap (Stage 1 known limitation — needs Stage 1→2 sign-off)
+
+Today, malformed XML is rejected by Xerces XSD validation (§6) **before**
+any `Data*::add(DataParseElement*)` body runs. That validation is what
+makes it safe for 80+ `Data*::add()` implementations to dereference a
+required attribute unchecked — e.g.
+`_physics->setMass(element->attribute(YARS_STRING_KG)->realValue())`
+(`DataBox.cpp:67`) assumes `attribute("kg")` is never `NULL`, because the
+schema already guaranteed `kg` was present on `<mass>` before this code
+ever ran.
+
+`JsonParser` (`src/yars/configuration/json/JsonParser.{h,cpp}`) has **no
+equivalent schema validation**. It catches JSON-structural problems it can
+see — invalid JSON syntax, a missing top-level `rosiml` key, a `#children`
+entry missing its `#tag` field — and reports them cleanly via the
+`errors` out-parameter, matching `YarsXSDSaxParser::errors()`'s contract
+closely enough that `YarsConfiguration::__readXmlFiles` prints and
+`exit(-1)`s the same way for both formats on those failures.
+
+**What it does NOT catch**: a JSON config that is well-formed JSON but
+omits a required XML attribute (e.g. a `<mass>` object with no `"kg"`
+key) reaches the unchanged `Data*::add()` machinery exactly as before,
+and the same unchecked `element->attribute(name)->realValue()` call
+dereferences a `NULL` `DataParseAttribute*` — a segfault, not a clean
+error message.
+
+**Why this wasn't patched at the `DataParseElement::attribute()`
+boundary** (the approach floated in the Stage 1 task brief): `attribute()`
+is used in two shapes throughout the 80+ `Data*::add()` bodies —
+(a) unchecked `attribute(x)->value()` for attributes the schema
+guarantees are present, and (b) `if (attribute(x) != NULL) ...` /
+`element->set(...)` (which itself null-checks) for attributes that are
+**legitimately optional** and fall back to a C++ default when absent
+(confirmed in §6: the schema has no default-injection, defaults live in
+each `Data*` class's own field initializers). `attribute()` has no way to
+distinguish "required, should abort if missing" from "optional, NULL is
+the normal not-provided case" — it's the same function serving both call
+shapes. Making it abort-on-miss unconditionally (e.g. via a virtual
+override in a JSON-specific `DataParseElement` subclass) would fix the
+required-attribute case but break every legitimately-optional attribute
+across the whole `Data*` hierarchy, which is a strictly worse regression
+than the gap it would close. That generic fix needs per-attribute
+required/optional metadata — which is exactly what Stage 4's binding
+tables are for. Patching this properly is deferred to Stage 4, not
+attempted here.
+
+**User-visible statement of the gap (per-brief requirement)**: JSON
+configs are **structurally unvalidated** for Stage 1 — the JSON reader
+will crash (not cleanly error) on a config that is valid JSON but
+violates a schema constraint the XSD would have caught (missing required
+attribute, wrong element nesting the schema would reject, etc.). This is
+acceptable for Stage 1 because JSON configs are currently only produced by
+`XmlToJson` from already-schema-valid XML, so this gap is not reachable
+through the Stage 0→1 pipeline as shipped — it only bites hand-written or
+hand-edited `.json` configs. **The spec's original validation promise
+(reject malformed config input cleanly) is only fully restored once ALL
+`Data*` families have Stage 4 binding tables with required/optional
+attribute metadata.** Explicit sign-off on this gap is needed at the
+Stage 1 → Stage 2 boundary before JSON configs are treated as a
+first-class, hand-editable format rather than a converter-only
+intermediate.
