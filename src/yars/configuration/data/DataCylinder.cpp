@@ -1,4 +1,5 @@
 #include "DataCylinder.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 #include "DataDimensionFactory.h"
 
@@ -37,6 +38,26 @@ RHDimension DataCylinder::dimension()
   return _dimension;
 }
 
+namespace
+{
+// Attribute binding table for the cylinder's own opening tag. Child-element
+// dispatch (pose/dimension/physics/texture/mesh) stays hand-written below.
+const std::vector<yars::AttributeBinding> &cylinderAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataCylinder *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataCylinder *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 void DataCylinder::add(DataParseElement *element)
 {
   if (element->closing(YARS_STRING_OBJECT_CYLINDER))
@@ -45,8 +66,7 @@ void DataCylinder::add(DataParseElement *element)
   }
   if (element->opening(YARS_STRING_OBJECT_CYLINDER))
   {
-    element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
+    yars::applyAttributes(this, element, cylinderAttributeBindings());
   }
   if (element->opening(YARS_STRING_POSE))
   {
