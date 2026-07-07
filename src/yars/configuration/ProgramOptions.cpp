@@ -184,9 +184,12 @@ void ProgramOptions::__parseProgramOptionsParameters()
   if (_captureFrameRateSet)   __captureFrameRate();
   if (_captureNameSet)        __captureName();
   if (_captureDirSet)         __captureDirectory();
-  if (_framesDirSet)          __captureFramesDirectory();
   if (_captureSet)            __capture();
 #endif // USE_CAPTURE_VIDEO
+  // PNG frame export is independent of the FFmpeg video pipeline
+  // (SdlWindow::__captureImageFrame uses writeContentsToFile) and must
+  // work on builds without USE_CAPTURE_VIDEO — keep it OUTSIDE the guard.
+  if (_framesDirSet)          __captureFramesDirectory();
 
   if (_pauseSet)              __pause();
   if (_realtimeSet)           __realTime();
