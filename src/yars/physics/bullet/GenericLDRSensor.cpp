@@ -42,12 +42,20 @@ void GenericLDRSensor::postPhysicsUpdate()
 
   for(DataPointLightSources::iterator l = _env->l_begin(); l != _env->l_end(); l++)
   {
-    double dist     = o.dist((*l)->position());
+    P3D lightPos    = (*l)->position();
+    double dist     = o.dist(lightPos);
 
-    P3D hit        = World::rayTest(o, (*l)->position());
+    btVector3 start(o.x, o.y, o.z);
+    btVector3 end(lightPos.x, lightPos.y, lightPos.z);
+    btVector3 hitVec;
+    // On a miss, mirror the P3D overload's exact semantics: return the
+    // original double-precision light position, never the float round-trip
+    // through hitOut (which World::rayTest sets to `end` on miss).
+    P3D hit = World::rayTest(start, end, hitVec) ?
+      P3D(hitVec[0], hitVec[1], hitVec[2]) : lightPos;
     double hit_dist = hit.dist(o);
 
-    P3D d = (*l)->position() - o;
+    P3D d = lightPos - o;
     d.normalise();
 
     double angle = acos(d.x * z.x + d.y * z.y + d.z * z.z);
