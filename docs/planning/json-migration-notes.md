@@ -435,7 +435,11 @@ attribute, wrong element nesting the schema would reject, etc.). This is
 acceptable for Stage 1 because JSON configs are currently only produced by
 `XmlToJson` from already-schema-valid XML, so this gap is not reachable
 through the Stage 0→1 pipeline as shipped — it only bites hand-written or
-hand-edited `.json` configs. **The spec's original validation promise
+hand-edited `.json` configs. (Review addendum 2026-07-07: one indirect
+path exists — `XmlToJson` parses with validation disabled (`Val_Never`),
+so converting a well-formed but schema-INVALID .xml yields a .json that
+crashes at runtime where the .xml itself would have been rejected by
+XSD. Convert only known-valid configs until Stage 4 lands.) **The spec's original validation promise
 (reject malformed config input cleanly) is only fully restored once ALL
 `Data*` families have Stage 4 binding tables with required/optional
 attribute metadata.** Explicit sign-off on this gap is needed at the
