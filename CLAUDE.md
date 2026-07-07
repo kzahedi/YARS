@@ -80,6 +80,19 @@ parser — has been deleted:
   used to build. `DataParseElement` is the shared adapter both parsers fed
   into and is unchanged.
 - **Factory Pattern**: 80+ factory classes for object creation (unchanged).
+- **Attribute parsing (binding-table pilot, JSON Stage 4)**: the
+  attribute-parsing half of `Data*::add(DataParseElement*)` — a
+  hand-written block repeated across ~90 classes — has a replacement
+  primitive: `yars::AttributeBinding` / `yars::applyAttributes`
+  (`src/yars/configuration/data/DataBinding.h/.cpp`). Piloted on the
+  shape family (`DataBox`, `DataSphere`, `DataCylinder`, `DataCapsule`,
+  `DataPly`); child-element dispatch (pose/dimension/physics/texture/mesh)
+  stays hand-written — tables don't model that state machine. Remaining
+  families (sensors, actuators, logging, robot/environment roots) are
+  each an independent follow-up task; see
+  `docs/planning/binding-table-recipe.md` for the mechanical steps,
+  including the suppression-retirement step for `leak:Data*` entries in
+  `scripts/sanitizer-suppressions.txt`.
 - **XML is retired**: non-`.json` input (including the old `-` stdin mode)
   now exits with a clear error. To convert a legacy `.xml` config, use the
   `--convert` option of the `v0.9.0-last-xml` release tag (the last release
