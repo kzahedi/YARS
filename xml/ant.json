@@ -1,0 +1,1514 @@
+{
+  "rosiml": [
+    {
+      "version": "0.8.41",
+      "simulator": [
+        {
+          "frequency": "100",
+          "solver": [
+            {
+              "iterations": "10"
+            }
+          ]
+        }
+      ],
+      "screens": [
+        {
+          "screen": [
+            {
+              "capture": "false",
+              "follow": "true",
+              "name": "main",
+              "show": "true",
+              "resolution": [
+                {
+                  "name": "720p"
+                }
+              ],
+              "camera": [
+                {
+                  "position": [
+                    {
+                      "x": "3.00",
+                      "y": "-2.00",
+                      "z": "2.5"
+                    }
+                  ],
+                  "lookAt": [
+                    {
+                      "x": "0.0",
+                      "y": "0.0",
+                      "z": "0.55"
+                    }
+                  ]
+                }
+              ],
+              "osd": [
+                {
+                  "time": [
+                    {
+                      "colour": "FFFF00",
+                      "font": "Time",
+                      "size": "25"
+                    }
+                  ],
+                  "robot": [
+                    {
+                      "colour": "FFFFFF",
+                      "font": "Robot",
+                      "size": "25"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "sky": [
+            {
+              "name": "YARS/CloudySky"
+            }
+          ],
+          "cameras": [
+            {
+              "orbit": [
+                {
+                  "speed": "-0.3",
+                  "lookAtX": [
+                    {
+                      "d": "0.002",
+                      "i": "0.001",
+                      "p": "0.25"
+                    }
+                  ],
+                  "lookAtY": [
+                    {
+                      "d": "0.002",
+                      "i": "0.001",
+                      "p": "0.25"
+                    }
+                  ],
+                  "lookAtZ": [
+                    {
+                      "d": "0.000",
+                      "i": "0.0",
+                      "p": "0.0"
+                    }
+                  ],
+                  "fromX": [
+                    {
+                      "d": "0.0002",
+                      "i": "0.0001",
+                      "p": "0.50"
+                    }
+                  ],
+                  "fromY": [
+                    {
+                      "d": "0.0002",
+                      "i": "0.0001",
+                      "p": "0.50"
+                    }
+                  ],
+                  "fromZ": [
+                    {
+                      "d": "0.0",
+                      "i": "0.0",
+                      "p": "0.00"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "followables": [
+            {
+              "followable": [
+                {
+                  "name": "body"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "environment": [
+        {
+          "name": "env",
+          "ground": [
+            {
+              "visualisation": [
+                {
+                  "texture": [
+                    {
+                      "name": "YARS/DryGround"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "robots": [
+        {
+          "robot": [
+            {
+              "name": "ant",
+              "body": [
+                {
+                  "selfCollide": "false",
+                  "box": [
+                    {
+                      "name": "body",
+                      "dimension": [
+                        {
+                          "depth": "1.0",
+                          "height": "0.1",
+                          "width": "0.3"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.0",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "first": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ],
+                          "second": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ],
+                          "third": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ],
+                          "fourth": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ],
+                          "fifth": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ],
+                          "sixth": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "1.0"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "capsule": [
+                    {
+                      "name": "left front femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "90.0",
+                          "x": "0.25",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "left front tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "0.362",
+                          "y": "-0.5",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right front femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "-90.0",
+                          "x": "-0.25",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right front tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "-0.362",
+                          "y": "-0.5",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "left centre femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "90.0",
+                          "x": "0.25",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "left centre tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "0.362",
+                          "y": "0.0",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right centre femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "-90.0",
+                          "x": "-0.25",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right centre tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "-0.362",
+                          "y": "0.0",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "left back femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "90.0",
+                          "x": "0.25",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "left back tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "0.362",
+                          "y": "0.5",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right back femur",
+                      "dimension": [
+                        {
+                          "height": "0.224",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "-90.0",
+                          "x": "-0.25",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.1"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "right back tibia",
+                      "dimension": [
+                        {
+                          "height": "0.45",
+                          "radius": "0.05"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "beta": "0.0",
+                          "x": "-0.362",
+                          "y": "0.5",
+                          "z": "0.325"
+                        }
+                      ],
+                      "visualisation": [
+                        {
+                          "texture": [
+                            {
+                              "name": "YARS/Blue"
+                            }
+                          ]
+                        }
+                      ],
+                      "physics": [
+                        {
+                          "mass": [
+                            {
+                              "kg": "0.1"
+                            }
+                          ],
+                          "friction": [
+                            {
+                              "value": "0.5"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "actuators": [
+                {
+                  "hinge": [
+                    {
+                      "mode": "passive",
+                      "name": "left front hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left front femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.15",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right front hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right front femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.15",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "left centre hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left centre femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.15",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right centre hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right centre femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.15",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "left back hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left back femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.15",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right back hip",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right back femur"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "body"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.75"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.15",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "25.0",
+                          "min": "-25.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "left front knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left front tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "left front femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.362",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right front knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right front tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "right front femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.362",
+                          "y": "-0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "left centre knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left centre tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "left centre femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.362",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right centre knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right centre tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "right centre femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.362",
+                          "y": "0.0",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "left back knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "left back tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "left back femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "0.362",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "mode": "passive",
+                      "name": "right back knee",
+                      "type": "angular",
+                      "source": [
+                        {
+                          "name": "right back tibia"
+                        }
+                      ],
+                      "destination": [
+                        {
+                          "name": "right back femur"
+                        }
+                      ],
+                      "force": [
+                        {
+                          "max": "3.5"
+                        }
+                      ],
+                      "velocity": [
+                        {
+                          "max": "0.5"
+                        }
+                      ],
+                      "pose": [
+                        {
+                          "x": "-0.362",
+                          "y": "0.5",
+                          "z": "0.55"
+                        }
+                      ],
+                      "deflection": [
+                        {
+                          "max": "15.0",
+                          "min": "-15.0"
+                        }
+                      ],
+                      "mapping": [
+                        {
+                          "max": "1",
+                          "min": "-1"
+                        }
+                      ],
+                      "regular": [
+                        {
+                          "damping": "4.0",
+                          "restitution": "0.0",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "limit": [
+                        {
+                          "damping": "1.0",
+                          "restitution": "0.7",
+                          "softness": "1.0"
+                        }
+                      ],
+                      "pid": [
+                        {
+                          "d": "0.0",
+                          "i": "0.0",
+                          "p": "0.0",
+                          "size": "1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

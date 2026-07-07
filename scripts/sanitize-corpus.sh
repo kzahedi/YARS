@@ -17,28 +17,28 @@ export LSAN_OPTIONS="suppressions=$SUPP"
 
 # Standalone configs (no controller library needed)
 STANDALONE=(
-  xml/braitenberg_nocontroller.xml
-  xml/falling_objects.xml
-  xml/test_capture.xml
-  xml/hexapod_logging.xml
+  xml/braitenberg_nocontroller.json
+  xml/falling_objects.json
+  xml/test_capture.json
+  xml/hexapod_logging.json
 )
 # Controller-based configs: config -> lib name (mirrors linux-build.yml)
 CONFIGS=(
-  "xml/braitenberg.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_noise.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_logging.xml:YarsControllerBraitenberg3b"
-  "xml/braitenberg_light_source.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_trace_projection.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_zoo.xml:YarsControllerBraitenberg2a"
-  "xml/muscle.xml:YarsControllerSquareWave"
-  "xml/joints/generic_angular.xml:YarsControllerSine"
-  "xml/joints/generic_force.xml:YarsControllerSine"
+  "xml/braitenberg.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_noise.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_logging.json:YarsControllerBraitenberg3b"
+  "xml/braitenberg_light_source.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_trace_projection.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_zoo.json:YarsControllerBraitenberg2a"
+  "xml/muscle.json:YarsControllerSquareWave"
+  "xml/joints/generic_angular.json:YarsControllerSine"
+  "xml/joints/generic_force.json:YarsControllerSine"
 )
 
 FAILED=0
 cd "$BUILD_DIR"
 for cfg in "${STANDALONE[@]}"; do
-  name=$(basename "$cfg" .xml)
+  name=$(basename "$cfg" .json)
   # Sanitized builds are ~2-4x slower: 240s cap, 500 iterations
   if timeout 240s ./bin/yars --iterations 500 --nogui --xml "$ROOT/$cfg" > "san-${name}.log" 2>&1; then
     echo "PASS $cfg"
@@ -48,7 +48,7 @@ for cfg in "${STANDALONE[@]}"; do
 done
 for entry in "${CONFIGS[@]}"; do
   cfg="${entry%%:*}"; lib="${entry##*:}"
-  name=$(basename "$cfg" .xml)
+  name=$(basename "$cfg" .json)
   if ! ls lib/lib${lib}.* >/dev/null 2>&1; then
     echo "FAIL $cfg (lib${lib} missing)"; FAILED=1; continue
   fi

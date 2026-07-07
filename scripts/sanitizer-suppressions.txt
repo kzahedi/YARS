@@ -21,6 +21,11 @@ leak:xercesc_3_2::
 # --- for the Data*/XSD layer; physics-layer entries are unique_ptr
 # --- candidates recorded in docs/planning/v0.8.7-open-points.md).
 leak:YarsXSDSaxHandler::startElement
+# Same leak, JSON path: JsonParser deliberately mirrors the SAX handler's
+# opening-element lifetime (bit-exactness contract, Stage 1) — the
+# allocation site is emitElement/parseJsonConfig instead of the handler.
+# Retired together with the parse-layer rework (Stage 3/4).
+leak:parseJsonConfig
 leak:createXsd
 leak:XsdSpecification
 leak:YarsXSDSaxParser::read

@@ -115,21 +115,21 @@ jobs:
       - name: Smoke test (--nogui, 100 iterations)
         run: |
           cd build
-          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg_nocontroller.xml
+          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg_nocontroller.json
 
       - name: Smoke test with controller (--nogui, 100 iterations)
         run: |
           cd build
-          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg.xml
+          ./bin/yars --iterations 100 --nogui --xml ../xml/braitenberg.json
 
-      - name: Reference CSV regression check (braitenberg_logging.xml)
+      - name: Reference CSV regression check (braitenberg_logging.json)
         run: |
           cd build
           rm -f braitenberg-*.csv
           # macOS arm64 hits 2000 iters in ~5s. No external timeout
           # wrapper because BSD doesn't ship GNU `timeout`; the
           # --iterations flag is the stop condition.
-          ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
+          ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.json
           ACTUAL=$(ls -t braitenberg-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No braitenberg-*.csv produced"
@@ -160,14 +160,14 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Reference CSV regression check (hexapod_logging.xml)
+      - name: Reference CSV regression check (hexapod_logging.json)
         run: |
           cd build
           rm -f hexapod-*.csv
           # macOS arm64 hits 2000 iters in ~5s. No external timeout
           # wrapper because BSD doesn't ship GNU `timeout`; the
           # --iterations flag is the stop condition.
-          ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.xml
+          ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.json
           ACTUAL=$(ls -t hexapod-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No hexapod-*.csv produced"

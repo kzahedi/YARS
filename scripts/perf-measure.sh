@@ -12,7 +12,7 @@ now() { python3 -c 'import time; print(time.time())'; }
 cd "$BUILD_DIR"
 START=$(now)
 ${TIMEOUT_BIN:+$TIMEOUT_BIN 600s} ./bin/yars --iterations $ITER --nogui \
-  --xml "$ROOT/xml/braitenberg.xml" > /dev/null 2>&1
+  --xml "$ROOT/xml/braitenberg.json" > /dev/null 2>&1
 END=$(now)
 SPS=$(echo "$ITER $END $START" | awk '{printf "%.0f", $1/($2-$3)}')
 SHA=$(git -C "$ROOT" rev-parse --short HEAD)

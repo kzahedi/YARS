@@ -9,6 +9,16 @@
 #     bit-exact CSV diff.
 #   - everything else: exit code + final console line.
 #
+# Corpus is read-only: the committed xml/*.json twins are never written or
+# deleted by this script. --convert writes its output next to whatever
+# input path it is given, so the source .xml is copied into the $WORKDIR
+# scratch tree first and converted there. The freshly-converted
+# $WORKDIR/<name>.json is then diffed byte-for-byte against the committed
+# xml/<name>.json ("DRIFT" failure if they differ) and is also the file the
+# JSON-side simulation run is executed from (proving the converter's actual
+# output, not the pre-existing corpus copy). $WORKDIR is removed via the
+# EXIT trap, so nothing under xml/ is ever touched.
+#
 # Usage: scripts/json-roundtrip-check.sh <build-dir>   (default: build)
 
 set -u
@@ -70,10 +80,15 @@ run_one() {
   TOTAL=$((TOTAL + 1))
 
   local xmlpath="$ROOT/$cfg"
-  local jsonpath="${xmlpath%.xml}.json"
+  local corpus_jsonpath="${xmlpath%.xml}.json"
 
-  # 1. Convert.
-  if ! timeout 30s "$YARS_BIN" --convert "$xmlpath" >"$WORKDIR/${name}-convert.log" 2>&1; then
+  # 1. Convert. --convert writes its output next to the INPUT path, so copy
+  # the .xml into the scratch dir and convert there — the committed corpus
+  # (both the .xml and its .json twin) is never written to.
+  local scratch_xml="$WORKDIR/${name}.xml"
+  local jsonpath="$WORKDIR/${name}.json"
+  cp "$xmlpath" "$scratch_xml"
+  if ! timeout 30s "$YARS_BIN" --convert "$scratch_xml" >"$WORKDIR/${name}-convert.log" 2>&1; then
     echo "FAIL $cfg (conversion failed, see $WORKDIR/${name}-convert.log)"
     sed 's/^/  /' "$WORKDIR/${name}-convert.log"
     FAILED=1
@@ -81,6 +96,21 @@ run_one() {
   fi
   if [[ ! -f "$jsonpath" ]]; then
     echo "FAIL $cfg (conversion did not produce $jsonpath)"
+    FAILED=1
+    return
+  fi
+
+  # 1b. Corpus-drift check: the freshly-converted JSON must be byte-identical
+  # to the committed twin. A mismatch means the corpus is stale relative to
+  # the converter and needs regenerating (and re-committing) deliberately.
+  if [[ ! -f "$corpus_jsonpath" ]]; then
+    echo "FAIL $cfg (DRIFT: no committed corpus twin at $corpus_jsonpath)"
+    FAILED=1
+    return
+  fi
+  if ! diff -q "$jsonpath" "$corpus_jsonpath" >/dev/null; then
+    echo "FAIL $cfg (DRIFT: converted JSON differs from committed $corpus_jsonpath)"
+    diff "$jsonpath" "$corpus_jsonpath" | head -20
     FAILED=1
     return
   fi
@@ -155,7 +185,6 @@ run_one() {
     echo "PASS $cfg (exit=$xml_rc, final line matches)"
   fi
   PASSED=$((PASSED + 1))
-  rm -f "$jsonpath"
 }
 
 for cfg in "${STANDALONE[@]}"; do
