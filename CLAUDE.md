@@ -116,22 +116,22 @@ cmake ..
 make -j4
 
 # Test the build
-./bin/yars --iterations 1000 --xml ../xml/braitenberg_logging.xml
+./bin/yars --iterations 1000 --xml ../xml/braitenberg_logging.json
 ```
 
 ### Validation Commands
 ```bash
 # Basic simulation test
-./bin/yars --iterations 1000 --xml xml/braitenberg_logging.xml
+./bin/yars --iterations 1000 --xml xml/braitenberg_logging.json
 
 # Compare with reference logfile
 diff braitenberg-*.csv ../xml/reference_logfile.macos-arm64.csv
 
 # Performance test  
-time ./bin/yars --iterations 10000 --xml xml/falling_objects.xml
+time ./bin/yars --iterations 10000 --xml xml/falling_objects.json
 
 # Memory validation
-valgrind --leak-check=full ./bin/yars --iterations 100 --xml xml/braitenberg.xml
+valgrind --leak-check=full ./bin/yars --iterations 100 --xml xml/braitenberg.json
 ```
 
 ## Modernization Achievements
@@ -185,7 +185,7 @@ valgrind --leak-check=full ./bin/yars --iterations 100 --xml xml/braitenberg.xml
 - **Headers**: Include guards and minimal dependencies
 
 ### Testing Protocol
-- **Regression**: Always test with `braitenberg_logging.xml`
+- **Regression**: Always test with `braitenberg_logging.json`
 - **Validation**: Compare logfile output with reference
 - **Build**: Clean build required after significant changes
 - **Memory**: Run valgrind for memory leak detection
@@ -261,13 +261,13 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 ### Test Commands
 ```bash
 # Basic functionality
-./bin/yars --iterations 1000 --xml xml/braitenberg_logging.xml
+./bin/yars --iterations 1000 --xml xml/braitenberg_logging.json
 
 # No GUI mode
-./bin/yars --iterations 1000 --xml xml/braitenberg_logging.xml --no-gui
+./bin/yars --iterations 1000 --xml xml/braitenberg_logging.json --no-gui
 
 # Performance test
-time ./bin/yars --iterations 10000 --xml xml/falling_objects.xml
+time ./bin/yars --iterations 10000 --xml xml/falling_objects.json
 ```
 
 ### Analysis Commands

@@ -125,7 +125,7 @@ jobs:
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
-          ./build/bin/yars --iterations 100 --nogui --xml xml/braitenberg_nocontroller.xml
+          ./build/bin/yars --iterations 100 --nogui --xml xml/braitenberg_nocontroller.json
 
       - name: Locate contrib controller libraries
         id: contrib
@@ -147,16 +147,16 @@ jobs:
           mkdir -p linux-audit-logs
           FAILED=0
           STANDALONE=(
-            xml/braitenberg_nocontroller.xml
-            xml/falling_objects.xml
-            xml/test_capture.xml
+            xml/braitenberg_nocontroller.json
+            xml/falling_objects.json
+            xml/test_capture.json
           )
           # cd into build/ so YARS resolves controller .so files via cwd/lib.
           # --lib arg is only validated by YARS, not added to the candidate
           # search path, so the cwd/lib fallback is the working pattern.
           cd build
           for cfg in "${STANDALONE[@]}"; do
-            name=$(basename "$cfg" .xml)
+            name=$(basename "$cfg" .json)
             log="../linux-audit-logs/${name}.log"
             # 60s per-config wall-clock cap so any hang fails fast rather
             # than burning the whole 90-min job budget.
@@ -178,15 +178,15 @@ jobs:
           FAILED=0
           # Map of XML config -> required controller lib name (no prefix/suffix)
           declare -A CFG2LIB=(
-            ["xml/braitenberg.xml"]="YarsControllerBraitenberg2b"
-            ["xml/braitenberg_noise.xml"]="YarsControllerBraitenberg2b"
-            ["xml/braitenberg_logging.xml"]="YarsControllerBraitenberg3b"
-            ["xml/braitenberg_light_source.xml"]="YarsControllerBraitenberg2b"
-            ["xml/braitenberg_trace_projection.xml"]="YarsControllerBraitenberg2b"
-            ["xml/braitenberg_zoo.xml"]="YarsControllerBraitenberg2a"
-            ["xml/muscle.xml"]="YarsControllerSquareWave"
-            ["xml/joints/generic_angular.xml"]="YarsControllerSine"
-            ["xml/joints/generic_force.xml"]="YarsControllerSine"
+            ["xml/braitenberg.json"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_noise.json"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_logging.json"]="YarsControllerBraitenberg3b"
+            ["xml/braitenberg_light_source.json"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_trace_projection.json"]="YarsControllerBraitenberg2b"
+            ["xml/braitenberg_zoo.json"]="YarsControllerBraitenberg2a"
+            ["xml/muscle.json"]="YarsControllerSquareWave"
+            ["xml/joints/generic_angular.json"]="YarsControllerSine"
+            ["xml/joints/generic_force.json"]="YarsControllerSine"
           )
           # cd into build/ so YARS resolves controller .so files via cwd/lib.
           # --lib arg is only validated by YARS, not added to the candidate
@@ -195,7 +195,7 @@ jobs:
           for cfg in "${!CFG2LIB[@]}"; do
             libname="${CFG2LIB[$cfg]}"
             libfile="lib/lib${libname}.so"
-            name=$(basename "$cfg" .xml)
+            name=$(basename "$cfg" .json)
             log="../linux-audit-logs/${name}.log"
             if [ ! -f "$libfile" ]; then
               echo "${cfg}: SKIP (lib ${libfile} not found)" | tee -a ../linux-audit-logs/summary.txt
@@ -217,7 +217,7 @@ jobs:
           cd ..
           exit $FAILED
 
-      - name: Reference CSV regression check (braitenberg_logging.xml)
+      - name: Reference CSV regression check (braitenberg_logging.json)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
@@ -226,7 +226,7 @@ jobs:
           rm -f braitenberg-*.csv
           # Bound the run; the XML has no built-in stop condition so an
           # unbounded invocation runs until the 90-min job timeout.
-          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.json
           ACTUAL=$(ls -t braitenberg-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No braitenberg-*.csv produced"
@@ -257,13 +257,44 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Reference CSV regression check (hexapod_logging.xml)
+      - name: XML-path guard (until Stage 3)
+        env:
+          LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
+        run: |
+          # Keeps the legacy XML parse path exercised in CI until Stage 3
+          # deletes the XML corpus. Runs the same braitenberg_logging config
+          # from .xml and diffs against the same reference used for the
+          # JSON gate above — the two paths must stay bit-identical.
+          cd build
+          rm -f braitenberg-*.csv
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/braitenberg_logging.xml
+          ACTUAL=$(ls -t braitenberg-*.csv | head -1)
+          if [ -z "$ACTUAL" ]; then
+            echo "No braitenberg-*.csv produced (XML path)"
+            exit 1
+          fi
+          mv "$ACTUAL" braitenberg_logging_actual_xml.csv
+          cd ..
+          REF=xml/reference_logfile.linux-x86_64.csv
+          if [ ! -f "$REF" ]; then
+            echo "::warning::No Linux x86_64 reference committed yet; skipping XML-path guard diff."
+          else
+            if diff -u "$REF" build/braitenberg_logging_actual_xml.csv > csv-diff-xml.log; then
+              echo "XML-path CSV byte-identical to $REF."
+            else
+              echo "::error::XML-path CSV differs from $REF — see csv-diff-xml.log artifact."
+              head -50 csv-diff-xml.log
+              exit 1
+            fi
+          fi
+
+      - name: Reference CSV regression check (hexapod_logging.json)
         env:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           cd build
           rm -f hexapod-*.csv
-          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.xml
+          timeout 120s ./bin/yars --iterations 2000 --nogui --xml ../xml/hexapod_logging.json
           ACTUAL=$(ls -t hexapod-*.csv | head -1)
           if [ -z "$ACTUAL" ]; then
             echo "No hexapod-*.csv produced"
@@ -299,8 +330,8 @@ jobs:
           LD_LIBRARY_PATH: ${{ env.OGRE_INSTALL_PREFIX }}/lib:${{ env.BULLET_INSTALL_PREFIX }}/lib
         run: |
           set -e
-          if [ ! -f xml/test_capture.xml ]; then
-            echo "::warning::xml/test_capture.xml not present, skipping capture step"
+          if [ ! -f xml/test_capture.json ]; then
+            echo "::warning::xml/test_capture.json not present, skipping capture step"
             exit 0
           fi
           # Ogre::Root("plugins.cfg", "ogre.cfg", "") uses cwd-relative
@@ -326,7 +357,7 @@ jobs:
               --capture \
               --captureDirectory . \
               --captureName yars-capture.mp4 \
-              --xml ../xml/test_capture.xml \
+              --xml ../xml/test_capture.json \
             > ../linux-audit-logs/video-capture.log 2>&1
           # YARS writes per-segment captures named <base>-NNNN.mp4 (see
           # WindowConfiguration::getNextCaptureName). For our 1800-iter
