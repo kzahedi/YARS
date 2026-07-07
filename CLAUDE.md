@@ -29,7 +29,7 @@ The codebase has been significantly modernized:
 | Physics | Bullet Physics 3.x | ✅ Working |
 | Graphics | Ogre3D 14.x | ✅ Integrated (Linux + macOS, dynamic link) |
 | Windowing | SDL2 | ✅ Working |
-| Configuration | XML (Xerces-C++) | ⚠️ Legacy (future: JSON) |
+| Configuration | JSON (nlohmann/json) | ✅ Modernized (XML/Xerces removed) |
 | Threading | std::thread | ✅ Modernized |
 | Filesystem | std::filesystem | ✅ Modernized |
 | Memory | Smart pointers | ✅ Modernized |
@@ -38,7 +38,7 @@ The codebase has been significantly modernized:
 - **Main Control**: `src/yars/main/YarsMainControl.cpp` - Central simulation controller
 - **Physics**: `src/yars/physics/` - Bullet Physics integration
 - **Graphics**: `src/yars/view/gui/` - Ogre3D rendering system
-- **Configuration**: `src/yars/configuration/` - XML parsing and data management
+- **Configuration**: `src/yars/configuration/` - JSON parsing and data management
 - **Logging**: `src/yars/logging/` - CSV/file output system
 - **Utilities**: `src/yars/util/` - Helper classes and infrastructure
 
@@ -69,11 +69,25 @@ The legacy Observer pattern has been replaced with direct method calls:
   the `_o`/`_observable` static members, the `notify()` Observer-API
   method on every component, and the `__M_*` message-type constants.
 
-### Configuration System
-Currently uses XML with Xerces-C++:
-- **XML Schema**: `src/yars/configuration/xsd/` - Complex validation system
-- **Factory Pattern**: 80+ factory classes for object creation
-- **Status**: Working but complex, future candidate for JSON migration
+### Configuration System (JSON, Xerces removed)
+YARS reads only `.json` configuration files as of the JSON Stage 3 harvest
+(v0.9.0 onward). The entire XML/Xerces-C++ layer — the XSD schema, the XSD
+generator, the `createXsd` chain on every `Data*` class, and the Xerces SAX
+parser — has been deleted:
+- **Parsing**: `src/yars/configuration/json/JsonParser.{h,cpp}` replays the
+  always-arrays JSON shape (produced historically by the now-deleted
+  `XmlToJson` converter) into the same `Data*` object model the SAX parser
+  used to build. `DataParseElement` is the shared adapter both parsers fed
+  into and is unchanged.
+- **Factory Pattern**: 80+ factory classes for object creation (unchanged).
+- **XML is retired**: non-`.json` input (including the old `-` stdin mode)
+  now exits with a clear error. To convert a legacy `.xml` config, use the
+  `--convert` option of the `v0.9.0-last-xml` release tag (the last release
+  with `--export` and the Xerces-based XML path); it writes `<file>.json`
+  next to the input.
+- **Status**: ✅ Complete. `otool -L build/bin/yars | grep -i xerces` is
+  empty; no source file under `src/yars` or `tests` references
+  `xercesc`/`XMLString`/`createXsd`.
 
 ### Memory Management
 Now uses modern C++ patterns:
@@ -86,7 +100,7 @@ Now uses modern C++ patterns:
 ### Prerequisites
 - CMake 3.16+
 - C++17 compatible compiler
-- Required libraries: SDL2, Xerces-C++, FreeImage, FreeType, ZZip, zlib
+- Required libraries: SDL2, FreeImage, FreeType, ZZip, zlib
 - **Bullet Physics 3.25**: built from source via the `ext/bullet-source` git
   submodule (https://github.com/bulletphysics/bullet3.git @ tag 3.25), not
   from Homebrew/apt. Measured +11.4% headless-physics throughput over the
@@ -171,9 +185,9 @@ valgrind --leak-check=full ./bin/yars --iterations 100 --xml xml/braitenberg.jso
 - **Overlays**: Text rendering for debugging and information display
 
 ### Configuration System
-- **XML Format**: Comprehensive robot and environment definitions
-- **Validation**: XSD schema validation for configuration correctness
-- **Examples**: Working configurations in `xml/` directory
+- **JSON Format**: Comprehensive robot and environment definitions
+- **Examples**: Working configurations in `xml/` directory (`.json`; the
+  directory name is historical)
 
 ## Development Guidelines
 
@@ -196,7 +210,7 @@ src/yars/
 ├── main/           # Core simulation control
 ├── physics/        # Bullet Physics integration  
 ├── view/           # Graphics and visualization
-├── configuration/  # XML parsing and data
+├── configuration/  # JSON parsing and data
 ├── logging/        # Output and data recording
 ├── types/          # Data structures and math
 └── util/           # Utilities and helpers
@@ -210,14 +224,13 @@ src/yars/
 - Remove ObservableMessage infrastructure
 
 ### Phase 2: Configuration System Simplification
-- Consider JSON migration for simpler configuration
+- JSON migration complete (Xerces/XSD/SAX layer removed, JSON Stage 3)
 - Reduce 80+ factory classes to template-based approach
 - Improve error messages and validation
 
-### Phase 3: Further C++ Modernization  
+### Phase 3: Further C++ Modernization
 - Move to C++20 when appropriate
 - Consider modules for faster compilation
-- Evaluate modern alternatives to Xerces-C++
 
 ### Phase 4: Testing Infrastructure
 - Add unit tests with Google Test

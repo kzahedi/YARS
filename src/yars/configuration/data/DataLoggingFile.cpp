@@ -57,31 +57,6 @@ void DataLoggingFile::add(DataParseElement *element)
 
 }
 
-void DataLoggingFile::createXsd(XsdSpecification *spec)
-{
-  // TODO: define filename type
-  XsdSequence *fileDefinition = new XsdSequence(YARS_STRING_FILE_LOGGER_DEFINITION);
-  fileDefinition->add(NA(YARS_STRING_NAME,          YARS_STRING_XSD_STRING,                true));
-  fileDefinition->add(NA(YARS_STRING_START,         YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  fileDefinition->add(NA(YARS_STRING_STOP,          YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  fileDefinition->add(NA(YARS_STRING_DATE,          YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  fileDefinition->add(NA(YARS_STRING_DEBUG,         YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  fileDefinition->add(NA(YARS_STRING_USE_TIME_STEP, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  fileDefinition->add(XE(YARS_STRING_TARGET,        YARS_STRING_TARGET_DEFINITION,         0));
-  spec->add(fileDefinition);
-
-  XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);
-  targetDefinition->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING, true));
-  spec->add(targetDefinition);
-
-  XsdEnumeration *trueFalseDefinition = new XsdEnumeration(YARS_STRING_TRUE_FALSE_DEFINITION, YARS_STRING_XSD_STRING);
-  trueFalseDefinition->add(YARS_STRING_TRUE);
-  trueFalseDefinition->add(YARS_STRING_FALSE);
-  spec->add(trueFalseDefinition);
-
-}
-
-
 DataLoggingFile* DataLoggingFile::copy()
 {
   DataLoggingFile *copy = new DataLoggingFile(NULL);

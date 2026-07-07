@@ -36,7 +36,6 @@ class ProgramOptionsConfiguration
     string   framesDirectory;
     string   lib;
     string   listCommand;
-    string   exportCommand;
     string   outConfigFile;
     string   textures;
     string   logDirectory;

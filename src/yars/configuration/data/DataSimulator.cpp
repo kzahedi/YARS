@@ -94,30 +94,6 @@ void DataSimulator::__processControlParameters(DataParseElement *element)
   if(element->attribute(YARS_STRING_SEED) != NULL) _useRandomSeed = true;
 }
 
-void DataSimulator::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *simulatorDefinition = new XsdSequence(YARS_STRING_SIMULATOR_DEFINITION);
-  simulatorDefinition->add(NA(YARS_STRING_FREQUENCY, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  spec->add(simulatorDefinition);
-
-  XsdElement *solverDefinition = XE(YARS_STRING_SOLVER, "", 0, 1);
-  solverDefinition->add(NA(YARS_STRING_ITERATIONS, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  simulatorDefinition->add(solverDefinition);
-
-  XsdElement *control = XE(YARS_STRING_CONTROL, "", 0, 1);
-  control->add(NA(YARS_STRING_ITERATIONS, YARS_STRING_XSD_INTEGER, false));
-  control->add(NA(YARS_STRING_AUTO_RESET, YARS_STRING_XSD_INTEGER, false));
-  control->add(NA(YARS_STRING_SEED,       YARS_STRING_XSD_INTEGER, false));
-  // control->add(NA(YARS_STRING_COUNT,      YARS_STRING_COUNT_DEFINITION, false));
-  simulatorDefinition->add(control);
-
-  XsdEnumeration *controlCount = new XsdEnumeration(YARS_STRING_COUNT_DEFINITION,
-      YARS_STRING_XSD_STRING);
-  controlCount->add(YARS_STRING_BEHAVIOUR);
-  controlCount->add(YARS_STRING_SIMULATOR);
-  spec->add(controlCount);
-}
-
 double DataSimulator::stepSize()
 {
   return _stepSize;

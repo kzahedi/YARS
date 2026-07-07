@@ -24,7 +24,6 @@ class ProgramOptions
     // functions to handle command line arguments
     void __version();
     void __license();
-    void __convert();
 
     void __simulationFrequency();
     void __controlFrequency();
@@ -78,7 +77,6 @@ class ProgramOptions
     bool _helpRequested = false;
     bool _versionRequested = false;
     bool _licenseRequested = false;
-    std::string _convertPath;
     bool _debugSet = false;
     bool _silentSet = false;
     bool _simFreqSet = false;

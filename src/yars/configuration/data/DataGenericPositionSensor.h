@@ -43,7 +43,6 @@ class DataGenericPositionSensor : public DataSensor
 
     int dimension();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericPositionSensor *_copy();
 

@@ -25,7 +25,6 @@ class DataCenterOrbitCam : public DataNode
 
     DataCenterOrbitCam* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     double speed();
 

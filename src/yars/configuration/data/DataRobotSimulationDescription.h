@@ -17,7 +17,6 @@
 #include <yars/configuration/data/DataSensors.h>
 #include <yars/configuration/data/DataActuators.h>
 #include <yars/configuration/data/DataControllers.h>
-#include <yars/configuration/xsd/specification/XsdSpecification.h>
 
 #include <yars/types/Version.h>
 #include <yars/defines/types.h>
@@ -142,7 +141,6 @@ class DataRobotSimulationDescription : public DataNode
      */
     void add(DataParseElement* element);
 
-    static void createXsd(XsdSpecification *spec = NULL);
     void clear();
 
     DataRobotSimulationDescription* copy();

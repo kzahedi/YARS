@@ -49,7 +49,6 @@ class DataCylinder : public DataObject
      */
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataCylinder* _copy();
 

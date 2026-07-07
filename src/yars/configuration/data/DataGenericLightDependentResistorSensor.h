@@ -68,7 +68,6 @@ class DataGenericLightDependentResistorSensor : public DataSensor
      */
     Colour colour();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericLightDependentResistorSensor *_copy();
 

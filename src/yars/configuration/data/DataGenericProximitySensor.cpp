@@ -5,8 +5,6 @@
 
 #include <yars/defines/mutex.h>
 
-#include <yars/configuration/xsd/specification/XsdSpecification.h>
-
 # define YARS_STRING_DISTANCE                  (char*)"distance"
 # define YARS_STRING_OPENING_ANGLES            (char*)"openingAngles"
 # define YARS_STRING_MAPPING                   (char*)"mapping"
@@ -122,33 +120,6 @@ P2D DataGenericProximitySensor::openingAngles()
   P2D r = _openingAngles;
   YM_UNLOCK;
   return r;
-}
-
-void DataGenericProximitySensor::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_PROXIMITY_DEFINITION);
-  sensor->add(NA(YARS_STRING_NAME,           YARS_STRING_XSD_STRING,               false));
-  sensor->add(XE(YARS_STRING_OBJECT,         YARS_STRING_NAME_DEFINITION,          1, 1));
-  sensor->add(XE(YARS_STRING_POSE,           YARS_STRING_POSE_DEFINITION,          1, 1));
-  sensor->add(XE(YARS_STRING_DISTANCE,       YARS_STRING_METER_DEFINITION,         1, 1));
-  sensor->add(XE(YARS_STRING_MAPPING,        YARS_STRING_MIN_MAX_DEFINITION,       1, 1));
-  sensor->add(XE(YARS_STRING_OPENING_ANGLES, YARS_STRING_OPENING_ANGLES_DEFINTION, 1, 1));
-  sensor->add(XE(YARS_STRING_NOISE,          YARS_STRING_NOISE_DEFINITION,         0, 1));
-  sensor->add(XE(YARS_STRING_FILTER,         YARS_STRING_FILTER_DEFINITION,        0, 1));
-  spec->add(sensor);
-
-  XsdSequence *oaDefinition = new XsdSequence(YARS_STRING_OPENING_ANGLES_DEFINTION);
-  oaDefinition->add(NA(YARS_STRING_X,    YARS_STRING_XSD_DECIMAL,        true));
-  oaDefinition->add(NA(YARS_STRING_Y,    YARS_STRING_XSD_DECIMAL,        true));
-  oaDefinition->add(NA(YARS_STRING_TYPE, YARS_STRING_RAD_DEG_DEFINITION, false));
-  spec->add(oaDefinition);
-
-  XsdSequence *meterDefinition = new XsdSequence(YARS_STRING_METER_DEFINITION);
-  meterDefinition->add(NA(YARS_STRING_METER, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, true));
-  spec->add(meterDefinition);
-
-  DataNoise::createXsd(spec);
-  DataFilter::createXsd(spec);
 }
 
 DataGenericProximitySensor* DataGenericProximitySensor::_copy()

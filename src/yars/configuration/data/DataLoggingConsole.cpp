@@ -35,19 +35,6 @@ void DataLoggingConsole::add(DataParseElement *element)
   }
 }
 
-void DataLoggingConsole::createXsd(XsdSpecification *spec)
-{
-  // TODO: define filename type
-  XsdSequence *consoleDefinition = new XsdSequence(YARS_STRING_CONSOLE_DEFINITION);
-  consoleDefinition->add(XE(YARS_STRING_TARGET, YARS_STRING_TARGET_DEFINITION, 0));
-  spec->add(consoleDefinition);
-
-  XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);
-  targetDefinition->add(NA(YARS_STRING_NAME,       YARS_STRING_XSD_STRING, true));
-  spec->add(targetDefinition);
-}
-
-
 DataLoggingConsole* DataLoggingConsole::copy()
 {
   DataLoggingConsole *copy = new DataLoggingConsole(NULL);

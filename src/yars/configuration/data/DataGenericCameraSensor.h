@@ -50,7 +50,6 @@ class DataGenericCameraSensor : public DataSensor
      */
     P2D openingAngles();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericCameraSensor* _copy();
 

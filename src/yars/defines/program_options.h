@@ -16,10 +16,6 @@
 #define __PO_OPTION_LICENSE_DESCRIPTION \
   "Print license information and exit."
 
-#define __PO_OPTION_CONVERT                            "convert"
-#define __PO_OPTION_CONVERT_DESCRIPTION \
-  "Convert an XML configuration file to JSON (writes <file>.json next to it) and exit."
-
 //      debug
 #define __PO_OPTION_DEBUG                             "debug"
 #define __PO_OPTION_DEBUG_DESCRIPTION \
@@ -210,14 +206,5 @@
 #define __PO_OPTION_CAPPED_CYLINDER_QUALITY "ccq"
 #define __PO_OPTION_CAPPED_CYLINDER_QUALITY_DESCRIPTION \
   "Set the depth of the cylinder visualisation. The higher, the nicer its drawn (increases CPU usage)."
-
-#define __PO_OPTION_EXPORT_PDF      "pdf"
-#define __PO_OPTION_EXPORT_PNG      "png"
-#define __PO_OPTION_EXPORT_XSD      "xsd"
-#define __PO_OPTION_EXPORT_PY       "py"
-
-#define __PO_OPTION_EXPORT "export"
-#define __PO_OPTION_EXPORT_DESCRIPTION \
-  "Use this option to export the rosiml.xsd (--export=xsd) or a set of graphs, visualising the grammar (--export=graphviz)."
 
 #endif // __ENGLISH_PROGRAM_OPTIONS_ENGLISH_H__

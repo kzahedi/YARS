@@ -37,13 +37,6 @@ DataRobotSimulationDescription* Data::newSpecification()
   return desc;
 }
 
-XsdSpecification* Data::xsd()
-{
-  XsdSpecification *spec = new XsdSpecification();
-  DataRobotSimulationDescription::createXsd(spec);
-  return spec;
-}
-
 void Data::clear()
 {
   for(std::vector<DataRobotSimulationDescription*>::iterator i = _description.begin(); i != _description.end(); i++)

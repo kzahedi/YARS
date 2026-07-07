@@ -38,7 +38,6 @@ class DataCameraConfig : public DataNode
     DataCenterOrbitCam* center();
     DataOffsetCam*      offset();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
 

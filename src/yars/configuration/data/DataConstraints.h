@@ -21,7 +21,6 @@ class DataConstraints : public DataNode
     std::vector<DataConstraint*>::iterator c_end();
     int c_size();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     std::vector<DataConstraint*> _constraints;

@@ -35,19 +35,6 @@ void DataTraces::add(DataParseElement *element)
   }
 }
 
-void DataTraces::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *traces = new XsdSequence(YARS_STRING_TRACES_DEFINITION);
-  XsdChoice *choice = new XsdChoice("", "1", YARS_STRING_XSD_UNBOUNDED);
-  choice->add(XE(YARS_STRING_TRACE, YARS_STRING_TRACE_LINE_DEFINITION,  0));
-  choice->add(XE(YARS_STRING_POINT, YARS_STRING_TRACE_POINT_DEFINITION, 0));
-  traces->add(choice);
-  spec->add(traces);
-
-  DataTraceLine::createXsd(spec);
-  DataTracePoint::createXsd(spec);
-}
-
 std::vector<DataTraceLine*>::iterator DataTraces::l_begin()
 {
   return _lines.begin();

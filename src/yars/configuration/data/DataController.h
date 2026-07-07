@@ -21,7 +21,6 @@ class DataController : public DataNode, public std::vector<DataParameter*>
     DataController(DataNode *parent);
     virtual ~DataController() { };
 
-    static void createXsd(XsdSpecification *spec);
     void add(DataParseElement *element);
 
     string module();

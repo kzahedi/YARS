@@ -40,7 +40,6 @@ class DataLoggingSensor : public DataNode, public std::vector<string>
 
     DataLoggingSensor* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string target();
 

@@ -44,7 +44,6 @@ class DataGenericSignalSensor : public DataSensor
      */
     string signal();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericSignalSensor* _copy();
 

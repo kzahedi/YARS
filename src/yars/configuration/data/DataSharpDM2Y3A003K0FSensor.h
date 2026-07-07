@@ -36,7 +36,6 @@ class DataSharpDM2Y3A003K0FSensor : public DataSensor
      */
     Pose pose();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSharpDM2Y3A003K0FSensor *_copy();
 

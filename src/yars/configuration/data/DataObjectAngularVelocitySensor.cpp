@@ -77,27 +77,6 @@ void DataObjectAngularVelocitySensor::add(DataParseElement *element)
   }
 }
 
-void DataObjectAngularVelocitySensor::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_OBJECT_ANGULAR_VELOCITY_SENSOR_DEFINITION);
-  sensor->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,             false));
-  sensor->add(NA(YARS_STRING_GLOBAL,      YARS_STRING_TRUE_FALSE_DEFINITION,  false));
-  sensor->add(XE(YARS_STRING_OBJECT,      YARS_STRING_NAME_DEFINITION,        1, 1));
-  sensor->add(XE(YARS_STRING_COORDINATES, YARS_STRING_COORDINATES_DEFINITION, 1, 1));
-  sensor->add(XE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,       0, 1));
-  sensor->add(XE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,      0, 1));
-  spec->add(sensor);
-
-  XsdSequence *coordinates = new XsdSequence(YARS_STRING_COORDINATES_DEFINITION);
-  coordinates->add(NA(YARS_STRING_X, YARS_STRING_TRUE_FALSE_DEFINITION, true));
-  coordinates->add(NA(YARS_STRING_Y, YARS_STRING_TRUE_FALSE_DEFINITION, true));
-  coordinates->add(NA(YARS_STRING_Z, YARS_STRING_TRUE_FALSE_DEFINITION, true));
-  spec->add(coordinates);
-
-  DataNoise::createXsd(spec);
-  DataFilter::createXsd(spec);
-}
-
 bool DataObjectAngularVelocitySensor::x()
 {
   YM_LOCK;

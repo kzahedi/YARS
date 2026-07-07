@@ -131,7 +131,6 @@ class DataSliderActuator : public DataActuator
     bool isDeflectionSet();
     void applyOffset(Pose offset);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSliderActuator* _copy();
 

@@ -37,7 +37,6 @@ class DataLoggingGnuplot : public DataLoggingModule, public DataNode
 
     DataLoggingGnuplot* copy();
 
-    static void createXsd(XsdSpecification *spec);
     int size();
     int delay();
     bool pairwise();

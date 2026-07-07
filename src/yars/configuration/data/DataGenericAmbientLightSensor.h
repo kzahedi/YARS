@@ -41,7 +41,6 @@ class DataGenericAmbientLightSensor : public DataSensor
 
     DataGenericAmbientLightSensor* _copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     int dimension() { return 1; }
 

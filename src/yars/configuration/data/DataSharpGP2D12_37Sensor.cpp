@@ -49,17 +49,6 @@ Pose DataSharpGP2D12_37Sensor::pose()
   return _pose;
 }
 
-void DataSharpGP2D12_37Sensor::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *sensor = new XsdSequence(YARS_STRING_SHARP_IR_GP2D12_37_DEFINITION);
-  sensor->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,         false));
-  sensor->add(XE(YARS_STRING_OBJECT,  YARS_STRING_NAME_DEFINITION,    1, 1));
-  sensor->add(XE(YARS_STRING_POSE,    YARS_STRING_POSE_DEFINITION,    1, 1));
-  sensor->add(XE(YARS_STRING_MAPPING, YARS_STRING_MIN_MAX_DEFINITION, 1, 1));
-  spec->add(sensor);
-}
-
-
 DataSharpGP2D12_37Sensor* DataSharpGP2D12_37Sensor::_copy()
 {
   DataSharpGP2D12_37Sensor *copy = new DataSharpGP2D12_37Sensor(NULL);

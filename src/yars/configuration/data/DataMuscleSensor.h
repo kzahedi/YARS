@@ -40,7 +40,6 @@ class DataMuscleSensor : public DataSensor
      */
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataMuscleSensor *_copy();
 

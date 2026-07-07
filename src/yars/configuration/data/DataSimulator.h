@@ -94,7 +94,6 @@ class DataSimulator : public DataNode
     int  getSolverIterations();
     DataSimulator* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     /**

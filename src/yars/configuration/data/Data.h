@@ -18,7 +18,6 @@ class Data
     DataRobotSimulationDescription* current();
     DataRobotSimulationDescription* last();
     void initialise(int index = 0);
-    XsdSpecification* xsd();
     void clear();
     int  size();
 

@@ -39,7 +39,6 @@ class DataCamera : public DataNode
     void add(DataParseElement *element);
     DataCamera* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     P3D _position;

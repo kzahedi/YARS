@@ -20,7 +20,6 @@ class DataFixedActuator : public DataActuator
     string source();
     string destination();
 
-    static void createXsd(XsdSpecification *spec);
     void applyOffset(Pose offset);
 
     DataFixedActuator* _copy();

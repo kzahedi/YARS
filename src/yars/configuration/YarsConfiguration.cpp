@@ -7,9 +7,6 @@
 #include <yars/util/VideoCodecs.h>
 #include <yars/defines/defaults.h>
 
-#include <yars/configuration/xsd/parser/YarsXSDSaxParser.h>
-#include <yars/configuration/xsd/graphviz/XsdGraphvizExporter.h>
-#include <yars/configuration/xsd/generator/YarsXSDGenerator.h>
 #include <yars/configuration/data/XmlChangeLog.h>
 #include <yars/configuration/json/JsonParser.h>
 
@@ -79,12 +76,6 @@ void YarsConfiguration::init(int argc, char **argv)
     exitYars = true;
   }
 
-  if (_programOptions->exportCommand.length() > 0)
-  {
-    __processExportCommand();
-    exitYars = true;
-  }
-
   if (exitYars)
     exit(0);
 
@@ -145,30 +136,6 @@ void YarsConfiguration::__processListCommand()
     cout << " " << __PO_OPTION_FOLLOW << " : " << __PO_OPTION_FOLLOW_DESCRIPTION << endl;
     cout << " " << __PO_OPTION_DEBUG << "  : " << __PO_OPTION_DEBUG_DESCRIPTION << endl;
     cout << " " << __PO_OPTION_VIDEO_CODEC << " : " << __PO_OPTION_VIDEO_CODEC_DESCRIPTION << endl;
-  }
-}
-
-void YarsConfiguration::__processExportCommand()
-{
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_PDF)
-  {
-    XsdGraphvizExporter::writeDotFile(__PO_OPTION_EXPORT_PDF);
-  }
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_PNG)
-  {
-    XsdGraphvizExporter::writeDotFile(__PO_OPTION_EXPORT_PNG);
-  }
-
-  if (_programOptions->exportCommand == __PO_OPTION_EXPORT_XSD)
-  {
-    auto xsd = std::make_unique<YarsXSDGenerator>();
-    ofstream myfile;
-    stringstream filename;
-    filename << "rosiml.xsd";
-    myfile.open(filename.str().c_str());
-    myfile << (*xsd) << endl;
-    myfile.close();
-    cout << "rosiml.xsd written to current directory." << endl;
   }
 }
 
@@ -234,32 +201,23 @@ void YarsConfiguration::__readXmlFiles()
   Data::instance()->clear();
   string xml = getXml();
 
-  if (__isJsonPath(xml))
+  if (!__isJsonPath(xml))
   {
-    DataRobotSimulationDescription *spec = Data::instance()->newSpecification();
-    std::vector<string> errors;
-    if (!yars::parseJsonConfig(xml, spec, errors))
-    {
-      for (auto &e : errors)
-        cout << "ERROR: " << e << endl;
-      exit(-1);
-    }
+    cout << "ERROR: '" << xml << "' is not a JSON configuration file." << endl;
+    cout << "YARS only reads .json configuration files as of this version." << endl;
+    cout << "To convert an existing XML configuration, use the --convert option of the" << endl;
+    cout << "v0.9.0-last-xml release (tag v0.9.0-last-xml), which writes <file>.json" << endl;
+    cout << "next to the given XML file." << endl;
+    exit(-1);
   }
-  else
+
+  DataRobotSimulationDescription *spec = Data::instance()->newSpecification();
+  std::vector<string> errors;
+  if (!yars::parseJsonConfig(xml, spec, errors))
   {
-    auto parser = std::make_unique<YarsXSDSaxParser>();
-    // TODO parser should add new xml files to current data-structure (might already be the case?)
-    parser->read(xml);
-    if (parser->errors() > 0)
-    {
-      for (auto i = parser->w_begin(); i != parser->w_end(); ++i)
-        cout << "WARNING: " << *i << endl;
-      for (auto i = parser->e_begin(); i != parser->e_end(); ++i)
-        cout << "ERROR: " << *i << endl;
-      for (auto i = parser->f_begin(); i != parser->f_end(); ++i)
-        cout << "FATAL: " << *i << endl;
-      exit(-1);
-    }
+    for (auto &e : errors)
+      cout << "ERROR: " << e << endl;
+    exit(-1);
   }
 
   if (useRandomSeed())
@@ -322,17 +280,21 @@ void YarsConfiguration::__validateXmlPath()
     exit(0);
   }
 
-  if (xml != "-")
+  if (xml == "-")
   {
-    stringstream oss;
-    if (!_directories->doesFileExist(xml))
-    {
-      oss << "The given xml file " << xml << " does not exist.";
-    }
-    if (oss.str().length() > 0)
-    {
-      YarsErrorHandler::push(oss.str());
-    }
+    cout << "ERROR: reading a configuration from stdin ('-') was an XML-only feature" << endl;
+    cout << "and is no longer supported. Pass a .json configuration file instead." << endl;
+    exit(-1);
+  }
+
+  stringstream oss;
+  if (!_directories->doesFileExist(xml))
+  {
+    oss << "The given xml file " << xml << " does not exist.";
+  }
+  if (oss.str().length() > 0)
+  {
+    YarsErrorHandler::push(oss.str());
   }
 }
 

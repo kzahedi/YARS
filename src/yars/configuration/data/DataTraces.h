@@ -46,7 +46,6 @@ class DataTraces : public DataNode
 
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataTraces* copy();
 

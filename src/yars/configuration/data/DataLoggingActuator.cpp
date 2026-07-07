@@ -69,27 +69,6 @@ void DataLoggingActuator::add(DataParseElement *element)
   }
 }
 
-void DataLoggingActuator::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *loggingActuatorDefinition = new XsdSequence(YARS_STRING_LOGGING_ACTUATOR_DEFINITION);
-  loggingActuatorDefinition->add(NA(YARS_STRING_PRECISION, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  loggingActuatorDefinition->add(NA(YARS_STRING_TARGET, YARS_STRING_XSD_STRING, true));
-  spec->add(loggingActuatorDefinition);
-
-
-
-  XsdChoice *options = new XsdChoice(YARS_NO_NAME, "0", YARS_STRING_XSD_UNBOUNDED);
-  options->add(XE(YARS_STRING_INTERNAL,         YARS_STRING_EMPTY, 0,1));
-  options->add(XE(YARS_STRING_EXTERNAL,         YARS_STRING_EMPTY, 0,1));
-  options->add(XE(YARS_STRING_DESIRED,          YARS_STRING_EMPTY, 0,1));
-  options->add(XE(YARS_STRING_APPLIED_FORCE,    YARS_STRING_EMPTY, 0,1));
-  options->add(XE(YARS_STRING_APPLIED_VELOCITY, YARS_STRING_EMPTY, 0,1));
-  loggingActuatorDefinition->add(options);
-
-  XsdSequence *emptyDefinition = new XsdSequence(YARS_STRING_EMPTY);
-  spec->add(emptyDefinition);
-}
-
 DataLoggingActuator* DataLoggingActuator::copy()
 {
   DataLoggingActuator *copy = new DataLoggingActuator(NULL);

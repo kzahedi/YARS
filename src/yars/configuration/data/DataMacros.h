@@ -48,7 +48,6 @@ class DataMacros : public std::vector<DataMacro*>, public DataNode
 
     DataMacros* copy();
 
-    static void createXsd(XsdSpecification *spec);
 };
 
 

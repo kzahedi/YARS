@@ -16,7 +16,6 @@ class DataSoftBodyParameters : public DataNode
     //DataSoftBodyParameters(const DataSoftBodyParameters);
     //DataSoftBodyParameters operator=(const DataSoftBodyParameters);
 
-    static void createXsd(XsdSpecification *spec);
     void add(DataParseElement *element);
 
     DataSoftBodyParameters *copy();

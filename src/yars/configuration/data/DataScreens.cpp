@@ -112,37 +112,6 @@ void DataScreens::add(DataParseElement *element)
   if(element->opening(YARS_STRING_SKY)) _sky = element->attribute(YARS_STRING_NAME)->value();
 }
 
-void DataScreens::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *screenConfigDefinition = new XsdSequence(YARS_STRING_SCREEN_CONFIG_DEFINITION);
-  screenConfigDefinition->add(XE(YARS_STRING_SCREEN,        YARS_STRING_SCREEN_DEFINITION,        1));
-  screenConfigDefinition->add(XE(YARS_STRING_DEFAULT,       YARS_STRING_SCREEN_DEFINITION,        0, 1));
-  screenConfigDefinition->add(XE(YARS_STRING_SKY,           YARS_STRING_NAME_DEFINITION,          0, 1));
-  screenConfigDefinition->add(XE(YARS_STRING_CAMERA_CONFIG, YARS_STRING_CAMERA_CONFIG_DEFINITION, 0, 1));
-  screenConfigDefinition->add(XE(YARS_STRING_FOLLOWABLES,   YARS_STRING_FOLLOWABLES_DEFINITION,   0, 1));
-  screenConfigDefinition->add(XE(YARS_STRING_RECORDING,     YARS_STRING_RECORDING_DEFINITION,     0, 1));
-  screenConfigDefinition->add(XE(YARS_STRING_VISUALISE,     YARS_STRING_VISUALISE_DEFINITION,     0, 1));
-  spec->add(screenConfigDefinition);
-
-  XsdSequence *visualiseDefinition = new XsdSequence(YARS_STRING_VISUALISE_DEFINITION);
-  visualiseDefinition->add(XE(YARS_STRING_JOINTS, YARS_STRING_JOINTS_AXIS_DEFINITION, 0, 1));
-  spec->add(visualiseDefinition);
-
-  XsdSequence *jointsVisDefinition = new XsdSequence(YARS_STRING_JOINTS_AXIS_DEFINITION);
-  jointsVisDefinition->add(NA(YARS_STRING_HEIGHT, YARS_STRING_POSITIVE_DECIMAL, false));
-  jointsVisDefinition->add(NA(YARS_STRING_RADIUS, YARS_STRING_POSITIVE_DECIMAL, false));
-  jointsVisDefinition->add(NA(YARS_STRING_X,      YARS_STRING_XSD_STRING,       false));
-  jointsVisDefinition->add(NA(YARS_STRING_Y,      YARS_STRING_XSD_STRING,       false));
-  jointsVisDefinition->add(NA(YARS_STRING_Z,      YARS_STRING_XSD_STRING,       false));
-  spec->add(jointsVisDefinition);
-
-  DataScreen::createXsd(spec);
-  DataFollowables::createXsd(spec);
-  DataCameraConfig::createXsd(spec);
-  DataRecording::createXsd(spec);
-}
-
-
 DataFollowables* DataScreens::followables()
 {
   return _followables;

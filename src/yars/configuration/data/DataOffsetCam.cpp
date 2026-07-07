@@ -86,18 +86,6 @@ DataOffsetCam* DataOffsetCam::copy()
   return copy;
 }
 
-void DataOffsetCam::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *offsetCamConfig = new XsdSequence(YARS_STRING_OFFSET_CAM_DEFINITION);
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_LOOK_AT_X, YARS_STRING_PID_DEFINITION, 0, 1));
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_LOOK_AT_Y, YARS_STRING_PID_DEFINITION, 0, 1));
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_LOOK_AT_Z, YARS_STRING_PID_DEFINITION, 0, 1));
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_FROM_X,    YARS_STRING_PID_DEFINITION, 0, 1));
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_FROM_Y,    YARS_STRING_PID_DEFINITION, 0, 1));
-  offsetCamConfig->add(XE(YARS_STRING_OFFSET_CAM_FROM_Z,    YARS_STRING_PID_DEFINITION, 0, 1));
-  spec->add(offsetCamConfig);
-}
-
 PID DataOffsetCam::lookAtX()
 {
   return _lookAtX;

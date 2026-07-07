@@ -88,50 +88,6 @@ void DataPhysicsParameter::add(DataParseElement *element)
   }
 }
 
-void DataPhysicsParameter::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *physicsParameterDef = new XsdSequence(YARS_STRING_PHYSICS_DEFINITION);
-  physicsParameterDef->add(XE(YARS_STRING_MASS,             YARS_STRING_MASS_DEFINITION,             0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_COM,              YARS_STRING_COM_DEFINITION,              0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_FRICTION,         YARS_STRING_FRICTION_DEFINITION,         0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_ROLLING_FRICTION, YARS_STRING_ROLLING_FRICTION_DEFINITION, 0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_LINEAR_DAMPING,   YARS_STRING_LINEAR_DAMPING_DEFINITION,   0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_ANGULAR_DAMPING,  YARS_STRING_ANGULAR_DAMPING_DEFINITION,  0, 1));
-  physicsParameterDef->add(XE(YARS_STRING_RESTITUTION,      YARS_STRING_RESTITUTION_DEFINITION,      0, 1));
-  spec->add(physicsParameterDef);
-
-  XsdSequence *frictionDefinition = new XsdSequence(YARS_STRING_FRICTION_DEFINITION        );
-  frictionDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_DECIMAL, true));
-  spec->add(frictionDefinition);
-
-  XsdSequence *comDefinition = new XsdSequence(YARS_STRING_COM_DEFINITION);
-  comDefinition->add(NA(YARS_STRING_X, YARS_STRING_XSD_DECIMAL, false));
-  comDefinition->add(NA(YARS_STRING_Y, YARS_STRING_XSD_DECIMAL, false));
-  comDefinition->add(NA(YARS_STRING_Z, YARS_STRING_XSD_DECIMAL, false));
-  spec->add(comDefinition);
-
-  XsdSequence *linearDampingDefinition = new XsdSequence(YARS_STRING_LINEAR_DAMPING_DEFINITION  );
-  linearDampingDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_DECIMAL, true));
-  spec->add(linearDampingDefinition);
-
-  XsdSequence *massDefinition = new XsdSequence(YARS_STRING_MASS_DEFINITION);
-  // massDefinition->add(NA(YARS_STRING_KG, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, true));
-  massDefinition->add(NA(YARS_STRING_KG, YARS_STRING_POSITIVE_DECIMAL, true));
-  spec->add(massDefinition);
-
-  XsdSequence *angularDampingDefinition = new XsdSequence(YARS_STRING_ANGULAR_DAMPING_DEFINITION );
-  angularDampingDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_DECIMAL, true));
-  spec->add(angularDampingDefinition);
-
-  XsdSequence *rollingFrictionDefinition = new XsdSequence(YARS_STRING_ROLLING_FRICTION_DEFINITION);
-  rollingFrictionDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_DECIMAL, true));
-  spec->add(rollingFrictionDefinition);
-
-  XsdSequence *restitutionDefinition = new XsdSequence(YARS_STRING_RESTITUTION_DEFINITION     );
-  restitutionDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_DECIMAL, true));
-  spec->add(restitutionDefinition);
-}
-
 DataPhysicsParameter* DataPhysicsParameter::copy()
 {
   DataPhysicsParameter *copy = new DataPhysicsParameter(NULL); // NULL because no parsing takes place after copying

@@ -21,7 +21,6 @@ class DataSignalKeyboard : public DataSignal, public std::vector<DataParameter*>
     string module();
     string key();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSignalKeyboard* _copy();
 

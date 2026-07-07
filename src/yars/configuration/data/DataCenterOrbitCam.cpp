@@ -38,13 +38,6 @@ DataCenterOrbitCam* DataCenterOrbitCam::copy()
   return copy;
 }
 
-void DataCenterOrbitCam::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *orbitCamConfig = new XsdSequence(YARS_STRING_CENTER_ORBIT_CAM_DEFINITION);
-  orbitCamConfig->add(NA(YARS_STRING_CENTER_ORBIT_CAM_SPEED,     YARS_STRING_XSD_DECIMAL,    false));
-  spec->add(orbitCamConfig);
-}
-
 double DataCenterOrbitCam::speed()
 {
   return _speed;

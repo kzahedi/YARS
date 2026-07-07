@@ -46,16 +46,6 @@ void DataSignalKeyboard::add(DataParseElement *element)
   }
 }
 
-void DataSignalKeyboard::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *keyboardSignal = new XsdSequence(YARS_STRING_KEYBOARD_SIGNAL_DEFINITION);
-  keyboardSignal->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,           true));
-  keyboardSignal->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
-  keyboardSignal->add(NA(YARS_STRING_KEY,       YARS_STRING_XSD_STRING,           true));
-  keyboardSignal->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0, 1));
-  spec->add(keyboardSignal);
-}
-
 DataSignalKeyboard* DataSignalKeyboard::_copy()
 {
   DataSignalKeyboard *copy = new DataSignalKeyboard(NULL);

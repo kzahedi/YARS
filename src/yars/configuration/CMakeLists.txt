@@ -96,43 +96,13 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataMeshVisualisation.cpp
             data/DataSoftBodyParameters.cpp
 
-            json/XmlToJson.cpp
             json/JsonParser.cpp
-
-            xsd/generator/YarsXSDGenerator.cpp
-            xsd/generator/XSDString.cpp
-            xsd/graphviz/graph/XsdGraph.cpp
-            xsd/graphviz/graph/XsdGraphLink.cpp
-            xsd/graphviz/graph/XsdSequenceGraphNode.cpp
-            xsd/graphviz/graph/XsdChoiceGraphNode.cpp
-            xsd/graphviz/graph/XsdRegularExpressionGraphNode.cpp
-            xsd/graphviz/graph/XsdEnumerationGraphNode.cpp
-            xsd/graphviz/graph/XsdIntervalGraphNode.cpp
-            xsd/graphviz/graph/XsdGraphNodeInstance.cpp
-            xsd/graphviz/graph/XsdElementGraphNode.cpp
-            xsd/graphviz/graph/XsdGraphNode.cpp
-            xsd/graphviz/XsdGraphvizGenerator.cpp
-            xsd/graphviz/XsdGraphvizExporter.cpp
-            xsd/parser/YarsXSDSaxParser.cpp
-            xsd/parser/YarsXSDSaxHandler.cpp
-            xsd/specification/XsdSpecification.cpp
-            xsd/specification/XsdSequence.cpp
-            xsd/specification/XsdElement.cpp
-            xsd/specification/XsdRegularExpression.cpp
-            xsd/specification/XsdChoice.cpp
-            xsd/specification/XsdInterval.cpp
-            xsd/specification/XsdNode.cpp
-            xsd/specification/XsdEnumeration.cpp
-            xsd/specification/XsdAttribute.cpp
             )
 
 add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})
 
-# Modern CMake: Use imported targets and cleaner dependency management
-# Note: XercesC may not provide modern imported targets, fallback to old approach
 target_link_libraries(YarsConfiguration
   PRIVATE
-    ${XERCESC_LIBRARY_FILE}
     CLI11::CLI11
     YarsUtil
 )

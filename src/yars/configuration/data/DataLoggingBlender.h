@@ -37,7 +37,6 @@ class DataLoggingBlender : public DataLoggingModule, public DataNode
 
     DataLoggingBlender* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string filename();
     string cfg();

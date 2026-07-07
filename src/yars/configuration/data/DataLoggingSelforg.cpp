@@ -114,35 +114,6 @@ void DataLoggingSelforg::add(DataParseElement *element)
   }
 }
 
-void DataLoggingSelforg::createXsd(XsdSpecification *spec)
-{
-  // TODO: define filename type
-  XsdSequence *selforgDefinition = new XsdSequence(YARS_STRING_SELFORG_LOGGER_DEFINITION);
-  selforgDefinition->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,                true));
-  selforgDefinition->add(NA(YARS_STRING_FILENAME,  YARS_STRING_XSD_STRING,                false));
-  selforgDefinition->add(NA(YARS_STRING_GUILOGGER, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  selforgDefinition->add(NA(YARS_STRING_MATRIXVIZ, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  selforgDefinition->add(NA(YARS_STRING_FILE,      YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  selforgDefinition->add(XE(YARS_STRING_GUILOGGER, YARS_STRING_GUILOGGER_DEFINITION,      0));
-  selforgDefinition->add(XE(YARS_STRING_MATRIXVIZ, YARS_STRING_MATRIXVIZ_DEFINITION,      0));
-  selforgDefinition->add(XE(YARS_STRING_TARGET,    YARS_STRING_TARGET_DEFINITION,         0));
-  spec->add(selforgDefinition);
-
-  XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);
-  targetDefinition->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING, true));
-  spec->add(targetDefinition);
-
-  XsdSequence *guiloggerDefinition = new XsdSequence(YARS_STRING_GUILOGGER_DEFINITION);
-  guiloggerDefinition->add(NA(YARS_STRING_STEP_SIZE, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  spec->add(guiloggerDefinition);
-
-  XsdSequence *matrixvizDefinition = new XsdSequence(YARS_STRING_MATRIXVIZ_DEFINITION);
-  matrixvizDefinition->add(NA(YARS_STRING_STEP_SIZE, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  spec->add(matrixvizDefinition);
-
-}
-
-
 DataLoggingSelforg* DataLoggingSelforg::copy()
 {
   DataLoggingSelforg *copy = new DataLoggingSelforg(NULL);

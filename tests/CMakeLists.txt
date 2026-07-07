@@ -20,7 +20,6 @@ add_executable(
   types/test_pose.cpp
   regression/test_braitenberg.cpp
   unit/test_circular_buffer.cpp
-  unit/test_xml_to_json.cpp
   integration/test_simulation.cpp
 )
 
@@ -52,23 +51,17 @@ include(GoogleTest)
 gtest_discover_tests(yars_tests)
 
 # Parse-all test driver — black-box: invokes the yars binary on every config
-# enumerated in tests/xml_corpus.txt and asserts exit code 0 (parse + 1 iter).
+# enumerated in tests/json_corpus.txt and asserts exit code 0 (parse + 1 iter).
 # Built only if the yars binary is in the build.
-add_executable(yars_xml_parse_all xml_parse_all.cpp)
-target_link_libraries(yars_xml_parse_all gtest gtest_main)
-add_dependencies(yars_xml_parse_all yars)
-add_custom_target(test_xml_parse
+add_executable(yars_json_parse_all json_parse_all.cpp)
+target_link_libraries(yars_json_parse_all gtest gtest_main)
+add_dependencies(yars_json_parse_all yars)
+add_custom_target(test_json_parse
   COMMAND ${CMAKE_COMMAND} -E env
     YARS_REPO_ROOT=${CMAKE_SOURCE_DIR}
     YARS_BIN=$<TARGET_FILE:yars>
-    $<TARGET_FILE:yars_xml_parse_all>
-  DEPENDS yars_xml_parse_all yars
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  USES_TERMINAL)
-
-# XSD-validate driver — runs xmllint over the corpus against xml/yars.xsd.
-add_custom_target(test_xsd_validate
-  COMMAND ${CMAKE_SOURCE_DIR}/tests/xsd_validate.sh ${CMAKE_SOURCE_DIR}
+    $<TARGET_FILE:yars_json_parse_all>
+  DEPENDS yars_json_parse_all yars
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   USES_TERMINAL)
 

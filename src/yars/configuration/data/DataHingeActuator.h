@@ -127,7 +127,6 @@ class DataHingeActuator : public DataActuator
     double getAppliedVelocity(int index);
     void setAppliedForceAndVelocity(int index, double force, double velocity);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataHingeActuator* _copy();
 

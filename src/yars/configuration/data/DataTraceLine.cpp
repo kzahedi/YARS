@@ -113,55 +113,6 @@ void DataTraceLine::add(DataParseElement *element)
 
 }
 
-void DataTraceLine::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *line = new XsdSequence(YARS_STRING_TRACE_LINE_DEFINITION);
-  line->add(NA(YARS_STRING_TARGET,         YARS_STRING_XSD_STRING,                true));
-  line->add(NA(YARS_STRING_LENGTH,         YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  line->add(NA(YARS_STRING_NR_OF_ELEMENTS, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  line->add(NA(YARS_STRING_TIME,           YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  line->add(NA(YARS_STRING_LINE,           YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  line->add(NA(YARS_STRING_PARTICLES,      YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  line->add(NA(YARS_STRING_BILLBOARD,      YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  line->add(NA(YARS_STRING_PROJECT,        YARS_STRING_PLANES_DEFINITION,         false));
-
-  line->add(XE(YARS_STRING_INIT,           YARS_STRING_INIT_DEFINITION,           0, 1));
-  line->add(XE(YARS_STRING_FINAL,          YARS_STRING_FINAL_DEFINITION,          0, 1));
-  line->add(XE(YARS_STRING_OFFSET,         YARS_STRING_OFFSET_DEFINITION,         0, 1));
-  line->add(XE(YARS_STRING_TEXTURE,        YARS_STRING_NAME_DEFINITION,           0, 1));
-  line->add(XE(YARS_STRING_PARTICLES,      YARS_STRING_NAME_DEFINITION,           0, 1));
-  line->add(XE(YARS_STRING_BILLBOARD,      YARS_STRING_NAME_DEFINITION,           0, 1));
-  spec->add(line);
-
-  XsdSequence *init = new XsdSequence(YARS_STRING_INIT_DEFINITION);
-  init->add(NA(YARS_STRING_COLOR, YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION, false));
-  init->add(NA(YARS_STRING_SIZE,  YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  spec->add(init);
-
-  XsdSequence *final = new XsdSequence(YARS_STRING_FINAL_DEFINITION);
-  final->add(NA(YARS_STRING_COLOR, YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION, false));
-  final->add(NA(YARS_STRING_SIZE,  YARS_STRING_POSITIVE_DECIMAL, false));
-  spec->add(final);
-
-  XsdSequence *offset = new XsdSequence(YARS_STRING_OFFSET_DEFINITION);
-  offset->add(NA(YARS_STRING_LOCAL, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-  offset->add(NA(YARS_STRING_X,     YARS_STRING_XSD_DECIMAL,           false));
-  offset->add(NA(YARS_STRING_Y,     YARS_STRING_XSD_DECIMAL,           false));
-  offset->add(NA(YARS_STRING_Z,     YARS_STRING_XSD_DECIMAL,           false));
-  spec->add(offset);
-
-  XsdEnumeration *planes = new XsdEnumeration(YARS_STRING_PLANES_DEFINITION, YARS_STRING_XSD_STRING);
-  planes->add(YARS_STRING_PROJECT_XZ);
-  planes->add(YARS_STRING_PROJECT_YZ);
-  planes->add(YARS_STRING_PROJECT_XY);
-  spec->add(planes);
-
-  XsdRegularExpression *colorHex = new XsdRegularExpression(YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION,
-                                                            YARS_STRING_XSD_STRING,
-                                                            YARS_STRING_XSD_HEX_COLOR);
-  spec->add(colorHex);
-}
-
 string DataTraceLine::target()
 {
   return _target;

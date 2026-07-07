@@ -45,7 +45,6 @@ class DataSharpGP2D12_37Sensor : public DataSensor
      */
     Pose pose();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSharpGP2D12_37Sensor *_copy();
 

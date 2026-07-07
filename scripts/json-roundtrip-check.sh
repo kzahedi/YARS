@@ -1,23 +1,18 @@
 #!/usr/bin/env bash
 #
-# Stage 1 acceptance check (JSON Stage 1 brief, Step 4): for each config in
-# the CI-runnable corpus (the same 13 configs sanitize-corpus.sh exercises,
-# mirroring the STANDALONE/CFG2LIB arrays in .github/workflows/linux-build.yml),
-# convert XML -> JSON, run both from the .xml and from the converted .json,
-# and compare:
-#   - braitenberg_logging / hexapod_logging (the two logging configs):
-#     bit-exact CSV diff.
-#   - everything else: exit code + final console line.
+# JSON self-check gate (formerly the JSON Stage 1 XML<->JSON round-trip
+# check; retargeted for JSON Stage 3, the XML/Xerces harvest — see
+# v0.9.0-last-xml for the last release that could still run this check
+# against a live --convert / XML-SAX path).
 #
-# Corpus is read-only: the committed xml/*.json twins are never written or
-# deleted by this script. --convert writes its output next to whatever
-# input path it is given, so the source .xml is copied into the $WORKDIR
-# scratch tree first and converted there. The freshly-converted
-# $WORKDIR/<name>.json is then diffed byte-for-byte against the committed
-# xml/<name>.json ("DRIFT" failure if they differ) and is also the file the
-# JSON-side simulation run is executed from (proving the converter's actual
-# output, not the pre-existing corpus copy). $WORKDIR is removed via the
-# EXIT trap, so nothing under xml/ is ever touched.
+# There is no XML path left to diff against, so this now runs each config
+# in the CI-runnable corpus (the same set sanitize-corpus.sh exercises,
+# mirroring the STANDALONE/CFG2LIB arrays in .github/workflows/linux-build.yml)
+# TWICE from its committed .json and checks for determinism:
+#   - braitenberg_logging / hexapod_logging (the two logging configs):
+#     bit-exact CSV diff between the two runs.
+#   - everything else: exit code 0 on both runs + identical final console
+#     line between the two runs.
 #
 # Usage: scripts/json-roundtrip-check.sh <build-dir>   (default: build)
 
@@ -25,9 +20,6 @@ set -u
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="${1:-$ROOT/build}"
-# Resolve to an absolute path: run_one() cd's into a scratch directory
-# before invoking $YARS_BIN, so a relative BUILD_DIR (e.g. the default
-# caller-friendly "build") would otherwise silently fail to resolve there.
 BUILD_DIR="$(cd "$BUILD_DIR" && pwd)"
 YARS_BIN="$BUILD_DIR/bin/yars"
 
@@ -38,30 +30,28 @@ fi
 
 # Standalone configs (no controller library needed).
 STANDALONE=(
-  xml/braitenberg_nocontroller.xml
-  xml/falling_objects.xml
-  xml/test_capture.xml
-  xml/hexapod_logging.xml
+  xml/braitenberg_nocontroller.json
+  xml/falling_objects.json
+  xml/test_capture.json
+  xml/hexapod_logging.json
 )
 # Controller-based configs: config -> lib name (mirrors sanitize-corpus.sh /
 # linux-build.yml).
 CONFIGS=(
-  "xml/braitenberg.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_noise.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_logging.xml:YarsControllerBraitenberg3b"
-  "xml/braitenberg_light_source.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_trace_projection.xml:YarsControllerBraitenberg2b"
-  "xml/braitenberg_zoo.xml:YarsControllerBraitenberg2a"
-  "xml/muscle.xml:YarsControllerSquareWave"
-  "xml/joints/generic_angular.xml:YarsControllerSine"
-  "xml/joints/generic_force.xml:YarsControllerSine"
+  "xml/braitenberg.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_noise.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_logging.json:YarsControllerBraitenberg3b"
+  "xml/braitenberg_light_source.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_trace_projection.json:YarsControllerBraitenberg2b"
+  "xml/braitenberg_zoo.json:YarsControllerBraitenberg2a"
+  "xml/muscle.json:YarsControllerSquareWave"
+  "xml/joints/generic_angular.json:YarsControllerSine"
+  "xml/joints/generic_force.json:YarsControllerSine"
 )
 
-# The two logging configs get a bit-exact CSV diff; everything else gets
-# exit-code + final-console-line comparison.
 is_logging_config() {
   case "$1" in
-    xml/braitenberg_logging.xml|xml/hexapod_logging.xml) return 0 ;;
+    xml/braitenberg_logging.json|xml/hexapod_logging.json) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -76,113 +66,79 @@ PASSED=0
 run_one() {
   local cfg="$1"
   local name
-  name="$(basename "$cfg" .xml)"
+  name="$(basename "$cfg" .json)"
   TOTAL=$((TOTAL + 1))
 
-  local xmlpath="$ROOT/$cfg"
-  local corpus_jsonpath="${xmlpath%.xml}.json"
+  local jsonpath="$ROOT/$cfg"
+  local rundir_a="$WORKDIR/${name}-a"
+  local rundir_b="$WORKDIR/${name}-b"
+  mkdir -p "$rundir_a" "$rundir_b"
 
-  # 1. Convert. --convert writes its output next to the INPUT path, so copy
-  # the .xml into the scratch dir and convert there — the committed corpus
-  # (both the .xml and its .json twin) is never written to.
-  local scratch_xml="$WORKDIR/${name}.xml"
-  local jsonpath="$WORKDIR/${name}.json"
-  cp "$xmlpath" "$scratch_xml"
-  if ! timeout 30s "$YARS_BIN" --convert "$scratch_xml" >"$WORKDIR/${name}-convert.log" 2>&1; then
-    echo "FAIL $cfg (conversion failed, see $WORKDIR/${name}-convert.log)"
-    sed 's/^/  /' "$WORKDIR/${name}-convert.log"
-    FAILED=1
-    return
-  fi
-  if [[ ! -f "$jsonpath" ]]; then
-    echo "FAIL $cfg (conversion did not produce $jsonpath)"
-    FAILED=1
-    return
-  fi
-
-  # 1b. Corpus-drift check: the freshly-converted JSON must be byte-identical
-  # to the committed twin. A mismatch means the corpus is stale relative to
-  # the converter and needs regenerating (and re-committing) deliberately.
-  if [[ ! -f "$corpus_jsonpath" ]]; then
-    echo "FAIL $cfg (DRIFT: no committed corpus twin at $corpus_jsonpath)"
-    FAILED=1
-    return
-  fi
-  if ! diff -q "$jsonpath" "$corpus_jsonpath" >/dev/null; then
-    echo "FAIL $cfg (DRIFT: converted JSON differs from committed $corpus_jsonpath)"
-    diff "$jsonpath" "$corpus_jsonpath" | head -20
-    FAILED=1
-    return
-  fi
-
-  # 2/3. Run 500 iters from each format. Controller libraries are located
-  # via a path relative to CWD (confirmed: running from outside $BUILD_DIR
-  # fails with "Controller '...' not found"), so both runs must execute
-  # with $BUILD_DIR as CWD, exactly like sanitize-corpus.sh does. CSV
-  # logging output also lands in CWD, so any newly-created *.csv is moved
-  # out to a per-run scratch dir immediately after each run (sequential,
-  # not parallel, so there's no cross-run collision).
-  local xmldir="$WORKDIR/${name}-xml"
-  local jsondir="$WORKDIR/${name}-json"
-  mkdir -p "$xmldir" "$jsondir"
-
-  local before_csvs after_csvs new_csv
+  # Run the same committed .json twice and require deterministic output.
+  # Controller libraries are located via a path relative to CWD (confirmed:
+  # running from outside $BUILD_DIR fails with "Controller '...' not
+  # found"), so both runs execute with $BUILD_DIR as CWD, exactly like
+  # sanitize-corpus.sh does. CSV logging output also lands in CWD, so any
+  # newly-created *.csv is moved out to a per-run scratch dir immediately
+  # after each run (sequential, not parallel, so there's no cross-run
+  # collision).
+  local before_csvs after_csvs
   before_csvs="$(ls "$BUILD_DIR"/*.csv 2>/dev/null || true)"
-  ( cd "$BUILD_DIR" && timeout 120s "$YARS_BIN" --iterations 500 --nogui --xml "$xmlpath" \
-      >"$WORKDIR/${name}-xml.log" 2>&1 )
-  local xml_rc=$?
+  ( cd "$BUILD_DIR" && timeout 120s "$YARS_BIN" --iterations 500 --nogui --xml "$jsonpath" \
+      >"$WORKDIR/${name}-a.log" 2>&1 )
+  local rc_a=$?
   after_csvs="$(ls "$BUILD_DIR"/*.csv 2>/dev/null || true)"
   for f in $after_csvs; do
     if ! grep -qxF "$f" <<<"$before_csvs"; then
-      mv "$f" "$xmldir/"
+      mv "$f" "$rundir_a/"
     fi
   done
 
   before_csvs="$(ls "$BUILD_DIR"/*.csv 2>/dev/null || true)"
   ( cd "$BUILD_DIR" && timeout 120s "$YARS_BIN" --iterations 500 --nogui --xml "$jsonpath" \
-      >"$WORKDIR/${name}-json.log" 2>&1 )
-  local json_rc=$?
+      >"$WORKDIR/${name}-b.log" 2>&1 )
+  local rc_b=$?
   after_csvs="$(ls "$BUILD_DIR"/*.csv 2>/dev/null || true)"
   for f in $after_csvs; do
     if ! grep -qxF "$f" <<<"$before_csvs"; then
-      mv "$f" "$jsondir/"
+      mv "$f" "$rundir_b/"
     fi
   done
 
-  if [[ $xml_rc -ne $json_rc ]]; then
-    echo "FAIL $cfg (exit code mismatch: xml=$xml_rc json=$json_rc)"
+  if [[ $rc_a -ne 0 || $rc_b -ne 0 ]]; then
+    echo "FAIL $cfg (non-zero exit: run-a=$rc_a run-b=$rc_b)"
     FAILED=1
     return
   fi
 
   if is_logging_config "$cfg"; then
-    local xml_csv json_csv
-    xml_csv=$(ls "$xmldir"/*.csv 2>/dev/null | head -1)
-    json_csv=$(ls "$jsondir"/*.csv 2>/dev/null | head -1)
-    if [[ -z "$xml_csv" || -z "$json_csv" ]]; then
-      echo "FAIL $cfg (expected CSV logging output, xml_csv='$xml_csv' json_csv='$json_csv')"
+    local csv_a csv_b
+    csv_a=$(ls "$rundir_a"/*.csv 2>/dev/null | head -1)
+    csv_b=$(ls "$rundir_b"/*.csv 2>/dev/null | head -1)
+    if [[ -z "$csv_a" || -z "$csv_b" ]]; then
+      echo "FAIL $cfg (expected CSV logging output, run-a='$csv_a' run-b='$csv_b')"
       FAILED=1
       return
     fi
-    if ! diff -q "$xml_csv" "$json_csv" >/dev/null; then
-      echo "FAIL $cfg (CSV mismatch: $xml_csv vs $json_csv)"
-      diff "$xml_csv" "$json_csv" | head -20
+    if ! diff -q "$csv_a" "$csv_b" >/dev/null; then
+      echo "FAIL $cfg (CSV mismatch between two runs: $csv_a vs $csv_b)"
+      diff "$csv_a" "$csv_b" | head -20
       FAILED=1
       return
     fi
-    echo "PASS $cfg (exit=$xml_rc, CSV bit-exact)"
+    echo "PASS $cfg (exit=0, CSV bit-exact across two runs)"
   else
-    local xml_last json_last
-    xml_last=$(tail -1 "$WORKDIR/${name}-xml.log")
-    json_last=$(tail -1 "$WORKDIR/${name}-json.log")
-    if [[ "$xml_last" != "$json_last" ]]; then
-      echo "FAIL $cfg (final console line mismatch)"
-      echo "  xml : $xml_last"
-      echo "  json: $json_last"
+    local last_a last_b
+    last_a=$(tail -1 "$WORKDIR/${name}-a.log")
+    last_b=$(tail -1 "$WORKDIR/${name}-b.log")
+    if [[ "$last_a" != "$last_b" ]]; then
+      echo "FAIL $cfg (final console line mismatch between two runs)"
+      echo "  run-a: $last_a"
+      echo "  run-b: $last_b"
       FAILED=1
       return
     fi
-    echo "PASS $cfg (exit=$xml_rc, final line matches)"
+    echo "PASS $cfg (exit=0, final line matches across two runs)"
   fi
   PASSED=$((PASSED + 1))
 }
@@ -203,6 +159,6 @@ for entry in "${CONFIGS[@]}"; do
 done
 
 echo ""
-echo "Round-trip: $PASSED/$TOTAL passed"
+echo "JSON self-check: $PASSED/$TOTAL passed"
 
 exit $FAILED

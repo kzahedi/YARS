@@ -18,7 +18,6 @@ class DataSignals : public DataNode, public std::vector<DataSignal*>
 
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSignals* copy();
 

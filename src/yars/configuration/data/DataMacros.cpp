@@ -48,15 +48,6 @@ void DataMacros::add(DataParseElement *element)
   }
 }
 
-void DataMacros::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *macrosConfigDefinition = new XsdSequence(YARS_STRING_MACROS_DEFINITION);
-  macrosConfigDefinition->add(XE(YARS_STRING_MACRO, YARS_STRING_MACRO_DEFINITION, 1));
-  spec->add(macrosConfigDefinition);
-  DataMacro::createXsd(spec);
-}
-
-
 DataMacros* DataMacros::copy()
 {
   DataMacros *copy = new DataMacros(NULL);

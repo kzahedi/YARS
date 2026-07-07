@@ -57,7 +57,6 @@ class DataBox : public DataObject
     DataBox* _copy();
     void     _resetTo(const DataObject* other);
 
-    static void createXsd(XsdSpecification *spec);
 
 
   private:

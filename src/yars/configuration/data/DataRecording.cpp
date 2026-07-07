@@ -37,18 +37,6 @@ void DataRecording::add(DataParseElement *element)
   }
 }
 
-void DataRecording::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *recording = new XsdSequence(YARS_STRING_RECORDING_DEFINITION);
-  recording->add(XE(YARS_STRING_INTERVAL, YARS_STRING_INTERVAL_DEFINITION, 0));
-  spec->add(recording);
-
-  XsdSequence *intervalDefinition = new XsdSequence(YARS_STRING_INTERVAL_DEFINITION);
-  intervalDefinition->add(NA(YARS_STRING_START, YARS_STRING_POSITIVE_INTEGER, true));
-  intervalDefinition->add(NA(YARS_STRING_END,   YARS_STRING_POSITIVE_INTEGER, true));
-  spec->add(intervalDefinition);
-}
-
 DataRecording* DataRecording::copy()
 {
   DataRecording *copy = new DataRecording(NULL);

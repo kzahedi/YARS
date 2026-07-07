@@ -16,7 +16,6 @@ class DataMeshVisualisation : public DataNode
 
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     P3D    scale();
     string name();

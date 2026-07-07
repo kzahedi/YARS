@@ -48,20 +48,6 @@ double DataAmbientLight::brightness()
   return _brightness;
 }
 
-void DataAmbientLight::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *lightSourceDefinition = new XsdSequence(YARS_STRING_AMBIENT_LIGHT_DEFINITION);
-  lightSourceDefinition->add(NA(YARS_STRING_COLOR,      YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION, true));
-  lightSourceDefinition->add(NA(YARS_STRING_BRIGHTNESS, YARS_STRING_UNIT_INTERVAL,                true));
-  spec->add(lightSourceDefinition);
-
-  XsdRegularExpression *colorHex =
-    new XsdRegularExpression(YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION,
-                             YARS_STRING_XSD_STRING, YARS_STRING_XSD_HEX_COLOR);
-  spec->add(colorHex);
-}
-
-
 DataAmbientLight* DataAmbientLight::copy()
 {
   DataAmbientLight *copy = new DataAmbientLight(NULL);

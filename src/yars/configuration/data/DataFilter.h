@@ -25,7 +25,6 @@ class DataFilter : public DataNode, public std::vector<DataParameter*>
 
     DataParameter* parameter(int index);
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     string                 _module;
