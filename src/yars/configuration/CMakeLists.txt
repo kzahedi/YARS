@@ -96,6 +96,8 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataMeshVisualisation.cpp
             data/DataSoftBodyParameters.cpp
 
+            json/XmlToJson.cpp
+
             xsd/generator/YarsXSDGenerator.cpp
             xsd/generator/XSDString.cpp
             xsd/graphviz/graph/XsdGraph.cpp

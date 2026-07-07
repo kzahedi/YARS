@@ -20,6 +20,7 @@ add_executable(
   types/test_pose.cpp
   regression/test_braitenberg.cpp
   unit/test_circular_buffer.cpp
+  unit/test_xml_to_json.cpp
   integration/test_simulation.cpp
 )
 
@@ -30,6 +31,7 @@ target_link_libraries(
   gtest_main
   YarsDataTypes
   YarsUtil
+  YarsConfiguration
 )
 
 # Include YARS headers
