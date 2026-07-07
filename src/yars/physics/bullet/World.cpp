@@ -131,16 +131,29 @@ void World::removeConstraint(btTypedConstraint *constraint)
   _world->removeConstraint(constraint);
 }
 
+bool World::rayTest(const btVector3 &start, const btVector3 &end,
+                    btVector3 &hitOut, btScalar maxFraction)
+{
+  btCollisionWorld::ClosestRayResultCallback rayCallback(start, end);
+  if (maxFraction < btScalar(1.0))
+    rayCallback.m_closestHitFraction = maxFraction;   // Bullet seeds traversal pruning from this
+  _me->_world->rayTest(start, end, rayCallback);
+  if (rayCallback.m_collisionObject != nullptr)       // NOT hasHit(): see precision context above
+  {
+    hitOut = rayCallback.m_hitPointWorld;
+    return true;
+  }
+  hitOut = end;
+  return false;
+}
+
 P3D World::rayTest(P3D start, P3D end)
 {
   btVector3 _start(start.x, start.y, start.z);
   btVector3 _end(end.x, end.y, end.z);
-  btCollisionWorld::ClosestRayResultCallback rayCallback(_start, _end);
-  _me->_world->rayTest(_start, _end, rayCallback);
-  btVector3 hit = rayCallback.m_hitPointWorld;
-  if (rayCallback.hasHit())
-    return P3D(hit[0], hit[1], hit[2]);
-  return end;
+  btVector3 hit;
+  if (rayTest(_start, _end, hit)) return P3D(hit[0], hit[1], hit[2]);
+  return end;   // exact original double value, no float round-trip
 }
 
 #ifdef USE_SOFT_BODIES

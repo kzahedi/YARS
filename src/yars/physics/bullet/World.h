@@ -24,6 +24,9 @@ class World
     static World *instance();
     static World *reset();
     static P3D rayTest(P3D start, P3D end);
+    static bool rayTest(const btVector3 &start, const btVector3 &end,
+                        btVector3 &hitOut,
+                        btScalar maxFraction = btScalar(1.0));
 
     // proceeds one simulation step
     void step(double stepSize);
