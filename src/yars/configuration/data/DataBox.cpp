@@ -1,4 +1,5 @@
 #include "DataBox.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 #include "DataDimensionFactory.h"
 
@@ -21,6 +22,27 @@
 #define YARS_STRING_VISUALISATION_OPTION_1 (char*)"option1"
 #define YARS_STRING_VISUALISATION_OPTION_2 (char*)"option2"
 #define YARS_STRING_VISUALISATION_OPTION_3 (char*)"option3"
+
+namespace
+{
+// Attribute binding table for the box's own opening tag. Child-element
+// dispatch (pose/dimension/physics/texture/mesh) stays hand-written below —
+// it's a state machine a flat attribute table doesn't model.
+const std::vector<yars::AttributeBinding> &boxAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataBox *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataBox *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataBox::DataBox(DataNode *parent)
   : DataObject(parent, DATA_OBJECT_BOX)
@@ -45,8 +67,7 @@ void DataBox::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_OBJECT_BOX))
   {
-    element->set(YARS_STRING_NAME,      _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
+    yars::applyAttributes(this, element, boxAttributeBindings());
   }
   if(element->opening(YARS_STRING_POSE))
   {
