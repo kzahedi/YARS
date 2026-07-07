@@ -1,4 +1,5 @@
 #include "DataSphere.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 
 # define YARS_STRING_RADIUS                      (char*)"radius"
@@ -31,6 +32,26 @@ double DataSphere::radius()
 }
 
 
+namespace
+{
+// Attribute binding table for the sphere's own opening tag. Child-element
+// dispatch (dimension/pose/physics/texture/mesh) stays hand-written below.
+const std::vector<yars::AttributeBinding> &sphereAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSphere *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSphere *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 void DataSphere::add(DataParseElement *element)
 {
   if(element->closing(YARS_STRING_OBJECT_SPHERE))
@@ -39,8 +60,7 @@ void DataSphere::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_OBJECT_SPHERE))
   {
-    element->set(YARS_STRING_NAME,      _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
+    yars::applyAttributes(this, element, sphereAttributeBindings());
   }
   if(element->opening(YARS_STRING_DIMENSION))
   {

@@ -20,6 +20,7 @@ add_executable(
   types/test_pose.cpp
   regression/test_braitenberg.cpp
   unit/test_circular_buffer.cpp
+  unit/test_data_binding.cpp
   integration/test_simulation.cpp
 )
 

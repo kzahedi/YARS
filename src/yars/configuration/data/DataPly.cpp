@@ -1,4 +1,5 @@
 #include "DataPly.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 #include "DataMeshVisualisation.h"
 
@@ -32,17 +33,46 @@ DataPly::~DataPly()
   delete _parameters;
 }
 
+namespace
+{
+// Attribute binding table for the ply's own opening tag. Child-element
+// dispatch (pose/physics/soft-body-parameters/texture/mesh) stays
+// hand-written below.
+const std::vector<yars::AttributeBinding> &plyAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataPly *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataPly *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_FILE_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataPly *>(self)->setFilename(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_CONVEX,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataPly *>(self)->setConvex(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_SOFT,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataPly *>(self)->setSoft(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 void DataPly::add(DataParseElement *element)
 {
   if(element->closing(YARS_STRING_OBJECT_PLY)) current = parent;
 
   if(element->opening(YARS_STRING_OBJECT_PLY))
   {
-    element->set(YARS_STRING_NAME,      _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
-    element->set(YARS_STRING_FILE_NAME, _filename);
-    element->set(YARS_STRING_CONVEX,    _isConvex);
-    element->set(YARS_STRING_SOFT,      _isSoft);
+    yars::applyAttributes(this, element, plyAttributeBindings());
   }
 
   if(element->opening(YARS_STRING_POSE))    DataPoseFactory::set(_pose,       element);
@@ -109,6 +139,21 @@ bool DataPly::isConvex()
 bool DataPly::isSoft()
 {
   return _isSoft;
+}
+
+void DataPly::setFilename(string filename)
+{
+  _filename = filename;
+}
+
+void DataPly::setConvex(bool isConvex)
+{
+  _isConvex = isConvex;
+}
+
+void DataPly::setSoft(bool isSoft)
+{
+  _isSoft = isSoft;
 }
 
 void DataPly::setNumberOfVertices(int n)

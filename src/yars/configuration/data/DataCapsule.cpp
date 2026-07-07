@@ -1,4 +1,5 @@
 #include "DataCapsule.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 #include "DataDimensionFactory.h"
 
@@ -28,6 +29,26 @@ DataCapsule::~DataCapsule()
 {
 }
 
+namespace
+{
+// Attribute binding table for the capsule's own opening tag. Child-element
+// dispatch (pose/dimension/physics/texture/mesh) stays hand-written below.
+const std::vector<yars::AttributeBinding> &capsuleAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataCapsule *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataCapsule *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 void DataCapsule::add(DataParseElement *element)
 {
   if(element->closing(YARS_STRING_OBJECT_CAPPED_CYLINDER))
@@ -36,8 +57,7 @@ void DataCapsule::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_OBJECT_CAPPED_CYLINDER))
   {
-    element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
+    yars::applyAttributes(this, element, capsuleAttributeBindings());
   }
   if(element->opening(YARS_STRING_POSE))
   {

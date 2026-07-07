@@ -30,6 +30,10 @@ class DataPly : public DataObject
     bool   isConvex();
     bool   isSoft();
 
+    void   setFilename(string filename);
+    void   setConvex(bool isConvex);
+    void   setSoft(bool isSoft);
+
     void   lock();
     void   setVertex(int i, double x, double y, double z);
     void   setNormal(int i, double x, double y, double z);
