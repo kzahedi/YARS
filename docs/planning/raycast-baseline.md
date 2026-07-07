@@ -146,3 +146,171 @@ run 3: 1.99s real
 Regression gates (bit-exact, both empty):
 - `braitenberg_logging.xml`, 2000 iterations vs `reference_logfile.macos-arm64.csv`: empty diff.
 - `hexapod_logging.xml`, 2000 iterations vs `reference_logfile_hexapod.macos-arm64.csv`: empty diff.
+
+## Task 5: LDR ray via btVector3 overload
+
+Converted `GenericLDRSensor`'s per-light occlusion ray from the P3D `World::rayTest`
+overload to the `btVector3` overload introduced in Task 2, removing a P3D↔btVector3
+round-trip on the hit path. The planned range early-out step was skipped:
+`DataGenericLightDependentResistorSensor` has no range/distance member to early-out on.
+Verified byte-identical output on a dedicated LDR A/B gate
+(`braitenberg_light_source.xml`, 2000 iterations) plus the standard braitenberg/hexapod
+gates.
+
+## Final results (all five tasks applied)
+
+**Machine**: Mac Mini, Apple M4, macOS 26.5.1 (Darwin 25.5.0, arm64) — same machine as
+the baseline. **Date**: 2026-07-07. **Git SHA**: `53a0259b123fd7049f1b824dac52aaed7dac546e`
+(branch `feat/raycast-optimization`, clean tree, all five perf commits applied: Task 2
+`377a0d6`, Task 3 `ed582ca`, Task 4 `455a41b`, Task 5 `53a0259`). Build: `./build`,
+Release configuration, rebuilt immediately before measuring. Machine-quiet check
+(`pgrep -fl "clang|cc1plus|cmake --build" | grep -v clangd`) returned empty before each
+timed batch.
+
+### Per-task wall-clock deltas on `braitenberg_zoo.xml` (20,000 iterations, running median)
+
+| Checkpoint | Median real time | Throughput | Cumulative delta vs. baseline |
+|---|---|---|---|
+| Baseline (Task 1) | 2.209 s | ~9,054 steps/s | — |
+| Post-Task-3 (rayTest overload + ray clamping) | 2.06 s | ~9,709 steps/s | ~6.7% |
+| Post-Task-4 (Pose composition hoist) | 1.98 s | ~10,101 steps/s | ~10.4% |
+| Post-Task-5 (LDR ray overload) / **final** | 1.997 s | ~10,015 steps/s | **~9.6%** |
+
+(Post-Task-5 is a hair above the post-Task-4 checkpoint — both are within normal
+run-to-run variance on this machine, ~1-2%; Task 5 targets the LDR ray, not the
+proximity-sensor path this benchmark's rays run through, so no further zoo movement
+was expected from it.)
+
+### Final wall-clock benchmark: `braitenberg_zoo.xml`, 20,000 iterations, `--nogui`
+
+Six runs; the first three (below) show typical warm-up variance, the settled group
+of three that follows is the representative measurement:
+
+```
+run 1: 2.080s real
+run 2: 2.016s real
+run 3: 2.034s real
+run 4: 2.018s real
+run 5: 1.997s real
+run 6: 1.993s real
+```
+
+- Median of the settled runs (4-6): **1.997 s**
+- Median throughput: **20000 / 1.997 ≈ 10,015 steps/s**
+- **Delta vs. baseline (2.209 s): ~9.6%** (just under the 10% target; see profile
+  discussion below for what remains)
+
+### Final wall-clock benchmark: `braitenberg.xml`, 100,000 iterations, `--nogui`
+
+```
+run 1: 2.014s real
+run 2: 2.230s real
+run 3: 2.251s real
+run 4: 2.139s real
+run 5: 2.172s real
+run 6: 2.083s real
+```
+
+- Median of the settled runs (4-6): **2.139 s**
+- Median throughput: **100000 / 2.139 ≈ 46,751 steps/s**
+- **Delta vs. baseline (2.163 s): ~1.1%** — within run-to-run noise. Expected:
+  `braitenberg.xml` runs a single robot with far fewer proximity/LDR rays per step
+  than the zoo scenario, so the raycast-path optimizations have little surface here.
+
+### Final profile spot-check
+
+Command (identical to the baseline):
+
+```bash
+cd /Volumes/Eregion/projects/yars/build
+./bin/yars --iterations 400000 --nogui --xml ../xml/braitenberg_zoo.xml >/dev/null 2>&1 & YPID=$!
+sleep 2; sample $YPID 5 -file raycast-final-sample.txt >/dev/null 2>&1
+kill $YPID 2>/dev/null
+grep -A25 "Sort by top of stack" raycast-final-sample.txt | head -30
+```
+
+Top of the "Sort by top of stack" table, baseline vs. final (sample counts):
+
+| Frame | Baseline | Final |
+|---|---|---|
+| `__workq_kernreturn` (kernel) | 6886 | 6986 |
+| `btDbvt::rayTestInternal` | 746 | 787 |
+| `btSubsimplexConvexCast::calcTimeOfImpact` | 645 | 612 |
+| `btVoronoiSimplexSolver::closestPtPointTriangle` | 243 | 299 |
+| `btVoronoiSimplexSolver::updateClosestVectorAndPoints` | 204 | 194 |
+| `btSphereShape::localGetSupportingVertex` | 163 | 232 |
+| `gResolveSingleConstraintRowGeneric_scalar_reference` | 160 | 228 |
+| `btCollisionWorld::rayTestSingleInternal` | 152 | 115 |
+| `btDbvt::rayTest` | 152 | 164 |
+| `btVoronoiSimplexSolver::inSimplex` | 121 | 109 |
+| `atan2` | 113 | 51 |
+| `yars::Pose::operator<<` | **43** | **5** |
+
+`yars::Pose::operator<<` dropped from 43 samples to 5 (≈88% reduction), confirming the
+Task 4 hoist is still in effect at the final SHA and matches the ~5x call-count
+reduction expected from moving pose composition out of the 5-ray loop.
+
+The Bullet-internal raycast/narrowphase frames (`btDbvt::rayTestInternal`,
+`btSubsimplexConvexCast::calcTimeOfImpact`, the `btVoronoiSimplexSolver::*` family)
+did **not** shrink in absolute or kernel-relative terms — they move within normal
+sample-to-sample noise (±10-15%) around their baseline values. This is expected given
+what Tasks 2/3/5 actually changed: Task 2 removed a P3D↔btVector3 conversion on the
+call boundary (cheap relative to the Bullet-internal BVH walk itself), Task 3's
+running-min clamp only prunes traversal once a closer hit than the sensor's own
+max range has already been found (most zoo rays hit nothing or hit far, so the clamp
+rarely fires), and Task 5 touches the LDR path, not the proximity-sensor rays this
+profile predominantly samples. None of the applied optimizations changed Bullet's own
+`rayTestInternal`/narrowphase algorithms — they removed conversions and redundant work
+*around* those calls. The dominant remaining cost is still raycasting/narrowphase
+itself, which would require a different approach (e.g. reducing per-step ray count,
+spatial batching, or a custom broadphase) to move further.
+
+### GUI verification
+
+Frame export via `--framesDirectory` is a known pre-existing break (see
+`docs/planning/v0.8.7-open-points.md`, "PNG frame export is non-functional") — it
+produces zero frames on this machine independent of this branch's changes, so it was
+**not** used for this check per that documented limitation. Instead, ran the GUI
+without frame export:
+
+```bash
+cd /Volumes/Eregion/projects/yars/build
+timeout 90s ./bin/yars --iterations 1000 --xml ../xml/braitenberg_zoo.xml
+```
+
+Result: window opened, simulation ran to completion, clean exit:
+
+```
+Non-critical XML version mismatch
+Showing differences from your XML's version 0.8.40 to the current version 0.8.41:
+     0.8.41 -- optional -- traces can now also be projected to xy,yz,xz plane
+...
+ShadowMapper: initialised with light=Vector3(-0.57735, -0.57735, -0.57735)
+Maximum number of physics iterations (1000) reached.
+Good bye.
+EXIT CODE: 0
+```
+
+Visual frame-by-frame comparison (sensor rays/robots in exported PNGs) is blocked by
+the pre-existing frame-export bug and was not performed; the version-mismatch message
+is expected/non-critical (XML schema version note, not an error).
+
+### Regression gates (bit-exact, re-verified at final SHA)
+
+- `braitenberg_logging.xml`, 2000 iterations vs `reference_logfile.macos-arm64.csv`: empty diff.
+- `hexapod_logging.xml`, 2000 iterations vs `reference_logfile_hexapod.macos-arm64.csv`: empty diff.
+
+### Summary
+
+| Scenario | Baseline | Final | Delta |
+|---|---|---|---|
+| `braitenberg_zoo.xml` (20k iter) | 2.209 s / ~9,054 steps/s | 1.997 s / ~10,015 steps/s | **~9.6%** |
+| `braitenberg.xml` (100k iter) | 2.163 s / ~46,232 steps/s | 2.139 s / ~46,751 steps/s | ~1.1% (noise) |
+
+Result: **~9.6% on the zoo benchmark** — just under the ≥10% target set in the plan,
+result-preserving (all regression gates bit-exact) across five commits (Task 2 through
+Task 5). The profile confirms the targeted `Pose::operator<<` hotspot is resolved; the
+remaining cost is dominated by Bullet's own raycast/narrowphase implementation, which
+is out of scope for this result-preserving optimization pass and would need a
+different (likely more invasive, e.g. broadphase/ray-batching) approach to move
+further.
