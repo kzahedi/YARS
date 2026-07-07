@@ -11,6 +11,7 @@
 #include <yars/configuration/xsd/graphviz/XsdGraphvizExporter.h>
 #include <yars/configuration/xsd/generator/YarsXSDGenerator.h>
 #include <yars/configuration/data/XmlChangeLog.h>
+#include <yars/configuration/json/JsonParser.h>
 
 #include <yars/defines/program_options.h>
 #include <yars/defines/keyboard_shortcuts.h>
@@ -213,23 +214,52 @@ void YarsConfiguration::__printListCommandFollowModes()
 #endif // USE_VISUALISATION
 }
 
+namespace
+{
+// ".json" extension selects the JSON parse path (yars::parseJsonConfig);
+// anything else (including the "-" stdin sentinel) keeps using the XML/SAX
+// path. Stdin-fed JSON configs are out of scope for Stage 1 — "-" has no
+// filename extension to key off, and JsonParser has no stdin-reading
+// equivalent, so it deliberately stays XML-only.
+bool __isJsonPath(const string &path)
+{
+  static const string suffix = ".json";
+  return path.size() > suffix.size() &&
+         path.compare(path.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+} // namespace
+
 void YarsConfiguration::__readXmlFiles()
 {
   Data::instance()->clear();
   string xml = getXml();
 
-  auto parser = std::make_unique<YarsXSDSaxParser>();
-  // TODO parser should add new xml files to current data-structure (might already be the case?)
-  parser->read(xml);
-  if (parser->errors() > 0)
+  if (__isJsonPath(xml))
   {
-    for (auto i = parser->w_begin(); i != parser->w_end(); ++i)
-      cout << "WARNING: " << *i << endl;
-    for (auto i = parser->e_begin(); i != parser->e_end(); ++i)
-      cout << "ERROR: " << *i << endl;
-    for (auto i = parser->f_begin(); i != parser->f_end(); ++i)
-      cout << "FATAL: " << *i << endl;
-    exit(-1);
+    DataRobotSimulationDescription *spec = Data::instance()->newSpecification();
+    std::vector<string> errors;
+    if (!yars::parseJsonConfig(xml, spec, errors))
+    {
+      for (auto &e : errors)
+        cout << "ERROR: " << e << endl;
+      exit(-1);
+    }
+  }
+  else
+  {
+    auto parser = std::make_unique<YarsXSDSaxParser>();
+    // TODO parser should add new xml files to current data-structure (might already be the case?)
+    parser->read(xml);
+    if (parser->errors() > 0)
+    {
+      for (auto i = parser->w_begin(); i != parser->w_end(); ++i)
+        cout << "WARNING: " << *i << endl;
+      for (auto i = parser->e_begin(); i != parser->e_end(); ++i)
+        cout << "ERROR: " << *i << endl;
+      for (auto i = parser->f_begin(); i != parser->f_end(); ++i)
+        cout << "FATAL: " << *i << endl;
+      exit(-1);
+    }
   }
 
   if (useRandomSeed())
