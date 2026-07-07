@@ -19,8 +19,32 @@
 - Ogre rebuilds are expensive (~20+ min): reuse `ext/ogre/build` incrementally; only reconfigure when flags change.
 - Commit per task; no pushes without user approval.
 - Key existing code: `src/yars/view/gui/OgreHandler.cpp` (render system selection + Root init), `src/yars/view/gui/SdlWindow.cpp` (SDL↔Ogre window glue), `src/cfg/plugins.cfg.in` (plugin list), `src/yars/view/gui/ShadowMapper.*` + shadow materials (see `docs/planning/shadows_state.md` — READ IT FIRST).
+- Staleness re-review 2026-07-07: all load-bearing technical claims re-verified against the post-batch tree (no MSL writer in RTSS; `OgreMetalRenderWindow.mm` param parsing; flat plugins.cfg.in; source line refs). Workflow line refs updated below. Task 0 added as a hard prerequisite for Tasks 5-8.
 
 ---
+
+### Task 0 (PREREQUISITE for Tasks 5-8): Fix the PNG frame-export bug
+
+PNG frame export (`--framesDirectory`) is broken — produces zero frames on
+macOS arm64 (pre-existing; discovered 2026-07-06, recorded in
+`docs/planning/v0.8.7-open-points.md`). It is this plan's sole visual
+acceptance instrument from Task 5 onward, so it must work first.
+Tasks 1-4 (spike + `--renderer` plumbing) do NOT depend on it and may run
+before or in parallel with this task.
+
+**Files:**
+- Likely: `src/yars/view/gui/SdlWindow.cpp` and/or the configuration
+  plumbing between `src/yars/configuration/ProgramOptions.cpp:187`
+  (`if (_framesDirSet) __captureFramesDirectory();` — confirmed to run)
+  and `__YARS_GET_FRAMES_DIRECTORY` as read in `SdlWindow.cpp:90-94`
+  (auto-enable) — the suspect is init ordering: SdlWindow may be
+  constructed/initialized before the option value reaches the container
+  it reads, or it reads a different container instance.
+
+- [ ] **Step 1: Reproduce + instrument.** `cd build && mkdir -p frames && timeout 60s ./bin/yars --iterations 10 --framesDirectory frames --xml ../xml/braitenberg.xml; ls frames | wc -l` — currently 0. Add a temporary debug print of `__YARS_GET_FRAMES_DIRECTORY` at SdlWindow's read site to confirm it's empty there, then trace where/when the value is set vs read (macro definition, container instance, call order from `grep -rn "__YARS_GET_FRAMES_DIRECTORY\|setFramesDirectory" src/`).
+- [ ] **Step 2: Fix the ordering/plumbing** (minimal change; remove the debug print). Also verify `ConsoleView::printCapturingInformation` output appears per frame.
+- [ ] **Step 3: Acceptance.** The Step 1 command now produces `frames/frame_00000001.png` … `frame_00000010.png`, non-empty, visually showing the scene (open one). Bit-exact CSV regression (braitenberg + hexapod, 2000 iters) unchanged — this is a GUI-path fix and must not touch simulation output.
+- [ ] **Step 4: Commit** (`fix(gui): frame export — <actual root cause>`), update the open-points entry to closed.
 
 ### Task 1 (Phase 0): Build Ogre with the Metal render system
 
@@ -122,7 +146,7 @@ The remaining tasks assume GO and use the spike's recorded working parameters.
 
 - [ ] **Step 1: Add the CLI option** following the exact pattern of an existing string option in the same file (copy `--captureName`'s definition/plumbing end-to-end, rename accordingly, default value `"gl"`, validate against {`gl`,`metal`}).
 
-- [ ] **Step 2: Plugin list**: `src/cfg/plugins.cfg.in` is a FLAT list with no platform conditionals (only `@OGRE_PLUGINS_DIR@` is substituted, via plain `configure_file` at `cmake/CreateConfigFiles.cmake:51`) — there is no existing idiom to copy, and an unconditional `Plugin=RenderSystem_Metal` line would abort Ogre::Root on Linux. Introduce one: in `CreateConfigFiles.cmake`, `set(METAL_PLUGIN_LINE "")`, then inside `if(APPLE)` (and ideally only if the Metal framework exists in `ext/ogre/install`) `set(METAL_PLUGIN_LINE "Plugin=RenderSystem_Metal")`; put `@METAL_PLUGIN_LINE@` on its own line in the template. Verify the generated Linux-style `plugins.cfg` (configure with the variable unset) contains no Metal line and no blank-line breakage.
+- [ ] **Step 2: Plugin list**: `src/cfg/plugins.cfg.in` is a FLAT list with no platform conditionals (only `@OGRE_PLUGINS_DIR@` is substituted, via plain `configure_file` at `cmake/CreateConfigFiles.cmake:51`; note that file now also carries the `OGRE_PLUGINS_DIR`/APPLE-symlink logic at lines ~36-50 just above — don't disturb it) — there is no existing idiom to copy, and an unconditional `Plugin=RenderSystem_Metal` line would abort Ogre::Root on Linux. Introduce one: in `CreateConfigFiles.cmake`, `set(METAL_PLUGIN_LINE "")`, then inside `if(APPLE)` (and ideally only if the Metal framework exists in `ext/ogre/install`) `set(METAL_PLUGIN_LINE "Plugin=RenderSystem_Metal")`; put `@METAL_PLUGIN_LINE@` on its own line in the template. Verify the generated Linux-style `plugins.cfg` (configure with the variable unset) contains no Metal line and no blank-line breakage.
 
 - [ ] **Step 3: Selection in OgreHandler**: replace the hard-coded selection with a lookup keyed by the flag; unknown/unavailable render system ⇒ throw with a message listing available ones. Apply the SDL window-creation differences (no `SDL_WINDOW_OPENGL` for Metal; the spike's recorded param set) conditioned on the same flag in `SdlWindow.cpp`.
 
@@ -220,6 +244,6 @@ time ./bin/yars --iterations 5000 --renderer metal --xml ../xml/braitenberg_zoo.
 
 Expected: Metal wall-clock ≤ GL within ~10%. Record both numbers in the findings doc; a materially slower Metal blocks any future default flip.
 
-- [ ] **Step 2: CI**: confirm both workflows green (they exercise only the GL path — that is by design; add `-DOGRE_BUILD_RENDERSYSTEM_METAL=ON` to the macOS workflow's Ogre build block at `macos-build.yml:47-51` so the plugin at least compiles in CI, and change the cache key's trailing `-v2-nofi` to `-v3-nofi` at `macos-build.yml:45` to force the rebuild).
+- [ ] **Step 2: CI**: confirm both workflows green (they exercise only the GL path — that is by design; add `-DOGRE_BUILD_RENDERSYSTEM_METAL=ON` to the macOS workflow's Ogre configure command — replace the `OFF` at `macos-build.yml:67`, inside the `cmake -S ext/ogre-source …` block spanning lines 53-70 — and change the cache key's trailing `-v2-nofi` to `-v3-nofi` at `macos-build.yml:48` to force the rebuild. Line numbers re-verified 2026-07-07 after the Bullet-cache blocks landed; re-check with `grep -n "ogre14-macos14\|RENDERSYSTEM_METAL" .github/workflows/macos-build.yml` before editing).
 
 - [ ] **Step 3: Update docs**: `CLAUDE.md` (renderer flag, Metal status), `docs/planning/v0.8.7-open-points.md` (Metal available behind flag; default-flip decision deferred). Commit, hand off for push approval.

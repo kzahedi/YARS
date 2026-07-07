@@ -146,9 +146,9 @@ Today, malformed configs are rejected by Xerces XSD validation BEFORE the Data* 
 ```bash
 cd /Volumes/Eregion/projects/yars/build
 # for each convertible corpus config with a runnable setup — corpus
-# sources: tests/xml_corpus.txt, plus the STANDALONE/CFG2LIB arrays in
-# .github/workflows/linux-build.yml (and scripts/sanitize-corpus.sh if
-# the CI quality gates plan has merged by then):
+# sources: tests/xml_corpus.txt, the STANDALONE/CFG2LIB arrays in
+# .github/workflows/linux-build.yml, AND scripts/sanitize-corpus.sh
+# (exists now — 13 hardcoded xml/ paths mirroring the workflow arrays):
 #   1. run 500 iters from the .xml     -> out-xml.csv (if it logs)
 #   2. run 500 iters from the .json    -> out-json.csv
 #   3. diff — must be bit-identical
@@ -168,7 +168,13 @@ Write this as `scripts/json-roundtrip-check.sh` (committed). For braitenberg_log
 
 **Files:**
 - Create: `xml/*.json` for every runnable corpus config (via `scripts/convert-corpus.sh`)
-- Modify: both workflows: audit/corpus/regression steps run the `.json` twins; ADD one step that still runs braitenberg_logging from `.xml` (guards the XML path until Stage 3 deletes it)
+- Modify: both workflows — EXHAUSTIVE retarget list (13 distinct xml/ paths; enumerated 2026-07-07, re-verify with `grep -n "xml/" .github/workflows/*.yml scripts/*.sh` before editing — a partial retarget leaves jobs silently on stale paths):
+  - `linux-build.yml` job `build-and-audit`: smoke test (braitenberg_nocontroller), STANDALONE array (3 configs), CFG2LIB map (9 configs), braitenberg_logging CSV-regression step, hexapod_logging CSV-regression step, FFmpeg capture step (test_capture), performance-trend step (via perf-measure.sh below)
+  - `linux-build.yml` job `sanitize`: its `scripts/sanitize-corpus.sh` invocation (script edit below); its own `libxerces-c-dev` apt entry stays until Stage 3
+  - `macos-build.yml`: both smoke-test steps, braitenberg_logging + hexapod_logging CSV-regression steps, performance-trend step
+- Modify: `scripts/sanitize-corpus.sh` — retarget BOTH config arrays (STANDALONE + CONFIGS) to `.json`
+- Modify: `scripts/perf-measure.sh` — retarget its hardcoded `xml/braitenberg.xml`. Its CI step is `continue-on-error: true`, so missing this makes the perf trend DIE SILENTLY after Stage 3 — verify a fresh data point lands on `ci-perf-history` after the switch
+- ADD one workflow step that still runs braitenberg_logging from `.xml` (guards the XML path until Stage 3 deletes it)
 - Modify: `README`/`CLAUDE.md` examples to `.json`
 
 - [ ] **Step 1:** Convert, commit configs. **Step 2:** Switch workflow steps (CSV gates now run from JSON — references must stay bit-identical, which Stage 1 already proved locally; if CI disagrees, STOP and debug — do not regenerate references). **Step 3:** Validate YAML, run full local regression from JSON, GUI smoke run from a JSON config. Commit per step; hand off for push approval.
@@ -188,7 +194,9 @@ Write this as `scripts/json-roundtrip-check.sh` (committed). For braitenberg_log
 Note: removing `--export` deletes a user-facing CLI feature (schema/diagram export). Confirm with the user at the same time as the release-tag confirmation in Step 1 — it is XSD-specific by nature, but the removal must be a stated decision, not a silent casualty.
 
 - [ ] **Step 1:** Confirm with the user, then tag: `git tag v0.9.0-last-xml && git push --tags` (approval required). The tag's README section documents `--convert` usage for stragglers.
-- [ ] **Step 2:** Delete in dependency order (graphviz/`--export` first, generator + createXsd chain second, SAX third, Xerces last), building between deletions. Completeness gates: `grep -rn "xercesc\|XMLString\|createXsd" src/yars tests --include="*.h" --include="*.cpp" | grep -v json` must end empty (excluding comments), AND `grep -rn "\.xml\b" tests/CMakeLists.txt .github/workflows/` must show only intentionally-retained references.
+- [ ] **Step 2:** Delete in dependency order (graphviz/`--export` first, generator + createXsd chain second, SAX third, Xerces last), building between deletions. Xerces apt removal covers BOTH `libxerces-c-dev` entries in `linux-build.yml` (the `build-and-audit` job AND the `sanitize` job have separate apt lists). Completeness gates: `grep -rn "xercesc\|XMLString\|createXsd" src/yars tests --include="*.h" --include="*.cpp" | grep -v json` must end empty (excluding comments), AND `grep -rn "\.xml\b" tests/CMakeLists.txt .github/workflows/ scripts/` must show only intentionally-retained references, AND `scripts/perf-measure.sh` still executes (run it once).
+
+- [ ] **Step 2b: Suppression-file hygiene.** `scripts/sanitizer-suppressions.txt` names this plan as the removal tracker for most of its entries. After the deletions: remove `leak:xercesc_3_2::`, `leak:YarsXSDSaxHandler::startElement`, `leak:createXsd`, `leak:XsdSpecification`, `leak:YarsXSDSaxParser::read` (all symbols gone). Leave the `Data*` constructor entries for Stage 4 to retire family-by-family. Push and confirm the `sanitize` job is STILL GREEN with the pruned file — if new unsuppressed leaks surface, the deletion missed a free path; investigate, don't re-add suppressions.
 - [ ] **Step 3:** Full local verification: build, JSON regression bit-exact, GUI smoke, `otool -L build/bin/yars | grep -i xerces` empty. Record LOC delta (`git diff --stat main` summary) in the commit message. Commit per deletion batch.
 
 ---
@@ -223,7 +231,7 @@ void applyAttributes(DataNode *self, DataParseElement *element,
 - [ ] **Step 1:** Write `applyAttributes` + a unit test (a fake DataNode subclass with two attributes, one required, one defaulted; assert values land, missing-required throws with the `file:node: message` format from the spec).
 - [ ] **Step 2:** Migrate `DataBox` alone: its `add()` attribute-handling block becomes a static binding table + one `applyAttributes` call; child-element dispatch stays hand-written (that's the state-machine part, tables don't model it — the spec's LOC win comes mostly from `createXsd()` deletion, already harvested in Stage 3, plus attribute-block dedup here). Regression: bit-exact CSVs; boxes appear in the braitenberg environments (NOT in `falling_objects.json`, which is spheres-only) — the standard braitenberg regression gate exercises DataBox directly.
 - [ ] **Step 3:** Migrate the remaining four shape classes with the identical recipe. Commit per class.
-- [ ] **Step 4: Write the recipe doc** `docs/planning/binding-table-recipe.md`: the mechanical steps + the DataBox before/after diff as the worked example, plus the priority order for remaining families (sensors → actuators → logging → robot/environment roots). Each subsequent family is an independent future task executed with this recipe under the same regression gate — explicitly OK to schedule across sessions.
+- [ ] **Step 4: Write the recipe doc** `docs/planning/binding-table-recipe.md`: the mechanical steps + the DataBox before/after diff as the worked example, plus the priority order for remaining families (sensors → actuators → logging → robot/environment roots). Each subsequent family is an independent future task executed with this recipe under the same regression gate — explicitly OK to schedule across sessions. The recipe MUST include a suppression-retirement step: when a family's constructors gain real ownership, delete its `leak:Data*` entries from `scripts/sanitizer-suppressions.txt` and confirm the CI `sanitize` job stays green — a suppression that outlives its leak hides regressions.
 
 ---
 
