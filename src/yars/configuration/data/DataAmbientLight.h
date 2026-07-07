@@ -63,7 +63,6 @@ class DataAmbientLight : public DataNode
 
     DataAmbientLight *copy();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     P3D      _position;

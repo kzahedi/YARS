@@ -39,7 +39,6 @@ class DataCapsule : public DataCylinder
     string texture(int index);
     void setTexture(int index, string texture);
 
-    static void createXsd(XsdSpecification *spec);
 
     void _resetTo(const DataObject* other);
 

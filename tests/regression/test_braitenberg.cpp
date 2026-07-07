@@ -51,17 +51,17 @@ TEST_F(BraitenbergRegressionTest, BasicDataTypesWork) {
 
 TEST_F(BraitenbergRegressionTest, ConfigurationFileExists) {
     // Test that the braitenberg configuration file exists
-    std::string xml_path = (original_dir / ".." / "xml" / "braitenberg_logging.xml").string();
-    
-    EXPECT_TRUE(std::filesystem::exists(xml_path)) << "Braitenberg XML file not found: " << xml_path;
-    
+    std::string json_path = (original_dir / ".." / "xml" / "braitenberg_logging.json").string();
+
+    EXPECT_TRUE(std::filesystem::exists(json_path)) << "Braitenberg JSON file not found: " << json_path;
+
     // Test that we can read the file
-    std::ifstream file(xml_path);
-    EXPECT_TRUE(file.is_open()) << "Could not open braitenberg XML file";
-    
-    // Check that it contains expected XML content
+    std::ifstream file(json_path);
+    EXPECT_TRUE(file.is_open()) << "Could not open braitenberg JSON file";
+
+    // Check that it contains expected JSON content
     std::string content((std::istreambuf_iterator<char>(file)),
                         std::istreambuf_iterator<char>());
-    EXPECT_TRUE(content.find("<rosiml") != std::string::npos) << "XML file does not contain expected ROSIML root element";
-    EXPECT_TRUE(content.find("Braiternberg") != std::string::npos || content.find("braitenberg") != std::string::npos) << "XML file does not contain braitenberg elements";
+    EXPECT_TRUE(content.find("\"rosiml\"") != std::string::npos) << "JSON file does not contain expected rosiml root element";
+    EXPECT_TRUE(content.find("Braiternberg") != std::string::npos || content.find("braitenberg") != std::string::npos) << "JSON file does not contain braitenberg elements";
 }

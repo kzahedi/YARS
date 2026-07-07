@@ -49,24 +49,6 @@ void DataNoise::add(DataParseElement *element)
   }
 }
 
-void DataNoise::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *noiseDefinition = new XsdSequence(YARS_STRING_NOISE_DEFINITION);
-  noiseDefinition->add(NA(YARS_STRING_MODULE,    YARS_STRING_NOISE_TYPE_DEFINITION, true));
-  noiseDefinition->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION,  true));
-  spec->add(noiseDefinition);
-
-  XsdEnumeration *noiseTypesDefinition = new XsdEnumeration(YARS_STRING_NOISE_TYPE_DEFINITION, YARS_STRING_XSD_STRING);
-  noiseTypesDefinition->add(YARS_STRING_GAUSS);
-  noiseTypesDefinition->add(YARS_STRING_WHITE);
-  spec->add(noiseTypesDefinition);
-
-  XsdSequence *parameterDefinition = new XsdSequence(YARS_STRING_PARAMETER_DEFINITION);
-  parameterDefinition->add(NA(YARS_STRING_NAME,  YARS_STRING_XSD_STRING, true));
-  parameterDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_STRING, true));
-  spec->add(parameterDefinition);
-}
-
 DataParameter* DataNoise::parameter(int index)
 {
   return at(index);

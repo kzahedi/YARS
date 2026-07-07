@@ -47,23 +47,6 @@ void DataMeshVisualisation::add(DataParseElement *element)
   }
 }
 
-void DataMeshVisualisation::createXsd(XsdSpecification *spec)
-{
-
-  XsdSequence *meshDefinition = new XsdSequence(YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION);
-  meshDefinition->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING,       true));
-  meshDefinition->add(XE(YARS_STRING_TEXTURE, YARS_STRING_NAME_DEFINITION, 0, 1));
-  meshDefinition->add(XE(YARS_STRING_SCALE,   YARS_STRING_SCALE_DEFINITION, 0, 1));
-  meshDefinition->add(XE(YARS_STRING_POSE,    YARS_STRING_POSE_DEFINITION,  0, 1));
-  spec->add(meshDefinition);
-
-  XsdSequence *scaleDefinition = new XsdSequence(YARS_STRING_SCALE_DEFINITION);
-  scaleDefinition->add(NA(YARS_STRING_X, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  scaleDefinition->add(NA(YARS_STRING_Y, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  scaleDefinition->add(NA(YARS_STRING_Z, YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  spec->add(scaleDefinition);
-}
-
 DataMeshVisualisation* DataMeshVisualisation::copy()
 {
   DataMeshVisualisation* copy = new DataMeshVisualisation(NULL);

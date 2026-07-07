@@ -123,7 +123,6 @@ class DataGenericActuatorSensor : public DataSensor
      */
     Domain domain(int index);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericActuatorSensor* _copy();
 

@@ -29,7 +29,3 @@ void DataConstraints::add(DataParseElement *element)
   }
 }
 
-void DataConstraints::createXsd(XsdSpecification *spec)
-{
-}
-

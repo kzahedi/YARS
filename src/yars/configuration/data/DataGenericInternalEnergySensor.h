@@ -37,7 +37,6 @@ class DataGenericInternalEnergySensor : public DataSensor
      */
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericInternalEnergySensor *_copy();
 

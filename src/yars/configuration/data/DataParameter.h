@@ -26,7 +26,6 @@ class DataParameter : public DataNode
     string value();
     bool boolValue();
 
-    void createXsd();
 
     DataParameter *copy();
 

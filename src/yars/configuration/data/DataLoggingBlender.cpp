@@ -31,16 +31,6 @@ void DataLoggingBlender::add(DataParseElement *element)
   }
 }
 
-void DataLoggingBlender::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *blenderDefinition = new XsdSequence(YARS_STRING_BLENDER_LOGGER_DEFINITION);
-  blenderDefinition->add(NA(YARS_STRING_NAME,       YARS_STRING_XSD_STRING,                true));
-  blenderDefinition->add(NA(YARS_STRING_CFG,        YARS_STRING_XSD_STRING,                false));
-  blenderDefinition->add(NA(YARS_STRING_FRAME_RATE, YARS_STRING_POSITIVE_NON_ZERO_INTEGER, false));
-  spec->add(blenderDefinition);
-}
-
-
 DataLoggingBlender* DataLoggingBlender::copy()
 {
   DataLoggingBlender *copy = new DataLoggingBlender(NULL);

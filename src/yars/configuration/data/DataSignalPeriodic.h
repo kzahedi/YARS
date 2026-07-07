@@ -20,7 +20,6 @@ class DataSignalPeriodic : public DataSignal, public std::vector<DataParameter*>
     string name();
     string module();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSignalPeriodic* _copy();
 

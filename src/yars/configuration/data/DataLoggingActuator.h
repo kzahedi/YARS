@@ -43,7 +43,6 @@ class DataLoggingActuator : public DataNode, public std::vector<string>
 
     DataLoggingActuator* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string target();
 

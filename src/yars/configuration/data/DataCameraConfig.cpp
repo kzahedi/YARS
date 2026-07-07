@@ -46,20 +46,6 @@ DataCameraConfig* DataCameraConfig::copy()
   return copy;
 }
 
-void DataCameraConfig::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *cameraConfigDefinition = new XsdSequence(YARS_STRING_CAMERA_CONFIG_DEFINITION);
-  cameraConfigDefinition->add(XE(YARS_STRING_ORBIT_CAM,        YARS_STRING_ORBIT_CAM_DEFINITION,        0, 1));
-  cameraConfigDefinition->add(XE(YARS_STRING_CENTER_ORBIT_CAM, YARS_STRING_CENTER_ORBIT_CAM_DEFINITION, 0, 1));
-  cameraConfigDefinition->add(XE(YARS_STRING_OFFSET_CAM,       YARS_STRING_OFFSET_CAM_DEFINITION,       0, 1));
-  spec->add(cameraConfigDefinition);
-
-  DataOrbitCam::createXsd(spec);
-  DataCenterOrbitCam::createXsd(spec);
-  DataOffsetCam::createXsd(spec);
-}
-
-
 DataOrbitCam* DataCameraConfig::orbit()
 {
   return _orbit;

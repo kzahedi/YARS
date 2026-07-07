@@ -40,7 +40,6 @@ class DataPly : public DataObject
     void   setNumberOfNormals(int n);
     void   setNumberOfIndices(int n);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSoftBodyParameters* parameter();
 

@@ -32,12 +32,9 @@ class DataObjectFactory
      */
     static DataObject* object(DataParseElement *element, DataNode *parent);
 
-    static void createXsd(XsdSpecification *spec);
-    static void createXsdWithoutComposite(XsdSpecification *spec);
 
   private:
 
-    static void        __createXsd(XsdSpecification *spec, bool withComposite);
     static DataObject* __generateBox(DataParseElement *element, DataNode *parent);
     static DataObject* __generateSphere(DataParseElement *element, DataNode *parent);
     static DataObject* __generateCylinder(DataParseElement *element, DataNode *parent);

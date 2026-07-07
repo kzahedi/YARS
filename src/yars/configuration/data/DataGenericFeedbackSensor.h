@@ -40,7 +40,6 @@ class DataGenericFeedbackSensor : public DataSensor
      */
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericFeedbackSensor *_copy();
 

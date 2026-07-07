@@ -202,64 +202,6 @@ void DataHingeActuator::applyOffset(Pose offset)
   _axisOrientation   = _pose.orientation;
 }
 
-void DataHingeActuator::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *hingeDefinition = new XsdSequence(YARS_STRING_HINGE_DEFINITION);
-  hingeDefinition->add(NA(YARS_STRING_NAME,        YARS_STRING_XSD_STRING,               false));
-  hingeDefinition->add(NA(YARS_STRING_TYPE,        YARS_STRING_ACTUATOR_TYPE_DEFINITION, true));
-  hingeDefinition->add(NA(YARS_STRING_MODE,        YARS_STRING_ACTUATOR_MODE_DEFINITION, true));
-  hingeDefinition->add(NA(YARS_STRING_FORCE,       YARS_STRING_POSITIVE_DECIMAL,         false));
-  hingeDefinition->add(NA(YARS_STRING_VELOCITY,    YARS_STRING_POSITIVE_DECIMAL,         false));
-  hingeDefinition->add(XE(YARS_STRING_SOURCE,      YARS_STRING_NAME_DEFINITION,          1, 1));
-  hingeDefinition->add(XE(YARS_STRING_DESTINATION, YARS_STRING_NAME_DEFINITION,          0, 1));
-  hingeDefinition->add(XE(YARS_STRING_POSE,        YARS_STRING_POSEG_DEFINITION,         1, 1));
-  hingeDefinition->add(XE(YARS_STRING_DEFLECTION,  YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-  hingeDefinition->add(XE(YARS_STRING_MAPPING,     YARS_STRING_MIN_MAX_DEFINITION,       0, 1));
-
-  XsdElement *regularParameters = XE(YARS_STRING_REGULAR, "", 0, 1);
-  regularParameters->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
-  regularParameters->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
-  hingeDefinition->add(regularParameters);
-
-  hingeDefinition->add(XE(YARS_STRING_LIMIT,       YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  hingeDefinition->add(XE(YARS_STRING_ORTHOGONAL,  YARS_STRING_ACTUATOR_PARAMETER_DEFINITION, 0, 1));
-  hingeDefinition->add(XE(YARS_STRING_PID,         YARS_STRING_PID_DEFINITION,                0, 1));
-  hingeDefinition->add(XE(YARS_STRING_NOISE,       YARS_STRING_NOISE_DEFINITION,              0, 1));
-  hingeDefinition->add(XE(YARS_STRING_FILTER,      YARS_STRING_FILTER_DEFINITION,             0, 1));
-  spec->add(hingeDefinition);
-
-  XsdEnumeration *actuatorTypeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_TYPE_DEFINITION,
-      YARS_STRING_XSD_STRING);
-  actuatorTypeDefinition->add(YARS_STRING_VELOCITY);
-  actuatorTypeDefinition->add(YARS_STRING_ANGULAR);
-  actuatorTypeDefinition->add(YARS_STRING_FORCE);
-  spec->add(actuatorTypeDefinition);
-
-  XsdSequence *poseDefinition = new XsdSequence(YARS_STRING_POSEG_DEFINITION);
-  poseDefinition->add(NA(YARS_STRING_X,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_Y,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_Z,     YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_ALPHA, YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_BETA,  YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_GAMMA, YARS_STRING_XSD_DECIMAL,        false));
-  poseDefinition->add(NA(YARS_STRING_TYPE,  YARS_STRING_RAD_DEG_DEFINITION, false));
-  poseDefinition->add(NA(YARS_STRING_GLOBAL, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-  spec->add(poseDefinition);
-
-  XsdEnumeration *actuatorModeDefinition = new XsdEnumeration(YARS_STRING_ACTUATOR_MODE_DEFINITION,
-      YARS_STRING_XSD_STRING);
-  actuatorModeDefinition->add(YARS_STRING_ACTIVE);
-  actuatorModeDefinition->add(YARS_STRING_PASSIVE);
-  spec->add(actuatorModeDefinition);
-
-  XsdSequence *actuatorParameter = new XsdSequence(YARS_STRING_ACTUATOR_PARAMETER_DEFINITION);
-  actuatorParameter->add(NA(YARS_STRING_SOFTNESS,    YARS_STRING_POSITIVE_DECIMAL, false));
-  actuatorParameter->add(NA(YARS_STRING_DAMPING,     YARS_STRING_POSITIVE_DECIMAL, false));
-  actuatorParameter->add(NA(YARS_STRING_RESTITUTION, YARS_STRING_POSITIVE_DECIMAL, false));
-  spec->add(actuatorParameter);
-}
-
 void DataHingeActuator::__close()
 {
   if(_jointType == YARS_STRING_ANGULAR)  _controlType = DATA_ACTUATOR_CONTROL_ANGULAR;

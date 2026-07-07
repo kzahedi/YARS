@@ -26,7 +26,6 @@ class DataOrbitCam : public DataNode
 
     DataOrbitCam* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     PID lookAtX();
     PID lookAtY();

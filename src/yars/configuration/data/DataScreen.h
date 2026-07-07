@@ -105,7 +105,6 @@ class DataScreen : public DataNode
 
     DataScreen* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     int    osdRobotFontSize();
     string osdRobotFontName();

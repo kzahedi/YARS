@@ -226,7 +226,6 @@ class DataGenericActuator : public DataActuator
     GenericParamter parameter();
 
     void applyOffset(Pose offset);
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericActuator* _copy();
 

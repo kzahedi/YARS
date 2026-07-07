@@ -28,7 +28,6 @@ class DataMacroInstance : public DataNode, public DataObjects
     string texture(int index);
     int nrOfTextures();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     void __setTexture(DataObject *o);

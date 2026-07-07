@@ -37,7 +37,6 @@ class DataLoggingConsole : public DataLoggingModule, public DataNode
 
     DataLoggingConsole* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
 };

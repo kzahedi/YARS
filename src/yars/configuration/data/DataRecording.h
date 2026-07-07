@@ -24,7 +24,6 @@ class DataRecording : public DataNode, public std::vector<RecordingInterval>
     DataRecording(DataNode *parent);
     virtual ~DataRecording() { };
 
-    static void createXsd(XsdSpecification *spec);
     void add(DataParseElement *element);
     void resetTo(const DataRecording*);
     DataRecording* copy();

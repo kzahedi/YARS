@@ -56,7 +56,6 @@ class DataSphere : public DataObject
     DataSphere* _copy();
     void _resetTo(const DataObject* other);
 
-    static void createXsd(XsdSpecification *spec);
     void setRadius(double radius);
 
     string texture();

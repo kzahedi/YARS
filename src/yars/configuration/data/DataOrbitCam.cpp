@@ -86,19 +86,6 @@ DataOrbitCam* DataOrbitCam::copy()
   return copy;
 }
 
-void DataOrbitCam::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *orbitCamConfig = new XsdSequence(YARS_STRING_ORBIT_CAM_DEFINITION);
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_LOOK_AT_X, YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_LOOK_AT_Y, YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_LOOK_AT_Z, YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_FROM_X,    YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_FROM_Y,    YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(XE(YARS_STRING_ORBIT_CAM_FROM_Z,    YARS_STRING_PID_DEFINITION, 0, 1));
-  orbitCamConfig->add(NA(YARS_STRING_ORBIT_CAM_SPEED,     YARS_STRING_XSD_DECIMAL,    false));
-  spec->add(orbitCamConfig);
-}
-
 PID DataOrbitCam::lookAtX()
 {
   return _lookAtX;

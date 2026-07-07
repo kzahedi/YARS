@@ -85,29 +85,6 @@ void DataLoggingGnuplot::add(DataParseElement *element)
   }
 }
 
-void DataLoggingGnuplot::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *gnuplotDefinition = new XsdSequence(YARS_STRING_GNUPLOT_LOGGER_DEFINITION);
-  gnuplotDefinition->add(NA(YARS_STRING_SIZE,     YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  gnuplotDefinition->add(NA(YARS_STRING_DELAY,    YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  gnuplotDefinition->add(NA(YARS_STRING_NAME,     YARS_STRING_XSD_STRING,                false));
-  gnuplotDefinition->add(NA(YARS_STRING_PAIRWISE, YARS_STRING_TRUE_FALSE_DEFINITION,     false));
-  gnuplotDefinition->add(NA(YARS_STRING_TERM,     YARS_STRING_GNUPLOT_TERM_DEFINITION,   false));
-  gnuplotDefinition->add(XE(YARS_STRING_TARGET,   YARS_STRING_TARGET_DEFINITION, 0));
-  spec->add(gnuplotDefinition);
-
-  XsdSequence *targetDefinition = new XsdSequence(YARS_STRING_TARGET_DEFINITION);
-  targetDefinition->add(NA(YARS_STRING_NAME,    YARS_STRING_XSD_STRING, true));
-  spec->add(targetDefinition);
-
-  XsdEnumeration *gnuplotTermDefinition = new XsdEnumeration(YARS_STRING_GNUPLOT_TERM_DEFINITION,
-      YARS_STRING_XSD_STRING);
-  gnuplotTermDefinition->add(YARS_STRING_X11);
-  gnuplotTermDefinition->add(YARS_STRING_AQUA);
-  gnuplotTermDefinition->add(YARS_STRING_WXT);
-  spec->add(gnuplotTermDefinition);
-}
-
 int DataLoggingGnuplot::size()
 {
   return _size;

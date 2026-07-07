@@ -42,19 +42,6 @@ string DataFilter::module()
   return _module;
 }
 
-void DataFilter::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *filter = new XsdSequence(YARS_STRING_FILTER_DEFINITION);
-  filter->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
-  filter->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
-  spec->add(filter);
-
-  XsdSequence *parameterDefinition = new XsdSequence(YARS_STRING_PARAMETER_DEFINITION);
-  parameterDefinition->add(NA(YARS_STRING_NAME,  YARS_STRING_XSD_STRING,  true));
-  parameterDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_STRING, true));
-  spec->add(parameterDefinition);
-}
-
 DataParameter* DataFilter::parameter(int index)
 {
   return at(index);

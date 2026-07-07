@@ -16,10 +16,6 @@
 #define __PO_OPTION_LICENSE_DESCRIPTION \
   "Print license information and exit."
 
-#define __PO_OPTION_CONVERT                            "convert"
-#define __PO_OPTION_CONVERT_DESCRIPTION \
-  "Convert an XML configuration file to JSON (writes <file>.json next to it) and exit."
-
 //      debug
 #define __PO_OPTION_DEBUG                             "debug"
 #define __PO_OPTION_DEBUG_DESCRIPTION \

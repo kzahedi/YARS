@@ -24,7 +24,6 @@ class DataTracePoint : public DataTrace, public DataNode
     double pointSize();
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataTracePoint* copy();
 

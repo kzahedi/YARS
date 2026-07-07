@@ -39,7 +39,6 @@ class DataRobots : public DataNode, public std::vector<DataRobot*>
 
     void setMacros(DataMacros *macros);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataRobots* copy();
 

@@ -120,50 +120,6 @@ void DataLogging::add(DataParseElement *element)
 
 }
 
-void DataLogging::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *loggingDefinition = new XsdSequence(YARS_STRING_LOGGING_DEFINITION);
-  spec->add(loggingDefinition);
-
-  XsdChoice *loggingObjectChoice = new XsdChoice("",              "0", YARS_STRING_XSD_UNBOUNDED);
-  loggingObjectChoice->add(XE(YARS_STRING_LOGGING_OBJECT, YARS_STRING_LOGGING_OBJECT_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingObjectChoice->add(XE(YARS_STRING_LOGGING_SENSOR, YARS_STRING_LOGGING_SENSOR_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingObjectChoice->add(XE(YARS_STRING_LOGGING_ACTUATOR, YARS_STRING_LOGGING_ACTUATOR_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingObjectChoice->add(XE(YARS_STRING_LOGGING_CONTROLLER, YARS_STRING_LOGGING_CONTROLLER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingDefinition->add(loggingObjectChoice);
-
-  XsdChoice *loggingOutputChoice = new XsdChoice("",              "0", YARS_STRING_XSD_UNBOUNDED);
-  loggingOutputChoice->add(XE(YARS_STRING_CONSOLE, YARS_STRING_CONSOLE_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingOutputChoice->add(XE(YARS_STRING_FILE_LOGGER, YARS_STRING_FILE_LOGGER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingOutputChoice->add(XE(YARS_STRING_GNUPLOT_LOGGER, YARS_STRING_GNUPLOT_LOGGER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingOutputChoice->add(XE(YARS_STRING_SELFORG_LOGGER, YARS_STRING_SELFORG_LOGGER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingOutputChoice->add(XE(YARS_STRING_BLENDER_LOGGER, YARS_STRING_BLENDER_LOGGER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingOutputChoice->add(XE(YARS_STRING_CSV_LOGGER, YARS_STRING_CSV_LOGGER_DEFINITION,
-        0, YARS_STRING_XSD_UNBOUNDED));
-  loggingDefinition->add(loggingOutputChoice);
-
-  DataLoggingSelforg::createXsd(spec);
-  DataLoggingConsole::createXsd(spec);
-  DataLoggingFile::createXsd(spec);
-  DataLoggingCSV::createXsd(spec);
-  DataLoggingGnuplot::createXsd(spec);
-  DataLoggingBlender::createXsd(spec);
-
-  DataLoggingObject::createXsd(spec);
-  DataLoggingSensor::createXsd(spec);
-  DataLoggingActuator::createXsd(spec);
-  DataLoggingController::createXsd(spec);
-}
-
 DataLogging* DataLogging::copy()
 {
   DataLogging *copy = new DataLogging(NULL);

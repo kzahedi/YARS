@@ -45,7 +45,6 @@ class DataGenericOrientationSensor : public DataSensor
 
     int dimension();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericOrientationSensor *_copy();
 

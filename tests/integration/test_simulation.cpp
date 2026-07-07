@@ -15,27 +15,27 @@ static fs::path getProjectRoot()
   return fs::path(YARS_PROJECT_ROOT);
 }
 
-TEST(IntegrationXml, BraitenbergXmlExists)
+TEST(IntegrationJson, BraitenbergJsonExists)
 {
-  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg.xml"));
+  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg.json"));
 }
 
-TEST(IntegrationXml, BraitenbergZooXmlExists)
+TEST(IntegrationJson, BraitenbergZooJsonExists)
 {
-  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg_zoo.xml"));
+  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg_zoo.json"));
 }
 
-TEST(IntegrationXml, BraitenbergLoggingXmlExists)
+TEST(IntegrationJson, BraitenbergLoggingJsonExists)
 {
-  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg_logging.xml"));
+  EXPECT_TRUE(fs::exists(getProjectRoot() / "xml" / "braitenberg_logging.json"));
 }
 
-TEST(IntegrationMultiRobot, ZooXmlContainsExpectedRobotsAndLights)
+TEST(IntegrationMultiRobot, ZooJsonContainsExpectedRobotsAndLights)
 {
-  fs::path xml_path = getProjectRoot() / "xml" / "braitenberg_zoo.xml";
-  ASSERT_TRUE(fs::exists(xml_path));
+  fs::path json_path = getProjectRoot() / "xml" / "braitenberg_zoo.json";
+  ASSERT_TRUE(fs::exists(json_path));
 
-  std::ifstream file(xml_path);
+  std::ifstream file(json_path);
   ASSERT_TRUE(file.is_open());
 
   std::string content((std::istreambuf_iterator<char>(file)),

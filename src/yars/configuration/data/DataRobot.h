@@ -172,7 +172,6 @@ class DataRobot : public DataNode, public MacroUserInterface
 
     void setMacros(DataMacros* macros);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataController* controller();
     bool selfCollide();

@@ -37,7 +37,6 @@ class DataLoggingSelforg : public DataLoggingModule, public DataNode
 
     DataLoggingSelforg* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string filename();
     string name();

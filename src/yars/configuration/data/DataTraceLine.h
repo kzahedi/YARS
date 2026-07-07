@@ -38,7 +38,6 @@ class DataTraceLine : public DataTrace, public DataNode
     bool   useProjection();
     int    projectionPlane();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataTraceLine* copy();
 

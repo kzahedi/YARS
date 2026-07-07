@@ -17,7 +17,6 @@ class DataActuatorFactory
 {
   public:
     static DataActuator* actuator(DataParseElement *element, DataNode *parent);
-    static void createXsd(XsdSpecification *spec);
 
   private:
     static DataHingeActuator*   __generateHingeActuator(DataParseElement   *element, DataNode *parent);

@@ -2,7 +2,6 @@
 #define __DATA_NODE_H__
 
 #include "DataParseElement.h"
-#include <yars/configuration/xsd/specification/specification.h>
 
 #include <string>
 #include <ostream>

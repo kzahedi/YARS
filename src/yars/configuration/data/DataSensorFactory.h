@@ -36,7 +36,6 @@ class DataSensorFactory
      */
     static DataSensor* sensor(DataParseElement *element, DataNode *parent);
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     static DataSensor* __generateGenericProximitySensor      (DataParseElement *element, DataNode *parent);

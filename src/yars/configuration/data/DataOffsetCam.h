@@ -26,7 +26,6 @@ class DataOffsetCam : public DataNode
 
     DataOffsetCam* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     PID lookAtX();
     PID lookAtY();

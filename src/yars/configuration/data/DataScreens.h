@@ -81,7 +81,6 @@ class DataScreens : public std::vector<DataScreen*>, public DataNode
     string yAxisTexture();
     string zAxisTexture();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     DataScreen       *_default;

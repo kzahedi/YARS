@@ -63,21 +63,6 @@ void DataController::add(DataParseElement *element)
   }
 }
 
-void DataController::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *controller = new XsdSequence(YARS_STRING_CONTROLLER_DEFINITION);
-  controller->add(NA(YARS_STRING_MODULE,    YARS_STRING_XSD_STRING,           true));
-  controller->add(NA(YARS_STRING_FREQUENCY,
-        YARS_STRING_POSITIVE_NON_ZERO_INTEGER, true));
-  controller->add(XE(YARS_STRING_PARAMETER, YARS_STRING_PARAMETER_DEFINITION, 0));
-  spec->add(controller);
-
-  XsdSequence *parameterDefinition = new XsdSequence(YARS_STRING_PARAMETER_DEFINITION);
-  parameterDefinition->add(NA(YARS_STRING_NAME,  YARS_STRING_XSD_STRING, true));
-  parameterDefinition->add(NA(YARS_STRING_VALUE, YARS_STRING_XSD_STRING, true));
-  spec->add(parameterDefinition);
-}
-
 string DataController::module()
 {
   return _module;

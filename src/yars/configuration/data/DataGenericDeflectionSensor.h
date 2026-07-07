@@ -50,7 +50,6 @@ class DataGenericDeflectionSensor : public DataSensor
      */
     Domain domain();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericDeflectionSensor* _copy();
 

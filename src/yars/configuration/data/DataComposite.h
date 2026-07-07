@@ -35,7 +35,6 @@ class DataComposite : public DataObject
     void setBody(DataObject* body);
     void applyOffset(Pose pose); // overwriting DataObject::applyPose
 
-    static void createXsd(XsdSpecification *spec);
 
     void _resetTo(const DataObject* other);
 

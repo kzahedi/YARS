@@ -168,7 +168,6 @@ class DataEnvironment : public DataNode, public MacroUserInterface
     vector<DataMeshVisualisation*>::iterator m_end();
     int                                      m_size();
 
-    static void createXsd(XsdSpecification *spec);
 
     void resetTo(DataEnvironment *other);
     double gravitation(int index);

@@ -61,7 +61,6 @@ class DataPhysicsParameter : public DataNode
     bool      useRestitution();
 
 
-    static void createXsd(XsdSpecification *spec);
     DataPhysicsParameter* copy();
 
   private:

@@ -130,41 +130,6 @@ void DataMacroInstance::add(DataParseElement *element)
 
 }
 
-void DataMacroInstance::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *macroDefinition = new XsdSequence(YARS_STRING_OBJECT_MACRO_DEFINTION);
-  macroDefinition->add(NA(YARS_STRING_NAME,   YARS_STRING_XSD_STRING,      true));
-  macroDefinition->add(NA(YARS_STRING_REF,    YARS_STRING_XSD_STRING,      true));
-  macroDefinition->add(XE(YARS_STRING_POSE,   YARS_STRING_POSE_DEFINITION, 1, 1));
-  macroDefinition->add(XE(YARS_STRING_TARGET, YARS_STRING_TARGET_DEFINITION, 0));
-  spec->add(macroDefinition);
-
-  XsdChoice *targetDefinition = new XsdChoice(YARS_STRING_TARGET_DEFINITION);
-  targetDefinition->add(NA(YARS_STRING_OBJECT, YARS_STRING_XSD_STRING, true));
-  spec->add(targetDefinition);
-
-  XsdSequence *option1 = new XsdSequence(OPTION_1);
-  option1->add(XE(YARS_STRING_FIRST_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option1->add(XE(YARS_STRING_SECOND_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option1->add(XE(YARS_STRING_THIRD_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option1->add(XE(YARS_STRING_FOURTH_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option1->add(XE(YARS_STRING_FIFTH_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option1->add(XE(YARS_STRING_SIXTH_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  targetDefinition->add(option1);
-
-  XsdSequence *option2 = new XsdSequence(OPTION_2);
-  option2->add(XE(YARS_STRING_TOP_TEXTURE,    YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_BOTTOM_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_BODY_TEXTURE,   YARS_STRING_NAME_DEFINITION, 1, 1));
-  targetDefinition->add(option2);
-
-  XsdSequence *option3 = new XsdSequence(OPTION_3);
-  option3->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  targetDefinition->add(option3);
-
-}
-
-
 DataMacroInstance* DataMacroInstance::copy(DataNode *parent)
 {
   DataMacroInstance *copy = new DataMacroInstance(parent, NULL);

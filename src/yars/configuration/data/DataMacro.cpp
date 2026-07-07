@@ -47,25 +47,6 @@ void DataMacro::add(DataParseElement *element)
   }
 }
 
-void DataMacro::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *macroDefinition = new XsdSequence(YARS_STRING_MACRO_DEFINITION);
-  macroDefinition->add(NA(YARS_STRING_NAME, YARS_STRING_XSD_STRING, true));
-  spec->add(macroDefinition);
-
-  XsdChoice *objectChoice = new XsdChoice("", "1", YARS_STRING_XSD_UNBOUNDED);
-  objectChoice->add(XE(YARS_STRING_OBJECT_BOX,             YARS_STRING_OBJECT_BOX_DEFINTION,             0));
-  objectChoice->add(XE(YARS_STRING_OBJECT_SPHERE,          YARS_STRING_OBJECT_SPHERE_DEFINTION,          0));
-  objectChoice->add(XE(YARS_STRING_OBJECT_PLY,             YARS_STRING_OBJECT_PLY_DEFINTION,             0));
-  objectChoice->add(XE(YARS_STRING_OBJECT_CYLINDER,        YARS_STRING_OBJECT_CYLINDER_DEFINTION,        0));
-  objectChoice->add(XE(YARS_STRING_OBJECT_CAPPED_CYLINDER, YARS_STRING_OBJECT_CAPPED_CYLINDER_DEFINTION, 0));
-  objectChoice->add(XE(YARS_STRING_OBJECT_COMPOSITE,       YARS_STRING_OBJECT_COMPOSITE_DEFINITION,      0));
-  macroDefinition->add(objectChoice);
-
-  DataObjectFactory::createXsd(spec);
-}
-
-
 DataMacro* DataMacro::copy()
 {
   DataMacro *copy = new DataMacro(NULL);

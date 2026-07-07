@@ -21,7 +21,6 @@ class DataSignalTriggered : public DataSignal, public std::vector<DataParameter*
     string module();
     string key();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataSignalTriggered* _copy();
 

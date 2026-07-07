@@ -58,7 +58,6 @@ class DataLogging : public DataNode
     void checkControllers(DataControllers *controllers);
     void finish();
 
-    static void createXsd(XsdSpecification *spec);
 
     // std::vector<DataLoggingSelforg*>::iterator selforg_begin();
     // std::vector<DataLoggingSelforg*>::iterator selforg_end();

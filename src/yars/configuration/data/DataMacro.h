@@ -21,7 +21,6 @@ class DataMacro : public DataObjects, public DataNode
 
     DataMacro* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     void add(DataParseElement *element);
 

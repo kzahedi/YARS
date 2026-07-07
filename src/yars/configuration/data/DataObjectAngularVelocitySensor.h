@@ -46,7 +46,6 @@ class DataObjectAngularVelocitySensor : public DataSensor
 
     bool global();
 
-    static void createXsd(XsdSpecification *spec);
 
     DataObjectAngularVelocitySensor *_copy();
 

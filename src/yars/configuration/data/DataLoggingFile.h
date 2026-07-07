@@ -37,7 +37,6 @@ class DataLoggingFile : public DataLoggingModule, public DataNode
 
     DataLoggingFile* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string filename();
     bool   useDate();

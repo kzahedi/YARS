@@ -36,7 +36,6 @@ class DataLoggingObject : public DataNode, public std::vector<string>
 
     DataLoggingObject* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string target();
 

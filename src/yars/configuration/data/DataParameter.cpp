@@ -49,11 +49,6 @@ double DataParameter::realValue()
   return (double)atof(_value.c_str());
 }
 
-void DataParameter::createXsd()
-{
-
-}
-
 DataParameter *DataParameter::copy()
 {
   DataParameter *copy = new DataParameter(NULL);

@@ -90,52 +90,6 @@ void DataBox::setDimension(WHDDimension dimension)
   _dimension = dimension;
 }
 
-void DataBox::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *boxDefinition = new XsdSequence(YARS_STRING_OBJECT_BOX_DEFINTION);
-  boxDefinition->add(NA(YARS_STRING_NAME,      YARS_STRING_XSD_STRING,            false));
-  boxDefinition->add(NA(YARS_STRING_VISUALISE, YARS_STRING_TRUE_FALSE_DEFINITION, false));
-
-
-  XsdElement *whdDefinition = XE(YARS_STRING_DIMENSION, "", 1, 1);
-  whdDefinition->add(NA(YARS_STRING_WIDTH,  YARS_STRING_XSD_DECIMAL, true));
-  whdDefinition->add(NA(YARS_STRING_HEIGHT, YARS_STRING_XSD_DECIMAL, true));
-  whdDefinition->add(NA(YARS_STRING_DEPTH,  YARS_STRING_XSD_DECIMAL, true));
-  boxDefinition->add(whdDefinition);
-
-  boxDefinition->add(XE(YARS_STRING_POSE,              YARS_STRING_POSE_DEFINITION,               0, 1));
-  boxDefinition->add(XE(YARS_STRING_BOX_VISUALISATION, YARS_STRING_BOX_VISUALISATION_DEFINITION,  0, 1));
-  boxDefinition->add(XE(YARS_STRING_PHYSICS,           YARS_STRING_PHYSICS_DEFINITION,            1, 1));
-  spec->add(boxDefinition);
-
-
-  XsdChoice *options = new XsdChoice(YARS_STRING_BOX_VISUALISATION_DEFINITION, 1, 1);
-  spec->add(options);
-
-  XsdSequence *option1 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_1);
-  option1->add(XE(YARS_STRING_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  options->add(option1);
-
-  XsdSequence *option2 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_2);
-  option2->add(XE(YARS_STRING_FIRST_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_SECOND_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_THIRD_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_FOURTH_TEXTURE, YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_FIFTH_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  option2->add(XE(YARS_STRING_SIXTH_TEXTURE,  YARS_STRING_NAME_DEFINITION, 1, 1));
-  options->add(option2);
-
-  XsdSequence *option3 = new XsdSequence(YARS_STRING_VISUALISATION_OPTION_3);
-  option3->add(XE(YARS_STRING_OBJECT_MESH_VISUALISATION,
-                  YARS_STRING_OBJECT_MESH_VISUALISATION_DEFINTION, 1, 1));
-  options->add(option3);
-
-  DataMeshVisualisation::createXsd(spec);
-
-  DataPhysicsParameter::createXsd(spec);
-}
-
-
 DataBox* DataBox::_copy()
 {
   DataBox *copy = new DataBox(NULL); // no parent needed, because no parsing takes place after copying

@@ -53,27 +53,6 @@ void DataTracePoint::add(DataParseElement *element)
   }
 }
 
-void DataTracePoint::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *point = new XsdSequence(YARS_STRING_TRACE_POINT_DEFINITION);
-  point->add(NA(YARS_STRING_TARGET, YARS_STRING_XSD_STRING,                   true));
-  point->add(NA(YARS_STRING_COLOR,  YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION, true));
-  point->add(NA(YARS_STRING_SIZE,   YARS_STRING_XSD_DECIMAL,                  true));
-  point->add(NA(YARS_STRING_STEP,   YARS_STRING_POSITIVE_NON_ZERO_INTEGER,    false));
-  point->add(NA(YARS_STRING_MAX,    YARS_STRING_POSITIVE_NON_ZERO_INTEGER,    false));
-  point->add(NA(YARS_STRING_FADE,   YARS_STRING_TRUE_FALSE_DEFINITION,        false));
-  point->add(NA(YARS_STRING_LOCAL,  YARS_STRING_TRUE_FALSE_DEFINITION,        false));
-  point->add(NA(YARS_STRING_X,      YARS_STRING_XSD_DECIMAL,                  false));
-  point->add(NA(YARS_STRING_Y,      YARS_STRING_XSD_DECIMAL,                  false));
-  point->add(NA(YARS_STRING_Z,      YARS_STRING_XSD_DECIMAL,                  false));
-  spec->add(point);
-
-  XsdRegularExpression *colorHex = new XsdRegularExpression(YARS_STRING_COLOR_HEX_REG_EXP_DEFINITION,
-                                                            YARS_STRING_XSD_STRING,
-                                                            YARS_STRING_XSD_HEX_COLOR);
-  spec->add(colorHex);
-}
-
 string DataTracePoint::target()
 {
   return _target;

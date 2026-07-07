@@ -67,7 +67,6 @@ class DataPointLightSource : public DataNode
 
     DataPointLightSource *copy();
 
-    static void createXsd(XsdSpecification *spec);
 
   private:
     P3D    _position;

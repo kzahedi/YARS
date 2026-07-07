@@ -57,17 +57,6 @@ void DataGenericBinaryContactSensor::add(DataParseElement *element)
 
 }
 
-void DataGenericBinaryContactSensor::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *sensor = new XsdSequence(YARS_STRING_GENERIC_BINARY_CONTACT_SENSOR_DEFINITION);
-  sensor->add(NA(YARS_STRING_NAME,   YARS_STRING_XSD_STRING,         false));
-  sensor->add(XE(YARS_STRING_OBJECT, YARS_STRING_NAME_DEFINITION,    1, 1));
-  sensor->add(XE(YARS_STRING_DOMAIN, YARS_STRING_MIN_MAX_DEFINITION, 0, 1));
-  spec->add(sensor);
-  DataNoise::createXsd(spec);
-  DataFilter::createXsd(spec);
-}
-
 DataGenericBinaryContactSensor* DataGenericBinaryContactSensor::_copy()
 {
   DataGenericBinaryContactSensor *copy = new DataGenericBinaryContactSensor(NULL);

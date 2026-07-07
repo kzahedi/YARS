@@ -22,16 +22,7 @@ set(YARS_ROBOT_CONTROLLER_FILES "${CMAKE_SOURCE_DIR}/src/yars/configuration/data
                                 "${CMAKE_SOURCE_DIR}/src/yars/types/Matrix.cpp"
                                 "${CMAKE_SOURCE_DIR}/src/yars/types/Quaternion.cpp"
                                 "${CMAKE_SOURCE_DIR}/src/yars/util/Filter.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/util/Mapping.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdAttribute.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdChoice.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdElement.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdEnumeration.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdInterval.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdNode.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdRegularExpression.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdSequence.cpp"
-                                "${CMAKE_SOURCE_DIR}/src/yars/configuration/xsd/specification/XsdSpecification.cpp")
+                                "${CMAKE_SOURCE_DIR}/src/yars/util/Mapping.cpp")
 
 
 add_library(YarsRobotController STATIC ${YARS_ROBOT_CONTROLLER_FILES} ${XERCESC_LIBRARY_FILE})

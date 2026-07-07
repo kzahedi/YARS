@@ -66,43 +66,6 @@ DataSoftBodyParameters::DataSoftBodyParameters(DataNode *parent)
   ndamping    = 0.15;
 }
 
-void DataSoftBodyParameters::createXsd(XsdSpecification *spec)
-{
-  XsdSequence *def = new XsdSequence(YARS_STRING_SOFT_BODY_PARAMETER_DEFINITION);
-  def->add(NA(YARS_STRING_VCF,        YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  def->add(NA(YARS_STRING_DP,         YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_DG,         YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  def->add(NA(YARS_STRING_LF,         YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  def->add(NA(YARS_STRING_PR,         YARS_STRING_XSD_DECIMAL,               false));
-  def->add(NA(YARS_STRING_VC,         YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  def->add(NA(YARS_STRING_DF,         YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_MT,         YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_CHR,        YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_KHR,        YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SHR,        YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_AHR,        YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SRHR_CL,    YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SKHR_CL,    YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SSHR_CL,    YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SR_SPLT_CL, YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SK_SPLT_CL, YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_SS_SPLT_CL, YARS_STRING_UNIT_INTERVAL,             false));
-  def->add(NA(YARS_STRING_MV,         YARS_STRING_XSD_DECIMAL,               false));
-  def->add(NA(YARS_STRING_TS,         YARS_STRING_POSITIVE_NON_ZERO_DECIMAL, false));
-  def->add(NA(YARS_STRING_VI,         YARS_STRING_POSITIVE_INTEGER,          false));
-  def->add(NA(YARS_STRING_PI,         YARS_STRING_POSITIVE_INTEGER,          false));
-  def->add(NA(YARS_STRING_DI,         YARS_STRING_POSITIVE_INTEGER,          false));
-  def->add(NA(YARS_STRING_CI,         YARS_STRING_POSITIVE_INTEGER,          false));
-  def->add(NA(YARS_STRING_MATCHING,   YARS_STRING_POSITIVE_DECIMAL,          false));
-  def->add(NA(YARS_STRING_DAMPING,    YARS_STRING_POSITIVE_DECIMAL,          false));
-  def->add(NA(YARS_STRING_LST,        YARS_STRING_POSITIVE_DECIMAL,          false));
-  def->add(NA(YARS_STRING_AST,        YARS_STRING_POSITIVE_DECIMAL,          false));
-  def->add(NA(YARS_STRING_VST,        YARS_STRING_POSITIVE_DECIMAL,          false));
-
-
-  spec->add(def);
-}
-
 void DataSoftBodyParameters::add(DataParseElement *element)
 {
   if(element->opening(YARS_STRING_SOFT_BODY_PARAMETER))

@@ -53,7 +53,6 @@ class DataGenericVelocitySensor : public DataSensor
      */
     void add(DataParseElement *element);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataGenericVelocitySensor *_copy();
 

@@ -40,7 +40,6 @@ class DataLoggingController : public DataNode, public std::vector<string>
 
     DataLoggingController* copy();
 
-    static void createXsd(XsdSpecification *spec);
 
     string target();
 

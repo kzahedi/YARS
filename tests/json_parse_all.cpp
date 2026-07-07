@@ -9,14 +9,14 @@
 #include <string>
 #include <vector>
 
-// Parse-all test: invokes the yars binary on every XML config listed in
-// tests/xml_corpus.txt and asserts that the parser+initial-setup pipeline
+// Parse-all test: invokes the yars binary on every JSON config listed in
+// tests/json_corpus.txt and asserts that the parser+initial-setup pipeline
 // completes for at least one simulation step. Configs that require an
 // external controller (TCPIP, named pipes, language bindings) are skipped:
 // they cannot run unattended without the controller running on the other
 // side of the IPC channel.
 //
-// Source-of-truth corpus: tests/xml_corpus.txt (relative to the repo root).
+// Source-of-truth corpus: tests/json_corpus.txt (relative to the repo root).
 //
 // Required environment / build state:
 //   * YARS_BIN env var, or fallback to ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/yars
@@ -28,10 +28,10 @@ const std::vector<std::string> kSkipPatterns = {
     "_tcpip", "_named_pipe", "_go", "_julia", "_matlab", "_python",
     "muscle_tcpip", "_mpi",
     // Hexapod configs that load a controller library not built by default:
-    // hexapod.xml + hexapod_low.xml reference the Python controller,
-    // hexapod_crbm.xml references the CRBM C++ controller. These can be
+    // hexapod.json + hexapod_low.json reference the Python controller,
+    // hexapod_crbm.json references the CRBM C++ controller. These can be
     // re-enabled once controller-build-verification declares them present.
-    "hexapod.xml", "hexapod_low.xml", "hexapod_crbm.xml"};
+    "hexapod.json", "hexapod_low.json", "hexapod_crbm.json"};
 
 bool ShouldSkip(const std::string& path) {
   for (const auto& pat : kSkipPatterns) {
@@ -55,7 +55,7 @@ std::filesystem::path YarsBinary() {
 
 std::vector<std::string> LoadCorpus() {
   std::vector<std::string> configs;
-  const auto corpus_file = RepoRoot() / "tests" / "xml_corpus.txt";
+  const auto corpus_file = RepoRoot() / "tests" / "json_corpus.txt";
   std::ifstream in(corpus_file);
   if (!in) return configs;
   std::string line;

@@ -34,7 +34,6 @@ class DataFollowables : public DataNode, public std::vector<string>
     DataObject*                   followable(int index);
 
     DataFollowables* copy();
-    static void createXsd(XsdSpecification *spec);
 
   private:
 

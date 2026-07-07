@@ -96,22 +96,7 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataMeshVisualisation.cpp
             data/DataSoftBodyParameters.cpp
 
-            json/XmlToJson.cpp
             json/JsonParser.cpp
-
-            xsd/generator/YarsXSDGenerator.cpp
-            xsd/generator/XSDString.cpp
-            xsd/parser/YarsXSDSaxParser.cpp
-            xsd/parser/YarsXSDSaxHandler.cpp
-            xsd/specification/XsdSpecification.cpp
-            xsd/specification/XsdSequence.cpp
-            xsd/specification/XsdElement.cpp
-            xsd/specification/XsdRegularExpression.cpp
-            xsd/specification/XsdChoice.cpp
-            xsd/specification/XsdInterval.cpp
-            xsd/specification/XsdNode.cpp
-            xsd/specification/XsdEnumeration.cpp
-            xsd/specification/XsdAttribute.cpp
             )
 
 add_library(YarsConfiguration ${LIBRARY_TYPE} ${CFG_SRC})

@@ -56,7 +56,6 @@ class DataAngularMotor : public DataActuator
     bool isDeflectionSet();
     void applyOffset(Pose offset);
 
-    static void createXsd(XsdSpecification *spec);
 
     DataAngularMotor* _copy();
 
