@@ -9,6 +9,7 @@ Object::Object(DataObject *data)
   _collisionShape = NULL;
   _rigidBody = NULL;
   _softBody = NULL;
+  _motionState = NULL;
   if (_data != NULL)
     _type = _data->type();
   __setInitialValues();
@@ -22,7 +23,7 @@ Object::~Object()
   if (_softBody != NULL)
     delete _softBody;
 
-  // delete _motionState;
+  delete _motionState;
 }
 
 DataObject *Object::data()
@@ -73,6 +74,12 @@ void Object::reset()
   if (_rigidBody != NULL)
   {
     delete _rigidBody;
+  }
+
+  if (_motionState != NULL)
+  {
+    delete _motionState;
+    _motionState = NULL;
   }
 
   init();
