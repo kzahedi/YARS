@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 10
-      }
+      "solver_iterations": 10
     },
     "screens": {
       "screen": {
@@ -31,12 +29,12 @@
         },
         "osd": {
           "time": {
-            "colour": "FFFF00",
+            "colour": "#FFFF00",
             "font": "Time",
             "size": 25
           },
           "robot": {
-            "colour": "FFFFFF",
+            "colour": "#FFFFFF",
             "font": "Robot",
             "size": 25
           }
@@ -76,14 +74,10 @@
             "p": 0.0
           }
         },
-        "centre": {
-          "speed": 1.5
-        }
+        "centre_speed": 1.5
       },
       "followables": {
-        "followable": {
-          "name": "main body"
-        }
+        "followable_name": "main body"
       }
     },
     "environment": {
@@ -96,9 +90,7 @@
         "fixed": true,
         "fog": false,
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGroundSmall"
-          }
+          "texture_name": "YARS/DryGroundSmall"
         }
       },
       "box": [
@@ -118,29 +110,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Wall1"
-            },
-            "third": {
-              "name": "YARS/Wall1"
-            },
-            "fourth": {
-              "name": "YARS/Wall1"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall2"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Wall1",
+            "third_name": "YARS/Wall1",
+            "fourth_name": "YARS/Wall1",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall2"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -159,29 +137,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Green"
-            },
-            "third": {
-              "name": "YARS/Blue"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Green",
+            "third_name": "YARS/Blue",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -200,29 +164,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Green"
-            },
-            "third": {
-              "name": "YARS/Wall1"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Green",
+            "third_name": "YARS/Wall1",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -241,29 +191,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Wall2"
-            },
-            "third": {
-              "name": "YARS/Wall2"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Wall2",
+            "third_name": "YARS/Wall2",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         }
       ]
@@ -291,29 +227,19 @@
                   "z": 0.01
                 },
                 "visualisation": {
-                  "top": {
-                    "name": "Chain/Circuit/Top/Green"
-                  },
-                  "bottom": {
-                    "name": "Chain/Circuit/Body/Green"
-                  },
-                  "body": {
-                    "name": "Chain/Circuit/Body/Green"
-                  }
+                  "top_name": "Chain/Circuit/Top/Green",
+                  "bottom_name": "Chain/Circuit/Body/Green",
+                  "body_name": "Chain/Circuit/Body/Green"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 1.0
-                  }
+                  "mass_kg": 1.0
                 }
               },
               "sphere": [
                 {
                   "name": "wheel front",
                   "visualise": true,
-                  "dimension": {
-                    "radius": 0.01
-                  },
+                  "dimension_radius": 0.01,
                   "pose": {
                     "alpha": 0,
                     "beta": 0,
@@ -323,22 +249,16 @@
                     "z": -0.0499999
                   },
                   "visualisation": {
-                    "texture": {
-                      "name": "Chain/Wheel"
-                    }
+                    "texture_name": "Chain/Wheel"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 0.1
-                    }
+                    "mass_kg": 0.1
                   }
                 },
                 {
                   "name": "wheel back",
                   "visualise": true,
-                  "dimension": {
-                    "radius": 0.01
-                  },
+                  "dimension_radius": 0.01,
                   "pose": {
                     "alpha": 0,
                     "beta": 0,
@@ -348,73 +268,51 @@
                     "z": -0.049999
                   },
                   "visualisation": {
-                    "texture": {
-                      "name": "Chain/Wheel"
-                    }
+                    "texture_name": "Chain/Wheel"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 0.1
-                    }
+                    "mass_kg": 0.1
                   }
                 }
               ]
             },
             "physics": {
-              "friction": {
-                "value": 0
-              }
+              "friction_value": 0
             }
           },
           "sphere": [
             {
               "name": "wheel left",
               "visualise": true,
-              "dimension": {
-                "radius": 0.03
-              },
+              "dimension_radius": 0.03,
               "pose": {
                 "x": 0,
                 "y": 0.085,
                 "z": -0.03
               },
               "visualisation": {
-                "texture": {
-                  "name": "Chain/Wheel"
-                }
+                "texture_name": "Chain/Wheel"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 1000
-                }
+                "mass_kg": 0.1,
+                "friction_value": 1000
               }
             },
             {
               "name": "wheel right",
               "visualise": true,
-              "dimension": {
-                "radius": 0.03
-              },
+              "dimension_radius": 0.03,
               "pose": {
                 "x": 0,
                 "y": -0.085,
                 "z": -0.03
               },
               "visualisation": {
-                "texture": {
-                  "name": "Chain/Wheel"
-                }
+                "texture_name": "Chain/Wheel"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 1000
-                }
+                "mass_kg": 0.1,
+                "friction_value": 1000
               }
             }
           ]
@@ -430,18 +328,10 @@
               "mode": "active",
               "name": "wheel left hinge",
               "type": "velocity",
-              "source": {
-                "name": "wheel left"
-              },
-              "destination": {
-                "name": "main body"
-              },
-              "force": {
-                "max": 10.0
-              },
-              "velocity": {
-                "max": 10.0
-              },
+              "source_name": "wheel left",
+              "destination_name": "main body",
+              "force_max": 10.0,
+              "velocity_max": 10.0,
               "pose": {
                 "gamma": 90.0,
                 "x": 0.0,
@@ -477,18 +367,10 @@
               "mode": "active",
               "name": "wheel right hinge",
               "type": "velocity",
-              "source": {
-                "name": "wheel right"
-              },
-              "destination": {
-                "name": "main body"
-              },
-              "force": {
-                "max": 10.0
-              },
-              "velocity": {
-                "max": 10.0
-              },
+              "source_name": "wheel right",
+              "destination_name": "main body",
+              "force_max": 10.0,
+              "velocity_max": 10.0,
               "pose": {
                 "gamma": 90.0,
                 "x": 0.0,
@@ -526,9 +408,7 @@
           "proximity": [
             {
               "name": "left 1",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": -90,
                 "beta": 90,
@@ -536,9 +416,7 @@
                 "y": 0.1,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -550,9 +428,7 @@
             },
             {
               "name": "left 2",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": -45,
                 "beta": 90,
@@ -560,9 +436,7 @@
                 "y": 0.0707107,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -574,9 +448,7 @@
             },
             {
               "name": "left 3",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": -15,
                 "beta": 90,
@@ -584,9 +456,7 @@
                 "y": 0.0258819,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -598,9 +468,7 @@
             },
             {
               "name": "right 3",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": 15,
                 "beta": 90,
@@ -608,9 +476,7 @@
                 "y": -0.0258819,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -622,9 +488,7 @@
             },
             {
               "name": "right 2",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": 45,
                 "beta": 90,
@@ -632,9 +496,7 @@
                 "y": -0.0707107,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -646,9 +508,7 @@
             },
             {
               "name": "right 1",
-              "object": {
-                "name": "main body"
-              },
+              "object_name": "main body",
               "pose": {
                 "alpha": 90,
                 "beta": 90,
@@ -656,9 +516,7 @@
                 "y": -0.1,
                 "z": 0
               },
-              "distance": {
-                "meter": 0.5
-              },
+              "distance_meter": 0.5,
               "mapping": {
                 "max": -1,
                 "min": 1
@@ -672,9 +530,7 @@
           "velocity": [
             {
               "name": "left wheel hinge sensor",
-              "object": {
-                "name": "wheel left hinge"
-              },
+              "object_name": "wheel left hinge",
               "domain": {
                 "max": 10,
                 "min": -10
@@ -686,9 +542,7 @@
             },
             {
               "name": "right wheel hinge sensor",
-              "object": {
-                "name": "wheel right hinge"
-              },
+              "object_name": "wheel right hinge",
               "domain": {
                 "max": 10,
                 "min": -10
@@ -701,9 +555,7 @@
           ],
           "ov": {
             "name": "main body velocity",
-            "object": {
-              "name": "main body"
-            },
+            "object_name": "main body",
             "coordinates": {
               "x": true,
               "y": true,
@@ -712,9 +564,7 @@
           },
           "position": {
             "name": "main body position",
-            "object": {
-              "name": "main body"
-            },
+            "object_name": "main body",
             "coordinates": {
               "x": true,
               "y": true,
@@ -741,11 +591,11 @@
           "target": "main body",
           "time": 5,
           "init": {
-            "colour": "ff0000",
+            "colour": "#ff0000",
             "size": 0.01
           },
           "final": {
-            "colour": "ff000000",
+            "colour": "#ff000000",
             "size": 0.0
           }
         },
@@ -756,11 +606,11 @@
           "target": "wheel right",
           "time": 5,
           "init": {
-            "colour": "00ff00",
+            "colour": "#00ff00",
             "size": 0.01
           },
           "final": {
-            "colour": "00ff0000",
+            "colour": "#00ff0000",
             "size": 0.0
           }
         },
@@ -771,11 +621,11 @@
           "target": "wheel left",
           "time": 5,
           "init": {
-            "colour": "0000ff",
+            "colour": "#0000ff",
             "size": 0.01
           },
           "final": {
-            "colour": "0000ff00",
+            "colour": "#0000ff00",
             "size": 0.0
           }
         }
@@ -882,9 +732,7 @@
         }
       ],
       "console": {
-        "target": {
-          "name": "main body"
-        }
+        "target_name": "main body"
       },
       "csv": {
         "name": "braitenberg",

@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 200
-      }
+      "solver_iterations": 200
     },
     "screens": {
       "screen": {
@@ -13,9 +11,7 @@
         "follow": true,
         "name": "main",
         "show": true,
-        "resolution": {
-          "name": "720p"
-        },
+        "resolution_name": "720p",
         "camera": {
           "position": {
             "x": 5.0,
@@ -30,20 +26,18 @@
         },
         "osd": {
           "time": {
-            "colour": "800040",
+            "colour": "#800040",
             "font": "Time",
             "size": 24
           },
           "robot": {
-            "colour": "800040",
+            "colour": "#800040",
             "font": "Robot",
             "size": 24
           }
         }
       },
-      "sky": {
-        "name": "YARS/CloudySky"
-      },
+      "sky_name": "YARS/CloudySky",
       "cameras": {
         "orbit": {
           "speed": 0.0,
@@ -65,18 +59,14 @@
         }
       },
       "followables": {
-        "followable": {
-          "name": "main"
-        }
+        "followable_name": "main"
       }
     },
     "environment": {
       "name": "env",
       "ground": {
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGround"
-          }
+          "texture_name": "YARS/DryGround"
         }
       }
     },
@@ -90,21 +80,13 @@
               "convex": false,
               "filename": "ply/ralf/Main_reduced.ply",
               "name": "main",
-              "pose": {
-                "z": 0.5
-              },
+              "pose_z": 0.5,
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 20.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 20.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -116,17 +98,11 @@
                 "z": 0.553054
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 10.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 10.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -138,17 +114,11 @@
                 "z": 0.618514
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 6.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 6.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -161,17 +131,11 @@
                 "z": 0.847976
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 2.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -184,17 +148,11 @@
                 "z": 0.913042
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.5
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 1.5,
+                "friction_value": 1.0
               }
             },
             {
@@ -207,17 +165,11 @@
                 "z": 0.254967
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -230,17 +182,11 @@
                 "z": 0.847976
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 2.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -253,17 +199,11 @@
                 "z": 0.913042
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.5
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.5,
+                "friction_value": 3.0
               }
             },
             {
@@ -276,17 +216,11 @@
                 "z": 0.254967
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -299,17 +233,11 @@
                 "z": 0.859246
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 2.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -322,17 +250,11 @@
                 "z": 0.903537
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.5
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.5,
+                "friction_value": 3.0
               }
             },
             {
@@ -345,17 +267,11 @@
                 "z": 0.261126
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -368,17 +284,11 @@
                 "z": 0.859246
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 2.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -391,17 +301,11 @@
                 "z": 0.903537
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.5
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.5,
+                "friction_value": 3.0
               }
             },
             {
@@ -414,17 +318,11 @@
                 "z": 0.261126
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 1.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -437,17 +335,11 @@
                 "z": 0.892816
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 4.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 4.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -460,17 +352,11 @@
                 "z": 0.911182
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 3.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -483,17 +369,11 @@
                 "z": 0.250164
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.4
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 2.4,
+                "friction_value": 3.0
               }
             },
             {
@@ -506,17 +386,11 @@
                 "z": 0.892816
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 4.0
-                },
-                "friction": {
-                  "value": 1.0
-                }
+                "mass_kg": 4.0,
+                "friction_value": 1.0
               }
             },
             {
@@ -529,17 +403,11 @@
                 "z": 0.911182
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 3.0,
+                "friction_value": 3.0
               }
             },
             {
@@ -552,1398 +420,1192 @@
                 "z": 0.250164
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 2.4
-                },
-                "friction": {
-                  "value": 3.0
-                }
+                "mass_kg": 2.4,
+                "friction_value": 3.0
               }
             }
           ]
         },
-        "pose": {
-          "z": 2.0
-        },
-        "actuators": {
-          "#children": [
-            {
-              "#tag": "generic",
-              "name": "front left Fe-Ma",
-              "spring": false,
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "femur front left"
-              },
-              "pose": {
-                "gamma": 30,
-                "x": -0.345967,
-                "y": 0.356388,
-                "z": -0.094383
-              },
-              "rotational": {
-                "x": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+        "pose_z": 2.0,
+        "actuators": [
+          {
+            "#tag": "generic",
+            "name": "front left Fe-Ma",
+            "spring": false,
+            "source_name": "main",
+            "destination_name": "femur front left",
+            "pose": {
+              "gamma": 30,
+              "x": -0.345967,
+              "y": 0.356388,
+              "z": -0.094383
+            },
+            "rotational": {
+              "x": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
                 },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 35,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
                 }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "front right Fe-Ma",
-              "spring": false,
-              "source": {
-                "name": "main"
               },
-              "destination": {
-                "name": "femur front right"
-              },
-              "pose": {
-                "gamma": -30,
-                "x": 0.345967,
-                "y": 0.356388,
-                "z": -0.094383
-              },
-              "rotational": {
-                "x": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
                 },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 45,
-                    "min": -35
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "centre left Fe-Ma",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "femur centre left"
-              },
-              "pose": {
-                "x": -0.373759,
-                "y": 0.0,
-                "z": -0.15891
-              },
-              "rotational": {
-                "y": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 45.0,
-                    "min": -0.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 35,
+                  "min": -45
                 },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 45,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "centre right Fe-Ma",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "femur centre right"
-              },
-              "pose": {
-                "x": 0.373759,
-                "y": 0.0,
-                "z": -0.15891
-              },
-              "rotational": {
-                "y": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 0.5,
-                    "min": -45.0
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 100.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 45,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "rear left Fe-Ma",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "femur rear left"
-              },
-              "pose": {
-                "gamma": -120,
-                "x": -0.350748,
-                "y": -0.364688,
-                "z": -0.163432
-              },
-              "rotational": {
-                "y": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 200.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 5.0,
-                    "min": -20.0
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 200.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 30,
-                    "min": -20
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "rear right Fe-Ma",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "femur rear right"
-              },
-              "pose": {
-                "gamma": 120,
-                "x": 0.350748,
-                "y": -0.364688,
-                "z": -0.163432
-              },
-              "rotational": {
-                "y": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 200.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 200.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 20,
-                    "min": -30
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "front left Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur front left"
-              },
-              "destination": {
-                "name": "tibia front left"
-              },
-              "force": {
-                "max": 200.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 30,
-                "x": -0.285346,
-                "y": 0.494232,
-                "z": 0.468772
-              },
-              "deflection": {
-                "max": 10.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "front right Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur front right"
-              },
-              "destination": {
-                "name": "tibia front right"
-              },
-              "force": {
-                "max": 200.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": -30,
-                "x": 0.285346,
-                "y": 0.494232,
-                "z": 0.468772
-              },
-              "deflection": {
-                "max": 10.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "centre left Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur centre left"
-              },
-              "destination": {
-                "name": "tibia centre left"
-              },
-              "force": {
-                "max": 100.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 90,
-                "x": -0.385284,
-                "y": 0.0,
-                "z": 0.464624
-              },
-              "deflection": {
-                "max": 45.0,
-                "min": -2.5
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "centre right Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur centre right"
-              },
-              "destination": {
-                "name": "tibia centre right"
-              },
-              "force": {
-                "max": 100.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": -90,
-                "x": 0.385284,
-                "y": 0.0,
-                "z": 0.464624
-              },
-              "deflection": {
-                "max": 45.0,
-                "min": -2.5
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "rear left Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur rear left"
-              },
-              "destination": {
-                "name": "tibia rear left"
-              },
-              "force": {
-                "max": 400.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": -30,
-                "x": -0.354114,
-                "y": -0.613342,
-                "z": 0.42241
-              },
-              "deflection": {
-                "max": 27.5,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "rear right Fe-Ti",
-              "type": "angular",
-              "source": {
-                "name": "femur rear right"
-              },
-              "destination": {
-                "name": "tibia rear right"
-              },
-              "force": {
-                "max": 400.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 30,
-                "x": 0.354114,
-                "y": -0.613342,
-                "z": 0.42241
-              },
-              "deflection": {
-                "max": 27.5,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "front left Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia front left"
-              },
-              "destination": {
-                "name": "tarsus front left"
-              },
-              "force": {
-                "max": 200.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 30,
-                "x": -0.069505,
-                "y": 0.120302,
-                "z": -0.476651
-              },
-              "deflection": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "front right Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia front right"
-              },
-              "destination": {
-                "name": "tarsus front right"
-              },
-              "force": {
-                "max": 200.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": -30,
-                "x": 0.069505,
-                "y": 0.120302,
-                "z": -0.476651
-              },
-              "deflection": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "centre left Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia centre left"
-              },
-              "destination": {
-                "name": "tarsus centre left"
-              },
-              "force": {
-                "max": 150.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 90,
-                "x": -0.008504,
-                "y": 0.0,
-                "z": -0.471905
-              },
-              "deflection": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "centre right Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia centre right"
-              },
-              "destination": {
-                "name": "tarsus centre right"
-              },
-              "force": {
-                "max": 150.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 90,
-                "x": 0.008504,
-                "y": 0.0,
-                "z": -0.471905
-              },
-              "deflection": {
-                "max": 30.0,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "rear left Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia rear left"
-              },
-              "destination": {
-                "name": "tarsus rear left"
-              },
-              "force": {
-                "max": 250.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": -30,
-                "x": -0.10703,
-                "y": -0.185465,
-                "z": -0.465533
-              },
-              "deflection": {
-                "max": 20.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "rear right Ti-Ta",
-              "type": "angular",
-              "source": {
-                "name": "tibia rear right"
-              },
-              "destination": {
-                "name": "tarsus rear right"
-              },
-              "force": {
-                "max": 250.0,
-                "scaling": 5.0
-              },
-              "velocity": {
-                "max": 4.0
-              },
-              "pose": {
-                "gamma": 30,
-                "x": 0.10703,
-                "y": -0.185465,
-                "z": -0.465533
-              },
-              "deflection": {
-                "max": 20.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "main - rear",
-              "spring": false,
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "rear"
-              },
-              "pose": {
-                "x": 0.0,
-                "y": -0.5,
-                "z": 0.0
-              },
-              "rotational": {
-                "x": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 1.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 6.0,
-                    "min": -5.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 1.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 6.0,
-                    "min": -6.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "main - head",
-              "spring": false,
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "head"
-              },
-              "pose": {
-                "x": 0.0,
-                "y": 0.5,
-                "z": 0.0
-              },
-              "rotational": {
-                "x": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 1.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 6.0,
-                    "min": -5.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                },
-                "z": {
-                  "mode": "active",
-                  "type": "angular",
-                  "force": {
-                    "max": 1.0,
-                    "scaling": 5.0
-                  },
-                  "velocity": {
-                    "max": 4.0
-                  },
-                  "deflection": {
-                    "max": 6.0,
-                    "min": -6.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+                "mapping": {
+                  "max": 1,
+                  "min": -1
                 }
               }
             }
-          ]
-        },
-        "sensors": {
-          "#children": [
-            {
-              "#tag": "generic",
-              "name": "sensor front left Fe-Ma",
-              "object": {
-                "name": "front left Fe-Ma"
-              },
+          },
+          {
+            "#tag": "generic",
+            "name": "front right Fe-Ma",
+            "spring": false,
+            "source_name": "main",
+            "destination_name": "femur front right",
+            "pose": {
+              "gamma": -30,
+              "x": 0.345967,
+              "y": 0.356388,
+              "z": -0.094383
+            },
+            "rotational": {
               "x": {
+                "mode": "active",
                 "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
                 "deflection": {
-                  "domain": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
                 }
               },
               "z": {
+                "mode": "active",
                 "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
                 "deflection": {
-                  "domain": {
-                    "max": 35,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
+                  "max": 45,
+                  "min": -35
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
                 }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor front right Fe-Ma",
-              "object": {
-                "name": "front right Fe-Ma"
-              },
-              "x": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 45,
-                    "min": -35
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor centre left Fe-Ma",
-              "object": {
-                "name": "centre left Fe-Ma"
-              },
-              "y": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 45.0,
-                    "min": -0.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 45,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor centre right Fe-Ma",
-              "object": {
-                "name": "centre right Fe-Ma"
-              },
-              "y": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 0.5,
-                    "min": -45.0
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 45,
-                    "min": -45
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor rear left Fe-Ma",
-              "object": {
-                "name": "rear left Fe-Ma"
-              },
-              "y": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 5.0,
-                    "min": -20.0
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 30,
-                    "min": -20
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor rear right Fe-Ma",
-              "object": {
-                "name": "rear right Fe-Ma"
-              },
-              "y": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 20.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 20,
-                    "min": -30
-                  },
-                  "mapping": {
-                    "max": -1,
-                    "min": 1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor front left Fe-Ti",
-              "object": {
-                "name": "front left Fe-Ti"
-              },
-              "domain": {
-                "max": 10.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor front right Fe-Ti",
-              "object": {
-                "name": "front right Fe-Ti"
-              },
-              "domain": {
-                "max": 10.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor centre left Fe-Ti",
-              "object": {
-                "name": "centre left Fe-Ti"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -2.5
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor centre right Fe-Ti",
-              "object": {
-                "name": "centre right Fe-Ti"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -2.5
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor rear left Fe-Ti",
-              "object": {
-                "name": "rear left Fe-Ti"
-              },
-              "domain": {
-                "max": 27.5,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor rear right Fe-Ti",
-              "object": {
-                "name": "rear right Fe-Ti"
-              },
-              "domain": {
-                "max": 27.5,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor front left Ti-Ta",
-              "object": {
-                "name": "front left Ti-Ta"
-              },
-              "domain": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor front right Ti-Ta",
-              "object": {
-                "name": "front right Ti-Ta"
-              },
-              "domain": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor centre left Ti-Ta",
-              "object": {
-                "name": "centre left Ti-Ta"
-              },
-              "domain": {
-                "max": 5.0,
-                "min": -30.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor centre right Ti-Ta",
-              "object": {
-                "name": "centre right Ti-Ta"
-              },
-              "domain": {
-                "max": 30.0,
-                "min": -5.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor rear left Ti-Ta",
-              "object": {
-                "name": "rear left Ti-Ta"
-              },
-              "domain": {
-                "max": 20.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "sensor rear right Ti-Ta",
-              "object": {
-                "name": "rear right Ti-Ta"
-              },
-              "domain": {
-                "max": 20.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor main-rear",
-              "object": {
-                "name": "main - rear"
-              },
-              "x": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 6.0,
-                    "min": -5.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 6.0,
-                    "min": -6.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "generic",
-              "name": "sensor main-head",
-              "object": {
-                "name": "main - head"
-              },
-              "x": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 5.0,
-                    "min": -4.5
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              },
-              "z": {
-                "type": "angular",
-                "deflection": {
-                  "domain": {
-                    "max": 5.0,
-                    "min": -5.0
-                  },
-                  "mapping": {
-                    "max": 1,
-                    "min": -1
-                  }
-                }
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur front left contact sensor",
-              "object": {
-                "name": "femur front left"
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur front right contact sensor",
-              "object": {
-                "name": "femur front right"
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur centre left contact sensor",
-              "object": {
-                "name": "femur centre left"
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur centre right contact sensor",
-              "object": {
-                "name": "femur centre right"
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur rear left contact sensor",
-              "object": {
-                "name": "femur rear left"
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "femur rear right contact sensor",
-              "object": {
-                "name": "femur rear right"
-              }
-            },
-            {
-              "#tag": "position",
-              "name": "xyz position main",
-              "object": {
-                "name": "main"
-              },
-              "coordinates": {
-                "x": true,
-                "y": true,
-                "z": true
-              }
-            },
-            {
-              "#tag": "orientation",
-              "name": "xyz orientation main",
-              "object": {
-                "name": "main"
-              },
-              "coordinates": {
-                "x": true,
-                "y": true,
-                "z": true
-              }
-            },
-            {
-              "#tag": "ov",
-              "name": "main body velocity",
-              "object": {
-                "name": "main"
-              },
-              "coordinates": {
-                "x": false,
-                "y": true,
-                "z": false
               }
             }
-          ]
-        }
+          },
+          {
+            "#tag": "generic",
+            "name": "centre left Fe-Ma",
+            "source_name": "main",
+            "destination_name": "femur centre left",
+            "pose": {
+              "x": -0.373759,
+              "y": 0.0,
+              "z": -0.15891
+            },
+            "rotational": {
+              "y": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 45.0,
+                  "min": -0.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 45,
+                  "min": -45
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "centre right Fe-Ma",
+            "source_name": "main",
+            "destination_name": "femur centre right",
+            "pose": {
+              "x": 0.373759,
+              "y": 0.0,
+              "z": -0.15891
+            },
+            "rotational": {
+              "y": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 0.5,
+                  "min": -45.0
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 100.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 45,
+                  "min": -45
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "rear left Fe-Ma",
+            "source_name": "main",
+            "destination_name": "femur rear left",
+            "pose": {
+              "gamma": -120,
+              "x": -0.350748,
+              "y": -0.364688,
+              "z": -0.163432
+            },
+            "rotational": {
+              "y": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 200.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 5.0,
+                  "min": -20.0
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 200.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 30,
+                  "min": -20
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "rear right Fe-Ma",
+            "source_name": "main",
+            "destination_name": "femur rear right",
+            "pose": {
+              "gamma": 120,
+              "x": 0.350748,
+              "y": -0.364688,
+              "z": -0.163432
+            },
+            "rotational": {
+              "y": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 200.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 200.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 20,
+                  "min": -30
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "front left Fe-Ti",
+            "type": "angular",
+            "source_name": "femur front left",
+            "destination_name": "tibia front left",
+            "force": {
+              "max": 200.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 30,
+              "x": -0.285346,
+              "y": 0.494232,
+              "z": 0.468772
+            },
+            "deflection": {
+              "max": 10.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "front right Fe-Ti",
+            "type": "angular",
+            "source_name": "femur front right",
+            "destination_name": "tibia front right",
+            "force": {
+              "max": 200.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": -30,
+              "x": 0.285346,
+              "y": 0.494232,
+              "z": 0.468772
+            },
+            "deflection": {
+              "max": 10.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "centre left Fe-Ti",
+            "type": "angular",
+            "source_name": "femur centre left",
+            "destination_name": "tibia centre left",
+            "force": {
+              "max": 100.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 90,
+              "x": -0.385284,
+              "y": 0.0,
+              "z": 0.464624
+            },
+            "deflection": {
+              "max": 45.0,
+              "min": -2.5
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "centre right Fe-Ti",
+            "type": "angular",
+            "source_name": "femur centre right",
+            "destination_name": "tibia centre right",
+            "force": {
+              "max": 100.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": -90,
+              "x": 0.385284,
+              "y": 0.0,
+              "z": 0.464624
+            },
+            "deflection": {
+              "max": 45.0,
+              "min": -2.5
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "rear left Fe-Ti",
+            "type": "angular",
+            "source_name": "femur rear left",
+            "destination_name": "tibia rear left",
+            "force": {
+              "max": 400.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": -30,
+              "x": -0.354114,
+              "y": -0.613342,
+              "z": 0.42241
+            },
+            "deflection": {
+              "max": 27.5,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "rear right Fe-Ti",
+            "type": "angular",
+            "source_name": "femur rear right",
+            "destination_name": "tibia rear right",
+            "force": {
+              "max": 400.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 30,
+              "x": 0.354114,
+              "y": -0.613342,
+              "z": 0.42241
+            },
+            "deflection": {
+              "max": 27.5,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "front left Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia front left",
+            "destination_name": "tarsus front left",
+            "force": {
+              "max": 200.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 30,
+              "x": -0.069505,
+              "y": 0.120302,
+              "z": -0.476651
+            },
+            "deflection": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "front right Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia front right",
+            "destination_name": "tarsus front right",
+            "force": {
+              "max": 200.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": -30,
+              "x": 0.069505,
+              "y": 0.120302,
+              "z": -0.476651
+            },
+            "deflection": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "centre left Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia centre left",
+            "destination_name": "tarsus centre left",
+            "force": {
+              "max": 150.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 90,
+              "x": -0.008504,
+              "y": 0.0,
+              "z": -0.471905
+            },
+            "deflection": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "centre right Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia centre right",
+            "destination_name": "tarsus centre right",
+            "force": {
+              "max": 150.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 90,
+              "x": 0.008504,
+              "y": 0.0,
+              "z": -0.471905
+            },
+            "deflection": {
+              "max": 30.0,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "rear left Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia rear left",
+            "destination_name": "tarsus rear left",
+            "force": {
+              "max": 250.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": -30,
+              "x": -0.10703,
+              "y": -0.185465,
+              "z": -0.465533
+            },
+            "deflection": {
+              "max": 20.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "rear right Ti-Ta",
+            "type": "angular",
+            "source_name": "tibia rear right",
+            "destination_name": "tarsus rear right",
+            "force": {
+              "max": 250.0,
+              "scaling": 5.0
+            },
+            "velocity_max": 4.0,
+            "pose": {
+              "gamma": 30,
+              "x": 0.10703,
+              "y": -0.185465,
+              "z": -0.465533
+            },
+            "deflection": {
+              "max": 20.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "main - rear",
+            "spring": false,
+            "source_name": "main",
+            "destination_name": "rear",
+            "pose": {
+              "x": 0.0,
+              "y": -0.5,
+              "z": 0.0
+            },
+            "rotational": {
+              "x": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 1.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 6.0,
+                  "min": -5.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 1.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 6.0,
+                  "min": -6.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "main - head",
+            "spring": false,
+            "source_name": "main",
+            "destination_name": "head",
+            "pose": {
+              "x": 0.0,
+              "y": 0.5,
+              "z": 0.0
+            },
+            "rotational": {
+              "x": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 1.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 6.0,
+                  "min": -5.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              },
+              "z": {
+                "mode": "active",
+                "type": "angular",
+                "force": {
+                  "max": 1.0,
+                  "scaling": 5.0
+                },
+                "velocity_max": 4.0,
+                "deflection": {
+                  "max": 6.0,
+                  "min": -6.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          }
+        ],
+        "sensors": [
+          {
+            "#tag": "generic",
+            "name": "sensor front left Fe-Ma",
+            "object_name": "front left Fe-Ma",
+            "x": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 35,
+                  "min": -45
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor front right Fe-Ma",
+            "object_name": "front right Fe-Ma",
+            "x": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 45,
+                  "min": -35
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor centre left Fe-Ma",
+            "object_name": "centre left Fe-Ma",
+            "y": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 45.0,
+                  "min": -0.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 45,
+                  "min": -45
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor centre right Fe-Ma",
+            "object_name": "centre right Fe-Ma",
+            "y": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 0.5,
+                  "min": -45.0
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 45,
+                  "min": -45
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor rear left Fe-Ma",
+            "object_name": "rear left Fe-Ma",
+            "y": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 5.0,
+                  "min": -20.0
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 30,
+                  "min": -20
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor rear right Fe-Ma",
+            "object_name": "rear right Fe-Ma",
+            "y": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 20.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 20,
+                  "min": -30
+                },
+                "mapping": {
+                  "max": -1,
+                  "min": 1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor front left Fe-Ti",
+            "object_name": "front left Fe-Ti",
+            "domain": {
+              "max": 10.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor front right Fe-Ti",
+            "object_name": "front right Fe-Ti",
+            "domain": {
+              "max": 10.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor centre left Fe-Ti",
+            "object_name": "centre left Fe-Ti",
+            "domain": {
+              "max": 45.0,
+              "min": -2.5
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor centre right Fe-Ti",
+            "object_name": "centre right Fe-Ti",
+            "domain": {
+              "max": 45.0,
+              "min": -2.5
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor rear left Fe-Ti",
+            "object_name": "rear left Fe-Ti",
+            "domain": {
+              "max": 27.5,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor rear right Fe-Ti",
+            "object_name": "rear right Fe-Ti",
+            "domain": {
+              "max": 27.5,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor front left Ti-Ta",
+            "object_name": "front left Ti-Ta",
+            "domain": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor front right Ti-Ta",
+            "object_name": "front right Ti-Ta",
+            "domain": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor centre left Ti-Ta",
+            "object_name": "centre left Ti-Ta",
+            "domain": {
+              "max": 5.0,
+              "min": -30.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor centre right Ti-Ta",
+            "object_name": "centre right Ti-Ta",
+            "domain": {
+              "max": 30.0,
+              "min": -5.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor rear left Ti-Ta",
+            "object_name": "rear left Ti-Ta",
+            "domain": {
+              "max": 20.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "sensor rear right Ti-Ta",
+            "object_name": "rear right Ti-Ta",
+            "domain": {
+              "max": 20.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor main-rear",
+            "object_name": "main - rear",
+            "x": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 6.0,
+                  "min": -5.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 6.0,
+                  "min": -6.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "generic",
+            "name": "sensor main-head",
+            "object_name": "main - head",
+            "x": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 5.0,
+                  "min": -4.5
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            },
+            "z": {
+              "type": "angular",
+              "deflection": {
+                "domain": {
+                  "max": 5.0,
+                  "min": -5.0
+                },
+                "mapping": {
+                  "max": 1,
+                  "min": -1
+                }
+              }
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur front left contact sensor",
+            "object_name": "femur front left"
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur front right contact sensor",
+            "object_name": "femur front right"
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur centre left contact sensor",
+            "object_name": "femur centre left"
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur centre right contact sensor",
+            "object_name": "femur centre right"
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur rear left contact sensor",
+            "object_name": "femur rear left"
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "femur rear right contact sensor",
+            "object_name": "femur rear right"
+          },
+          {
+            "#tag": "position",
+            "name": "xyz position main",
+            "object_name": "main",
+            "coordinates": {
+              "x": true,
+              "y": true,
+              "z": true
+            }
+          },
+          {
+            "#tag": "orientation",
+            "name": "xyz orientation main",
+            "object_name": "main",
+            "coordinates": {
+              "x": true,
+              "y": true,
+              "z": true
+            }
+          },
+          {
+            "#tag": "ov",
+            "name": "main body velocity",
+            "object_name": "main",
+            "coordinates": {
+              "x": false,
+              "y": true,
+              "z": false
+            }
+          }
+        ]
       }
     },
     "traces": {
@@ -1953,11 +1615,11 @@
         "particles": false,
         "target": "main",
         "init": {
-          "colour": "7efaca",
+          "colour": "#7efaca",
           "size": 0.05
         },
         "final": {
-          "colour": "7efaca",
+          "colour": "#7efaca",
           "size": 0.0
         },
         "offset": {
@@ -2271,16 +1933,12 @@
         {
           "date": false,
           "name": "logs/main_body_velocities",
-          "target": {
-            "name": "main body velocity"
-          }
+          "target_name": "main body velocity"
         },
         {
           "date": false,
           "name": "logs/main_body_position",
-          "target": {
-            "name": "xyz position main"
-          }
+          "target_name": "xyz position main"
         },
         {
           "date": false,

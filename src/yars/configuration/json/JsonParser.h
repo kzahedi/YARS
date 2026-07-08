@@ -17,21 +17,32 @@ namespace yars
  * `root->add(...)` exactly as the SAX handler does, so all Data* state
  * machines work unchanged.
  *
- * Two element shapes are accepted per key, and may be mixed freely:
- *  - concise: an object value is a single child element
+ * Accepted value shapes per key (legacy and concise forms mix freely):
+ *  - scalar (string, number, bool): an attribute. Numbers and bools are
+ *    stringified before reaching the atoi/atof/"true"-compare accessors,
+ *    so native JSON types and the legacy all-strings form are equivalent.
+ *  - scalar under an "elem_attr" key: shorthand for a child element with
+ *    one attribute — "object_name": "main body" is
+ *    <object name="main body"/>. Split at the first underscore; real
+ *    element/attribute names never contain one.
+ *  - object: a single child element
  *      "lookAt": {"x": 0.0, "y": 0.01, "z": 0.0}
- *  - legacy always-arrays (XmlToJson's Stage-0 output): an array value
- *    holds one child element per entry
- *      "lookAt": [{"x": "0.0", "y": "0.01", "z": "0.0"}]
- *    Arrays remain the only way to express repeated children.
- * Scalar values (string, number, bool) are attributes; numbers and bools
- * are stringified before reaching the atoi/atof/"true"-compare accessors,
- * so native JSON types and the all-strings legacy form are equivalent.
- * scripts/json-canonicalize.py rewrites a legacy config to the concise
- * typed shape.
+ *  - array of objects: repeated child elements, one per entry
+ *      "hinge": [{...}, {...}]
+ *    (legacy always-arrays configs use this with one entry per singleton)
+ *  - array of objects that carry "#tag": the key is a container element
+ *    and the entries are its ordered, individually-tagged children —
+ *      "sensors": [{"#tag": "ldr", ...}, {"#tag": "deflection", ...}]
+ *    This is the flat form of the legacy {"#children": [...]} wrapper,
+ *    which remains accepted (and is still required when the container
+ *    element also carries attributes, e.g. <muscle name="...">).
+ * Colour attribute values accept CSS-style "#RRGGBB[AA]" as well as bare
+ * hex (stripped in DataColourFactory). scripts/json-canonicalize.py
+ * rewrites any accepted config to the canonical concise shape.
  *
- * Root element must be "rosiml" (matching YARS_STRING_ROSIML) — either a
- * plain object, or a one-element array in the legacy shape.
+ * Root key is "yars" ("rosiml" accepted for legacy configs); either maps
+ * to the internal "rosiml" element (YARS_STRING_ROSIML). The value may
+ * be a plain object or a one-element array in the legacy shape.
  *
  * NOTE: unlike the XML path (YarsXSDSaxParser::read), this reader does not
  * support "-" (stdin) — stdin JSON configs are out of scope for Stage 1;

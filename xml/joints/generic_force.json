@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 10
-      }
+      "solver_iterations": 10
     },
     "screens": {
       "screen": {
@@ -30,24 +28,20 @@
         },
         "osd": {
           "time": {
-            "colour": "FFFF00",
+            "colour": "#FFFF00",
             "font": "Time",
             "size": 25
           },
           "robot": {
-            "colour": "FFFFFF",
+            "colour": "#FFFFFF",
             "font": "Robot",
             "size": 25
           }
         }
       },
-      "sky": {
-        "name": "YARS/CloudySky"
-      },
+      "sky_name": "YARS/CloudySky",
       "cameras": {
-        "centre": {
-          "speed": 1.5
-        }
+        "centre_speed": 1.5
       }
     },
     "environment": {
@@ -55,9 +49,7 @@
         "fixed": true,
         "fog": false,
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGroundSmall"
-          }
+          "texture_name": "YARS/DryGroundSmall"
         }
       }
     },
@@ -79,29 +71,15 @@
                 "z": 0.25
               },
               "visualisation": {
-                "first": {
-                  "name": "YARS/Blue"
-                },
-                "second": {
-                  "name": "YARS/Blue"
-                },
-                "third": {
-                  "name": "YARS/Blue"
-                },
-                "fourth": {
-                  "name": "YARS/Blue"
-                },
-                "fifth": {
-                  "name": "YARS/Blue"
-                },
-                "sixth": {
-                  "name": "YARS/Blue"
-                }
+                "first_name": "YARS/Blue",
+                "second_name": "YARS/Blue",
+                "third_name": "YARS/Blue",
+                "fourth_name": "YARS/Blue",
+                "fifth_name": "YARS/Blue",
+                "sixth_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0
-                }
+                "mass_kg": 0
               }
             },
             {
@@ -117,29 +95,15 @@
                 "z": 1.25
               },
               "visualisation": {
-                "first": {
-                  "name": "YARS/Red"
-                },
-                "second": {
-                  "name": "YARS/Red"
-                },
-                "third": {
-                  "name": "YARS/Red"
-                },
-                "fourth": {
-                  "name": "YARS/Red"
-                },
-                "fifth": {
-                  "name": "YARS/Red"
-                },
-                "sixth": {
-                  "name": "YARS/Red"
-                }
+                "first_name": "YARS/Red",
+                "second_name": "YARS/Red",
+                "third_name": "YARS/Red",
+                "fourth_name": "YARS/Red",
+                "fifth_name": "YARS/Red",
+                "sixth_name": "YARS/Red"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                }
+                "mass_kg": 0.1
               }
             }
           ]
@@ -148,12 +112,8 @@
           "generic": {
             "name": "generic force joint",
             "spring": false,
-            "source": {
-              "name": "moving part"
-            },
-            "destination": {
-              "name": "base"
-            },
+            "source_name": "moving part",
+            "destination_name": "base",
             "pose": {
               "x": 0.0,
               "y": 0.0,
@@ -163,12 +123,8 @@
               "x": {
                 "mode": "active",
                 "type": "force",
-                "force": {
-                  "max": 100.0
-                },
-                "velocity": {
-                  "max": 0.5
-                },
+                "force_max": 100.0,
+                "velocity_max": 0.5,
                 "deflection": {
                   "max": 45.0,
                   "min": -45.0
@@ -181,12 +137,8 @@
               "y": {
                 "mode": "active",
                 "type": "force",
-                "force": {
-                  "max": 100.0
-                },
-                "velocity": {
-                  "max": 0.5
-                },
+                "force_max": 100.0,
+                "velocity_max": 0.5,
                 "deflection": {
                   "max": 45.0,
                   "min": -45.0
@@ -199,12 +151,8 @@
               "z": {
                 "mode": "active",
                 "type": "force",
-                "force": {
-                  "max": 100.0
-                },
-                "velocity": {
-                  "max": 0.5
-                },
+                "force_max": 100.0,
+                "velocity_max": 0.5,
                 "deflection": {
                   "max": 45.0,
                   "min": -45.0

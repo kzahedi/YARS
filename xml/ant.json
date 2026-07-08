@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 10
-      }
+      "solver_iterations": 10
     },
     "screens": {
       "screen": {
@@ -13,9 +11,7 @@
         "follow": true,
         "name": "main",
         "show": true,
-        "resolution": {
-          "name": "720p"
-        },
+        "resolution_name": "720p",
         "camera": {
           "position": {
             "x": 3.0,
@@ -30,20 +26,18 @@
         },
         "osd": {
           "time": {
-            "colour": "FFFF00",
+            "colour": "#FFFF00",
             "font": "Time",
             "size": 25
           },
           "robot": {
-            "colour": "FFFFFF",
+            "colour": "#FFFFFF",
             "font": "Robot",
             "size": 25
           }
         }
       },
-      "sky": {
-        "name": "YARS/CloudySky"
-      },
+      "sky_name": "YARS/CloudySky",
       "cameras": {
         "orbit": {
           "speed": -0.3,
@@ -80,18 +74,14 @@
         }
       },
       "followables": {
-        "followable": {
-          "name": "body"
-        }
+        "followable_name": "body"
       }
     },
     "environment": {
       "name": "env",
       "ground": {
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGround"
-          }
+          "texture_name": "YARS/DryGround"
         }
       }
     },
@@ -113,32 +103,16 @@
               "z": 0.55
             },
             "visualisation": {
-              "first": {
-                "name": "YARS/Blue"
-              },
-              "second": {
-                "name": "YARS/Blue"
-              },
-              "third": {
-                "name": "YARS/Blue"
-              },
-              "fourth": {
-                "name": "YARS/Blue"
-              },
-              "fifth": {
-                "name": "YARS/Blue"
-              },
-              "sixth": {
-                "name": "YARS/Blue"
-              }
+              "first_name": "YARS/Blue",
+              "second_name": "YARS/Blue",
+              "third_name": "YARS/Blue",
+              "fourth_name": "YARS/Blue",
+              "fifth_name": "YARS/Blue",
+              "sixth_name": "YARS/Blue"
             },
             "physics": {
-              "mass": {
-                "kg": 1.0
-              },
-              "friction": {
-                "value": 0.1
-              }
+              "mass_kg": 1.0,
+              "friction_value": 0.1
             }
           },
           "capsule": [
@@ -155,17 +129,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -181,17 +149,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             },
             {
@@ -207,17 +169,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -233,17 +189,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             },
             {
@@ -259,17 +209,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -285,17 +229,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             },
             {
@@ -311,17 +249,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -337,17 +269,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             },
             {
@@ -363,17 +289,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -389,17 +309,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             },
             {
@@ -415,17 +329,11 @@
                 "z": 0.55
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.1
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.1
               }
             },
             {
@@ -441,17 +349,11 @@
                 "z": 0.325
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Blue"
-                }
+                "texture_name": "YARS/Blue"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                },
-                "friction": {
-                  "value": 0.5
-                }
+                "mass_kg": 0.1,
+                "friction_value": 0.5
               }
             }
           ]
@@ -462,18 +364,10 @@
               "mode": "passive",
               "name": "left front hip",
               "type": "angular",
-              "source": {
-                "name": "left front femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "left front femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": 0.15,
                 "y": -0.5,
@@ -508,18 +402,10 @@
               "mode": "passive",
               "name": "right front hip",
               "type": "angular",
-              "source": {
-                "name": "right front femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "right front femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": -0.15,
                 "y": -0.5,
@@ -554,18 +440,10 @@
               "mode": "passive",
               "name": "left centre hip",
               "type": "angular",
-              "source": {
-                "name": "left centre femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "left centre femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": 0.15,
                 "y": 0.0,
@@ -600,18 +478,10 @@
               "mode": "passive",
               "name": "right centre hip",
               "type": "angular",
-              "source": {
-                "name": "right centre femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "right centre femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": -0.15,
                 "y": 0.0,
@@ -646,18 +516,10 @@
               "mode": "passive",
               "name": "left back hip",
               "type": "angular",
-              "source": {
-                "name": "left back femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "left back femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": 0.15,
                 "y": 0.5,
@@ -692,18 +554,10 @@
               "mode": "passive",
               "name": "right back hip",
               "type": "angular",
-              "source": {
-                "name": "right back femur"
-              },
-              "destination": {
-                "name": "body"
-              },
-              "force": {
-                "max": 0.5
-              },
-              "velocity": {
-                "max": 0.75
-              },
+              "source_name": "right back femur",
+              "destination_name": "body",
+              "force_max": 0.5,
+              "velocity_max": 0.75,
               "pose": {
                 "x": -0.15,
                 "y": 0.5,
@@ -738,18 +592,10 @@
               "mode": "passive",
               "name": "left front knee",
               "type": "angular",
-              "source": {
-                "name": "left front tibia"
-              },
-              "destination": {
-                "name": "left front femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "left front tibia",
+              "destination_name": "left front femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": 0.362,
                 "y": -0.5,
@@ -784,18 +630,10 @@
               "mode": "passive",
               "name": "right front knee",
               "type": "angular",
-              "source": {
-                "name": "right front tibia"
-              },
-              "destination": {
-                "name": "right front femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "right front tibia",
+              "destination_name": "right front femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": -0.362,
                 "y": -0.5,
@@ -830,18 +668,10 @@
               "mode": "passive",
               "name": "left centre knee",
               "type": "angular",
-              "source": {
-                "name": "left centre tibia"
-              },
-              "destination": {
-                "name": "left centre femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "left centre tibia",
+              "destination_name": "left centre femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": 0.362,
                 "y": 0.0,
@@ -876,18 +706,10 @@
               "mode": "passive",
               "name": "right centre knee",
               "type": "angular",
-              "source": {
-                "name": "right centre tibia"
-              },
-              "destination": {
-                "name": "right centre femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "right centre tibia",
+              "destination_name": "right centre femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": -0.362,
                 "y": 0.0,
@@ -922,18 +744,10 @@
               "mode": "passive",
               "name": "left back knee",
               "type": "angular",
-              "source": {
-                "name": "left back tibia"
-              },
-              "destination": {
-                "name": "left back femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "left back tibia",
+              "destination_name": "left back femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": 0.362,
                 "y": 0.5,
@@ -968,18 +782,10 @@
               "mode": "passive",
               "name": "right back knee",
               "type": "angular",
-              "source": {
-                "name": "right back tibia"
-              },
-              "destination": {
-                "name": "right back femur"
-              },
-              "force": {
-                "max": 3.5
-              },
-              "velocity": {
-                "max": 0.5
-              },
+              "source_name": "right back tibia",
+              "destination_name": "right back femur",
+              "force_max": 3.5,
+              "velocity_max": 0.5,
               "pose": {
                 "x": -0.362,
                 "y": 0.5,

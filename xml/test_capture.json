@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 1000,
-      "solver": {
-        "iterations": 100
-      }
+      "solver_iterations": 100
     },
     "screens": {
       "screen": {
@@ -31,20 +29,18 @@
         },
         "osd": {
           "time": {
-            "colour": "FFFF00",
+            "colour": "#FFFF00",
             "font": "Time",
             "size": 25
           },
           "robot": {
-            "colour": "FFFFFF",
+            "colour": "#FFFFFF",
             "font": "Robot",
             "size": 25
           }
         }
       },
-      "sky": {
-        "name": "YARS/CloudySky"
-      },
+      "sky_name": "YARS/CloudySky",
       "cameras": {
         "orbit": {
           "speed": 0.5,
@@ -79,14 +75,10 @@
             "p": 0.0
           }
         },
-        "centre": {
-          "speed": 1.5
-        }
+        "centre_speed": 1.5
       },
       "followables": {
-        "followable": {
-          "name": "swinging body"
-        }
+        "followable_name": "swinging body"
       },
       "visualise": {
         "joints": {
@@ -100,9 +92,7 @@
         "fixed": true,
         "fog": false,
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGroundSmall"
-          }
+          "texture_name": "YARS/DryGroundSmall"
         }
       }
     },
@@ -114,44 +104,32 @@
             {
               "name": "source body",
               "visualise": true,
-              "dimension": {
-                "radius": 0.1
-              },
+              "dimension_radius": 0.1,
               "pose": {
                 "y": 0.0,
                 "z": 2.0
               },
               "visualisation": {
-                "texture": {
-                  "name": "Chain/Circuit/Top/Green"
-                }
+                "texture_name": "Chain/Circuit/Top/Green"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.0
-                }
+                "mass_kg": 0.0
               }
             },
             {
               "name": "destination body",
               "visualise": true,
-              "dimension": {
-                "radius": 0.1
-              },
+              "dimension_radius": 0.1,
               "pose": {
                 "x": 0.5,
                 "y": 0.5,
                 "z": 1.5
               },
               "visualisation": {
-                "texture": {
-                  "name": "Chain/Circuit/Top/Green"
-                }
+                "texture_name": "Chain/Circuit/Top/Green"
               },
               "physics": {
-                "mass": {
-                  "kg": 0.1
-                }
+                "mass_kg": 0.1
               }
             }
           ]
@@ -161,18 +139,10 @@
             "mode": "passive",
             "name": "slider",
             "type": "positional",
-            "source": {
-              "name": "source body"
-            },
-            "destination": {
-              "name": "destination body"
-            },
-            "force": {
-              "max": 2.0
-            },
-            "velocity": {
-              "max": 0.5
-            },
+            "source_name": "source body",
+            "destination_name": "destination body",
+            "force_max": 2.0,
+            "velocity_max": 0.5,
             "pose": {
               "beta": 90,
               "x": 0.0,

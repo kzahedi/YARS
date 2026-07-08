@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.41",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 200
-      }
+      "solver_iterations": 200
     },
     "screens": {
       "screen": {
@@ -13,9 +11,7 @@
         "follow": true,
         "name": "main",
         "show": false,
-        "resolution": {
-          "name": "720p"
-        },
+        "resolution_name": "720p",
         "camera": {
           "position": {
             "x": 7.0,
@@ -30,38 +26,30 @@
         },
         "osd": {
           "time": {
-            "colour": "800000",
+            "colour": "#800000",
             "font": "Time",
             "size": 24
           },
           "robot": {
-            "colour": "800000",
+            "colour": "#800000",
             "font": "Robot",
             "size": 24
           }
         }
       },
-      "sky": {
-        "name": "YARS/CloudySky"
-      },
+      "sky_name": "YARS/CloudySky",
       "cameras": {
-        "orbit": {
-          "speed": 0.0
-        }
+        "orbit_speed": 0.0
       },
       "followables": {
-        "followable": {
-          "name": "main"
-        }
+        "followable_name": "main"
       }
     },
     "environment": {
       "name": "env",
       "ground": {
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGround"
-          }
+          "texture_name": "YARS/DryGround"
         }
       },
       "box": {
@@ -80,29 +68,15 @@
           "z": 0.6
         },
         "visualisation": {
-          "first": {
-            "name": "SimpleWhite"
-          },
-          "second": {
-            "name": "SimpleWhite"
-          },
-          "third": {
-            "name": "SimpleWhite"
-          },
-          "fourth": {
-            "name": "SimpleWhite"
-          },
-          "fifth": {
-            "name": "SimpleWhite"
-          },
-          "sixth": {
-            "name": "SimpleWhite"
-          }
+          "first_name": "SimpleWhite",
+          "second_name": "SimpleWhite",
+          "third_name": "SimpleWhite",
+          "fourth_name": "SimpleWhite",
+          "fifth_name": "SimpleWhite",
+          "sixth_name": "SimpleWhite"
         },
         "physics": {
-          "mass": {
-            "kg": 0
-          }
+          "mass_kg": 0
         }
       }
     },
@@ -122,17 +96,11 @@
                 "z": 0.828109
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 97.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 97.0,
+                "friction_value": 10
               }
             },
             {
@@ -145,17 +113,11 @@
                 "z": 1.194516
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 73.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 73.0,
+                "friction_value": 10
               }
             },
             {
@@ -168,17 +130,11 @@
                 "z": 0.729942
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 244.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 244.0,
+                "friction_value": 10
               }
             },
             {
@@ -193,17 +149,11 @@
                 "z": 0.777272
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 9.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 9.0,
+                "friction_value": 10
               }
             },
             {
@@ -218,17 +168,11 @@
                 "z": 0.828558
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 6.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 6.0,
+                "friction_value": 10
               }
             },
             {
@@ -243,17 +187,11 @@
                 "z": 0.870632
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -268,17 +206,11 @@
                 "z": 0.273804
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             },
             {
@@ -293,17 +225,11 @@
                 "z": 0.803203
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 9.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 9.0,
+                "friction_value": 10
               }
             },
             {
@@ -318,17 +244,11 @@
                 "z": 0.907809
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 6.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 6.0,
+                "friction_value": 10
               }
             },
             {
@@ -343,17 +263,11 @@
                 "z": 1.045528
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -368,17 +282,11 @@
                 "z": 0.365667
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             },
             {
@@ -393,17 +301,11 @@
                 "z": 0.724711
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -418,17 +320,11 @@
                 "z": 0.962445
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 6.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 6.0,
+                "friction_value": 10
               }
             },
             {
@@ -443,17 +339,11 @@
                 "z": 1.211122
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -468,17 +358,11 @@
                 "z": 0.434763
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             },
             {
@@ -493,17 +377,11 @@
                 "z": 0.724711
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -518,17 +396,11 @@
                 "z": 0.962445
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 6.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 6.0,
+                "friction_value": 10
               }
             },
             {
@@ -543,17 +415,11 @@
                 "z": 1.211122
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 3.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 3.0,
+                "friction_value": 10
               }
             },
             {
@@ -568,17 +434,11 @@
                 "z": 0.434763
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             },
             {
@@ -593,17 +453,11 @@
                 "z": 0.660947
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 5.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 5.0,
+                "friction_value": 10
               }
             },
             {
@@ -618,17 +472,11 @@
                 "z": 1.031232
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 9.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 9.0,
+                "friction_value": 10
               }
             },
             {
@@ -643,17 +491,11 @@
                 "z": 1.332172
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 4.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 4.0,
+                "friction_value": 10
               }
             },
             {
@@ -668,17 +510,11 @@
                 "z": 0.467886
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             },
             {
@@ -693,17 +529,11 @@
                 "z": 0.660947
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 5.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 5.0,
+                "friction_value": 10
               }
             },
             {
@@ -718,17 +548,11 @@
                 "z": 1.031232
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 9.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 9.0,
+                "friction_value": 10
               }
             },
             {
@@ -743,17 +567,11 @@
                 "z": 1.332172
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 4.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 4.0,
+                "friction_value": 10
               }
             },
             {
@@ -768,17 +586,11 @@
                 "z": 0.467886
               },
               "visualisation": {
-                "texture": {
-                  "name": "YARS/Gray"
-                }
+                "texture_name": "YARS/Gray"
               },
               "physics": {
-                "mass": {
-                  "kg": 1.0
-                },
-                "friction": {
-                  "value": 10
-                }
+                "mass_kg": 1.0,
+                "friction_value": 10
               }
             }
           ]
@@ -787,21 +599,13 @@
           "fixed": [
             {
               "name": "main head",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "head"
-              }
+              "source_name": "main",
+              "destination_name": "head"
             },
             {
               "name": "main tail",
-              "source": {
-                "name": "main"
-              },
-              "destination": {
-                "name": "tail"
-              }
+              "source_name": "main",
+              "destination_name": "tail"
             }
           ],
           "hinge": [
@@ -809,18 +613,10 @@
               "mode": "active",
               "name": "right main - L1S1",
               "type": "angular",
-              "source": {
-                "name": "right L1S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L1S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -851,18 +647,10 @@
               "mode": "active",
               "name": "right L1S1 - L1S2",
               "type": "angular",
-              "source": {
-                "name": "right L1S2"
-              },
-              "destination": {
-                "name": "right L1S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L1S2",
+              "destination_name": "right L1S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -893,18 +681,10 @@
               "mode": "active",
               "name": "right L1S2 - L1S3",
               "type": "angular",
-              "source": {
-                "name": "right L1S3"
-              },
-              "destination": {
-                "name": "right L1S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L1S3",
+              "destination_name": "right L1S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.348007,
@@ -934,18 +714,10 @@
               "mode": "active",
               "name": "right L1S3 - L1S4",
               "type": "angular",
-              "source": {
-                "name": "right L1S4"
-              },
-              "destination": {
-                "name": "right L1S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L1S4",
+              "destination_name": "right L1S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.481949,
@@ -975,18 +747,10 @@
               "mode": "active",
               "name": "left main - L1S1",
               "type": "angular",
-              "source": {
-                "name": "left L1S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L1S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -1017,18 +781,10 @@
               "mode": "active",
               "name": "left L1S1 - L1S2",
               "type": "angular",
-              "source": {
-                "name": "left L1S2"
-              },
-              "destination": {
-                "name": "left L1S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L1S2",
+              "destination_name": "left L1S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -1059,18 +815,10 @@
               "mode": "active",
               "name": "left L1S2 - L1S3",
               "type": "angular",
-              "source": {
-                "name": "left L1S3"
-              },
-              "destination": {
-                "name": "left L1S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L1S3",
+              "destination_name": "left L1S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.348007,
@@ -1100,18 +848,10 @@
               "mode": "active",
               "name": "left L1S3 - L1S4",
               "type": "angular",
-              "source": {
-                "name": "left L1S4"
-              },
-              "destination": {
-                "name": "left L1S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L1S4",
+              "destination_name": "left L1S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.481949,
@@ -1141,18 +881,10 @@
               "mode": "active",
               "name": "right main - L2S1",
               "type": "angular",
-              "source": {
-                "name": "right L2S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L2S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -1183,18 +915,10 @@
               "mode": "active",
               "name": "right L2S1 - L2S2",
               "type": "angular",
-              "source": {
-                "name": "right L2S2"
-              },
-              "destination": {
-                "name": "right L2S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L2S2",
+              "destination_name": "right L2S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -1225,18 +949,10 @@
               "mode": "active",
               "name": "right L2S2 - L2S3",
               "type": "angular",
-              "source": {
-                "name": "right L2S3"
-              },
-              "destination": {
-                "name": "right L2S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L2S3",
+              "destination_name": "right L2S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.165596,
@@ -1266,18 +982,10 @@
               "mode": "active",
               "name": "right L2S3 - L2S4",
               "type": "angular",
-              "source": {
-                "name": "right L2S4"
-              },
-              "destination": {
-                "name": "right L2S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L2S4",
+              "destination_name": "right L2S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.052062,
@@ -1307,18 +1015,10 @@
               "mode": "active",
               "name": "left main - L2S1",
               "type": "angular",
-              "source": {
-                "name": "left L2S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L2S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -1349,18 +1049,10 @@
               "mode": "active",
               "name": "left L2S1 - L2S2",
               "type": "angular",
-              "source": {
-                "name": "left L2S2"
-              },
-              "destination": {
-                "name": "left L2S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L2S2",
+              "destination_name": "left L2S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -1391,18 +1083,10 @@
               "mode": "active",
               "name": "left L2S2 - L2S3",
               "type": "angular",
-              "source": {
-                "name": "left L2S3"
-              },
-              "destination": {
-                "name": "left L2S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L2S3",
+              "destination_name": "left L2S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.165596,
@@ -1432,18 +1116,10 @@
               "mode": "active",
               "name": "left L2S3 - L2S4",
               "type": "angular",
-              "source": {
-                "name": "left L2S4"
-              },
-              "destination": {
-                "name": "left L2S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L2S4",
+              "destination_name": "left L2S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.052062,
@@ -1473,18 +1149,10 @@
               "mode": "active",
               "name": "right main - L3S1",
               "type": "angular",
-              "source": {
-                "name": "right L3S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L3S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -1515,18 +1183,10 @@
               "mode": "active",
               "name": "right L3S1 - L3S2",
               "type": "angular",
-              "source": {
-                "name": "right L3S2"
-              },
-              "destination": {
-                "name": "right L3S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L3S2",
+              "destination_name": "right L3S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -1557,18 +1217,10 @@
               "mode": "active",
               "name": "right L3S2 - L3S3",
               "type": "angular",
-              "source": {
-                "name": "right L3S3"
-              },
-              "destination": {
-                "name": "right L3S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L3S3",
+              "destination_name": "right L3S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.156881,
@@ -1598,18 +1250,10 @@
               "mode": "active",
               "name": "right L3S3 - L3S4",
               "type": "angular",
-              "source": {
-                "name": "right L3S4"
-              },
-              "destination": {
-                "name": "right L3S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "right L3S4",
+              "destination_name": "right L3S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.066215,
@@ -1639,18 +1283,10 @@
               "mode": "active",
               "name": "left main - L3S1",
               "type": "angular",
-              "source": {
-                "name": "left L3S1"
-              },
-              "destination": {
-                "name": "main"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L3S1",
+              "destination_name": "main",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "alpha": 90,
                 "x": 0.0,
@@ -1681,18 +1317,10 @@
               "mode": "active",
               "name": "left L3S1 - L3S2",
               "type": "angular",
-              "source": {
-                "name": "left L3S2"
-              },
-              "destination": {
-                "name": "left L3S1"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L3S2",
+              "destination_name": "left L3S1",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "gamma": 90,
                 "x": 0.0,
@@ -1723,18 +1351,10 @@
               "mode": "active",
               "name": "left L3S2 - L3S3",
               "type": "angular",
-              "source": {
-                "name": "left L3S3"
-              },
-              "destination": {
-                "name": "left L3S2"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L3S3",
+              "destination_name": "left L3S2",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.156881,
@@ -1764,18 +1384,10 @@
               "mode": "active",
               "name": "left L3S3 - L3S4",
               "type": "angular",
-              "source": {
-                "name": "left L3S4"
-              },
-              "destination": {
-                "name": "left L3S3"
-              },
-              "force": {
-                "max": 6000.0
-              },
-              "velocity": {
-                "max": 1.0
-              },
+              "source_name": "left L3S4",
+              "destination_name": "left L3S3",
+              "force_max": 6000.0,
+              "velocity_max": 1.0,
               "pose": {
                 "x": 0.0,
                 "y": -0.066215,
@@ -1803,424 +1415,360 @@
             }
           ]
         },
-        "sensors": {
-          "#children": [
-            {
-              "#tag": "deflection",
-              "name": "right main - L1S1 sensor",
-              "object": {
-                "name": "right main - L1S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
+        "sensors": [
+          {
+            "#tag": "deflection",
+            "name": "right main - L1S1 sensor",
+            "object_name": "right main - L1S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
             },
-            {
-              "#tag": "deflection",
-              "name": "right L1S1 - L1S2 sensor",
-              "object": {
-                "name": "right L1S1 - L1S2"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -85.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L1S2 - L1S3 sensor",
-              "object": {
-                "name": "right L1S2 - L1S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L1S3 - L1S4 sensor",
-              "object": {
-                "name": "right L1S3 - L1S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "right L1S4 contact sensor",
-              "object": {
-                "name": "right L1S4"
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left main - L1S1 sensor",
-              "object": {
-                "name": "left main - L1S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L1S1 - L1S2 sensor",
-              "object": {
-                "name": "left L1S1 - L1S2"
-              },
-              "domain": {
-                "max": 85.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L1S2 - L1S3 sensor",
-              "object": {
-                "name": "left L1S2 - L1S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L1S3 - L1S4 sensor",
-              "object": {
-                "name": "left L1S3 - L1S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "left L1S4 contact sensor",
-              "object": {
-                "name": "left L1S4"
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right main - L2S1 sensor",
-              "object": {
-                "name": "right main - L2S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L2S1 - L2S2 sensor",
-              "object": {
-                "name": "right L2S1 - L2S2"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -85.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L2S2 - L2S3 sensor",
-              "object": {
-                "name": "right L2S2 - L2S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L2S3 - L2S4 sensor",
-              "object": {
-                "name": "right L2S3 - L2S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "right L2S4 contact sensor",
-              "object": {
-                "name": "right L2S4"
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left main - L2S1 sensor",
-              "object": {
-                "name": "left main - L2S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L2S1 - L2S2 sensor",
-              "object": {
-                "name": "left L2S1 - L2S2"
-              },
-              "domain": {
-                "max": 85.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L2S2 - L2S3 sensor",
-              "object": {
-                "name": "left L2S2 - L2S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L2S3 - L2S4 sensor",
-              "object": {
-                "name": "left L2S3 - L2S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "left L2S4 contact sensor",
-              "object": {
-                "name": "left L2S4"
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right main - L3S1 sensor",
-              "object": {
-                "name": "right main - L3S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L3S1 - L3S2 sensor",
-              "object": {
-                "name": "right L3S1 - L3S2"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -85.0
-              },
-              "mapping": {
-                "max": -1,
-                "min": 1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L3S2 - L3S3 sensor",
-              "object": {
-                "name": "right L3S2 - L3S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "right L3S3 - L3S4 sensor",
-              "object": {
-                "name": "right L3S3 - L3S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "right L3S4 contact sensor",
-              "object": {
-                "name": "right L3S4"
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left main - L3S1 sensor",
-              "object": {
-                "name": "left main - L3S1"
-              },
-              "domain": {
-                "max": 45.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L3S1 - L3S2 sensor",
-              "object": {
-                "name": "left L3S1 - L3S2"
-              },
-              "domain": {
-                "max": 85.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L3S2 - L3S3 sensor",
-              "object": {
-                "name": "left L3S2 - L3S3"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "deflection",
-              "name": "left L3S3 - L3S4 sensor",
-              "object": {
-                "name": "left L3S3 - L3S4"
-              },
-              "domain": {
-                "max": 25.0,
-                "min": -45.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "binaryContact",
-              "name": "left L3S4 contact sensor",
-              "object": {
-                "name": "left L3S4"
-              }
-            },
-            {
-              "#tag": "position",
-              "name": "main body position",
-              "object": {
-                "name": "main"
-              },
-              "coordinates": {
-                "x": true,
-                "y": true,
-                "z": true
-              }
+            "mapping": {
+              "max": 1,
+              "min": -1
             }
-          ]
-        }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L1S1 - L1S2 sensor",
+            "object_name": "right L1S1 - L1S2",
+            "domain": {
+              "max": 25.0,
+              "min": -85.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L1S2 - L1S3 sensor",
+            "object_name": "right L1S2 - L1S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L1S3 - L1S4 sensor",
+            "object_name": "right L1S3 - L1S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "right L1S4 contact sensor",
+            "object_name": "right L1S4"
+          },
+          {
+            "#tag": "deflection",
+            "name": "left main - L1S1 sensor",
+            "object_name": "left main - L1S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L1S1 - L1S2 sensor",
+            "object_name": "left L1S1 - L1S2",
+            "domain": {
+              "max": 85.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L1S2 - L1S3 sensor",
+            "object_name": "left L1S2 - L1S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L1S3 - L1S4 sensor",
+            "object_name": "left L1S3 - L1S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "left L1S4 contact sensor",
+            "object_name": "left L1S4"
+          },
+          {
+            "#tag": "deflection",
+            "name": "right main - L2S1 sensor",
+            "object_name": "right main - L2S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L2S1 - L2S2 sensor",
+            "object_name": "right L2S1 - L2S2",
+            "domain": {
+              "max": 25.0,
+              "min": -85.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L2S2 - L2S3 sensor",
+            "object_name": "right L2S2 - L2S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L2S3 - L2S4 sensor",
+            "object_name": "right L2S3 - L2S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "right L2S4 contact sensor",
+            "object_name": "right L2S4"
+          },
+          {
+            "#tag": "deflection",
+            "name": "left main - L2S1 sensor",
+            "object_name": "left main - L2S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L2S1 - L2S2 sensor",
+            "object_name": "left L2S1 - L2S2",
+            "domain": {
+              "max": 85.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L2S2 - L2S3 sensor",
+            "object_name": "left L2S2 - L2S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L2S3 - L2S4 sensor",
+            "object_name": "left L2S3 - L2S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "left L2S4 contact sensor",
+            "object_name": "left L2S4"
+          },
+          {
+            "#tag": "deflection",
+            "name": "right main - L3S1 sensor",
+            "object_name": "right main - L3S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L3S1 - L3S2 sensor",
+            "object_name": "right L3S1 - L3S2",
+            "domain": {
+              "max": 25.0,
+              "min": -85.0
+            },
+            "mapping": {
+              "max": -1,
+              "min": 1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L3S2 - L3S3 sensor",
+            "object_name": "right L3S2 - L3S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "right L3S3 - L3S4 sensor",
+            "object_name": "right L3S3 - L3S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "right L3S4 contact sensor",
+            "object_name": "right L3S4"
+          },
+          {
+            "#tag": "deflection",
+            "name": "left main - L3S1 sensor",
+            "object_name": "left main - L3S1",
+            "domain": {
+              "max": 45.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L3S1 - L3S2 sensor",
+            "object_name": "left L3S1 - L3S2",
+            "domain": {
+              "max": 85.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L3S2 - L3S3 sensor",
+            "object_name": "left L3S2 - L3S3",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "deflection",
+            "name": "left L3S3 - L3S4 sensor",
+            "object_name": "left L3S3 - L3S4",
+            "domain": {
+              "max": 25.0,
+              "min": -45.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "binaryContact",
+            "name": "left L3S4 contact sensor",
+            "object_name": "left L3S4"
+          },
+          {
+            "#tag": "position",
+            "name": "main body position",
+            "object_name": "main",
+            "coordinates": {
+              "x": true,
+              "y": true,
+              "z": true
+            }
+          }
+        ]
       }
     },
     "logging": {

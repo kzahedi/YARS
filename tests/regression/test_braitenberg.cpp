@@ -62,6 +62,6 @@ TEST_F(BraitenbergRegressionTest, ConfigurationFileExists) {
     // Check that it contains expected JSON content
     std::string content((std::istreambuf_iterator<char>(file)),
                         std::istreambuf_iterator<char>());
-    EXPECT_TRUE(content.find("\"rosiml\"") != std::string::npos) << "JSON file does not contain expected rosiml root element";
+    EXPECT_TRUE(content.find("\"yars\"") != std::string::npos) << "JSON file does not contain expected yars root element";
     EXPECT_TRUE(content.find("Braiternberg") != std::string::npos || content.find("braitenberg") != std::string::npos) << "JSON file does not contain braitenberg elements";
 }

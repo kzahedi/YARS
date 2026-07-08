@@ -20,6 +20,9 @@ class DataColourFactory
 
     static void set(Colour& color, string value)
     {
+      // Accept CSS-style "#RRGGBB[AA]" (canonical in JSON configs) as
+      // well as the bare "RRGGBB[AA]" hex form.
+      if(value.length() > 0 && value[0] == '#') value = value.substr(1);
       char *red   = new char[3];
       char *green = new char[3];
       char *blue  = new char[3];

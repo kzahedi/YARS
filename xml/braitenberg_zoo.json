@@ -1,11 +1,9 @@
 {
-  "rosiml": {
+  "yars": {
     "version": "0.8.40",
     "simulator": {
       "frequency": 100,
-      "solver": {
-        "iterations": 10
-      }
+      "solver_iterations": 10
     },
     "screens": {
       "screen": {
@@ -30,12 +28,12 @@
         },
         "osd": {
           "time": {
-            "colour": "FFFF00",
+            "colour": "#FFFF00",
             "font": "Time",
             "size": 25
           },
           "robot": {
-            "colour": "FFFFFF",
+            "colour": "#FFFFFF",
             "font": "Robot",
             "size": 25
           }
@@ -75,14 +73,10 @@
             "p": 0.0
           }
         },
-        "centre": {
-          "speed": 1.5
-        }
+        "centre_speed": 1.5
       },
       "followables": {
-        "followable": {
-          "name": "main body"
-        }
+        "followable_name": "main body"
       }
     },
     "environment": {
@@ -95,9 +89,7 @@
         "fixed": true,
         "fog": false,
         "visualisation": {
-          "texture": {
-            "name": "YARS/DryGroundSmall"
-          }
+          "texture_name": "YARS/DryGroundSmall"
         }
       },
       "box": [
@@ -117,29 +109,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Wall1"
-            },
-            "third": {
-              "name": "YARS/Wall1"
-            },
-            "fourth": {
-              "name": "YARS/Wall1"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall2"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Wall1",
+            "third_name": "YARS/Wall1",
+            "fourth_name": "YARS/Wall1",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall2"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -158,29 +136,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Green"
-            },
-            "third": {
-              "name": "YARS/Blue"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Green",
+            "third_name": "YARS/Blue",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -199,29 +163,15 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Green"
-            },
-            "third": {
-              "name": "YARS/Wall1"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Green",
+            "third_name": "YARS/Wall1",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         },
         {
@@ -240,36 +190,22 @@
             "z": -0.15
           },
           "visualisation": {
-            "first": {
-              "name": "YARS/Wall2"
-            },
-            "second": {
-              "name": "YARS/Wall2"
-            },
-            "third": {
-              "name": "YARS/Wall2"
-            },
-            "fourth": {
-              "name": "YARS/Wall2"
-            },
-            "fifth": {
-              "name": "YARS/Wall1"
-            },
-            "sixth": {
-              "name": "YARS/Wall1"
-            }
+            "first_name": "YARS/Wall2",
+            "second_name": "YARS/Wall2",
+            "third_name": "YARS/Wall2",
+            "fourth_name": "YARS/Wall2",
+            "fifth_name": "YARS/Wall1",
+            "sixth_name": "YARS/Wall1"
           },
           "physics": {
-            "mass": {
-              "kg": 0
-            }
+            "mass_kg": 0
           }
         }
       ],
       "pointLightSource": [
         {
           "brightness": 1.0,
-          "colour": "FF0000",
+          "colour": "#FF0000",
           "draw": true,
           "name": "light source 1",
           "size": 0.05,
@@ -279,7 +215,7 @@
         },
         {
           "brightness": 1.0,
-          "colour": "FF0000",
+          "colour": "#FF0000",
           "draw": true,
           "name": "light source 2",
           "size": 0.05,
@@ -289,7 +225,7 @@
         },
         {
           "brightness": 1.0,
-          "colour": "FF0000",
+          "colour": "#FF0000",
           "draw": true,
           "name": "light source 3",
           "size": 0.05,
@@ -299,7 +235,7 @@
         },
         {
           "brightness": 1.0,
-          "colour": "FF0000",
+          "colour": "#FF0000",
           "draw": true,
           "name": "light source 4",
           "size": 0.05,
@@ -309,7 +245,7 @@
         },
         {
           "brightness": 1.0,
-          "colour": "FF0000",
+          "colour": "#FF0000",
           "draw": true,
           "name": "light source 5",
           "size": 0.05,
@@ -343,29 +279,19 @@
                     "z": 0.01
                   },
                   "visualisation": {
-                    "top": {
-                      "name": "Chain/Circuit/Top/Purple"
-                    },
-                    "bottom": {
-                      "name": "Chain/Circuit/Body/Purple"
-                    },
-                    "body": {
-                      "name": "Chain/Circuit/Body/Purple"
-                    }
+                    "top_name": "Chain/Circuit/Top/Purple",
+                    "bottom_name": "Chain/Circuit/Body/Purple",
+                    "body_name": "Chain/Circuit/Body/Purple"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 1.0
-                    }
+                    "mass_kg": 1.0
                   }
                 },
                 "sphere": [
                   {
                     "name": "2a wheel front",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -375,22 +301,16 @@
                       "z": -0.0499999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   },
                   {
                     "name": "2a wheel back",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -400,73 +320,51 @@
                       "z": -0.049999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   }
                 ]
               },
               "physics": {
-                "friction": {
-                  "value": 0
-                }
+                "friction_value": 0
               }
             },
             "sphere": [
               {
                 "name": "2a wheel left",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": 0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               },
               {
                 "name": "2a wheel right",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": -0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               }
             ]
@@ -482,18 +380,10 @@
                 "mode": "active",
                 "name": "2a wheel left hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "2a wheel left"
-                },
-                "destination": {
-                  "name": "2a main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "2a wheel left",
+                "destination_name": "2a main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -529,18 +419,10 @@
                 "mode": "active",
                 "name": "2a wheel right hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "2a wheel right"
-                },
-                "destination": {
-                  "name": "2a main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "2a wheel right",
+                "destination_name": "2a main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -578,9 +460,7 @@
             "proximity": [
               {
                 "name": "2a left 1",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": -90,
                   "beta": 90,
@@ -588,9 +468,7 @@
                   "y": 0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -602,9 +480,7 @@
               },
               {
                 "name": "2a left 2",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -612,9 +488,7 @@
                   "y": 0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -626,9 +500,7 @@
               },
               {
                 "name": "2a left 3",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": -15,
                   "beta": 90,
@@ -636,9 +508,7 @@
                   "y": 0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -650,9 +520,7 @@
               },
               {
                 "name": "2a right 3",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": 15,
                   "beta": 90,
@@ -660,9 +528,7 @@
                   "y": -0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -674,9 +540,7 @@
               },
               {
                 "name": "2a right 2",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -684,9 +548,7 @@
                   "y": -0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -698,9 +560,7 @@
               },
               {
                 "name": "2a right 1",
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": 90,
                   "beta": 90,
@@ -708,9 +568,7 @@
                   "y": -0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -725,9 +583,7 @@
               {
                 "name": "2a ldr left 2",
                 "opening": 70,
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -735,9 +591,7 @@
                   "y": 0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -759,9 +613,7 @@
               {
                 "name": "2a ldr right 2",
                 "opening": 70,
-                "object": {
-                  "name": "2a main body"
-                },
+                "object_name": "2a main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -769,9 +621,7 @@
                   "y": -0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -794,9 +644,7 @@
             "velocity": [
               {
                 "name": "2a left wheel hinge sensor",
-                "object": {
-                  "name": "2a wheel left hinge"
-                },
+                "object_name": "2a wheel left hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -808,9 +656,7 @@
               },
               {
                 "name": "2a right wheel hinge sensor",
-                "object": {
-                  "name": "2a wheel right hinge"
-                },
+                "object_name": "2a wheel right hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -853,29 +699,19 @@
                     "z": 0.01
                   },
                   "visualisation": {
-                    "top": {
-                      "name": "Chain/Circuit/Top/Green"
-                    },
-                    "bottom": {
-                      "name": "Chain/Circuit/Body/Green"
-                    },
-                    "body": {
-                      "name": "Chain/Circuit/Body/Green"
-                    }
+                    "top_name": "Chain/Circuit/Top/Green",
+                    "bottom_name": "Chain/Circuit/Body/Green",
+                    "body_name": "Chain/Circuit/Body/Green"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 1.0
-                    }
+                    "mass_kg": 1.0
                   }
                 },
                 "sphere": [
                   {
                     "name": "2b wheel front",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -885,22 +721,16 @@
                       "z": -0.0499999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   },
                   {
                     "name": "2b wheel back",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -910,73 +740,51 @@
                       "z": -0.049999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   }
                 ]
               },
               "physics": {
-                "friction": {
-                  "value": 0
-                }
+                "friction_value": 0
               }
             },
             "sphere": [
               {
                 "name": "2b wheel left",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": 0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               },
               {
                 "name": "2b wheel right",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": -0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               }
             ]
@@ -993,18 +801,10 @@
                 "mode": "active",
                 "name": "2b wheel left hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "2b wheel left"
-                },
-                "destination": {
-                  "name": "2b main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "2b wheel left",
+                "destination_name": "2b main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -1040,18 +840,10 @@
                 "mode": "active",
                 "name": "2b wheel right hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "2b wheel right"
-                },
-                "destination": {
-                  "name": "2b main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "2b wheel right",
+                "destination_name": "2b main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -1089,9 +881,7 @@
             "proximity": [
               {
                 "name": "2b left 1",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": -90,
                   "beta": 90,
@@ -1099,9 +889,7 @@
                   "y": 0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1113,9 +901,7 @@
               },
               {
                 "name": "2b left 2",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -1123,9 +909,7 @@
                   "y": 0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1137,9 +921,7 @@
               },
               {
                 "name": "2b left 3",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": -15,
                   "beta": 90,
@@ -1147,9 +929,7 @@
                   "y": 0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1161,9 +941,7 @@
               },
               {
                 "name": "2b right 3",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": 15,
                   "beta": 90,
@@ -1171,9 +949,7 @@
                   "y": -0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1185,9 +961,7 @@
               },
               {
                 "name": "2b right 2",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -1195,9 +969,7 @@
                   "y": -0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1209,9 +981,7 @@
               },
               {
                 "name": "2b right 1",
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": 90,
                   "beta": 90,
@@ -1219,9 +989,7 @@
                   "y": -0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1236,9 +1004,7 @@
               {
                 "name": "2b ldr left 2",
                 "opening": 70,
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -1246,9 +1012,7 @@
                   "y": 0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -1270,9 +1034,7 @@
               {
                 "name": "2b ldr right 2",
                 "opening": 70,
-                "object": {
-                  "name": "2b main body"
-                },
+                "object_name": "2b main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -1280,9 +1042,7 @@
                   "y": -0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -1305,9 +1065,7 @@
             "velocity": [
               {
                 "name": "2b left wheel hinge sensor",
-                "object": {
-                  "name": "2b wheel left hinge"
-                },
+                "object_name": "2b wheel left hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -1319,9 +1077,7 @@
               },
               {
                 "name": "2b right wheel hinge sensor",
-                "object": {
-                  "name": "2b wheel right hinge"
-                },
+                "object_name": "2b wheel right hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -1364,29 +1120,19 @@
                     "z": 0.01
                   },
                   "visualisation": {
-                    "top": {
-                      "name": "Chain/Circuit/Top/Blue"
-                    },
-                    "bottom": {
-                      "name": "Chain/Circuit/Body/Blue"
-                    },
-                    "body": {
-                      "name": "Chain/Circuit/Body/Blue"
-                    }
+                    "top_name": "Chain/Circuit/Top/Blue",
+                    "bottom_name": "Chain/Circuit/Body/Blue",
+                    "body_name": "Chain/Circuit/Body/Blue"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 1.0
-                    }
+                    "mass_kg": 1.0
                   }
                 },
                 "sphere": [
                   {
                     "name": "3a wheel front",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -1396,22 +1142,16 @@
                       "z": -0.0499999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   },
                   {
                     "name": "3a wheel back",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -1421,73 +1161,51 @@
                       "z": -0.049999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   }
                 ]
               },
               "physics": {
-                "friction": {
-                  "value": 0
-                }
+                "friction_value": 0
               }
             },
             "sphere": [
               {
                 "name": "3a wheel left",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": 0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               },
               {
                 "name": "3a wheel right",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": -0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               }
             ]
@@ -1504,18 +1222,10 @@
                 "mode": "active",
                 "name": "3a wheel left hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "3a wheel left"
-                },
-                "destination": {
-                  "name": "3a main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "3a wheel left",
+                "destination_name": "3a main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -1551,18 +1261,10 @@
                 "mode": "active",
                 "name": "3a wheel right hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "3a wheel right"
-                },
-                "destination": {
-                  "name": "3a main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "3a wheel right",
+                "destination_name": "3a main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -1600,9 +1302,7 @@
             "proximity": [
               {
                 "name": "3a left 1",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": -90,
                   "beta": 90,
@@ -1610,9 +1310,7 @@
                   "y": 0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1624,9 +1322,7 @@
               },
               {
                 "name": "3a left 2",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -1634,9 +1330,7 @@
                   "y": 0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1648,9 +1342,7 @@
               },
               {
                 "name": "3a left 3",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": -15,
                   "beta": 90,
@@ -1658,9 +1350,7 @@
                   "y": 0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1672,9 +1362,7 @@
               },
               {
                 "name": "3a right 3",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": 15,
                   "beta": 90,
@@ -1682,9 +1370,7 @@
                   "y": -0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1696,9 +1382,7 @@
               },
               {
                 "name": "3a right 2",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -1706,9 +1390,7 @@
                   "y": -0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1720,9 +1402,7 @@
               },
               {
                 "name": "3a right 1",
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": 90,
                   "beta": 90,
@@ -1730,9 +1410,7 @@
                   "y": -0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -1747,9 +1425,7 @@
               {
                 "name": "3a ldr left 2",
                 "opening": 70,
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -1757,9 +1433,7 @@
                   "y": 0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -1781,9 +1455,7 @@
               {
                 "name": "3a ldr right 2",
                 "opening": 70,
-                "object": {
-                  "name": "3a main body"
-                },
+                "object_name": "3a main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -1791,9 +1463,7 @@
                   "y": -0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -1816,9 +1486,7 @@
             "velocity": [
               {
                 "name": "3a left wheel hinge sensor",
-                "object": {
-                  "name": "3a wheel left hinge"
-                },
+                "object_name": "3a wheel left hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -1830,9 +1498,7 @@
               },
               {
                 "name": "3a right wheel hinge sensor",
-                "object": {
-                  "name": "3a wheel right hinge"
-                },
+                "object_name": "3a wheel right hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -1875,29 +1541,19 @@
                     "z": 0.01
                   },
                   "visualisation": {
-                    "top": {
-                      "name": "Chain/Circuit/Top/Yellow"
-                    },
-                    "bottom": {
-                      "name": "Chain/Circuit/Body/Yellow"
-                    },
-                    "body": {
-                      "name": "Chain/Circuit/Body/Yellow"
-                    }
+                    "top_name": "Chain/Circuit/Top/Yellow",
+                    "bottom_name": "Chain/Circuit/Body/Yellow",
+                    "body_name": "Chain/Circuit/Body/Yellow"
                   },
                   "physics": {
-                    "mass": {
-                      "kg": 1.0
-                    }
+                    "mass_kg": 1.0
                   }
                 },
                 "sphere": [
                   {
                     "name": "3b wheel front",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -1907,22 +1563,16 @@
                       "z": -0.0499999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   },
                   {
                     "name": "3b wheel back",
                     "visualise": true,
-                    "dimension": {
-                      "radius": 0.01
-                    },
+                    "dimension_radius": 0.01,
                     "pose": {
                       "alpha": 0,
                       "beta": 0,
@@ -1932,73 +1582,51 @@
                       "z": -0.049999
                     },
                     "visualisation": {
-                      "texture": {
-                        "name": "Chain/Wheel"
-                      }
+                      "texture_name": "Chain/Wheel"
                     },
                     "physics": {
-                      "mass": {
-                        "kg": 0.1
-                      }
+                      "mass_kg": 0.1
                     }
                   }
                 ]
               },
               "physics": {
-                "friction": {
-                  "value": 0
-                }
+                "friction_value": 0
               }
             },
             "sphere": [
               {
                 "name": "3b wheel left",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": 0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               },
               {
                 "name": "3b wheel right",
                 "visualise": true,
-                "dimension": {
-                  "radius": 0.03
-                },
+                "dimension_radius": 0.03,
                 "pose": {
                   "x": 0,
                   "y": -0.085,
                   "z": -0.03
                 },
                 "visualisation": {
-                  "texture": {
-                    "name": "Chain/Wheel"
-                  }
+                  "texture_name": "Chain/Wheel"
                 },
                 "physics": {
-                  "mass": {
-                    "kg": 0.1
-                  },
-                  "friction": {
-                    "value": 1000
-                  }
+                  "mass_kg": 0.1,
+                  "friction_value": 1000
                 }
               }
             ]
@@ -2014,18 +1642,10 @@
                 "mode": "active",
                 "name": "3b wheel left hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "3b wheel left"
-                },
-                "destination": {
-                  "name": "3b main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "3b wheel left",
+                "destination_name": "3b main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -2061,18 +1681,10 @@
                 "mode": "active",
                 "name": "3b wheel right hinge",
                 "type": "velocity",
-                "source": {
-                  "name": "3b wheel right"
-                },
-                "destination": {
-                  "name": "3b main body"
-                },
-                "force": {
-                  "max": 10.0
-                },
-                "velocity": {
-                  "max": 10.0
-                },
+                "source_name": "3b wheel right",
+                "destination_name": "3b main body",
+                "force_max": 10.0,
+                "velocity_max": 10.0,
                 "pose": {
                   "gamma": 90.0,
                   "x": 0.0,
@@ -2110,9 +1722,7 @@
             "proximity": [
               {
                 "name": "3b left 1",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": -90,
                   "beta": 90,
@@ -2120,9 +1730,7 @@
                   "y": 0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2134,9 +1742,7 @@
               },
               {
                 "name": "3b left 2",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -2144,9 +1750,7 @@
                   "y": 0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2158,9 +1762,7 @@
               },
               {
                 "name": "3b left 3",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": -15,
                   "beta": 90,
@@ -2168,9 +1770,7 @@
                   "y": 0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2182,9 +1782,7 @@
               },
               {
                 "name": "3b right 3",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": 15,
                   "beta": 90,
@@ -2192,9 +1790,7 @@
                   "y": -0.0258819,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2206,9 +1802,7 @@
               },
               {
                 "name": "3b right 2",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -2216,9 +1810,7 @@
                   "y": -0.0707107,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2230,9 +1822,7 @@
               },
               {
                 "name": "3b right 1",
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": 90,
                   "beta": 90,
@@ -2240,9 +1830,7 @@
                   "y": -0.1,
                   "z": 0
                 },
-                "distance": {
-                  "meter": 0.5
-                },
+                "distance_meter": 0.5,
                 "mapping": {
                   "max": -1,
                   "min": 1
@@ -2257,9 +1845,7 @@
               {
                 "name": "3b ldr left 2",
                 "opening": 70,
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": -45,
                   "beta": 90,
@@ -2267,9 +1853,7 @@
                   "y": 0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -2291,9 +1875,7 @@
               {
                 "name": "3b ldr right 2",
                 "opening": 70,
-                "object": {
-                  "name": "3b main body"
-                },
+                "object_name": "3b main body",
                 "pose": {
                   "alpha": 45,
                   "beta": 90,
@@ -2301,9 +1883,7 @@
                   "y": -0.0707107,
                   "z": 0.045
                 },
-                "colour": {
-                  "value": "FF0000"
-                },
+                "colour_value": "#FF0000",
                 "mapping": {
                   "max": 1,
                   "min": -1
@@ -2326,9 +1906,7 @@
             "velocity": [
               {
                 "name": "3b left wheel hinge sensor",
-                "object": {
-                  "name": "3b wheel left hinge"
-                },
+                "object_name": "3b wheel left hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -2340,9 +1918,7 @@
               },
               {
                 "name": "3b right wheel hinge sensor",
-                "object": {
-                  "name": "3b wheel right hinge"
-                },
+                "object_name": "3b wheel right hinge",
                 "domain": {
                   "max": 10,
                   "min": -10
@@ -2374,11 +1950,11 @@
           "target": "2a main body",
           "time": 5,
           "init": {
-            "colour": "ff0000",
+            "colour": "#ff0000",
             "size": 0.01
           },
           "final": {
-            "colour": "ff000000",
+            "colour": "#ff000000",
             "size": 0.0
           }
         },
@@ -2389,11 +1965,11 @@
           "target": "2a wheel right",
           "time": 5,
           "init": {
-            "colour": "00ff00",
+            "colour": "#00ff00",
             "size": 0.01
           },
           "final": {
-            "colour": "00ff0000",
+            "colour": "#00ff0000",
             "size": 0.0
           }
         },
@@ -2404,11 +1980,11 @@
           "target": "2a wheel left",
           "time": 5,
           "init": {
-            "colour": "0000ff",
+            "colour": "#0000ff",
             "size": 0.01
           },
           "final": {
-            "colour": "0000ff00",
+            "colour": "#0000ff00",
             "size": 0.0
           }
         },
@@ -2419,11 +1995,11 @@
           "target": "2b main body",
           "time": 5,
           "init": {
-            "colour": "ff0000",
+            "colour": "#ff0000",
             "size": 0.01
           },
           "final": {
-            "colour": "ff000000",
+            "colour": "#ff000000",
             "size": 0.0
           }
         },
@@ -2434,11 +2010,11 @@
           "target": "2b wheel right",
           "time": 5,
           "init": {
-            "colour": "00ff00",
+            "colour": "#00ff00",
             "size": 0.01
           },
           "final": {
-            "colour": "00ff0000",
+            "colour": "#00ff0000",
             "size": 0.0
           }
         },
@@ -2449,11 +2025,11 @@
           "target": "2b wheel left",
           "time": 5,
           "init": {
-            "colour": "0000ff",
+            "colour": "#0000ff",
             "size": 0.01
           },
           "final": {
-            "colour": "0000ff00",
+            "colour": "#0000ff00",
             "size": 0.0
           }
         },
@@ -2464,11 +2040,11 @@
           "target": "3a main body",
           "time": 5,
           "init": {
-            "colour": "ff0000",
+            "colour": "#ff0000",
             "size": 0.01
           },
           "final": {
-            "colour": "ff000000",
+            "colour": "#ff000000",
             "size": 0.0
           }
         },
@@ -2479,11 +2055,11 @@
           "target": "3a wheel right",
           "time": 5,
           "init": {
-            "colour": "00ff00",
+            "colour": "#00ff00",
             "size": 0.01
           },
           "final": {
-            "colour": "00ff0000",
+            "colour": "#00ff0000",
             "size": 0.0
           }
         },
@@ -2494,11 +2070,11 @@
           "target": "3a wheel left",
           "time": 5,
           "init": {
-            "colour": "0000ff",
+            "colour": "#0000ff",
             "size": 0.01
           },
           "final": {
-            "colour": "0000ff00",
+            "colour": "#0000ff00",
             "size": 0.0
           }
         },
@@ -2509,11 +2085,11 @@
           "target": "3b main body",
           "time": 5,
           "init": {
-            "colour": "ff0000",
+            "colour": "#ff0000",
             "size": 0.01
           },
           "final": {
-            "colour": "ff000000",
+            "colour": "#ff000000",
             "size": 0.0
           }
         },
@@ -2524,11 +2100,11 @@
           "target": "3b wheel right",
           "time": 5,
           "init": {
-            "colour": "00ff00",
+            "colour": "#00ff00",
             "size": 0.01
           },
           "final": {
-            "colour": "00ff0000",
+            "colour": "#00ff0000",
             "size": 0.0
           }
         },
@@ -2539,11 +2115,11 @@
           "target": "3b wheel left",
           "time": 5,
           "init": {
-            "colour": "0000ff",
+            "colour": "#0000ff",
             "size": 0.01
           },
           "final": {
-            "colour": "0000ff00",
+            "colour": "#0000ff00",
             "size": 0.0
           }
         }
