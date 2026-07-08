@@ -107,8 +107,11 @@ the element and attribute name with an underscore:
 "texture_name": "YARS/DryGroundSmall"
 ```
 
-The key is split at the first underscore; genuine element and attribute
-names never contain one.
+The key is split at the first underscore. Attribute names never contain
+one, and the few multi-word element names (`object_velocity`,
+`source_anchor`, ...) only ever carry object values — the shorthand
+applies to scalar values only, so there is no ambiguity. Elements whose
+names contain an underscore never use the shorthand.
 
 ### 5. Tagged arrays for ordered, mixed-type containers
 
@@ -173,9 +176,9 @@ everywhere (and `scripts/json-canonicalize.py` upgrades them):
 | Canonical | Legacy | Meaning |
 |-----------|--------|---------|
 | `light` | `ldr` | light sensor (light dependent resistor) |
-| `objectVelocity` | `ov` | object velocity sensor |
-| `objectAngularVelocity` | `oav` | object angular velocity sensor |
-| `sourceAnchor` / `destinationAnchor` | `srcAnchor` / `dstAnchor` | muscle attachment anchors |
+| `object_velocity` | `ov` | object velocity sensor |
+| `object_angular_velocity` | `oav` | object angular velocity sensor |
+| `source_anchor` / `destination_anchor` | `srcAnchor` / `dstAnchor` | muscle attachment anchors |
 | `top`, `left`, `bottom`, `right`, `front`, `back` (box faces) | `first`..`sixth` | box face textures (+z, −x, −z, +x, +y, −y with z up) |
 
 Names that look cryptic but are domain-standard stay: `cfm`/`erp`

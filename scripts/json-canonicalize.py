@@ -56,10 +56,15 @@ PLURAL_CONTAINERS = {"robots": "robot"}
 # Box face names follow SceneGraphBoxNode's build order with z up.
 RENAMED_ELEMENTS = {
     "ldr": "light",
-    "ov": "objectVelocity",
-    "oav": "objectAngularVelocity",
-    "srcAnchor": "sourceAnchor",
-    "dstAnchor": "destinationAnchor",
+    "ov": "object_velocity",
+    "oav": "object_angular_velocity",
+    "srcAnchor": "source_anchor",
+    "dstAnchor": "destination_anchor",
+    # camelCase spellings shipped briefly in v0.12.0
+    "objectVelocity": "object_velocity",
+    "objectAngularVelocity": "object_angular_velocity",
+    "sourceAnchor": "source_anchor",
+    "destinationAnchor": "destination_anchor",
     "first": "top",
     "second": "left",
     "third": "bottom",

@@ -97,9 +97,10 @@ parser — has been deleted:
 - **JSON idiom pass (0.12)**: `"robots"` is a flat array (parser plural
   table maps entries to `robot`); presence flags are `null`
   (`"external": null` = `<external/>`); renamed elements with legacy
-  aliases — `light`←`ldr`, `objectVelocity`←`ov`,
-  `objectAngularVelocity`←`oav`, `sourceAnchor`/`destinationAnchor`←
-  `srcAnchor`/`dstAnchor` (parser alias map), box faces
+  aliases — `light`←`ldr`, `object_velocity`←`ov`,
+  `object_angular_velocity`←`oav`, `source_anchor`/`destination_anchor`←
+  `srcAnchor`/`dstAnchor` (parser alias map; the camelCase spellings
+  from v0.12.0 are also accepted), box faces
   `top/left/bottom/right/front/back`←`first..sixth` (dual-accept in
   `DataBox` only; `DataMacroInstance` keeps legacy names because its
   push-order texture parsing also handles cylinder `top`/`bottom`). The

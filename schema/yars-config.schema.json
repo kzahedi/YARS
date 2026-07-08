@@ -706,8 +706,8 @@
         }
       }
     },
-    "destinationAnchor": {
-      "title": "destinationAnchor",
+    "destination_anchor": {
+      "title": "destination_anchor",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -716,7 +716,7 @@
           "description": "Merge another JSON file (path relative to this file); sibling keys override."
         },
         "#tag": {
-          "const": "destinationAnchor"
+          "const": "destination_anchor"
         },
         "sphere": {
           "anyOf": [
@@ -1880,15 +1880,15 @@
             }
           ]
         },
-        "destinationAnchor": {
+        "destination_anchor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/destinationAnchor"
+              "$ref": "#/definitions/destination_anchor"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/destinationAnchor"
+                "$ref": "#/definitions/destination_anchor"
               }
             }
           ]
@@ -1958,15 +1958,15 @@
             }
           ]
         },
-        "sourceAnchor": {
+        "source_anchor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/sourceAnchor"
+              "$ref": "#/definitions/source_anchor"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/sourceAnchor"
+                "$ref": "#/definitions/source_anchor"
               }
             }
           ]
@@ -2074,8 +2074,8 @@
         }
       }
     },
-    "objectAngularVelocity": {
-      "title": "objectAngularVelocity",
+    "object_angular_velocity": {
+      "title": "object_angular_velocity",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -2084,7 +2084,7 @@
           "description": "Merge another JSON file (path relative to this file); sibling keys override."
         },
         "#tag": {
-          "const": "objectAngularVelocity"
+          "const": "object_angular_velocity"
         },
         "name": {
           "type": "string"
@@ -2107,8 +2107,8 @@
         }
       }
     },
-    "objectVelocity": {
-      "title": "objectVelocity",
+    "object_velocity": {
+      "title": "object_velocity",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -2117,7 +2117,7 @@
           "description": "Merge another JSON file (path relative to this file); sibling keys override."
         },
         "#tag": {
-          "const": "objectVelocity"
+          "const": "object_velocity"
         },
         "name": {
           "type": "string"
@@ -2842,10 +2842,10 @@
                     "$ref": "#/definitions/muscle"
                   },
                   {
-                    "$ref": "#/definitions/objectAngularVelocity"
+                    "$ref": "#/definitions/object_angular_velocity"
                   },
                   {
-                    "$ref": "#/definitions/objectVelocity"
+                    "$ref": "#/definitions/object_velocity"
                   },
                   {
                     "$ref": "#/definitions/orientation"
@@ -3256,8 +3256,8 @@
         }
       }
     },
-    "sourceAnchor": {
-      "title": "sourceAnchor",
+    "source_anchor": {
+      "title": "source_anchor",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -3266,7 +3266,7 @@
           "description": "Merge another JSON file (path relative to this file); sibling keys override."
         },
         "#tag": {
-          "const": "sourceAnchor"
+          "const": "source_anchor"
         },
         "sphere": {
           "anyOf": [

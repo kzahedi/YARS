@@ -41,16 +41,23 @@ std::string toAttributeString(const ordered_json &value)
 
 // Canonical element names introduced for readability map onto the legacy
 // names the Data* dispatch expects. Config authors use the left column;
-// the legacy names remain accepted. (Box face names top/bottom/left/...
-// are context-dependent — cylinders also have a "top" — and are aliased
-// inside DataBox instead.)
+// the legacy names remain accepted. The snake_case names never conflict
+// with the "elem_attr" shorthand: these elements always carry object
+// values, and the shorthand only applies to scalar-valued keys. (Box
+// face names top/bottom/left/... are context-dependent — cylinders also
+// have a "top" — and are aliased inside DataBox instead.)
 const std::map<std::string, std::string> &elementNameAliases()
 {
   static const std::map<std::string, std::string> aliases = {
-      {"light", "ldr"},                       // light (LDR) sensor
-      {"objectVelocity", "ov"},               // object velocity sensor
-      {"objectAngularVelocity", "oav"},       // object angular velocity sensor
-      {"sourceAnchor", "srcAnchor"},          // muscle anchors
+      {"light", "ldr"},                          // light (LDR) sensor
+      {"object_velocity", "ov"},                 // object velocity sensor
+      {"object_angular_velocity", "oav"},        // object angular velocity sensor
+      {"source_anchor", "srcAnchor"},            // muscle anchors
+      {"destination_anchor", "dstAnchor"},
+      // camelCase spellings shipped briefly in v0.12.0:
+      {"objectVelocity", "ov"},
+      {"objectAngularVelocity", "oav"},
+      {"sourceAnchor", "srcAnchor"},
       {"destinationAnchor", "dstAnchor"},
   };
   return aliases;

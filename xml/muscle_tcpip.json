@@ -143,7 +143,7 @@
             "visualise": true,
             "source_name": "source body",
             "destination_name": "destination body",
-            "sourceAnchor": {
+            "source_anchor": {
               "sphere": {
                 "name": "source anchor",
                 "visualise": true,
@@ -161,7 +161,7 @@
                 }
               }
             },
-            "destinationAnchor": {
+            "destination_anchor": {
               "sphere": {
                 "name": "destination anchor",
                 "visualise": true,

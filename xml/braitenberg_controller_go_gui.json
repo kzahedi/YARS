@@ -557,7 +557,7 @@
             }
           },
           {
-            "#tag": "objectVelocity",
+            "#tag": "object_velocity",
             "name": "main body velocity",
             "object_name": "main body",
             "coordinates": {
@@ -567,7 +567,7 @@
             }
           },
           {
-            "#tag": "objectAngularVelocity",
+            "#tag": "object_angular_velocity",
             "name": "main body angular velocity",
             "object_name": "main body",
             "coordinates": {
