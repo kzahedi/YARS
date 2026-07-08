@@ -5,6 +5,38 @@ A selection of creatures in action can be found [here](https://www.youtube.com/w
 
 Other videos can be found [here](https://www.youtube.com/playlist?list=PLrIVgT56nVQ55q0DNvVbGHfMf87PBnOM-).
 
+## Configuration
+
+Simulations are described by JSON files (examples in [`xml/`](xml/)):
+
+```json
+{
+  "yars": {
+    "version": "0.8.41",
+    "simulator": { "frequency": 100, "solver_iterations": 10 },
+    "environment": {
+      "ground": { "fixed": true, "visualisation": { "texture_name": "YARS/DryGroundSmall" } }
+    },
+    "robots": { "robot": { "...": "body, sensors, actuators, controller" } }
+  }
+}
+```
+
+The format supports comments, `$include` composition, native JSON
+types, and ships with a JSON Schema for live validation in VS Code.
+**Full format documentation: [docs/JSON_Format.md](docs/JSON_Format.md).**
+
+```bash
+./bin/yars --xml xml/braitenberg.json                 # run a simulation
+python3 scripts/json-schema-check.py my.json          # validate a config
+python3 scripts/json-canonicalize.py my.json          # normalize formatting
+```
+
+## Building
+
+- macOS: [docs/macOS_Build.md](docs/macOS_Build.md)
+- Linux: [docs/Linux_Build.md](docs/Linux_Build.md)
+
 
 ### Third party files
 <b> Fonts </b><br>
