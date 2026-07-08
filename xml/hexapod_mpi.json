@@ -1,3162 +1,2186 @@
 {
-  "rosiml": [
-    {
-      "version": "0.8.41",
-      "simulator": [
-        {
-          "frequency": "100",
-          "solver": [
-            {
-              "iterations": "200"
-            }
-          ]
+  "rosiml": {
+    "version": "0.8.41",
+    "simulator": {
+      "frequency": 100,
+      "solver": {
+        "iterations": 200
+      }
+    },
+    "screens": {
+      "screen": {
+        "capture": false,
+        "follow": true,
+        "name": "main",
+        "show": true,
+        "resolution": {
+          "name": "720p"
+        },
+        "camera": {
+          "position": {
+            "x": 7.0,
+            "y": 0.0,
+            "z": 3.5
+          },
+          "lookAt": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.5
+          }
+        },
+        "osd": {
+          "time": {
+            "colour": "800000",
+            "font": "Time",
+            "size": 24
+          },
+          "robot": {
+            "colour": "800000",
+            "font": "Robot",
+            "size": 24
+          }
         }
-      ],
-      "screens": [
-        {
-          "screen": [
+      },
+      "sky": {
+        "name": "YARS/CloudySky"
+      },
+      "cameras": {
+        "orbit": {
+          "speed": 0.0
+        }
+      },
+      "followables": {
+        "followable": {
+          "name": "main"
+        }
+      }
+    },
+    "environment": {
+      "name": "env",
+      "ground": {
+        "visualisation": {
+          "texture": {
+            "name": "YARS/DryGround"
+          }
+        }
+      }
+    },
+    "robots": {
+      "robot": {
+        "name": "hexapod",
+        "body": {
+          "selfCollide": true,
+          "ply": [
             {
-              "capture": "false",
-              "follow": "true",
+              "filename": "ply/h4/h4head_reduced.ply",
+              "name": "head",
+              "pose": {
+                "gamma": -180,
+                "x": 0.0,
+                "y": 1.311974,
+                "z": 0.828109
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 97.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4main_reduced.ply",
               "name": "main",
-              "show": "true",
-              "resolution": [
-                {
-                  "name": "720p"
+              "pose": {
+                "gamma": 180,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.194516
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
                 }
-              ],
-              "camera": [
-                {
-                  "position": [
-                    {
-                      "x": "7.00",
-                      "y": "0.00",
-                      "z": "3.5"
-                    }
-                  ],
-                  "lookAt": [
-                    {
-                      "x": "0.0",
-                      "y": "0.0",
-                      "z": "1.5"
-                    }
-                  ]
+              },
+              "physics": {
+                "mass": {
+                  "kg": 73.0
+                },
+                "friction": {
+                  "value": 10
                 }
-              ],
-              "osd": [
-                {
-                  "time": [
-                    {
-                      "colour": "800000",
-                      "font": "Time",
-                      "size": "24"
-                    }
-                  ],
-                  "robot": [
-                    {
-                      "colour": "800000",
-                      "font": "Robot",
-                      "size": "24"
-                    }
-                  ]
+              }
+            },
+            {
+              "filename": "ply/h4/h4tail_reduced.ply",
+              "name": "tail",
+              "pose": {
+                "gamma": -180,
+                "x": 0.0,
+                "y": -1.611996,
+                "z": 0.729942
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
                 }
-              ]
+              },
+              "physics": {
+                "mass": {
+                  "kg": 244.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg1_reduced.ply",
+              "name": "left L1S1",
+              "pose": {
+                "alpha": -33.95327,
+                "beta": 0,
+                "gamma": -45.703818,
+                "x": -0.369519,
+                "y": 0.184943,
+                "z": 0.777272
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 9.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg2_reduced.ply",
+              "name": "left L1S2",
+              "pose": {
+                "alpha": -33.95327,
+                "beta": 0.0,
+                "gamma": -151.601909,
+                "x": -0.707165,
+                "y": 0.372142,
+                "z": 0.828558
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 6.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg3_reduced.ply",
+              "name": "left L1S3",
+              "pose": {
+                "alpha": -96.185224,
+                "beta": 0.0,
+                "gamma": -151.601909,
+                "x": -1.079545,
+                "y": 1.060895,
+                "z": 0.870632
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg4.ply",
+              "name": "left L1S4",
+              "pose": {
+                "alpha": 54.424669,
+                "beta": -180,
+                "gamma": 28.39813,
+                "x": -1.466908,
+                "y": 1.777365,
+                "z": 0.273804
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg1_reduced.ply",
+              "name": "right L1S1",
+              "pose": {
+                "alpha": -39.064833,
+                "beta": 0.0,
+                "gamma": 30.623471,
+                "x": 0.384198,
+                "y": 0.118267,
+                "z": 0.803203
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 9.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg2_reduced.ply",
+              "name": "right L1S2",
+              "pose": {
+                "alpha": -39.064847,
+                "beta": 0.0,
+                "gamma": 156.274701,
+                "x": 0.648176,
+                "y": 0.246003,
+                "z": 0.907809
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 6.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg3_reduced.ply",
+              "name": "right L1S3",
+              "pose": {
+                "alpha": -106.373448,
+                "beta": 0.0,
+                "gamma": 156.274646,
+                "x": 0.971616,
+                "y": 0.981933,
+                "z": 1.045528
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg1seg4.ply",
+              "name": "right L1S4",
+              "pose": {
+                "alpha": -106.373448,
+                "beta": 0.0,
+                "gamma": 156.27466,
+                "x": 1.281028,
+                "y": 1.685947,
+                "z": 0.365667
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg1_reduced.ply",
+              "name": "left L2S1",
+              "pose": {
+                "alpha": -113.937282,
+                "beta": 0.0,
+                "gamma": 135.823052,
+                "x": -0.2577,
+                "y": -0.115553,
+                "z": 0.724711
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg2_reduced.ply",
+              "name": "left L2S2",
+              "pose": {
+                "alpha": -31.877268,
+                "beta": 0.0,
+                "gamma": 135.823052,
+                "x": -0.54434,
+                "y": -0.410551,
+                "z": 0.962445
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 6.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg3_reduced.ply",
+              "name": "left L2S3",
+              "pose": {
+                "alpha": 33.760754,
+                "beta": 0.0,
+                "gamma": 135.823052,
+                "x": -1.07631,
+                "y": -0.957955,
+                "z": 1.211122
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg4.ply",
+              "name": "left L2S4",
+              "pose": {
+                "alpha": 34.475137,
+                "beta": 0.0,
+                "gamma": 135.823052,
+                "x": -1.63247,
+                "y": -1.530336,
+                "z": 0.434763
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg1_reduced.ply",
+              "name": "right L2S1",
+              "pose": {
+                "alpha": -113.937282,
+                "beta": 0.0,
+                "gamma": -135.823052,
+                "x": 0.2577,
+                "y": -0.115553,
+                "z": 0.724711
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg2_reduced.ply",
+              "name": "right L2S2",
+              "pose": {
+                "alpha": -31.877268,
+                "beta": 0.0,
+                "gamma": -135.823052,
+                "x": 0.54434,
+                "y": -0.410551,
+                "z": 0.962445
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 6.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg3_reduced.ply",
+              "name": "right L2S3",
+              "pose": {
+                "alpha": 33.760754,
+                "beta": 0.0,
+                "gamma": -135.823052,
+                "x": 1.07631,
+                "y": -0.957955,
+                "z": 1.211122
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 3.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg2seg4.ply",
+              "name": "right L2S4",
+              "pose": {
+                "alpha": 34.475137,
+                "beta": 0.0,
+                "gamma": -135.823052,
+                "x": 1.63247,
+                "y": -1.530336,
+                "z": 0.434763
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg1_reduced.ply",
+              "name": "left L3S1",
+              "pose": {
+                "alpha": -74.274441,
+                "beta": 0.0,
+                "gamma": 146.885062,
+                "x": -0.2291,
+                "y": -0.630977,
+                "z": 0.660947
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 5.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg2_reduced.ply",
+              "name": "left L3S2",
+              "pose": {
+                "alpha": -35.061116,
+                "beta": 0.0,
+                "gamma": 146.885062,
+                "x": -0.52851,
+                "y": -1.090006,
+                "z": 1.031232
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 9.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg3_reduced.ply",
+              "name": "left L3S3",
+              "pose": {
+                "alpha": 46.017221,
+                "beta": 0.0,
+                "gamma": 146.885062,
+                "x": -1.09468,
+                "y": -1.958001,
+                "z": 1.332172
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 4.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg4.ply",
+              "name": "left L3S4",
+              "pose": {
+                "alpha": 46.017225,
+                "beta": 0.0,
+                "gamma": 146.885062,
+                "x": -1.76085,
+                "y": -2.979317,
+                "z": 0.467886
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg1_reduced.ply",
+              "name": "right L3S1",
+              "pose": {
+                "alpha": -74.274441,
+                "beta": 0.0,
+                "gamma": -146.885062,
+                "x": 0.2291,
+                "y": -0.630977,
+                "z": 0.660947
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 5.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg2_reduced.ply",
+              "name": "right L3S2",
+              "pose": {
+                "alpha": -35.061116,
+                "beta": 0.0,
+                "gamma": -146.885062,
+                "x": 0.52851,
+                "y": -1.090006,
+                "z": 1.031232
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 9.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg3_reduced.ply",
+              "name": "right L3S3",
+              "pose": {
+                "alpha": 46.017221,
+                "beta": 0.0,
+                "gamma": -146.885062,
+                "x": 1.09468,
+                "y": -1.958001,
+                "z": 1.332172
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 4.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            },
+            {
+              "filename": "ply/h4/h4leg3seg4.ply",
+              "name": "right L3S4",
+              "pose": {
+                "alpha": 46.017225,
+                "beta": 0.0,
+                "gamma": -146.885062,
+                "x": 1.76085,
+                "y": -2.979317,
+                "z": 0.467886
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "YARS/Gray"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 1.0
+                },
+                "friction": {
+                  "value": 10
+                }
+              }
+            }
+          ]
+        },
+        "actuators": {
+          "fixed": [
+            {
+              "name": "main head",
+              "source": {
+                "name": "main"
+              },
+              "destination": {
+                "name": "head"
+              }
+            },
+            {
+              "name": "main tail",
+              "source": {
+                "name": "main"
+              },
+              "destination": {
+                "name": "tail"
+              }
             }
           ],
-          "sky": [
+          "hinge": [
             {
-              "name": "YARS/CloudySky"
+              "mode": "active",
+              "name": "right main - L1S1",
+              "type": "angular",
+              "source": {
+                "name": "right L1S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": 0.108318,
+                "z": 0.288676
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L1S1 - L1S2",
+              "type": "angular",
+              "source": {
+                "name": "right L1S2"
+              },
+              "destination": {
+                "name": "right L1S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": 0.46333,
+                "z": 0.011461
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L1S2 - L1S3",
+              "type": "angular",
+              "source": {
+                "name": "right L1S3"
+              },
+              "destination": {
+                "name": "right L1S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.348007,
+                "z": 0.242132
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L1S3 - L1S4",
+              "type": "angular",
+              "source": {
+                "name": "right L1S4"
+              },
+              "destination": {
+                "name": "right L1S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.481949,
+                "z": 0.262414
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left main - L1S1",
+              "type": "angular",
+              "source": {
+                "name": "left L1S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": 0.108318,
+                "z": 0.288676
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L1S1 - L1S2",
+              "type": "angular",
+              "source": {
+                "name": "left L1S2"
+              },
+              "destination": {
+                "name": "left L1S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": 0.46333,
+                "z": 0.011461
+              },
+              "deflection": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L1S2 - L1S3",
+              "type": "angular",
+              "source": {
+                "name": "left L1S3"
+              },
+              "destination": {
+                "name": "left L1S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.348007,
+                "z": 0.242132
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L1S3 - L1S4",
+              "type": "angular",
+              "source": {
+                "name": "left L1S4"
+              },
+              "destination": {
+                "name": "left L1S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.481949,
+                "z": 0.262414
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right main - L2S1",
+              "type": "angular",
+              "source": {
+                "name": "right L2S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": -0.083263,
+                "z": -0.123404
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L2S1 - L2S2",
+              "type": "angular",
+              "source": {
+                "name": "right L2S2"
+              },
+              "destination": {
+                "name": "right L2S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": -0.094742,
+                "z": -0.491264
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L2S2 - L2S3",
+              "type": "angular",
+              "source": {
+                "name": "right L2S3"
+              },
+              "destination": {
+                "name": "right L2S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.165596,
+                "z": 0.423891
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L2S3 - L2S4",
+              "type": "angular",
+              "source": {
+                "name": "right L2S4"
+              },
+              "destination": {
+                "name": "right L2S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.052062,
+                "z": 0.556805
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left main - L2S1",
+              "type": "angular",
+              "source": {
+                "name": "left L2S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": -0.083263,
+                "z": -0.123404
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L2S1 - L2S2",
+              "type": "angular",
+              "source": {
+                "name": "left L2S2"
+              },
+              "destination": {
+                "name": "left L2S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": -0.094742,
+                "z": -0.491264
+              },
+              "deflection": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L2S2 - L2S3",
+              "type": "angular",
+              "source": {
+                "name": "left L2S3"
+              },
+              "destination": {
+                "name": "left L2S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.165596,
+                "z": 0.423891
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L2S3 - L2S4",
+              "type": "angular",
+              "source": {
+                "name": "left L2S4"
+              },
+              "destination": {
+                "name": "left L2S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.052062,
+                "z": 0.556805
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right main - L3S1",
+              "type": "angular",
+              "source": {
+                "name": "right L3S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": -0.157125,
+                "z": -0.127871
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L3S1 - L3S2",
+              "type": "angular",
+              "source": {
+                "name": "right L3S2"
+              },
+              "destination": {
+                "name": "right L3S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": -0.040014,
+                "z": -0.606707
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L3S2 - L3S3",
+              "type": "angular",
+              "source": {
+                "name": "right L3S3"
+              },
+              "destination": {
+                "name": "right L3S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.156881,
+                "z": 0.615627
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "right L3S3 - L3S4",
+              "type": "angular",
+              "source": {
+                "name": "right L3S4"
+              },
+              "destination": {
+                "name": "right L3S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.066215,
+                "z": 0.764271
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left main - L3S1",
+              "type": "angular",
+              "source": {
+                "name": "left L3S1"
+              },
+              "destination": {
+                "name": "main"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "alpha": 90,
+                "x": 0.0,
+                "y": -0.157125,
+                "z": -0.127871
+              },
+              "deflection": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L3S1 - L3S2",
+              "type": "angular",
+              "source": {
+                "name": "left L3S2"
+              },
+              "destination": {
+                "name": "left L3S1"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.0,
+                "y": -0.040014,
+                "z": -0.606707
+              },
+              "deflection": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L3S2 - L3S3",
+              "type": "angular",
+              "source": {
+                "name": "left L3S3"
+              },
+              "destination": {
+                "name": "left L3S2"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.156881,
+                "z": 0.615627
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
+            },
+            {
+              "mode": "active",
+              "name": "left L3S3 - L3S4",
+              "type": "angular",
+              "source": {
+                "name": "left L3S4"
+              },
+              "destination": {
+                "name": "left L3S3"
+              },
+              "force": {
+                "max": 6000.0
+              },
+              "velocity": {
+                "max": 1.0
+              },
+              "pose": {
+                "x": 0.0,
+                "y": -0.066215,
+                "z": 0.764271
+              },
+              "deflection": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 10
+              }
             }
-          ],
-          "cameras": [
+          ]
+        },
+        "sensors": {
+          "#children": [
             {
-              "orbit": [
-                {
-                  "speed": "0.0"
-                }
-              ]
-            }
-          ],
-          "followables": [
+              "#tag": "deflection",
+              "name": "right main - L1S1 sensor",
+              "object": {
+                "name": "right main - L1S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
             {
-              "followable": [
-                {
-                  "name": "main"
-                }
-              ]
+              "#tag": "deflection",
+              "name": "right L1S1 - L1S2 sensor",
+              "object": {
+                "name": "right L1S1 - L1S2"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L1S2 - L1S3 sensor",
+              "object": {
+                "name": "right L1S2 - L1S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L1S3 - L1S4 sensor",
+              "object": {
+                "name": "right L1S3 - L1S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "right L1S4 contact sensor",
+              "object": {
+                "name": "right L1S4"
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left main - L1S1 sensor",
+              "object": {
+                "name": "left main - L1S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L1S1 - L1S2 sensor",
+              "object": {
+                "name": "left L1S1 - L1S2"
+              },
+              "domain": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L1S2 - L1S3 sensor",
+              "object": {
+                "name": "left L1S2 - L1S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L1S3 - L1S4 sensor",
+              "object": {
+                "name": "left L1S3 - L1S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "left L1S4 contact sensor",
+              "object": {
+                "name": "left L1S4"
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right main - L2S1 sensor",
+              "object": {
+                "name": "right main - L2S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L2S1 - L2S2 sensor",
+              "object": {
+                "name": "right L2S1 - L2S2"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L2S2 - L2S3 sensor",
+              "object": {
+                "name": "right L2S2 - L2S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L2S3 - L2S4 sensor",
+              "object": {
+                "name": "right L2S3 - L2S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "right L2S4 contact sensor",
+              "object": {
+                "name": "right L2S4"
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left main - L2S1 sensor",
+              "object": {
+                "name": "left main - L2S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L2S1 - L2S2 sensor",
+              "object": {
+                "name": "left L2S1 - L2S2"
+              },
+              "domain": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L2S2 - L2S3 sensor",
+              "object": {
+                "name": "left L2S2 - L2S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L2S3 - L2S4 sensor",
+              "object": {
+                "name": "left L2S3 - L2S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "left L2S4 contact sensor",
+              "object": {
+                "name": "left L2S4"
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right main - L3S1 sensor",
+              "object": {
+                "name": "right main - L3S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L3S1 - L3S2 sensor",
+              "object": {
+                "name": "right L3S1 - L3S2"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -85.0
+              },
+              "mapping": {
+                "max": -1,
+                "min": 1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L3S2 - L3S3 sensor",
+              "object": {
+                "name": "right L3S2 - L3S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "right L3S3 - L3S4 sensor",
+              "object": {
+                "name": "right L3S3 - L3S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "right L3S4 contact sensor",
+              "object": {
+                "name": "right L3S4"
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left main - L3S1 sensor",
+              "object": {
+                "name": "left main - L3S1"
+              },
+              "domain": {
+                "max": 45.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L3S1 - L3S2 sensor",
+              "object": {
+                "name": "left L3S1 - L3S2"
+              },
+              "domain": {
+                "max": 85.0,
+                "min": -25.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L3S2 - L3S3 sensor",
+              "object": {
+                "name": "left L3S2 - L3S3"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "deflection",
+              "name": "left L3S3 - L3S4 sensor",
+              "object": {
+                "name": "left L3S3 - L3S4"
+              },
+              "domain": {
+                "max": 25.0,
+                "min": -45.0
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "#tag": "binaryContact",
+              "name": "left L3S4 contact sensor",
+              "object": {
+                "name": "left L3S4"
+              }
+            },
+            {
+              "#tag": "position",
+              "name": "main body position",
+              "object": {
+                "name": "main"
+              },
+              "coordinates": {
+                "x": true,
+                "y": true,
+                "z": true
+              }
             }
           ]
         }
-      ],
-      "environment": [
-        {
-          "name": "env",
-          "ground": [
-            {
-              "visualisation": [
-                {
-                  "texture": [
-                    {
-                      "name": "YARS/DryGround"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "robots": [
-        {
-          "robot": [
-            {
-              "name": "hexapod",
-              "body": [
-                {
-                  "selfCollide": "true",
-                  "ply": [
-                    {
-                      "filename": "ply/h4/h4head_reduced.ply",
-                      "name": "head",
-                      "pose": [
-                        {
-                          "gamma": "-180",
-                          "x": "0.0",
-                          "y": "1.311974",
-                          "z": "0.828109"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "97.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4main_reduced.ply",
-                      "name": "main",
-                      "pose": [
-                        {
-                          "gamma": "180",
-                          "x": "0.0",
-                          "y": "0.0",
-                          "z": "1.194516"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "73.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4tail_reduced.ply",
-                      "name": "tail",
-                      "pose": [
-                        {
-                          "gamma": "-180",
-                          "x": "0.0",
-                          "y": "-1.611996",
-                          "z": "0.729942"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "244.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg1_reduced.ply",
-                      "name": "left L1S1",
-                      "pose": [
-                        {
-                          "alpha": "-33.95327",
-                          "beta": "0",
-                          "gamma": "-45.703818",
-                          "x": "-0.369519",
-                          "y": "0.184943",
-                          "z": "0.777272"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "9.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg2_reduced.ply",
-                      "name": "left L1S2",
-                      "pose": [
-                        {
-                          "alpha": "-33.95327",
-                          "beta": "0.0",
-                          "gamma": "-151.601909",
-                          "x": "-0.707165",
-                          "y": "0.372142",
-                          "z": "0.828558"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "6.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg3_reduced.ply",
-                      "name": "left L1S3",
-                      "pose": [
-                        {
-                          "alpha": "-96.185224",
-                          "beta": "0.0",
-                          "gamma": "-151.601909",
-                          "x": "-1.079545",
-                          "y": "1.060895",
-                          "z": "0.870632"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg4.ply",
-                      "name": "left L1S4",
-                      "pose": [
-                        {
-                          "alpha": "54.424669",
-                          "beta": "-180",
-                          "gamma": "28.39813",
-                          "x": "-1.466908",
-                          "y": "1.777365",
-                          "z": "0.273804"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg1_reduced.ply",
-                      "name": "right L1S1",
-                      "pose": [
-                        {
-                          "alpha": "-39.064833",
-                          "beta": "0.0",
-                          "gamma": "30.623471",
-                          "x": "0.384198",
-                          "y": "0.118267",
-                          "z": "0.803203"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "9.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg2_reduced.ply",
-                      "name": "right L1S2",
-                      "pose": [
-                        {
-                          "alpha": "-39.064847",
-                          "beta": "0.0",
-                          "gamma": "156.274701",
-                          "x": "0.648176",
-                          "y": "0.246003",
-                          "z": "0.907809"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "6.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg3_reduced.ply",
-                      "name": "right L1S3",
-                      "pose": [
-                        {
-                          "alpha": "-106.373448",
-                          "beta": "0.0",
-                          "gamma": "156.274646",
-                          "x": "0.971616",
-                          "y": "0.981933",
-                          "z": "1.045528"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg1seg4.ply",
-                      "name": "right L1S4",
-                      "pose": [
-                        {
-                          "alpha": "-106.373448",
-                          "beta": "0.0",
-                          "gamma": "156.27466",
-                          "x": "1.281028",
-                          "y": "1.685947",
-                          "z": "0.365667"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg1_reduced.ply",
-                      "name": "left L2S1",
-                      "pose": [
-                        {
-                          "alpha": "-113.937282",
-                          "beta": "0.0",
-                          "gamma": "135.823052",
-                          "x": "-0.2577",
-                          "y": "-0.115553",
-                          "z": "0.724711"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg2_reduced.ply",
-                      "name": "left L2S2",
-                      "pose": [
-                        {
-                          "alpha": "-31.877268",
-                          "beta": "0.0",
-                          "gamma": "135.823052",
-                          "x": "-0.54434",
-                          "y": "-0.410551",
-                          "z": "0.962445"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "6.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg3_reduced.ply",
-                      "name": "left L2S3",
-                      "pose": [
-                        {
-                          "alpha": "33.760754",
-                          "beta": "0.0",
-                          "gamma": "135.823052",
-                          "x": "-1.07631",
-                          "y": "-0.957955",
-                          "z": "1.211122"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg4.ply",
-                      "name": "left L2S4",
-                      "pose": [
-                        {
-                          "alpha": "34.475137",
-                          "beta": "0.0",
-                          "gamma": "135.823052",
-                          "x": "-1.63247",
-                          "y": "-1.530336",
-                          "z": "0.434763"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg1_reduced.ply",
-                      "name": "right L2S1",
-                      "pose": [
-                        {
-                          "alpha": "-113.937282",
-                          "beta": "0.0",
-                          "gamma": "-135.823052",
-                          "x": "0.2577",
-                          "y": "-0.115553",
-                          "z": "0.724711"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg2_reduced.ply",
-                      "name": "right L2S2",
-                      "pose": [
-                        {
-                          "alpha": "-31.877268",
-                          "beta": "0.0",
-                          "gamma": "-135.823052",
-                          "x": "0.54434",
-                          "y": "-0.410551",
-                          "z": "0.962445"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "6.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg3_reduced.ply",
-                      "name": "right L2S3",
-                      "pose": [
-                        {
-                          "alpha": "33.760754",
-                          "beta": "0.0",
-                          "gamma": "-135.823052",
-                          "x": "1.07631",
-                          "y": "-0.957955",
-                          "z": "1.211122"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "3.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg2seg4.ply",
-                      "name": "right L2S4",
-                      "pose": [
-                        {
-                          "alpha": "34.475137",
-                          "beta": "0.0",
-                          "gamma": "-135.823052",
-                          "x": "1.63247",
-                          "y": "-1.530336",
-                          "z": "0.434763"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg1_reduced.ply",
-                      "name": "left L3S1",
-                      "pose": [
-                        {
-                          "alpha": "-74.274441",
-                          "beta": "0.0",
-                          "gamma": "146.885062",
-                          "x": "-0.2291",
-                          "y": "-0.630977",
-                          "z": "0.660947"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "5.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg2_reduced.ply",
-                      "name": "left L3S2",
-                      "pose": [
-                        {
-                          "alpha": "-35.061116",
-                          "beta": "0.0",
-                          "gamma": "146.885062",
-                          "x": "-0.52851",
-                          "y": "-1.090006",
-                          "z": "1.031232"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "9.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg3_reduced.ply",
-                      "name": "left L3S3",
-                      "pose": [
-                        {
-                          "alpha": "46.017221",
-                          "beta": "0.0",
-                          "gamma": "146.885062",
-                          "x": "-1.09468",
-                          "y": "-1.958001",
-                          "z": "1.332172"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "4.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg4.ply",
-                      "name": "left L3S4",
-                      "pose": [
-                        {
-                          "alpha": "46.017225",
-                          "beta": "0.0",
-                          "gamma": "146.885062",
-                          "x": "-1.76085",
-                          "y": "-2.979317",
-                          "z": "0.467886"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg1_reduced.ply",
-                      "name": "right L3S1",
-                      "pose": [
-                        {
-                          "alpha": "-74.274441",
-                          "beta": "0.0",
-                          "gamma": "-146.885062",
-                          "x": "0.2291",
-                          "y": "-0.630977",
-                          "z": "0.660947"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "5.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg2_reduced.ply",
-                      "name": "right L3S2",
-                      "pose": [
-                        {
-                          "alpha": "-35.061116",
-                          "beta": "0.0",
-                          "gamma": "-146.885062",
-                          "x": "0.52851",
-                          "y": "-1.090006",
-                          "z": "1.031232"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "9.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg3_reduced.ply",
-                      "name": "right L3S3",
-                      "pose": [
-                        {
-                          "alpha": "46.017221",
-                          "beta": "0.0",
-                          "gamma": "-146.885062",
-                          "x": "1.09468",
-                          "y": "-1.958001",
-                          "z": "1.332172"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "4.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "filename": "ply/h4/h4leg3seg4.ply",
-                      "name": "right L3S4",
-                      "pose": [
-                        {
-                          "alpha": "46.017225",
-                          "beta": "0.0",
-                          "gamma": "-146.885062",
-                          "x": "1.76085",
-                          "y": "-2.979317",
-                          "z": "0.467886"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "YARS/Gray"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "1.0"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "10"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "actuators": [
-                {
-                  "fixed": [
-                    {
-                      "name": "main head",
-                      "source": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "head"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "main tail",
-                      "source": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "tail"
-                        }
-                      ]
-                    }
-                  ],
-                  "hinge": [
-                    {
-                      "mode": "active",
-                      "name": "right main - L1S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L1S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "0.108318",
-                          "z": "0.288676"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L1S1 - L1S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L1S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L1S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "0.46333",
-                          "z": "0.011461"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L1S2 - L1S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L1S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L1S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.348007",
-                          "z": "0.242132"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L1S3 - L1S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L1S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L1S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.481949",
-                          "z": "0.262414"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left main - L1S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L1S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "0.108318",
-                          "z": "0.288676"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L1S1 - L1S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L1S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L1S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "0.46333",
-                          "z": "0.011461"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L1S2 - L1S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L1S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L1S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.348007",
-                          "z": "0.242132"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L1S3 - L1S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L1S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L1S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.481949",
-                          "z": "0.262414"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right main - L2S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L2S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "-0.083263",
-                          "z": "-0.123404"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L2S1 - L2S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L2S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L2S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "-0.094742",
-                          "z": "-0.491264"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "+1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L2S2 - L2S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L2S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L2S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.165596",
-                          "z": "0.423891"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L2S3 - L2S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L2S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L2S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.052062",
-                          "z": "0.556805"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left main - L2S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L2S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "-0.083263",
-                          "z": "-0.123404"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L2S1 - L2S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L2S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L2S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "-0.094742",
-                          "z": "-0.491264"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L2S2 - L2S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L2S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L2S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.165596",
-                          "z": "0.423891"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L2S3 - L2S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L2S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L2S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.052062",
-                          "z": "0.556805"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right main - L3S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L3S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "-0.157125",
-                          "z": "-0.127871"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L3S1 - L3S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L3S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L3S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "-0.040014",
-                          "z": "-0.606707"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "+1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L3S2 - L3S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L3S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L3S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.156881",
-                          "z": "0.615627"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "right L3S3 - L3S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "right L3S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "right L3S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.066215",
-                          "z": "0.764271"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left main - L3S1",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L3S1"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "alpha": "90",
-                          "x": "0.0",
-                          "y": "-0.157125",
-                          "z": "-0.127871"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L3S1 - L3S2",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L3S2"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L3S1"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.0",
-                          "y": "-0.040014",
-                          "z": "-0.606707"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L3S2 - L3S3",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L3S3"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L3S2"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.156881",
-                          "z": "0.615627"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "left L3S3 - L3S4",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "left L3S4"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "left L3S3"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "6000.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "1.0"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "-0.066215",
-                          "z": "0.764271"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "10"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "sensors": [
-                {
-                  "#children": [
-                    {
-                      "#tag": "deflection",
-                      "name": "right main - L1S1 sensor",
-                      "object": [
-                        {
-                          "name": "right main - L1S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L1S1 - L1S2 sensor",
-                      "object": [
-                        {
-                          "name": "right L1S1 - L1S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L1S2 - L1S3 sensor",
-                      "object": [
-                        {
-                          "name": "right L1S2 - L1S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L1S3 - L1S4 sensor",
-                      "object": [
-                        {
-                          "name": "right L1S3 - L1S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "right L1S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "right L1S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left main - L1S1 sensor",
-                      "object": [
-                        {
-                          "name": "left main - L1S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L1S1 - L1S2 sensor",
-                      "object": [
-                        {
-                          "name": "left L1S1 - L1S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L1S2 - L1S3 sensor",
-                      "object": [
-                        {
-                          "name": "left L1S2 - L1S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L1S3 - L1S4 sensor",
-                      "object": [
-                        {
-                          "name": "left L1S3 - L1S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "left L1S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "left L1S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right main - L2S1 sensor",
-                      "object": [
-                        {
-                          "name": "right main - L2S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L2S1 - L2S2 sensor",
-                      "object": [
-                        {
-                          "name": "right L2S1 - L2S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L2S2 - L2S3 sensor",
-                      "object": [
-                        {
-                          "name": "right L2S2 - L2S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L2S3 - L2S4 sensor",
-                      "object": [
-                        {
-                          "name": "right L2S3 - L2S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "right L2S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "right L2S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left main - L2S1 sensor",
-                      "object": [
-                        {
-                          "name": "left main - L2S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L2S1 - L2S2 sensor",
-                      "object": [
-                        {
-                          "name": "left L2S1 - L2S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L2S2 - L2S3 sensor",
-                      "object": [
-                        {
-                          "name": "left L2S2 - L2S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L2S3 - L2S4 sensor",
-                      "object": [
-                        {
-                          "name": "left L2S3 - L2S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "left L2S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "left L2S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right main - L3S1 sensor",
-                      "object": [
-                        {
-                          "name": "right main - L3S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L3S1 - L3S2 sensor",
-                      "object": [
-                        {
-                          "name": "right L3S1 - L3S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-85.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "-1",
-                          "min": "+1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L3S2 - L3S3 sensor",
-                      "object": [
-                        {
-                          "name": "right L3S2 - L3S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "right L3S3 - L3S4 sensor",
-                      "object": [
-                        {
-                          "name": "right L3S3 - L3S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "right L3S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "right L3S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left main - L3S1 sensor",
-                      "object": [
-                        {
-                          "name": "left main - L3S1"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "45.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L3S1 - L3S2 sensor",
-                      "object": [
-                        {
-                          "name": "left L3S1 - L3S2"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "85.0",
-                          "min": "-25.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L3S2 - L3S3 sensor",
-                      "object": [
-                        {
-                          "name": "left L3S2 - L3S3"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "deflection",
-                      "name": "left L3S3 - L3S4 sensor",
-                      "object": [
-                        {
-                          "name": "left L3S3 - L3S4"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25.0",
-                          "min": "-45.0"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "binaryContact",
-                      "name": "left L3S4 contact sensor",
-                      "object": [
-                        {
-                          "name": "left L3S4"
-                        }
-                      ]
-                    },
-                    {
-                      "#tag": "position",
-                      "name": "main body position",
-                      "object": [
-                        {
-                          "name": "main"
-                        }
-                      ],
-                      "coordinates": [
-                        {
-                          "x": "true",
-                          "y": "true",
-                          "z": "true"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      }
     }
-  ]
+  }
 }

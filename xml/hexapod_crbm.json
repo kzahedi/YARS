@@ -1,2639 +1,1853 @@
 {
-  "rosiml": [
-    {
-      "version": "0.8.41",
-      "simulator": [
-        {
-          "frequency": "100",
-          "solver": [
+  "rosiml": {
+    "version": "0.8.41",
+    "simulator": {
+      "frequency": 100,
+      "solver": {
+        "iterations": 100
+      }
+    },
+    "screens": {
+      "screen": {
+        "capture": false,
+        "follow": true,
+        "name": "main",
+        "show": true,
+        "resolution": {
+          "name": "720p"
+        },
+        "camera": {
+          "position": {
+            "x": 7.0,
+            "y": 0.0,
+            "z": 2.0
+          },
+          "lookAt": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.0
+          }
+        },
+        "osd": {
+          "time": {
+            "colour": "800040",
+            "font": "Time",
+            "size": 25
+          },
+          "robot": {
+            "colour": "FFFF00",
+            "font": "Robot",
+            "size": 25
+          }
+        }
+      },
+      "sky": {
+        "name": "YARS/CloudySky"
+      },
+      "cameras": {
+        "orbit": {
+          "speed": -0.5,
+          "lookAtX": {
+            "d": 0.002,
+            "i": 0.001,
+            "p": 0.25
+          },
+          "lookAtY": {
+            "d": 0.002,
+            "i": 0.001,
+            "p": 0.25
+          },
+          "lookAtZ": {
+            "d": 0.0,
+            "i": 0.0,
+            "p": 0.0
+          },
+          "fromX": {
+            "d": 0.0002,
+            "i": 0.0001,
+            "p": 0.5
+          },
+          "fromY": {
+            "d": 0.0002,
+            "i": 0.0001,
+            "p": 0.5
+          },
+          "fromZ": {
+            "d": 0.0,
+            "i": 0.0,
+            "p": 0.0
+          }
+        }
+      },
+      "followables": {
+        "followable": {
+          "name": "main body"
+        }
+      }
+    },
+    "environment": {
+      "name": "env",
+      "ground": {
+        "visualisation": {
+          "texture": {
+            "name": "YARS/DryGround"
+          }
+        }
+      }
+    },
+    "robots": {
+      "robot": {
+        "name": "hexapod",
+        "body": {
+          "selfCollide": true,
+          "ply": [
             {
-              "iterations": "100"
+              "convex": false,
+              "filename": "ply/main_body.ply",
+              "name": "main body",
+              "pose": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.449429
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "MainBodyMesh.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 2
+                },
+                "friction": {
+                  "value": 50
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_right.ply",
+              "name": "rear right femur",
+              "pose": {
+                "x": 0.700179,
+                "y": -2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearFemurMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_right.ply",
+              "name": "rear right tibia",
+              "pose": {
+                "x": 1.080657,
+                "y": -2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearTibiaMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_right.ply",
+              "name": "rear right tarsus",
+              "pose": {
+                "x": 1.613118,
+                "y": -2.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearTarsusMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_right.ply",
+              "name": "centre right femur",
+              "pose": {
+                "x": 0.700179,
+                "y": 0.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreFemurMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_right.ply",
+              "name": "centre right tibia",
+              "pose": {
+                "x": 1.080657,
+                "y": 0.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreTibiaMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_right.ply",
+              "name": "centre right tarsus",
+              "pose": {
+                "x": 1.613118,
+                "y": 0.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreTarsusMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_right.ply",
+              "name": "front right femur",
+              "pose": {
+                "x": 0.700179,
+                "y": 2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontFemurMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_right.ply",
+              "name": "front right tibia",
+              "pose": {
+                "x": 1.080657,
+                "y": 2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontTibiaMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_right.ply",
+              "name": "front right tarsus",
+              "pose": {
+                "x": 1.613118,
+                "y": 2.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontTarsusMesh_R.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_left.ply",
+              "name": "rear left femur",
+              "pose": {
+                "x": -0.700179,
+                "y": -2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearFemurMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_left.ply",
+              "name": "rear left tibia",
+              "pose": {
+                "x": -1.080657,
+                "y": -2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearTibiaMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_left.ply",
+              "name": "rear left tarsus",
+              "pose": {
+                "x": -1.613118,
+                "y": -2.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "RearTarsusMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_left.ply",
+              "name": "centre left femur",
+              "pose": {
+                "x": -0.700179,
+                "y": 0.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreFemurMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_left.ply",
+              "name": "centre left tibia",
+              "pose": {
+                "x": -1.080657,
+                "y": 0.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreTibiaMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_left.ply",
+              "name": "centre left tarsus",
+              "pose": {
+                "x": -1.613118,
+                "y": 0.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "CentreTarsusMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/femur_left.ply",
+              "name": "front left femur",
+              "pose": {
+                "x": -0.700179,
+                "y": 2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontFemurMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.2
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tibia_left.ply",
+              "name": "front left tibia",
+              "pose": {
+                "x": -1.080657,
+                "y": 2.0,
+                "z": 0.851405
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontTibiaMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.15
+                },
+                "friction": {
+                  "value": 0
+                }
+              }
+            },
+            {
+              "convex": false,
+              "filename": "ply/tarsus_left.ply",
+              "name": "front left tarsus",
+              "pose": {
+                "x": -1.613118,
+                "y": 2.0,
+                "z": 0.208994
+              },
+              "visualisation": {
+                "mesh": {
+                  "name": "FrontTarsusMesh_L.mesh",
+                  "pose": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                },
+                "friction": {
+                  "value": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "actuators": {
+          "hinge": [
+            {
+              "mode": "active",
+              "name": "front right z-axis",
+              "type": "angular",
+              "source": {
+                "name": "front right femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": 90,
+                "x": -0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "front right y-axis",
+              "type": "angular",
+              "source": {
+                "name": "front right femur"
+              },
+              "destination": {
+                "name": "front right tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "front left z-axis",
+              "type": "angular",
+              "source": {
+                "name": "front left femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": -90,
+                "x": 0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "front left y-axis",
+              "type": "angular",
+              "source": {
+                "name": "front left femur"
+              },
+              "destination": {
+                "name": "front left tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": -90,
+                "x": -0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "centre right z-axis",
+              "type": "angular",
+              "source": {
+                "name": "centre right femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": 90,
+                "x": -0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "centre right y-axis",
+              "type": "angular",
+              "source": {
+                "name": "centre right femur"
+              },
+              "destination": {
+                "name": "centre right tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "centre left z-axis",
+              "type": "angular",
+              "source": {
+                "name": "centre left femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": -90,
+                "x": 0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "centre left y-axis",
+              "type": "angular",
+              "source": {
+                "name": "centre left femur"
+              },
+              "destination": {
+                "name": "centre left tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": -90,
+                "x": -0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "rear right z-axis",
+              "type": "angular",
+              "source": {
+                "name": "rear right femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": 90,
+                "x": -0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "rear right y-axis",
+              "type": "angular",
+              "source": {
+                "name": "rear right femur"
+              },
+              "destination": {
+                "name": "rear right tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": 90,
+                "x": 0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "rear left z-axis",
+              "type": "angular",
+              "source": {
+                "name": "rear left femur"
+              },
+              "destination": {
+                "name": "main body"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "beta": -90,
+                "x": 0.275206,
+                "y": 0.0,
+                "z": -0.398469
+              },
+              "deflection": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            },
+            {
+              "mode": "active",
+              "name": "rear left y-axis",
+              "type": "angular",
+              "source": {
+                "name": "rear left femur"
+              },
+              "destination": {
+                "name": "rear left tibia"
+              },
+              "force": {
+                "max": 20.0
+              },
+              "velocity": {
+                "max": 0.75
+              },
+              "pose": {
+                "gamma": -90,
+                "x": -0.353679,
+                "y": 0.0,
+                "z": 0.464797
+              },
+              "deflection": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              },
+              "regular": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "limit": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "orthogonal": {
+                "damping": 1.0,
+                "restitution": 0.7,
+                "softness": 1.0
+              },
+              "pid": {
+                "d": 0.0,
+                "i": 0.0,
+                "p": 0.9,
+                "size": 1
+              }
+            }
+          ],
+          "fixed": [
+            {
+              "name": "front left ti-ta fixed",
+              "source": {
+                "name": "front left tibia"
+              },
+              "destination": {
+                "name": "front left tarsus"
+              }
+            },
+            {
+              "name": "centre left ti-ta fixed",
+              "source": {
+                "name": "centre left tibia"
+              },
+              "destination": {
+                "name": "centre left tarsus"
+              }
+            },
+            {
+              "name": "rear left ti-ta fixed",
+              "source": {
+                "name": "rear left tibia"
+              },
+              "destination": {
+                "name": "rear left tarsus"
+              }
+            },
+            {
+              "name": "front right ti-ta fixed",
+              "source": {
+                "name": "front right tibia"
+              },
+              "destination": {
+                "name": "front right tarsus"
+              }
+            },
+            {
+              "name": "centre right ti-ta fixed",
+              "source": {
+                "name": "centre right tibia"
+              },
+              "destination": {
+                "name": "centre right tarsus"
+              }
+            },
+            {
+              "name": "rear right ti-ta fixed",
+              "source": {
+                "name": "rear right tibia"
+              },
+              "destination": {
+                "name": "rear right tarsus"
+              }
+            }
+          ]
+        },
+        "sensors": {
+          "deflection": [
+            {
+              "name": "front right z-axis sensor",
+              "object": {
+                "name": "front right z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "front right y-axis sensor",
+              "object": {
+                "name": "front right y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "front left z-axis sensor",
+              "object": {
+                "name": "front left z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "front left y-axis sensor",
+              "object": {
+                "name": "front left y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "centre right z-axis sensor",
+              "object": {
+                "name": "centre right z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "centre right y-axis sensor",
+              "object": {
+                "name": "centre right y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "centre left z-axis sensor",
+              "object": {
+                "name": "centre left z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "centre left y-axis sensor",
+              "object": {
+                "name": "centre left y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "rear right z-axis sensor",
+              "object": {
+                "name": "rear right z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "rear right y-axis sensor",
+              "object": {
+                "name": "rear right y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "rear left z-axis sensor",
+              "object": {
+                "name": "rear left z-axis"
+              },
+              "domain": {
+                "max": 35,
+                "min": -35
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            },
+            {
+              "name": "rear left y-axis sensor",
+              "object": {
+                "name": "rear left y-axis"
+              },
+              "domain": {
+                "max": 25,
+                "min": -15
+              },
+              "mapping": {
+                "max": 1,
+                "min": -1
+              }
+            }
+          ],
+          "position": {
+            "name": "main body position",
+            "object": {
+              "name": "main body"
+            },
+            "coordinates": {
+              "x": true,
+              "y": true,
+              "z": true
+            }
+          },
+          "ov": {
+            "name": "main body velocity",
+            "object": {
+              "name": "main body"
+            },
+            "coordinates": {
+              "x": true,
+              "y": true,
+              "z": true
+            }
+          }
+        },
+        "controller": {
+          "frequency": 10,
+          "module": "CRBMCtrl",
+          "parameter": [
+            {
+              "name": "crbm",
+              "value": "/Users/zahedi/projects/YARS/contrib/controller/mode_four.rbm"
+            },
+            {
+              "name": "A",
+              "value": "/Users/zahedi/projects/YARS/contrib/controller/actuators.csv"
+            },
+            {
+              "name": "init",
+              "value": 20
+            },
+            {
+              "name": "record",
+              "value": false
             }
           ]
         }
-      ],
-      "screens": [
+      }
+    },
+    "traces": {
+      "trace": [
         {
-          "screen": [
-            {
-              "capture": "false",
-              "follow": "true",
-              "name": "main",
-              "show": "true",
-              "resolution": [
-                {
-                  "name": "720p"
-                }
-              ],
-              "camera": [
-                {
-                  "position": [
-                    {
-                      "x": "7.00",
-                      "y": "0.00",
-                      "z": "2.0"
-                    }
-                  ],
-                  "lookAt": [
-                    {
-                      "x": "0.0",
-                      "y": "0.0",
-                      "z": "1.0"
-                    }
-                  ]
-                }
-              ],
-              "osd": [
-                {
-                  "time": [
-                    {
-                      "colour": "800040",
-                      "font": "Time",
-                      "size": "25"
-                    }
-                  ],
-                  "robot": [
-                    {
-                      "colour": "FFFF00",
-                      "font": "Robot",
-                      "size": "25"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "sky": [
-            {
-              "name": "YARS/CloudySky"
-            }
-          ],
-          "cameras": [
-            {
-              "orbit": [
-                {
-                  "speed": "-0.5",
-                  "lookAtX": [
-                    {
-                      "d": "0.002",
-                      "i": "0.001",
-                      "p": "0.25"
-                    }
-                  ],
-                  "lookAtY": [
-                    {
-                      "d": "0.002",
-                      "i": "0.001",
-                      "p": "0.25"
-                    }
-                  ],
-                  "lookAtZ": [
-                    {
-                      "d": "0.000",
-                      "i": "0.0000",
-                      "p": "0.0"
-                    }
-                  ],
-                  "fromX": [
-                    {
-                      "d": "0.0002",
-                      "i": "0.0001",
-                      "p": "0.50"
-                    }
-                  ],
-                  "fromY": [
-                    {
-                      "d": "0.0002",
-                      "i": "0.0001",
-                      "p": "0.50"
-                    }
-                  ],
-                  "fromZ": [
-                    {
-                      "d": "0.0",
-                      "i": "0.0",
-                      "p": "0.00"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "followables": [
-            {
-              "followable": [
-                {
-                  "name": "main body"
-                }
-              ]
-            }
-          ]
+          "length": 15,
+          "max": 1000,
+          "particles": false,
+          "project": "xy",
+          "target": "main body",
+          "time": 20,
+          "init": {
+            "colour": "009cff",
+            "size": 0.05
+          },
+          "final": {
+            "colour": "009cff00",
+            "size": 0.0
+          },
+          "offset": {
+            "local": true,
+            "z": 0.05
+          }
+        },
+        {
+          "length": 15,
+          "max": 1000,
+          "particles": false,
+          "target": "front left femur",
+          "time": 20,
+          "init": {
+            "colour": "95aeca",
+            "size": 0.05
+          },
+          "final": {
+            "colour": "95aeca00",
+            "size": 0.0
+          },
+          "offset": {
+            "local": true,
+            "z": 0.0
+          }
+        },
+        {
+          "length": 15,
+          "max": 1000,
+          "particles": false,
+          "target": "front left tarsus",
+          "time": 20,
+          "init": {
+            "colour": "668092",
+            "size": 0.05
+          },
+          "final": {
+            "colour": "66809200",
+            "size": 0.0
+          },
+          "offset": {
+            "local": true,
+            "z": 0.0
+          }
+        },
+        {
+          "length": 15,
+          "max": 1000,
+          "particles": false,
+          "target": "front right femur",
+          "time": 20,
+          "init": {
+            "colour": "95aeca",
+            "size": 0.05
+          },
+          "final": {
+            "colour": "95aeca00",
+            "size": 0.0
+          },
+          "offset": {
+            "local": true,
+            "z": 0.0
+          }
+        },
+        {
+          "length": 15,
+          "max": 1000,
+          "particles": false,
+          "target": "front right tarsus",
+          "time": 20,
+          "init": {
+            "colour": "668092",
+            "size": 0.05
+          },
+          "final": {
+            "colour": "66809200",
+            "size": 0.0
+          },
+          "offset": {
+            "local": true,
+            "z": 0.0
+          }
+        }
+      ]
+    },
+    "logging": {
+      "sensor": [
+        {
+          "precision": 8,
+          "target": "front right z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front right y-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front left z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front left y-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre right z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre right y-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre left z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre left y-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear right z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear right y-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear left z-axis sensor",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear left y-axis sensor",
+          "external": {}
         }
       ],
-      "environment": [
+      "actuator": [
         {
-          "name": "env",
-          "ground": [
-            {
-              "visualisation": [
-                {
-                  "texture": [
-                    {
-                      "name": "YARS/DryGround"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          "precision": 8,
+          "target": "front right z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front right y-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front left z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "front left y-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre right z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre right y-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre left z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "centre left y-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear right z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear right y-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear left z-axis",
+          "external": {}
+        },
+        {
+          "precision": 8,
+          "target": "rear left y-axis",
+          "external": {}
         }
       ],
-      "robots": [
+      "csv": [
         {
-          "robot": [
+          "date": false,
+          "name": "sensors",
+          "target": [
             {
-              "name": "hexapod",
-              "body": [
-                {
-                  "selfCollide": "true",
-                  "ply": [
-                    {
-                      "convex": "false",
-                      "filename": "ply/main_body.ply",
-                      "name": "main body",
-                      "pose": [
-                        {
-                          "x": "0.0",
-                          "y": "0.0",
-                          "z": "0.449429"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "MainBodyMesh.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "50"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_right.ply",
-                      "name": "rear right femur",
-                      "pose": [
-                        {
-                          "x": "0.700179",
-                          "y": "-2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearFemurMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_right.ply",
-                      "name": "rear right tibia",
-                      "pose": [
-                        {
-                          "x": "1.080657",
-                          "y": "-2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearTibiaMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_right.ply",
-                      "name": "rear right tarsus",
-                      "pose": [
-                        {
-                          "x": "1.613118",
-                          "y": "-2.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearTarsusMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_right.ply",
-                      "name": "centre right femur",
-                      "pose": [
-                        {
-                          "x": "0.700179",
-                          "y": "0.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreFemurMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_right.ply",
-                      "name": "centre right tibia",
-                      "pose": [
-                        {
-                          "x": "1.080657",
-                          "y": "0.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreTibiaMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_right.ply",
-                      "name": "centre right tarsus",
-                      "pose": [
-                        {
-                          "x": "1.613118",
-                          "y": "0.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreTarsusMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_right.ply",
-                      "name": "front right femur",
-                      "pose": [
-                        {
-                          "x": "0.700179",
-                          "y": "2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontFemurMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_right.ply",
-                      "name": "front right tibia",
-                      "pose": [
-                        {
-                          "x": "1.080657",
-                          "y": "2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontTibiaMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_right.ply",
-                      "name": "front right tarsus",
-                      "pose": [
-                        {
-                          "x": "1.613118",
-                          "y": "2.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontTarsusMesh_R.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_left.ply",
-                      "name": "rear left femur",
-                      "pose": [
-                        {
-                          "x": "-0.700179",
-                          "y": "-2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearFemurMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_left.ply",
-                      "name": "rear left tibia",
-                      "pose": [
-                        {
-                          "x": "-1.080657",
-                          "y": "-2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearTibiaMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_left.ply",
-                      "name": "rear left tarsus",
-                      "pose": [
-                        {
-                          "x": "-1.613118",
-                          "y": "-2.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "RearTarsusMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_left.ply",
-                      "name": "centre left femur",
-                      "pose": [
-                        {
-                          "x": "-0.700179",
-                          "y": "0.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreFemurMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_left.ply",
-                      "name": "centre left tibia",
-                      "pose": [
-                        {
-                          "x": "-1.080657",
-                          "y": "0.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreTibiaMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_left.ply",
-                      "name": "centre left tarsus",
-                      "pose": [
-                        {
-                          "x": "-1.613118",
-                          "y": "0.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "CentreTarsusMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/femur_left.ply",
-                      "name": "front left femur",
-                      "pose": [
-                        {
-                          "x": "-0.700179",
-                          "y": "2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontFemurMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".2"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tibia_left.ply",
-                      "name": "front left tibia",
-                      "pose": [
-                        {
-                          "x": "-1.080657",
-                          "y": "2.0",
-                          "z": "0.851405"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontTibiaMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".15"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "convex": "false",
-                      "filename": "ply/tarsus_left.ply",
-                      "name": "front left tarsus",
-                      "pose": [
-                        {
-                          "x": "-1.613118",
-                          "y": "2.0",
-                          "z": "0.208994"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "mesh": [
-                            {
-                              "name": "FrontTarsusMesh_L.mesh",
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.0"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": ".1"
-                            }
-                          ],
-                          "friction": [
-                            {
-                              "value": "1.0"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "actuators": [
-                {
-                  "hinge": [
-                    {
-                      "mode": "active",
-                      "name": "front right z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "front right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "90",
-                          "x": "-0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "front right y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "front right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "front right tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "front left z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "front left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "-90",
-                          "x": "0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "front left y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "front left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "front left tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "-90",
-                          "x": "-0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "centre right z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "centre right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "90",
-                          "x": "-0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "centre right y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "centre right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "centre right tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "centre left z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "centre left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "-90",
-                          "x": "0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "centre left y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "centre left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "centre left tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "-90",
-                          "x": "-0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "rear right z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "rear right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "90",
-                          "x": "-0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "rear right y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "rear right femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "rear right tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "90",
-                          "x": "0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "rear left z-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "rear left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "beta": "-90",
-                          "x": "0.275206",
-                          "y": "0.0",
-                          "z": "-0.398469"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    },
-                    {
-                      "mode": "active",
-                      "name": "rear left y-axis",
-                      "type": "angular",
-                      "source": [
-                        {
-                          "name": "rear left femur"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "rear left tibia"
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "20.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.75"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "gamma": "-90",
-                          "x": "-0.353679",
-                          "y": "0.0",
-                          "z": "0.464797"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "pid": [
-                        {
-                          "d": "0.0",
-                          "i": "0.0",
-                          "p": "0.9",
-                          "size": "1"
-                        }
-                      ]
-                    }
-                  ],
-                  "fixed": [
-                    {
-                      "name": "front left ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "front left tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "front left tarsus"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre left ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "centre left tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "centre left tarsus"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear left ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "rear left tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "rear left tarsus"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "front right ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "front right tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "front right tarsus"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre right ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "centre right tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "centre right tarsus"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear right ti-ta fixed",
-                      "source": [
-                        {
-                          "name": "rear right tibia"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "rear right tarsus"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "sensors": [
-                {
-                  "deflection": [
-                    {
-                      "name": "front right z-axis sensor",
-                      "object": [
-                        {
-                          "name": "front right z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "front right y-axis sensor",
-                      "object": [
-                        {
-                          "name": "front right y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "front left z-axis sensor",
-                      "object": [
-                        {
-                          "name": "front left z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "front left y-axis sensor",
-                      "object": [
-                        {
-                          "name": "front left y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre right z-axis sensor",
-                      "object": [
-                        {
-                          "name": "centre right z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre right y-axis sensor",
-                      "object": [
-                        {
-                          "name": "centre right y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre left z-axis sensor",
-                      "object": [
-                        {
-                          "name": "centre left z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "centre left y-axis sensor",
-                      "object": [
-                        {
-                          "name": "centre left y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear right z-axis sensor",
-                      "object": [
-                        {
-                          "name": "rear right z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear right y-axis sensor",
-                      "object": [
-                        {
-                          "name": "rear right y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear left z-axis sensor",
-                      "object": [
-                        {
-                          "name": "rear left z-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "35",
-                          "min": "-35"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "rear left y-axis sensor",
-                      "object": [
-                        {
-                          "name": "rear left y-axis"
-                        }
-                      ],
-                      "domain": [
-                        {
-                          "max": "25",
-                          "min": "-15"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "1",
-                          "min": "-1"
-                        }
-                      ]
-                    }
-                  ],
-                  "position": [
-                    {
-                      "name": "main body position",
-                      "object": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "coordinates": [
-                        {
-                          "x": "true",
-                          "y": "true",
-                          "z": "true"
-                        }
-                      ]
-                    }
-                  ],
-                  "ov": [
-                    {
-                      "name": "main body velocity",
-                      "object": [
-                        {
-                          "name": "main body"
-                        }
-                      ],
-                      "coordinates": [
-                        {
-                          "x": "true",
-                          "y": "true",
-                          "z": "true"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "controller": [
-                {
-                  "frequency": "10",
-                  "module": "CRBMCtrl",
-                  "parameter": [
-                    {
-                      "name": "crbm",
-                      "value": "/Users/zahedi/projects/YARS/contrib/controller/mode_four.rbm"
-                    },
-                    {
-                      "name": "A",
-                      "value": "/Users/zahedi/projects/YARS/contrib/controller/actuators.csv"
-                    },
-                    {
-                      "name": "init",
-                      "value": "20"
-                    },
-                    {
-                      "name": "record",
-                      "value": "false"
-                    }
-                  ]
-                }
-              ]
+              "name": "front right z-axis sensor"
+            },
+            {
+              "name": "front right y-axis sensor"
+            },
+            {
+              "name": "front left z-axis sensor"
+            },
+            {
+              "name": "front left y-axis sensor"
+            },
+            {
+              "name": "centre right z-axis sensor"
+            },
+            {
+              "name": "centre right y-axis sensor"
+            },
+            {
+              "name": "centre left z-axis sensor"
+            },
+            {
+              "name": "centre left y-axis sensor"
+            },
+            {
+              "name": "rear right z-axis sensor"
+            },
+            {
+              "name": "rear right y-axis sensor"
+            },
+            {
+              "name": "rear left z-axis sensor"
+            },
+            {
+              "name": "rear left y-axis sensor"
             }
           ]
-        }
-      ],
-      "traces": [
+        },
         {
-          "trace": [
+          "date": false,
+          "name": "actuators",
+          "target": [
             {
-              "length": "15",
-              "max": "1000",
-              "particles": "false",
-              "project": "xy",
-              "target": "main body",
-              "time": "20",
-              "init": [
-                {
-                  "colour": "009cff",
-                  "size": "0.05"
-                }
-              ],
-              "final": [
-                {
-                  "colour": "009cff00",
-                  "size": "0.00"
-                }
-              ],
-              "offset": [
-                {
-                  "local": "true",
-                  "z": "0.05"
-                }
-              ]
+              "name": "front right z-axis"
             },
             {
-              "length": "15",
-              "max": "1000",
-              "particles": "false",
-              "target": "front left femur",
-              "time": "20",
-              "init": [
-                {
-                  "colour": "95aeca",
-                  "size": "0.05"
-                }
-              ],
-              "final": [
-                {
-                  "colour": "95aeca00",
-                  "size": "0.00"
-                }
-              ],
-              "offset": [
-                {
-                  "local": "true",
-                  "z": "0.0"
-                }
-              ]
+              "name": "front right y-axis"
             },
             {
-              "length": "15",
-              "max": "1000",
-              "particles": "false",
-              "target": "front left tarsus",
-              "time": "20",
-              "init": [
-                {
-                  "colour": "668092",
-                  "size": "0.05"
-                }
-              ],
-              "final": [
-                {
-                  "colour": "66809200",
-                  "size": "0.00"
-                }
-              ],
-              "offset": [
-                {
-                  "local": "true",
-                  "z": "0.0"
-                }
-              ]
+              "name": "front left z-axis"
             },
             {
-              "length": "15",
-              "max": "1000",
-              "particles": "false",
-              "target": "front right femur",
-              "time": "20",
-              "init": [
-                {
-                  "colour": "95aeca",
-                  "size": "0.05"
-                }
-              ],
-              "final": [
-                {
-                  "colour": "95aeca00",
-                  "size": "0.00"
-                }
-              ],
-              "offset": [
-                {
-                  "local": "true",
-                  "z": "0.0"
-                }
-              ]
+              "name": "front left y-axis"
             },
             {
-              "length": "15",
-              "max": "1000",
-              "particles": "false",
-              "target": "front right tarsus",
-              "time": "20",
-              "init": [
-                {
-                  "colour": "668092",
-                  "size": "0.05"
-                }
-              ],
-              "final": [
-                {
-                  "colour": "66809200",
-                  "size": "0.00"
-                }
-              ],
-              "offset": [
-                {
-                  "local": "true",
-                  "z": "0.0"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "logging": [
-        {
-          "sensor": [
-            {
-              "precision": "8",
-              "target": "front right z-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "centre right z-axis"
             },
             {
-              "precision": "8",
-              "target": "front right y-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "centre right y-axis"
             },
             {
-              "precision": "8",
-              "target": "front left z-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "centre left z-axis"
             },
             {
-              "precision": "8",
-              "target": "front left y-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "centre left y-axis"
             },
             {
-              "precision": "8",
-              "target": "centre right z-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "rear right z-axis"
             },
             {
-              "precision": "8",
-              "target": "centre right y-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "rear right y-axis"
             },
             {
-              "precision": "8",
-              "target": "centre left z-axis sensor",
-              "external": [
-                {}
-              ]
+              "name": "rear left z-axis"
             },
             {
-              "precision": "8",
-              "target": "centre left y-axis sensor",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear right z-axis sensor",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear right y-axis sensor",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear left z-axis sensor",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear left y-axis sensor",
-              "external": [
-                {}
-              ]
-            }
-          ],
-          "actuator": [
-            {
-              "precision": "8",
-              "target": "front right z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "front right y-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "front left z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "front left y-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "centre right z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "centre right y-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "centre left z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "centre left y-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear right z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear right y-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear left z-axis",
-              "external": [
-                {}
-              ]
-            },
-            {
-              "precision": "8",
-              "target": "rear left y-axis",
-              "external": [
-                {}
-              ]
-            }
-          ],
-          "csv": [
-            {
-              "date": "false",
-              "name": "sensors",
-              "target": [
-                {
-                  "name": "front right z-axis sensor"
-                },
-                {
-                  "name": "front right y-axis sensor"
-                },
-                {
-                  "name": "front left z-axis sensor"
-                },
-                {
-                  "name": "front left y-axis sensor"
-                },
-                {
-                  "name": "centre right z-axis sensor"
-                },
-                {
-                  "name": "centre right y-axis sensor"
-                },
-                {
-                  "name": "centre left z-axis sensor"
-                },
-                {
-                  "name": "centre left y-axis sensor"
-                },
-                {
-                  "name": "rear right z-axis sensor"
-                },
-                {
-                  "name": "rear right y-axis sensor"
-                },
-                {
-                  "name": "rear left z-axis sensor"
-                },
-                {
-                  "name": "rear left y-axis sensor"
-                }
-              ]
-            },
-            {
-              "date": "false",
-              "name": "actuators",
-              "target": [
-                {
-                  "name": "front right z-axis"
-                },
-                {
-                  "name": "front right y-axis"
-                },
-                {
-                  "name": "front left z-axis"
-                },
-                {
-                  "name": "front left y-axis"
-                },
-                {
-                  "name": "centre right z-axis"
-                },
-                {
-                  "name": "centre right y-axis"
-                },
-                {
-                  "name": "centre left z-axis"
-                },
-                {
-                  "name": "centre left y-axis"
-                },
-                {
-                  "name": "rear right z-axis"
-                },
-                {
-                  "name": "rear right y-axis"
-                },
-                {
-                  "name": "rear left z-axis"
-                },
-                {
-                  "name": "rear left y-axis"
-                }
-              ]
+              "name": "rear left y-axis"
             }
           ]
         }
       ]
     }
-  ]
+  }
 }

@@ -75,10 +75,18 @@ YARS reads only `.json` configuration files as of the JSON Stage 3 harvest
 generator, the `createXsd` chain on every `Data*` class, and the Xerces SAX
 parser — has been deleted:
 - **Parsing**: `src/yars/configuration/json/JsonParser.{h,cpp}` replays the
-  always-arrays JSON shape (produced historically by the now-deleted
-  `XmlToJson` converter) into the same `Data*` object model the SAX parser
-  used to build. `DataParseElement` is the shared adapter both parsers fed
-  into and is unchanged.
+  JSON config into the same `Data*` object model the SAX parser used to
+  build. `DataParseElement` is the shared adapter both parsers fed into
+  and is unchanged. Two element shapes are accepted and can be mixed: the
+  concise form (object value = single child element, e.g.
+  `"lookAt": {"x": 0.0, "y": 0.01, "z": 0.0}`; native JSON numbers/bools
+  as attribute values) and the legacy always-arrays all-strings shape
+  (produced historically by the now-deleted `XmlToJson` converter, e.g.
+  `"lookAt": [{"x": "0.0", ...}]`). Arrays express repeated children;
+  `#children` arrays express order-sensitive mixed-type child lists (e.g.
+  interleaved sensor types where order = controller channel order). The
+  committed corpus under `xml/` is in the concise typed form;
+  `scripts/json-canonicalize.py` rewrites a legacy config to it.
 - **Factory Pattern**: 80+ factory classes for object creation (unchanged).
 - **Attribute parsing (binding-table pilot, JSON Stage 4)**: the
   attribute-parsing half of `Data*::add(DataParseElement*)` — a

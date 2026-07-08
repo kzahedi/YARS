@@ -1,494 +1,340 @@
 {
-  "rosiml": [
-    {
-      "version": "0.8.41",
-      "simulator": [
-        {
-          "frequency": "1000",
-          "solver": [
+  "rosiml": {
+    "version": "0.8.41",
+    "simulator": {
+      "frequency": 1000,
+      "solver": {
+        "iterations": 100
+      }
+    },
+    "screens": {
+      "screen": {
+        "follow": false,
+        "name": "Braiternberg",
+        "show": true,
+        "size": {
+          "height": 600,
+          "width": 600
+        },
+        "camera": {
+          "position": {
+            "x": 3.0,
+            "y": 0.0,
+            "z": 2.0
+          },
+          "lookAt": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.0
+          }
+        },
+        "osd": {
+          "time": {
+            "colour": "FFFF00",
+            "font": "Time",
+            "size": 25
+          },
+          "robot": {
+            "colour": "FFFFFF",
+            "font": "Robot",
+            "size": 25
+          }
+        }
+      },
+      "sky": {
+        "name": "YARS/CloudySky"
+      },
+      "cameras": {
+        "orbit": {
+          "speed": 0.5,
+          "lookAtX": {
+            "d": 0.002,
+            "i": 0.001,
+            "p": 0.05
+          },
+          "lookAtY": {
+            "d": 0.002,
+            "i": 0.001,
+            "p": 0.05
+          },
+          "lookAtZ": {
+            "d": 0.0,
+            "i": 0.0,
+            "p": 1.0
+          },
+          "fromX": {
+            "d": 0.0002,
+            "i": 0.0001,
+            "p": 0.01
+          },
+          "fromY": {
+            "d": 0.0002,
+            "i": 0.0001,
+            "p": 0.01
+          },
+          "fromZ": {
+            "d": 0.0,
+            "i": 0.0,
+            "p": 0.0
+          }
+        },
+        "centre": {
+          "speed": 1.5
+        }
+      },
+      "followables": {
+        "followable": {
+          "name": "swinging body"
+        }
+      },
+      "visualise": {
+        "joints": {
+          "height": 0.5,
+          "radius": 0.01
+        }
+      }
+    },
+    "environment": {
+      "ground": {
+        "fixed": true,
+        "fog": false,
+        "visualisation": {
+          "texture": {
+            "name": "YARS/DryGroundSmall"
+          }
+        }
+      }
+    },
+    "robots": {
+      "robot": {
+        "name": "Muscle",
+        "body": {
+          "sphere": [
             {
-              "iterations": "100"
+              "name": "source body",
+              "visualise": true,
+              "dimension": {
+                "radius": 0.1
+              },
+              "pose": {
+                "y": 0.0,
+                "z": 2.0
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "Chain/Circuit/Top/Green"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.0
+                }
+              }
+            },
+            {
+              "name": "destination body",
+              "visualise": true,
+              "dimension": {
+                "radius": 0.1
+              },
+              "pose": {
+                "x": 0.5,
+                "y": 0.5,
+                "z": 1.5
+              },
+              "visualisation": {
+                "texture": {
+                  "name": "Chain/Circuit/Top/Green"
+                }
+              },
+              "physics": {
+                "mass": {
+                  "kg": 0.1
+                }
+              }
+            }
+          ]
+        },
+        "actuators": {
+          "muscle": {
+            "cfm": 0.1,
+            "erp": 1.0,
+            "friction": 1e-05,
+            "name": "muscle",
+            "visualise": true,
+            "source": {
+              "name": "source body"
+            },
+            "destination": {
+              "name": "destination body"
+            },
+            "srcAnchor": {
+              "sphere": {
+                "name": "source anchor",
+                "visualise": true,
+                "dimension": {
+                  "radius": 0.05
+                },
+                "pose": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": -0.1
+                },
+                "visualisation": {
+                  "texture": {
+                    "name": "Chain/Circuit/Top/Yellow"
+                  }
+                },
+                "physics": {
+                  "mass": {
+                    "kg": 0.01
+                  }
+                }
+              }
+            },
+            "dstAnchor": {
+              "sphere": {
+                "name": "destination anchor",
+                "visualise": true,
+                "dimension": {
+                  "radius": 0.05
+                },
+                "pose": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.1
+                },
+                "visualisation": {
+                  "texture": {
+                    "name": "Chain/Circuit/Top/Blue"
+                  }
+                },
+                "physics": {
+                  "mass": {
+                    "kg": 0.01
+                  }
+                }
+              }
+            },
+            "force": {
+              "max": 2.0
+            },
+            "velocity": {
+              "max": 0.5
+            },
+            "deflection": {
+              "max": 0.5,
+              "min": -0.5
+            },
+            "mapping": {
+              "max": 1,
+              "min": 0
+            },
+            "lengthComponent": {
+              "c": 5.0,
+              "optimalLength": 1.0,
+              "use": true,
+              "w": 1.5
+            },
+            "velocityComponent": {
+              "K": 1.5,
+              "N": 1.5,
+              "maxVelocity": -3.5,
+              "use": true
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            }
+          }
+        },
+        "sensors": {
+          "muscle": {
+            "name": "muscle sensor",
+            "#children": [
+              {
+                "#tag": "object",
+                "name": "muscle"
+              },
+              {
+                "#tag": "domain",
+                "max": 5.0,
+                "min": 0
+              },
+              {
+                "#tag": "mapping",
+                "max": 5.0,
+                "min": 0
+              },
+              {
+                "#tag": "domain",
+                "max": 2.0,
+                "min": 0
+              },
+              {
+                "#tag": "mapping",
+                "max": 2.0,
+                "min": 0
+              },
+              {
+                "#tag": "domain",
+                "max": 2.0,
+                "min": 0
+              },
+              {
+                "#tag": "mapping",
+                "max": 2.0,
+                "min": 0
+              },
+              {
+                "#tag": "domain",
+                "max": 2.0,
+                "min": -2.0
+              },
+              {
+                "#tag": "mapping",
+                "max": 2,
+                "min": -2.0
+              },
+              {
+                "#tag": "domain",
+                "max": 2.0,
+                "min": 0
+              },
+              {
+                "#tag": "mapping",
+                "max": 2,
+                "min": 0
+              }
+            ]
+          }
+        },
+        "controller": {
+          "frequency": 100,
+          "module": "TCPIP",
+          "parameter": [
+            {
+              "name": "port",
+              "value": 9500
+            },
+            {
+              "name": "debug",
+              "value": "True"
             }
           ]
         }
-      ],
-      "screens": [
-        {
-          "screen": [
-            {
-              "follow": "false",
-              "name": "Braiternberg",
-              "show": "true",
-              "size": [
-                {
-                  "height": "600",
-                  "width": "600"
-                }
-              ],
-              "camera": [
-                {
-                  "position": [
-                    {
-                      "x": "3.00",
-                      "y": "0.00",
-                      "z": "2.0"
-                    }
-                  ],
-                  "lookAt": [
-                    {
-                      "x": "0.0",
-                      "y": "0.00",
-                      "z": "1.0"
-                    }
-                  ]
-                }
-              ],
-              "osd": [
-                {
-                  "time": [
-                    {
-                      "colour": "FFFF00",
-                      "font": "Time",
-                      "size": "25"
-                    }
-                  ],
-                  "robot": [
-                    {
-                      "colour": "FFFFFF",
-                      "font": "Robot",
-                      "size": "25"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "sky": [
-            {
-              "name": "YARS/CloudySky"
-            }
-          ],
-          "cameras": [
-            {
-              "orbit": [
-                {
-                  "speed": "0.5",
-                  "lookAtX": [
-                    {
-                      "d": "0.002",
-                      "i": "0.001",
-                      "p": "0.05"
-                    }
-                  ],
-                  "lookAtY": [
-                    {
-                      "d": "0.002",
-                      "i": "0.001",
-                      "p": "0.05"
-                    }
-                  ],
-                  "lookAtZ": [
-                    {
-                      "d": "0.0",
-                      "i": "0.0",
-                      "p": "1.0"
-                    }
-                  ],
-                  "fromX": [
-                    {
-                      "d": "0.0002",
-                      "i": "0.0001",
-                      "p": "0.01"
-                    }
-                  ],
-                  "fromY": [
-                    {
-                      "d": "0.0002",
-                      "i": "0.0001",
-                      "p": "0.01"
-                    }
-                  ],
-                  "fromZ": [
-                    {
-                      "d": "0.0",
-                      "i": "0.0",
-                      "p": "0.0"
-                    }
-                  ]
-                }
-              ],
-              "centre": [
-                {
-                  "speed": "1.5"
-                }
-              ]
-            }
-          ],
-          "followables": [
-            {
-              "followable": [
-                {
-                  "name": "swinging body"
-                }
-              ]
-            }
-          ],
-          "visualise": [
-            {
-              "joints": [
-                {
-                  "height": "0.5",
-                  "radius": "0.01"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "environment": [
-        {
-          "ground": [
-            {
-              "fixed": "true",
-              "fog": "false",
-              "visualisation": [
-                {
-                  "texture": [
-                    {
-                      "name": "YARS/DryGroundSmall"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "robots": [
-        {
-          "robot": [
-            {
-              "name": "Muscle",
-              "body": [
-                {
-                  "sphere": [
-                    {
-                      "name": "source body",
-                      "visualise": "true",
-                      "dimension": [
-                        {
-                          "radius": "0.10"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "y": "0.0",
-                          "z": "2.00"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "Chain/Circuit/Top/Green"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "0.0"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "name": "destination body",
-                      "visualise": "true",
-                      "dimension": [
-                        {
-                          "radius": "0.10"
-                        }
-                      ],
-                      "pose": [
-                        {
-                          "x": "0.5",
-                          "y": "0.5",
-                          "z": "1.5"
-                        }
-                      ],
-                      "visualisation": [
-                        {
-                          "texture": [
-                            {
-                              "name": "Chain/Circuit/Top/Green"
-                            }
-                          ]
-                        }
-                      ],
-                      "physics": [
-                        {
-                          "mass": [
-                            {
-                              "kg": "0.1"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "actuators": [
-                {
-                  "muscle": [
-                    {
-                      "cfm": "0.1",
-                      "erp": "1.0",
-                      "friction": "0.00001",
-                      "name": "muscle",
-                      "visualise": "true",
-                      "source": [
-                        {
-                          "name": "source body"
-                        }
-                      ],
-                      "destination": [
-                        {
-                          "name": "destination body"
-                        }
-                      ],
-                      "srcAnchor": [
-                        {
-                          "sphere": [
-                            {
-                              "name": "source anchor",
-                              "visualise": "true",
-                              "dimension": [
-                                {
-                                  "radius": "0.05"
-                                }
-                              ],
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "-0.1"
-                                }
-                              ],
-                              "visualisation": [
-                                {
-                                  "texture": [
-                                    {
-                                      "name": "Chain/Circuit/Top/Yellow"
-                                    }
-                                  ]
-                                }
-                              ],
-                              "physics": [
-                                {
-                                  "mass": [
-                                    {
-                                      "kg": "0.01"
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "dstAnchor": [
-                        {
-                          "sphere": [
-                            {
-                              "name": "destination anchor",
-                              "visualise": "true",
-                              "dimension": [
-                                {
-                                  "radius": "0.05"
-                                }
-                              ],
-                              "pose": [
-                                {
-                                  "x": "0.0",
-                                  "y": "0.0",
-                                  "z": "0.1"
-                                }
-                              ],
-                              "visualisation": [
-                                {
-                                  "texture": [
-                                    {
-                                      "name": "Chain/Circuit/Top/Blue"
-                                    }
-                                  ]
-                                }
-                              ],
-                              "physics": [
-                                {
-                                  "mass": [
-                                    {
-                                      "kg": "0.01"
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ],
-                      "force": [
-                        {
-                          "max": "2.0"
-                        }
-                      ],
-                      "velocity": [
-                        {
-                          "max": "0.5"
-                        }
-                      ],
-                      "deflection": [
-                        {
-                          "max": "0.5",
-                          "min": "-0.5"
-                        }
-                      ],
-                      "mapping": [
-                        {
-                          "max": "+1",
-                          "min": "0"
-                        }
-                      ],
-                      "lengthComponent": [
-                        {
-                          "c": "5.0",
-                          "optimalLength": "1.0",
-                          "use": "true",
-                          "w": "1.5"
-                        }
-                      ],
-                      "velocityComponent": [
-                        {
-                          "K": "1.5",
-                          "N": "1.5",
-                          "maxVelocity": "-3.5",
-                          "use": "true"
-                        }
-                      ],
-                      "regular": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "limit": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ],
-                      "orthogonal": [
-                        {
-                          "damping": "1.0",
-                          "restitution": "0.7",
-                          "softness": "1.0"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "sensors": [
-                {
-                  "muscle": [
-                    {
-                      "name": "muscle sensor",
-                      "#children": [
-                        {
-                          "#tag": "object",
-                          "name": "muscle"
-                        },
-                        {
-                          "#tag": "domain",
-                          "max": "5.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "mapping",
-                          "max": "5.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "domain",
-                          "max": "2.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "mapping",
-                          "max": "2.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "domain",
-                          "max": "2.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "mapping",
-                          "max": "2.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "domain",
-                          "max": "2.0",
-                          "min": "-2.0"
-                        },
-                        {
-                          "#tag": "mapping",
-                          "max": "2",
-                          "min": "-2.0"
-                        },
-                        {
-                          "#tag": "domain",
-                          "max": "2.0",
-                          "min": "0"
-                        },
-                        {
-                          "#tag": "mapping",
-                          "max": "2",
-                          "min": "0"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "controller": [
-                {
-                  "frequency": "100",
-                  "module": "TCPIP",
-                  "parameter": [
-                    {
-                      "name": "port",
-                      "value": "9500"
-                    },
-                    {
-                      "name": "debug",
-                      "value": "True"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      }
     }
-  ]
+  }
 }

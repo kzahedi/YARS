@@ -10,17 +10,28 @@ namespace yars
 {
 
 /**
- * Replays the always-arrays JSON produced by XmlToJson (Stage 0) as the
- * identical DataParseElement open/close event stream that
- * YarsXSDSaxHandler would emit for the equivalent XML (see
- * docs/planning/json-migration-notes.md for the full characterization of
- * that event contract). Feeds events into `root->add(...)` exactly as the
- * SAX handler does, so all Data* state machines work unchanged.
+ * Replays a JSON config as the identical DataParseElement open/close
+ * event stream that YarsXSDSaxHandler would emit for the equivalent XML
+ * (see docs/planning/json-migration-notes.md for the full
+ * characterization of that event contract). Feeds events into
+ * `root->add(...)` exactly as the SAX handler does, so all Data* state
+ * machines work unchanged.
  *
- * Root element must be "rosiml" (matching YARS_STRING_ROSIML) — this is
- * reproduced structurally here (a JSON object with a top-level "rosiml"
- * key whose array holds exactly one element), the same shape XmlToJson
- * always produces for any converted document.
+ * Two element shapes are accepted per key, and may be mixed freely:
+ *  - concise: an object value is a single child element
+ *      "lookAt": {"x": 0.0, "y": 0.01, "z": 0.0}
+ *  - legacy always-arrays (XmlToJson's Stage-0 output): an array value
+ *    holds one child element per entry
+ *      "lookAt": [{"x": "0.0", "y": "0.01", "z": "0.0"}]
+ *    Arrays remain the only way to express repeated children.
+ * Scalar values (string, number, bool) are attributes; numbers and bools
+ * are stringified before reaching the atoi/atof/"true"-compare accessors,
+ * so native JSON types and the all-strings legacy form are equivalent.
+ * scripts/json-canonicalize.py rewrites a legacy config to the concise
+ * typed shape.
+ *
+ * Root element must be "rosiml" (matching YARS_STRING_ROSIML) — either a
+ * plain object, or a one-element array in the legacy shape.
  *
  * NOTE: unlike the XML path (YarsXSDSaxParser::read), this reader does not
  * support "-" (stdin) — stdin JSON configs are out of scope for Stage 1;

@@ -59,7 +59,7 @@ void emitElement(const std::string &tag, const ordered_json &object,
     const std::string &key = it.key();
     if (key == "#tag" || key == "#children")
       continue;
-    if (it.value().is_array())
+    if (it.value().is_array() || it.value().is_object())
       continue; // handled as children below, not an attribute
     DataParseAttribute *attribute = new DataParseAttribute();
     attribute->setName(key);
@@ -89,6 +89,12 @@ void emitElement(const std::string &tag, const ordered_json &object,
     {
       for (const auto &child : value)
         emitElement(key, child, root);
+    }
+    else if (value.is_object())
+    {
+      // Concise singleton form: `"lookAt": {"x": ...}` is equivalent to
+      // the always-arrays form `"lookAt": [{"x": ...}]`.
+      emitElement(key, value, root);
     }
   }
 
@@ -123,16 +129,23 @@ bool parseJsonConfig(const std::string &jsonPath,
     std::string text = readWholeFile(jsonPath);
     ordered_json document = ordered_json::parse(text);
 
-    if (!document.contains("rosiml") || !document["rosiml"].is_array() ||
-        document["rosiml"].empty())
+    const bool rootIsObject =
+        document.contains("rosiml") && document["rosiml"].is_object();
+    const bool rootIsArray = document.contains("rosiml") &&
+                             document["rosiml"].is_array() &&
+                             !document["rosiml"].empty();
+    if (!rootIsObject && !rootIsArray)
     {
       errors.push_back(jsonPath +
-                        ": missing top-level 'rosiml' element (root of a "
-                        "JSON config must match XmlToJson's output shape)");
+                        ": missing top-level 'rosiml' element (must be an "
+                        "object, or an array in the legacy always-arrays "
+                        "shape)");
       return false;
     }
 
-    emitElement("rosiml", document["rosiml"][0], root);
+    emitElement("rosiml",
+                rootIsObject ? document["rosiml"] : document["rosiml"][0],
+                root);
     return true;
   }
   catch (const nlohmann::json::exception &e)
