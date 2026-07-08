@@ -317,238 +317,242 @@
           "x": 2.25,
           "z": 0.05
         },
-        "actuators": {
-          "hinge": [
-            {
-              "mode": "active",
-              "name": "wheel left hinge",
-              "type": "velocity",
-              "source_name": "wheel left",
-              "destination_name": "main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "wheel left hinge",
+            "type": "velocity",
+            "source_name": "wheel left",
+            "destination_name": "main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
             },
-            {
-              "mode": "active",
-              "name": "wheel right hinge",
-              "type": "velocity",
-              "source_name": "wheel right",
-              "destination_name": "main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
             }
-          ]
-        },
-        "sensors": {
-          "proximity": [
-            {
-              "name": "left 1",
-              "object_name": "main body",
-              "pose": {
-                "alpha": -90,
-                "beta": 90,
-                "x": 0.0,
-                "y": 0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "wheel right hinge",
+            "type": "velocity",
+            "source_name": "wheel right",
+            "destination_name": "main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
             },
-            {
-              "name": "left 2",
-              "object_name": "main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "mapping": {
+              "max": 1,
+              "min": -1
             },
-            {
-              "name": "left 3",
-              "object_name": "main body",
-              "pose": {
-                "alpha": -15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": 0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "name": "right 3",
-              "object_name": "main body",
-              "pose": {
-                "alpha": 15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": -0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "name": "right 2",
-              "object_name": "main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "name": "right 1",
-              "object_name": "main body",
-              "pose": {
-                "alpha": 90,
-                "beta": 90,
-                "x": 0.0,
-                "y": -0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
             }
-          ],
-          "velocity": [
-            {
-              "name": "left wheel hinge sensor",
-              "object_name": "wheel left hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
+          }
+        ],
+        "sensors": [
+          {
+            "#tag": "proximity",
+            "name": "left 1",
+            "object_name": "main body",
+            "pose": {
+              "alpha": -90,
+              "beta": 90,
+              "x": 0.0,
+              "y": 0.1,
+              "z": 0
             },
-            {
-              "name": "right wheel hinge sensor",
-              "object_name": "wheel right hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
             }
-          ]
-        }
+          },
+          {
+            "#tag": "proximity",
+            "name": "left 2",
+            "object_name": "main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "left 3",
+            "object_name": "main body",
+            "pose": {
+              "alpha": -15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": 0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "right 3",
+            "object_name": "main body",
+            "pose": {
+              "alpha": 15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": -0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "right 2",
+            "object_name": "main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "right 1",
+            "object_name": "main body",
+            "pose": {
+              "alpha": 90,
+              "beta": 90,
+              "x": 0.0,
+              "y": -0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "left wheel hinge sensor",
+            "object_name": "wheel left hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "right wheel hinge sensor",
+            "object_name": "wheel right hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          }
+        ]
       }
     },
     "traces": {

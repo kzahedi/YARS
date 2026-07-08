@@ -6,8 +6,11 @@
 
 #include <nlohmann/json.hpp>
 
+#include <filesystem>
 #include <fstream>
+#include <set>
 #include <sstream>
+#include <vector>
 
 using nlohmann::ordered_json;
 
@@ -193,6 +196,104 @@ std::string readWholeFile(const std::string &path)
   return contents.str();
 }
 
+// Parses JSON text with two extensions over the defaults:
+//  - // and /* */ comments are permitted (ignore_comments)
+//  - duplicate object keys are a hard error instead of nlohmann's silent
+//    last-one-wins, which would otherwise let a hand-edited config drop
+//    an element without any diagnostic (e.g. a second "box" key where an
+//    array was intended)
+ordered_json parseChecked(const std::string &text, const std::string &context)
+{
+  std::vector<std::set<std::string>> openObjects;
+  ordered_json::parser_callback_t callback =
+      [&](int /*depth*/, ordered_json::parse_event_t event,
+          ordered_json &parsed) -> bool
+  {
+    switch (event)
+    {
+    case ordered_json::parse_event_t::object_start:
+      openObjects.emplace_back();
+      break;
+    case ordered_json::parse_event_t::object_end:
+      openObjects.pop_back();
+      break;
+    case ordered_json::parse_event_t::key:
+      if (!openObjects.back().insert(parsed.get<std::string>()).second)
+        throw std::runtime_error(context + ": duplicate key '" +
+                                 parsed.get<std::string>() +
+                                 "' — use an array for repeated elements");
+      break;
+    default:
+      break;
+    }
+    return true;
+  };
+  return ordered_json::parse(text, callback, /*allow_exceptions=*/true,
+                             /*ignore_comments=*/true);
+}
+
+ordered_json loadConfigFile(const std::filesystem::path &path,
+                            std::vector<std::filesystem::path> &includeStack);
+
+// Resolves `{"$include": "other.json", ...overrides}` objects in place.
+// The included file (path relative to the including file's directory) must
+// hold a JSON object; sibling keys shallow-override it — an existing key
+// is replaced at its original position, a new key is appended. Includes
+// nest; cycles are a hard error.
+void resolveIncludes(ordered_json &node, const std::filesystem::path &baseDir,
+                     std::vector<std::filesystem::path> &includeStack)
+{
+  if (node.is_array())
+  {
+    for (auto &entry : node)
+      resolveIncludes(entry, baseDir, includeStack);
+    return;
+  }
+  if (!node.is_object())
+    return;
+
+  if (node.contains("$include"))
+  {
+    if (!node["$include"].is_string())
+      throw std::runtime_error("JSON config: '$include' must be a string "
+                               "path relative to the including file");
+    const std::filesystem::path includePath =
+        (baseDir / node["$include"].get<std::string>()).lexically_normal();
+    ordered_json included = loadConfigFile(includePath, includeStack);
+    if (!included.is_object())
+      throw std::runtime_error("JSON config: included file '" +
+                               includePath.string() +
+                               "' must contain a JSON object");
+    for (auto it = node.begin(); it != node.end(); ++it)
+    {
+      if (it.key() == "$include")
+        continue;
+      included[it.key()] = it.value(); // replace in place or append
+    }
+    node = std::move(included);
+  }
+
+  for (auto &entry : node.items())
+    resolveIncludes(entry.value(), baseDir, includeStack);
+}
+
+ordered_json loadConfigFile(const std::filesystem::path &path,
+                            std::vector<std::filesystem::path> &includeStack)
+{
+  const std::filesystem::path canonical =
+      std::filesystem::weakly_canonical(path);
+  for (const auto &open : includeStack)
+    if (open == canonical)
+      throw std::runtime_error("JSON config: '$include' cycle involving '" +
+                               canonical.string() + "'");
+  includeStack.push_back(canonical);
+  ordered_json document =
+      parseChecked(readWholeFile(path.string()), path.string());
+  resolveIncludes(document, path.parent_path(), includeStack);
+  includeStack.pop_back();
+  return document;
+}
+
 } // namespace
 
 bool parseJsonConfig(const std::string &jsonPath,
@@ -204,8 +305,8 @@ bool parseJsonConfig(const std::string &jsonPath,
     // Stdin ("-") is intentionally unsupported here — see JsonParser.h and
     // YarsConfiguration::__readXmlFiles, where ".json" format detection
     // never routes "-" to this function.
-    std::string text = readWholeFile(jsonPath);
-    ordered_json document = ordered_json::parse(text);
+    std::vector<std::filesystem::path> includeStack;
+    ordered_json document = loadConfigFile(jsonPath, includeStack);
 
     // Canonical root key is "yars"; "rosiml" is the legacy name from the
     // XML era. Either maps to the internal "rosiml" element the Data*

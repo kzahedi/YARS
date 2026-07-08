@@ -40,9 +40,24 @@ namespace yars
  * hex (stripped in DataColourFactory). scripts/json-canonicalize.py
  * rewrites any accepted config to the canonical concise shape.
  *
+ * Further reader behaviour:
+ *  - Line (//) and C-style block comments are permitted anywhere.
+ *  - Duplicate object keys are a hard error (nlohmann would silently
+ *    keep the last one, dropping an element without diagnostic).
+ *  - `{"$include": "other.json", ...}` merges another JSON file (path
+ *    relative to the including file): its object is taken as the base
+ *    and sibling keys shallow-override it (an existing key is replaced
+ *    at its original position, a new key is appended). Includes nest;
+ *    cycles are a hard error. See xml/robots/ for shared robot
+ *    fragments used this way.
+ *
  * Root key is "yars" ("rosiml" accepted for legacy configs); either maps
  * to the internal "rosiml" element (YARS_STRING_ROSIML). The value may
- * be a plain object or a one-element array in the legacy shape.
+ * be a plain object or a one-element array in the legacy shape. A
+ * top-level "$schema" key is ignored by the reader; JSON Schemas for
+ * editor validation live in schema/ (wired up for VS Code via
+ * .vscode/settings.json, checkable headless via
+ * scripts/json-schema-check.py).
  *
  * NOTE: unlike the XML path (YarsXSDSaxParser::read), this reader does not
  * support "-" (stdin) — stdin JSON configs are out of scope for Stage 1;

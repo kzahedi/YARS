@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/kzahedi/YARS/schema/yars-robot-fragment.schema.json",
+  "title": "YARS robot fragment",
+  "description": "A robot definition included from a full config via $include (see xml/robots/).",
+  "$ref": "yars-config.schema.json#/definitions/robot"
+}

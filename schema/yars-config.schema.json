@@ -1,0 +1,4145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/kzahedi/YARS/schema/yars-config.schema.json",
+  "title": "YARS simulation configuration",
+  "description": "Canonical concise YARS JSON config format (see src/yars/configuration/json/JsonParser.h). Generated from the xml/ corpus; hand-maintained from here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "yars"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "yars": {
+      "$ref": "#/definitions/yars"
+    }
+  },
+  "definitions": {
+    "actuator": {
+      "title": "actuator",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "target": {
+          "type": "string"
+        },
+        "appliedForce": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/appliedForce"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/appliedForce"
+              }
+            }
+          ]
+        },
+        "appliedVelocity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/appliedVelocity"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/appliedVelocity"
+              }
+            }
+          ]
+        },
+        "desired": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/desired"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/desired"
+              }
+            }
+          ]
+        },
+        "external": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/external"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/external"
+              }
+            }
+          ]
+        },
+        "internal": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/internal"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/internal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "actuators": {
+      "title": "actuators",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "appliedForce": {
+      "title": "appliedForce",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "appliedVelocity": {
+      "title": "appliedVelocity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "binaryContact": {
+      "title": "binaryContact",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/domain"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/domain"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "blender": {
+      "title": "blender",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "cfg": {
+          "type": "string"
+        },
+        "framerate": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "body": {
+      "title": "body",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "selfCollide": {
+          "type": "boolean"
+        },
+        "box": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/box"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/box"
+              }
+            }
+          ]
+        },
+        "capsule": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/capsule"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/capsule"
+              }
+            }
+          ]
+        },
+        "composite": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/composite"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/composite"
+              }
+            }
+          ]
+        },
+        "ply": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ply"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ply"
+              }
+            }
+          ]
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/sphere"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sphere"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "box": {
+      "title": "box",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "dimension": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/dimension"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dimension"
+              }
+            }
+          ]
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "camera": {
+      "title": "camera",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "lookAt": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/lookAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/lookAt"
+              }
+            }
+          ]
+        },
+        "position": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/position"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/position"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "cameras": {
+      "title": "cameras",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "centre_speed": {
+          "type": "number"
+        },
+        "orbit_speed": {
+          "type": "number"
+        },
+        "orbit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/orbit"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/orbit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "capsule": {
+      "title": "capsule",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "dimension": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/dimension"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dimension"
+              }
+            }
+          ]
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "composite": {
+      "title": "composite",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "geometry": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/geometry"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/geometry"
+              }
+            }
+          ]
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "console": {
+      "title": "console",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "target_name": {
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/target"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/target"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "controller": {
+      "title": "controller",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "module": {
+          "type": "string"
+        },
+        "parameter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/parameter"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/parameter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "coordinates": {
+      "title": "coordinates",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "x": {
+          "type": "boolean"
+        },
+        "y": {
+          "type": "boolean"
+        },
+        "z": {
+          "type": "boolean"
+        }
+      }
+    },
+    "csv": {
+      "title": "csv",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "date": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/target"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/target"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "cylinder": {
+      "title": "cylinder",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "visualise": {
+          "type": "boolean"
+        },
+        "dimension": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/dimension"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dimension"
+              }
+            }
+          ]
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "deflection": {
+      "title": "deflection",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/domain"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/domain"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "desired": {
+      "title": "desired",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "dimension": {
+      "title": "dimension",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      }
+    },
+    "domain": {
+      "title": "domain",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        }
+      }
+    },
+    "dstAnchor": {
+      "title": "dstAnchor",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/sphere"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sphere"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "environment": {
+      "title": "environment",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "box": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/box"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/box"
+              }
+            }
+          ]
+        },
+        "gravitation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/gravitation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gravitation"
+              }
+            }
+          ]
+        },
+        "ground": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ground"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ground"
+              }
+            }
+          ]
+        },
+        "pointLightSource": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pointLightSource"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pointLightSource"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "external": {
+      "title": "external",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "file": {
+      "title": "file",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "date": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "target_name": {
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/target"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/target"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "final": {
+      "title": "final",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "size": {
+          "type": "number"
+        }
+      }
+    },
+    "fixed": {
+      "title": "fixed",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "destination_name": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source_name": {
+          "type": "string"
+        }
+      }
+    },
+    "followables": {
+      "title": "followables",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "followable_name": {
+          "type": "string"
+        }
+      }
+    },
+    "force": {
+      "title": "force",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "scaling": {
+          "type": "number"
+        }
+      }
+    },
+    "fromX": {
+      "title": "fromX",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "fromY": {
+      "title": "fromY",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "fromZ": {
+      "title": "fromZ",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "generic": {
+      "title": "generic",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "destination_name": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "source_name": {
+          "type": "string"
+        },
+        "spring": {
+          "type": "boolean"
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "rotational": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/rotational"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/rotational"
+              }
+            }
+          ]
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/x"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/x"
+              }
+            }
+          ]
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/y"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/y"
+              }
+            }
+          ]
+        },
+        "z": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/z"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/z"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "geometry": {
+      "title": "geometry",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "cylinder": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/cylinder"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/cylinder"
+              }
+            }
+          ]
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/sphere"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sphere"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "gnuplot": {
+      "title": "gnuplot",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "delay": {
+          "type": "number"
+        },
+        "size": {
+          "type": "number"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/target"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/target"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "gravitation": {
+      "title": "gravitation",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      }
+    },
+    "ground": {
+      "title": "ground",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "fixed": {
+          "type": "boolean"
+        },
+        "fog": {
+          "type": "boolean"
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "hinge": {
+      "title": "hinge",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "destination_name": {
+          "type": "string"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "active",
+            "passive"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "source_name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "force": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/force"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/force"
+              }
+            }
+          ]
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/limit"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/limit"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "noise": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/noise"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/noise"
+              }
+            }
+          ]
+        },
+        "orthogonal": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/orthogonal"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/orthogonal"
+              }
+            }
+          ]
+        },
+        "pid": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pid"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pid"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "regular": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/regular"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/regular"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "init": {
+      "title": "init",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "size": {
+          "type": "number"
+        }
+      }
+    },
+    "internal": {
+      "title": "internal",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "joints": {
+      "title": "joints",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "height": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        }
+      }
+    },
+    "ldr": {
+      "title": "ldr",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "colour_value": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "opening": {
+          "type": "number"
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "noise": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/noise"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/noise"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "lengthComponent": {
+      "title": "lengthComponent",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "c": {
+          "type": "number"
+        },
+        "optimalLength": {
+          "type": "number"
+        },
+        "use": {
+          "type": "boolean"
+        },
+        "w": {
+          "type": "number"
+        }
+      }
+    },
+    "limit": {
+      "title": "limit",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "damping": {
+          "type": "number"
+        },
+        "restitution": {
+          "type": "number"
+        },
+        "softness": {
+          "type": "number"
+        }
+      }
+    },
+    "logging": {
+      "title": "logging",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "actuator": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/actuator"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/actuator"
+              }
+            }
+          ]
+        },
+        "blender": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/blender"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/blender"
+              }
+            }
+          ]
+        },
+        "console": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/console"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/console"
+              }
+            }
+          ]
+        },
+        "csv": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/csv"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/csv"
+              }
+            }
+          ]
+        },
+        "file": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/file"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/file"
+              }
+            }
+          ]
+        },
+        "gnuplot": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/gnuplot"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gnuplot"
+              }
+            }
+          ]
+        },
+        "object": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/object"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/object"
+              }
+            }
+          ]
+        },
+        "sensor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/sensor"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sensor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "lookAt": {
+      "title": "lookAt",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      }
+    },
+    "lookAtX": {
+      "title": "lookAtX",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "lookAtY": {
+      "title": "lookAtY",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "lookAtZ": {
+      "title": "lookAtZ",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        }
+      }
+    },
+    "mapping": {
+      "title": "mapping",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        }
+      }
+    },
+    "mesh": {
+      "title": "mesh",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "muscle": {
+      "title": "muscle",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "cfm": {
+          "type": "number"
+        },
+        "destination_name": {
+          "type": "string"
+        },
+        "erp": {
+          "type": "number"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "friction": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source_name": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "visualise": {
+          "type": "boolean"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "dstAnchor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/dstAnchor"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dstAnchor"
+              }
+            }
+          ]
+        },
+        "lengthComponent": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/lengthComponent"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/lengthComponent"
+              }
+            }
+          ]
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/limit"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/limit"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "orthogonal": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/orthogonal"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/orthogonal"
+              }
+            }
+          ]
+        },
+        "regular": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/regular"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/regular"
+              }
+            }
+          ]
+        },
+        "srcAnchor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/srcAnchor"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/srcAnchor"
+              }
+            }
+          ]
+        },
+        "velocityComponent": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/velocityComponent"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/velocityComponent"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        },
+        "#children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "#tag"
+            ]
+          }
+        }
+      }
+    },
+    "noise": {
+      "title": "noise",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        },
+        "parameter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/parameter"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/parameter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "oav": {
+      "title": "oav",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/coordinates"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/coordinates"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "object": {
+      "title": "object",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "target": {
+          "type": "string"
+        },
+        "use": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/use"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/use"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "offset": {
+      "title": "offset",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "local": {
+          "type": "boolean"
+        },
+        "z": {
+          "type": "number"
+        }
+      }
+    },
+    "openingAngles": {
+      "title": "openingAngles",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      }
+    },
+    "orbit": {
+      "title": "orbit",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "fromX": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/fromX"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/fromX"
+              }
+            }
+          ]
+        },
+        "fromY": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/fromY"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/fromY"
+              }
+            }
+          ]
+        },
+        "fromZ": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/fromZ"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/fromZ"
+              }
+            }
+          ]
+        },
+        "lookAtX": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/lookAtX"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/lookAtX"
+              }
+            }
+          ]
+        },
+        "lookAtY": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/lookAtY"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/lookAtY"
+              }
+            }
+          ]
+        },
+        "lookAtZ": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/lookAtZ"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/lookAtZ"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "orientation": {
+      "title": "orientation",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/coordinates"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/coordinates"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "orthogonal": {
+      "title": "orthogonal",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "damping": {
+          "type": "number"
+        },
+        "restitution": {
+          "type": "number"
+        },
+        "softness": {
+          "type": "number"
+        }
+      }
+    },
+    "osd": {
+      "title": "osd",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "robot": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/robot"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/robot"
+              }
+            }
+          ]
+        },
+        "time": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/time"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/time"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ov": {
+      "title": "ov",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/coordinates"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/coordinates"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "parameter": {
+      "title": "parameter",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "boolean",
+            "number",
+            "string"
+          ]
+        }
+      }
+    },
+    "physics": {
+      "title": "physics",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "friction_value": {
+          "type": "number"
+        },
+        "mass_kg": {
+          "type": "number"
+        }
+      }
+    },
+    "pid": {
+      "title": "pid",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "d": {
+          "type": "number"
+        },
+        "i": {
+          "type": "number"
+        },
+        "p": {
+          "type": "number"
+        },
+        "size": {
+          "type": "number"
+        }
+      }
+    },
+    "ply": {
+      "title": "ply",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "convex": {
+          "type": "boolean"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pose_z": {
+          "type": "number"
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "pointLightSource": {
+      "title": "pointLightSource",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "brightness": {
+          "type": "number"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "draw": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      }
+    },
+    "pose": {
+      "title": "pose",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "alpha": {
+          "type": "number"
+        },
+        "beta": {
+          "type": "number"
+        },
+        "gamma": {
+          "type": "number"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      }
+    },
+    "position": {
+      "title": "position",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/coordinates"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/coordinates"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "proximity": {
+      "title": "proximity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "distance_meter": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "noise": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/noise"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/noise"
+              }
+            }
+          ]
+        },
+        "openingAngles": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/openingAngles"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/openingAngles"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "regular": {
+      "title": "regular",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "damping": {
+          "type": "number"
+        },
+        "restitution": {
+          "type": "number"
+        },
+        "softness": {
+          "type": "number"
+        }
+      }
+    },
+    "robot": {
+      "title": "robot",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "font": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pose_z": {
+          "type": "number"
+        },
+        "size": {
+          "type": "number"
+        },
+        "actuators": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "required": [
+                  "#tag"
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/fixed"
+                  },
+                  {
+                    "$ref": "#/definitions/generic"
+                  },
+                  {
+                    "$ref": "#/definitions/hinge"
+                  },
+                  {
+                    "$ref": "#/definitions/muscle"
+                  },
+                  {
+                    "$ref": "#/definitions/slider"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "body": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/body"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/body"
+              }
+            }
+          ]
+        },
+        "controller": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/controller"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/controller"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "sensors": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "required": [
+                  "#tag"
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/binaryContact"
+                  },
+                  {
+                    "$ref": "#/definitions/deflection"
+                  },
+                  {
+                    "$ref": "#/definitions/generic"
+                  },
+                  {
+                    "$ref": "#/definitions/ldr"
+                  },
+                  {
+                    "$ref": "#/definitions/muscle"
+                  },
+                  {
+                    "$ref": "#/definitions/oav"
+                  },
+                  {
+                    "$ref": "#/definitions/orientation"
+                  },
+                  {
+                    "$ref": "#/definitions/ov"
+                  },
+                  {
+                    "$ref": "#/definitions/position"
+                  },
+                  {
+                    "$ref": "#/definitions/proximity"
+                  },
+                  {
+                    "$ref": "#/definitions/velocity"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "robots": {
+      "title": "robots",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "robot": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/robot"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/robot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "rotational": {
+      "title": "rotational",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/x"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/x"
+              }
+            }
+          ]
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/y"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/y"
+              }
+            }
+          ]
+        },
+        "z": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/z"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/z"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "screen": {
+      "title": "screen",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "capture": {
+          "type": "boolean"
+        },
+        "follow": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resolution_name": {
+          "type": "string"
+        },
+        "show": {
+          "type": "boolean"
+        },
+        "camera": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/camera"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/camera"
+              }
+            }
+          ]
+        },
+        "osd": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/osd"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/osd"
+              }
+            }
+          ]
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/size"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/size"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "screens": {
+      "title": "screens",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "sky_name": {
+          "type": "string"
+        },
+        "cameras": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/cameras"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/cameras"
+              }
+            }
+          ]
+        },
+        "followables": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/followables"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/followables"
+              }
+            }
+          ]
+        },
+        "screen": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/screen"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/screen"
+              }
+            }
+          ]
+        },
+        "visualise": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualise"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualise"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sensor": {
+      "title": "sensor",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "target": {
+          "type": "string"
+        },
+        "external": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/external"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/external"
+              }
+            }
+          ]
+        },
+        "internal": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/internal"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/internal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sensors": {
+      "title": "sensors",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        }
+      }
+    },
+    "simulator": {
+      "title": "simulator",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "control_reset": {
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "solver_iterations": {
+          "type": "number"
+        }
+      }
+    },
+    "size": {
+      "title": "size",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "height": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      }
+    },
+    "slider": {
+      "title": "slider",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "destination_name": {
+          "type": "string"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "passive"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "source_name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/limit"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/limit"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "orthogonal": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/orthogonal"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/orthogonal"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "regular": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/regular"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/regular"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sphere": {
+      "title": "sphere",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "dimension_radius": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "visualise": {
+          "type": "boolean"
+        },
+        "physics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/physics"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/physics"
+              }
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/pose"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pose"
+              }
+            }
+          ]
+        },
+        "visualisation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/visualisation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/visualisation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "srcAnchor": {
+      "title": "srcAnchor",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/sphere"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sphere"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "target": {
+      "title": "target",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "time": {
+      "title": "time",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "colour": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "font": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        }
+      }
+    },
+    "trace": {
+      "title": "trace",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "length": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "offset_x": {
+          "type": "number"
+        },
+        "offset_z": {
+          "type": "number"
+        },
+        "particles": {
+          "type": "boolean"
+        },
+        "project": {
+          "enum": [
+            "xy",
+            "xz",
+            "yz"
+          ]
+        },
+        "target": {
+          "type": "string"
+        },
+        "time": {
+          "type": "number"
+        },
+        "final": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/final"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/final"
+              }
+            }
+          ]
+        },
+        "init": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/init"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/init"
+              }
+            }
+          ]
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/offset"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/offset"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "traces": {
+      "title": "traces",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "trace": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/trace"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/trace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "use": {
+      "title": "use",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "velocity": {
+      "title": "velocity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "object_name": {
+          "type": "string"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/domain"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/domain"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        },
+        "noise": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/noise"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/noise"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "velocityComponent": {
+      "title": "velocityComponent",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "K": {
+          "type": "number"
+        },
+        "N": {
+          "type": "number"
+        },
+        "maxVelocity": {
+          "type": "number"
+        },
+        "use": {
+          "type": "boolean"
+        }
+      }
+    },
+    "visualisation": {
+      "title": "visualisation",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "body_name": {
+          "type": "string"
+        },
+        "bottom_name": {
+          "type": "string"
+        },
+        "fifth_name": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "fourth_name": {
+          "type": "string"
+        },
+        "second_name": {
+          "type": "string"
+        },
+        "sixth_name": {
+          "type": "string"
+        },
+        "texture_name": {
+          "type": "string"
+        },
+        "third_name": {
+          "type": "string"
+        },
+        "top_name": {
+          "type": "string"
+        },
+        "mesh": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mesh"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mesh"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "visualise": {
+      "title": "visualise",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "joints": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/joints"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/joints"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "x": {
+      "title": "x",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "active"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "force": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/force"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/force"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "y": {
+      "title": "y",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "active"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "force": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/force"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/force"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "yars": {
+      "title": "yars",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Config schema version (XmlChangeLog); the binary rejects configs newer than it supports or older than the last crucial change."
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/environment"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/environment"
+              }
+            }
+          ]
+        },
+        "logging": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/logging"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/logging"
+              }
+            }
+          ]
+        },
+        "robots": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/robots"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/robots"
+              }
+            }
+          ]
+        },
+        "screens": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/screens"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/screens"
+              }
+            }
+          ]
+        },
+        "simulator": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/simulator"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/simulator"
+              }
+            }
+          ]
+        },
+        "traces": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/traces"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/traces"
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "version"
+      ]
+    },
+    "z": {
+      "title": "z",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$include": {
+          "type": "string",
+          "description": "Merge another JSON file (path relative to this file); sibling keys override."
+        },
+        "#tag": {
+          "type": "string"
+        },
+        "force_max": {
+          "type": "number"
+        },
+        "mode": {
+          "enum": [
+            "active"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "velocity_max": {
+          "type": "number"
+        },
+        "deflection": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/deflection"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/deflection"
+              }
+            }
+          ]
+        },
+        "force": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/force"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/force"
+              }
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/mapping"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

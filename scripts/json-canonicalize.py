@@ -25,6 +25,15 @@ as the concise canonical form this script rewrites configs into:
   "elem_attr" key:
     "object": {"name": "main body"}  ->  "object_name": "main body"
 - colour values gain the CSS-style "#" prefix: "#RRGGBB[AA]"
+- "sensors"/"actuators" containers written as tag-grouped objects
+  ("sensors": {"deflection": [...], "ldr": [...]}) become flat tagged
+  arrays, making sensor order (= controller channel order) explicit
+
+Handled but left untouched: "$include" references (never resolved or
+collapsed), "$schema", and "#children" wrappers on attribute-bearing
+elements. Comments (// and /* */, accepted by the parser) are stripped
+on rewrite — don't canonicalize hand-commented files you want to keep
+commented.
 
 Usage: scripts/json-canonicalize.py <file.json> [more.json ...]
        (rewrites each file in place; exits non-zero on parse errors)
@@ -33,6 +42,10 @@ Usage: scripts/json-canonicalize.py <file.json> [more.json ...]
 import json
 import re
 import sys
+
+# Containers whose object form groups children by tag; canonicalized to a
+# flat ordered array of {"#tag": ...} entries.
+TAGGED_CONTAINERS = {"sensors", "actuators"}
 
 # Attribute keys whose values are text/identifiers even when they happen
 # to look numeric or boolean (e.g. colour "000000", a robot named "true").
@@ -57,8 +70,41 @@ STRING_KEYS = {
 HEX_COLOUR = re.compile(r"[0-9a-fA-F]{6}([0-9a-fA-F]{2})?\Z")
 
 
+def strip_comments(text):
+    """Remove // and /* */ comments (string-aware), as the parser does."""
+    out = []
+    i, n = 0, len(text)
+    in_string = False
+    while i < n:
+        c = text[i]
+        if in_string:
+            out.append(c)
+            if c == "\\" and i + 1 < n:
+                out.append(text[i + 1])
+                i += 1
+            elif c == '"':
+                in_string = False
+        elif c == '"':
+            in_string = True
+            out.append(c)
+        elif c == "/" and i + 1 < n and text[i + 1] == "/":
+            while i < n and text[i] != "\n":
+                i += 1
+            continue
+        elif c == "/" and i + 1 < n and text[i + 1] == "*":
+            i += 2
+            while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                i += 1
+            i += 2
+            continue
+        else:
+            out.append(c)
+        i += 1
+    return "".join(out)
+
+
 def typed(key, value):
-    if not isinstance(value, str):
+    if not isinstance(value, str) or key.startswith("$"):
         return value
     components = set(key.split("_")) | {key}
     if "colour" in components and HEX_COLOUR.match(value):
@@ -84,6 +130,16 @@ def is_scalar(value):
     return not isinstance(value, (dict, list))
 
 
+def tagged_array(container):
+    """Flatten {"deflection": [...], "ldr": {...}} to [{"#tag": ...}, ...]."""
+    entries = []
+    for tag, value in container.items():
+        group = value if isinstance(value, list) else [value]
+        for child in group:
+            entries.append({"#tag": tag, **child})
+    return entries
+
+
 def canonicalize(node):
     if isinstance(node, list):
         return [canonicalize(item) for item in node]
@@ -96,9 +152,28 @@ def canonicalize(node):
             and len(value) == 1
             and isinstance(value[0], dict)
             and key != "#children"
+            and "#tag" not in value[0]
         ):
             value = value[0]
         if isinstance(value, dict):
+            if "$include" in value:
+                # Never resolve or restructure an include reference; its
+                # sibling keys are shallow overrides — canonicalize them
+                # individually (which may rename them, e.g. elem_attr
+                # collapse) but keep the reference dict intact.
+                resolved = {}
+                for k, v in value.items():
+                    if k == "$include":
+                        resolved[k] = v
+                    else:
+                        resolved.update(canonicalize({k: v}))
+                out[key] = resolved
+                continue
+            if key in TAGGED_CONTAINERS and all(
+                isinstance(v, (dict, list)) for v in value.values()
+            ):
+                out[key] = canonicalize(tagged_array(value))
+                continue
             if set(value.keys()) == {"#children"}:
                 # Attribute-free ordered container: hoist the entries.
                 out[key] = canonicalize(value["#children"])
@@ -111,6 +186,8 @@ def canonicalize(node):
                     and not key.startswith("#")
                     and "_" not in attribute
                     and not attribute.startswith("#")
+                    and not key.startswith("$")
+                    and not attribute.startswith("$")
                 ):
                     # Single-attribute child element: "object": {"name":
                     # ...} becomes "object_name": ... The combined key
@@ -133,7 +210,7 @@ def main(paths):
     for path in paths:
         try:
             with open(path, "r", encoding="utf-8") as handle:
-                document = json.load(handle)
+                document = json.loads(strip_comments(handle.read()))
         except (OSError, json.JSONDecodeError) as error:
             print(f"FAIL {path}: {error}", file=sys.stderr)
             status = 1

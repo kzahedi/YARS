@@ -108,8 +108,9 @@
             }
           ]
         },
-        "actuators": {
-          "generic": {
+        "actuators": [
+          {
+            "#tag": "generic",
             "name": "generic force joint",
             "spring": false,
             "source_name": "moving part",
@@ -164,7 +165,7 @@
               }
             }
           }
-        },
+        ],
         "controller": {
           "frequency": 10,
           "module": "Sine"

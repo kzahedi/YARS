@@ -127,8 +127,9 @@
             }
           ]
         },
-        "actuators": {
-          "muscle": {
+        "actuators": [
+          {
+            "#tag": "muscle",
             "cfm": 0.1,
             "erp": 1.0,
             "friction": 1e-05,
@@ -215,7 +216,7 @@
               "body_name": "YARS/Blue"
             }
           }
-        },
+        ],
         "controller": {
           "frequency": 500,
           "module": "SquareWave",

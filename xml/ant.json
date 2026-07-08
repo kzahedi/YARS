@@ -358,466 +358,476 @@
             }
           ]
         },
-        "actuators": {
-          "hinge": [
-            {
-              "mode": "passive",
-              "name": "left front hip",
-              "type": "angular",
-              "source_name": "left front femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": 0.15,
-                "y": -0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left front hip",
+            "type": "angular",
+            "source_name": "left front femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": 0.15,
+              "y": -0.5,
+              "z": 0.55
             },
-            {
-              "mode": "passive",
-              "name": "right front hip",
-              "type": "angular",
-              "source_name": "right front femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": -0.15,
-                "y": -0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
             },
-            {
-              "mode": "passive",
-              "name": "left centre hip",
-              "type": "angular",
-              "source_name": "left centre femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": 0.15,
-                "y": 0.0,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+            "mapping": {
+              "max": 1,
+              "min": -1
             },
-            {
-              "mode": "passive",
-              "name": "right centre hip",
-              "type": "angular",
-              "source_name": "right centre femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": -0.15,
-                "y": 0.0,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
             },
-            {
-              "mode": "passive",
-              "name": "left back hip",
-              "type": "angular",
-              "source_name": "left back femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": 0.15,
-                "y": 0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "mode": "passive",
-              "name": "right back hip",
-              "type": "angular",
-              "source_name": "right back femur",
-              "destination_name": "body",
-              "force_max": 0.5,
-              "velocity_max": 0.75,
-              "pose": {
-                "x": -0.15,
-                "y": 0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 25.0,
-                "min": -25.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "left front knee",
-              "type": "angular",
-              "source_name": "left front tibia",
-              "destination_name": "left front femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": 0.362,
-                "y": -0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "right front knee",
-              "type": "angular",
-              "source_name": "right front tibia",
-              "destination_name": "right front femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": -0.362,
-                "y": -0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "left centre knee",
-              "type": "angular",
-              "source_name": "left centre tibia",
-              "destination_name": "left centre femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": 0.362,
-                "y": 0.0,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "right centre knee",
-              "type": "angular",
-              "source_name": "right centre tibia",
-              "destination_name": "right centre femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": -0.362,
-                "y": 0.0,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "left back knee",
-              "type": "angular",
-              "source_name": "left back tibia",
-              "destination_name": "left back femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": 0.362,
-                "y": 0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
-            },
-            {
-              "mode": "passive",
-              "name": "right back knee",
-              "type": "angular",
-              "source_name": "right back tibia",
-              "destination_name": "right back femur",
-              "force_max": 3.5,
-              "velocity_max": 0.5,
-              "pose": {
-                "x": -0.362,
-                "y": 0.5,
-                "z": 0.55
-              },
-              "deflection": {
-                "max": 15.0,
-                "min": -15.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 4.0,
-                "restitution": 0.0,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.0,
-                "i": 0.0,
-                "p": 0.0,
-                "size": 1
-              }
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
             }
-          ]
-        }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right front hip",
+            "type": "angular",
+            "source_name": "right front femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": -0.15,
+              "y": -0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left centre hip",
+            "type": "angular",
+            "source_name": "left centre femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": 0.15,
+              "y": 0.0,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right centre hip",
+            "type": "angular",
+            "source_name": "right centre femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": -0.15,
+              "y": 0.0,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left back hip",
+            "type": "angular",
+            "source_name": "left back femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": 0.15,
+              "y": 0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right back hip",
+            "type": "angular",
+            "source_name": "right back femur",
+            "destination_name": "body",
+            "force_max": 0.5,
+            "velocity_max": 0.75,
+            "pose": {
+              "x": -0.15,
+              "y": 0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 25.0,
+              "min": -25.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left front knee",
+            "type": "angular",
+            "source_name": "left front tibia",
+            "destination_name": "left front femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": 0.362,
+              "y": -0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right front knee",
+            "type": "angular",
+            "source_name": "right front tibia",
+            "destination_name": "right front femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": -0.362,
+              "y": -0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left centre knee",
+            "type": "angular",
+            "source_name": "left centre tibia",
+            "destination_name": "left centre femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": 0.362,
+              "y": 0.0,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right centre knee",
+            "type": "angular",
+            "source_name": "right centre tibia",
+            "destination_name": "right centre femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": -0.362,
+              "y": 0.0,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "left back knee",
+            "type": "angular",
+            "source_name": "left back tibia",
+            "destination_name": "left back femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": 0.362,
+              "y": 0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "passive",
+            "name": "right back knee",
+            "type": "angular",
+            "source_name": "right back tibia",
+            "destination_name": "right back femur",
+            "force_max": 3.5,
+            "velocity_max": 0.5,
+            "pose": {
+              "x": -0.362,
+              "y": 0.5,
+              "z": 0.55
+            },
+            "deflection": {
+              "max": 15.0,
+              "min": -15.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 4.0,
+              "restitution": 0.0,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.0,
+              "i": 0.0,
+              "p": 0.0,
+              "size": 1
+            }
+          }
+        ]
       }
     }
   }

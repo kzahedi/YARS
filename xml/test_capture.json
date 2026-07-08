@@ -134,8 +134,9 @@
             }
           ]
         },
-        "actuators": {
-          "slider": {
+        "actuators": [
+          {
+            "#tag": "slider",
             "mode": "passive",
             "name": "slider",
             "type": "positional",
@@ -173,8 +174,8 @@
               "softness": 1.0
             }
           }
-        },
-        "sensors": {}
+        ],
+        "sensors": []
       }
     }
   }

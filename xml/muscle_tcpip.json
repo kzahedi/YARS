@@ -133,8 +133,9 @@
             }
           ]
         },
-        "actuators": {
-          "muscle": {
+        "actuators": [
+          {
+            "#tag": "muscle",
             "cfm": 0.1,
             "erp": 1.0,
             "friction": 1e-05,
@@ -216,9 +217,10 @@
               "softness": 1.0
             }
           }
-        },
-        "sensors": {
-          "muscle": {
+        ],
+        "sensors": [
+          {
+            "#tag": "muscle",
             "name": "muscle sensor",
             "#children": [
               {
@@ -277,7 +279,7 @@
               }
             ]
           }
-        },
+        ],
         "controller": {
           "frequency": 100,
           "module": "TCPIP",

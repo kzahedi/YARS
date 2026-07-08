@@ -89,6 +89,23 @@ parser — has been deleted:
   accepted and byte-identical in simulation output. The committed corpus
   under `xml/` is canonical; `scripts/json-canonicalize.py` rewrites any
   accepted config to the canonical shape (idempotent).
+- **Reader extensions**: `//` and `/* */` comments are allowed; duplicate
+  object keys are a hard error (instead of nlohmann's silent last-wins);
+  `{"$include": "file.json", ...overrides}` shallow-merges another JSON
+  file (relative path, nesting allowed, cycles rejected) — shared robot
+  fragments live in `xml/robots/` (hexapod-12dof, hexapod-24dof).
+- **Version check**: the `"version"` attribute on the root is the config
+  schema version (`XmlChangeLog`, `src/yars/defines/version.h`): configs
+  newer than the binary supports, or older than the last crucial change,
+  are hard errors. A missing version is (silently) accepted at runtime
+  but flagged by the JSON Schema.
+- **Editor validation**: `schema/yars-config.schema.json` (draft-07;
+  `schema/yars-robot-fragment.schema.json` for `xml/robots/` fragments)
+  gives live validation/completion in VS Code via `.vscode/settings.json`
+  (configs are associated with `jsonc` so comments are fine). Headless:
+  `python3 scripts/json-schema-check.py` (needs `pip install jsonschema`).
+  The schema was generated from the corpus and is hand-maintained — new
+  config elements/attributes must be added there.
 - **Factory Pattern**: 80+ factory classes for object creation (unchanged).
 - **Attribute parsing (binding-table pilot, JSON Stage 4)**: the
   attribute-parsing half of `Data*::add(DataParseElement*)` — a
