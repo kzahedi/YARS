@@ -85,8 +85,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "$include": "robots/hexapod-12dof.json",
         "controller": {
           "frequency": 10,
@@ -103,7 +103,7 @@
           ]
         }
       }
-    },
+    ],
     "traces": {
       "trace": [
         {

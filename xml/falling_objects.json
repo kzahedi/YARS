@@ -95,8 +95,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "name": "Muscle",
         "body": {
           "sphere": [
@@ -176,6 +176,6 @@
         ],
         "sensors": []
       }
-    }
+    ]
   }
 }

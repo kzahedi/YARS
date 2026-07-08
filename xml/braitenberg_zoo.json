@@ -109,12 +109,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Wall1",
-            "third_name": "YARS/Wall1",
-            "fourth_name": "YARS/Wall1",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall2"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Wall1",
+            "bottom_name": "YARS/Wall1",
+            "right_name": "YARS/Wall1",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall2"
           },
           "physics": {
             "mass_kg": 0
@@ -136,12 +136,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Green",
-            "third_name": "YARS/Blue",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Green",
+            "bottom_name": "YARS/Blue",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -163,12 +163,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Green",
-            "third_name": "YARS/Wall1",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Green",
+            "bottom_name": "YARS/Wall1",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -190,12 +190,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Wall2",
-            "third_name": "YARS/Wall2",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Wall2",
+            "bottom_name": "YARS/Wall2",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -255,1708 +255,1706 @@
         }
       ]
     },
-    "robots": {
-      "robot": [
-        {
-          "name": "Braitenberg 2a",
-          "body": {
-            "composite": {
-              "name": "composite",
-              "geometry": {
-                "cylinder": {
-                  "name": "2a main body",
+    "robots": [
+      {
+        "name": "Braitenberg 2a",
+        "body": {
+          "composite": {
+            "name": "composite",
+            "geometry": {
+              "cylinder": {
+                "name": "2a main body",
+                "visualise": true,
+                "dimension": {
+                  "height": 0.09,
+                  "radius": 0.1
+                },
+                "pose": {
+                  "alpha": 0,
+                  "beta": 0,
+                  "gamma": 0,
+                  "x": 0,
+                  "y": 0,
+                  "z": 0.01
+                },
+                "visualisation": {
+                  "top_name": "Chain/Circuit/Top/Purple",
+                  "bottom_name": "Chain/Circuit/Body/Purple",
+                  "body_name": "Chain/Circuit/Body/Purple"
+                },
+                "physics": {
+                  "mass_kg": 1.0
+                }
+              },
+              "sphere": [
+                {
+                  "name": "2a wheel front",
                   "visualise": true,
-                  "dimension": {
-                    "height": 0.09,
-                    "radius": 0.1
-                  },
+                  "dimension_radius": 0.01,
                   "pose": {
                     "alpha": 0,
                     "beta": 0,
                     "gamma": 0,
-                    "x": 0,
+                    "x": 0.08,
                     "y": 0,
-                    "z": 0.01
+                    "z": -0.0499999
                   },
                   "visualisation": {
-                    "top_name": "Chain/Circuit/Top/Purple",
-                    "bottom_name": "Chain/Circuit/Body/Purple",
-                    "body_name": "Chain/Circuit/Body/Purple"
+                    "texture_name": "Chain/Wheel"
                   },
                   "physics": {
-                    "mass_kg": 1.0
+                    "mass_kg": 0.1
                   }
                 },
-                "sphere": [
-                  {
-                    "name": "2a wheel front",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": 0.08,
-                      "y": 0,
-                      "z": -0.0499999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
+                {
+                  "name": "2a wheel back",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": -0.08,
+                    "y": 0,
+                    "z": -0.049999
                   },
-                  {
-                    "name": "2a wheel back",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": -0.08,
-                      "y": 0,
-                      "z": -0.049999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
                   }
-                ]
+                }
+              ]
+            },
+            "physics": {
+              "friction_value": 0
+            }
+          },
+          "sphere": [
+            {
+              "name": "2a wheel left",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": 0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
               },
               "physics": {
-                "friction_value": 0
-              }
-            },
-            "sphere": [
-              {
-                "name": "2a wheel left",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": 0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              },
-              {
-                "name": "2a wheel right",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": -0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              }
-            ]
-          },
-          "pose": {
-            "gamma": 180.0,
-            "x": -2.25,
-            "z": 0.05
-          },
-          "actuators": [
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "2a wheel left hinge",
-              "type": "velocity",
-              "source_name": "2a wheel left",
-              "destination_name": "2a main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
+                "mass_kg": 0.1,
+                "friction_value": 1000
               }
             },
             {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "2a wheel right hinge",
-              "type": "velocity",
-              "source_name": "2a wheel right",
-              "destination_name": "2a main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
+              "name": "2a wheel right",
+              "visualise": true,
+              "dimension_radius": 0.03,
               "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": 0,
+                "y": -0.085,
+                "z": -0.03
               },
-              "mapping": {
-                "max": 1,
-                "min": -1
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
               },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
               }
             }
-          ],
-          "sensors": [
-            {
-              "#tag": "proximity",
-              "name": "2a left 1",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": -90,
-                "beta": 90,
-                "x": 0.0,
-                "y": 0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+          ]
+        },
+        "pose": {
+          "gamma": 180.0,
+          "x": -2.25,
+          "z": 0.05
+        },
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "2a wheel left hinge",
+            "type": "velocity",
+            "source_name": "2a wheel left",
+            "destination_name": "2a main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
             },
-            {
-              "#tag": "proximity",
-              "name": "2a left 2",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "mapping": {
+              "max": 1,
+              "min": -1
             },
-            {
-              "#tag": "proximity",
-              "name": "2a left 3",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": -15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": 0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "#tag": "proximity",
-              "name": "2a right 3",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": 15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": -0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "#tag": "proximity",
-              "name": "2a right 2",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
             },
-            {
-              "#tag": "proximity",
-              "name": "2a right 1",
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": 90,
-                "beta": 90,
-                "x": 0.0,
-                "y": -0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "2a ldr left 2",
-              "opening": 70,
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "2a sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "2a mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "2a ldr right 2",
-              "opening": 70,
-              "object_name": "2a main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "2a sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "2a mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "2a left wheel hinge sensor",
-              "object_name": "2a wheel left hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "2a right wheel hinge sensor",
-              "object_name": "2a wheel right hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
             }
-          ],
-          "controller": {
-            "frequency": 10,
-            "module": "Braitenberg2a",
-            "parameter": {
-              "name": "osd",
-              "value": false
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "2a wheel right hinge",
+            "type": "velocity",
+            "source_name": "2a wheel right",
+            "destination_name": "2a main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
             }
           }
-        },
-        {
-          "name": "Braitenberg 2b",
-          "body": {
-            "composite": {
-              "name": "composite",
-              "geometry": {
-                "cylinder": {
-                  "name": "2b main body",
-                  "visualise": true,
-                  "dimension": {
-                    "height": 0.09,
-                    "radius": 0.1
-                  },
-                  "pose": {
-                    "alpha": 0,
-                    "beta": 0,
-                    "gamma": 0,
-                    "x": 0,
-                    "y": 0,
-                    "z": 0.01
-                  },
-                  "visualisation": {
-                    "top_name": "Chain/Circuit/Top/Green",
-                    "bottom_name": "Chain/Circuit/Body/Green",
-                    "body_name": "Chain/Circuit/Body/Green"
-                  },
-                  "physics": {
-                    "mass_kg": 1.0
-                  }
-                },
-                "sphere": [
-                  {
-                    "name": "2b wheel front",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": 0.08,
-                      "y": 0,
-                      "z": -0.0499999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  },
-                  {
-                    "name": "2b wheel back",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": -0.08,
-                      "y": 0,
-                      "z": -0.049999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  }
-                ]
-              },
-              "physics": {
-                "friction_value": 0
-              }
+        ],
+        "sensors": [
+          {
+            "#tag": "proximity",
+            "name": "2a left 1",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": -90,
+              "beta": 90,
+              "x": 0.0,
+              "y": 0.1,
+              "z": 0
             },
-            "sphere": [
-              {
-                "name": "2b wheel left",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": 0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              },
-              {
-                "name": "2b wheel right",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": -0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              }
-            ]
-          },
-          "pose": {
-            "gamma": 0.0,
-            "x": 0.0,
-            "y": 2.0,
-            "z": 0.05
-          },
-          "actuators": [
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "2b wheel left hinge",
-              "type": "velocity",
-              "source_name": "2b wheel left",
-              "destination_name": "2b main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
             },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "2b wheel right hinge",
-              "type": "velocity",
-              "source_name": "2b wheel right",
-              "destination_name": "2b main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
             }
-          ],
-          "sensors": [
-            {
-              "#tag": "proximity",
-              "name": "2b left 1",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": -90,
-                "beta": 90,
-                "x": 0.0,
-                "y": 0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2a left 2",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0
             },
-            {
-              "#tag": "proximity",
-              "name": "2b left 2",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
             },
-            {
-              "#tag": "proximity",
-              "name": "2b left 3",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": -15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": 0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "2b right 3",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": 15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": -0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "2b right 2",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "2b right 1",
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": 90,
-                "beta": 90,
-                "x": 0.0,
-                "y": -0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "2b ldr left 2",
-              "opening": 70,
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "2b sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "2b mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "2b ldr right 2",
-              "opening": 70,
-              "object_name": "2b main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "2b sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "2b mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "2b left wheel hinge sensor",
-              "object_name": "2b wheel left hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "2b right wheel hinge sensor",
-              "object_name": "2b wheel right hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
             }
-          ],
-          "controller": {
-            "frequency": 10,
-            "module": "Braitenberg2b",
-            "parameter": {
-              "name": "osd",
-              "value": false
+          },
+          {
+            "#tag": "proximity",
+            "name": "2a left 3",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": -15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": 0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2a right 3",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": 15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": -0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2a right 2",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2a right 1",
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": 90,
+              "beta": 90,
+              "x": 0.0,
+              "y": -0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "2a ldr left 2",
+            "opening": 70,
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "2a sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "2a mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "2a ldr right 2",
+            "opening": 70,
+            "object_name": "2a main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "2a sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "2a mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "2a left wheel hinge sensor",
+            "object_name": "2a wheel left hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "2a right wheel hinge sensor",
+            "object_name": "2a wheel right hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
             }
           }
-        },
-        {
-          "name": "Braitenberg 3a",
-          "body": {
-            "composite": {
-              "name": "composite",
-              "geometry": {
-                "cylinder": {
-                  "name": "3a main body",
-                  "visualise": true,
-                  "dimension": {
-                    "height": 0.09,
-                    "radius": 0.1
-                  },
-                  "pose": {
-                    "alpha": 0,
-                    "beta": 0,
-                    "gamma": 0,
-                    "x": 0,
-                    "y": 0,
-                    "z": 0.01
-                  },
-                  "visualisation": {
-                    "top_name": "Chain/Circuit/Top/Blue",
-                    "bottom_name": "Chain/Circuit/Body/Blue",
-                    "body_name": "Chain/Circuit/Body/Blue"
-                  },
-                  "physics": {
-                    "mass_kg": 1.0
-                  }
-                },
-                "sphere": [
-                  {
-                    "name": "3a wheel front",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": 0.08,
-                      "y": 0,
-                      "z": -0.0499999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  },
-                  {
-                    "name": "3a wheel back",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": -0.08,
-                      "y": 0,
-                      "z": -0.049999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  }
-                ]
-              },
-              "physics": {
-                "friction_value": 0
-              }
-            },
-            "sphere": [
-              {
-                "name": "3a wheel left",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": 0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              },
-              {
-                "name": "3a wheel right",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": -0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              }
-            ]
-          },
-          "pose": {
-            "gamma": 0.0,
-            "x": 0.0,
-            "y": -2.0,
-            "z": 0.05
-          },
-          "actuators": [
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "3a wheel left hinge",
-              "type": "velocity",
-              "source_name": "3a wheel left",
-              "destination_name": "3a main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "3a wheel right hinge",
-              "type": "velocity",
-              "source_name": "3a wheel right",
-              "destination_name": "3a main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
-            }
-          ],
-          "sensors": [
-            {
-              "#tag": "proximity",
-              "name": "3a left 1",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": -90,
-                "beta": 90,
-                "x": 0.0,
-                "y": 0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3a left 2",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3a left 3",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": -15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": 0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3a right 3",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": 15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": -0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3a right 2",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3a right 1",
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": 90,
-                "beta": 90,
-                "x": 0.0,
-                "y": -0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "3a ldr left 2",
-              "opening": 70,
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "3a sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "3a mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "3a ldr right 2",
-              "opening": 70,
-              "object_name": "3a main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "3a sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "3a mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "3a left wheel hinge sensor",
-              "object_name": "3a wheel left hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "3a right wheel hinge sensor",
-              "object_name": "3a wheel right hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            }
-          ],
-          "controller": {
-            "frequency": 10,
-            "module": "Braitenberg3a",
-            "parameter": {
-              "name": "osd",
-              "value": false
-            }
-          }
-        },
-        {
-          "name": "Braitenberg 3b",
-          "body": {
-            "composite": {
-              "name": "composite",
-              "geometry": {
-                "cylinder": {
-                  "name": "3b main body",
-                  "visualise": true,
-                  "dimension": {
-                    "height": 0.09,
-                    "radius": 0.1
-                  },
-                  "pose": {
-                    "alpha": 0,
-                    "beta": 0,
-                    "gamma": 0,
-                    "x": 0,
-                    "y": 0,
-                    "z": 0.01
-                  },
-                  "visualisation": {
-                    "top_name": "Chain/Circuit/Top/Yellow",
-                    "bottom_name": "Chain/Circuit/Body/Yellow",
-                    "body_name": "Chain/Circuit/Body/Yellow"
-                  },
-                  "physics": {
-                    "mass_kg": 1.0
-                  }
-                },
-                "sphere": [
-                  {
-                    "name": "3b wheel front",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": 0.08,
-                      "y": 0,
-                      "z": -0.0499999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  },
-                  {
-                    "name": "3b wheel back",
-                    "visualise": true,
-                    "dimension_radius": 0.01,
-                    "pose": {
-                      "alpha": 0,
-                      "beta": 0,
-                      "gamma": 0,
-                      "x": -0.08,
-                      "y": 0,
-                      "z": -0.049999
-                    },
-                    "visualisation": {
-                      "texture_name": "Chain/Wheel"
-                    },
-                    "physics": {
-                      "mass_kg": 0.1
-                    }
-                  }
-                ]
-              },
-              "physics": {
-                "friction_value": 0
-              }
-            },
-            "sphere": [
-              {
-                "name": "3b wheel left",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": 0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              },
-              {
-                "name": "3b wheel right",
-                "visualise": true,
-                "dimension_radius": 0.03,
-                "pose": {
-                  "x": 0,
-                  "y": -0.085,
-                  "z": -0.03
-                },
-                "visualisation": {
-                  "texture_name": "Chain/Wheel"
-                },
-                "physics": {
-                  "mass_kg": 0.1,
-                  "friction_value": 1000
-                }
-              }
-            ]
-          },
-          "pose": {
-            "gamma": 0.0,
-            "x": 2.25,
-            "z": 0.05
-          },
-          "actuators": [
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "3b wheel left hinge",
-              "type": "velocity",
-              "source_name": "3b wheel left",
-              "destination_name": "3b main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
-            },
-            {
-              "#tag": "hinge",
-              "mode": "active",
-              "name": "3b wheel right hinge",
-              "type": "velocity",
-              "source_name": "3b wheel right",
-              "destination_name": "3b main body",
-              "force_max": 10.0,
-              "velocity_max": 10.0,
-              "pose": {
-                "gamma": 90.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "regular": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "limit": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "orthogonal": {
-                "damping": 1.0,
-                "restitution": 0.7,
-                "softness": 1.0
-              },
-              "pid": {
-                "d": 0.001,
-                "i": 0.001,
-                "p": 0.1
-              }
-            }
-          ],
-          "sensors": [
-            {
-              "#tag": "proximity",
-              "name": "3b left 1",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": -90,
-                "beta": 90,
-                "x": 0.0,
-                "y": 0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3b left 2",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3b left 3",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": -15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": 0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3b right 3",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": 15,
-                "beta": 90,
-                "x": 0.0965926,
-                "y": -0.0258819,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3b right 2",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "proximity",
-              "name": "3b right 1",
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": 90,
-                "beta": 90,
-                "x": 0.0,
-                "y": -0.1,
-                "z": 0
-              },
-              "distance_meter": 0.5,
-              "mapping": {
-                "max": -1,
-                "min": 1
-              },
-              "openingAngles": {
-                "x": 25,
-                "y": 2.5
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "3b ldr left 2",
-              "opening": 70,
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": -45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": 0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "3b sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "3b mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "ldr",
-              "name": "3b ldr right 2",
-              "opening": 70,
-              "object_name": "3b main body",
-              "pose": {
-                "alpha": 45,
-                "beta": 90,
-                "x": 0.0707107,
-                "y": -0.0707107,
-                "z": 0.045
-              },
-              "colour_value": "#FF0000",
-              "mapping": {
-                "max": 1,
-                "min": -1
-              },
-              "noise": {
-                "module": "white",
-                "parameter": [
-                  {
-                    "name": "3b sigma",
-                    "value": 0.4
-                  },
-                  {
-                    "name": "3b mean",
-                    "value": 0.0
-                  }
-                ]
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "3b left wheel hinge sensor",
-              "object_name": "3b wheel left hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            },
-            {
-              "#tag": "velocity",
-              "name": "3b right wheel hinge sensor",
-              "object_name": "3b wheel right hinge",
-              "domain": {
-                "max": 10,
-                "min": -10
-              },
-              "mapping": {
-                "max": 1,
-                "min": -1
-              }
-            }
-          ],
-          "controller": {
-            "frequency": 10,
-            "module": "Braitenberg3b",
-            "parameter": {
-              "name": "osd",
-              "value": false
-            }
+        ],
+        "controller": {
+          "frequency": 10,
+          "module": "Braitenberg2a",
+          "parameter": {
+            "name": "osd",
+            "value": false
           }
         }
-      ]
-    },
+      },
+      {
+        "name": "Braitenberg 2b",
+        "body": {
+          "composite": {
+            "name": "composite",
+            "geometry": {
+              "cylinder": {
+                "name": "2b main body",
+                "visualise": true,
+                "dimension": {
+                  "height": 0.09,
+                  "radius": 0.1
+                },
+                "pose": {
+                  "alpha": 0,
+                  "beta": 0,
+                  "gamma": 0,
+                  "x": 0,
+                  "y": 0,
+                  "z": 0.01
+                },
+                "visualisation": {
+                  "top_name": "Chain/Circuit/Top/Green",
+                  "bottom_name": "Chain/Circuit/Body/Green",
+                  "body_name": "Chain/Circuit/Body/Green"
+                },
+                "physics": {
+                  "mass_kg": 1.0
+                }
+              },
+              "sphere": [
+                {
+                  "name": "2b wheel front",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": 0.08,
+                    "y": 0,
+                    "z": -0.0499999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                },
+                {
+                  "name": "2b wheel back",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": -0.08,
+                    "y": 0,
+                    "z": -0.049999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                }
+              ]
+            },
+            "physics": {
+              "friction_value": 0
+            }
+          },
+          "sphere": [
+            {
+              "name": "2b wheel left",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": 0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            },
+            {
+              "name": "2b wheel right",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": -0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            }
+          ]
+        },
+        "pose": {
+          "gamma": 0.0,
+          "x": 0.0,
+          "y": 2.0,
+          "z": 0.05
+        },
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "2b wheel left hinge",
+            "type": "velocity",
+            "source_name": "2b wheel left",
+            "destination_name": "2b main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "2b wheel right hinge",
+            "type": "velocity",
+            "source_name": "2b wheel right",
+            "destination_name": "2b main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          }
+        ],
+        "sensors": [
+          {
+            "#tag": "proximity",
+            "name": "2b left 1",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": -90,
+              "beta": 90,
+              "x": 0.0,
+              "y": 0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2b left 2",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2b left 3",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": -15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": 0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2b right 3",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": 15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": -0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2b right 2",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "2b right 1",
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": 90,
+              "beta": 90,
+              "x": 0.0,
+              "y": -0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "2b ldr left 2",
+            "opening": 70,
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "2b sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "2b mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "2b ldr right 2",
+            "opening": 70,
+            "object_name": "2b main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "2b sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "2b mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "2b left wheel hinge sensor",
+            "object_name": "2b wheel left hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "2b right wheel hinge sensor",
+            "object_name": "2b wheel right hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          }
+        ],
+        "controller": {
+          "frequency": 10,
+          "module": "Braitenberg2b",
+          "parameter": {
+            "name": "osd",
+            "value": false
+          }
+        }
+      },
+      {
+        "name": "Braitenberg 3a",
+        "body": {
+          "composite": {
+            "name": "composite",
+            "geometry": {
+              "cylinder": {
+                "name": "3a main body",
+                "visualise": true,
+                "dimension": {
+                  "height": 0.09,
+                  "radius": 0.1
+                },
+                "pose": {
+                  "alpha": 0,
+                  "beta": 0,
+                  "gamma": 0,
+                  "x": 0,
+                  "y": 0,
+                  "z": 0.01
+                },
+                "visualisation": {
+                  "top_name": "Chain/Circuit/Top/Blue",
+                  "bottom_name": "Chain/Circuit/Body/Blue",
+                  "body_name": "Chain/Circuit/Body/Blue"
+                },
+                "physics": {
+                  "mass_kg": 1.0
+                }
+              },
+              "sphere": [
+                {
+                  "name": "3a wheel front",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": 0.08,
+                    "y": 0,
+                    "z": -0.0499999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                },
+                {
+                  "name": "3a wheel back",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": -0.08,
+                    "y": 0,
+                    "z": -0.049999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                }
+              ]
+            },
+            "physics": {
+              "friction_value": 0
+            }
+          },
+          "sphere": [
+            {
+              "name": "3a wheel left",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": 0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            },
+            {
+              "name": "3a wheel right",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": -0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            }
+          ]
+        },
+        "pose": {
+          "gamma": 0.0,
+          "x": 0.0,
+          "y": -2.0,
+          "z": 0.05
+        },
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "3a wheel left hinge",
+            "type": "velocity",
+            "source_name": "3a wheel left",
+            "destination_name": "3a main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "3a wheel right hinge",
+            "type": "velocity",
+            "source_name": "3a wheel right",
+            "destination_name": "3a main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          }
+        ],
+        "sensors": [
+          {
+            "#tag": "proximity",
+            "name": "3a left 1",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": -90,
+              "beta": 90,
+              "x": 0.0,
+              "y": 0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3a left 2",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3a left 3",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": -15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": 0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3a right 3",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": 15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": -0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3a right 2",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3a right 1",
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": 90,
+              "beta": 90,
+              "x": 0.0,
+              "y": -0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "3a ldr left 2",
+            "opening": 70,
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "3a sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "3a mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "3a ldr right 2",
+            "opening": 70,
+            "object_name": "3a main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "3a sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "3a mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "3a left wheel hinge sensor",
+            "object_name": "3a wheel left hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "3a right wheel hinge sensor",
+            "object_name": "3a wheel right hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          }
+        ],
+        "controller": {
+          "frequency": 10,
+          "module": "Braitenberg3a",
+          "parameter": {
+            "name": "osd",
+            "value": false
+          }
+        }
+      },
+      {
+        "name": "Braitenberg 3b",
+        "body": {
+          "composite": {
+            "name": "composite",
+            "geometry": {
+              "cylinder": {
+                "name": "3b main body",
+                "visualise": true,
+                "dimension": {
+                  "height": 0.09,
+                  "radius": 0.1
+                },
+                "pose": {
+                  "alpha": 0,
+                  "beta": 0,
+                  "gamma": 0,
+                  "x": 0,
+                  "y": 0,
+                  "z": 0.01
+                },
+                "visualisation": {
+                  "top_name": "Chain/Circuit/Top/Yellow",
+                  "bottom_name": "Chain/Circuit/Body/Yellow",
+                  "body_name": "Chain/Circuit/Body/Yellow"
+                },
+                "physics": {
+                  "mass_kg": 1.0
+                }
+              },
+              "sphere": [
+                {
+                  "name": "3b wheel front",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": 0.08,
+                    "y": 0,
+                    "z": -0.0499999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                },
+                {
+                  "name": "3b wheel back",
+                  "visualise": true,
+                  "dimension_radius": 0.01,
+                  "pose": {
+                    "alpha": 0,
+                    "beta": 0,
+                    "gamma": 0,
+                    "x": -0.08,
+                    "y": 0,
+                    "z": -0.049999
+                  },
+                  "visualisation": {
+                    "texture_name": "Chain/Wheel"
+                  },
+                  "physics": {
+                    "mass_kg": 0.1
+                  }
+                }
+              ]
+            },
+            "physics": {
+              "friction_value": 0
+            }
+          },
+          "sphere": [
+            {
+              "name": "3b wheel left",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": 0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            },
+            {
+              "name": "3b wheel right",
+              "visualise": true,
+              "dimension_radius": 0.03,
+              "pose": {
+                "x": 0,
+                "y": -0.085,
+                "z": -0.03
+              },
+              "visualisation": {
+                "texture_name": "Chain/Wheel"
+              },
+              "physics": {
+                "mass_kg": 0.1,
+                "friction_value": 1000
+              }
+            }
+          ]
+        },
+        "pose": {
+          "gamma": 0.0,
+          "x": 2.25,
+          "z": 0.05
+        },
+        "actuators": [
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "3b wheel left hinge",
+            "type": "velocity",
+            "source_name": "3b wheel left",
+            "destination_name": "3b main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          },
+          {
+            "#tag": "hinge",
+            "mode": "active",
+            "name": "3b wheel right hinge",
+            "type": "velocity",
+            "source_name": "3b wheel right",
+            "destination_name": "3b main body",
+            "force_max": 10.0,
+            "velocity_max": 10.0,
+            "pose": {
+              "gamma": 90.0,
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "regular": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "limit": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "orthogonal": {
+              "damping": 1.0,
+              "restitution": 0.7,
+              "softness": 1.0
+            },
+            "pid": {
+              "d": 0.001,
+              "i": 0.001,
+              "p": 0.1
+            }
+          }
+        ],
+        "sensors": [
+          {
+            "#tag": "proximity",
+            "name": "3b left 1",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": -90,
+              "beta": 90,
+              "x": 0.0,
+              "y": 0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3b left 2",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3b left 3",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": -15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": 0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3b right 3",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": 15,
+              "beta": 90,
+              "x": 0.0965926,
+              "y": -0.0258819,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3b right 2",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "proximity",
+            "name": "3b right 1",
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": 90,
+              "beta": 90,
+              "x": 0.0,
+              "y": -0.1,
+              "z": 0
+            },
+            "distance_meter": 0.5,
+            "mapping": {
+              "max": -1,
+              "min": 1
+            },
+            "openingAngles": {
+              "x": 25,
+              "y": 2.5
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "3b ldr left 2",
+            "opening": 70,
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": -45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": 0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "3b sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "3b mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "light",
+            "name": "3b ldr right 2",
+            "opening": 70,
+            "object_name": "3b main body",
+            "pose": {
+              "alpha": 45,
+              "beta": 90,
+              "x": 0.0707107,
+              "y": -0.0707107,
+              "z": 0.045
+            },
+            "colour_value": "#FF0000",
+            "mapping": {
+              "max": 1,
+              "min": -1
+            },
+            "noise": {
+              "module": "white",
+              "parameter": [
+                {
+                  "name": "3b sigma",
+                  "value": 0.4
+                },
+                {
+                  "name": "3b mean",
+                  "value": 0.0
+                }
+              ]
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "3b left wheel hinge sensor",
+            "object_name": "3b wheel left hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          },
+          {
+            "#tag": "velocity",
+            "name": "3b right wheel hinge sensor",
+            "object_name": "3b wheel right hinge",
+            "domain": {
+              "max": 10,
+              "min": -10
+            },
+            "mapping": {
+              "max": 1,
+              "min": -1
+            }
+          }
+        ],
+        "controller": {
+          "frequency": 10,
+          "module": "Braitenberg3b",
+          "parameter": {
+            "name": "osd",
+            "value": false
+          }
+        }
+      }
+    ],
     "traces": {
       "trace": [
         {

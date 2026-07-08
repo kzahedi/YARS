@@ -70,8 +70,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "name": "hexapod",
         "body": {
           "selfCollide": false,
@@ -1596,7 +1596,7 @@
             }
           },
           {
-            "#tag": "ov",
+            "#tag": "objectVelocity",
             "name": "main body velocity",
             "object_name": "main",
             "coordinates": {
@@ -1607,7 +1607,7 @@
           }
         ]
       }
-    },
+    ],
     "traces": {
       "trace": {
         "length": 5,
@@ -1632,217 +1632,217 @@
       "sensor": [
         {
           "target": "sensor front left Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor front right Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre left Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre right Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear left Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear right Fe-Ma",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor front left Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor front right Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre left Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre right Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear left Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear right Fe-Ti",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor front left Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor front right Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre left Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor centre right Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear left Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor rear right Ti-Ta",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor main-rear",
-          "external": {}
+          "external": null
         },
         {
           "target": "sensor main-head",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur front left contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur front right contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur centre left contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur centre right contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur rear left contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "femur rear right contact sensor",
-          "external": {}
+          "external": null
         },
         {
           "target": "main body velocity",
-          "external": {}
+          "external": null
         },
         {
           "target": "xyz position main",
-          "external": {}
+          "external": null
         }
       ],
       "actuator": [
         {
           "target": "front left Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "front right Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre left Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre right Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear left Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear right Fe-Ma",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "front left Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "front right Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre left Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre right Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear left Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear right Fe-Ti",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "front left Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "front right Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre left Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "centre right Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear left Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "rear right Ti-Ta",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "main - rear",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         },
         {
           "target": "main - head",
-          "external": {},
-          "desired": {}
+          "external": null,
+          "desired": null
         }
       ],
       "file": [

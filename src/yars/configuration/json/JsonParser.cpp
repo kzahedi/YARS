@@ -8,6 +8,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include <set>
 #include <sstream>
 #include <vector>
@@ -36,6 +37,41 @@ std::string toAttributeString(const ordered_json &value)
   // form ("3.5", "12", ...) that atof/atoi parse identically to what an
   // XML attribute string would have looked like.
   return value.dump();
+}
+
+// Canonical element names introduced for readability map onto the legacy
+// names the Data* dispatch expects. Config authors use the left column;
+// the legacy names remain accepted. (Box face names top/bottom/left/...
+// are context-dependent — cylinders also have a "top" — and are aliased
+// inside DataBox instead.)
+const std::map<std::string, std::string> &elementNameAliases()
+{
+  static const std::map<std::string, std::string> aliases = {
+      {"light", "ldr"},                       // light (LDR) sensor
+      {"objectVelocity", "ov"},               // object velocity sensor
+      {"objectAngularVelocity", "oav"},       // object angular velocity sensor
+      {"sourceAnchor", "srcAnchor"},          // muscle anchors
+      {"destinationAnchor", "dstAnchor"},
+  };
+  return aliases;
+}
+
+std::string internalElementName(const std::string &name)
+{
+  const auto &aliases = elementNameAliases();
+  const auto hit = aliases.find(name);
+  return hit == aliases.end() ? name : hit->second;
+}
+
+// Pure plural containers: a plain array under the key holds repeated
+// children of the mapped singular element.
+//   "robots": [ {...}, {...} ]  ==  <robots><robot/><robot/></robots>
+const std::map<std::string, std::string> &pluralContainers()
+{
+  static const std::map<std::string, std::string> plurals = {
+      {"robots", "robot"},
+  };
+  return plurals;
 }
 
 // A key like "object_name" is shorthand for a child element with a
@@ -90,9 +126,10 @@ void emitTaggedChild(const std::string &parentTag, const ordered_json &child,
 // against that assumption, not against prompt cleanup. The closing
 // DataParseElement is deleted immediately after root->add() returns, also
 // matching the SAX handler.
-void emitElement(const std::string &tag, const ordered_json &object,
+void emitElement(const std::string &canonicalTag, const ordered_json &object,
                   DataRobotSimulationDescription *root)
 {
+  const std::string tag = internalElementName(canonicalTag);
   DataParseElement *opening =
       new DataParseElement(YARS_DATA_PARSE_ELEMENT_TYPE_OPENING);
   opening->setName(tag);
@@ -102,7 +139,8 @@ void emitElement(const std::string &tag, const ordered_json &object,
     const std::string &key = it.key();
     if (key == "#tag" || key == "#children")
       continue;
-    if (it.value().is_array() || it.value().is_object())
+    if (it.value().is_array() || it.value().is_object() ||
+        it.value().is_null())
       continue; // handled as children below, not an attribute
     std::string childTag, childAttribute;
     if (splitElementAttributeKey(key, childTag, childAttribute))
@@ -125,18 +163,32 @@ void emitElement(const std::string &tag, const ordered_json &object,
       for (const auto &child : value)
         emitTaggedChild(tag, child, root);
     }
-    else if (isTaggedChildArray(value))
+    else if (isTaggedChildArray(value) ||
+             (value.is_array() && pluralContainers().count(key) != 0 &&
+              !(value.front().is_object() &&
+                value.front().contains(pluralContainers().at(key)))))
     {
-      // Flattened ordered container: `"sensors": [{"#tag": "ldr", ...},
-      // ...]` — the key is an element whose ordered, per-entry-tagged
-      // children are the array entries (concise form of
-      // `"sensors": {"#children": [...]}`).
+      // (The extra guard keeps legacy always-arrays semantics working:
+      // "robots": [{"robot": [...]}] is a one-element wrapper array, not
+      // a flat list of robot definitions.)
+      // Container written as a flat array. Entries either carry their
+      // own "#tag" (ordered mixed-type container, e.g. sensors), or the
+      // key is a known plural container whose entries are its singular
+      // element ("robots": [...] -> <robots><robot/>...</robots>).
+      const auto plural = pluralContainers().find(key);
       DataParseElement *containerOpening =
           new DataParseElement(YARS_DATA_PARSE_ELEMENT_TYPE_OPENING);
       containerOpening->setName(key);
       root->add(containerOpening);
       for (const auto &child : value)
-        emitTaggedChild(key, child, root);
+      {
+        if (child.is_object() && child.contains("#tag"))
+          emitTaggedChild(key, child, root);
+        else if (plural != pluralContainers().end())
+          emitElement(plural->second, child, root);
+        else
+          emitTaggedChild(key, child, root); // throws with clear message
+      }
       DataParseElement *containerClosing =
           new DataParseElement(YARS_DATA_PARSE_ELEMENT_TYPE_CLOSING);
       containerClosing->setName(key);
@@ -154,6 +206,12 @@ void emitElement(const std::string &tag, const ordered_json &object,
       // the always-arrays form `"lookAt": [{"x": ...}]`.
       emitElement(key, value, root);
     }
+    else if (value.is_null())
+    {
+      // Presence flag: `"external": null` is an empty child element
+      // (<external/>), the concise form of `"external": {}`.
+      emitElement(key, ordered_json::object(), root);
+    }
     else
     {
       // Scalar with an "elem_attr" key: shorthand for a child element
@@ -164,7 +222,7 @@ void emitElement(const std::string &tag, const ordered_json &object,
       {
         DataParseElement *childOpening =
             new DataParseElement(YARS_DATA_PARSE_ELEMENT_TYPE_OPENING);
-        childOpening->setName(childTag);
+        childOpening->setName(internalElementName(childTag));
         DataParseAttribute *attribute = new DataParseAttribute();
         attribute->setName(childAttribute);
         attribute->setValue(toAttributeString(value));
@@ -172,7 +230,7 @@ void emitElement(const std::string &tag, const ordered_json &object,
         root->add(childOpening);
         DataParseElement *childClosing =
             new DataParseElement(YARS_DATA_PARSE_ELEMENT_TYPE_CLOSING);
-        childClosing->setName(childTag);
+        childClosing->setName(internalElementName(childTag));
         root->add(childClosing);
         delete childClosing;
       }

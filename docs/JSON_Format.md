@@ -2,7 +2,7 @@
 
 YARS simulations are described by a single JSON file (conventionally kept
 in `xml/`, the historical directory name from the XML era). This document
-specifies the canonical format as of YARS 0.11.0: the structural rules,
+specifies the canonical format as of YARS 0.12.0: the structural rules,
 the reader extensions (comments, includes, duplicate-key detection), the
 version check, editor integration, and the migration path from older
 formats.
@@ -16,14 +16,14 @@ Quick orientation:
     "simulator": { "frequency": 100, "solver_iterations": 10 },
     "screens":   { "...": "window, camera, OSD setup" },
     "environment": { "...": "ground, static objects, lights" },
-    "robots":    { "robot": { "...": "body, sensors, actuators, controller" } },
+    "robots":    [ { "...": "body, sensors, actuators, controller" } ],
     "logging":   { "...": "CSV/file/console output" }
   }
 }
 ```
 
 - Authoritative element reference: [`schema/yars-config.schema.json`](../schema/yars-config.schema.json)
-  (~96 element definitions; drives editor validation, see
+  (90 element definitions; drives editor validation, see
   [Editor integration](#editor-integration)).
 - Working examples: every file under [`xml/`](../xml/).
 - Reader implementation: [`src/yars/configuration/json/JsonParser.{h,cpp}`](../src/yars/configuration/json/JsonParser.h).
@@ -56,7 +56,7 @@ A config is a JSON object with a single required key `yars`:
 ## Structural rules
 
 The format maps JSON onto XML-style elements (named nodes with attributes
-and children). Five value shapes cover everything; they may be mixed
+and children). Six value shapes cover everything; they may be mixed
 freely within one file.
 
 ### 1. Scalars are attributes
@@ -88,7 +88,12 @@ all-strings form is accepted but not canonical).
 ```
 
 A one-element array is equivalent to a plain object; the canonical form
-uses the object.
+uses the object. The `robots` container is always a flat array of robot
+definitions:
+
+```json
+"robots": [ { "name": "walker", "...": "..." } ]
+```
 
 ### 4. `elem_attr` shorthand for single-attribute elements
 
@@ -144,6 +149,38 @@ order (`xml/muscle_tcpip.json`):
   ]
 }
 ```
+
+### 6. Presence flags are `null`
+
+Some elements are pure on/off markers — their presence enables a
+behaviour (XML's `<external/>`). They are written as `null`; omit the
+key to disable:
+
+```json
+"sensor": [
+  { "target": "left 1", "precision": 3, "external": null, "internal": null }
+]
+```
+
+(The legacy `"external": {}` form is still accepted.)
+
+## Element names
+
+A few legacy element names were replaced with descriptive ones. New
+configs use the canonical names; the legacy names remain accepted
+everywhere (and `scripts/json-canonicalize.py` upgrades them):
+
+| Canonical | Legacy | Meaning |
+|-----------|--------|---------|
+| `light` | `ldr` | light sensor (light dependent resistor) |
+| `objectVelocity` | `ov` | object velocity sensor |
+| `objectAngularVelocity` | `oav` | object angular velocity sensor |
+| `sourceAnchor` / `destinationAnchor` | `srcAnchor` / `dstAnchor` | muscle attachment anchors |
+| `top`, `left`, `bottom`, `right`, `front`, `back` (box faces) | `first`..`sixth` | box face textures (+z, −x, −z, +x, +y, −y with z up) |
+
+Names that look cryptic but are domain-standard stay: `cfm`/`erp`
+(Bullet/ODE constraint parameters), `pid` (controller gains), `osd`
+(on-screen display).
 
 ## Data types
 
@@ -279,8 +316,8 @@ Each `robot` has a `body` (rigid bodies, possibly `composite`),
 `actuators`, `sensors`, and optionally a `controller`:
 
 ```json
-"robots": {
-  "robot": {
+"robots": [
+  {
     "name": "Braitenberg",
     "body": {
       "composite": {
@@ -322,7 +359,7 @@ Each `robot` has a `body` (rigid bodies, possibly `composite`),
       "parameter": { "name": "debug", "value": true }
     }
   }
-}
+]
 ```
 
 Actuator types include `hinge`, `slider`, `fixed`, `generic`, `muscle`;
@@ -345,7 +382,7 @@ entries) and sinks (`csv`, `file`, `console`, `gnuplot`, `blender`):
       "use": [ { "value": "x" }, { "value": "y" } ] }
   ],
   "sensor": [
-    { "target": "left 1", "precision": 3, "external": {}, "internal": {} }
+    { "target": "left 1", "precision": 3, "external": null, "internal": null }
   ],
   "csv": {
     "name": "braitenberg",
@@ -398,9 +435,10 @@ python3 scripts/json-schema-check.py            # whole corpus
 python3 scripts/json-schema-check.py my.json    # specific files
 ```
 
-The schema was generated from the config corpus and is hand-maintained:
-when adding a new element or attribute to the `Data*` classes, add it to
-the schema too. Schema validation is advisory (the runtime does not
+The schema is generated from the config corpus by
+`scripts/json-schema-generate.py` (plus curated rules such as the
+required `version`): after adding a new element or attribute to the
+`Data*` classes and the corpus, rerun it and review the diff. Schema validation is advisory (the runtime does not
 enforce it); a config the schema rejects may still run.
 
 ## Tooling and legacy formats
@@ -411,7 +449,8 @@ logs):
 
 | Era | Root | Elements | Values |
 |-----|------|----------|--------|
-| canonical (≥ 0.10) | `"yars"` | objects, tagged arrays, `elem_attr` | native types, `#RRGGBB` |
+| canonical (≥ 0.12) | `"yars"` | objects, tagged arrays, `elem_attr`, `robots` array, `null` flags, renamed elements | native types, `#RRGGBB` |
+| 0.10–0.11 | `"yars"` | objects, tagged arrays, `elem_attr`, plural wrappers, `{}` flags, legacy names | native types, `#RRGGBB` |
 | stage 1 | `"rosiml"` | objects | native types |
 | always-arrays (0.9.x, from `XmlToJson`) | `"rosiml"` | one-element arrays everywhere, `#children` | all strings |
 

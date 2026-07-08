@@ -68,23 +68,23 @@
           "z": 0.6
         },
         "visualisation": {
-          "first_name": "SimpleWhite",
-          "second_name": "SimpleWhite",
-          "third_name": "SimpleWhite",
-          "fourth_name": "SimpleWhite",
-          "fifth_name": "SimpleWhite",
-          "sixth_name": "SimpleWhite"
+          "top_name": "SimpleWhite",
+          "left_name": "SimpleWhite",
+          "bottom_name": "SimpleWhite",
+          "right_name": "SimpleWhite",
+          "front_name": "SimpleWhite",
+          "back_name": "SimpleWhite"
         },
         "physics": {
           "mass_kg": 0
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "$include": "robots/hexapod-24dof.json"
       }
-    },
+    ],
     "logging": {
       "object": [
         {

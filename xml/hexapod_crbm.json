@@ -85,8 +85,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "$include": "robots/hexapod-12dof.json",
         "controller": {
           "frequency": 10,
@@ -111,7 +111,7 @@
           ]
         }
       }
-    },
+    ],
     "traces": {
       "trace": [
         {
@@ -217,124 +217,124 @@
         {
           "precision": 8,
           "target": "front right z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front right y-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front left z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front left y-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre right z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre right y-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre left z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre left y-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear right z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear right y-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear left z-axis sensor",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear left y-axis sensor",
-          "external": {}
+          "external": null
         }
       ],
       "actuator": [
         {
           "precision": 8,
           "target": "front right z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front right y-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front left z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "front left y-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre right z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre right y-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre left z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "centre left y-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear right z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear right y-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear left z-axis",
-          "external": {}
+          "external": null
         },
         {
           "precision": 8,
           "target": "rear left y-axis",
-          "external": {}
+          "external": null
         }
       ],
       "csv": [

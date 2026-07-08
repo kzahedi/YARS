@@ -47,6 +47,34 @@ import sys
 # flat ordered array of {"#tag": ...} entries.
 TAGGED_CONTAINERS = {"sensors", "actuators"}
 
+# Pure plural containers: {"robots": {"robot": [...]}} flattens to
+# {"robots": [...]} (the parser knows the singular element).
+PLURAL_CONTAINERS = {"robots": "robot"}
+
+# Canonical element names replacing cryptic legacy ones (the parser and
+# the Data* dispatch accept both; new files use the canonical name).
+# Box face names follow SceneGraphBoxNode's build order with z up.
+RENAMED_ELEMENTS = {
+    "ldr": "light",
+    "ov": "objectVelocity",
+    "oav": "objectAngularVelocity",
+    "srcAnchor": "sourceAnchor",
+    "dstAnchor": "destinationAnchor",
+    "first": "top",
+    "second": "left",
+    "third": "bottom",
+    "fourth": "right",
+    "fifth": "front",
+    "sixth": "back",
+}
+
+
+def renamed(key):
+    if "_" in key:
+        element, _, attribute = key.partition("_")
+        return RENAMED_ELEMENTS.get(element, element) + "_" + attribute
+    return RENAMED_ELEMENTS.get(key, key)
+
 # Attribute keys whose values are text/identifiers even when they happen
 # to look numeric or boolean (e.g. colour "000000", a robot named "true").
 # Checked against every "_"-separated component of a key, so the
@@ -147,14 +175,35 @@ def canonicalize(node):
         return node
     out = {}
     for key, value in node.items():
+        if key == "#tag" and isinstance(value, str):
+            out[key] = RENAMED_ELEMENTS.get(value, value)
+            continue
+        if not key.startswith(("#", "$")):
+            key = renamed(key)
         if (
             isinstance(value, list)
             and len(value) == 1
             and isinstance(value[0], dict)
             and key != "#children"
+            and key not in PLURAL_CONTAINERS
             and "#tag" not in value[0]
         ):
             value = value[0]
+        if (
+            key in PLURAL_CONTAINERS
+            and isinstance(value, dict)
+            and set(value.keys()) == {PLURAL_CONTAINERS[key]}
+        ):
+            # {"robots": {"robot": [...]}} -> {"robots": [...]}
+            singular = value[PLURAL_CONTAINERS[key]]
+            out[key] = canonicalize(
+                singular if isinstance(singular, list) else [singular]
+            )
+            continue
+        if isinstance(value, dict) and not value:
+            # Empty element = presence flag: {"external": {}} -> null
+            out[key] = None
+            continue
         if isinstance(value, dict):
             if "$include" in value:
                 # Never resolve or restructure an include reference; its

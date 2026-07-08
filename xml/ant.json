@@ -85,8 +85,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "name": "ant",
         "body": {
           "selfCollide": false,
@@ -103,12 +103,12 @@
               "z": 0.55
             },
             "visualisation": {
-              "first_name": "YARS/Blue",
-              "second_name": "YARS/Blue",
-              "third_name": "YARS/Blue",
-              "fourth_name": "YARS/Blue",
-              "fifth_name": "YARS/Blue",
-              "sixth_name": "YARS/Blue"
+              "top_name": "YARS/Blue",
+              "left_name": "YARS/Blue",
+              "bottom_name": "YARS/Blue",
+              "right_name": "YARS/Blue",
+              "front_name": "YARS/Blue",
+              "back_name": "YARS/Blue"
             },
             "physics": {
               "mass_kg": 1.0,
@@ -829,6 +829,6 @@
           }
         ]
       }
-    }
+    ]
   }
 }

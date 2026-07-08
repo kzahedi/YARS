@@ -109,12 +109,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Wall1",
-            "third_name": "YARS/Wall1",
-            "fourth_name": "YARS/Wall1",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall2"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Wall1",
+            "bottom_name": "YARS/Wall1",
+            "right_name": "YARS/Wall1",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall2"
           },
           "physics": {
             "mass_kg": 0
@@ -136,12 +136,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Green",
-            "third_name": "YARS/Blue",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Green",
+            "bottom_name": "YARS/Blue",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -163,12 +163,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Green",
-            "third_name": "YARS/Wall1",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Green",
+            "bottom_name": "YARS/Wall1",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -190,12 +190,12 @@
             "z": -0.15
           },
           "visualisation": {
-            "first_name": "YARS/Wall2",
-            "second_name": "YARS/Wall2",
-            "third_name": "YARS/Wall2",
-            "fourth_name": "YARS/Wall2",
-            "fifth_name": "YARS/Wall1",
-            "sixth_name": "YARS/Wall1"
+            "top_name": "YARS/Wall2",
+            "left_name": "YARS/Wall2",
+            "bottom_name": "YARS/Wall2",
+            "right_name": "YARS/Wall2",
+            "front_name": "YARS/Wall1",
+            "back_name": "YARS/Wall1"
           },
           "physics": {
             "mass_kg": 0
@@ -203,8 +203,8 @@
         }
       ]
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "name": "Braitenberg",
         "body": {
           "composite": {
@@ -557,7 +557,7 @@
             }
           },
           {
-            "#tag": "ov",
+            "#tag": "objectVelocity",
             "name": "main body velocity",
             "object_name": "main body",
             "coordinates": {
@@ -567,7 +567,7 @@
             }
           },
           {
-            "#tag": "oav",
+            "#tag": "objectAngularVelocity",
             "name": "main body angular velocity",
             "object_name": "main body",
             "coordinates": {
@@ -602,7 +602,7 @@
           ]
         }
       }
-    },
+    ],
     "traces": {
       "trace": [
         {

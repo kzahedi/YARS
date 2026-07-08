@@ -53,10 +53,10 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "$include": "robots/hexapod-24dof.json"
       }
-    }
+    ]
   }
 }

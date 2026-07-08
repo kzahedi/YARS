@@ -89,8 +89,8 @@
         }
       }
     },
-    "robots": {
-      "robot": {
+    "robots": [
+      {
         "name": "Muscle 3",
         "body": {
           "sphere": [
@@ -137,7 +137,7 @@
             "visualise": true,
             "source_name": "source body",
             "destination_name": "destination body",
-            "srcAnchor": {
+            "sourceAnchor": {
               "sphere": {
                 "name": "source anchor",
                 "visualise": true,
@@ -155,7 +155,7 @@
                 }
               }
             },
-            "dstAnchor": {
+            "destinationAnchor": {
               "sphere": {
                 "name": "destination anchor",
                 "visualise": true,
@@ -236,6 +236,6 @@
           ]
         }
       }
-    }
+    ]
   }
 }

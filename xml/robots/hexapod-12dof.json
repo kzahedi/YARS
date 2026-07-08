@@ -1207,7 +1207,7 @@
       }
     },
     {
-      "#tag": "ov",
+      "#tag": "objectVelocity",
       "name": "main body velocity",
       "object_name": "main body",
       "coordinates": {
