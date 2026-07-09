@@ -1,4 +1,5 @@
 #include "DataGenericAmbientLightSensor.h"
+#include "DataBinding.h"
 #include "DataDomainFactory.h"
 
 #include <yars/defines/mutex.h>
@@ -8,6 +9,22 @@
 # define YARS_STRING_POSE               (char*)"pose"
 # define YARS_STRING_NAME               (char*)"name"
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
+
+namespace
+{
+// Attribute binding table for the ambient light sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericAmbientLightSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericAmbientLightSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericAmbientLightSensor::DataGenericAmbientLightSensor(DataNode* parent)
   : DataSensor(parent,DATA_GENERIC_AMBIENT_LIGHT_SENSOR)
@@ -29,7 +46,7 @@ void DataGenericAmbientLightSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericAmbientLightSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_NOISE))
   {
