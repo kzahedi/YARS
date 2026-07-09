@@ -39,10 +39,16 @@ class DataLoggingFile : public DataLoggingModule, public DataNode
 
 
     string filename();
+    void   setFilename(string filename);
     bool   useDate();
+    void   setUseDate(bool useDate);
     bool   useTimeStep();
+    void   setUseTimeStep(bool useTimeStep);
     bool   isLogging(unsigned int timestep);
     bool   debug();
+    void   setDebug(int debug);
+    void   setStart(int start);
+    void   setStop(int stop);
 
   private:
     string _filename;
