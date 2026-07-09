@@ -287,9 +287,10 @@ src/yars/
   "<element>: missing attribute" error that JsonParser prefixes with
   the file path
 
-### Phase 2: Graphics streams
-- **Vulkan renderer**: builds behind `YARS_USE_VULKAN=OFF`, not wired
-  into the runtime (`docs/vulkan-status.md`); decide wire-in vs. drop
+### Phase 2: Graphics streams — ✅ CLOSED
+- **Vulkan renderer**: dropped (decision 2026-07-09) — the experimental
+  module was never wired into the runtime and the Ogre 14 path is
+  complete; recoverable from git history (last present at v0.13.0)
 - **Shadows**: ✅ resolved — `SHADOWTYPE_TEXTURE_MODULATIVE` +
   `ShadowMapper` (`src/yars/view/gui/ShadowMapper.h`); the plan docs
   are historical
