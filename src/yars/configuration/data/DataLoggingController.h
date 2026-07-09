@@ -42,10 +42,12 @@ class DataLoggingController : public DataNode, public std::vector<string>
 
 
     string target();
+    void setTarget(string target);
 
     DataController* controller();
     void set(DataController* controller);
     int precision();
+    void setPrecision(int precision);
     std::vector<int> order();
 
   private:
