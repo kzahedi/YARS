@@ -1,7 +1,9 @@
 #include <yars/configuration/data/DataLoggingSensor.h>
+#include "DataBinding.h"
 
 #include <yars/util/YarsErrorHandler.h>
 
+#include <cstdlib>
 #include <sstream>
 
 using namespace std;
@@ -19,6 +21,26 @@ using namespace std;
 #define YARS_INTERNAL_EXTERNAL_OPTION         (char*)"internal_external_option"
 #define YARS_EXTERNAL_INTERNAL_OPTION         (char*)"external_internal_option"
 
+
+namespace
+{
+// Attribute binding table for the sensor logger's own opening tag.
+// Child-element dispatch (internal/external) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_TARGET,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingSensor *>(self)->setTarget(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_PRECISION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingSensor *>(self)->setPrecision(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingSensor::DataLoggingSensor(DataNode *parent)
   : DataNode(parent)
@@ -41,8 +63,7 @@ void DataLoggingSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_LOGGING_SENSOR))
   {
-    element->set(YARS_STRING_TARGET, _target);
-    element->set(YARS_STRING_PRECISION, _precision);
+    yars::applyAttributes(this, element, loggingSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_INTERNAL))
   {
@@ -67,6 +88,16 @@ DataLoggingSensor* DataLoggingSensor::copy()
 string DataLoggingSensor::target()
 {
   return _target;
+}
+
+void DataLoggingSensor::setTarget(string target)
+{
+  _target = target;
+}
+
+void DataLoggingSensor::setPrecision(int precision)
+{
+  _precision = precision;
 }
 
 DataSensor* DataLoggingSensor::sensor()
