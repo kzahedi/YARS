@@ -49,6 +49,7 @@ class DataRobot : public DataNode, public MacroUserInterface
      * @return name
      */
     string name();
+    void setName(string name) { _name = name; };
 
     /**
      * @brief Returns the pose.
