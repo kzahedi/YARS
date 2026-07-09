@@ -1,4 +1,5 @@
 #include "DataGenericCameraSensor.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 #include "DataDomainFactory.h"
 
@@ -13,6 +14,22 @@
 # define YARS_STRING_XY_DEFINITION      (char*)"xy_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
+
+namespace
+{
+// Attribute binding table for the camera sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericCameraSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericCameraSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericCameraSensor::DataGenericCameraSensor(DataNode *parent)
   : DataSensor(parent, DATA_GENERIC_CAMERA_SENSOR)
@@ -32,7 +49,7 @@ void DataGenericCameraSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_CAMERA_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericCameraSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {
