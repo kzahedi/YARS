@@ -1,4 +1,5 @@
 #include "DataComposite.h"
+#include "DataBinding.h"
 
 #include "DataObjectFactory.h"
 #include "DataPoseFactory.h"
@@ -39,6 +40,23 @@
 
 #define YARS_STRING_C_PHYSICS_DEFINITION (char *)"composite_physics_definition"
 
+
+namespace
+{
+// Attribute binding table for the composite's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &compositeAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataComposite *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataComposite::DataComposite(DataNode *parent)
     : DataObject(parent, DATA_OBJECT_COMPOSITE)
 {
@@ -54,7 +72,7 @@ void DataComposite::add(DataParseElement *element)
   }
   if (element->opening(YARS_STRING_OBJECT_COMPOSITE))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, compositeAttributeBindings());
     return;
   }
   if (element->opening(YARS_STRING_PHYSICS))
