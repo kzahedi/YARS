@@ -59,6 +59,13 @@ class DataSensor : public DataNode
     string name();
 
     /**
+     * @brief Sets the name of the sensor.
+     *
+     * @param name
+     */
+    void setName(string name);
+
+    /**
      * @brief Returns the noise definition.
      *
      * @return noise definition
