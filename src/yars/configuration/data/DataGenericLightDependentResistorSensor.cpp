@@ -51,14 +51,13 @@ const std::vector<yars::AttributeBinding> &genericLightDependentResistorSensorAt
 DataGenericLightDependentResistorSensor::DataGenericLightDependentResistorSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_LIGHT_DEPENDENT_RESISTOR_SENSOR)
 {
-  _noise = new DataNoise(this);
+  _noise = std::make_unique<DataNoise>(this);
   _n     = NULL;
 }
 
 DataGenericLightDependentResistorSensor::~DataGenericLightDependentResistorSensor()
 {
   if(_n != NULL) delete _n;
-  delete _noise;
 }
 
 void DataGenericLightDependentResistorSensor::add(DataParseElement *element)
@@ -66,7 +65,7 @@ void DataGenericLightDependentResistorSensor::add(DataParseElement *element)
   if(element->closing(YARS_STRING_GENERIC_LDR_SENSOR))
   {
     current = parent;
-    _n = NoiseFactory::create(_noise);
+    _n = NoiseFactory::create(_noise.get());
   }
   if(element->opening(YARS_STRING_GENERIC_LDR_SENSOR))
   {
@@ -93,8 +92,8 @@ void DataGenericLightDependentResistorSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -136,7 +135,7 @@ DataGenericLightDependentResistorSensor* DataGenericLightDependentResistorSensor
   copy->_openingAngle  = _openingAngle;
   copy->_mapping       = _mapping;
   copy->_colour        = _colour;
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   if (_filter != NULL) copy->_filter = _filter->copy();
   copy->__setMapping();
   return copy;
@@ -150,7 +149,8 @@ void DataGenericLightDependentResistorSensor::_resetTo(const DataSensor *sensor)
   _object        = other->object();
   _pose          = other->pose();
   _openingAngle  = other->opening();
-  _noise         = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
   _filter        = other->filter();
   _mapping       = other->mapping();
   _colour        = other->colour();
@@ -195,7 +195,7 @@ void DataGenericLightDependentResistorSensor::__setMapping()
   _internalDomain.min = 0.0; _internalDomain.max = 1.0;
   _internalExternalMapping.setInputDomain(_internalDomain);
   _internalExternalMapping.setOutputDomain(_externalDomain);
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 
 Domain DataGenericLightDependentResistorSensor::getInternalDomain(int index)

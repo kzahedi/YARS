@@ -44,8 +44,8 @@ void DataGenericInternalEnergySensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -65,7 +65,7 @@ DataGenericInternalEnergySensor* DataGenericInternalEnergySensor::_copy()
   DataGenericInternalEnergySensor *copy = new DataGenericInternalEnergySensor(NULL);
 
   copy->_name = _name;
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   if (_filter != NULL) copy->_filter = _filter->copy();
   copy->_mapping = _mapping;
   return copy;
@@ -75,7 +75,8 @@ void DataGenericInternalEnergySensor::_resetTo(const DataSensor *sensor)
 {
   DataGenericInternalEnergySensor *other = (DataGenericInternalEnergySensor*)sensor;
   _name    = other->name();
-  _noise   = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
   _filter  = other->filter();
   _mapping = other->mapping();
 }

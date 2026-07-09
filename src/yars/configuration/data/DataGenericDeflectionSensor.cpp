@@ -68,8 +68,8 @@ void DataGenericDeflectionSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -97,7 +97,7 @@ DataGenericDeflectionSensor* DataGenericDeflectionSensor::_copy()
   copy->_mapping = _mapping;
   copy->_domain = _domain;
   if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   copy->__setMapping();
   copy->_useRad = _useRad;
   return copy;
@@ -141,7 +141,7 @@ void DataGenericDeflectionSensor::__setMapping()
   _internalDomain = _domain;
   _internalExternalMapping.setInputDomain(_internalDomain);
   _internalExternalMapping.setOutputDomain(_externalDomain);
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 
   if(_useRad)
   {
@@ -190,7 +190,8 @@ void DataGenericDeflectionSensor::_resetTo(const DataSensor *sensor)
   _mapping = other->mapping();
   _domain  = other->domain();
   _filter  = other->filter();
-  _noise   = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
   __setMapping();
 }
 

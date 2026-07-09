@@ -24,8 +24,6 @@ leak:yars::PID::PID
 # Config data-model constructors (owning raw members freed never/legacy):
 leak:DataCameraConfig::DataCameraConfig
 leak:DataObject::DataObject
-leak:DataGenericProximitySensor::DataGenericProximitySensor
-leak:DataGenericLightDependentResistorSensor::DataGenericLightDependentResistorSensor
 leak:DataComposite::DataComposite
 leak:DataScreen::DataScreen
 leak:DataScreens::DataScreens

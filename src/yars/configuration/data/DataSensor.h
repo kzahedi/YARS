@@ -8,6 +8,7 @@
 #include <yars/types/Pose.h>
 #include <yars/types/Domain.h>
 
+#include <memory>
 #include <vector>
 
 #define DATA_GENERIC_VELOCITY_SENSOR                 2500
@@ -114,7 +115,7 @@ class DataSensor : public DataNode
   protected:
     int         _type;
     string      _name;
-    DataNoise  *_noise;
+    std::unique_ptr<DataNoise> _noise;
     DataFilter *_filter;
     Domain      _mapping;
     string      _object;
