@@ -26,7 +26,6 @@ leak:DataCameraConfig::DataCameraConfig
 leak:DataObject::DataObject
 leak:DataGenericProximitySensor::DataGenericProximitySensor
 leak:DataGenericLightDependentResistorSensor::DataGenericLightDependentResistorSensor
-leak:DataHingeActuator::DataHingeActuator
 leak:DataSliderActuator::DataSliderActuator
 leak:DataMuscleActuator::DataMuscleActuator
 leak:DataComposite::DataComposite

@@ -12,6 +12,8 @@
 
 #include <pthread.h>
 
+#include <memory>
+
 # define YARS_STRING_HINGE            (char*)"hinge"
 # define YARS_STRING_HINGE_DEFINITION (char*)"hinge_definition"
 
@@ -98,6 +100,11 @@ class DataHingeActuator : public DataActuator
     HingeParameter parameter();
     string mode();
 
+    void setName(string name);
+    void setJointType(string jointType);
+    void setMode(string mode);
+    void setFriction(double friction);
+
     double velocity();
     double force();
     void setVelocity(double v);
@@ -135,7 +142,7 @@ class DataHingeActuator : public DataActuator
     void __setMapping();
 
     DataFilter     *_filter;
-    DataNoise      *_noise;
+    std::unique_ptr<DataNoise> _noise;
     Domain          _deflection;
     Domain          _mapping;
     HingeParameter  _parameter;
