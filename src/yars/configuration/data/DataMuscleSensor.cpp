@@ -1,4 +1,5 @@
 #include "DataMuscleSensor.h"
+#include "DataBinding.h"
 #include "DataDomainFactory.h"
 
 # define YARS_STRING_MAPPING            (char*)"mapping"
@@ -9,6 +10,22 @@
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
+
+namespace
+{
+// Attribute binding table for the muscle sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &muscleSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataMuscleSensor::DataMuscleSensor(DataNode* parent)
   : DataSensor(parent, DATA_MUSCLE_SENSOR)
@@ -37,7 +54,7 @@ void DataMuscleSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_MUSCLE_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, muscleSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {
