@@ -39,11 +39,16 @@ class DataLoggingSelforg : public DataLoggingModule, public DataNode
 
 
     string filename();
+    void   setFilename(string filename);
     string name();
+    void   setName(string name);
 
     bool useFile();
+    void setUseFile(bool useFile);
     bool useMatrixviz();
+    void setUseMatrixviz(bool useMatrixviz);
     bool useGuilogger();
+    void setUseGuilogger(bool useGuilogger);
 
     int  glStepSize();
     int  mvStepSize();
