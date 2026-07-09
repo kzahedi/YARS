@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericActuator.h>
+#include "DataBinding.h"
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataPIDFactory.h>
@@ -96,6 +97,26 @@
   }
 
 
+namespace
+{
+// Attribute binding table for the generic actuator's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericActuatorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericActuator *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_SPRING,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericActuator *>(self)->setUseSpring(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataGenericActuator::DataGenericActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_GENERIC)
 {
@@ -144,6 +165,16 @@ string DataGenericActuator::source()
 string DataGenericActuator::destination()
 {
   return _destination;
+}
+
+void DataGenericActuator::setName(string name)
+{
+  _name = name;
+}
+
+void DataGenericActuator::setUseSpring(bool useSpring)
+{
+  _useSpring = useSpring;
 }
 
 void DataGenericActuator::applyOffset(Pose offset)
@@ -488,8 +519,7 @@ void DataGenericActuator::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC))
   {
-    element->set(YARS_STRING_NAME,   _name);
-    element->set(YARS_STRING_SPRING, _useSpring);
+    yars::applyAttributes(this, element, genericActuatorAttributeBindings());
   }
   if(element->opening(YARS_STRING_SOURCE))
   {

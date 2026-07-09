@@ -225,6 +225,9 @@ class DataGenericActuator : public DataActuator
     Pose            pose();
     GenericParamter parameter();
 
+    void setName(string name);
+    void setUseSpring(bool useSpring);
+
     void applyOffset(Pose offset);
 
     DataGenericActuator* _copy();
