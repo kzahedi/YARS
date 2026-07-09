@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericProximitySensor.h>
+#include <yars/configuration/data/DataBinding.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/util/noise/NoiseFactory.h>
@@ -27,6 +28,22 @@
 # define CONVERT_TO_RAD(x) x = x / 180.0 * M_PI
 # define CONVERT_TO_DEG(x) x = x / M_PI  * 180.0
 
+namespace
+{
+// Attribute binding table for the proximity sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericProximitySensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericProximitySensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataGenericProximitySensor::DataGenericProximitySensor(DataNode *parent)
   : DataSensor(parent, DATA_GENERIC_PROXIMITY_SENSOR)
 {
@@ -51,7 +68,7 @@ void DataGenericProximitySensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_PROXIMITY))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericProximitySensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {
