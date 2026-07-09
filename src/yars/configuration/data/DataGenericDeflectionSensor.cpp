@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericDeflectionSensor.h>
+#include <yars/configuration/data/DataBinding.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 
 #include <yars/util/noise/NoiseFactory.h>
@@ -12,6 +13,22 @@
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
+
+namespace
+{
+// Attribute binding table for the deflection sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericDeflectionSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericDeflectionSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericDeflectionSensor::DataGenericDeflectionSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_DEFLECTION_SENSOR)
@@ -35,7 +52,7 @@ void DataGenericDeflectionSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_DEFLECTION_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericDeflectionSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {
