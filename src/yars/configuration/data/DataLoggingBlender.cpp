@@ -1,9 +1,36 @@
 #include "DataLoggingBlender.h"
+#include "DataBinding.h"
+
+#include <cstdlib>
 
 #define YARS_STRING_NAME                      (char*)"name"
 #define YARS_STRING_CFG                       (char*)"cfg"
 #define YARS_STRING_FRAME_RATE                (char*)"framerate"
 #define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
+
+namespace
+{
+// Attribute binding table for the blender logger's own opening tag.
+// No child-element dispatch remains below.
+const std::vector<yars::AttributeBinding> &loggingBlenderAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingBlender *>(self)->setFilename(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_CFG,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingBlender *>(self)->setCfg(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_FRAME_RATE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingBlender *>(self)->setFramerate(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingBlender::DataLoggingBlender(DataNode *parent)
   : DataNode(parent)
@@ -25,9 +52,7 @@ void DataLoggingBlender::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_BLENDER_LOGGER))
   {
-    element->set(YARS_STRING_NAME,       _filename);
-    element->set(YARS_STRING_CFG,        _cfg);
-    element->set(YARS_STRING_FRAME_RATE, _framerate);
+    yars::applyAttributes(this, element, loggingBlenderAttributeBindings());
   }
 }
 
@@ -43,6 +68,21 @@ DataLoggingBlender* DataLoggingBlender::copy()
 string DataLoggingBlender::filename()
 {
   return _filename;
+}
+
+void DataLoggingBlender::setFilename(string filename)
+{
+  _filename = filename;
+}
+
+void DataLoggingBlender::setCfg(string cfg)
+{
+  _cfg = cfg;
+}
+
+void DataLoggingBlender::setFramerate(int framerate)
+{
+  _framerate = framerate;
 }
 
 string DataLoggingBlender::cfg()
