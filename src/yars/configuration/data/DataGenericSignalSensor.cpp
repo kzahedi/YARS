@@ -55,8 +55,8 @@ void DataGenericSignalSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -80,7 +80,7 @@ DataGenericSignalSensor* DataGenericSignalSensor::_copy()
   copy->_signal = _signal;
   copy->_mapping = _mapping;
   if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   return copy;
 }
 
@@ -91,5 +91,6 @@ void DataGenericSignalSensor::_resetTo(const DataSensor *sensor)
   _signal  = other->signal();
   _mapping = other->mapping();
   _filter  = other->filter();
-  _noise   = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
 }

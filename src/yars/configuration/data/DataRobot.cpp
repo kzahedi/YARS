@@ -49,14 +49,9 @@ DataRobot::~DataRobot()
   {
     delete (*i);
   }
-  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
-    delete (*i);
-  }
   _objects.clear();
   _sensors.clear();
   _actuators.clear();
-  _macros.clear();
   if (_controller != NULL)
     delete _controller;
 }
@@ -137,7 +132,6 @@ void DataRobot::add(DataParseElement *element)
   {
     current = parent;
     // __assignSensorsToObjects(); // only needs to be called after copying
-    __applyMacros();
     __collectActuatorObjects();
     __gatherGeoms();
     __applyPose();
@@ -157,14 +151,6 @@ void DataRobot::add(DataParseElement *element)
   if (element->opening(YARS_STRING_POSE))
   {
     DataPoseFactory::set(_pose, element);
-  }
-
-  if (element->opening(YARS_STRING_MACRO))
-  {
-    DataMacroInstance *macroInstance = new DataMacroInstance(this, _macrosDefinitions);
-    current = macroInstance;
-    macroInstance->add(element);
-    _macros.push_back(macroInstance);
   }
 
   DataObject *object = DataObjectFactory::object(element, this);
@@ -219,16 +205,6 @@ void DataRobot::add(DataParseElement *element)
   }
 }
 
-void DataRobot::setMacros(DataMacros *macros)
-{
-  _macrosDefinitions = macros;
-}
-
-DataMacros *DataRobot::macros()
-{
-  return _macrosDefinitions;
-}
-
 DataController *DataRobot::controller()
 {
   return _controller;
@@ -247,17 +223,6 @@ DataActuator *DataRobot::actuator(int index)
 bool DataRobot::selfCollide()
 {
   return _selfCollide;
-}
-
-void DataRobot::__applyMacros()
-{
-  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
-    for (DataObjects::iterator o = (*i)->begin(); o != (*i)->end(); o++)
-    {
-      _objects.push_back(*o);
-    }
-  }
 }
 
 void DataRobot::__applyPose()
@@ -331,8 +296,6 @@ DataRobot *DataRobot::copy()
   copy->_selfCollide = _selfCollide;
   if (_controller != NULL)
     copy->_controller = _controller->copy();
-  if (_macrosDefinitions != NULL)
-    copy->_macrosDefinitions = _macrosDefinitions->copy();
   for (DataObjects::iterator i = _objects.begin(); i != _objects.end(); i++)
   {
     copy->_objects.push_back((*i)->copy());
@@ -344,10 +307,6 @@ DataRobot *DataRobot::copy()
   for (std::vector<DataActuator *>::iterator i = _actuators.begin(); i != _actuators.end(); i++)
   {
     copy->_actuators.push_back((*i)->copy());
-  }
-  for (std::vector<DataMacroInstance *>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
-    copy->_macros.push_back((*i)->copy(this));
   }
   copy->__gatherGeoms();
   copy->__assignSensorsToObjects();

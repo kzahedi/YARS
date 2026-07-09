@@ -39,13 +39,10 @@ std::string toAttributeString(const ordered_json &value)
   return value.dump();
 }
 
-// Canonical element names introduced for readability map onto the legacy
-// names the Data* dispatch expects. Config authors use the left column;
-// the legacy names remain accepted. The snake_case names never conflict
-// with the "elem_attr" shorthand: these elements always carry object
-// values, and the shorthand only applies to scalar-valued keys. (Box
-// face names top/bottom/left/... are context-dependent — cylinders also
-// have a "top" — and are aliased inside DataBox instead.)
+// Canonical element names map onto the legacy names the Data* dispatch
+// expects. The snake_case names never conflict with the "elem_attr"
+// shorthand: these elements always carry object values, and the
+// shorthand only applies to scalar-valued keys.
 const std::map<std::string, std::string> &elementNameAliases()
 {
   static const std::map<std::string, std::string> aliases = {
@@ -54,17 +51,43 @@ const std::map<std::string, std::string> &elementNameAliases()
       {"object_angular_velocity", "oav"},        // object angular velocity sensor
       {"source_anchor", "srcAnchor"},            // muscle anchors
       {"destination_anchor", "dstAnchor"},
-      // camelCase spellings shipped briefly in v0.12.0:
-      {"objectVelocity", "ov"},
-      {"objectAngularVelocity", "oav"},
-      {"sourceAnchor", "srcAnchor"},
-      {"destinationAnchor", "dstAnchor"},
   };
   return aliases;
 }
 
+// Retired legacy spellings (0.14): rejected with a migration hint
+// instead of being silently half-parsed as unknown elements.
+const std::map<std::string, std::string> &retiredElementNames()
+{
+  static const std::map<std::string, std::string> retired = {
+      {"ldr", "light"},
+      {"ov", "object_velocity"},
+      {"oav", "object_angular_velocity"},
+      {"srcAnchor", "source_anchor"},
+      {"dstAnchor", "destination_anchor"},
+      // camelCase spellings shipped briefly in v0.12.0:
+      {"objectVelocity", "object_velocity"},
+      {"objectAngularVelocity", "object_angular_velocity"},
+      {"sourceAnchor", "source_anchor"},
+      {"destinationAnchor", "destination_anchor"},
+      // box face textures (legacy first..sixth):
+      {"first", "top"},
+      {"second", "left"},
+      {"third", "bottom"},
+      {"fourth", "right"},
+      {"fifth", "front"},
+      {"sixth", "back"},
+  };
+  return retired;
+}
+
 std::string internalElementName(const std::string &name)
 {
+  const auto retired = retiredElementNames().find(name);
+  if (retired != retiredElementNames().end())
+    throw std::runtime_error(
+        "legacy element name '" + name + "' (now '" + retired->second +
+        "') — run scripts/json-canonicalize.py to migrate this config");
   const auto &aliases = elementNameAliases();
   const auto hit = aliases.find(name);
   return hit == aliases.end() ? name : hit->second;
@@ -373,27 +396,26 @@ bool parseJsonConfig(const std::string &jsonPath,
     std::vector<std::filesystem::path> includeStack;
     ordered_json document = loadConfigFile(jsonPath, includeStack);
 
-    // Canonical root key is "yars"; "rosiml" is the legacy name from the
-    // XML era. Either maps to the internal "rosiml" element the Data*
-    // dispatch expects (YARS_STRING_ROSIML).
-    const char *rootKey = document.contains("yars") ? "yars" : "rosiml";
-    const bool rootIsObject =
-        document.contains(rootKey) && document[rootKey].is_object();
-    const bool rootIsArray = document.contains(rootKey) &&
-                             document[rootKey].is_array() &&
-                             !document[rootKey].empty();
-    if (!rootIsObject && !rootIsArray)
+    // Canonical root key is "yars" holding a plain object. The XML-era
+    // "rosiml" root and the always-arrays wrapper were retired in 0.14 —
+    // reject them with a migration hint rather than half-parsing.
+    if (document.contains("rosiml") ||
+        (document.contains("yars") && document["yars"].is_array()))
     {
       errors.push_back(jsonPath +
-                        ": missing top-level 'yars' element (or legacy "
-                        "'rosiml'); must be an object, or an array in the "
-                        "legacy always-arrays shape");
+                        ": legacy config shape (rosiml root or "
+                        "always-arrays) — run scripts/json-canonicalize.py "
+                        "to migrate this config");
+      return false;
+    }
+    if (!document.contains("yars") || !document["yars"].is_object())
+    {
+      errors.push_back(jsonPath +
+                        ": missing top-level 'yars' object");
       return false;
     }
 
-    emitElement("rosiml",
-                rootIsObject ? document[rootKey] : document[rootKey][0],
-                root);
+    emitElement("rosiml", document["yars"], root);
     return true;
   }
   catch (const nlohmann::json::exception &e)

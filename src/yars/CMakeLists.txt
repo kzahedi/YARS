@@ -68,9 +68,5 @@ if(YARS_USE_VISUALISATION)
   target_link_libraries(${YARS_TARGET} YarsGUI)
 endif(YARS_USE_VISUALISATION)
 
-option(YARS_USE_VULKAN "Build Vulkan renderer and tests" OFF)
-if(YARS_USE_VULKAN)
-  add_subdirectory(view/vulkan)
-endif(YARS_USE_VULKAN)
 
 INSTALL(TARGETS ${YARS_TARGET} RUNTIME DESTINATION bin CONFIGURATIONS Release Debug)

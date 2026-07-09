@@ -47,7 +47,7 @@ const std::vector<yars::AttributeBinding> &genericProximitySensorAttributeBindin
 DataGenericProximitySensor::DataGenericProximitySensor(DataNode *parent)
   : DataSensor(parent, DATA_GENERIC_PROXIMITY_SENSOR)
 {
-  _noise  = new DataNoise(this);
+  _noise  = std::make_unique<DataNoise>(this);
   _n = NULL;
   _measuredDistance = 0;
   YM_INIT;
@@ -104,7 +104,7 @@ void DataGenericProximitySensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    current = _noise;
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -149,7 +149,7 @@ DataGenericProximitySensor* DataGenericProximitySensor::_copy()
   copy->_mapping          = _mapping;
   copy->_openingAngles    = _openingAngles;
   copy->_measuredDistance = _measuredDistance;
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   if (_filter != NULL) copy->_filter = _filter->copy();
   copy->__setMapping();
   return copy;
@@ -209,7 +209,7 @@ void DataGenericProximitySensor::__setMapping()
   _internalDomain.min = 0; _internalDomain.max = _distance;
   _internalExternalMapping.setInputDomain(_internalDomain);
   _internalExternalMapping.setOutputDomain(_externalDomain);
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 
 Domain DataGenericProximitySensor::getInternalDomain(int index)
@@ -237,7 +237,8 @@ void DataGenericProximitySensor::_resetTo(const DataSensor *sensor)
   _distance      = other->distance();
   _mapping       = other->mapping();
   _openingAngles = other->openingAngles();
-  _noise         = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
   _filter        = other->filter();
   _measuredDistance = other->getMeasuredDistance();
   __setMapping();

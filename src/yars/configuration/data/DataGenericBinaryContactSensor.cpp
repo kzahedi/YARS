@@ -61,8 +61,8 @@ void DataGenericBinaryContactSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -81,7 +81,7 @@ DataGenericBinaryContactSensor* DataGenericBinaryContactSensor::_copy()
   copy->_object = _object;
   copy->_domain = _domain;
   if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   return copy;
 }
 

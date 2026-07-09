@@ -10,9 +10,6 @@
 #include "DataObjectFactory.h" // must be here, otherwise DataBox and the others are not accessible
 // #include "DataTexture.h"
 
-#include "DataMacroInstance.h"
-#include "MacroUserInterface.h"
-
 # define YARS_STRING_ENVIRONMENT            (char*)"environment"
 # define YARS_STRING_ENVIRONMENT_DEFINITION (char*)"environment_definition"
 
@@ -21,7 +18,7 @@
 
 using namespace std;
 
-class DataEnvironment : public DataNode, public MacroUserInterface
+class DataEnvironment : public DataNode
 {
   public:
     /**
@@ -151,8 +148,6 @@ class DataEnvironment : public DataNode, public MacroUserInterface
 
     DataAmbientLight* ambientLight();
 
-    void setMacros(DataMacros *macros);
-    DataMacros* macros();
     // DataTexture* texture();
     bool groundIsFixed();
 
@@ -177,14 +172,10 @@ class DataEnvironment : public DataNode, public MacroUserInterface
     void                       __gatherGeoms();
 
   private:
-    void __applyMacros();
-
     string                           _name;
     DataObjects                      _objects;
     DataObjects                      _geoms;
     std::vector<DataPointLightSource*>    _lightSources;
-    std::vector<DataMacroInstance*>  _macros;
-    DataMacros                      *_macrosDefinitions;
     P3D                              _normal;
     bool                             _fixedGround;
     bool                             _useFog;

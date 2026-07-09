@@ -277,30 +277,35 @@ src/yars/
 - All families migrated (shapes, sensors, actuators, logging, roots);
   `docs/planning/binding-table-recipe.md` stays as the recipe for new
   classes
-- Actuator constructor `_noise` leaks fixed (unique_ptr); their three
-  `leak:` suppressions retired. The two sensor suppressions remain —
-  base-class `_noise` aliasing (and a latent LDR double-delete) make a
-  mechanical fix unsafe; needs a deliberate ownership redesign
+- All `_noise` ownership fixed (unique_ptr in DataSensor base +
+  actuators; `_resetTo` deep-copies instead of aliasing; LDR
+  double-delete removed); all five constructor `leak:` suppressions
+  retired. Known follow-up: `DataGenericActuatorSensor` has a
+  `vector<DataNoise*>` shadowing the base member (still leaks); the
+  `_filter` members alias/leak the same way (covered by
+  `leak:NoiseFactory::create` etc.)
 - ✅ Required-attribute crash gap closed: all unchecked
   `attribute(x)->` derefs now go through
   `DataParseElement::requiredAttribute`, which throws a clean
   "<element>: missing attribute" error that JsonParser prefixes with
   the file path
 
-### Phase 2: Graphics streams
-- **Vulkan renderer**: builds behind `YARS_USE_VULKAN=OFF`, not wired
-  into the runtime (`docs/vulkan-status.md`); decide wire-in vs. drop
+### Phase 2: Graphics streams — ✅ CLOSED
+- **Vulkan renderer**: dropped (decision 2026-07-09) — the experimental
+  module was never wired into the runtime and the Ogre 14 path is
+  complete; recoverable from git history (last present at v0.13.0)
 - **Shadows**: ✅ resolved — `SHADOWTYPE_TEXTURE_MODULATIVE` +
   `ShadowMapper` (`src/yars/view/gui/ShadowMapper.h`); the plan docs
   are historical
 
 ### Phase 3: Housekeeping
-- `v0.8.7-open-points.md` leftovers: Ogre submodule hosting decision,
-  `OgreHandler` singleton refactor
-- At 1.0: consider dropping legacy config-format acceptance (`rosiml`,
-  always-arrays, v0.12.0 camelCase aliases) and the unused XML-era
-  macros feature (`DataMacroInstance`)
-- C++20 when appropriate
+- ✅ Submodule hosting: both `ext/ogre-source` and `ext/bullet-source`
+  point at kzahedi forks (pinned commits preserved)
+- ✅ Legacy config-format acceptance dropped in 0.14 (loud errors with
+  a canonicalize hint); XML-era macros feature deleted
+- Remaining: `OgreHandler` singleton refactor (openspec pre-flight
+  exists); `DataGenericActuatorSensor` noise vector + `_filter`
+  ownership; C++20 when appropriate
 
 ## Lessons Learned
 

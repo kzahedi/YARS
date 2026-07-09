@@ -29,7 +29,7 @@ const std::vector<yars::AttributeBinding> &genericAmbientLightSensorAttributeBin
 DataGenericAmbientLightSensor::DataGenericAmbientLightSensor(DataNode* parent)
   : DataSensor(parent,DATA_GENERIC_AMBIENT_LIGHT_SENSOR)
 {
-  _noise = new DataNoise(this);
+  _noise = std::make_unique<DataNoise>(this);
   _n     = NULL;
 }
 
@@ -42,7 +42,7 @@ void DataGenericAmbientLightSensor::add(DataParseElement *element)
   if(element->closing(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR))
   {
     current = parent;
-    _n = NoiseFactory::create(_noise);
+    _n = NoiseFactory::create(_noise.get());
   }
   if(element->opening(YARS_STRING_GENERIC_AMBIENT_LIGHT_SENSOR))
   {
@@ -50,7 +50,7 @@ void DataGenericAmbientLightSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    current = _noise;
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -69,7 +69,7 @@ DataGenericAmbientLightSensor* DataGenericAmbientLightSensor::_copy()
 {
   DataGenericAmbientLightSensor *copy = new DataGenericAmbientLightSensor(NULL);
   copy->_name = _name;
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   if (_filter != NULL) copy->_filter = _filter->copy();
   copy->_mapping = _mapping;
   copy->__setMapping();
@@ -81,7 +81,8 @@ void DataGenericAmbientLightSensor::_resetTo(const DataSensor *sensor)
   DataGenericAmbientLightSensor* other = (DataGenericAmbientLightSensor*)sensor;
   _name    = other->name();
   _mapping = other->mapping();
-  _noise  = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
   _filter = other->filter();
 }
 
@@ -124,7 +125,7 @@ void DataGenericAmbientLightSensor::__setMapping()
   _internalDomain.min = 0.0; _internalDomain.max = 1.0;
   _internalExternalMapping.setInputDomain(_internalDomain);
   _internalExternalMapping.setOutputDomain(_externalDomain);
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 
 Domain DataGenericAmbientLightSensor::getInternalDomain(int index)

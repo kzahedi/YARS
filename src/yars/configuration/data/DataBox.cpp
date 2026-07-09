@@ -12,12 +12,6 @@
 
 #define YARS_STRING_USE                    (char*)"use"
 #define YARS_STRING_TEXTURE                (char*)"texture"
-#define YARS_STRING_FIRST_TEXTURE          (char*)"first"
-#define YARS_STRING_SECOND_TEXTURE         (char*)"second"
-#define YARS_STRING_THIRD_TEXTURE          (char*)"third"
-#define YARS_STRING_FOURTH_TEXTURE         (char*)"fourth"
-#define YARS_STRING_FIFTH_TEXTURE          (char*)"fifth"
-#define YARS_STRING_SIXTH_TEXTURE          (char*)"sixth"
 #define YARS_STRING_TOP_FACE_TEXTURE       (char*)"top"
 #define YARS_STRING_LEFT_FACE_TEXTURE      (char*)"left"
 #define YARS_STRING_BOTTOM_FACE_TEXTURE    (char*)"bottom"
@@ -97,14 +91,15 @@ void DataBox::add(DataParseElement *element)
   {
     for(int i = 0; i < 6; i++) _texture[i] = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
-  // Canonical face names (matching SceneGraphBoxNode's face build order:
-  // +z, -x, -z, +x, +y, -y with z up); first..sixth are the legacy names.
-  if(element->opening(YARS_STRING_TOP_FACE_TEXTURE)    || element->opening(YARS_STRING_FIRST_TEXTURE))  _texture[0] = element->requiredAttribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_LEFT_FACE_TEXTURE)   || element->opening(YARS_STRING_SECOND_TEXTURE)) _texture[1] = element->requiredAttribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_BOTTOM_FACE_TEXTURE) || element->opening(YARS_STRING_THIRD_TEXTURE))  _texture[2] = element->requiredAttribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_RIGHT_FACE_TEXTURE)  || element->opening(YARS_STRING_FOURTH_TEXTURE)) _texture[3] = element->requiredAttribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_FRONT_FACE_TEXTURE)  || element->opening(YARS_STRING_FIFTH_TEXTURE))  _texture[4] = element->requiredAttribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_BACK_FACE_TEXTURE)   || element->opening(YARS_STRING_SIXTH_TEXTURE))  _texture[5] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  // Face names match SceneGraphBoxNode's face build order:
+  // +z, -x, -z, +x, +y, -y with z up. (Legacy first..sixth were retired
+  // in 0.14; the JSON reader rejects them with a migration hint.)
+  if(element->opening(YARS_STRING_TOP_FACE_TEXTURE))    _texture[0] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_LEFT_FACE_TEXTURE))   _texture[1] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_BOTTOM_FACE_TEXTURE)) _texture[2] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_RIGHT_FACE_TEXTURE))  _texture[3] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_FRONT_FACE_TEXTURE))  _texture[4] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_BACK_FACE_TEXTURE))   _texture[5] = element->requiredAttribute(YARS_STRING_NAME)->value();
   if(element->opening(YARS_STRING_OBJECT_MESH_VISUALISATION))
   {
     DataMeshVisualisation *mesh = new DataMeshVisualisation(this);

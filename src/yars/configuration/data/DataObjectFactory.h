@@ -7,7 +7,6 @@
 #include "DataCylinder.h"
 #include "DataCapsule.h"
 #include "DataComposite.h"
-#include "DataMacro.h"
 
 #include "DataPly.h"
 

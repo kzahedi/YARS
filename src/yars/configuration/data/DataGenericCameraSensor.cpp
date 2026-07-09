@@ -70,8 +70,8 @@ void DataGenericCameraSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -100,7 +100,7 @@ DataGenericCameraSensor* DataGenericCameraSensor::_copy()
   copy->_pose = _pose;
   copy->_openingAngles = _openingAngles;
   copy->_mapping = _mapping;
-  if (_noise != NULL) copy->_noise = _noise->copy();
+  if (_noise) copy->_noise.reset(_noise->copy());
   if (_filter != NULL) copy->_filter = _filter->copy();
   return copy;
 }
@@ -114,5 +114,6 @@ void DataGenericCameraSensor::_resetTo(const DataSensor *sensor)
   _openingAngles = other->openingAngles();
   _mapping       = other->mapping();
   _filter        = other->filter();
-  _noise         = other->noise();
+  // deep copy: aliasing another sensor's noise would double-free
+  _noise.reset(other->noise() ? other->noise()->copy() : nullptr);
 }

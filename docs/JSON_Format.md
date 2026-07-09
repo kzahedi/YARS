@@ -51,7 +51,10 @@ A config is a JSON object with a single required key `yars`:
 - `$schema` (optional) is ignored by the reader; editors use it to locate
   the JSON Schema when the repository `.vscode/settings.json` wiring is
   not in effect.
-- `rosiml` is accepted in place of `yars` for legacy configs.
+- The XML-era `rosiml` root (and the always-arrays wrapper) are
+  **rejected since 0.14** with a hint to run
+  `scripts/json-canonicalize.py`, which still reads every historical
+  shape and rewrites it canonically.
 
 ## Structural rules
 
@@ -169,9 +172,9 @@ key to disable:
 
 ## Element names
 
-A few legacy element names were replaced with descriptive ones. New
-configs use the canonical names; the legacy names remain accepted
-everywhere (and `scripts/json-canonicalize.py` upgrades them):
+A few legacy element names were replaced with descriptive ones. Since
+0.14 the reader **rejects** the legacy spellings with a migration hint;
+`scripts/json-canonicalize.py` upgrades them:
 
 | Canonical | Legacy | Meaning |
 |-----------|--------|---------|
@@ -446,16 +449,16 @@ enforce it); a config the schema rejects may still run.
 
 ## Tooling and legacy formats
 
-The reader accepts every historical shape — all of the following parse
-to identical simulations (verified byte-identical on the reference
-logs):
+Since 0.14 the reader accepts only the canonical shape; retired shapes
+fail with an explicit migration hint. `scripts/json-canonicalize.py`
+still reads every historical era and rewrites it canonically:
 
-| Era | Root | Elements | Values |
-|-----|------|----------|--------|
-| canonical (≥ 0.12) | `"yars"` | objects, tagged arrays, `elem_attr`, `robots` array, `null` flags, renamed elements | native types, `#RRGGBB` |
-| 0.10–0.11 | `"yars"` | objects, tagged arrays, `elem_attr`, plural wrappers, `{}` flags, legacy names | native types, `#RRGGBB` |
-| stage 1 | `"rosiml"` | objects | native types |
-| always-arrays (0.9.x, from `XmlToJson`) | `"rosiml"` | one-element arrays everywhere, `#children` | all strings |
+| Era | Root | Reader (≥ 0.14) |
+|-----|------|------------------|
+| canonical (≥ 0.12) | `"yars"` | ✅ accepted |
+| 0.10–0.11 (plural wrappers, `{}` flags, legacy names) | `"yars"` | structural forms still parse; retired element names are rejected with a hint |
+| stage 1 | `"rosiml"` | ❌ rejected with hint |
+| always-arrays (0.9.x, from `XmlToJson`) | `"rosiml"` | ❌ rejected with hint |
 
 - **Canonicalize** any accepted config (idempotent):
 

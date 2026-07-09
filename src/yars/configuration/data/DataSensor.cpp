@@ -3,14 +3,12 @@
 DataSensor::DataSensor(DataNode *parent, int type)
   : DataNode(parent)
 {
-  _noise  = NULL;
   _filter = NULL;
   _type   = type;
 }
 
 DataSensor::~DataSensor()
 {
-  if(_noise  != NULL) delete _noise;
   if(_filter != NULL) delete _filter;
 }
 
@@ -48,7 +46,7 @@ void DataSensor::setName(string name)
 
 DataNoise* DataSensor::noise()
 {
-  return _noise;
+  return _noise.get();
 }
 
 DataFilter* DataSensor::filter()

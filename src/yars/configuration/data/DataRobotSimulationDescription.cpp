@@ -22,7 +22,6 @@ DataRobotSimulationDescription::DataRobotSimulationDescription(DataNode*)
 
   _simulator   = NULL;
   _screens     = NULL;
-  _macros      = NULL;
   _robots    = NULL;
   _environment = NULL;
   _signals     = NULL;
@@ -42,7 +41,6 @@ DataRobotSimulationDescription::~DataRobotSimulationDescription()
 {
   if(_screens     != NULL) delete _screens;
   if(_robots      != NULL) delete _robots;
-  if(_macros      != NULL) delete _macros;
   if(_environment != NULL) delete _environment;
   if(_signals     != NULL) delete _signals;
   if(_simulator   != NULL) delete _simulator;
@@ -77,11 +75,6 @@ DataSimulator* DataRobotSimulationDescription::simulator()
 DataScreens* DataRobotSimulationDescription::screens()
 {
   return _screens;
-}
-
-DataMacros* DataRobotSimulationDescription::macros()
-{
-  return _macros;
 }
 
 DataRobots* DataRobotSimulationDescription::robots()
@@ -140,19 +133,11 @@ void DataRobotSimulationDescription::__getChild(DataParseElement *element)
     return;
   }
 
-  if(element->opening(YARS_STRING_MACROS))
-  {
-    _macros = new DataMacros(this);
-    current = _macros;
-    _macros->add(element);
-  }
-
   if(element->opening(YARS_STRING_ENVIRONMENT))
   {
     _environment = new DataEnvironment(this);
     current       = _environment;
     _environment->add(element);
-    _environment->setMacros(_macros);
     return;
   }
 
@@ -161,7 +146,6 @@ void DataRobotSimulationDescription::__getChild(DataParseElement *element)
     _robots = new DataRobots(this);
     current   = _robots;
     _robots->add(element);
-    _robots->setMacros(_macros);
     return;
   }
 
@@ -343,14 +327,12 @@ void DataRobotSimulationDescription::clear()
 {
   if(_screens     != NULL) delete _screens;
   if(_robots    != NULL) delete _robots;
-  if(_macros      != NULL) delete _macros;
   if(_environment != NULL) delete _environment;
   if(_signals     != NULL) delete _signals;
   if(_simulator   != NULL) delete _simulator;
   if(_logging     != NULL) delete _logging;
   _screens     = NULL;
   _robots    = NULL;
-  _macros      = NULL;
   _environment = NULL;
   _signals     = NULL;
   _simulator   = NULL;
@@ -365,7 +347,6 @@ DataRobotSimulationDescription* DataRobotSimulationDescription::copy()
   copy->_version      = _version;
   if(_simulator   != NULL) copy->_simulator   = _simulator->copy();
   if(_screens     != NULL) copy->_screens     = _screens->copy();
-  if(_macros      != NULL) copy->_macros      = _macros->copy();
   if(_robots    != NULL) copy->_robots    = _robots->copy();
   if(_environment != NULL) copy->_environment = _environment->copy();
   if(_signals     != NULL) copy->_signals     = _signals->copy();
@@ -517,7 +498,6 @@ void DataRobotSimulationDescription::resetTo(const DataRobotSimulationDescriptio
 
   // _simulator << rsd._simulator; // not required
   // _screen    << rsd._screens;   // not required
-  // _macros    << rsd._macros;    // not required
   // if(_environment != NULL) copy->_environment = _environment->copy();
   // if(_signals     != NULL) copy->_signals     = _signals->copy();
   // if(_traces      != NULL) copy->_traces      = _traces->copy();

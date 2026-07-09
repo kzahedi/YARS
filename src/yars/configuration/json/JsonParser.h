@@ -29,7 +29,7 @@ namespace yars
  *      "lookAt": {"x": 0.0, "y": 0.01, "z": 0.0}
  *  - array of objects: repeated child elements, one per entry
  *      "hinge": [{...}, {...}]
- *    (legacy always-arrays configs use this with one entry per singleton)
+ *
  *  - array of objects that carry "#tag": the key is a container element
  *    and the entries are its ordered, individually-tagged children —
  *      "sensors": [{"#tag": "ldr", ...}, {"#tag": "deflection", ...}]
@@ -51,9 +51,12 @@ namespace yars
  *    cycles are a hard error. See xml/robots/ for shared robot
  *    fragments used this way.
  *
- * Root key is "yars" ("rosiml" accepted for legacy configs); either maps
- * to the internal "rosiml" element (YARS_STRING_ROSIML). The value may
- * be a plain object or a one-element array in the legacy shape. A
+ * Root key is "yars" holding a plain object (maps to the internal
+ * "rosiml" element, YARS_STRING_ROSIML). The XML-era "rosiml" root, the
+ * always-arrays wrapper, and retired legacy element names (ldr, ov,
+ * oav, srcAnchor, dstAnchor, first..sixth, the v0.12.0 camelCase
+ * spellings) are rejected since 0.14 with a hint to run
+ * scripts/json-canonicalize.py. A
  * top-level "$schema" key is ignored by the reader; JSON Schemas for
  * editor validation live in schema/ (wired up for VS Code via
  * .vscode/settings.json, checkable headless via
