@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataEnvironment.h>
+#include <yars/configuration/data/DataBinding.h>
 
 #include <yars/util/macros.h>
 
@@ -28,6 +29,23 @@
 
 # define OPTION_1                                    (char*)"option1"
 # define OPTION_2                                    (char*)"option2"
+
+
+namespace
+{
+// Attribute binding table for the environment's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &environmentAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataEnvironment *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataEnvironment::DataEnvironment(DataNode *parent)
   : DataNode(parent)
@@ -69,7 +87,7 @@ void DataEnvironment::add(DataParseElement *element)
 {
   if(element->opening(YARS_STRING_ENVIRONMENT))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, environmentAttributeBindings());
   }
   if(element->closing(YARS_STRING_ENVIRONMENT))
   {
