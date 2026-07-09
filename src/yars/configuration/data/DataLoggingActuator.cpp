@@ -1,7 +1,9 @@
 #include <yars/configuration/data/DataLoggingActuator.h>
+#include "DataBinding.h"
 
 #include <yars/util/YarsErrorHandler.h>
 
+#include <cstdlib>
 #include <sstream>
 
 using namespace std;
@@ -22,6 +24,27 @@ using namespace std;
 #define YARS_STRING_ACTUATOR_USE_DEFINITION   (char*)"actuator_use_definition"
 #define YARS_STRING_POSITIVE_NON_ZERO_INTEGER (char*)"positive_non_zero_integer_definition"
 
+
+namespace
+{
+// Attribute binding table for the actuator logger's own opening tag.
+// Child-element dispatch (internal/external/desired/appliedForce/
+// appliedVelocity) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingActuatorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_TARGET,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingActuator *>(self)->setTarget(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_PRECISION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingActuator *>(self)->setPrecision(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingActuator::DataLoggingActuator(DataNode *parent)
   : DataNode(parent)
@@ -44,8 +67,7 @@ void DataLoggingActuator::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_LOGGING_ACTUATOR))
   {
-    element->set(YARS_STRING_TARGET, _target);
-    element->set(YARS_STRING_PRECISION, _precision);
+    yars::applyAttributes(this, element, loggingActuatorAttributeBindings());
   }
   if(element->opening(YARS_STRING_INTERNAL))
   {
@@ -82,6 +104,16 @@ DataLoggingActuator* DataLoggingActuator::copy()
 string DataLoggingActuator::target()
 {
   return _target;
+}
+
+void DataLoggingActuator::setTarget(string target)
+{
+  _target = target;
+}
+
+void DataLoggingActuator::setPrecision(int precision)
+{
+  _precision = precision;
 }
 
 DataActuator* DataLoggingActuator::actuator()
