@@ -287,7 +287,9 @@ src/yars/
 ### Phase 2: Graphics streams
 - **Vulkan renderer**: builds behind `YARS_USE_VULKAN=OFF`, not wired
   into the runtime (`docs/vulkan-status.md`); decide wire-in vs. drop
-- **Shadows**: open thread, see `docs/planning/shadows_v5_plan.md`
+- **Shadows**: ✅ resolved — `SHADOWTYPE_TEXTURE_MODULATIVE` +
+  `ShadowMapper` (`src/yars/view/gui/ShadowMapper.h`); the plan docs
+  are historical
 
 ### Phase 3: Housekeeping
 - `v0.8.7-open-points.md` leftovers: Ogre submodule hosting decision,

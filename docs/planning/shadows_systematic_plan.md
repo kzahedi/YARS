@@ -1,5 +1,11 @@
 # Shadows — systematic plan (2026-05-20)
 
+> **RESOLVED (2026-06):** shadow mapping shipped via
+> `SHADOWTYPE_TEXTURE_MODULATIVE` + `ShadowMapper`
+> (`src/yars/view/gui/ShadowMapper.h`, commit `9c3f07b`); the custom
+> RTT pipeline was removed in `3dd7a77`. This document is kept as a
+> historical record of the approaches considered.
+
 After multiple failed attempts at making `SHADOWTYPE_TEXTURE_MODULATIVE`
 with custom caster/receiver materials work correctly on GL3+ core, the
 plan is to switch to **`SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED`** —

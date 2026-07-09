@@ -1,5 +1,11 @@
 # Shadows v5 — comprehensive plan (2026-05-21 PM)
 
+> **RESOLVED (2026-06):** shadow mapping shipped via
+> `SHADOWTYPE_TEXTURE_MODULATIVE` + `ShadowMapper`
+> (`src/yars/view/gui/ShadowMapper.h`, commit `9c3f07b`); the custom
+> RTT pipeline was removed in `3dd7a77`. This document is kept as a
+> historical record of the approaches considered.
+
 After three sessions of failed attempts at making `SHADOWTYPE_TEXTURE_*`
 on Ogre 14 + GL3+ core produce correct shadows, this document
 consolidates **every** approach worth trying — from cheap one-day
