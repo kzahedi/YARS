@@ -273,14 +273,14 @@ src/yars/
 (Observer removal, XML→JSON migration, GoogleTest suite, and CI are all
 **done** — see the sections above.)
 
-### Phase 1: Binding-table migration (JSON Stage 4, in progress)
-- Migrate remaining `Data*::add()` attribute blocks to
-  `yars::AttributeBinding` tables per
-  `docs/planning/binding-table-recipe.md`
-- Order: sensors (14 classes) → actuators (4) → logging (12) →
-  robot/environment roots
-- Retire the corresponding `leak:Data*` entries in
-  `scripts/sanitizer-suppressions.txt` per class
+### Phase 1: Binding-table migration (JSON Stage 4) — ✅ COMPLETE
+- All families migrated (shapes, sensors, actuators, logging, roots);
+  `docs/planning/binding-table-recipe.md` stays as the recipe for new
+  classes
+- Actuator constructor `_noise` leaks fixed (unique_ptr); their three
+  `leak:` suppressions retired. The two sensor suppressions remain —
+  base-class `_noise` aliasing (and a latent LDR double-delete) make a
+  mechanical fix unsafe; needs a deliberate ownership redesign
 - ✅ Required-attribute crash gap closed: all unchecked
   `attribute(x)->` derefs now go through
   `DataParseElement::requiredAttribute`, which throws a clean
