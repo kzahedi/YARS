@@ -1,4 +1,5 @@
 #include "DataGenericSignalSensor.h"
+#include "DataBinding.h"
 #include "DataDomainFactory.h"
 
 # define YARS_STRING_SOURCE             (char*)"source"
@@ -8,6 +9,22 @@
 # define YARS_STRING_OBJECT             (char*)"object"
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
+
+namespace
+{
+// Attribute binding table for the signal sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericSignalSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericSignalSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericSignalSensor::DataGenericSignalSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_SIGNAL_SENSOR)
@@ -26,7 +43,7 @@ void DataGenericSignalSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_SIGNAL_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericSignalSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_SOURCE))
   {
