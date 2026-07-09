@@ -34,10 +34,10 @@ void DataMeshVisualisation::add(DataParseElement *element)
   }
 
   if(element->opening(YARS_STRING_OBJECT_MESH_VISUALISATION))
-    _name = element->attribute(YARS_STRING_NAME)->value();
+    _name = element->requiredAttribute(YARS_STRING_NAME)->value();
 
   if(element->opening(YARS_STRING_POSE))    DataPoseFactory::set(_pose, element);
-  if(element->opening(YARS_STRING_TEXTURE)) _texture = element->attribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_TEXTURE)) _texture = element->requiredAttribute(YARS_STRING_NAME)->value();
 
   if(element->opening(YARS_STRING_SCALE))
   {

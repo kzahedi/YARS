@@ -1,5 +1,7 @@
 #include "DataParseElement.h"
 
+#include <stdexcept>
+
 DataParseElement::DataParseElement(int type)
 {
   _name = "";
@@ -44,6 +46,16 @@ DataParseAttribute* DataParseElement::attribute(string name)
     }
   }
   return NULL;
+}
+
+DataParseAttribute* DataParseElement::requiredAttribute(string name)
+{
+  DataParseAttribute *found = attribute(name);
+  if(found == nullptr)
+  {
+    throw std::runtime_error(_name + ": missing attribute '" + name + "'");
+  }
+  return found;
 }
 bool DataParseElement::hasAttriute(string name)
 {

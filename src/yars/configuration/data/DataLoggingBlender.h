@@ -39,8 +39,11 @@ class DataLoggingBlender : public DataLoggingModule, public DataNode
 
 
     string filename();
+    void   setFilename(string filename);
     string cfg();
+    void   setCfg(string cfg);
     int    framerate();
+    void   setFramerate(int framerate);
 
   private:
     string _filename;

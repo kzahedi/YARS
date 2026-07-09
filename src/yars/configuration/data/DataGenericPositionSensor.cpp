@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericPositionSensor.h>
+#include <yars/configuration/data/DataBinding.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 
 #include <yars/defines/mutex.h>
@@ -17,6 +18,22 @@
 # define YARS_STRING_X                      (char*)"x"
 # define YARS_STRING_Y                      (char*)"y"
 # define YARS_STRING_Z                      (char*)"z"
+
+namespace
+{
+// Attribute binding table for the position sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericPositionSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericPositionSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericPositionSensor::DataGenericPositionSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_POSITION_SENSOR)
@@ -39,7 +56,7 @@ void DataGenericPositionSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_POSITION_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericPositionSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {

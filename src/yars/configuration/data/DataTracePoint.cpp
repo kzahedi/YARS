@@ -49,7 +49,7 @@ void DataTracePoint::add(DataParseElement *element)
     element->set(YARS_STRING_Y,      _offset.y);
     element->set(YARS_STRING_Z,      _offset.z);
     element->set(YARS_STRING_SIZE,   _pointSize);
-    DataColourFactory::set(_color, element->attribute(YARS_STRING_COLOR)->value());
+    DataColourFactory::set(_color, element->requiredAttribute(YARS_STRING_COLOR)->value());
   }
 }
 

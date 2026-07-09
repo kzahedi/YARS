@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataHingeActuator.h>
+#include "DataBinding.h"
 
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
@@ -9,6 +10,7 @@
 #include <yars/util/noise/NoiseFactory.h>
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/defines/mutex.h>
+#include <cstdlib>
 #include <vector>
 
 #define YARS_STRING_FRICTION (char *)"friction"
@@ -58,10 +60,38 @@
 #define YARS_STRING_PID (char *)"pid"
 #define YARS_STRING_UNIT_INTERVAL (char *)"unit_interval_definition"
 
+namespace
+{
+// Attribute binding table for the hinge's own opening tag. Child-element
+// dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &hingeActuatorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataHingeActuator *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_TYPE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataHingeActuator *>(self)->setJointType(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_FRICTION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataHingeActuator *>(self)->setFriction(atof(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_MODE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataHingeActuator *>(self)->setMode(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataHingeActuator::DataHingeActuator(DataNode *parent)
     : DataActuator(parent, DATA_ACTUATOR_HINGE)
 {
-  _noise = new DataNoise(this);
+  _noise = std::make_unique<DataNoise>(this);
   _filter = NULL;
   _deflectionSet = false;
   _isActive = true;
@@ -99,16 +129,13 @@ void DataHingeActuator::add(DataParseElement *element)
   if (element->closing(YARS_STRING_HINGE))
   {
     __close();
-    _n = NoiseFactory::create(_noise);
+    _n = NoiseFactory::create(_noise.get());
     current = parent;
   }
 
   if (element->opening(YARS_STRING_HINGE))
   {
-    element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_TYPE, _jointType);
-    element->set(YARS_STRING_FRICTION, _friction);
-    element->set(YARS_STRING_MODE, _mode);
+    yars::applyAttributes(this, element, hingeActuatorAttributeBindings());
     if (_mode == YARS_STRING_ACTIVE)
       _isActive = true;
     if (_mode == YARS_STRING_PASSIVE)
@@ -177,7 +204,7 @@ void DataHingeActuator::add(DataParseElement *element)
 
   if (element->opening(YARS_STRING_NOISE))
   {
-    current = _noise;
+    current = _noise.get();
     _noise->add(element);
   }
   if (element->opening(YARS_STRING_FILTER))
@@ -220,7 +247,7 @@ Domain DataHingeActuator::mapping()
 
 DataNoise *DataHingeActuator::noise()
 {
-  return _noise;
+  return _noise.get();
 }
 
 DataFilter *DataHingeActuator::filter()
@@ -288,14 +315,34 @@ double DataHingeActuator::friction()
   return _friction;
 }
 
+void DataHingeActuator::setName(string name)
+{
+  _name = name;
+}
+
+void DataHingeActuator::setJointType(string jointType)
+{
+  _jointType = jointType;
+}
+
+void DataHingeActuator::setMode(string mode)
+{
+  _mode = mode;
+}
+
+void DataHingeActuator::setFriction(double friction)
+{
+  _friction = friction;
+}
+
 DataHingeActuator *DataHingeActuator::_copy()
 {
   DataHingeActuator *copy = new DataHingeActuator(NULL);
 
   if (_filter != NULL)
     copy->_filter = _filter->copy();
-  if (_noise != NULL)
-    copy->_noise = _noise->copy();
+  if (_noise != nullptr)
+    copy->_noise.reset(_noise->copy());
   copy->_deflection = _deflection;
   copy->_mapping = _mapping;
   copy->_parameter = _parameter;
@@ -423,7 +470,7 @@ void DataHingeActuator::__setMapping()
     _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
     break;
   }
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 
 Domain DataHingeActuator::getInternalDomain(int index)

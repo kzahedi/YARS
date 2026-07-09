@@ -61,6 +61,13 @@ class DataGenericLightDependentResistorSensor : public DataSensor
     double opening();
 
     /**
+     * @brief Sets the opening angle.
+     *
+     * @param opening
+     */
+    void setOpening(double opening);
+
+    /**
      * @brief Returns the domain of the sensor, i.e. which light values can be
      * measured.
      *

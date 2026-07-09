@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericVelocitySensor.h>
+#include <yars/configuration/data/DataBinding.h>
 
 #include <yars/configuration/data/DataDomainFactory.h>
 
@@ -13,6 +14,22 @@
 # define YARS_STRING_DOMAIN             (char*)"domain"
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
+
+namespace
+{
+// Attribute binding table for the velocity sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericVelocitySensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericVelocitySensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericVelocitySensor::DataGenericVelocitySensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_VELOCITY_SENSOR)
@@ -35,7 +52,7 @@ void DataGenericVelocitySensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_VELOCITY_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericVelocitySensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {

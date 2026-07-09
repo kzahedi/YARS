@@ -48,7 +48,7 @@ void DataPhysicsParameter::add(DataParseElement *element)
   if(element->opening(YARS_STRING_FRICTION))
   {
     // cout << "set friction to " << _friction << endl;
-    // cout << element->attribute(YARS_STRING_VALUE)->value() << endl;
+    // cout << element->requiredAttribute(YARS_STRING_VALUE)->value() << endl;
     element->set(YARS_STRING_VALUE, _friction);
     _useFriction = true;
   }

@@ -38,10 +38,12 @@ class DataLoggingObject : public DataNode, public std::vector<string>
 
 
     string target();
+    void setTarget(string target);
 
     DataObject* object();
     void set(DataObject* object);
     int precision();
+    void setPrecision(int precision);
 
   private:
     string      _target;

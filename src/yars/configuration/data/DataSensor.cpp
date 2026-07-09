@@ -41,6 +41,11 @@ string DataSensor::name()
   return _name;
 }
 
+void DataSensor::setName(string name)
+{
+  _name = name;
+}
+
 DataNoise* DataSensor::noise()
 {
   return _noise;

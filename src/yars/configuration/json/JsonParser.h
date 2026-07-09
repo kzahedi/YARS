@@ -63,17 +63,15 @@ namespace yars
  * support "-" (stdin) — stdin JSON configs are out of scope for Stage 1;
  * see YarsConfiguration::__readXmlFiles for where that is enforced.
  *
- * NOTE on validation (Stage 1 known gap, see docs/planning/json-migration-notes.md
- * §"JSON validation gap"): malformed/incomplete JSON structure (parse
- * errors, a missing "#tag" inside a "#children" entry, a missing root
- * "rosiml" key) is caught here and reported cleanly via `errors`. A
- * missing REQUIRED XML attribute (e.g. <mass kg="..."/> without `kg`) is
- * NOT guarded here — same as the XML path, which relies on upstream XSD
- * validation to prevent it from ever reaching the Data* classes. The JSON
- * path has no equivalent schema validation yet (planned for Stage 4's
- * binding tables), so a malformed-but-JSON-well-formed config can still
- * crash inside a Data*::add() unchecked `element->attribute(x)->value()`
- * dereference. This is a documented, user-visible gap for Stage 1.
+ * NOTE on validation: malformed/incomplete JSON structure (parse
+ * errors, a missing "#tag" inside an ordered-children entry, a missing
+ * root key) is caught here and reported cleanly via `errors`. A missing
+ * REQUIRED attribute (e.g. a box face texture without `name`) is caught
+ * by DataParseElement::requiredAttribute at the read site and reported
+ * as "<file>: <element>: missing attribute '<name>'" through the same
+ * `errors` path. Attributes read via the optional element->set()/
+ * binding-table rows keep their legacy silently-default semantics; the
+ * JSON Schema (schema/) additionally flags them while editing.
  */
 bool parseJsonConfig(const std::string &jsonPath,
                       DataRobotSimulationDescription *root,

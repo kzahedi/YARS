@@ -23,7 +23,7 @@ void DataFollowables::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_FOLLOWABLE))
   {
-    push_back(element->attribute(YARS_STRING_NAME)->value());
+    push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
   }
 }
 

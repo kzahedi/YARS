@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericActuatorSensor.h>
+#include <yars/configuration/data/DataBinding.h>
 
 #include <yars/configuration/data/DataDomainFactory.h>
 
@@ -25,6 +26,22 @@
 # define YARS_STRING_DOMAIN_DEFINITION  (char*)"generic_actuator_domain_definition"
 # define YARS_STRING_ANGULAR            (char*)"angular"
 # define YARS_STRING_LINEAR             (char*)"linear"
+
+namespace
+{
+// Attribute binding table for the actuator sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericActuatorSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericActuatorSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericActuatorSensor::DataGenericActuatorSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_ACTUATOR_SENSOR)
@@ -54,7 +71,7 @@ void DataGenericActuatorSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_ACTUATOR_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericActuatorSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {

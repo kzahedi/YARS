@@ -1,4 +1,7 @@
 #include "DataLoggingCSV.h"
+#include "DataBinding.h"
+
+#include <cstdlib>
 
 #define YARS_STRING_TARGET                (char*)"target"
 #define YARS_STRING_MODULE                (char*)"module"
@@ -18,6 +21,42 @@
 
 #define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
 
+
+namespace
+{
+// Attribute binding table for the csv logger's own opening tag.
+// Child-element dispatch (target) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingCSVAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setFilename(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_DATE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setUseDate(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_START,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setStart(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_STOP,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setStop(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_DEBUG,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setDebug(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_USE_TIME_STEP,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingCSV *>(self)->setUseTimeStep(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingCSV::DataLoggingCSV(DataNode *parent)
   : DataNode(parent)
@@ -42,12 +81,7 @@ void DataLoggingCSV::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_CSV_LOGGER))
   {
-    element->set(YARS_STRING_NAME,          _filename);
-    element->set(YARS_STRING_DATE,          _useDate);
-    element->set(YARS_STRING_START,         _start);
-    element->set(YARS_STRING_STOP,          _stop);
-    element->set(YARS_STRING_DEBUG,         _debug);
-    element->set(YARS_STRING_USE_TIME_STEP, _useTimeStep);
+    yars::applyAttributes(this, element, loggingCSVAttributeBindings());
   }
   if(element->opening(YARS_STRING_TARGET))
   {
@@ -77,6 +111,36 @@ DataLoggingCSV* DataLoggingCSV::copy()
 string DataLoggingCSV::filename()
 {
   return _filename;
+}
+
+void DataLoggingCSV::setFilename(string filename)
+{
+  _filename = filename;
+}
+
+void DataLoggingCSV::setUseDate(bool useDate)
+{
+  _useDate = useDate;
+}
+
+void DataLoggingCSV::setStart(int start)
+{
+  _start = start;
+}
+
+void DataLoggingCSV::setStop(int stop)
+{
+  _stop = stop;
+}
+
+void DataLoggingCSV::setDebug(bool debug)
+{
+  _debug = debug;
+}
+
+void DataLoggingCSV::setUseTimeStep(bool useTimeStep)
+{
+  _useTimeStep = useTimeStep;
 }
 
 bool DataLoggingCSV::useDate()

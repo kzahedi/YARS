@@ -1,8 +1,11 @@
 #include <yars/configuration/data/DataLoggingGnuplot.h>
+#include "DataBinding.h"
 
 #include <yars/util/YarsErrorHandler.h>
 #include <yars/util/FileSystemOperations.h>
 #include <yars/configuration/YarsConfiguration.h>
+
+#include <cstdlib>
 
 
 #define YARS_STRING_TARGET                    (char*)"target"
@@ -23,6 +26,34 @@
 #define YARS_STRING_AQUA                      (char*)"aqua"
 #define YARS_STRING_WXT                       (char*)"wxt"
 
+
+namespace
+{
+// Attribute binding table for the gnuplot logger's own opening tag.
+// Child-element dispatch (target) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingGnuplotAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_SIZE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingGnuplot *>(self)->setSize(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_DELAY,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingGnuplot *>(self)->setDelay(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_TERM,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingGnuplot *>(self)->setTerm(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_PAIRWISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingGnuplot *>(self)->setPairwise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingGnuplot::DataLoggingGnuplot(DataNode *parent)
   : DataNode(parent)
@@ -50,10 +81,7 @@ void DataLoggingGnuplot::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GNUPLOT_LOGGER))
   {
-    element->set(YARS_STRING_SIZE,     _size);
-    element->set(YARS_STRING_DELAY,    _delay);
-    element->set(YARS_STRING_TERM,     _term);
-    element->set(YARS_STRING_PAIRWISE, _pairwise);
+    yars::applyAttributes(this, element, loggingGnuplotAttributeBindings());
   }
   if(element->opening(YARS_STRING_TARGET))
   {
@@ -108,6 +136,26 @@ string DataLoggingGnuplot::name()
 string DataLoggingGnuplot::term()
 {
   return _term;
+}
+
+void DataLoggingGnuplot::setSize(int size)
+{
+  _size = size;
+}
+
+void DataLoggingGnuplot::setDelay(int delay)
+{
+  _delay = delay;
+}
+
+void DataLoggingGnuplot::setTerm(string term)
+{
+  _term = term;
+}
+
+void DataLoggingGnuplot::setPairwise(bool pairwise)
+{
+  _pairwise = pairwise;
 }
 
 DataLoggingGnuplot* DataLoggingGnuplot::copy()

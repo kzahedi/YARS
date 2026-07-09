@@ -1,5 +1,16 @@
 # Binding-table recipe (JSON Stage 4)
 
+> **STATUS (2026-07-09): all families migrated.** Shapes (pilot),
+> sensors (14), actuators (4, with constructor-`_noise` ownership fixes
+> and their three `leak:` suppressions retired), logging (9 with
+> attributes; DataLogging/DataLoggingModule/DataLoggingConsole have
+> none), and roots (DataRobot, DataEnvironment, DataComposite;
+> DataRobots and the root description have no own-tag attributes).
+> Additionally every unchecked `attribute(x)->` deref now goes through
+> `DataParseElement::requiredAttribute` (clean missing-attribute
+> errors). This document remains the recipe for any future Data*
+> class.
+
 Stage 3 deleted every `createXsd()` method — the XSD-generation half of
 each `Data*` class's duplication. What's left is the *attribute-parsing*
 half of `Data*::add(DataParseElement*)`: a hand-written block, repeated

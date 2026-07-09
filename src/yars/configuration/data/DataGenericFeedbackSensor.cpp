@@ -1,4 +1,5 @@
 #include "DataGenericFeedbackSensor.h"
+#include "DataBinding.h"
 #include "DataDomainFactory.h"
 
 # define YARS_STRING_MAPPING            (char*)"mapping"
@@ -8,6 +9,22 @@
 # define YARS_STRING_MIN_MAX_DEFINITION (char*)"min_max_definition"
 # define YARS_STRING_NAME_DEFINITION    (char*)"name_definition"
 
+
+namespace
+{
+// Attribute binding table for the feedback sensor's own opening tag.
+// Child-element dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericFeedbackSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericFeedbackSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataGenericFeedbackSensor::DataGenericFeedbackSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_FEEDBACK_SENSOR)
@@ -26,7 +43,7 @@ void DataGenericFeedbackSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_FEEDBACK_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericFeedbackSensorAttributeBindings());
   }
   if(element->opening(YARS_STRING_OBJECT))
   {

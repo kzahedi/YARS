@@ -91,20 +91,20 @@ void DataBox::add(DataParseElement *element)
   }
 
   // for composite objects
-  if(element->opening(YARS_STRING_MASS)) _physics->setMass(element->attribute(YARS_STRING_KG)->realValue());
+  if(element->opening(YARS_STRING_MASS)) _physics->setMass(element->requiredAttribute(YARS_STRING_KG)->realValue());
 
   if(element->opening(YARS_STRING_TEXTURE))
   {
-    for(int i = 0; i < 6; i++) _texture[i] = element->attribute(YARS_STRING_NAME)->value();
+    for(int i = 0; i < 6; i++) _texture[i] = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
   // Canonical face names (matching SceneGraphBoxNode's face build order:
   // +z, -x, -z, +x, +y, -y with z up); first..sixth are the legacy names.
-  if(element->opening(YARS_STRING_TOP_FACE_TEXTURE)    || element->opening(YARS_STRING_FIRST_TEXTURE))  _texture[0] = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_LEFT_FACE_TEXTURE)   || element->opening(YARS_STRING_SECOND_TEXTURE)) _texture[1] = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_BOTTOM_FACE_TEXTURE) || element->opening(YARS_STRING_THIRD_TEXTURE))  _texture[2] = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_RIGHT_FACE_TEXTURE)  || element->opening(YARS_STRING_FOURTH_TEXTURE)) _texture[3] = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_FRONT_FACE_TEXTURE)  || element->opening(YARS_STRING_FIFTH_TEXTURE))  _texture[4] = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_BACK_FACE_TEXTURE)   || element->opening(YARS_STRING_SIXTH_TEXTURE))  _texture[5] = element->attribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_TOP_FACE_TEXTURE)    || element->opening(YARS_STRING_FIRST_TEXTURE))  _texture[0] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_LEFT_FACE_TEXTURE)   || element->opening(YARS_STRING_SECOND_TEXTURE)) _texture[1] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_BOTTOM_FACE_TEXTURE) || element->opening(YARS_STRING_THIRD_TEXTURE))  _texture[2] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_RIGHT_FACE_TEXTURE)  || element->opening(YARS_STRING_FOURTH_TEXTURE)) _texture[3] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_FRONT_FACE_TEXTURE)  || element->opening(YARS_STRING_FIFTH_TEXTURE))  _texture[4] = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_BACK_FACE_TEXTURE)   || element->opening(YARS_STRING_SIXTH_TEXTURE))  _texture[5] = element->requiredAttribute(YARS_STRING_NAME)->value();
   if(element->opening(YARS_STRING_OBJECT_MESH_VISUALISATION))
   {
     DataMeshVisualisation *mesh = new DataMeshVisualisation(this);

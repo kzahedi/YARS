@@ -1,4 +1,5 @@
 #include "DataRobot.h"
+#include "DataBinding.h"
 #include "DataPoseFactory.h"
 
 #define YARS_STRING_POSE (char *)"pose"
@@ -7,6 +8,23 @@
 #define YARS_STRING_BODY_DEFINITION (char *)"body_definition"
 #define YARS_STRING_SELF_COLLIDE (char *)"selfCollide"
 #define YARS_STRING_TRUE_FALSE_DEFINITION (char *)"true_false_definition"
+
+
+namespace
+{
+// Attribute binding table for the robot's own opening tag. Child-element
+// dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &robotAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataRobot *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataRobot::DataRobot(DataNode *parent)
     : DataNode(parent)
@@ -128,7 +146,7 @@ void DataRobot::add(DataParseElement *element)
 
   if (element->opening(YARS_STRING_ROBOT))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, robotAttributeBindings());
   }
 
   if (element->opening(YARS_STRING_BODY))

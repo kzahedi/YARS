@@ -42,10 +42,12 @@ class DataLoggingSensor : public DataNode, public std::vector<string>
 
 
     string target();
+    void setTarget(string target);
 
     DataSensor* sensor();
     void set(DataSensor* sensor);
     int precision();
+    void setPrecision(int precision);
     std::vector<int> order();
 
   private:

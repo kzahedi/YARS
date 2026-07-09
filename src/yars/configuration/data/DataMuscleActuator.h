@@ -13,6 +13,8 @@
 
 #include <pthread.h>
 
+#include <memory>
+
 #define YARS_STRING_MUSCLE (char *)"muscle"
 #define YARS_STRING_MUSCLE_DEFINITION (char *)"muscle_definition"
 
@@ -106,6 +108,12 @@ public:
   string type();
   void setPosition(P3D position);
 
+  void setName(string name);
+  void setVisualise(bool visualise);
+  void setFriction(double friction);
+  void setErp(double erp);
+  void setCfm(double cfm);
+
   double velocity();
   double force();
   void setVelocity(double v);
@@ -184,7 +192,7 @@ private:
   void __setMapping();
 
   DataFilter *_filter;
-  DataNoise *_noise;
+  std::unique_ptr<DataNoise> _noise;
   Domain _deflection;
   Domain _mapping;
   MuscleParameter _parameter;

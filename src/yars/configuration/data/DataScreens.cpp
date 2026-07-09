@@ -109,7 +109,7 @@ void DataScreens::add(DataParseElement *element)
     element->set(YARS_STRING_Z,      _zTexture);
   }
 
-  if(element->opening(YARS_STRING_SKY)) _sky = element->attribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_SKY)) _sky = element->requiredAttribute(YARS_STRING_NAME)->value();
 }
 
 DataFollowables* DataScreens::followables()

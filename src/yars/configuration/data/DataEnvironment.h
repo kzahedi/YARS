@@ -44,6 +44,7 @@ class DataEnvironment : public DataNode, public MacroUserInterface
      * @return name
      */
     string name();
+    void setName(string name) { _name = name; };
 
     /**
      * @brief Adds DataParseElement to this element. Used during parsing.

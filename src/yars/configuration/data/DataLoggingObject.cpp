@@ -1,8 +1,9 @@
 #include <yars/configuration/data/DataLoggingObject.h>
-
+#include "DataBinding.h"
 
 #include <yars/util/YarsErrorHandler.h>
 
+#include <cstdlib>
 #include <sstream>
 
 using namespace std;
@@ -20,6 +21,26 @@ using namespace std;
 # define YARS_STRING_ALPHA                     "alpha"
 # define YARS_STRING_BETA                      "beta"
 # define YARS_STRING_GAMMA                     "gamma"
+
+namespace
+{
+// Attribute binding table for the object logger's own opening tag.
+// Child-element dispatch (use) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingObjectAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_TARGET,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingObject *>(self)->setTarget(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_PRECISION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingObject *>(self)->setPrecision(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingObject::DataLoggingObject(DataNode *parent)
   : DataNode(parent)
@@ -42,8 +63,7 @@ void DataLoggingObject::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_LOGGING_OBJECT))
   {
-    element->set(YARS_STRING_TARGET,    _target);
-    element->set(YARS_STRING_PRECISION, _precision);
+    yars::applyAttributes(this, element, loggingObjectAttributeBindings());
   }
   if(element->opening(YARS_STRING_USE))
   {
@@ -68,6 +88,16 @@ DataLoggingObject* DataLoggingObject::copy()
 string DataLoggingObject::target()
 {
   return _target;
+}
+
+void DataLoggingObject::setTarget(string target)
+{
+  _target = target;
+}
+
+void DataLoggingObject::setPrecision(int precision)
+{
+  _precision = precision;
 }
 
 DataObject* DataLoggingObject::object()

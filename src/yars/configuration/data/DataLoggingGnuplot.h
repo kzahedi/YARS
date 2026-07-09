@@ -38,10 +38,14 @@ class DataLoggingGnuplot : public DataLoggingModule, public DataNode
     DataLoggingGnuplot* copy();
 
     int size();
+    void setSize(int size);
     int delay();
+    void setDelay(int delay);
     bool pairwise();
+    void setPairwise(bool pairwise);
     string name();
     string term();
+    void setTerm(string term);
 
   private:
     int _size;

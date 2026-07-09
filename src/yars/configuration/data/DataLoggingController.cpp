@@ -1,7 +1,9 @@
 #include <yars/configuration/data/DataLoggingController.h>
+#include "DataBinding.h"
 
 #include <yars/util/YarsErrorHandler.h>
 
+#include <cstdlib>
 #include <sstream>
 
 using namespace std;
@@ -17,6 +19,26 @@ using namespace std;
 #define YARS_INTERNAL_EXTERNAL_OPTION         (char*)"internal_external_option"
 #define YARS_EXTERNAL_INTERNAL_OPTION         (char*)"external_internal_option"
 
+
+namespace
+{
+// Attribute binding table for the controller logger's own opening tag.
+// Child-element dispatch (use) stays hand-written below.
+const std::vector<yars::AttributeBinding> &loggingControllerAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_TARGET,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingController *>(self)->setTarget(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_PRECISION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingController *>(self)->setPrecision(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingController::DataLoggingController(DataNode *parent)
   : DataNode(parent)
@@ -39,8 +61,7 @@ void DataLoggingController::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_LOGGING_CONTROLLER))
   {
-    element->set(YARS_STRING_TARGET, _target);
-    element->set(YARS_STRING_PRECISION, _precision);
+    yars::applyAttributes(this, element, loggingControllerAttributeBindings());
   }
   if(element->opening(YARS_STRING_USE))
   {
@@ -63,6 +84,16 @@ DataLoggingController* DataLoggingController::copy()
 string DataLoggingController::target()
 {
   return _target;
+}
+
+void DataLoggingController::setTarget(string target)
+{
+  _target = target;
+}
+
+void DataLoggingController::setPrecision(int precision)
+{
+  _precision = precision;
 }
 
 DataController* DataLoggingController::controller()

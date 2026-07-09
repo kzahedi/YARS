@@ -1,4 +1,7 @@
 #include "DataLoggingFile.h"
+#include "DataBinding.h"
+
+#include <cstdlib>
 
 #define YARS_STRING_TARGET                (char*)"target"
 #define YARS_STRING_MODULE                (char*)"module"
@@ -18,6 +21,44 @@
 
 #define YARS_STRING_TRUE_FALSE_DEFINITION (char*)"true_false_definition"
 
+
+namespace
+{
+// Attribute binding table for the file logger's own opening tag.
+// Child-element dispatch (target) stays hand-written below.
+// Note: _debug is declared int in the header, so the legacy code bound the
+// int set() overload (atoi) — preserved here.
+const std::vector<yars::AttributeBinding> &loggingFileAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setFilename(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_DATE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setUseDate(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_START,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setStart(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_STOP,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setStop(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_DEBUG,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setDebug(atoi(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_USE_TIME_STEP,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataLoggingFile *>(self)->setUseTimeStep(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
 
 DataLoggingFile::DataLoggingFile(DataNode *parent)
   : DataNode(parent)
@@ -41,12 +82,7 @@ void DataLoggingFile::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_FILE_LOGGER))
   {
-    element->set(YARS_STRING_NAME,          _filename);
-    element->set(YARS_STRING_DATE,          _useDate);
-    element->set(YARS_STRING_START,         _start);
-    element->set(YARS_STRING_STOP,          _stop);
-    element->set(YARS_STRING_DEBUG,         _debug);
-    element->set(YARS_STRING_USE_TIME_STEP, _useTimeStep);
+    yars::applyAttributes(this, element, loggingFileAttributeBindings());
   }
   if(element->opening(YARS_STRING_TARGET))
   {
@@ -76,6 +112,36 @@ DataLoggingFile* DataLoggingFile::copy()
 string DataLoggingFile::filename()
 {
   return _filename;
+}
+
+void DataLoggingFile::setFilename(string filename)
+{
+  _filename = filename;
+}
+
+void DataLoggingFile::setUseDate(bool useDate)
+{
+  _useDate = useDate;
+}
+
+void DataLoggingFile::setStart(int start)
+{
+  _start = start;
+}
+
+void DataLoggingFile::setStop(int stop)
+{
+  _stop = stop;
+}
+
+void DataLoggingFile::setDebug(int debug)
+{
+  _debug = debug;
+}
+
+void DataLoggingFile::setUseTimeStep(bool useTimeStep)
+{
+  _useTimeStep = useTimeStep;
 }
 
 bool DataLoggingFile::useDate()
