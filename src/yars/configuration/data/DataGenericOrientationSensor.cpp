@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataGenericOrientationSensor.h>
+#include <yars/configuration/data/DataBinding.h>
 #include <yars/configuration/data/DataDomainFactory.h>
 
 #include <yars/defines/mutex.h>
@@ -24,6 +25,23 @@
 
 # define YARS_STRING_TYPE                   (char*)"type"
 
+namespace
+{
+// Attribute binding table for the orientation sensor's own opening tag.
+// Child-element dispatch (and the hand-rolled optional "type" attribute
+// handling) stays hand-written below.
+const std::vector<yars::AttributeBinding> &genericOrientationSensorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataGenericOrientationSensor *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataGenericOrientationSensor::DataGenericOrientationSensor(DataNode* parent)
   : DataSensor(parent, DATA_GENERIC_ORIENTATION_SENSOR)
 {
@@ -47,7 +65,7 @@ void DataGenericOrientationSensor::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_GENERIC_ORIENTATION_SENSOR))
   {
-    element->set(YARS_STRING_NAME, _name);
+    yars::applyAttributes(this, element, genericOrientationSensorAttributeBindings());
     if(element->attribute(YARS_STRING_TYPE) != NULL)
     {
       if(element->attribute(YARS_STRING_TYPE)->value() == YARS_STRING_DEG)
