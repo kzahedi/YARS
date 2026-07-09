@@ -27,6 +27,13 @@ jobs:
         with:
           submodules: recursive
 
+      # Cheap fail-fast gate before the expensive dependency builds:
+      # every committed config must validate against the JSON Schema.
+      - name: JSON Schema check (configs vs schema/)
+        run: |
+          pip install --quiet jsonschema
+          python3 scripts/json-schema-check.py
+
       - name: Install apt dependencies
         run: |
           sudo apt-get update

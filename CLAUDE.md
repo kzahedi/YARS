@@ -270,24 +270,32 @@ src/yars/
 
 ## Future Modernization Priorities
 
-### Phase 1: Complete Observer Pattern Removal
-- Remove remaining ~141 Observer/Observable references
-- Simplify control flow with direct method calls
-- Remove ObservableMessage infrastructure
+(Observer removal, XML→JSON migration, GoogleTest suite, and CI are all
+**done** — see the sections above.)
 
-### Phase 2: Configuration System Simplification
-- JSON migration complete (Xerces/XSD/SAX layer removed, JSON Stage 3)
-- Reduce 80+ factory classes to template-based approach
-- Improve error messages and validation
+### Phase 1: Binding-table migration (JSON Stage 4, in progress)
+- Migrate remaining `Data*::add()` attribute blocks to
+  `yars::AttributeBinding` tables per
+  `docs/planning/binding-table-recipe.md`
+- Order: sensors (14 classes) → actuators (4) → logging (12) →
+  robot/environment roots
+- Retire the corresponding `leak:Data*` entries in
+  `scripts/sanitizer-suppressions.txt` per class
+- Then enforce `required` attributes at parse time (closes the
+  missing-attribute crash gap the JSON Schema only catches in-editor)
 
-### Phase 3: Further C++ Modernization
-- Move to C++20 when appropriate
-- Consider modules for faster compilation
+### Phase 2: Graphics streams
+- **Vulkan renderer**: builds behind `YARS_USE_VULKAN=OFF`, not wired
+  into the runtime (`docs/vulkan-status.md`); decide wire-in vs. drop
+- **Shadows**: open thread, see `docs/planning/shadows_v5_plan.md`
 
-### Phase 4: Testing Infrastructure
-- Add unit tests with Google Test
-- Create integration test suite
-- Set up continuous integration
+### Phase 3: Housekeeping
+- `v0.8.7-open-points.md` leftovers: Ogre submodule hosting decision,
+  `OgreHandler` singleton refactor
+- At 1.0: consider dropping legacy config-format acceptance (`rosiml`,
+  always-arrays, v0.12.0 camelCase aliases) and the unused XML-era
+  macros feature (`DataMacroInstance`)
+- C++20 when appropriate
 
 ## Lessons Learned
 
