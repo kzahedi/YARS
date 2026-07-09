@@ -11,11 +11,7 @@
 #include <yars/configuration/data/DataSensorFactory.h>
 #include <yars/configuration/data/DataActuatorFactory.h>
 #include <yars/configuration/data/DataController.h>
-#include <yars/configuration/data/DataMacroInstance.h>
-#include <yars/configuration/data/DataMacros.h>
-#include <yars/configuration/data/DataController.h>
 #include <yars/configuration/data/DataConstraints.h>
-#include <yars/configuration/data/MacroUserInterface.h>
 
 #include <yars/types/Pose.h>
 
@@ -28,7 +24,7 @@
 
 using namespace std;
 
-class DataRobot : public DataNode, public MacroUserInterface
+class DataRobot : public DataNode
 {
   public:
     /**
@@ -171,13 +167,9 @@ class DataRobot : public DataNode, public MacroUserInterface
      */
     void add(DataParseElement *element);
 
-    void setMacros(DataMacros* macros);
-
-
     DataController* controller();
     bool selfCollide();
 
-    DataMacros* macros();
     DataRobot* copy();
 
     std::vector<double>::iterator av_begin();
@@ -201,7 +193,6 @@ class DataRobot : public DataNode, public MacroUserInterface
     void __collectActuatorObjects();
   private:
     void __applyPose();
-    void __applyMacros();
     void __setMotorVector();
     void __setSensorVector();
     void __setActuatorsInController();
@@ -213,10 +204,8 @@ class DataRobot : public DataNode, public MacroUserInterface
     DataObjects                     _geoms;
     std::vector<DataSensor*>        _sensors;
     std::vector<DataActuator*>      _actuators;
-    std::vector<DataMacroInstance*> _macros;
     DataController*                 _controller;
     bool                            _selfCollide;
-    DataMacros                      *_macrosDefinitions;
     bool                            _processingSensors;
     bool                            _processingActuators;
 

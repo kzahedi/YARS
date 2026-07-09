@@ -92,7 +92,6 @@ void DataEnvironment::add(DataParseElement *element)
   if(element->closing(YARS_STRING_ENVIRONMENT))
   {
     current = parent;
-    __applyMacros();
   }
 
   if(element->opening(YARS_STRING_GRAVITATION))
@@ -114,13 +113,6 @@ void DataEnvironment::add(DataParseElement *element)
     current = ls;
     ls->add(element);
     _lightSources.push_back(ls);
-  }
-  if(element->opening(YARS_STRING_MACRO))
-  {
-    DataMacroInstance *macroInstance = new DataMacroInstance(this, _macrosDefinitions);
-    current = macroInstance;
-    macroInstance->add(element);
-    _macros.push_back(macroInstance);
   }
   if(element->opening(YARS_STRING_NORMAL))
   {
@@ -220,27 +212,6 @@ DataPointLightSource* DataEnvironment::lightSource(int index)
   return _lightSources[index];
 }
 
-void DataEnvironment::setMacros(DataMacros *macros)
-{
-  _macrosDefinitions = macros;
-}
-
-DataMacros* DataEnvironment::macros()
-{
-  return _macrosDefinitions;
-}
-
-void DataEnvironment::__applyMacros()
-{
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
-    for(DataObjects::iterator o = (*i)->begin(); o != (*i)->end(); o++)
-    {
-      _objects.push_back(*o);
-    }
-  }
-}
-
 P3D DataEnvironment::normal()
 {
   return _normal;
@@ -256,7 +227,6 @@ DataEnvironment* DataEnvironment::copy()
   DataEnvironment *copy = new DataEnvironment(NULL);
   copy->_name = _name;
   for(int i = 0; i < 3; i++) copy->_gravitation[i] = _gravitation[i];
-  if(_macrosDefinitions != NULL) copy->_macrosDefinitions = _macrosDefinitions->copy();
 
   for(vector<DataMeshVisualisation*>::iterator m = m_begin(); m != m_end(); m++)
   {
@@ -269,10 +239,6 @@ DataEnvironment* DataEnvironment::copy()
   for(std::vector<DataPointLightSource*>::iterator i = _lightSources.begin(); i != _lightSources.end(); i++)
   {
     copy->_lightSources.push_back((*i)->copy());
-  }
-  for(std::vector<DataMacroInstance*>::iterator i = _macros.begin(); i != _macros.end(); i++)
-  {
-    copy->_macros.push_back((*i)->copy(this));
   }
   copy->_normal = _normal;
   // copy->_textureDefinition = NULL;

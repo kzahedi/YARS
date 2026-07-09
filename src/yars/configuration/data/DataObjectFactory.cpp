@@ -5,7 +5,6 @@
 #include "DataCapsule.h"
 #include "DataComposite.h"
 #include "DataPly.h"
-#include "DataMacro.h"
 
 
 #include <iostream>

@@ -1,5 +1,4 @@
 #include "DataRobots.h"
-#include "DataMacros.h"
 
 #include <sstream>
 
@@ -7,9 +6,7 @@ using namespace std;
 
 DataRobots::DataRobots(DataNode *parent)
   : DataNode(parent)
-{
-  _macros = NULL;
-}
+{ }
 
 DataRobots::~DataRobots()
 { }
@@ -25,7 +22,6 @@ void DataRobots::add(DataParseElement *element)
     DataRobot *robot = new DataRobot(this);
     push_back(robot);
     current = robot;
-    robot->setMacros(_macros);
     robot->add(element);
   }
 }
@@ -35,11 +31,6 @@ DataRobot* DataRobots::robot(int index)
   return at(index);
 }
 
-void DataRobots::setMacros(DataMacros *macros)
-{
-  _macros = macros;
-}
-
 DataRobots* DataRobots::copy()
 {
   DataRobots *copy = new DataRobots(NULL);
@@ -47,7 +38,6 @@ DataRobots* DataRobots::copy()
   {
     copy->push_back((*i)->copy());
   }
-  if(_macros != NULL) copy->_macros = _macros->copy();
   return copy;
 }
 

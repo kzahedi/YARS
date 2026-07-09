@@ -6,7 +6,6 @@
 #include <yars/configuration/data/DataScreens.h>
 #include <yars/configuration/data/DataRobots.h>
 #include <yars/configuration/data/DataSignals.h>
-#include <yars/configuration/data/DataMacros.h>
 #include <yars/configuration/data/DataEnvironment.h>
 #include <yars/configuration/data/DataNode.h>
 #include <yars/configuration/data/DataParseElement.h>
@@ -84,14 +83,6 @@ class DataRobotSimulationDescription : public DataNode
     DataScreens* screens();
 
     /**
-     * @brief Return the Macros Configuration
-     *
-     * @return macros definition
-     * @sa DataMacros
-     */
-    DataMacros* macros();
-
-    /**
      * @brief Returns the robots configuration
      *
      * @return robots configuration
@@ -167,7 +158,6 @@ class DataRobotSimulationDescription : public DataNode
 
     DataSimulator   *_simulator;
     DataScreens     *_screens;
-    DataMacros      *_macros;
     DataEnvironment *_environment;
     DataRobots      *_robots;
     DataSignals     *_signals;

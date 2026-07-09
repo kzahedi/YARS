@@ -54,9 +54,6 @@ set(CFG_SRC YarsConfiguration.cpp
             data/DataLoggingObject.cpp
             data/DataLoggingSelforg.cpp
             data/DataLoggingSensor.cpp
-            data/DataMacro.cpp
-            data/DataMacroInstance.cpp
-            data/DataMacros.cpp
             data/DataNode.cpp
             data/DataNoise.cpp
             data/DataObject.cpp

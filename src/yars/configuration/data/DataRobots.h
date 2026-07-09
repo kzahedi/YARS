@@ -3,7 +3,6 @@
 
 #include "DataNode.h"
 #include "DataRobot.h"
-#include "DataMacros.h"
 
 # define YARS_STRING_ROBOTS            (char*)"robots"
 # define YARS_STRING_ROBOTS_DEFINITION (char*)"robots_definition"
@@ -37,16 +36,9 @@ class DataRobots : public DataNode, public std::vector<DataRobot*>
 
     DataRobot* robot(int index);
 
-    void setMacros(DataMacros *macros);
-
-
     DataRobots* copy();
 
     void resetTo(const DataRobots *robots);
-
-  private:
-    DataMacros *_macros;
-
 };
 
 #endif // __DATA_MOVEABLES_H__
