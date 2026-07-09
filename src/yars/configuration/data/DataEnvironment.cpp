@@ -153,7 +153,7 @@ void DataEnvironment::add(DataParseElement *element)
 
   if(element->opening(YARS_STRING_TEXTURE))
   {
-    _texture = element->attribute(YARS_STRING_NAME)->value();
+    _texture = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
 
   if(element->opening(YARS_STRING_OBJECT_MESH_VISUALISATION))

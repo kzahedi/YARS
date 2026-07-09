@@ -74,6 +74,15 @@ class DataParseElement : public std::vector<DataParseAttribute*>
      * @s DataParseAttribute
      */
     DataParseAttribute* attribute(string name);
+
+    /**
+     * @brief Like attribute(), but throws std::runtime_error
+     *        ("<element>: missing attribute '<name>'") instead of
+     *        returning nullptr. Use at call sites that immediately
+     *        dereference — JsonParser's catch block prefixes the config
+     *        file path, turning a would-be crash into a clean error.
+     */
+    DataParseAttribute* requiredAttribute(string name);
     bool hasAttriute(string name);
 
     /**

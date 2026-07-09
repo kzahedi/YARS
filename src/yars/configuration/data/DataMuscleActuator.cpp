@@ -191,15 +191,15 @@ void DataMuscleActuator::add(DataParseElement *element)
 
   if (element->opening(YARS_STRING_TOP_TEXTURE))
   {
-    _texture[0] = element->attribute(YARS_STRING_NAME)->value();
+    _texture[0] = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
   if (element->opening(YARS_STRING_BOTTOM_TEXTURE))
   {
-    _texture[1] = element->attribute(YARS_STRING_NAME)->value();
+    _texture[1] = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
   if (element->opening(YARS_STRING_BODY_TEXTURE))
   {
-    _texture[2] = element->attribute(YARS_STRING_NAME)->value();
+    _texture[2] = element->requiredAttribute(YARS_STRING_NAME)->value();
   }
 
   if (_parsingSourceAnchor)

@@ -95,20 +95,20 @@ void DataTraceLine::add(DataParseElement *element)
     element->set(YARS_STRING_Z,     _offset.z);
   }
 
-  if(element->opening(YARS_STRING_TEXTURE))   _texture   = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_PARTICLES)) _particles = element->attribute(YARS_STRING_NAME)->value();
-  if(element->opening(YARS_STRING_BILLBOARD)) _billboard = element->attribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_TEXTURE))   _texture   = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_PARTICLES)) _particles = element->requiredAttribute(YARS_STRING_NAME)->value();
+  if(element->opening(YARS_STRING_BILLBOARD)) _billboard = element->requiredAttribute(YARS_STRING_NAME)->value();
 
   if(element->opening(YARS_STRING_INIT))
   {
     element->set(YARS_STRING_SIZE,   _lineWidth);
-    DataColourFactory::set(_color, element->attribute(YARS_STRING_COLOR)->value());
+    DataColourFactory::set(_color, element->requiredAttribute(YARS_STRING_COLOR)->value());
   }
 
   if(element->opening(YARS_STRING_FINAL))
   {
     element->set(YARS_STRING_SIZE, _finalWidth);
-    DataColourFactory::set(_finalColour, element->attribute(YARS_STRING_COLOR)->value());
+    DataColourFactory::set(_finalColour, element->requiredAttribute(YARS_STRING_COLOR)->value());
   }
 
 }

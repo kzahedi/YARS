@@ -68,7 +68,7 @@ void DataGenericOrientationSensor::add(DataParseElement *element)
     yars::applyAttributes(this, element, genericOrientationSensorAttributeBindings());
     if(element->attribute(YARS_STRING_TYPE) != NULL)
     {
-      if(element->attribute(YARS_STRING_TYPE)->value() == YARS_STRING_DEG)
+      if(element->requiredAttribute(YARS_STRING_TYPE)->value() == YARS_STRING_DEG)
       {
         _useDegree = true;
       }

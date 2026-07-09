@@ -115,18 +115,18 @@ void DataMacroInstance::add(DataParseElement *element)
     _target = _prefix + _target;
   }
 
-  if(element->opening(YARS_STRING_FIRST_TEXTURE))  _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_SECOND_TEXTURE)) _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_THIRD_TEXTURE))  _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_FOURTH_TEXTURE)) _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_FIFTH_TEXTURE))  _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_SIXTH_TEXTURE))  _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_FIRST_TEXTURE))  _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_SECOND_TEXTURE)) _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_THIRD_TEXTURE))  _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_FOURTH_TEXTURE)) _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_FIFTH_TEXTURE))  _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_SIXTH_TEXTURE))  _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
 
-  if(element->opening(YARS_STRING_TOP_TEXTURE))    _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_BOTTOM_TEXTURE)) _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
-  if(element->opening(YARS_STRING_BODY_TEXTURE))   _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_TOP_TEXTURE))    _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_BOTTOM_TEXTURE)) _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_BODY_TEXTURE))   _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
 
-  if(element->opening(YARS_STRING_TEXTURE))        _textures.push_back(element->attribute(YARS_STRING_NAME)->value());
+  if(element->opening(YARS_STRING_TEXTURE))        _textures.push_back(element->requiredAttribute(YARS_STRING_NAME)->value());
 
 }
 

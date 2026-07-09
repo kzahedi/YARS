@@ -281,8 +281,11 @@ src/yars/
   robot/environment roots
 - Retire the corresponding `leak:Data*` entries in
   `scripts/sanitizer-suppressions.txt` per class
-- Then enforce `required` attributes at parse time (closes the
-  missing-attribute crash gap the JSON Schema only catches in-editor)
+- ✅ Required-attribute crash gap closed: all unchecked
+  `attribute(x)->` derefs now go through
+  `DataParseElement::requiredAttribute`, which throws a clean
+  "<element>: missing attribute" error that JsonParser prefixes with
+  the file path
 
 ### Phase 2: Graphics streams
 - **Vulkan renderer**: builds behind `YARS_USE_VULKAN=OFF`, not wired

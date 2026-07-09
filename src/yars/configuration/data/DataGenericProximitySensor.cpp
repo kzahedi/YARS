@@ -95,7 +95,7 @@ void DataGenericProximitySensor::add(DataParseElement *element)
     CONVERT_TO_RAD(_openingAngles.y);
     if(element->attribute(YARS_STRING_TYPE) != NULL)
     {
-      if(element->attribute(YARS_STRING_TYPE)->value() == YARS_STRING_RAD)
+      if(element->requiredAttribute(YARS_STRING_TYPE)->value() == YARS_STRING_RAD)
       {
         CONVERT_TO_DEG(_openingAngles.x);
         CONVERT_TO_DEG(_openingAngles.y);
