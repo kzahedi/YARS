@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataSliderActuator.h>
+#include "DataBinding.h"
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataPIDFactory.h>
@@ -7,6 +8,8 @@
 #include <yars/types/Quaternion.h>
 #include <yars/util/noise/NoiseFactory.h>
 #include <yars/defines/mutex.h>
+
+#include <cstdlib>
 
 # define YARS_STRING_FRICTION                      (char*)"friction"
 # define YARS_STRING_TYPE                          (char*)"type"
@@ -50,10 +53,38 @@
 # define YARS_STRING_GLOBAL                        (char*)"global"
 
 
+namespace
+{
+// Attribute binding table for the slider's own opening tag. Child-element
+// dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &sliderActuatorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSliderActuator *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_TYPE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSliderActuator *>(self)->setJointType(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_MODE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSliderActuator *>(self)->setMode(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_FRICTION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataSliderActuator *>(self)->setFriction(atof(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataSliderActuator::DataSliderActuator(DataNode *parent)
   : DataActuator(parent, DATA_ACTUATOR_SLIDER)
 {
-  _noise                       = new DataNoise(this);
+  _noise                       = std::make_unique<DataNoise>(this);
   _filter                      = NULL;
   _deflectionSet               = false;
   _isActive                    = true;
@@ -95,10 +126,7 @@ void DataSliderActuator::add(DataParseElement *element)
   }
   if(element->opening(YARS_STRING_SLIDER))
   {
-    element->set(YARS_STRING_NAME,     _name);
-    element->set(YARS_STRING_TYPE,     _jointType);
-    element->set(YARS_STRING_MODE,     _mode);
-    element->set(YARS_STRING_FRICTION, _friction);
+    yars::applyAttributes(this, element, sliderActuatorAttributeBindings());
     if(_mode == YARS_STRING_ACTIVE)    _isActive = true;
     if(_mode == YARS_STRING_PASSIVE)   _isActive = false;
   }
@@ -164,8 +192,8 @@ void DataSliderActuator::add(DataParseElement *element)
 
   if(element->opening(YARS_STRING_NOISE))
   {
-    _noise  = new DataNoise(this);
-    current = _noise;
+    _noise  = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if(element->opening(YARS_STRING_FILTER))
@@ -219,7 +247,7 @@ Domain DataSliderActuator::mapping()
 
 DataNoise* DataSliderActuator::noise()
 {
-  return _noise;
+  return _noise.get();
 }
 
 DataFilter* DataSliderActuator::filter()
@@ -269,12 +297,32 @@ string DataSliderActuator::mode()
   return _mode;
 }
 
+void DataSliderActuator::setName(string name)
+{
+  _name = name;
+}
+
+void DataSliderActuator::setJointType(string jointType)
+{
+  _jointType = jointType;
+}
+
+void DataSliderActuator::setMode(string mode)
+{
+  _mode = mode;
+}
+
+void DataSliderActuator::setFriction(double friction)
+{
+  _friction = friction;
+}
+
 DataSliderActuator* DataSliderActuator::_copy()
 {
   DataSliderActuator *copy = new DataSliderActuator(NULL);
 
   if (_filter != NULL) copy->_filter = _filter->copy();
-  if (_noise  != NULL) copy->_noise  = _noise->copy();
+  if (_noise  != nullptr) copy->_noise.reset(_noise->copy());
   copy->_mapping            = _mapping;
   copy->_parameter          = _parameter;
   copy->_pose               = _pose;
@@ -402,7 +450,7 @@ void DataSliderActuator::__setMapping()
       _internalExternalMapping[1].setOutputDomain(_externalDomain[1]);
       break;
   }
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 Domain DataSliderActuator::getInternalDomain(int index)
 {
