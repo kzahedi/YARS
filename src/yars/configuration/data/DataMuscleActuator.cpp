@@ -1,4 +1,5 @@
 #include <yars/configuration/data/DataMuscleActuator.h>
+#include "DataBinding.h"
 #include <yars/configuration/data/DataDomainFactory.h>
 #include <yars/configuration/data/DataPoseFactory.h>
 #include <yars/configuration/data/DataPIDFactory.h>
@@ -8,6 +9,8 @@
 #include <yars/types/Quaternion.h>
 #include <yars/util/noise/NoiseFactory.h>
 #include <yars/defines/mutex.h>
+
+#include <cstdlib>
 
 #define YARS_STRING_VISUALISE (char *)"visualise"
 // #define YARS_STRING_FRICTION (char *)"friction"
@@ -78,10 +81,42 @@
 #define YARS_STRING_VISUALISATION (char *)"visualisation"
 #define YARS_STRING_MUSCLE_TEXTURE_DEFINITION (char *)"muscle_visualisation_definition"
 
+namespace
+{
+// Attribute binding table for the muscle's own opening tag. Child-element
+// dispatch stays hand-written below.
+const std::vector<yars::AttributeBinding> &muscleActuatorAttributeBindings()
+{
+  static const std::vector<yars::AttributeBinding> bindings = {
+      {YARS_STRING_NAME,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleActuator *>(self)->setName(value); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_VISUALISE,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleActuator *>(self)->setVisualise(value == "true"); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_FRICTION,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleActuator *>(self)->setFriction(atof(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_ERP,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleActuator *>(self)->setErp(atof(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+      {YARS_STRING_CFM,
+       [](DataNode *self, const std::string &value)
+       { static_cast<DataMuscleActuator *>(self)->setCfm(atof(value.c_str())); },
+       /*required=*/false, /*defaultValue=*/nullptr},
+  };
+  return bindings;
+}
+} // namespace
+
 DataMuscleActuator::DataMuscleActuator(DataNode *parent)
     : DataActuator(parent, DATA_ACTUATOR_MUSCLE)
 {
-  _noise = new DataNoise(this);
+  _noise = std::make_unique<DataNoise>(this);
   _filter = NULL;
   _deflectionSet = false;
   _currentTransitionalVelocity = 0.0;
@@ -127,11 +162,7 @@ void DataMuscleActuator::add(DataParseElement *element)
   }
   if (element->opening(YARS_STRING_MUSCLE))
   {
-    element->set(YARS_STRING_NAME, _name);
-    element->set(YARS_STRING_VISUALISE, _visualise);
-    element->set(YARS_STRING_FRICTION, _friction);
-    element->set(YARS_STRING_ERP, _erp);
-    element->set(YARS_STRING_CFM, _cfm);
+    yars::applyAttributes(this, element, muscleActuatorAttributeBindings());
   }
 
   if (element->opening(YARS_STRING_FORCE))
@@ -220,8 +251,8 @@ void DataMuscleActuator::add(DataParseElement *element)
 
   if (element->opening(YARS_STRING_NOISE))
   {
-    _noise = new DataNoise(this);
-    current = _noise;
+    _noise = std::make_unique<DataNoise>(this);
+    current = _noise.get();
     _noise->add(element);
   }
   if (element->opening(YARS_STRING_FILTER))
@@ -297,7 +328,7 @@ Domain DataMuscleActuator::mapping()
 
 DataNoise *DataMuscleActuator::noise()
 {
-  return _noise;
+  return _noise.get();
 }
 
 DataFilter *DataMuscleActuator::filter()
@@ -340,14 +371,39 @@ string DataMuscleActuator::mode()
   return string("active");
 }
 
+void DataMuscleActuator::setName(string name)
+{
+  _name = name;
+}
+
+void DataMuscleActuator::setVisualise(bool visualise)
+{
+  _visualise = visualise;
+}
+
+void DataMuscleActuator::setFriction(double friction)
+{
+  _friction = friction;
+}
+
+void DataMuscleActuator::setErp(double erp)
+{
+  _erp = erp;
+}
+
+void DataMuscleActuator::setCfm(double cfm)
+{
+  _cfm = cfm;
+}
+
 DataMuscleActuator *DataMuscleActuator::_copy()
 {
   DataMuscleActuator *copy = new DataMuscleActuator(NULL);
 
   if (_filter != NULL)
     copy->_filter = _filter->copy();
-  if (_noise != NULL)
-    copy->_noise = _noise->copy();
+  if (_noise != nullptr)
+    copy->_noise.reset(_noise->copy());
   copy->_mapping = _mapping;
   copy->_parameter = _parameter;
   copy->_deflection = _deflection;
@@ -437,7 +493,7 @@ void DataMuscleActuator::__setMapping()
   _internalExternalMapping.setInputDomain(_internalDomain);
   _internalExternalMapping.setOutputDomain(_externalDomain);
 
-  _n = NoiseFactory::create(_noise);
+  _n = NoiseFactory::create(_noise.get());
 }
 
 Domain DataMuscleActuator::getInternalDomain(int index)
