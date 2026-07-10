@@ -303,9 +303,13 @@ src/yars/
   point at kzahedi forks (pinned commits preserved)
 - ✅ Legacy config-format acceptance dropped in 0.14 (loud errors with
   a canonicalize hint); XML-era macros feature deleted
-- Remaining: `OgreHandler` singleton refactor (openspec pre-flight
-  exists); `DataGenericActuatorSensor` noise vector + `_filter`
-  ownership; C++20 when appropriate
+- Remaining work is consolidated in
+  `docs/planning/road-to-1.0.md`: noise/filter ownership completion,
+  constructor-member suppression burn-down, four investigate-first
+  entries, the intentional parseJsonConfig leak decision, and the 1.0
+  release gate. (`OgreHandler` singleton refactor is framework-blocked
+  by Ogre 14 internals — see the archived openspec change; C++20 is
+  explicitly post-1.0.)
 
 ## Lessons Learned
 
